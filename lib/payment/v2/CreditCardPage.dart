@@ -1,0 +1,671 @@
+import 'package:flutter/material.dart';
+//import 'package:payment_page_v2/CountDownTimer/CardInputWidget.dart';
+//import 'package:payment_page_v2/CountDownTimer/timerWidget.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:vmba/menu/menu.dart';
+import 'package:intl/intl.dart';
+import 'package:vmba/payment/v2/countDownTimer/CardInputWidget.dart';
+import 'package:vmba/payment/v2/countDownTimer/CountDownTimer.dart';
+import 'package:vmba/payment/v2/countDownTimer/timerWidget.dart';
+import 'package:vmba/resources/app_config.dart';
+import 'package:vmba/data/models/models.dart';
+import 'package:vmba/data/models/pnr.dart';
+
+import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/widgets/snackbarWidget.dart';
+import 'package:vmba/data/models/pnrs.dart';
+import 'package:vmba/data/settings.dart';
+import 'package:vmba/data/repository.dart';
+import 'package:vmba/data/globals.dart';
+//import 'countDownTimer/CountDownTimer/CountDownTimer.dart';
+
+class CreditCardPage extends StatefulWidget {
+  CreditCardPage({    Key key,
+    this.newBooking,
+    this.pnrModel,
+    this.stopwatch,
+    this.isMmb=false,
+    this.mmbBooking,
+    this.session,
+  }) : super(key: key);
+
+  final NewBooking newBooking;
+  final PnrModel pnrModel;
+  final Stopwatch stopwatch;
+  final bool isMmb;
+  final MmbBooking mmbBooking;
+  final Session session;
+
+  @override
+  _CreditCardPageState createState() => _CreditCardPageState();
+}
+
+class _CreditCardPageState extends State<CreditCardPage> {
+  GlobalKey<ScaffoldState> _key = GlobalKey();
+  // bool _displayProcessingIndicator;
+  //String _displayProcessingText = 'Making your Booking...';
+  PaymentDetails paymentDetails = new PaymentDetails();
+  String nostop = '';
+
+  bool _displayProcessingIndicator;
+  String _displayProcessingText;
+  PnrModel pnrModel;
+  String _error;
+  String rLOC = '';
+  Session session;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _key,
+      appBar: AppBar(
+        brightness: gbl_SystemColors.statusBar,
+        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(
+            color: gbl_SystemColors.headerTextColor),
+        title: new Text('Payment',
+            style: TextStyle(
+                color:
+                gbl_SystemColors.headerTextColor)),
+      ),
+      endDrawer: DrawerMenu(),
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[
+          Row(children: <Widget>[
+            Expanded(
+              child: DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.black),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Please complete you payment within ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          ChangeNotifierProvider(
+                              create: (context) => CountDownTimer(),
+                              child: TimerWidget(timerExpired: () {
+                                timerExpired();
+                                print('expired');
+                              })),
+                        ],
+                      ),
+                    ),
+                  )),
+            )
+          ]),
+          CardInputWidget(
+            payCallback: () {
+              hasDataConnection().then((result) async {
+                if (result == true) {
+
+                  makePayment();
+                //  signin().then((_) => makePayment());
+                } else {
+                  setState(() {
+                    // _displayProcessingIndicator = false;
+                  });
+                  showSnackBar('Please check your internet connection');
+                }
+              });
+            },
+            paymentDetails:  paymentDetails,
+          ),
+        ]),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  void _dataLoaded() {
+    setState(() {
+      _displayProcessingIndicator = false;
+    });
+  }
+  Future _sendVRSCommand(msg) async {
+    final http.Response response = await http.post(
+        Uri.parse(gbl_settings.apiUrl + "/RunVRSCommand"),
+        headers: {'Content-Type': 'application/json',
+          'Videcom_ApiKey': gbl_settings.apiKey
+        },
+        body: msg);
+
+    if (response.statusCode == 200) {
+      return response.body.trim();
+    }
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Error"),
+          content: _error != null && _error != ''
+              ? new Text(_error)
+              : new Text("Please try again"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              child: new Text("Close"),
+              onPressed: () {
+                _error = '';
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> signin() async {
+    await login().then((result) {
+      session = Session(
+        result.sessionId,
+        result.varsSessionId,
+        result.vrsServerNo,
+      );
+    });
+  }
+
+  Future makePayment() async {
+    String msg = '';
+    http.Response response;
+    setState(() {
+      _displayProcessingText = 'Processing your payment...';
+      _displayProcessingIndicator = true;
+    });
+    if (widget.isMmb) {
+      session = widget.session;
+    }
+    if (session != null) {
+      _sendVRSCommand(json.encode(
+          RunVRSCommand(session, getPaymentCmd(false)).toJson()))
+          .then((result) {
+            print(result);
+        if (result == 'Payment Complete') {
+
+          // kill timer
+          Provider.of<CountDownTimer>(context, listen: false)
+              .stop();
+
+          _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
+              .then((onValue) {
+            Map map = json.decode(onValue);
+            PnrModel pnrModel = new PnrModel.fromJson(map);
+            PnrDBCopy pnrDBCopy = new PnrDBCopy(
+                rloc: pnrModel.pNR.rLOC, //_rloc,
+                data: onValue,
+                delete: 0,
+                nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+            Repository.get()
+                .updatePnr(pnrDBCopy)
+                .then((n) => getArgs())
+                .then((arg) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/CompletedPage', (Route<dynamic> route) => false,
+                  arguments: arg);
+            });
+          });
+        } else {
+          _error = 'Declined';
+          _dataLoaded();
+          _showDialog();
+        }
+      });
+    } else {
+      if (widget.isMmb) {
+        msg = '*$rLOC';
+        widget.mmbBooking.newFlights.forEach((flt) {
+          print(flt);
+          msg += '^' + flt;
+        });
+        msg += '^e*r~x';
+      } else {
+        if( rLOC.isEmpty) {
+          if( widget.pnrModel != null ) {
+            rLOC = widget.pnrModel.pNR.rLOC;
+            msg = '*$rLOC~x';
+          } else {
+            msg = '*R~x';
+          }
+        } else {
+          msg = '*$rLOC~x';
+        }
+      }
+      //msg += '~x';
+      print(msg);
+      response = await http
+          .get(Uri.parse(
+          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          .catchError((resp) {});
+      if (response == null) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        showSnackBar('Please check your internet connection');
+        return null;
+      }
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        showSnackBar('Please check your internet connection');
+        return null;
+      }
+
+      bool flightsConfirmed = true;
+      String _response = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+      if (response.body.contains('ERROR - ') ||
+          !_response.trim().startsWith('{')) {
+        _error = _response.replaceAll('ERROR - ', '').trim();
+        _dataLoaded();
+        showSnackBar(_error);
+        return null;
+      } else {
+        Map map = json.decode(_response);
+        pnrModel = new PnrModel.fromJson(map);
+        print(pnrModel.pNR.rLOC);
+        if (pnrModel.hasNonHostedFlights() &&
+            pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+          int noFLts = pnrModel
+              .flightCount(); //if external flights aren't confirmed they get removed from the PNR
+          // which makes it look like the flights are confirmed
+
+          flightsConfirmed = false;
+          for (var i = 0; i < 10; i++) {
+            msg = '*' + pnrModel.pNR.rLOC + '~x';
+            response = await http
+                .get(Uri.parse(
+                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                .catchError((resp) {});
+            if (response == null) {
+              setState(() {
+                _displayProcessingIndicator = false;
+              });
+              showSnackBar('Please check your internet connection');
+              return null;
+            }
+
+            //If there was an error return an empty list
+            if (response.statusCode < 200 || response.statusCode >= 300) {
+              setState(() {
+                _displayProcessingIndicator = false;
+              });
+              showSnackBar('Please check your internet connection');
+              return null;
+            }
+            if (response.body.contains('ERROR - ')) {
+              _error = response.body
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '')
+                  .replaceAll('ERROR - ', '')
+                  .trim(); // 'Please check your details';
+              _dataLoaded();
+              return null;
+            } else {
+              String pnrJson = response.body
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '');
+              Map map = json.decode(pnrJson);
+
+              pnrModel = new PnrModel.fromJson(map);
+            }
+
+            if (!pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+              if (noFLts == pnrModel.flightCount()) {
+                flightsConfirmed = true;
+              } else {
+                flightsConfirmed = false;
+              }
+              break;
+            }
+            await new Future.delayed(const Duration(seconds: 2));
+          }
+        }
+      }
+      if (!flightsConfirmed) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        showSnackBar('Unable to confirm partner airlines flights.');
+        //Cnx new flights
+        msg = '*${widget.mmbBooking.rloc}';
+        widget.mmbBooking.newFlights.forEach((flt) {
+          print('x' + flt.split('NN1')[0].substring(2));
+          msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
+        });
+        response = await http
+            .get(Uri.parse(
+            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+            .catchError((resp) {});
+        return null;
+      }
+
+      msg = '*$rLOC^';
+      //update to use full cancel segment command
+      if (widget.isMmb) {
+        //msg += '^';
+
+        for (var i = 0;
+        i <
+            widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
+        i++) {
+          Itin f = widget.mmbBooking.journeys
+              .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+          String _depDate =
+          DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
+          msg +=
+          'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
+          if (f.nostop == 'X') {
+            nostop += ".${f.line}X^";
+          }
+        }
+
+        // widget.mmbBooking.journeys
+        //     .journey[widget.mmbBooking.journeyToChange - 1].itin.reversed
+        //     .forEach((f) {
+        //   //msg += 'X${f.line}^';
+
+        //   String _depDate =
+        //       DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
+        //   msg +=
+        //       'X${f.airID}${f.fltNo}${f.cabin}$_depDate${f.depDate}${f.arrive}^';
+        //   if (f.nostop == 'X') {
+        //     nostop += ".${f.line}X^";
+        //   }
+        // });
+
+        // widget.mmbBooking.newFlights.forEach((flt) {
+        //   print(flt);
+        //   msg += flt + '^';
+        // });
+
+        msg += 'fg^fs1^e*r^';
+      }
+
+      //msg = '*$rLOC^';
+      msg += getPaymentCmd(true);
+
+      response = await http
+          .get(Uri.parse(
+          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          .catchError((resp) {});
+
+      if (response == null) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        showSnackBar('Please check your internet connection');
+        return null;
+      }
+
+      //If there was an error return an empty list
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        showSnackBar('Please check your internet connection');
+        return null;
+      }
+
+      try {
+        String result = response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', '');
+
+        if (result.trim() == 'Payment Complete') {
+          print('Payment success');
+          // kill timer
+ //         try {
+ //         Provider.of<CountDownTimer>(context, listen: false)
+   //           .stop();
+     //     } catch(e) {
+       //     print(e.toString());
+         // }
+
+          setState(() {
+            _displayProcessingText = 'Completing your booking...';
+            _displayProcessingIndicator = true;
+          });
+          if (pnrModel.pNR.tickets != null) {
+            await pullTicketControl(pnrModel.pNR.tickets);
+          }
+          ticketBooking();
+        } else if (result.contains('ERROR')) {
+          _error = result;
+          _dataLoaded();
+          _showDialog();
+        } else if (result.contains('Payment not')) {
+          _error = result;
+          _dataLoaded();
+          _showDialog();
+        } else {
+          _error = 'Declined';
+          _dataLoaded();
+          _showDialog();
+        }
+      } catch (e) {
+        _error = response.body; // 'Please check your details';
+        _dataLoaded();
+        _showDialog();
+      }
+    }
+  }
+
+
+  String getPaymentCmd(bool makeHtmlSafe) {
+    var buffer = new StringBuffer();
+    //if (isLive) {
+      //buffer.write('MK($creditCardProviderProduction)');
+      buffer.write('MK(${gbl_settings.creditCardProvider})');
+    //} else {
+      //buffer.write('MK($creditCardProviderStaging)');
+      //buffer.write('MK(${gbl_settings.creditCardProvider})');
+    //}
+
+    //creditCardProviderStaging
+    //buffer.write('MK(${gbl_settings.creditCardProvider})');
+    // buffer.write('${pnrModel.pNR.basket.outstanding.cur}');
+    // buffer.write('${pnrModel.pNR.basket.outstanding.amount}');
+    buffer.write('/${this.paymentDetails.cardNumber.trim()}');
+
+    buffer.write(
+        '**${this.paymentDetails.expiryDate.substring(0, 2)}${this.paymentDetails.expiryDate.substring(2, 4)}');
+    buffer.write(
+        ':${this.paymentDetails.cardHolderName.replaceAll(',', ' ').replaceAll('/', ' ').replaceAll('-', ' ').trim()}');
+    buffer.write('&${this.paymentDetails.cVV.trim()}');
+    buffer.write(
+        '/${this.paymentDetails.addressLine1.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+    buffer.write(
+        '/${this.paymentDetails.addressLine2.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+    buffer.write(
+        '/${this.paymentDetails.town.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+    buffer.write(
+        '/${this.paymentDetails.state.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+    buffer.write(
+        '/${this.paymentDetails.postCode.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+    buffer.write(
+        '/${this.paymentDetails.country.replaceAll(',', ' ').replaceAll('/', ' ').trim()}');
+
+    if (makeHtmlSafe) {
+      return buffer
+          .toString()
+          .replaceAll('=', '%3D')
+          .replaceAll(',', '%2C')
+          .replaceAll('/', '%2F')
+          .replaceAll(':', '%3A')
+          .replaceAll('[', '%5B')
+          .replaceAll(']', '%5D')
+          .replaceAll('&', '%26');
+    } else {
+      return buffer.toString();
+    }
+  }
+
+  Future<void> timerExpired() async {
+    await new Future.delayed(const Duration(
+        seconds:
+            2)); // this is required to stop the navigator triggering before the provider has triggered the last notification
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
+  }
+
+
+  String getTicketingCmd() {
+    var buffer = new StringBuffer();
+    if (widget.isMmb) {
+      buffer.write(nostop);
+      buffer.write('EZV*[E][ZWEB]^');
+    }
+    buffer.write('EZT*R^*R~x');
+    return buffer.toString();
+  }
+  Future<void> pullTicketControl(Tickets tickets) async {
+    String msg = '';
+    for (var i = 0; i < pnrModel.pNR.tickets.tKT.length; i++) {
+      if (pnrModel.pNR.tickets.tKT[i].status == 'A') {
+        msg = '*${widget.mmbBooking.rloc}^';
+        msg += '*t-' +
+            pnrModel.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
+            '/' +
+            pnrModel.pNR.tickets.tKT[i].coupon +
+            '=o';
+        http.Response reponse = await http
+            .get(Uri.parse(
+            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+            .catchError((resp) {});
+      }
+    }
+  }
+
+  Future ticketBooking() async {
+    String msg = '';
+    http.Response response;
+    msg = '*$rLOC^';
+    msg += getTicketingCmd();
+
+    response = await http
+        .get(Uri.parse(
+        "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+        .catchError((resp) {});
+
+    if (response == null) {
+      setState(() {
+        _displayProcessingIndicator = false;
+      });
+      showSnackBar('Please check your internet connection');
+      return null;
+    }
+
+    //If there was an error return an empty list
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      setState(() {
+        _displayProcessingIndicator = false;
+      });
+      showSnackBar('Please check your internet connection');
+      return null;
+    }
+
+    try {
+      String pnrJson = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+
+      Map map = json.decode(pnrJson);
+
+      PnrModel pnrModel = new PnrModel.fromJson(map);
+
+      PnrDBCopy pnrDBCopy = new PnrDBCopy(
+          rloc: pnrModel.pNR.rLOC, //_rloc,
+          data: pnrJson,
+          delete: 0,
+          nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+      Repository.get().updatePnr(pnrDBCopy);
+      Repository.get()
+          .fetchApisStatus(this.pnrModel.pNR.rLOC)
+          .then((_) => sendEmailConfirmation())
+          .then((_) => getArgs())
+          .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
+          '/CompletedPage', (Route<dynamic> route) => false,
+          arguments: args
+        //[pnrModel.pNR.rLOC, result.toString()]
+      ));
+      //sendEmailConfirmation();
+
+    } catch (e) {
+      _error = response.body; // 'Please check your details';
+      _dataLoaded();
+      _showDialog();
+    }
+  }
+
+  getArgs() {
+    List<String> args = [];
+    // List<String>();
+    args.add(this.pnrModel.pNR.rLOC);
+    if (pnrModel.pNR.itinerary.itin
+        .where((itin) =>
+    itin.classBand.toLowerCase() != 'fly' &&
+        itin.openSeating != 'True')
+        .length >
+        0) {
+      args.add('true');
+    } else {
+      args.add('false');
+    }
+    return args;
+  }
+
+
+  sendEmailConfirmation() async {
+    try {
+      String msg = '*${pnrModel.pNR.rLOC}^EZRE';
+      http.Response response = await http
+          .get(Uri.parse(
+          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          .catchError((resp) {});
+
+      if (response == null) {
+        //return new ParsedResponse(NO_INTERNET, []);
+      }
+
+      //If there was an error return an empty list
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        //return new ParsedResponse(response.statusCode, []);
+      }
+      print(response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(snackbar(message));
+    // final _snackbar = snackbar(message);
+    // _key.currentState.showSnackBar(_snackbar);
+  }
+}

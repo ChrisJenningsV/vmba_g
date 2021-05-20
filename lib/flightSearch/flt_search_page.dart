@@ -1,0 +1,216 @@
+import 'package:flutter/material.dart';
+import 'package:vmba/data/settings.dart';
+import 'package:vmba/datePickers/models/flightDatesModel.dart';
+import 'package:vmba/flightSearch/widgets/passenger.dart';
+import 'package:vmba/flightSearch/widgets/searchButton.dart';
+import 'package:vmba/flightSearch/widgets/type.dart';
+import 'package:vmba/flightSearch/widgets/date.dart';
+import 'package:vmba/flightSearch/widgets/journey.dart';
+import 'package:vmba/data/models/models.dart';
+import 'package:vmba/data/repository.dart';
+import 'package:vmba/menu/menu.dart';
+import 'package:vmba/resources/app_config.dart';
+import 'package:vmba/flightSearch/widgets/evoucher.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/data/globals.dart';
+
+class FlightSearchPage extends StatefulWidget {
+  FlightSearchPage({this.ads});
+  final bool ads;
+  @override
+  _FlightSearchPageState createState() => _FlightSearchPageState();
+}
+
+class _FlightSearchPageState extends State<FlightSearchPage> {
+  NewBooking booking;
+  bool adsTermsAccepted;
+
+  @override
+  initState() {
+    super.initState();
+    booking = new NewBooking();
+    adsTermsAccepted = false;
+    if (widget.ads) {
+      Repository.get().getADSDetails().then((v) {
+        booking.ads = v;
+      });
+    }
+  }
+
+  void flightSelected(String flight) {
+    print(flight);
+  }
+
+  Passengers pax = new Passengers(1, 0, 0, 0);
+  bool _isReturn = true;
+
+  void _handleReturnToggleChanged(bool newValue) {
+    setState(() {
+      _isReturn = newValue;
+      booking.isReturn = newValue;
+    });
+  }
+
+  void _handleFlightselectedChanged(SelectedRoute newValue) {
+    booking.arrival = newValue.arrival;
+    booking.departure = newValue.departure;
+  }
+
+  void _handlePaxNumberChanged(Passengers newValue) {
+    booking.passengers = newValue;
+  }
+
+  void _handleDateChanged(FlightDates newValue) {
+    if (newValue != null) {
+      booking.departureDate = newValue.departureDate;
+      booking.returnDate = newValue.returnDate;
+    }
+  }
+
+  _handleEVoucherChanged(String newValue) {
+    if (newValue != null) {
+      booking.eVoucherCode = newValue;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+    return new Scaffold(
+        appBar: 
+         appBar(context, widget.ads == true ? 'ADS Flight Search': 'Flight Search'),
+        endDrawer: DrawerMenu(),
+        floatingActionButton: showFab
+            ? SearchButtonWidget(
+                systemColors: gbl_SystemColors,
+                newBooking: booking,
+                onChanged: _reloadSearch,
+              )
+            : null,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              JourneyTypeWidget(
+                  systemColors: gbl_SystemColors,
+                  isReturn: _isReturn,
+                  onChanged: _handleReturnToggleChanged),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 5, top: 5),
+                child: new Divider(
+                  height: 0.0,
+                ),
+              ),
+              JourneyWidget(
+                onChanged: _handleFlightselectedChanged,
+              ),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 5, top: 5),
+                child: new Divider(
+                  height: 0.0,
+                ),
+              ),
+              JourneyDateWidget(
+                  isReturn: _isReturn, onChanged: _handleDateChanged),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 5, top: 5),
+                child: new Divider(
+                  height: 0.0,
+                ),
+              ),
+              //Pax selection
+              PassengerWidget(
+                systemColors: gbl_SystemColors,
+                passengers: booking.passengers,
+                onChanged: _handlePaxNumberChanged,
+              ),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 5, top: 5),
+                child: new Divider(
+                  height: 0.0,
+                ),
+              ),
+
+              gbl_settings.eVoucher
+                  ? EVoucherWidget(
+                      evoucherNo: booking.eVoucherCode,
+                      onChanged: _handleEVoucherChanged,
+                    )
+                  : Container()
+            ],
+          ),
+        ));
+  }
+
+  void _reloadSearch(NewBooking newBooking) {
+    if (newBooking != null) {
+      setState(() {
+        booking = newBooking;
+      });
+    }
+  }
+
+  List<Widget> airportsInputs(BuildContext context) {
+    return [
+      new Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        new Expanded(
+            child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            new Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Text("Adults (16+)",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.0)),
+                ],
+              ),
+            ),
+            new Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Children & Infants",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.0)),
+                  Text("Select",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 17.0,
+                          color: Colors.grey)),
+                ],
+              ),
+            )
+          ],
+        )),
+      ]),
+      new Container(
+          child: new Divider(
+        height: 0.0,
+      )),
+    ];
+  }
+}
+
+
+//       class CustomWidget {
+// AppBar appBar(BuildContext context, String title) {
+//      return AppBar(
+//        leading: Padding(
+//           padding: EdgeInsets.only(left: 10.0),
+//           child: Image.asset(
+//               'lib/assets/${AppConfig.of(context).appTitle}/images/appBarLeft.png',
+//               color: Color.fromRGBO(255, 255, 255, 0.1),
+//                colorBlendMode: BlendMode.modulate)),
+//        brightness: AppConfig.of(context).systemColors.statusBar,
+//        backgroundColor: AppConfig.of(context).systemColors.primaryHeaderColor,
+//       iconTheme: IconThemeData(
+//            color: AppConfig.of(context).systemColors.primaryHeaderOnColor),
+//       title: new Text(title,
+//          style: TextStyle(
+//               color: AppConfig.of(context).systemColors.primaryHeaderOnColor)),
+//      );}
+//   }

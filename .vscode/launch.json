@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "AirSwift",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "program": "lib/main_t6.dart"
+        // },
+        // {
+        //     "name": "BlueIslands",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "program": "lib/main_si.dart"
+        // },
+        // {
+        //     "name": "IbomAir",
+        //     "request": "launch",
+        //     "type": "dart",         
+        //     "program": "lib/main_z4.dart"
+        // },
+        {
+            "name": "Loganair",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_lm.dart"       
+        }        
+    ]
+}

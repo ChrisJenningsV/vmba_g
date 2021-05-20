@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:vmba/data/settingsData.dart';
+import 'package:vmba/menu/customerfiles/contact_us/contact_us.dart' as Default;
+import 'package:vmba/menu/customerfiles/contact_us/contact_us_lm.dart' as LM;
+import 'package:vmba/menu/customerfiles/contact_us/contact_us_si.dart' as SI;
+import 'package:vmba/menu/customerfiles/contact_us/contact_us_t6.dart' as T6;
+import 'package:vmba/resources/app_config.dart';
+import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/widgets/webviewWidget.dart';
+
+class ContactUsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: Image.asset(
+                'lib/assets/${gbl_appTitle}/images/appBarLeft.png',
+                color: Color.fromRGBO(255, 255, 255, 0.1),
+                colorBlendMode: BlendMode.modulate)),
+        brightness: gbl_SystemColors.statusBar,
+        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(
+            color: gbl_SystemColors.headerTextColor),
+        title: Text('Contact Us',
+            style: TextStyle(
+                color: gbl_SystemColors.headerTextColor)),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 16, 8, 8),
+          child: (() {
+            switch (gbl_settings.aircode) {
+              case 'LM':
+                return LM.ContactUs();
+                break;
+
+              case 'SI':
+                return SI.ContactUs();
+                break;
+              case 'T6':
+                return T6.ContactUs();
+                break;
+              default:
+                return Default.ContactUs();
+            }
+          }())),
+    );
+  }
+}
+class ContactUsPageWeb extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row( children: <Widget>[ Expanded( child: WebViewWidget(
+        title: 'Contact Us',
+        url: gbl_settings.contactUsUrl))]);
+  }
+}
