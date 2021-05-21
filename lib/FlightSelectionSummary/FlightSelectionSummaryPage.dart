@@ -477,15 +477,15 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Summary',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -505,14 +505,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -542,14 +542,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -589,14 +589,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -700,7 +700,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: gbl_SystemColors
+                      primary: gblSystemColors
                           .primaryButtonColor, //Colors.black,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),

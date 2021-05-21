@@ -17,14 +17,14 @@ class FAQsPage extends StatelessWidget {
                 'lib/assets/${gblAppTitle}/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: TrText('FAQs',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(

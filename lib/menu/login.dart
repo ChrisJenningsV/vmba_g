@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     return AlertDialog(
        title: Row(
 
-        children:[ TrText('Login', style: TextStyle( backgroundColor: gbl_SystemColors.primaryHeaderColor, color: gbl_SystemColors.headerTextColor), )]
+        children:[ TrText('Login', style: TextStyle( backgroundColor: gblSystemColors.primaryHeaderColor, color: gblSystemColors.headerTextColor), )]
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Constants.padding),

@@ -11,9 +11,9 @@ class TrText extends StatelessWidget {
   build(BuildContext context) {
     var txt = labelText;
 
-    if( gbl_langMap != null) {
+    if( gblLangMap != null) {
       if (gblLanguage != 'en') {
-        var txt2 = gbl_langMap[txt];
+        var txt2 = gblLangMap[txt];
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {
           txt = txt2;

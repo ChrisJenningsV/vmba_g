@@ -15,7 +15,7 @@ void main() {
       appTitle: 'airleap',
       child: App(),
       buildFlavor: 'FL',
-      systemColors: gbl_SystemColors,
+      systemColors: gblSystemColors,
       settings: gbl_settings,);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -35,7 +35,7 @@ void config_fl() {
       headerTextColor: Colors.white,
       statusBar: Brightness.dark);
 
-  gbl_SystemColors =_systemColors;
+  gblSystemColors =_systemColors;
   gbl_titleStyle =  new TextStyle( color: Colors.white) ;
 
 

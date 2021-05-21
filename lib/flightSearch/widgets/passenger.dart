@@ -271,15 +271,15 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Add Passengers',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         floatingActionButton: Padding(
             padding: EdgeInsets.only(left: 35.0),
@@ -292,11 +292,11 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                     label: Text(
                       'DONE',
                       style: TextStyle(
-                          color: gbl_SystemColors
+                          color: gblSystemColors
                               .primaryButtonTextColor),
                     ),
                     icon: Icon(Icons.check,
-                        color: gbl_SystemColors
+                        color: gblSystemColors
                             .primaryButtonTextColor),
                     backgroundColor: widget.systemColors
                         .primaryButtonColor, //new Color(0xFF000000),

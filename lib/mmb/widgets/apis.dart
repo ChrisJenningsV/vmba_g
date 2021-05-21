@@ -167,14 +167,14 @@ class _ApisWidgetState extends State<ApisWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text('Additional Information',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: body(),

@@ -74,14 +74,14 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text('Edit Details',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -121,7 +121,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
         validateAndSubmit();
       },
       style: ElevatedButton.styleFrom(
-          primary: gbl_SystemColors
+          primary: gblSystemColors
               .primaryButtonColor, //Colors.black,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),

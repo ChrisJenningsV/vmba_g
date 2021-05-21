@@ -35,7 +35,7 @@ void main() async {
         break;
       default:
         gblAppTitle='Test Title';
-        gbl_SystemColors = new SystemColors(primaryButtonColor: Colors.red,
+        gblSystemColors = new SystemColors(primaryButtonColor: Colors.red,
             accentButtonColor: Colors.green,
             primaryColor: Colors.black,
             accentColor: Colors.blue);
@@ -62,8 +62,8 @@ class App extends StatelessWidget {
       title: gblAppTitle, //'Loganair',
       theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: gbl_SystemColors.primaryColor,
-        accentColor: gbl_SystemColors.accentColor,
+        primaryColor: gblSystemColors.primaryColor,
+        accentColor: gblSystemColors.accentColor,
       ),
       home: new RootPage(),
       routes: <String, WidgetBuilder>{

@@ -17,7 +17,7 @@ void main() {
       primaryButtonTextColor: Colors.white,
       statusBar: Brightness.light);
 
-  gbl_SystemColors =_systemColors;
+  gblSystemColors =_systemColors;
   gblAppTitle = 'ibomair';
   gblBuildFlavor = 'Z4';
 

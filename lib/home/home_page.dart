@@ -55,7 +55,7 @@ class _HomeState extends State<HomePage> {
     if( gblLanguage != 'en') {
       String jsonString = await rootBundle.loadString(
           'lib/assets/lang/$gblLanguage.json');
-      gbl_langMap = json.decode(jsonString);
+      gblLangMap = json.decode(jsonString);
     }
   }
 
@@ -72,8 +72,8 @@ class _HomeState extends State<HomePage> {
           ? gbl_settings.latestBuildiOS
           : gbl_settings.latestBuildAndroid);
 
-      gbl_version = version;
-      gbl_isIos = Platform.isIOS;
+      gblVersion = version;
+      gblIsIos = Platform.isIOS;
       if (latestVersion > currentVersion) {
         _updateAppDialog();
       }
@@ -202,13 +202,13 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
       return new Scaffold(
 
         appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
-            title: gbl_isLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test Mode', style: gbl_titleStyle,)]),
+            gblSystemColors.primaryHeaderColor,
+            title: gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test Mode', style: gbl_titleStyle,)]),
             iconTheme: IconThemeData(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
             Container(
@@ -234,7 +234,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   shape: buttonShape,
-                                  backgroundColor: gbl_SystemColors.primaryButtonColor),
+                                  backgroundColor: gblSystemColors.primaryButtonColor),
                               onPressed: () => Navigator.of(context)
                                   .pushNamedAndRemoveUntil('/FlightSearchPage',
                                       (Route<dynamic> route) => false),
@@ -275,7 +275,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                         shape: buttonShape,
-                                        backgroundColor: gbl_SystemColors.primaryButtonColor),
+                                        backgroundColor: gblSystemColors.primaryButtonColor),
                                     onPressed: () => Navigator.of(context)
                                         .pushNamedAndRemoveUntil('/AdsPage',
                                             (Route<dynamic> route) => false),
@@ -315,7 +315,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   shape: buttonShape,
-                                  backgroundColor: gbl_SystemColors
+                                  backgroundColor: gblSystemColors
                                       .primaryButtonColor),
                               onPressed: () => Navigator.of(context)
                                   .pushNamedAndRemoveUntil('/MyBookingsPage',

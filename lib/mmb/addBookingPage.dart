@@ -136,7 +136,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: Material(
                       color:
-                      gbl_SystemColors.primaryButtonColor,
+                      gblSystemColors.primaryButtonColor,
                       borderRadius: BorderRadius.circular(25.0),
                       shadowColor: Colors.grey.shade100,
                       elevation: 5.0,
@@ -147,7 +147,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                           'ADD BOOKING',
                           style: new TextStyle(
                               fontSize: 16.0,
-                              color: gbl_SystemColors
+                              color: gblSystemColors
                                   .primaryButtonTextColor),
                         ),
                         onPressed: () {

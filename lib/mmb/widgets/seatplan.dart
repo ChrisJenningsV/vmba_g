@@ -306,15 +306,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     return new Scaffold(
         key: _key,
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Choose a seat',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: body(),
@@ -331,15 +331,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         label: Text(
                           'SELECT SEAT',
                           style: TextStyle(
-                              color: gbl_SystemColors
+                              color: gblSystemColors
                                   .primaryButtonTextColor),
                         ),
                         icon: Icon(
                           Icons.check,
-                          color: gbl_SystemColors
+                          color: gblSystemColors
                               .primaryButtonTextColor,
                         ),
-                        backgroundColor: gbl_SystemColors
+                        backgroundColor: gblSystemColors
                             .primaryButtonColor,
                         onPressed: () {
                           _handleBookSeats(paxlist);
@@ -434,7 +434,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         height: cellSize,
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
-                          color: gbl_SystemColors.seatPlanColorSelected,
+                          color: gblSystemColors.seatPlanColorSelected,
                           borderRadius:
                               new BorderRadius.all(new Radius.circular(5.0)),
                           boxShadow: [
@@ -461,7 +461,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         height: cellSize,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: gbl_SystemColors.seatPlanColorAvailable,
+                            color: gblSystemColors.seatPlanColorAvailable,
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(5.0))),
                       ),
@@ -481,7 +481,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         height: cellSize,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: gbl_SystemColors.seatPlanColorEmergency,
+                            color: gblSystemColors.seatPlanColorEmergency,
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(5.0))),
                       ),
@@ -501,7 +501,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         height: cellSize,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: gbl_SystemColors.seatPlanColorRestricted,
+                            color: gblSystemColors.seatPlanColorRestricted,
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(5.0))),
                       ),
@@ -521,7 +521,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         height: cellSize,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: gbl_SystemColors.seatPlanColorUnavailable,
+                            color: gblSystemColors.seatPlanColorUnavailable,
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(5.0))),
                         child: Center(
@@ -546,7 +546,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           ),
           SeatPlanPassengersWidget(
               paxList: paxlist,
-              systemColors: gbl_SystemColors),
+              systemColors: gblSystemColors),
           Padding(
             padding: EdgeInsets.only(top: 10.0),
           ),
@@ -797,7 +797,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                   height: cellSize,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: gbl_SystemColors.seatPlanColorRestricted,
+                      color: gblSystemColors.seatPlanColorRestricted,
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(5.0))),
                   child: Center(
@@ -813,19 +813,19 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           var color;
           switch (seat.sCellDescription) {
             case 'EmergencySeat':
-              color = gbl_SystemColors.seatPlanColorEmergency;
+              color = gblSystemColors.seatPlanColorEmergency;
               break;
             case 'Seat':
-              color = gbl_SystemColors.seatPlanColorAvailable;
+              color = gblSystemColors.seatPlanColorAvailable;
               break;
             default:
-              color = gbl_SystemColors.seatPlanColorSelected;
+              color = gblSystemColors.seatPlanColorSelected;
               selectableSeat = false;
           }
 
           //Is the seat already selected by one of the pax
           if (selectedSeats.contains(seat.sCode)) {
-            color = gbl_SystemColors.seatPlanColorSelected;
+            color = gblSystemColors.seatPlanColorSelected;
             selectableSeat = false;
           }
 

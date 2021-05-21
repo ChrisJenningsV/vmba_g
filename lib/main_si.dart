@@ -19,7 +19,7 @@ void main() {
       headerTextColor: Colors.white,
       statusBar: Brightness.dark);
 
-  gbl_SystemColors =_systemColors;
+  gblSystemColors =_systemColors;
   gblAppTitle = 'blueislands';
   gblBuildFlavor = 'SI';
   gbl_settings.wantLeftLogo = true;

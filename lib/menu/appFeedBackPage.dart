@@ -59,15 +59,15 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   'lib/assets/${gblAppTitle}/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate)),
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new TrText('App Feedback',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         body: new Center(
           child: Column(
@@ -91,15 +91,15 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   'lib/assets/${gblAppTitle}/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate)),
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: TrText('App Feedback',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(

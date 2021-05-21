@@ -185,14 +185,14 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text("Returning Flight",
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: _buildBody(),
@@ -226,7 +226,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
-                primary: gbl_SystemColors.primaryButtonColor,
+                primary: gblSystemColors.primaryButtonColor,
               ),
               onPressed: () => retrySearch(),
               child: Text(
@@ -308,7 +308,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     color: !isSearchDate(DateTime.parse(item.daylcl),
                             widget.newBooking.returnDate)
                         ? Colors.white
-                        : gbl_SystemColors.accentButtonColor,
+                        : gblSystemColors.accentButtonColor,
                   ),
                   //width: 120.0,
                   width: DateTime.parse(item.daylcl).isBefore(_departureDate)
@@ -663,7 +663,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                       },
                   child: Chip(
                     backgroundColor:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
                         Text(
@@ -674,7 +674,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: TextStyle(
-                                color: gbl_SystemColors
+                                color: gblSystemColors
                                     .primaryButtonTextColor)),
                         item[0].fltav.fav[index] != '0'
                             ? new Text(
@@ -693,14 +693,14 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                     0.0))
                                         .toStringAsFixed(2)),
                                 style: new TextStyle(
-                                  color: gbl_SystemColors
+                                  color: gblSystemColors
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 ),
                               )
                             : new Text('No Seats',
                                 style: new TextStyle(
-                                  color: gbl_SystemColors
+                                  color: gblSystemColors
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 )),
@@ -724,7 +724,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
@@ -749,7 +749,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: new TextStyle(
-                              color: gbl_SystemColors
+                              color: gblSystemColors
                                   .primaryButtonTextColor,
                               fontSize: 16.0,
                             ),
@@ -776,14 +776,14 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                       0.0))
                                           .toStringAsFixed(2)),
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   ),
                                 )
                               : new Text('No Seats',
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   )),

@@ -383,15 +383,15 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text('Boarding Pass',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: Center(
@@ -410,15 +410,15 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text('Boarding Pass',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: _contentWidget(),

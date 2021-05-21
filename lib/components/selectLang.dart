@@ -70,9 +70,9 @@ dialogContent(BuildContext context) {
             const EdgeInsets.only(left: 8.0, right: 8.0, top: 3.0, bottom: 3.0),
             child: TextButton(
             style: TextButton.styleFrom(
-                backgroundColor: gbl_SystemColors.primaryButtonColor ,
-                side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
-                primary: gbl_SystemColors.primaryButtonTextColor),
+                backgroundColor: gblSystemColors.primaryButtonColor ,
+                side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                primary: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
               gblLanguage=selectedLang;
               Navigator.of(context).pop();

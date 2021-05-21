@@ -783,15 +783,15 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Payment',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -821,28 +821,28 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       label: Text(
                         'PAY NOW',
                         style: TextStyle(
-                            color: gbl_SystemColors
+                            color: gblSystemColors
                                 .primaryButtonTextColor),
                       ),
                       icon: Icon(Icons.check,
-                          color: gbl_SystemColors
+                          color: gblSystemColors
                               .primaryButtonTextColor),
                       backgroundColor:
-                      gbl_SystemColors.primaryButtonColor,
+                      gblSystemColors.primaryButtonColor,
                       onPressed: () {
                         validateAndSubmit();
                       }),
                 ],
               )),
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Payment',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),

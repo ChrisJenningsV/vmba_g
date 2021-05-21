@@ -14,7 +14,7 @@ void main() {
       appTitle: 'loganair',
       child: App(),
       buildFlavor: 'LM',
-      systemColors: gbl_SystemColors,
+      systemColors: gblSystemColors,
       settings: gbl_settings,);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -40,7 +40,7 @@ void config_lm() {
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
   );
 
-  gbl_SystemColors =_systemColors;
+  gblSystemColors =_systemColors;
   gbl_titleStyle =  new TextStyle( color: Colors.white) ;
 
   gblAppTitle = 'loganair';

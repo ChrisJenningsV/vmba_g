@@ -166,14 +166,14 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text('Passengers Details',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: new Form(
@@ -257,7 +257,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           validateAndSubmit();
         },
         style: ElevatedButton.styleFrom(
-            primary: gbl_SystemColors
+            primary: gblSystemColors
                 .primaryButtonColor, //Colors.black,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),

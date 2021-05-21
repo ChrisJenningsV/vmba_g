@@ -12,6 +12,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';
 import 'package:http/http.dart' as http;
+import 'package:vmba/ads/adsPage.dart';
 
 
 class DrawerMenu extends StatelessWidget {
@@ -66,11 +67,7 @@ class DrawerMenu extends StatelessWidget {
               // contentPadding: EdgeInsets.zero,
               title: _getMenuItem( Icons.flight_takeoff, 'Book an ADS flight' ),
               onTap: () {
-                // Update the state of the app
-                // ...
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/AdsPage', (Route<dynamic> route) => false);
-                //Navigator.pop(context);
+                Navigator.push(context, SlideTopRoute(page: AdsPage()));
               },
             ): Padding(padding: EdgeInsets.all(0)),
             //Divider(),

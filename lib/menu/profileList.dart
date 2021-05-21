@@ -44,14 +44,14 @@ String _displayProcessingText = 'Loading...';
     if( _profileList != null ) {
     return Scaffold(
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Passenger profiles',
               style: TextStyle(
-                  color: gbl_SystemColors
+                  color: gblSystemColors
                       .headerTextColor)),
         ),
         body: Container(child: Padding(
@@ -63,14 +63,14 @@ String _displayProcessingText = 'Loading...';
     } else {
       return Scaffold(
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Passenger profiles',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           body: Container(

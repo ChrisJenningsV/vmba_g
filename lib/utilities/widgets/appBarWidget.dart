@@ -6,7 +6,7 @@ import 'package:vmba/data/settings.dart';
 
 //class CustomWidget {
 AppBar appBar(BuildContext context, String title) {
-  if( gbl_isLive == false ) {
+  if( gblIsLive == false ) {
     title = 'Test Mode: ' + title;
   }
   if( gbl_settings.wantLeftLogo) {
@@ -17,24 +17,24 @@ AppBar appBar(BuildContext context, String title) {
               'lib/assets/${gblAppTitle}/images/appBarLeft.png',
               color: Color.fromRGBO(255, 255, 255, 0.1),
               colorBlendMode: BlendMode.modulate)),
-      brightness: gbl_SystemColors.statusBar,
-      backgroundColor: gbl_SystemColors.primaryHeaderColor,
+      brightness: gblSystemColors.statusBar,
+      backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
-          color: gbl_SystemColors.headerTextColor),
+          color: gblSystemColors.headerTextColor),
       title: new Text(title,
           style: TextStyle(
-              color: gbl_SystemColors.headerTextColor)),
+              color: gblSystemColors.headerTextColor)),
     );
 
   } else {
     return AppBar(
-      brightness: gbl_SystemColors.statusBar,
-      backgroundColor: gbl_SystemColors.primaryHeaderColor,
+      brightness: gblSystemColors.statusBar,
+      backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
-          color: gbl_SystemColors.headerTextColor),
+          color: gblSystemColors.headerTextColor),
       title: new Text(title,
           style: TextStyle(
-              color: gbl_SystemColors.headerTextColor)),
+              color: gblSystemColors.headerTextColor)),
     );
   }
 }

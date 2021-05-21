@@ -20,7 +20,7 @@ void main() {
       headerTextColor: Colors.black,
       statusBar: Brightness.light);
 
-  gbl_SystemColors =_systemColors;
+  gblSystemColors =_systemColors;
   gblAppTitle = 'airswift';
   gblBuildFlavor = 'T6';
 

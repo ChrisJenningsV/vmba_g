@@ -184,7 +184,7 @@ class Repository {
                     gbl_settings.creditCardProvider = item['value'];
                     break;
                   case 'appLive':
-                    gbl_isLive = parseBool(item['value']);
+                    gblIsLive = parseBool(item['value']);
                     break;
                   case 'Languages':
                     gblLanguages = item['value'];
@@ -238,8 +238,8 @@ class Repository {
                     String param = item['parameter'];
                     if (param.startsWith('appVersion')) {
                       String vers = param.replaceAll('appVersion_', '');
-                      if (vers == gbl_version) {
-                        gbl_action = item['value'].toString().toUpperCase();
+                      if (vers == gblVersion) {
+                        gblAction = item['value'].toString().toUpperCase();
                         switch (item['value'].toString().toUpperCase()) {
                           case 'LIVE':
                             break;
@@ -263,18 +263,18 @@ class Repository {
             print('successful login');
           }
           else {
-            gbl_error = response.body;
+            gblError = response.body;
             gbl_NoNetwork = true;
           }
         } else {
-          gbl_error = response.body;
+          gblError = response.body;
           gbl_NoNetwork = true;
 
         }
       }
     } catch (e) {
       print(e);
-      gbl_error = e.toString();
+      gblError = e.toString();
       gbl_NoNetwork = true;
       rethrow;
     }

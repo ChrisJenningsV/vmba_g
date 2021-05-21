@@ -62,11 +62,11 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: TrText('DONE', style: TextStyle(color: gbl_SystemColors
+                    label: TrText('DONE', style: TextStyle(color: gblSystemColors
                               .primaryButtonTextColor),),
-                    icon: Icon(Icons.check, color: gbl_SystemColors
+                    icon: Icon(Icons.check, color: gblSystemColors
                               .primaryButtonTextColor,),
-                    backgroundColor: gbl_SystemColors
+                    backgroundColor: gblSystemColors
                               .primaryButtonColor,//new Color(0xFF000000),
                     onPressed: () {
                       Navigator.pop(

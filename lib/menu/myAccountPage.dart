@@ -88,15 +88,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 'lib/assets/${gblAppTitle}/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
-        brightness: gbl_SystemColors.statusBar,
+        brightness: gblSystemColors.statusBar,
         backgroundColor:
-        gbl_SystemColors.primaryHeaderColor,
+        gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: TrText('My Account',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -349,7 +349,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               validateAndSubmit();
             },
             style: ElevatedButton.styleFrom(
-                primary: gbl_SystemColors
+                primary: gblSystemColors
                     .primaryButtonColor, //Colors.black,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0))),

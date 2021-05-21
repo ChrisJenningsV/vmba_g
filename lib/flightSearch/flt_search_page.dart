@@ -82,7 +82,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(
-                systemColors: gbl_SystemColors,
+                systemColors: gblSystemColors,
                 newBooking: booking,
                 onChanged: _reloadSearch,
               )
@@ -94,7 +94,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               JourneyTypeWidget(
-                  systemColors: gbl_SystemColors,
+                  systemColors: gblSystemColors,
                   isReturn: _isReturn,
                   onChanged: _handleReturnToggleChanged),
               new Padding(
@@ -122,7 +122,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               ),
               //Pax selection
               PassengerWidget(
-                systemColors: gbl_SystemColors,
+                systemColors: gblSystemColors,
                 passengers: booking.passengers,
                 onChanged: _handlePaxNumberChanged,
               ),

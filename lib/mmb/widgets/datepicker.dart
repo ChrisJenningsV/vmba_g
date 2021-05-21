@@ -107,9 +107,9 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: Text('DONE',style: TextStyle(color: gbl_SystemColors.primaryButtonTextColor),),
-                    icon: Icon(Icons.check, color: gbl_SystemColors.primaryButtonTextColor,),
-                    backgroundColor: gbl_SystemColors.primaryButtonColor,
+                    label: Text('DONE',style: TextStyle(color: gblSystemColors.primaryButtonTextColor),),
+                    icon: Icon(Icons.check, color: gblSystemColors.primaryButtonTextColor,),
+                    backgroundColor: gblSystemColors.primaryButtonColor,
                     onPressed: () {
                       mmbBooking.journeyToChange = widget.journeyToChange;
                       Navigator.push(

@@ -912,15 +912,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Payment Selection',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -945,15 +945,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         child: new Scaffold(
             key: _key,
             appBar: new AppBar(
-              brightness: gbl_SystemColors.statusBar,
+              brightness: gblSystemColors.statusBar,
               backgroundColor:
-              gbl_SystemColors.primaryHeaderColor,
+              gblSystemColors.primaryHeaderColor,
               iconTheme: IconThemeData(
                   color:
-                  gbl_SystemColors.headerTextColor),
+                  gblSystemColors.headerTextColor),
               title: new Text('Payment',
                   style: TextStyle(
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .headerTextColor)),
             ),
             endDrawer: DrawerMenu(),
