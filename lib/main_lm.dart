@@ -14,7 +14,8 @@ void main() {
       appTitle: 'loganair',
       child: App(),
       buildFlavor: 'LM',
-      systemColors: gbl_SystemColors);
+      systemColors: gbl_SystemColors,
+      settings: gbl_settings,);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -42,8 +43,8 @@ void config_lm() {
   gbl_SystemColors =_systemColors;
   gbl_titleStyle =  new TextStyle( color: Colors.white) ;
 
-  gbl_appTitle = 'loganair';
-  gbl_buildFlavor = 'LM';
+  gblAppTitle = 'loganair';
+  gblBuildFlavor = 'LM';
 
   gbl_settings = Settings (
     latestBuildiOS: '1.0.5',
@@ -87,9 +88,9 @@ void config_lm() {
   eVoucher: true,
 
 //Staging setttings
-  xmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  apisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApi/api/',
+  xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApi/api/',
   creditCardProvider: 'videcard',
   wantPayStack: false,
   wantLeftLogo: false,

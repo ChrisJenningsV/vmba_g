@@ -39,8 +39,8 @@ void config_fl() {
   gbl_titleStyle =  new TextStyle( color: Colors.white) ;
 
 
-  gbl_appTitle = 'airleap';
-  gbl_buildFlavor = 'FL';
+  gblAppTitle = 'airleap';
+  gblBuildFlavor = 'FL';
   //gbl_language = 'en';
 
   gbl_settings = Settings(

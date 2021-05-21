@@ -6,10 +6,10 @@ import 'package:vmba/data/settings.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gbl_appTitle ;
-String gbl_language = 'en' ;
-String gbl_languages ;
-String gbl_buildFlavor = 'FL';
+String gblAppTitle ;
+String gblLanguage = 'en' ;
+String gblLanguages ;
+String gblBuildFlavor = 'FL';
 String gbl_error = '';
 String gbl_version = '';
 String gbl_action='';

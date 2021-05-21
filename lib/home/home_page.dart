@@ -36,7 +36,7 @@ class _HomeState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    initLang(gbl_language);
+    initLang(gblLanguage);
     _displayProcessingIndicator = true;
     waitAndThenHideProcessingIndicator();
   }
@@ -52,9 +52,9 @@ class _HomeState extends State<HomePage> {
 
    initLang(String lang) async {
     //Future<Countrylist> getCountrylist() async {
-    if( gbl_language != 'en') {
+    if( gblLanguage != 'en') {
       String jsonString = await rootBundle.loadString(
-          'lib/assets/lang/$gbl_language.json');
+          'lib/assets/lang/$gblLanguage.json');
       gbl_langMap = json.decode(jsonString);
     }
   }
@@ -90,10 +90,10 @@ class _HomeState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    appBarImage = Image.asset(      'lib/assets/$gbl_appTitle/images/appBar.png',    );
-String bgImage ='lib/assets/$gbl_appTitle/images/background.png';
+    appBarImage = Image.asset(      'lib/assets/$gblAppTitle/images/appBar.png',    );
+String bgImage ='lib/assets/$gblAppTitle/images/background.png';
     mainBackGroundImage = AssetImage(bgImage);
-    logoImage = AssetImage('lib/assets/$gbl_appTitle/images/loader.png');
+    logoImage = AssetImage('lib/assets/$gblAppTitle/images/loader.png');
     precacheImage(appBarImage.image, context);
     precacheImage(mainBackGroundImage, context);
     precacheImage(logoImage, context);
@@ -188,7 +188,7 @@ String bgImage ='lib/assets/$gbl_appTitle/images/background.png';
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('lib/assets/$gbl_appTitle/images/loader.png'),
+            Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
             CircularProgressIndicator(),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -265,7 +265,7 @@ String bgImage ='lib/assets/$gbl_appTitle/images/background.png';
                       )
                     ],
                   ),
-                  gbl_buildFlavor == 'LM'
+                  gblBuildFlavor == 'LM'
                       ? Row(
                           children: <Widget>[
                             Expanded(

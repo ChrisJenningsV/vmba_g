@@ -18,14 +18,15 @@ void main() {
       statusBar: Brightness.light);
 
   gbl_SystemColors =_systemColors;
-  gbl_appTitle = 'ibomair';
-  gbl_buildFlavor = 'Z4';
+  gblAppTitle = 'ibomair';
+  gblBuildFlavor = 'Z4';
 
   var configuredApp = AppConfig(
     appTitle: 'ibomair',
     child: App(),
     buildFlavor: 'Z4',
     systemColors: _systemColors,
+    settings: gbl_settings,
   );
   return runApp(configuredApp);
 }
