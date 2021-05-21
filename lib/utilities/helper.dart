@@ -94,7 +94,7 @@ Future<String> _loadCountrylistAsset() async {
           .loadString('lib/assets/loganair/json/countries.json');
       break;
     default:
-      return await rootBundle.loadString('lib/assets/${gbl_appTitle}/json/countries.json');
+      return await rootBundle.loadString('lib/assets/${gblAppTitle}/json/countries.json');
   }
 }
 

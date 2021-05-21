@@ -12,7 +12,7 @@ class TrText extends StatelessWidget {
     var txt = labelText;
 
     if( gbl_langMap != null) {
-      if (gbl_language != 'en') {
+      if (gblLanguage != 'en') {
         var txt2 = gbl_langMap[txt];
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {

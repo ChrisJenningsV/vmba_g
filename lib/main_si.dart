@@ -20,8 +20,8 @@ void main() {
       statusBar: Brightness.dark);
 
   gbl_SystemColors =_systemColors;
-  gbl_appTitle = 'blueislands';
-  gbl_buildFlavor = 'SI';
+  gblAppTitle = 'blueislands';
+  gblBuildFlavor = 'SI';
   gbl_settings.wantLeftLogo = true;
 
   var configuredApp = AppConfig(
@@ -29,6 +29,7 @@ void main() {
     child: App(),
     buildFlavor: 'SI',
     systemColors: _systemColors,
+    settings: gbl_settings,
   );
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

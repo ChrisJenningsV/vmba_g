@@ -14,7 +14,7 @@ AppBar appBar(BuildContext context, String title) {
       leading: Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: Image.asset(
-              'lib/assets/${gbl_appTitle}/images/appBarLeft.png',
+              'lib/assets/${gblAppTitle}/images/appBarLeft.png',
               color: Color.fromRGBO(255, 255, 255, 0.1),
               colorBlendMode: BlendMode.modulate)),
       brightness: gbl_SystemColors.statusBar,

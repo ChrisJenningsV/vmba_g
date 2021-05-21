@@ -187,7 +187,7 @@ class Repository {
                     gbl_isLive = parseBool(item['value']);
                     break;
                   case 'Languages':
-                    gbl_languages = item['value'];
+                    gblLanguages = item['value'];
                     break;
                   case 'titles':
                     gbl_titles = item['value'].split(',');
@@ -221,6 +221,9 @@ class Repository {
                     break;
                   case 'specialAssistanceUrl':
                     gbl_settings.specialAssistanceUrl = item['value'];
+                    break;
+                  case 'contactUsUrl':
+                    gbl_settings.contactUsUrl =  item['value'];
                     break;
                 /*
                   EMAILS

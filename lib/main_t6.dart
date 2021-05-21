@@ -21,14 +21,15 @@ void main() {
       statusBar: Brightness.light);
 
   gbl_SystemColors =_systemColors;
-  gbl_appTitle = 'airswift';
-  gbl_buildFlavor = 'T6';
+  gblAppTitle = 'airswift';
+  gblBuildFlavor = 'T6';
 
   var configuredApp = AppConfig(
     appTitle: 'airswift',
     child: App(),
     buildFlavor: 't6',
     systemColors: _systemColors,
+    settings: gbl_settings,
   );
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

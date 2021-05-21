@@ -25,8 +25,8 @@ void main() async {
 
   gbl_titleStyle =  new TextStyle( color: Colors.white) ;
 
-  if (gbl_appTitle == null){
-    switch(gbl_buildFlavor){
+  if (gblAppTitle == null){
+    switch(gblBuildFlavor){
       case 'LM':
         config_lm();
       break;
@@ -34,7 +34,7 @@ void main() async {
         config_fl();
         break;
       default:
-        gbl_appTitle='Test Title';
+        gblAppTitle='Test Title';
         gbl_SystemColors = new SystemColors(primaryButtonColor: Colors.red,
             accentButtonColor: Colors.green,
             primaryColor: Colors.black,
@@ -59,7 +59,7 @@ class App extends StatelessWidget {
     return MaterialApp(
 //      locale: model.appLocal,
        debugShowCheckedModeBanner: false,
-      title: gbl_appTitle, //'Loganair',
+      title: gblAppTitle, //'Loganair',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: gbl_SystemColors.primaryColor,

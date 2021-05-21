@@ -85,7 +85,7 @@ String _displayProcessingText = 'Loading...';
               Padding(
                 padding: const EdgeInsets.all(8.0),
               ), */
-                  Image.asset('lib/assets/$gbl_appTitle/images/loader.png'),
+                  Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
                   CircularProgressIndicator(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

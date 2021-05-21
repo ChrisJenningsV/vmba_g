@@ -34,7 +34,7 @@ class DrawerMenu extends StatelessWidget {
             Container(
               height: 130,
               child: DrawerHeader(
-                child: Image.asset('lib/assets/${gbl_appTitle}/images/logo.png'),
+                child: Image.asset('lib/assets/${gblAppTitle}/images/logo.png'),
                 decoration: BoxDecoration(
                   color: Colors.white,
                 ),
@@ -61,7 +61,7 @@ class DrawerMenu extends StatelessWidget {
                 //Navigator.pop(context);
               },
             ),
-            gbl_buildFlavor == 'LM' ?
+            gblBuildFlavor == 'LM' ?
             ListTile(
               // contentPadding: EdgeInsets.zero,
               title: _getMenuItem( Icons.flight_takeoff, 'Book an ADS flight' ),
@@ -92,7 +92,7 @@ class DrawerMenu extends StatelessWidget {
                     '/AddBookingPage', (Route<dynamic> route) => false);
               },
             ),
-            if(gbl_languages != null)
+            if(gblLanguages != null)
             ListTile(
               title: _getMenuItem( Icons.flag, 'Language' ),
               onTap: () {

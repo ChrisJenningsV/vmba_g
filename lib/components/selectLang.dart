@@ -74,7 +74,7 @@ dialogContent(BuildContext context) {
                 side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
                 primary: gbl_SystemColors.primaryButtonTextColor),
             onPressed: () {
-              gbl_language=selectedLang;
+              gblLanguage=selectedLang;
               Navigator.of(context).pop();
               },
             child: Text("Submit"
@@ -133,7 +133,7 @@ class _MyDialogContentState extends State<MyDialogContent> {
   void initState() {
     super.initState();
 
-    List<String> langs = gbl_languages.split(',');
+    List<String> langs = gblLanguages.split(',');
     var count = langs.length /2;
     for( var i = 0 ; i <= count; i+=2){
       sampleData.add(CustomRowModel(title: langs[i+1], selected: false, code: langs[i]));
