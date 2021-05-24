@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/completed/ProcessCommandsPage.dart';
-//import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/payment.dart';
 import 'package:vmba/data/models/pnr.dart';
-//import 'package:vmba/data/models/pnrs.dart';
-//import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
 // To get started quickly, change this to your heroku deployment of
@@ -82,10 +77,10 @@ class Paystack {
     final http.Response response = await http.post(
         //'http://192.168.0.79:53792/api/Payment/InitPayment',
         Uri.parse(
-            gbl_settings.apiUrl + "/Payment/InitPayment"),
+            gblSettings.apiUrl + "/Payment/InitPayment"),
         headers: {
           'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {
@@ -103,10 +98,10 @@ class Paystack {
     final http.Response response = await http.post(
         //'http://192.168.0.79:53792/api/Payment/GetPaymentStatus',
         Uri.parse(
-            gbl_settings.apiUrl + "/Payment/GetPaymentStatus"),
+            gblSettings.apiUrl + "/Payment/GetPaymentStatus"),
         headers: {
           'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {

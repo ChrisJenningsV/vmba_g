@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:credit_card/credit_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
-import 'package:vmba/payment/payment.dart';
 import 'package:vmba/data/models/models.dart';
 import '../CreditCardHelper.dart';
 import 'package:vmba/data/globals.dart';
@@ -74,7 +72,7 @@ void initState() {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: gbl_SystemColors
+                            primary: gblSystemColors
                                 .primaryButtonColor, //Colors.black,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0))),
@@ -534,7 +532,7 @@ void initState() {
                               child: ElevatedButton(
                                 onPressed: () {validateAndSubmit();},
                                 style: ElevatedButton.styleFrom(
-                                    primary: gbl_SystemColors
+                                    primary: gblSystemColors
                                         .primaryButtonColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -843,7 +841,7 @@ void initState() {
                                 validateAndSubmit();
                               },
                               style: ElevatedButton.styleFrom(
-                                  primary: gbl_SystemColors
+                                  primary: gblSystemColors
                                       .primaryButtonColor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:

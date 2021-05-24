@@ -10,19 +10,22 @@ String gblAppTitle ;
 String gblLanguage = 'en' ;
 String gblLanguages ;
 String gblBuildFlavor = 'FL';
-String gbl_error = '';
-String gbl_version = '';
-String gbl_action='';
-bool gbl_isIos = true;
-bool gbl_isLive = false;
-SystemColors gbl_SystemColors;
-Map gbl_langMap ;
-Settings gbl_settings;
-bool gbl_NoNetwork;
-bool gbl_verbose = true;
-bool  gbl_wantLogin = true;
-TextStyle gbl_titleStyle;
-List<String> gbl_titles = <String>[
+String gblError = '';
+String gblSine = '';
+String gblVersion = '';
+String gblAction='';
+String gblMobileFlags = '';
+int gblSecurityLevel = 0;
+bool gblIsIos = true;
+bool gblIsLive = false;
+SystemColors gblSystemColors;
+Map gblLangMap ;
+Settings gblSettings;
+bool gblNoNetwork;
+bool gblVerbose = true;
+bool  gblWantLogin = true;
+TextStyle gblTitleStyle;
+List<String> gblTitles = <String>[
   'Mr',
   'Mrs',
   'Ms',

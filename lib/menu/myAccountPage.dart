@@ -37,14 +37,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   TextEditingController _dateOfBirthTextEditingController =  TextEditingController();
 
-  TextEditingController _adsNumberTextEditingController =
-  TextEditingController();
+  TextEditingController _adsNumberTextEditingController =   TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
-  TextEditingController _fqtvTextEditingController = TextEditingController();
+  //TextEditingController _fqtvTextEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
-  bool _loadingInProgress = false;
+//  bool _loadingInProgress = false;
   String _error;
 
   @override
@@ -70,6 +69,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
         _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
 
+        _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
+        _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
+
         if( widget.passengerDetail.paxType == null) {
           widget.passengerDetail.paxType = PaxType.adult;
         }
@@ -85,18 +87,18 @@ class _MyAccountPageState extends State<MyAccountPage> {
         leading: Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Image.asset(
-                'lib/assets/${gblAppTitle}/images/appBarLeft.png',
+                'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
-        brightness: gbl_SystemColors.statusBar,
+        brightness: gblSystemColors.statusBar,
         backgroundColor:
-        gbl_SystemColors.primaryHeaderColor,
+        gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: TrText('My Account',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -344,12 +346,74 @@ class _MyAccountPageState extends State<MyAccountPage> {
             )
                 : Padding(padding: const EdgeInsets.all(0.0)),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+            child: new Theme(
+              data: new ThemeData(
+                primaryColor: Colors.blueAccent,
+                primaryColorDark: Colors.blue,
+              ),
+              child: new TextFormField(
+                controller: _adsNumberTextEditingController,
+                decoration: InputDecoration(
+                  contentPadding:
+                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  labelText: 'ADS Number',
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
+                // controller: _emailTextEditingController,
+                keyboardType: TextInputType.streetAddress,
+//                validator: (value) => validateEmail(value.trim()),
+                onSaved:(value) {
+                  if( value.isNotEmpty) {
+                    widget.passengerDetail.adsNumber  = value.trim();
+                  }
+                },
+
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+            child: new Theme(
+              data: new ThemeData(
+                primaryColor: Colors.blueAccent,
+                primaryColorDark: Colors.blue,
+              ),
+              child: new TextFormField(
+                controller: _adsPinTextEditingController,
+                decoration: InputDecoration(
+                  contentPadding:
+                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  labelText: 'ADS Pin',
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
+                // controller: _emailTextEditingController,
+                keyboardType: TextInputType.number,
+//                validator: (value) => validateEmail(value.trim()),
+                onSaved:(value) {
+                  if( value.isNotEmpty) {
+                    widget.passengerDetail.adsPin   = value.trim();
+                  }
+                },
+
+              ),
+            ),
+          ),
           ElevatedButton(
             onPressed: () {
               validateAndSubmit();
             },
             style: ElevatedButton.styleFrom(
-                primary: gbl_SystemColors
+                primary: gblSystemColors
                     .primaryButtonColor, //Colors.black,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0))),
@@ -381,7 +445,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   ListView optionListView() {
     List<Widget> widgets = [];
     //new List<Widget>();
-    gbl_titles.forEach((title) =>
+    gblTitles.forEach((title) =>
         widgets.add(ListTile(
             title: Text(title),
             onTap: () {
@@ -507,7 +571,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      if (widget.isAdsBooking && widget.isLeadPassenger) {
+      if (gblBuildFlavor == 'LM' && widget.isLeadPassenger &&
+          _adsPinTextEditingController.text.isNotEmpty && _adsPinTextEditingController.text.isNotEmpty) {
         adsValidate();
       } else {
         try {
@@ -538,15 +603,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   Future<void> adsValidate() async {
     setState(() {
-      _loadingInProgress = true;
+//      _loadingInProgress = true;
     });
 
 //ZADSVERIFY/ADS4000000153501/7978
 
     http.Response response = await http
         .get(Uri.parse(
-        "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
-        .catchError((resp) {});
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
+        .catchError((resp) {
+          print( resp);
+    });
 
     if (response == null) {
       //return new ParsedResponse(NO_INTERNET, []);
@@ -569,7 +636,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
         print('Login success');
+        List<UserProfileRecord> _userProfileRecordList = [];
+        UserProfileRecord _profileRecord = new UserProfileRecord(
+            name: 'PAX1',
+            value: json.encode(widget.passengerDetail.toJson()).replaceAll('"', "'")
+        );
+
+        _userProfileRecordList.add(_profileRecord);
+        Repository.get().updateUserProfile(_userProfileRecordList);
         Navigator.pop(context, widget.passengerDetail);
+   //     Navigator.pop(context, widget.passengerDetail);
       } else {
         _error = 'Please check your details';
         _actionCompleted();
@@ -582,7 +658,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
   void _actionCompleted() {
     setState(() {
-      _loadingInProgress = false;
+//      _loadingInProgress = false;
     });
   }
 

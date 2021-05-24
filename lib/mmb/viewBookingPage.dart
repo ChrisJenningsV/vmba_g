@@ -4,12 +4,8 @@ import 'package:vmba/data/settings.dart';
 import 'package:vmba/mmb/widgets/apis.dart';
 import 'package:vmba/mmb/widgets/boardingPass.dart';
 import 'dart:math' as math;
-//import 'package:loganair/mmb/boarding_passes/boarding_pass.dart';
-//import 'package:loganair/seatplan/seatplan.dart';
-//import 'package:loganair/seatplan/models.dart';
 import 'package:vmba/mmb/widgets/datepicker.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'dart:convert';
@@ -18,14 +14,10 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/models/cities.dart';
-//import 'package:vmba/utilities/widgets.dart';
 import 'package:provider/provider.dart';
-//import 'package:vmba/apis/apis.dart';
 import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/menu/menu.dart';
-//import 'package:vmba/utilities/helper.dart';
-//import 'package:loganair/mmb/change_flight/mmbdatepicker.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -73,14 +65,14 @@ class _ViewBookingPage extends State<ViewBookingPage> {
       child: Scaffold(
           key: _key,
           appBar: AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: Text("My Booking",
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -253,7 +245,7 @@ class _CheckinBoardingPassesWidgetState
                       borderRadius: BorderRadius.circular(30.0))),
               child: Text(
                 'Reload booking',
-                style: TextStyle(color: gbl_SystemColors.textButtonTextColor),
+                style: TextStyle(color: gblSystemColors.textButtonTextColor),
               ),
             ),
           ],
@@ -477,9 +469,9 @@ class _CheckinBoardingPassesWidgetState
           _refreshBooking();
         },
     style: TextButton.styleFrom(
-        side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
-        primary: gbl_SystemColors.primaryButtonTextColor,
-        backgroundColor: gbl_SystemColors.primaryButtonColor
+        side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+        primary: gblSystemColors.primaryButtonTextColor,
+        backgroundColor: gblSystemColors.primaryButtonColor
     ),
     child: Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -487,7 +479,7 @@ class _CheckinBoardingPassesWidgetState
     Text(
     'Reload',
     style: TextStyle(
-    color: gbl_SystemColors.primaryButtonTextColor),
+    color: gblSystemColors.primaryButtonTextColor),
     ),
     Padding(
     padding: EdgeInsets.only(left: 5.0),
@@ -497,7 +489,7 @@ class _CheckinBoardingPassesWidgetState
     child: Icon(
     Icons.refresh,
                 size: 20.0,
-                color: gbl_SystemColors.primaryButtonTextColor,
+                color: gblSystemColors.primaryButtonTextColor,
               ),
             )
           ],
@@ -518,15 +510,15 @@ class _CheckinBoardingPassesWidgetState
               ),
             )),
         style: TextButton.styleFrom(
-            side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
-            primary: gbl_SystemColors.textButtonTextColor),
+            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+            primary: gblSystemColors.textButtonTextColor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               'Change Flight',
               style: TextStyle(
-                  color: gbl_SystemColors
+                  color: gblSystemColors
                       .textButtonTextColor),
             ),
             Padding(
@@ -586,8 +578,8 @@ class _CheckinBoardingPassesWidgetState
   }
 
   Future _sendVrsCheckinCommand(String cmd) async {
-    String msg = gbl_settings.xmlUrl +
-        gbl_settings.xmlToken +
+    String msg = gblSettings.xmlUrl +
+        gblSettings.xmlToken +
         '&Command=' +
         cmd;
     print(msg);
@@ -692,7 +684,7 @@ class _CheckinBoardingPassesWidgetState
   Widget buttonOption(
       PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
     if (pnr.pNR.itinerary.itin[journeyNo].airID !=
-        gbl_settings.aircode) {
+        gblSettings.aircode) {
       return Text(''
           // 'Please check in at the airport',
           );
@@ -731,15 +723,15 @@ class _CheckinBoardingPassesWidgetState
               : () => {};
         },
         style: TextButton.styleFrom(
-            side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
-            primary: gbl_SystemColors.textButtonTextColor),
+            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+            primary: gblSystemColors.textButtonTextColor),
         child: Row(
           children: <Widget>[
             Text(
               'Boarding Pass',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.textButtonTextColor),
+                  gblSystemColors.textButtonTextColor),
             ),
             Padding(
               padding: EdgeInsets.only(left: 5.0),
@@ -749,13 +741,13 @@ class _CheckinBoardingPassesWidgetState
                     Icons.confirmation_number,
                     size: 20.0,
                     color:
-                    gbl_SystemColors.primaryButtonTextColor,
+                    gblSystemColors.primaryButtonTextColor,
                   )
                 : Icon(
                     Icons.file_download,
                     size: 20.0,
                     color:
-                    gbl_SystemColors.textButtonTextColor,
+                    gblSystemColors.textButtonTextColor,
                   )
           ],
         ),
@@ -783,7 +775,7 @@ class _CheckinBoardingPassesWidgetState
             });
           },
           style: TextButton.styleFrom(
-              side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
               primary: Colors.black),
           child: Row(
             children: <Widget>[
@@ -861,14 +853,14 @@ class _CheckinBoardingPassesWidgetState
               _displayCheckingDialog(pnr, journeyNo, paxNo);
             },
             style: TextButton.styleFrom(
-                side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
-                primary: gbl_SystemColors.textButtonTextColor),
+                side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                primary: gblSystemColors.textButtonTextColor),
             child: Row(
               children: <Widget>[
                 Text(
                   'Check-in',
                   style: TextStyle(
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .textButtonTextColor),
                 ),
                 Padding(
@@ -879,12 +871,12 @@ class _CheckinBoardingPassesWidgetState
                   Icons.done,
                   size: 20.0,
                   color:
-                  gbl_SystemColors.textButtonTextColor,
+                  gblSystemColors.textButtonTextColor,
                 ),
                 Text(
                   '',
                   style: TextStyle(
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .textButtonTextColor),
                 )
               ],
@@ -988,16 +980,16 @@ class _CheckinBoardingPassesWidgetState
       now = new DateTime.now();
       if (itin.secRLoc != '') {
         response = 'Check-in with other airline ';
-      } else if ( city.webCheckinEnabled == false ) {
+      } else if ( city.webCheckinEnabled == 0 ) {
         response = 'no Check-in online for this city ';
       } else if (now.isBefore(checkinClosed) &&
           now.isAfter(checkinOpens) &&
-          itin.airID != gbl_settings.aircode) {
+          itin.airID != gblSettings.aircode) {
         response = 'Check-in with other airline ';
       } else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
         response = 'Online check-in open ';
       } else if (now.isBefore(checkinOpens) &&
-          itin.airID != gbl_settings.aircode) {
+          itin.airID != gblSettings.aircode) {
         response = 'Check-in with other airline ';
       } else if (now.isBefore(checkinOpens)) {
         response = 'Online check-in opens at ' +
@@ -1515,7 +1507,7 @@ class _CheckinBoardingPassesWidgetState
     return new TextButton(
 
       onPressed: () {
-        if (gbl_settings.autoSeatOption &&
+        if (gblSettings.autoSeatOption &&
             (paxlist.firstWhere((p) => p.id == paxNo + 1).seat == null ||
                 paxlist.firstWhere((p) => p.id == paxNo + 1).seat == '') &&
             checkinOpen) {
@@ -1526,15 +1518,15 @@ class _CheckinBoardingPassesWidgetState
         }
       },
       style: TextButton.styleFrom(
-          side: BorderSide(color: gbl_SystemColors.textButtonTextColor, width: 1),
-          primary: gbl_SystemColors.textButtonTextColor),
+          side: BorderSide(color: gblSystemColors.textButtonTextColor, width: 1),
+          primary: gblSystemColors.textButtonTextColor),
       child: Row(
         children: <Widget>[
           checkinOpen
               ? Text(
                   'Check-in',
                   style: TextStyle(
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .textButtonTextColor),
                 )
               : Text(
@@ -1544,7 +1536,7 @@ class _CheckinBoardingPassesWidgetState
                       ? 'Choose Seat'
                       : 'Change Seat',
                   style: TextStyle(
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .textButtonTextColor),
                 ),
           Padding(
@@ -1553,14 +1545,14 @@ class _CheckinBoardingPassesWidgetState
           Icon(
             Icons.airline_seat_recline_normal,
             size: 20.0,
-            color: gbl_SystemColors.primaryButtonTextColor,
+            color: gblSystemColors.primaryButtonTextColor,
           ),
           Text(
             paxlist.firstWhere((p) => p.id == paxNo + 1).seat != null
                 ? paxlist.firstWhere((p) => p.id == paxNo + 1).seat
                 : '',
             style: TextStyle(
-                color: gbl_SystemColors.primaryButtonTextColor),
+                color: gblSystemColors.primaryButtonTextColor),
           ),
         ],
       ),
@@ -1591,9 +1583,9 @@ class _CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              gbl_settings.prohibitedItemsNoticeUrl != null
+              gblSettings.prohibitedItemsNoticeUrl != null
                   ? appLinkWidget(
-                      gbl_settings.prohibitedItemsNoticeUrl,
+                      gblSettings.prohibitedItemsNoticeUrl,
                       Text(
                           GobalSettings
                               .shared.settings.prohibitedItemsNoticeUrl,
@@ -1627,11 +1619,11 @@ class _CheckinBoardingPassesWidgetState
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   primary:
-                  gbl_SystemColors.primaryButtonColor),
+                  gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
                 style: new TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .primaryButtonTextColor),
               ),
               onPressed: () {
@@ -1662,8 +1654,8 @@ class _CheckinBoardingPassesWidgetState
                 padding: EdgeInsets.all(4),
               ),
               appLinkWidget(
-                  gbl_settings.prohibitedItemsNoticeUrl,
-                  Text(gbl_settings.prohibitedItemsNoticeUrl,
+                  gblSettings.prohibitedItemsNoticeUrl,
+                  Text(gblSettings.prohibitedItemsNoticeUrl,
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                       ))),
@@ -1693,11 +1685,11 @@ class _CheckinBoardingPassesWidgetState
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   primary:
-                  gbl_SystemColors.primaryButtonColor),
+                  gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
                 style: new TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .primaryButtonTextColor),
               ),
               onPressed: () {
@@ -1725,8 +1717,8 @@ class _CheckinBoardingPassesWidgetState
   }
 
   _sendAutoseatCommand(String cmd) async {
-    String msg = gbl_settings.xmlUrl +
-        gbl_settings.xmlToken +
+    String msg = gblSettings.xmlUrl +
+        gblSettings.xmlToken +
         '&Command=' +
         cmd;
     print(msg);
@@ -1872,7 +1864,7 @@ class _CheckinBoardingPassesWidgetState
       child: Text('Allocate seats randomly',
           textAlign: TextAlign.center,
           style: new TextStyle(
-              color: gbl_SystemColors.primaryButtonColor)),
+              color: gblSystemColors.primaryButtonColor)),
       onPressed: () {
         //Navigator.of(context).pop();
         autoseat(pnr, journeyNo);
@@ -1882,14 +1874,14 @@ class _CheckinBoardingPassesWidgetState
 
     Widget preferredSeatingButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: gbl_SystemColors.primaryButtonColor),
+          primary: gblSystemColors.primaryButtonColor),
       child: Text(
         chargeForPreferredSeating
             ? 'Pay for preferred seat'
             : 'Choose preferred seat',
         textAlign: TextAlign.center,
         style: new TextStyle(
-            color: gbl_SystemColors.primaryButtonTextColor ),
+            color: gblSystemColors.primaryButtonTextColor ),
       ),
       onPressed: () {
         Navigator.of(context).pop();
@@ -1924,7 +1916,7 @@ List<Widget> checkinAllButton() {
         child: TextButton(
           onPressed: () => {},
           style: TextButton.styleFrom(
-              side: BorderSide(color:  gbl_SystemColors.textButtonTextColor, width: 1),
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
               primary: Colors.black),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

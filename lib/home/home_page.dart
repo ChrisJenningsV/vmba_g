@@ -9,10 +9,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_appstore/open_appstore.dart';
 import 'package:version/version.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:vmba/ads/adsPage.dart';
 
 
 
@@ -55,7 +53,7 @@ class _HomeState extends State<HomePage> {
     if( gblLanguage != 'en') {
       String jsonString = await rootBundle.loadString(
           'lib/assets/lang/$gblLanguage.json');
-      gbl_langMap = json.decode(jsonString);
+      gblLangMap = json.decode(jsonString);
     }
   }
 
@@ -69,11 +67,11 @@ class _HomeState extends State<HomePage> {
         .then((String version) {
       currentVersion = Version.parse(version);
       latestVersion = Version.parse(Platform.isIOS
-          ? gbl_settings.latestBuildiOS
-          : gbl_settings.latestBuildAndroid);
+          ? gblSettings.latestBuildiOS
+          : gblSettings.latestBuildAndroid);
 
-      gbl_version = version;
-      gbl_isIos = Platform.isIOS;
+      gblVersion = version;
+      gblIsIos = Platform.isIOS;
       if (latestVersion > currentVersion) {
         _updateAppDialog();
       }
@@ -126,8 +124,8 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                 style: TextButton.styleFrom(primary: Colors.black),
                 onPressed: () {
                   OpenAppstore.launch(
-                      androidAppId: gbl_settings.androidAppId,
-                      iOSAppId: gbl_settings.iOSAppId);
+                      androidAppId: gblSettings.androidAppId,
+                      iOSAppId: gblSettings.iOSAppId);
                 },
               ),
             ]);
@@ -148,7 +146,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
           children: <Widget>[
             Image(
               image: Image.network(
-                      gbl_settings.backgroundImageUrl)
+                      gblSettings.backgroundImageUrl)
                   .image,
               fit: BoxFit.fitWidth,
             ),
@@ -164,7 +162,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
    // var appLanguage = new AppLanguage();
  //   appLanguage.changeLanguage('fr');
 
-    switch (gbl_settings.aircode.toUpperCase()) {
+    switch (gblSettings.aircode.toUpperCase()) {
       case 'SI':
         buttonShape = RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -202,13 +200,13 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
       return new Scaffold(
 
         appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
-            title: gbl_isLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test Mode', style: gbl_titleStyle,)]),
+            gblSystemColors.primaryHeaderColor,
+            title: gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test Mode', style: gblTitleStyle,)]),
             iconTheme: IconThemeData(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
             Container(
@@ -225,7 +223,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  gbl_NoNetwork ? Text('') : Row(
+                  gblNoNetwork ? Text('') : Row(
                     children: <Widget>[
                       Expanded(
                         child: Padding(
@@ -234,7 +232,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   shape: buttonShape,
-                                  backgroundColor: gbl_SystemColors.primaryButtonColor),
+                                  backgroundColor: gblSystemColors.primaryButtonColor),
                               onPressed: () => Navigator.of(context)
                                   .pushNamedAndRemoveUntil('/FlightSearchPage',
                                       (Route<dynamic> route) => false),
@@ -251,7 +249,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                                       ),
                                     ),
                                     TrText(
-                                       'Book a Flight',
+                                       'Book a flight',
                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
@@ -275,7 +273,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                         shape: buttonShape,
-                                        backgroundColor: gbl_SystemColors.primaryButtonColor),
+                                        backgroundColor: gblSystemColors.primaryButtonColor),
                                     onPressed: () => Navigator.of(context)
                                         .pushNamedAndRemoveUntil('/AdsPage',
                                             (Route<dynamic> route) => false),
@@ -315,7 +313,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   shape: buttonShape,
-                                  backgroundColor: gbl_SystemColors
+                                  backgroundColor: gblSystemColors
                                       .primaryButtonColor),
                               onPressed: () => Navigator.of(context)
                                   .pushNamedAndRemoveUntil('/MyBookingsPage',
@@ -351,7 +349,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
                   Padding(
                     padding: EdgeInsets.all(8),
                   ),
-                  gbl_NoNetwork ? Row( children: <Widget>[ Expanded( child: new Text( 'No Network Connection',
+                  gblNoNetwork ? Row( children: <Widget>[ Expanded( child: new Text( 'No Network Connection',
                         style: TextStyle( backgroundColor: Colors.red, color: Colors.white, fontSize: 18.0, ))) ]): Text(''),
                 ],
               ),

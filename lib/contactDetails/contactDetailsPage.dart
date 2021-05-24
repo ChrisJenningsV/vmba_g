@@ -67,15 +67,15 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Payment',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -95,14 +95,14 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Contact Details',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -187,13 +187,13 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                       label: Text(
                         'PROCEED TO PAYMENT',
                         style: TextStyle(
-                            color: gbl_SystemColors
+                            color: gblSystemColors
                                 .primaryButtonTextColor),
                       ),
                       icon: Icon(Icons.check,
-                          color: gbl_SystemColors
+                          color: gblSystemColors
                               .primaryButtonTextColor),
-                      backgroundColor: gbl_SystemColors
+                      backgroundColor: gblSystemColors
                           .primaryButtonColor, //new Color(0xFF000000),
                       onPressed: () {
                         validateAndSubmit();
@@ -294,7 +294,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -349,7 +349,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                    "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
             if (response == null) {
               setState(() {

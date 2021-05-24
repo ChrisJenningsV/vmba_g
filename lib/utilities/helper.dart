@@ -21,13 +21,13 @@ import 'package:vmba/data/globals.dart';
 // }
 
 Future<Session> login() async {
-  var body = {"AgentGuid": "${gbl_settings.vrsGuid}"};
+  var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
 
   final http.Response response = await http.post(
-      Uri.parse(gbl_settings.apiUrl + "/login"),
+      Uri.parse(gblSettings.apiUrl + "/login"),
       headers: {
         'Content-Type': 'application/json',
-        'Videcom_ApiKey': gbl_settings.apiKey
+        'Videcom_ApiKey': gblSettings.apiKey
       },
       body: JsonEncoder().convert(body));
 
@@ -47,10 +47,10 @@ Future<Session> login() async {
 
 Future sendVRSCommand(msg) async {
   final http.Response response = await http.post(
-      Uri.parse(gbl_settings.apiUrl + "/RunVRSCommand"),
+      Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
       headers: {
         'Content-Type': 'application/json',
-        'Videcom_ApiKey': gbl_settings.apiKey
+        'Videcom_ApiKey': gblSettings.apiKey
       },
       body: msg);
 
@@ -69,9 +69,9 @@ Future<http.Response> post(Uri url,
 
 Future sendVRSCommandList(msg) async {
   final http.Response response = await http.post(
-      Uri.parse(gbl_settings.apiUrl + "/RunVRSCommandList"),
+      Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
       headers: {'Content-Type': 'application/json',
-        'Videcom_ApiKey': gbl_settings.apiKey
+        'Videcom_ApiKey': gblSettings.apiKey
       },
       body: msg);
 
@@ -84,7 +84,7 @@ Future sendVRSCommandList(msg) async {
 }
 
 Future<String> _loadCountrylistAsset() async {
-  switch (gbl_settings.aircode) {
+  switch (gblSettings.aircode) {
     case 'SI':
       return await rootBundle
           .loadString('lib/assets/blueislands/json/countries.json');

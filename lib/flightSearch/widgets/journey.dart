@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:vmba/flightSearch/widgets/citylist.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
-//import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class SelectedRoute {
   String departure;
@@ -25,7 +23,7 @@ class JourneyWidget extends StatefulWidget {
 class _JourneyWidgetState extends State<JourneyWidget> {
   String departureAirport = 'Select departure airport';
   String departureCode = '';
-  String arrivalAirport = 'Select departure airport';
+  String arrivalAirport = 'Select arrival airport';
   String arrivalCode = '';
   SelectedRoute route;
 
@@ -91,7 +89,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
                             fontSize: 15.0,
                           ),
                         ),
-                        _GetAirportText(departureAirport, departureCode),
+                        _getAirportText(departureAirport, departureCode),
   /*                      new Text(
                           departureAirport,
                           style: new TextStyle(
@@ -122,7 +120,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
                       new TrText('Fly to',
                           style: new TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15.0)),
-                  _GetAirportText(arrivalAirport,arrivalCode),
+                  _getAirportText(arrivalAirport,arrivalCode),
                       new Divider(
                         height: 0.0,
                       ),
@@ -133,7 +131,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
         ]);
   }
 
-  Widget _GetAirportText(String airportName, String code) {
+  Widget _getAirportText(String airportName, String code) {
     Color c;
     FontWeight fw;
     double fSize;
@@ -188,14 +186,14 @@ class CitiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new TrText('Flight Search',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       body: new Container(
           child: filterByCitiesCode != null

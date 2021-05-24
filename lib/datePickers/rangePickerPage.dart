@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
 
 class RangePickerWidget extends StatefulWidget {
@@ -69,11 +68,11 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: Text('DONE',style: TextStyle(color: gbl_SystemColors
+                    label: Text('DONE',style: TextStyle(color: gblSystemColors
                               .primaryButtonTextColor),),
-                    icon: Icon(Icons.check, color: gbl_SystemColors
+                    icon: Icon(Icons.check, color: gblSystemColors
                               .primaryButtonTextColor,),
-                    backgroundColor: gbl_SystemColors
+                    backgroundColor: gblSystemColors
                               .primaryButtonColor,//new Color(0xFF000000),
                     onPressed: () {
                       Navigator.pop(

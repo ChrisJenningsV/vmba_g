@@ -5,27 +5,39 @@ class TrText extends StatelessWidget {
   final String labelText;
   TextStyle style;
   String variety;
+  bool noTrans;
 
-  TrText(this.labelText,  {this.style, this.variety});
+  TrText(this.labelText,  {this.style, this.variety, this.noTrans});
 
   build(BuildContext context) {
     var txt = labelText;
 
-    if( gbl_langMap != null) {
+    if( gblLangMap != null && noTrans != true) {
       if (gblLanguage != 'en') {
-        var txt2 = gbl_langMap[txt];
+        var testTxt = '';
+        if( variety == 'title' && gblIsLive == false) {
+            if( gblLangMap['Test Mode: ']) {
+              testTxt = gblLangMap['Test Mode: '];
+            } else {
+              testTxt = 'Test Mode: ';
+            }
+        }
+
+
+        var txt2 = gblLangMap[txt];
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {
-          txt = txt2;
+          txt = testTxt + txt2;
         } else {
           var msg = 'need trans for $txt';
           print(msg);
         }
       }
     }
+
     if( variety != null &&  variety.isNotEmpty) {
       double width = MediaQuery.of(context).size.width;
-      Color clr;
+      Color clr = style.color;
       double fSize = 16.0;
 
       switch (variety) {

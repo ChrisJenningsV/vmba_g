@@ -29,7 +29,7 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     _displayProcessingIndicator = true;
-    gbl_NoNetwork = false;
+    gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
     var appVersion = 'Checking..';
@@ -43,8 +43,8 @@ class _RootPageState extends State<RootPage> {
         .then((PackageInfo packageInfo) =>
     packageInfo.version + '.' + packageInfo.buildNumber)
         .then((String version) async {
-      gbl_version = version;
-      gbl_isIos = Platform.isIOS;
+      gblVersion = version;
+      gblIsIos = Platform.isIOS;
       // await Repository.get().init();
       await Repository.get().settings().catchError((e) {
         setState(() {
@@ -98,7 +98,7 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
 
-    if (_displayFinalError || (gbl_error != null && gbl_error.isNotEmpty) ) {
+    if (_displayFinalError || (gblError != null && gblError.isNotEmpty) ) {
       return Scaffold(
           body: Container(
             color: Colors.white, constraints: BoxConstraints.expand(),
@@ -109,7 +109,7 @@ class _RootPageState extends State<RootPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TrText(_displayProcessingText + gbl_error, style: TextStyle(fontSize: 14.0)),
+                    child: TrText(_displayProcessingText + gblError, style: TextStyle(fontSize: 14.0)),
                   ),
                 ],
               ),
@@ -128,7 +128,7 @@ class _RootPageState extends State<RootPage> {
                     CircularProgressIndicator(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TrText(_displayProcessingText + ' ' + gbl_version),
+                      child: TrText(_displayProcessingText + ' ' + gblVersion),
                     ),
                   ],
                 ),

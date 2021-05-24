@@ -10,17 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:vmba/payment/v2/countDownTimer/CardInputWidget.dart';
 import 'package:vmba/payment/v2/countDownTimer/CountDownTimer.dart';
 import 'package:vmba/payment/v2/countDownTimer/timerWidget.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/models/pnrs.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
-//import 'countDownTimer/CountDownTimer/CountDownTimer.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({    Key key,
@@ -62,14 +59,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
     return Scaffold(
       key: _key,
       appBar: AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text('Payment',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: SingleChildScrollView(
@@ -131,9 +128,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
   Future _sendVRSCommand(msg) async {
     final http.Response response = await http.post(
-        Uri.parse(gbl_settings.apiUrl + "/RunVRSCommand"),
+        Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
         headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: msg);
 
@@ -248,7 +245,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       print(msg);
       response = await http
           .get(Uri.parse(
-          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
       if (response == null) {
         setState(() {
@@ -292,7 +289,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
             if (response == null) {
               setState(() {
@@ -354,7 +351,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         });
         response = await http
             .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});
         return null;
       }
@@ -407,7 +404,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
       response = await http
           .get(Uri.parse(
-          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {
@@ -477,7 +474,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     var buffer = new StringBuffer();
     //if (isLive) {
       //buffer.write('MK($creditCardProviderProduction)');
-      buffer.write('MK(${gbl_settings.creditCardProvider})');
+      buffer.write('MK(${gblSettings.creditCardProvider})');
     //} else {
       //buffer.write('MK($creditCardProviderStaging)');
       //buffer.write('MK(${gbl_settings.creditCardProvider})');
@@ -552,7 +549,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             '=o';
         http.Response reponse = await http
             .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }
     }
@@ -566,7 +563,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     response = await http
         .get(Uri.parse(
-        "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -643,7 +640,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
       http.Response response = await http
           .get(Uri.parse(
-          "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {

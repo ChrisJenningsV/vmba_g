@@ -19,15 +19,15 @@ class ChooseFlight extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: TrText("Choose Flight",
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
@@ -47,14 +47,14 @@ class ChooseFlight extends StatelessWidget {
                     isExtended: true,
                     label: TrText('CHOOSE FLIGHT',
                         style: TextStyle(
-                            color: gbl_SystemColors
+                            color: gblSystemColors
                                 .primaryButtonTextColor)),
                     icon: Icon(
                       Icons.check,
-                      color: gbl_SystemColors
+                      color: gblSystemColors
                           .primaryButtonTextColor,
                     ),
-                    backgroundColor: gbl_SystemColors
+                    backgroundColor: gblSystemColors
                         .primaryButtonColor, //new Color(0xFF000000),
                     onPressed: () {
                       Navigator.of(context).pop(buildfltRequestMsg(

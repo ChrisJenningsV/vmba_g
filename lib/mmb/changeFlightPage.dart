@@ -6,24 +6,12 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/mmb/widgets/flight_selection_summary.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
-//import '../../data/models/availability.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
-//import '../../availability/choose_flight.dart';
-//import '../../utilities/helper.dart';
-//import '../../menu/menu.dart';
-//import 'package:loganair/mmb/flightselectionsummary/flight_selection_summary.dart';
-//import '../../data/settings.dart';
-//import '../../availability/canned_fact.dart';
-//import '../../data/repository.dart';
-//import '../../utilities/widgets.dart';
-//import 'package:loganair/data/models/pnr.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -197,7 +185,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gbl_settings.bookingLeadTime)))) {
+            minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -347,14 +335,14 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text("Choose Flight",
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: _buildBody(),
@@ -405,7 +393,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gbl_settings.locale, name: currency);
+        locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
     if (price.length == 0) {
@@ -428,7 +416,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     color: !isSearchDate(
                             DateTime.parse(item.daylcl), widget.departureDate)
                         ? Colors.white
-                        : gbl_SystemColors.accentButtonColor,
+                        : gblSystemColors.accentButtonColor,
                   ),
                   width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(
                           DateFormat('y-MM-dd').format(DateTime.now().toUtc())))
@@ -825,7 +813,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       },
                   child: Chip(
                     backgroundColor:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
                         Text(
@@ -836,7 +824,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: TextStyle(
-                                color: gbl_SystemColors
+                                color: gblSystemColors
                                     .primaryButtonTextColor)),
                         item[0].fltav.fav[index] != '0'
                             ? new Text(
@@ -861,7 +849,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                               )
                             : new Text('No Seats',
                                 style: new TextStyle(
-                                  color: gbl_SystemColors
+                                  color: gblSystemColors
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 )),
@@ -885,7 +873,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
@@ -910,7 +898,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: new TextStyle(
-                              color: gbl_SystemColors
+                              color: gblSystemColors
                                   .primaryButtonTextColor,
                               fontSize: 16.0,
                             ),
@@ -937,14 +925,14 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                                       0.0))
                                           .toStringAsFixed(2)),
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   ),
                                 )
                               : new Text('No Seats',
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   )),

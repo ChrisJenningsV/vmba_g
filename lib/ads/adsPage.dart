@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
+import 'package:vmba/menu/login.dart';
 
 class AdsPage extends StatefulWidget {
   AdsPage();
@@ -21,17 +22,34 @@ class _AdsPageState extends State<AdsPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar:
-        appBar(context, 'Air Discount Scheme',
-        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+      floatingActionButton:   Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: gblSystemColors.primaryButtonColor,
+              ),
+          onPressed:() {
+            //Navigator.of(context).pushNamedAndRemoveUntil('/AdsFlightSearchPage', (Route<dynamic> route) => false);},
+            Navigator.push(context, SlideTopRoute(page: LoginPage()));
+          },
+          child: TrText('Accept', style: new TextStyle(color: gblSystemColors.primaryButtonTextColor),)),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.grey,
+              ),
+              onPressed:() {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/HomePage', (Route<dynamic> route) => false);
+              },
+              child: TrText('Cancel', style: new TextStyle(color: Colors.black),)),
+
+        ]),
         body: Row( children: <Widget>[
           Expanded( child: WebViewWidget(
-    title: 'FAQs',
-        url: gbl_settings.adsTermsUrl)),
-          ElevatedButton(
-              onPressed:() {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              '/MyBookingsPage', (Route<dynamic> route) => false);},
-              child: TrText('Accept'))
+    title: 'Air Discount Scheme',
+        url: gblSettings.adsTermsUrl)),
+
     ]));  }
   }

@@ -8,22 +8,22 @@ import 'main.dart';
 import 'data/globals.dart';
 
 void main() {
-  config_fl();
+  configFL();
 
 
   var configuredApp = AppConfig(
       appTitle: 'airleap',
       child: App(),
       buildFlavor: 'FL',
-      systemColors: gbl_SystemColors,
-      settings: gbl_settings,);
+      systemColors: gblSystemColors,
+      settings: gblSettings,);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(configuredApp);
   });
 }
-void config_fl() {
+void configFL() {
   SystemColors _systemColors = SystemColors(
       primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
       accentButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
@@ -35,15 +35,15 @@ void config_fl() {
       headerTextColor: Colors.white,
       statusBar: Brightness.dark);
 
-  gbl_SystemColors =_systemColors;
-  gbl_titleStyle =  new TextStyle( color: Colors.white) ;
+  gblSystemColors =_systemColors;
+  gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
   //gbl_language = 'en';
 
-  gbl_settings = Settings(
+  gblSettings = Settings(
     latestBuildiOS: '1.0.5',
     latestBuildAndroid: '1.0.0.98',
     airlineName: "Air Leap",

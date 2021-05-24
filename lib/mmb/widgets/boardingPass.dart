@@ -11,10 +11,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
-import 'package:vmba/data/settingsData.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 
@@ -236,8 +233,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     String _depart = widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart;
 
     String cmd = '&Command=DF/$_fltNo/$_date/$_depart';
-    String message = gbl_settings.xmlUrl +
-        gbl_settings.xmlToken +
+    String message = gblSettings.xmlUrl +
+        gblSettings.xmlToken +
         cmd;
     print(message);
     String data;
@@ -383,15 +380,15 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text('Boarding Pass',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: Center(
@@ -410,15 +407,15 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text('Boarding Pass',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: _contentWidget(),
@@ -444,7 +441,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
-                          gbl_settings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
+                          gblSettings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
                           style: new TextStyle(
                               fontSize: 18.0, fontWeight: FontWeight.w700)),
                     )
@@ -790,7 +787,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          (gbl_settings.aircode == 'LM')
+                          (gblSettings.aircode == 'LM')
                               ? TextButton(
                                   child: Text(
                                     "This barcode did not scan",

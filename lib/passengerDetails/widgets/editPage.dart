@@ -74,14 +74,14 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: new Text('Edit Details',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -121,7 +121,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
         validateAndSubmit();
       },
       style: ElevatedButton.styleFrom(
-          primary: gbl_SystemColors
+          primary: gblSystemColors
               .primaryButtonColor, //Colors.black,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
@@ -308,7 +308,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             : Padding(padding: const EdgeInsets.all(0.0)),
       ),
       widget.passengerDetail.paxType == PaxType.adult &&
-              gbl_settings.fqtvEnabled
+              gblSettings.fqtvEnabled
           ? Padding(
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
               child: new Theme(
@@ -320,9 +320,9 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                   decoration: InputDecoration(
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 15.0),
-                    labelText: gbl_settings.fqtvName == null
+                    labelText: gblSettings.fqtvName == null
                         ? 'FQTV number'
-                        : '${gbl_settings.fqtvName} number',
+                        : '${gblSettings.fqtvName} number',
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -436,7 +436,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   ListView optionListView() {
     List<Widget> widgets = [];
     //new List<Widget>();
-    gbl_titles.forEach((title) => widgets.add(ListTile(
+    gblTitles.forEach((title) => widgets.add(ListTile(
         title: Text(title),
         onTap: () {
           Navigator.pop(context, title);
@@ -463,7 +463,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -607,7 +607,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               )),
           actions: <Widget>[
             new TextButton(
-              child: new Text("Ok"),
+              child: new Text("OK"),
               onPressed: () {
                 Navigator.pop(context, dateTime);
                 _updateDateOfBirth(dateTime);

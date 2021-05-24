@@ -135,9 +135,13 @@ class AppDatabase {
         });
     didInit = true;
   }
+  /*
   Future _update() async {
 
   }
+
+   */
+  /*
    Future _drop() async {
      await db.execute("DROP TABLE [IF EXISTS] $tableNameCities");
   //       "DROP TABLE [IF EXISTS] $tableNamePNRs; "
@@ -149,6 +153,7 @@ class AppDatabase {
   //       "DROP TABLE [IF EXISTS] $tableNameSettings; "
   //       "DROP TABLE [IF EXISTS] $tableNameAppData; ");
    }
+   */
 
   /// Get a city by its ISO Code, if there is not entry for that ISO code, returns null.
   Future<City> getCityByCode(String code) async {

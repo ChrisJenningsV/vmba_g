@@ -51,13 +51,13 @@ class _ProcessCommandsWidgetState extends State<ProcessCommandsPage> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: new AppBar(
-          brightness:gbl_SystemColors.statusBar,
-          backgroundColor: gbl_SystemColors.primaryHeaderColor,
+          brightness:gblSystemColors.statusBar,
+          backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Processing',
               style: TextStyle(
-                  color: gbl_SystemColors.headerTextColor)),
+                  color: gblSystemColors.headerTextColor)),
         ),
         body: new Center(
           child: Column(

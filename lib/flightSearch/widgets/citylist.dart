@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -88,14 +87,14 @@ class Departures extends StatefulWidget {
 }
 
 class _DeparturesState extends State<Departures> {
-  bool _loadingInProgress;
-  String _LoadingMsg = 'Loading cities...';
+//  bool _loadingInProgress;
+//  String _loadingMsg = 'Loading cities...';
   List<String> _cityData;
 
   @override
   void initState() {
     super.initState();
-    _loadingInProgress = true;
+//    _loadingInProgress = true;
     _loadData();
   }
   Future _loadData() async {
@@ -114,11 +113,11 @@ class _DeparturesState extends State<Departures> {
 
       if( _cityData.length > 0) {
         setState(() {
-          _loadingInProgress = false;
+//          _loadingInProgress = false;
         });
       } else {
-        _loadingInProgress = true;
-        _LoadingMsg = 'Reloading Cities...';
+//        _loadingInProgress = true;
+//        _loadingMsg = 'Reloading Cities...';
           setState(() {
         });
       }
@@ -188,7 +187,7 @@ class DepartureList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (gbl_verbose) {print('build DepartureList len=${routes.length}');}
+    if (gblVerbose) {print('build DepartureList len=${routes.length}');}
     return new ListView.builder(
         itemCount: routes == null ? 0 : routes.length,
         itemBuilder: (BuildContext context, i) {
@@ -243,15 +242,15 @@ class Arrivals extends StatefulWidget {
   _ArrivalsState createState() => new _ArrivalsState();
 }
 class _ArrivalsState extends State<Arrivals> {
-  bool _loadingInProgress;
+//  bool _loadingInProgress;
   String departCityCode;
-  String _LoadingMsg = 'Loading arrivals...';
+//  String _loadingMsg = 'Loading arrivals...';
   List<String> _departCityData;
 
   @override
   void initState() {
     super.initState();
-    _loadingInProgress = true;
+//    _loadingInProgress = true;
     departCityCode = widget.departCityCode;
     _loadData();
   }
@@ -263,11 +262,11 @@ class _ArrivalsState extends State<Arrivals> {
     }
     if( _departCityData.length > 0) {
       setState(() {
-        _loadingInProgress = false;
+//        _loadingInProgress = false;
       });
     } else {
-      _loadingInProgress = true;
-      _LoadingMsg = 'Reloading Cities...';
+//      _loadingInProgress = true;
+//      _loadingMsg = 'Reloading Cities...';
       setState(() {
       });
     }
@@ -304,7 +303,7 @@ class _ArrivalsState extends State<Arrivals> {
 
   @override
   Widget build(BuildContext context) {
-    if (gbl_verbose) {print('build ArrivalList len=${routes.length}');}
+    if (gblVerbose) {print('build ArrivalList len=${routes.length}');}
     return new ListView.builder(
         itemCount: routes == null ? 0 : routes.length,
         itemBuilder: (BuildContext context, i) {

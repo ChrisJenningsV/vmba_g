@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/components/trText.dart';
 
 class CannedFactWidget extends StatelessWidget {
   final List<Flt> flt;
@@ -23,13 +24,13 @@ class CannedFactWidget extends StatelessWidget {
                       return AlertDialog(
                           actions: <Widget>[
                             new TextButton(
-                              child: new Text("OK"),
+                              child: new TrText("OK"),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
                           ],
-                          title: new Text('Additional Info'),
+                          title: new TrText('Additional Info'),
                           content: SingleChildScrollView(
                             child: Wrap(
                               children: additionalInfoWidget(
@@ -43,7 +44,7 @@ class CannedFactWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 4.0),
                   child: Row(
                     children: <Widget>[
-                      Text("Additional Info",
+                      TrText("Additional Info",
                           style: new TextStyle(
                               fontSize: 14.0, fontWeight: FontWeight.w300)),
                       Icon(Icons.expand_more)

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-//import 'package:loganair/data/models/models.dart';
 import 'dart:async';
-//import 'package:loganair/data/models/pnr.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/FlightSelectionSummary/widgets/flightRules.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -190,7 +186,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Total Tax: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(tax)),
       ],
@@ -223,7 +219,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Net Fare:'),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(netFareTotal)),
       ],
@@ -253,7 +249,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Flights Total: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(total))
         // (double.tryParse(fareStore.total) ?? 0.0))),
@@ -285,7 +281,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         children: <Widget>[
           Text('Discount: '),
           Text(NumberFormat.simpleCurrency(
-                  locale: gbl_settings.locale,
+                  locale: gblSettings.locale,
                   name: currencyCode)
               .format(total)),
         ],
@@ -299,7 +295,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text(
           NumberFormat.simpleCurrency(
-                  locale: gbl_settings.locale,
+                  locale: gblSettings.locale,
                   name: currencyCode)
               .format((double.tryParse(
                       this.pnrModel.pNR.basket.outstanding.amount) ??
@@ -402,7 +398,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             children: <Widget>[
               Text('Tax:'),
               Text(NumberFormat.simpleCurrency(
-                      locale: gbl_settings.locale,
+                      locale: gblSettings.locale,
                       name: currencyCode)
                   .format(taxTotal)),
             ],
@@ -422,15 +418,15 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: new AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: new Text('Summary',
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -450,14 +446,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -487,14 +483,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -533,14 +529,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: new Text('Summary',
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
@@ -622,7 +618,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   padding: EdgeInsets.only(top: 5),
                 ),
                 Divider(),
-                gbl_settings.hideFareRules
+                gblSettings.hideFareRules
                     ? Padding(
                         padding: EdgeInsets.only(top: 0),
                       )
@@ -645,7 +641,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary:
-                      gbl_SystemColors.primaryButtonColor,
+                      gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   onPressed: () {
@@ -671,13 +667,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     children: <Widget>[
                       Icon(
                         Icons.check,
-                        color: gbl_SystemColors
+                        color: gblSystemColors
                             .primaryButtonTextColor,
                       ),
                       Text(
                         'CONFIRM CHANGES',
                         style: TextStyle(
-                          color: gbl_SystemColors
+                          color: gblSystemColors
                               .primaryButtonTextColor,
                         ),
                       ),

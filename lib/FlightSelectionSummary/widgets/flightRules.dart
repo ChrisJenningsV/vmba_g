@@ -86,14 +86,14 @@ class _FlightRulesState extends State<FlightRulesWidget> {
     if (_displayProcessingIndicator) {
       return Scaffold(
           appBar: AppBar(
-            brightness: gbl_SystemColors.statusBar,
+            brightness: gblSystemColors.statusBar,
             backgroundColor:
-            gbl_SystemColors.primaryHeaderColor,
+            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
-                color: gbl_SystemColors.headerTextColor),
+                color: gblSystemColors.headerTextColor),
             title: Text("Flight Rules",
                 style: TextStyle(
-                    color: gbl_SystemColors
+                    color: gblSystemColors
                         .headerTextColor)),
             automaticallyImplyLeading: false,
             actions: <Widget>[
@@ -118,15 +118,15 @@ class _FlightRulesState extends State<FlightRulesWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text("Flight Rules",
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(

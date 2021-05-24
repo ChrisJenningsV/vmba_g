@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/data/settingsData.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
-//import 'package:vmba/utilities/widgets/appBarWidget.dart';
-//import '../utilities/helper.dart';
 
 class SpecialAssistancePage extends StatelessWidget {
   List<Widget> render() {
@@ -112,14 +108,14 @@ class SpecialAssistancePage extends StatelessWidget {
                 'lib/assets/${gblAppTitle}/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         title: Text('Special Assistance',
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -132,7 +128,7 @@ class SpecialAssistancePage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(8.0, 16, 8, 8),
         child: Column(
             children: (() {
-          switch (gbl_settings.aircode) {
+          switch (gblSettings.aircode) {
             case 'LM':
               return <Widget>[
                 Wrap(

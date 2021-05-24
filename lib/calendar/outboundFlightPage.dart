@@ -135,7 +135,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gbl_settings.bookingLeadTime)))) {
+            minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -195,10 +195,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
-        brightness: gbl_SystemColors.statusBar,
-        backgroundColor: gbl_SystemColors.primaryHeaderColor,
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
-            color: gbl_SystemColors.headerTextColor),
+            color: gblSystemColors.headerTextColor),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () async {
@@ -208,7 +208,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         title: new TrText("Outbound Flight",
             style: TextStyle(
                 color:
-                gbl_SystemColors.headerTextColor)),
+                gblSystemColors.headerTextColor)),
       ),
       endDrawer: DrawerMenu(),
       body: _buildBody(),
@@ -244,7 +244,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary: gbl_SystemColors.primaryButtonColor),
+                  primary: gblSystemColors.primaryButtonColor),
               onPressed: () => retrySearch(),
               child: TrText(
                 'Retry Search',
@@ -261,7 +261,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gbl_settings.locale, name: currency);
+        locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
     if (price.length == 0) {
@@ -285,7 +285,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                       color: !isSearchDate(DateTime.parse(item.daylcl),
                               widget.newBooking.departureDate)
                           ? Colors.white
-                          : gbl_SystemColors
+                          : gblSystemColors
                               .accentButtonColor //Colors.red,
                       ),
                   width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(
@@ -395,7 +395,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                         style: new TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.w300),
-                                            variety: 'airport',);
+                                            variety: 'airport',noTrans: true);
                                   },
                                 ),
                               ],
@@ -438,7 +438,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                         style: new TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.w300),
-                                        variety: 'airport',);
+                                        variety: 'airport', noTrans: true,);
                                   },
                                 ),
                               ],
@@ -685,7 +685,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                       },
                   child: Chip(
                     backgroundColor:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
                         Text(
@@ -696,7 +696,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: TextStyle(
-                                color: gbl_SystemColors
+                                color: gblSystemColors
                                     .primaryButtonTextColor)),
                         item[0].fltav.fav[index] != '0'
                             ? new Text(
@@ -715,14 +715,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                                     0.0))
                                         .toStringAsFixed(2)),
                                 style: new TextStyle(
-                                  color: gbl_SystemColors
+                                  color: gblSystemColors
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 ),
                               )
                             : new TrText('No Seats',
                                 style: new TextStyle(
-                                  color: gbl_SystemColors
+                                  color: gblSystemColors
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 )),
@@ -753,7 +753,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
                     primary:
-                    gbl_SystemColors.primaryButtonColor,
+                    gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
@@ -770,7 +770,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                 : objAv.availability.classbands.band[index]
                                     .cbdisplayname,
                             style: new TextStyle(
-                              color: gbl_SystemColors
+                              color: gblSystemColors
                                   .primaryButtonTextColor,
                               fontSize: 16.0,
                             ),
@@ -797,14 +797,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                                       0.0))
                                           .toStringAsFixed(2)),
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   ),
                                 )
                               : new TrText('No Seats',
                                   style: new TextStyle(
-                                    color: gbl_SystemColors
+                                    color: gblSystemColors
                                         .primaryButtonTextColor,
                                     fontSize: 12.0,
                                   )),

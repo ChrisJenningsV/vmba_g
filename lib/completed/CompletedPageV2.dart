@@ -8,15 +8,15 @@ class CompletedPageV2 extends StatelessWidget {
     final List<String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
-          brightness: gbl_SystemColors.statusBar,
+          brightness: gblSystemColors.statusBar,
           backgroundColor:
-          gbl_SystemColors.primaryHeaderColor,
+          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
-              color: gbl_SystemColors.headerTextColor),
+              color: gblSystemColors.headerTextColor),
           title: Text("Payment Completed",
               style: TextStyle(
                   color:
-                  gbl_SystemColors.headerTextColor)),
+                  gblSystemColors.headerTextColor)),
         ),
         endDrawer: DrawerMenu(),
         body: Center(
@@ -43,7 +43,7 @@ class CompletedPageV2 extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                       primary:
-                      gbl_SystemColors.primaryButtonColor,
+                      gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   child: Text(
@@ -51,7 +51,7 @@ class CompletedPageV2 extends StatelessWidget {
                         ? 'View booking and choose a seat'
                         : 'View booking',
                     style: TextStyle(
-                        color: gbl_SystemColors
+                        color: gblSystemColors
                             .primaryButtonTextColor),
                   ),
                 ),

@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import 'package:vmba/data/models/models.dart';
-import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 
 class Constants{
@@ -40,17 +33,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-       title: Row(
-
-        children:[ TrText('Login', style: TextStyle( backgroundColor: gbl_SystemColors.primaryHeaderColor, color: gbl_SystemColors.headerTextColor), )]
+    return new Scaffold(
+      appBar: AppBar(
+        brightness: gblSystemColors.statusBar,
+        backgroundColor: gblSystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(
+            color: gblSystemColors.headerTextColor),
+        title: new TrText('Air Discount Scheme',
+            style: TextStyle(
+                color:
+                gblSystemColors.headerTextColor)),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Constants.padding),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      content: contentBox(context),
+        body: contentBox(context),
     );
   }
 
@@ -58,22 +52,6 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: <Widget>[
         Container(
- /*         padding: EdgeInsets.only(left: Constants.padding,top: Constants.avatarRadius
-              + Constants.padding, right: Constants.padding,bottom: Constants.padding
-          ),
-          margin: EdgeInsets.only(top: Constants.avatarRadius),
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                BoxShadow(color: Colors.black,offset: Offset(0,10),
-                    blurRadius: 10
-                ),
-              ]
-          ),
-
-  */
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -83,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Sine',
+                  labelText: 'Number',
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -111,14 +89,14 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Password',
+                  labelText: 'Pin',
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),
                     borderSide: new BorderSide(),
                   ),
                 ),
-                keyboardType: TextInputType.visiblePassword,
+                keyboardType: TextInputType.number ,
 
                 // do not force phone no here
                 /*              validator: (value) => value.isEmpty
@@ -134,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 22,),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.center,
                 child: _getOkButton(),
               ),
             ],
@@ -167,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
             primary: Colors.black),
         onPressed: () => Navigator.pop(context, ''),
         child: Text(
-          'OK',
+          'LOGIN',
           style: new TextStyle(color: Colors.white),
         ));
   }
