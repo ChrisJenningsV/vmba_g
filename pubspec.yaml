@@ -61,7 +61,13 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "lib/assets/icon/Icon_1024x1024.png"
+  image_path: "lib/assets/icon/loganair_1024x1024.png"
+#  image_path: "lib/assets/icon/AirLeap_1024x1024.png"
+
+# flutter pub run flutter_launcher_icons:main -f launch_icons_airleap
+# flutter pub run flutter_launcher_icons:main -f launch_icons_loganair
+
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

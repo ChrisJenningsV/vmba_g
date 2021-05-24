@@ -415,6 +415,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
+      print(_error);
       _dataLoaded();
       _showDialog();
     }

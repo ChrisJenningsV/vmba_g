@@ -5,6 +5,13 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/menu/login.dart';
 
+
+/*
+The ADS Login: ADS4000000153501
+PIN: 7978
+
+
+ */
 class AdsPage extends StatefulWidget {
   AdsPage();
 
