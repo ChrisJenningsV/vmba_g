@@ -55,86 +55,89 @@ class AppDatabase {
     String path = join(documentsDirectory.path, "app.db");
     db = await openDatabase(path, version: _databaseVersion,
         onCreate: (Database db, int version) async {
-      // When creating the db, create the table
+          // When creating the db, create the table
           //await _drop();
 
           await db.execute("CREATE TABLE IF NOT EXISTS $tableNameCities ("
-          "${City.dbCode} TEXT PRIMARY KEY,"
-          "${City.dbName} TEXT,"
-          "${City.dbShortName} TEXT,"
-          "${City.dbWebCheckinEnabled} INTEGER,"
-          "${City.dbWebCheckinStart} INTEGER,"
-          "${City.dbWebCheckinEnd} INTEGER"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNameBoardingPasses ("
-          "${BoardingPass.dbRloc} TEXT PRIMARY KEY,"
-          "${BoardingPass.dbFltno} TEXT,"
-          "${BoardingPass.dbDepart} TEXT,"
-          "${BoardingPass.dbArrive} TEXT,"
-          "${BoardingPass.dbPaxname} TEXT,"
-          "${BoardingPass.dbBarcodedata} TEXT,"
-          "${BoardingPass.dbPaxno} INTEGER,"
-          "${BoardingPass.dbDepdate} TEXT,"
-          "${BoardingPass.dbSeat} TEXT,"
-          "${BoardingPass.dbGate} TEXT,"
-          "${BoardingPass.dbBoarding} INTEGER,"
-          "${BoardingPass.dbClassBand} TEXT"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNamePNRs ("
-          "${PnrDBCopy.dbRloc} TEXT PRIMARY KEY,"
-          "${PnrDBCopy.dbData} TEXT,"
-          "${PnrDBCopy.dbDelete} INTEGER"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNamePnrApisStatus ("
-          "${PnrDBCopy.dbRloc} TEXT PRIMARY KEY,"
-          "${PnrDBCopy.dbData} TEXT,"
-          "${PnrDBCopy.dbDelete} INTEGER"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNameUserProfile ("
+              "${City.dbCode} TEXT PRIMARY KEY,"
+              "${City.dbName} TEXT,"
+              "${City.dbShortName} TEXT,"
+              "${City.dbWebCheckinEnabled} INTEGER,"
+              "${City.dbWebCheckinStart} INTEGER,"
+              "${City.dbWebCheckinEnd} INTEGER"
+              ");");
+          await db.execute(
+              "CREATE TABLE IF NOT EXISTS $tableNameBoardingPasses ("
+                  "${BoardingPass.dbRloc} TEXT PRIMARY KEY,"
+                  "${BoardingPass.dbFltno} TEXT,"
+                  "${BoardingPass.dbDepart} TEXT,"
+                  "${BoardingPass.dbArrive} TEXT,"
+                  "${BoardingPass.dbPaxname} TEXT,"
+                  "${BoardingPass.dbBarcodedata} TEXT,"
+                  "${BoardingPass.dbPaxno} INTEGER,"
+                  "${BoardingPass.dbDepdate} TEXT,"
+                  "${BoardingPass.dbSeat} TEXT,"
+                  "${BoardingPass.dbGate} TEXT,"
+                  "${BoardingPass.dbBoarding} INTEGER,"
+                  "${BoardingPass.dbClassBand} TEXT"
+                  ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNamePNRs ("
+              "${PnrDBCopy.dbRloc} TEXT PRIMARY KEY,"
+              "${PnrDBCopy.dbData} TEXT,"
+              "${PnrDBCopy.dbDelete} INTEGER"
+              ");");
+          await db.execute(
+              "CREATE TABLE IF NOT EXISTS $tableNamePnrApisStatus ("
+                  "${PnrDBCopy.dbRloc} TEXT PRIMARY KEY,"
+                  "${PnrDBCopy.dbData} TEXT,"
+                  "${PnrDBCopy.dbDelete} INTEGER"
+                  ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNameUserProfile ("
           //"${UserProfileRecord.db_id} INTEGER PRIMARY KEY,"
-          "${UserProfileRecord.dbName} TEXT PRIMARY KEY,"
-          "${UserProfileRecord.dbValue} TEXT"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNameRoutes ("
-          "${RoutesDB.dbName} TEXT,"
-          "${RoutesDB.dbValue} TEXT"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNameSettings ("
-          "${KeyPair.dbName} TEXT,"
-          "${KeyPair.dbValue} TEXT"
-          ");");
-      await db.execute("CREATE TABLE IF NOT EXISTS $tableNameAppData ("
-          "${KeyPair.dbName} TEXT,"
-          "${KeyPair.dbValue} TEXT"
-          ");");
-    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
-      if (oldVersion < 2) {
-        await db.execute("CREATE TABLE IF NOT EXISTS $tableNameRoutes ("
-            "${RoutesDB.dbName} TEXT,"
-            "${RoutesDB.dbValue} TEXT"
-            ");");
-      }
+              "${UserProfileRecord.dbName} TEXT PRIMARY KEY,"
+              "${UserProfileRecord.dbValue} TEXT"
+              ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNameRoutes ("
+              "${RoutesDB.dbName} TEXT,"
+              "${RoutesDB.dbValue} TEXT"
+              ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNameSettings ("
+              "${KeyPair.dbName} TEXT,"
+              "${KeyPair.dbValue} TEXT"
+              ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNameAppData ("
+              "${KeyPair.dbName} TEXT,"
+              "${KeyPair.dbValue} TEXT"
+              ");");
+        }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
+          if (oldVersion < 2) {
+            await db.execute("CREATE TABLE IF NOT EXISTS $tableNameRoutes ("
+                "${RoutesDB.dbName} TEXT,"
+                "${RoutesDB.dbValue} TEXT"
+                ");");
+          }
 
-      if (oldVersion < 3) {
-        await db.execute("CREATE TABLE IF NOT EXISTS $tableNameSettings ("
-            "${KeyPair.dbName} TEXT,"
-            "${KeyPair.dbValue} TEXT"
-            ");");
-      }
+          if (oldVersion < 3) {
+            await db.execute("CREATE TABLE IF NOT EXISTS $tableNameSettings ("
+                "${KeyPair.dbName} TEXT,"
+                "${KeyPair.dbValue} TEXT"
+                ");");
+          }
 
-      if (oldVersion < 4) {
-        await db.execute("CREATE TABLE IF NOT EXISTS $tableNameAppData ("
-            "${KeyPair.dbName} TEXT PRIMARY KEY,"
-            "${KeyPair.dbValue} TEXT"
-            ");");
-      }
-      if (oldVersion < 5) {
-        await db.execute(
-            'ALTER TABLE $tableNameCities ADD ${City.dbShortName} TEXT');
-      }
+          if (oldVersion < 4) {
+            await db.execute("CREATE TABLE IF NOT EXISTS $tableNameAppData ("
+                "${KeyPair.dbName} TEXT PRIMARY KEY,"
+                "${KeyPair.dbValue} TEXT"
+                ");");
+          }
+          if (oldVersion < 5) {
+            await db.execute(
+                'ALTER TABLE $tableNameCities ADD ${City.dbShortName} TEXT');
+          }
         });
     didInit = true;
   }
+
   /*
   Future _update() async {
 
@@ -183,8 +186,12 @@ class AppDatabase {
   Future updateCity(City city) async {
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameCities(${City.dbCode}, ${City.dbName},${City.dbShortName}, ${City.dbWebCheckinEnabled}, ${City.dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
-        ' VALUES("${city.code}", "${city.name}", "${city.shortName}", "${city.webCheckinEnabled}", "${city.webCheckinStart}", "${city.webCheckinEnd}")');
+        '$tableNameCities(${City.dbCode}, ${City.dbName},${City
+        .dbShortName}, ${City.dbWebCheckinEnabled}, ${City
+        .dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
+        ' VALUES("${city.code}", "${city.name}", "${city.shortName}", "${city
+        .webCheckinEnabled}", "${city.webCheckinStart}", "${city
+        .webCheckinEnd}")');
   }
 
   /// Inserts or replaces the city in local database
@@ -192,13 +199,17 @@ class AppDatabase {
     String values = '';
 
     cities.cities
-      ..forEach((c) => values +=
-          "('${c.code}', '${c.name}', '${c.shortName}', ${c.webCheckinEnabled}, ${c.webCheckinStart}, ${c.webCheckinEnd}),");
-  //  '("${c.code}", "${c.name}", "${c.webCheckinEnabled}", "${c.webCheckinStart}", "${c.webCheckinEnd}"),');
+      ..forEach((c) =>
+      values +=
+      "('${c.code}', '${c.name}', '${c.shortName}', ${c.webCheckinEnabled}, ${c
+          .webCheckinStart}, ${c.webCheckinEnd}),");
+    //  '("${c.code}", "${c.name}", "${c.webCheckinEnabled}", "${c.webCheckinStart}", "${c.webCheckinEnd}"),');
     values = values.substring(0, values.length - 1);
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameCities(${City.dbCode}, ${City.dbName}, ${City.dbShortName}, ${City.dbWebCheckinEnabled}, ${City.dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
+        '$tableNameCities(${City.dbCode}, ${City.dbName}, ${City
+        .dbShortName}, ${City.dbWebCheckinEnabled}, ${City
+        .dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
         ' VALUES $values');
   }
 
@@ -221,7 +232,7 @@ class AppDatabase {
   Future<City> getCity(String code) async {
     var db = await _getDb();
     var result =
-        await db.rawQuery('SELECT * FROM $tableNameCities Where code = $code');
+    await db.rawQuery('SELECT * FROM $tableNameCities Where code = $code');
     if (result.length == 0)
       return new City(
           code: code,
@@ -240,8 +251,8 @@ class AppDatabase {
 
 //BOARDING PASSES START
 
-  Future<BoardingPass> getBoardingPass(
-      String fltno, String rloc, int paxno) async {
+  Future<BoardingPass> getBoardingPass(String fltno, String rloc,
+      int paxno) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         "SELECT * FROM $tableNameBoardingPasses Where fltno = '$fltno' and rloc = '$rloc' and paxno = '$paxno'");
@@ -269,8 +280,8 @@ class AppDatabase {
     return boardingPasses.first;
   }
 
-  Future<bool> hasDownloadedBoardingPass(
-      String fltno, String rloc, int paxno) async {
+  Future<bool> hasDownloadedBoardingPass(String fltno, String rloc,
+      int paxno) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         "SELECT * FROM $tableNameBoardingPasses Where fltno = '$fltno' and rloc = '$rloc' and paxno = '$paxno'");
@@ -282,16 +293,22 @@ class AppDatabase {
   Future updateBoardingPass(BoardingPass boardingPass) async {
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass.dbFltno}, ${BoardingPass.dbDepart}, '
-        '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass.dbPaxname}, ${BoardingPass.dbBarcodedata}, '
-        '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass.dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand})'
-        ' VALUES("${boardingPass.rloc}", "${boardingPass.fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
-        '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass.barcodedata}", "${boardingPass.paxno}", '
-        '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass.seat}", "${boardingPass.classBand}")');
+        '$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass
+        .dbFltno}, ${BoardingPass.dbDepart}, '
+        '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass
+        .dbPaxname}, ${BoardingPass.dbBarcodedata}, '
+        '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass
+        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand})'
+        ' VALUES("${boardingPass.rloc}", "${boardingPass
+        .fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
+        '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass
+        .barcodedata}", "${boardingPass.paxno}", '
+        '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass
+        .seat}", "${boardingPass.classBand}")');
   }
 
-  Future<List<BoardingPass>> getBoardingPasses(
-      String fltno, String rloc) async {
+  Future<List<BoardingPass>> getBoardingPasses(String fltno,
+      String rloc) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         'SELECT * FROM $tableNameBoardingPasses Where fltno = $fltno and rloc = $rloc order by paxno asc');
@@ -320,8 +337,8 @@ class AppDatabase {
 //BOARDING PASSES END
 
 //VRS BOARDING PASSES START
-  Future<bool> hasDownloadedVRSBoardingPass(
-      String fltno, String rloc, int paxno) async {
+  Future<bool> hasDownloadedVRSBoardingPass(String fltno, String rloc,
+      int paxno) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         "SELECT * FROM $tableNameVRSBoardingPasses Where flt = '$fltno' and rloc = '$rloc' and paxno = '$paxno'");
@@ -329,8 +346,8 @@ class AppDatabase {
     return true;
   }
 
-  Future<BoardingPass> getVrsBoardingPass(
-      String fltno, String rloc, int paxno) async {
+  Future<BoardingPass> getVrsBoardingPass(String fltno, String rloc,
+      int paxno) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         "SELECT * FROM $tableNameVRSBoardingPasses Where fltno = '$fltno' and rloc = '$rloc' and paxno = '$paxno'");
@@ -361,12 +378,18 @@ class AppDatabase {
   Future updateVRSBoardingPass(BoardingPass boardingPass) async {
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass.dbFltno}, ${BoardingPass.dbDepart}, '
-        '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass.dbPaxname}, ${BoardingPass.dbBarcodedata}, '
-        '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass.dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand})'
-        ' VALUES("${boardingPass.rloc}", "${boardingPass.fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
-        '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass.barcodedata}", "${boardingPass.paxno}", '
-        '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass.seat}", "${boardingPass.classBand}")');
+        '$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass
+        .dbFltno}, ${BoardingPass.dbDepart}, '
+        '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass
+        .dbPaxname}, ${BoardingPass.dbBarcodedata}, '
+        '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass
+        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand})'
+        ' VALUES("${boardingPass.rloc}", "${boardingPass
+        .fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
+        '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass
+        .barcodedata}", "${boardingPass.paxno}", '
+        '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass
+        .seat}", "${boardingPass.classBand}")');
   }
 
 //VRS BOARDING PASSES END
@@ -388,7 +411,7 @@ class AppDatabase {
   Future<PnrDBCopy> getPnr(String rloc) async {
     var db = await _getDb();
     var result =
-        await db.rawQuery("SELECT * FROM $tableNamePNRs Where rloc = '$rloc'");
+    await db.rawQuery("SELECT * FROM $tableNamePNRs Where rloc = '$rloc'");
     if (result.length == 0)
       return new PnrDBCopy(
         rloc: rloc,
@@ -423,7 +446,7 @@ class AppDatabase {
         await db.update(tableNamePNRs, mappedPnr,
             where: 'rloc = ?', whereArgs: [pnr.rloc]);
       }
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -440,7 +463,8 @@ class AppDatabase {
     var db = await _getDb();
     for (var pnr in pnrs) {
       await db.rawQuery('DELETE FROM '
-          '$tableNamePNRs WHERE ${PnrDBCopy.dbRloc} = ${pnr.rloc} AND ${PnrDBCopy.dbDelete} =  1 ');
+          '$tableNamePNRs WHERE ${PnrDBCopy.dbRloc} = ${pnr
+          .rloc} AND ${PnrDBCopy.dbDelete} =  1 ');
     }
   }
 
@@ -482,14 +506,16 @@ class AppDatabase {
   Future deletePnrApisStatus(DatabaseRecord record) async {
     var db = await _getDb();
     await db.rawQuery('DELETE FROM '
-        '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = ${record.rloc} AND ${DatabaseRecord.dbDelete} =  1 ');
+        '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = ${record
+        .rloc} AND ${DatabaseRecord.dbDelete} =  1 ');
   }
 
   Future deletePnrsApisStatus(List<DatabaseRecord> records) async {
     var db = await _getDb();
     for (var record in records) {
       await db.rawQuery('DELETE FROM '
-          '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = ${record.rloc} AND ${DatabaseRecord.dbDelete} =  1 ');
+          '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = ${record
+          .rloc} AND ${DatabaseRecord.dbDelete} =  1 ');
     }
   }
 
@@ -513,12 +539,15 @@ class AppDatabase {
     }
     return _userProfileRecordList;
   }
+
   Future<UserProfileRecord> getNamedUserProfile(String name) async {
     // await _dropADS();
     var db = await _getDb();
-    var result = await db.rawQuery("SELECT * FROM $tableNameUserProfile WHERE ${UserProfileRecord.dbName} = '$name' ");
+    var result = await db.rawQuery(
+        "SELECT * FROM $tableNameUserProfile WHERE ${UserProfileRecord
+            .dbName} = '$name' ");
     if (result.length == 0) {
-      UserProfileRecord _l  ; // = new UserProfileRecord();
+      UserProfileRecord _l; // = new UserProfileRecord();
       return _l;
     }
 
@@ -533,12 +562,14 @@ class AppDatabase {
   Future updateUserProfile(List<UserProfileRecord> userProfileList) async {
     String values = '';
 
-    userProfileList.forEach((userProfileRecord) => values +=
-        '("${userProfileRecord.name}", "${userProfileRecord.value}"),');
+    userProfileList.forEach((userProfileRecord) =>
+    values +=
+    '("${userProfileRecord.name}", "${userProfileRecord.value}"),');
     values = values.substring(0, values.length - 1);
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameUserProfile(${UserProfileRecord.dbName}, ${UserProfileRecord.dbValue})'
+        '$tableNameUserProfile(${UserProfileRecord.dbName}, ${UserProfileRecord
+        .dbValue})'
         ' VALUES $values');
   }
 
@@ -558,6 +589,21 @@ class AppDatabase {
 
 
   Future<ADS> getADSDetails() async {
+    UserProfileRecord profile = await getNamedUserProfile('PAX1');
+    try {
+      Map map = json.decode(
+          profile.value.toString().replaceAll(
+              "'", '"')); // .replaceAll(',}', '}')
+      PassengerDetail pax = PassengerDetail.fromJson(map);
+
+      return new ADS( pax.adsPin, pax.adsNumber);
+    } catch (e) {
+      print(e);
+      return new ADS('', '');
+    }
+  }
+
+/*
     var db = await _getDb();
     var result = await db.rawQuery(
         'SELECT * FROM $tableNameUserProfile WHERE ${UserProfileRecord.dbName} IN (\'ads_number\',\'ads_pin\')');
@@ -578,7 +624,9 @@ class AppDatabase {
         .toUpperCase();
 
     return aDS;
-  }
+
+ */
+
 
 //USER PROFILE END
 

@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vmba/data/globals.dart';
@@ -23,8 +25,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String title = 'Login';
   String descriptions = 'descriptions';
-  TextEditingController _sineController;
-  TextEditingController _passwordController;
+  TextEditingController _adsNumberTextEditingController = TextEditingController();
+  TextEditingController _adsPinTextEditingController = TextEditingController();
 
   @override
   initState() {
@@ -44,18 +46,19 @@ class _LoginPageState extends State<LoginPage> {
                 color:
                 gblSystemColors.headerTextColor)),
       ),
-        body: contentBox(context),
+      body: contentBox(context),
     );
   }
 
-  contentBox(context){
+  contentBox(context) {
     return Stack(
       children: <Widget>[
         Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(title,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+              Text(title,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
               SizedBox(height: 15,),
               new TextFormField(
                 decoration: InputDecoration(
@@ -68,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-                controller: _sineController,
+                controller: _adsNumberTextEditingController,
                 keyboardType: TextInputType.phone,
 
                 // do not force phone no here
@@ -85,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 15,),
               new TextFormField(
-                controller: _passwordController ,
+                controller: _adsPinTextEditingController,
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -96,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-                keyboardType: TextInputType.number ,
+                keyboardType: TextInputType.number,
 
                 // do not force phone no here
                 /*              validator: (value) => value.isEmpty
@@ -118,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-       /* Positioned(
+        /* Positioned(
           left: Constants.padding,
           right: Constants.padding,
           child: CircleAvatar(
@@ -143,15 +146,55 @@ class _LoginPageState extends State<LoginPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             primary: Colors.black),
-        onPressed: () => Navigator.pop(context, ''),
+        onPressed: () {
+          _checkAdsLogin();
+        },
         child: Text(
           'LOGIN',
           style: new TextStyle(color: Colors.white),
         ));
   }
 
-}
+  Future _checkAdsLogin() async {
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl}${gblSettings
+            .xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController
+            .text}/${_adsPinTextEditingController.text}'"))
+        .catchError((resp) {
+      print(resp);
+    });
 
+    if (response == null) {
+      //return new ParsedResponse(NO_INTERNET, []);
+    }
+
+    //If there was an error return an empty list
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      //return new ParsedResponse(response.statusCode, []);
+    }
+    try {
+      String adsJson;
+      adsJson = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+
+      Map map = json.decode(adsJson);
+
+      if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
+          'true') {
+        print('Login success');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/AdsFlightSearchPage', (Route<dynamic> route) => false);
+      } else {
+
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+}
 
 
 
