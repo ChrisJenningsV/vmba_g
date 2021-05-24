@@ -115,216 +115,229 @@ class _MyAccountPageState extends State<MyAccountPage> {
         child: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Column(
-        children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
-              child: InkWell(
-                onTap: () {
-                  formSave();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: new Text('Salutation'),
-                        content: new Container(
-                          width: double.maxFinite,
-                          child: optionListView(),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: IgnorePointer(
-                  child: TextFormField(
-                    decoration: new InputDecoration(
-                      contentPadding:
-                      new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 15.0),
-                      labelText: 'Title',
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
-                    ),
-                    controller: _titleTextEditingController, // TextEditingController(text: widget.passengerDetail.title ),
-                    validator: (value) =>
-                    value.isEmpty ? 'Title can\'t be empty' : null,
-                    onSaved: (value) {
-                      if (value != null) {
-                        widget.passengerDetail.title = value.trim();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
+        children:  _getWidgets()
+         ,
+    ),
+    ),
+        ),
+      ),
+    );
+    // });
+  }
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-              child: new Theme(
-                data: new ThemeData(
-                  primaryColor: Colors.blueAccent,
-                  primaryColorDark: Colors.blue,
+  List<Widget> _getWidgets() {
+    List<Widget> widgets = [];
+
+    widgets.add( Padding(
+      padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
+      child: InkWell(
+        onTap: () {
+          formSave();
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text('Salutation'),
+                content: new Container(
+                  width: double.maxFinite,
+                  child: optionListView(),
                 ),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    contentPadding:
-                    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                    labelText: 'First name (as Passport)',
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                  ),
-                  controller: _firstNameTextEditingController,
-                  onFieldSubmitted: (value) {
-                    widget.passengerDetail.firstName = value;
-                  },
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.text,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-                  ],
-                  validator: (value) =>
-                  value.isEmpty ? 'First name can\'t be empty' : null,
-                  onSaved: (value) {
-                    if (value != null) {
-                      widget.passengerDetail.firstName = value.trim();
-                    }
-                  },
-                ),
+              );
+            },
+          );
+        },
+        child: IgnorePointer(
+          child: TextFormField(
+            decoration: new InputDecoration(
+              contentPadding:
+              new EdgeInsets.symmetric(
+                  vertical: 15.0, horizontal: 15.0),
+              labelText: 'Title',
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
               ),
             ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: new Theme(
-              data: new ThemeData(
-                primaryColor: Colors.blueAccent,
-                primaryColorDark: Colors.blue,
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Last name (as Passport)',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                keyboardType: TextInputType.text,
-                controller: _lastNameTextEditingController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-                ],
-                onFieldSubmitted: (value) {
-                  widget.passengerDetail.lastName = value;
-                },
-                validator: (value) =>
-                value.isEmpty ? 'Last name can\'t be empty' : null,
-                onSaved: (value) {
-                  if (value != null) {
-                    widget.passengerDetail.lastName = value.trim();
-                  }
-                },
-              ),
-            ),
+            controller: _titleTextEditingController, // TextEditingController(text: widget.passengerDetail.title ),
+            validator: (value) =>
+            value.isEmpty ? 'Title can\'t be empty' : null,
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.title = value.trim();
+              }
+            },
           ),
-           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: new Theme(
-              data: new ThemeData(
-                primaryColor: Colors.blueAccent,
-                primaryColorDark: Colors.blue,
-              ),
-              child: new TextFormField(
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                controller:  _phoneNumberTextEditingController,  //' widget.passengerDetail.phonenumber,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-  // do not force phone no here
-  /*              validator: (value) => value.isEmpty
+        ),
+      ),
+    ));
+
+    widgets.add(Padding(
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: new Theme(
+    data: new ThemeData(
+    primaryColor: Colors.blueAccent,
+    primaryColorDark: Colors.blue,
+    ),
+    child: TextFormField(
+    decoration: InputDecoration(
+    contentPadding:
+    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+    labelText: 'First name (as Passport)',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    controller: _firstNameTextEditingController,
+    onFieldSubmitted: (value) {
+    widget.passengerDetail.firstName = value;
+    },
+    textInputAction: TextInputAction.done,
+    keyboardType: TextInputType.text,
+    inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+    ],
+    validator: (value) =>
+    value.isEmpty ? 'First name can\'t be empty' : null,
+    onSaved: (value) {
+    if (value != null) {
+    widget.passengerDetail.firstName = value.trim();
+    }
+    },
+    ),
+    ),
+    ),);
+
+    widgets.add(Padding(
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: new Theme(
+    data: new ThemeData(
+    primaryColor: Colors.blueAccent,
+    primaryColorDark: Colors.blue,
+    ),
+    child: TextFormField(
+    decoration: InputDecoration(
+    contentPadding:
+    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+    labelText: 'Last name (as Passport)',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    keyboardType: TextInputType.text,
+    controller: _lastNameTextEditingController,
+    inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+    ],
+    onFieldSubmitted: (value) {
+    widget.passengerDetail.lastName = value;
+    },
+    validator: (value) =>
+    value.isEmpty ? 'Last name can\'t be empty' : null,
+    onSaved: (value) {
+    if (value != null) {
+    widget.passengerDetail.lastName = value.trim();
+    }
+    },
+    ),
+    ),
+    ));
+    widgets.add(Padding(
+    padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: new Theme(
+    data: new ThemeData(
+    primaryColor: Colors.blueAccent,
+    primaryColorDark: Colors.blue,
+    ),
+    child: new TextFormField(
+    decoration: InputDecoration(
+    contentPadding:
+    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+    labelText: 'Phone Number',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    controller:  _phoneNumberTextEditingController,  //' widget.passengerDetail.phonenumber,
+    keyboardType: TextInputType.phone,
+    inputFormatters: [
+    FilteringTextInputFormatter.digitsOnly,
+    ],
+    // do not force phone no here
+    /*              validator: (value) => value.isEmpty
                     ? 'Phone number can\'t be empty'
                     : null,
 
    */
-                onSaved: (value) {
-                  if (value != null) {
-                    //.contactInfomation.phonenumber = value.trim()
-                    widget.passengerDetail.phonenumber = value.trim();
-                  }
-                },
-              )
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: new Theme(
-              data: new ThemeData(
-                primaryColor: Colors.blueAccent,
-                primaryColorDark: Colors.blue,
-              ),
-              child: new TextFormField(
-                controller: _emailTextEditingController,
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Email',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                // controller: _emailTextEditingController,
-                keyboardType: TextInputType.emailAddress,
+    onSaved: (value) {
+    if (value != null) {
+    //.contactInfomation.phonenumber = value.trim()
+    widget.passengerDetail.phonenumber = value.trim();
+    }
+    },
+    )
+    ),
+    ));
+    widgets.add(Padding(
+    padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: new Theme(
+    data: new ThemeData(
+    primaryColor: Colors.blueAccent,
+    primaryColorDark: Colors.blue,
+    ),
+    child: new TextFormField(
+    controller: _emailTextEditingController,
+    decoration: InputDecoration(
+    contentPadding:
+    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+    labelText: 'Email',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    // controller: _emailTextEditingController,
+    keyboardType: TextInputType.emailAddress,
 //                validator: (value) => validateEmail(value.trim()),
-                onSaved:(value) {
-                  if( value.isNotEmpty) {
-                    widget.passengerDetail.email = value.trim();
-                  }
-                },
+    onSaved:(value) {
+    if( value.isNotEmpty) {
+    widget.passengerDetail.email = value.trim();
+    }
+    },
 
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: (widget.passengerDetail.paxType != PaxType.adult &&
-                widget.passengerDetail.paxType != null)
-                ? InkWell(
-              onTap: () {
-                _showCalenderDialog(widget.passengerDetail.paxType);
-              },
-              child: IgnorePointer(
-                child: TextFormField(
-                  decoration: new InputDecoration(
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 15.0),
-                    labelText: 'Date of Birth',
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                  ),
-                  //initialValue: field.value,
-                  controller: _dateOfBirthTextEditingController, //
-                /*  validator: (value) =>
+    ),
+    ),
+    ));
+    widgets.add(Padding(
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: (widget.passengerDetail.paxType != PaxType.adult &&
+    widget.passengerDetail.paxType != null)
+    ? InkWell(
+    onTap: () {
+    _showCalenderDialog(widget.passengerDetail.paxType);
+    },
+    child: IgnorePointer(
+    child: TextFormField(
+    decoration: new InputDecoration(
+    contentPadding: new EdgeInsets.symmetric(
+    vertical: 15.0, horizontal: 15.0),
+    labelText: 'Date of Birth',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    //initialValue: field.value,
+    controller: _dateOfBirthTextEditingController, //
+    /*  validator: (value) =>
                   value.isEmpty ? 'Date of Birth is required' : null,
 
                  */
@@ -340,106 +353,103 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     }
                   },
 */
-                  // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
-                ),
-              ),
-            )
-                : Padding(padding: const EdgeInsets.all(0.0)),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: new Theme(
-              data: new ThemeData(
-                primaryColor: Colors.blueAccent,
-                primaryColorDark: Colors.blue,
-              ),
-              child: new TextFormField(
-                controller: _adsNumberTextEditingController,
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'ADS Number',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                // controller: _emailTextEditingController,
-                keyboardType: TextInputType.streetAddress,
-//                validator: (value) => validateEmail(value.trim()),
-                onSaved:(value) {
-                  if( value.isNotEmpty) {
-                    widget.passengerDetail.adsNumber  = value.trim();
-                  }
-                },
+    // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
+    ),
+    ),
+    )
+        : Padding(padding: const EdgeInsets.all(0.0)),
+    ));
 
+    if( gblSettings.aircode == 'LM') {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: new ThemeData(
+            primaryColor: Colors.blueAccent,
+            primaryColorDark: Colors.blue,
+          ),
+          child: new TextFormField(
+            controller: _adsNumberTextEditingController,
+            decoration: InputDecoration(
+              contentPadding:
+              new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+              labelText: 'ADS Number',
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-            child: new Theme(
-              data: new ThemeData(
-                primaryColor: Colors.blueAccent,
-                primaryColorDark: Colors.blue,
-              ),
-              child: new TextFormField(
-                controller: _adsPinTextEditingController,
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'ADS Pin',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                // controller: _emailTextEditingController,
-                keyboardType: TextInputType.number,
+            // controller: _emailTextEditingController,
+            keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
-                onSaved:(value) {
-                  if( value.isNotEmpty) {
-                    widget.passengerDetail.adsPin   = value.trim();
-                  }
-                },
-
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              validateAndSubmit();
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.adsNumber = value.trim();
+              }
             },
-            style: ElevatedButton.styleFrom(
-                primary: gblSystemColors
-                    .primaryButtonColor, //Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0))),
-            child: Row(
-              //mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.check,
-                  color: Colors.white,
-                ),
-                Text(
-                  'SAVE',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          )
 
-        ],
-    ),
-    ),
+          ),
         ),
-      ),
-    );
-    // });
+      ));
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: new ThemeData(
+            primaryColor: Colors.blueAccent,
+            primaryColorDark: Colors.blue,
+          ),
+          child: new TextFormField(
+            controller: _adsPinTextEditingController,
+            decoration: InputDecoration(
+              contentPadding:
+              new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+              labelText: 'ADS Pin',
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+            ),
+            // controller: _emailTextEditingController,
+            keyboardType: TextInputType.number,
+//                validator: (value) => validateEmail(value.trim()),
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.adsPin = value.trim();
+              }
+            },
+
+          ),
+        ),
+      ));
+    }
+    widgets.add(ElevatedButton(
+    onPressed: () {
+    validateAndSubmit();
+    },
+    style: ElevatedButton.styleFrom(
+    primary: gblSystemColors
+        .primaryButtonColor, //Colors.black,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(30.0))),
+    child: Row(
+    //mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+    Icon(
+    Icons.check,
+    color: Colors.white,
+    ),
+    Text(
+    'SAVE',
+    style: TextStyle(color: Colors.white),
+    ),
+    ],
+    ),
+    ));
+
+    return widgets;
   }
 
   ListView optionListView() {
