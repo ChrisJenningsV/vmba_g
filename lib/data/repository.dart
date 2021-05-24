@@ -62,7 +62,7 @@ class Repository {
   Future<ParsedResponse<List<City>>> initSettings() async {
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmasettings"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ssrpmasettings"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -96,9 +96,9 @@ class Repository {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     final http.Response response = await http.get(
-        Uri.parse('${gbl_settings.apiUrl}/cities/GetCityList'),
+        Uri.parse('${gblSettings.apiUrl}/cities/GetCityList'),
         headers: {          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         }
     ).catchError((resp) {
       print('initcities error $resp');
@@ -111,7 +111,6 @@ class Repository {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw(response.reasonPhrase);
-      return new ParsedResponse(response.statusCode, []);
     }
 
     Map map = jsonDecode('{ \"Cities\":' + response.body + '}');
@@ -146,18 +145,18 @@ class Repository {
           .write('"${item.key.trim()}": "${item.value.toString().trim()}",'));
       stringBuffer.write('}');
       Map map = json.decode(stringBuffer.toString().replaceAll(',}', '}'));
-      gbl_settings = Settings.fromJson(map);
+      gblSettings = Settings.fromJson(map);
     }
   }
 
   Future getSettingsFromApi() async {
-    var body = {"AgentGuid": "${gbl_settings.vrsGuid}"};
+    var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
     try {
       final http.Response response = await http.post(
-          Uri.parse(gbl_settings.apiUrl + "/login"),
+          Uri.parse(gblSettings.apiUrl + "/login"),
           headers: {
             'Content-Type': 'application/json',
-            'Videcom_ApiKey': gbl_settings.apiKey
+            'Videcom_ApiKey': gblSettings.apiKey
           },
           //       headers: {'Content-Type': 'application/json'},
           body: JsonEncoder().convert(body));
@@ -181,7 +180,7 @@ class Repository {
               for (var item in settingsJson) {
                 switch (item['parameter']) {
                   case 'creditCardProvider':
-                    gbl_settings.creditCardProvider = item['value'];
+                    gblSettings.creditCardProvider = item['value'];
                     break;
                   case 'appLive':
                     gblIsLive = parseBool(item['value']);
@@ -190,7 +189,7 @@ class Repository {
                     gblLanguages = item['value'];
                     break;
                   case 'titles':
-                    gbl_titles = item['value'].split(',');
+                    gblTitles = item['value'].split(',');
                     break;
                 /*
                   BOOLS
@@ -199,40 +198,43 @@ class Repository {
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
                   case 'wantProfileList':
-                    gbl_settings.wantProfileList = parseBool(item['value']);
+                    gblSettings.wantProfileList = parseBool(item['value']);
                     break;
                   case 'wantMyAccount':
-                    gbl_settings.wantMyAccount = parseBool(item['value']);
+                    gblSettings.wantMyAccount = parseBool(item['value']);
                     break;
                 /*
                   URLs
                    */
+                  case 'backgroundImageUrl':
+                    gblSettings.backgroundImageUrl = item['value'];
+                    break;
                   case 'adsTermsUrl':
-                    gbl_settings.adsTermsUrl = item['value'];
+                    gblSettings.adsTermsUrl = item['value'];
                     break;
                   case 'termsAndConditionsUrl':
-                    gbl_settings.termsAndConditionsUrl = item['value'];
+                    gblSettings.termsAndConditionsUrl = item['value'];
                     break;
                   case 'faqUrl':
-                    gbl_settings.faqUrl = item['value'];
+                    gblSettings.faqUrl = item['value'];
                     break;
                   case 'privacyPolicyUrl':
-                    gbl_settings.privacyPolicyUrl = item['value'];
+                    gblSettings.privacyPolicyUrl = item['value'];
                     break;
                   case 'specialAssistanceUrl':
-                    gbl_settings.specialAssistanceUrl = item['value'];
+                    gblSettings.specialAssistanceUrl = item['value'];
                     break;
                   case 'contactUsUrl':
-                    gbl_settings.contactUsUrl =  item['value'];
+                    gblSettings.contactUsUrl =  item['value'];
                     break;
                 /*
                   EMAILS
                    */
                   case 'appFeedbackEmail':
-                    gbl_settings.appFeedbackEmail = item['value'];
+                    gblSettings.appFeedbackEmail = item['value'];
                     break;
                   case 'groupsBookingsEmail':
-                    gbl_settings.groupsBookingsEmail = item['value'];
+                    gblSettings.groupsBookingsEmail = item['value'];
                     break;
                   default:
                     String param = item['parameter'];
@@ -264,18 +266,18 @@ class Repository {
           }
           else {
             gblError = response.body;
-            gbl_NoNetwork = true;
+            gblNoNetwork = true;
           }
         } else {
           gblError = response.body;
-          gbl_NoNetwork = true;
+          gblNoNetwork = true;
 
         }
       }
     } catch (e) {
       print(e);
       gblError = e.toString();
-      gbl_NoNetwork = true;
+      gblNoNetwork = true;
       rethrow;
     }
   }
@@ -297,10 +299,10 @@ class Repository {
         .get(
             //"${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmacitylist")
             Uri.parse(
-                '${gbl_settings.apiUrl}/cities/GetCityList'),
+                '${gblSettings.apiUrl}/cities/GetCityList'),
       headers: {
         'Content-Type': 'application/json',
-        'Videcom_ApiKey': gbl_settings.apiKey
+        'Videcom_ApiKey': gblSettings.apiKey
       },)
         .catchError((resp) {});
 
@@ -388,7 +390,7 @@ class Repository {
     //await database.updateBoardingPass(boardingPass);
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$cmd"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -479,7 +481,7 @@ class Repository {
   Future<PnrDBCopy> fetchPnr(String rloc) async {
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=*$rloc~x"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -528,7 +530,7 @@ class Repository {
   Future<DatabaseRecord> fetchApisStatus(String rloc) async {
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=DSP/$rloc'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=DSP/$rloc'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -588,10 +590,10 @@ class Repository {
     final http.Response response = await http
         .post(
             Uri.parse(
-                '${gbl_settings.apiUrl}/fare/GetFareRules'),
+                '${gblSettings.apiUrl}/fare/GetFareRules'),
             headers: {
               'Content-Type': 'application/json',
-              'Videcom_ApiKey': gbl_settings.apiKey
+              'Videcom_ApiKey': gblSettings.apiKey
             },
             body: JsonEncoder().convert(body))
         .catchError((resp) {});
@@ -616,7 +618,7 @@ class Repository {
     AvailabilityModel objAv = AvailabilityModel();
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$avCmd"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$avCmd"))
         .catchError((resp) {});
     if (response == null) {
       return new ParsedResponse(noInterent, null);
@@ -644,7 +646,7 @@ class Repository {
     PnrModel pnrModel = PnrModel();
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$cmd"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
         .catchError((resp) {});
     if (response == null) {
       return new ParsedResponse(noInterent, null);
@@ -669,7 +671,7 @@ class Repository {
     Seatplan seatplan = Seatplan();
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$seatPlanCmd"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$seatPlanCmd"))
         .catchError((resp) {});
     if (response == null) {
       return new ParsedResponse(noInterent, null);
@@ -695,10 +697,10 @@ class Repository {
     //If no internet is available for example response is
     final http.Response response = await http.get(
         Uri.parse(
-            '${gbl_settings.apiUrl}/cities/Getroutelist'),
+            '${gblSettings.apiUrl}/cities/Getroutelist'),
         headers: {
           'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         }).catchError((resp) {});
 
     if (response == null) {
@@ -716,14 +718,14 @@ class Repository {
   }
 
   Future <List<String>> getAllDepartures() async {
-    if (gbl_verbose) {print('start getRoutesData');}
+    if (gblVerbose) {print('start getRoutesData');}
     List<String> departureCities = [];
     // new List<String>();
     try {
 
 
     database.getRoutesData().then((valueMap) {
-      if (gbl_verbose) {print('getRoutesData');}
+      if (gblVerbose) {print('getRoutesData');}
       valueMap['Routes'].forEach((item) {
         departureCities.add(item.values.first['airportCode'] +
             "|" +
@@ -735,7 +737,7 @@ class Repository {
       if( departureCities.length==0){
         print("No departures");
       }
-      if (gbl_verbose) {print("routes len ${departureCities.length}");}
+      if (gblVerbose) {print("routes len ${departureCities.length}");}
       return departureCities;
     });
     return departureCities;
@@ -748,7 +750,7 @@ class Repository {
   Future <List<String>> getDestinations(String departure) async {
     List<String> destinationCities = [];
     // new List<String>();
-    if (gbl_verbose) {print('getDestinations');}
+    if (gblVerbose) {print('getDestinations');}
 
     database.getRoutesData().then((valueMap) {
       valueMap['Routes'].forEach((f) {

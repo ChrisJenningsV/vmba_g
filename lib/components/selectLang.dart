@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 
 class CustomRowModel {
@@ -36,6 +38,14 @@ class CustomRow extends StatelessWidget {
   }
 }
 
+initLang(String lang) async {
+  //Future<Countrylist> getCountrylist() async {
+  if (gblLanguage != 'en') {
+    String jsonString = await rootBundle.loadString(
+        'lib/assets/lang/$gblLanguage.json');
+    gblLangMap = json.decode(jsonString);
+  }
+}
 dialogContent(BuildContext context) {
   return Container(
     child: Column(
@@ -75,6 +85,7 @@ dialogContent(BuildContext context) {
                 primary: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
               gblLanguage=selectedLang;
+              initLang(gblLanguage);
               Navigator.of(context).pop();
               },
             child: Text("Submit"
@@ -86,6 +97,7 @@ dialogContent(BuildContext context) {
       ],
     ),
   );
+
 }
 
 
@@ -175,4 +187,5 @@ class _MyDialogContentState extends State<MyDialogContent> {
       ),
     );
   }
+
 }

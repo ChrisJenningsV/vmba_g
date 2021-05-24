@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'data/SystemColors.dart';
-import 'package:vmba/data/settings.dart';
-import 'package:vmba/data/models/passengerTypesDisplay.dart';
 
 import 'resources/app_config.dart';
 import 'main.dart';
@@ -26,7 +24,7 @@ void main() {
     child: App(),
     buildFlavor: 'Z4',
     systemColors: _systemColors,
-    settings: gbl_settings,
+    settings: gblSettings,
   );
   return runApp(configuredApp);
 }

@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:vmba/data/globals.dart';
-import 'package:vmba/data/settings.dart';
+import 'package:vmba/components/trText.dart';
 
 //class CustomWidget {
 AppBar appBar(BuildContext context, String title) {
-  if( gblIsLive == false ) {
-    title = 'Test Mode: ' + title;
-  }
-  if( gbl_settings.wantLeftLogo) {
+  if( gblSettings.wantLeftLogo) {
     return AppBar(
       leading: Padding(
           padding: EdgeInsets.only(left: 10.0),
@@ -21,9 +16,10 @@ AppBar appBar(BuildContext context, String title) {
       backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
-      title: new Text(title,
+      title: new TrText(title,
           style: TextStyle(
-              color: gblSystemColors.headerTextColor)),
+              color: gblSystemColors.headerTextColor),
+          variety: 'title'),
     );
 
   } else {
@@ -32,9 +28,10 @@ AppBar appBar(BuildContext context, String title) {
       backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
-      title: new Text(title,
+      title: new TrText(title,
           style: TextStyle(
-              color: gblSystemColors.headerTextColor)),
+              color: gblSystemColors.headerTextColor),
+              variety: 'title',),
     );
   }
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/calendar/outboundFlightPage.dart';
 
 import 'package:vmba/data/SystemColors.dart';
-//import 'package:vmba/availability/flight_page.dart';
 import 'package:vmba/data/models/models.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
@@ -45,12 +43,12 @@ class SearchButtonWidget extends StatelessWidget {
     if (newBooking.passengers.adults +
             newBooking.passengers.youths +
             newBooking.passengers.children >
-        gbl_settings.maxNumberOfPax) {
-      String email = gbl_settings.groupsBookingsEmail != null
-          ? gbl_settings.groupsBookingsEmail
+        gblSettings.maxNumberOfPax) {
+      String email = gblSettings.groupsBookingsEmail != null
+          ? gblSettings.groupsBookingsEmail
           : 'groups@videcom.com';
       errors.add('If booking more than ' +
-          gbl_settings.maxNumberOfPax.toString() +
+          gblSettings.maxNumberOfPax.toString() +
           ' passengers, please contact ' +
           email +
           '.');

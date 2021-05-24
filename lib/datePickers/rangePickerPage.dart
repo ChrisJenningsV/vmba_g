@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
 
 class RangePickerWidget extends StatefulWidget {

@@ -1,7 +1,7 @@
 {
   "title": "Titre",
   "Home": "Accueil",
-  "Book a Flight": "Réserver un vol",
+  "Book a flight": "Réserver un vol",
   "Message" : "C'est français",
   "My bookings": "Mes réservations",
   "Add an existing booking": "Ajouter une réservation existante",
@@ -11,5 +11,23 @@
   "FAQs": "FAQs",
   "Contact us": "Contactez-nous",
   "App feedback": "Commentaires sur l'application",
-  "Language": "Langue"
+  "Language": "Langue",
+  "OK": "OK",
+  "Additional Info": "Information additionnelle",
+  "Returning Flight": "Vol de retour",
+  "Searching for Flights": "Recherche de vols",
+  "Retry Search": "Réessayer la recherche",
+  "Your outbound flight is now after your original requested return date. You will need to select a new return date to contine.":
+     "Votre vol aller a maintenant lieu après la date de retour initialement demandée. Vous devrez sélectionner une nouvelle date de retour pour continuer",
+  "CHOOSE NEW DATE": "CHOISISSEZ LA NOUVELLE DATE",
+  "from": "de",
+  "No Calender results": "Aucun résultat de calendrier",
+  "Fly from": "Envolez-vous de",
+  "Select departure airport": "Sélectionnez l'aéroport de départ",
+  "Fly to": "voler vers",
+  "Select arrival airport": "Sélectionnez l'aéroport d'arrivée",
+  "LOGIN": "CONNEXION",
+  "Test Mode: ": "Mode d'essai: ",
+  "Flight Search": "Recherche de vol"
+
 }

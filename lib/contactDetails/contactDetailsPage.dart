@@ -294,7 +294,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -349,7 +349,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                    "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
             if (response == null) {
               setState(() {

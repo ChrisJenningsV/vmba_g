@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/flightSearch/widgets/passenger.dart';
 import 'package:vmba/flightSearch/widgets/searchButton.dart';
@@ -9,7 +8,6 @@ import 'package:vmba/flightSearch/widgets/journey.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/flightSearch/widgets/evoucher.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -133,7 +131,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                 ),
               ),
 
-              gbl_settings.eVoucher
+              gblSettings.eVoucher
                   ? EVoucherWidget(
                       evoucherNo: booking.eVoucherCode,
                       onChanged: _handleEVoucherChanged,

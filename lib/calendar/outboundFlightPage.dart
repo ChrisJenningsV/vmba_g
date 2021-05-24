@@ -135,7 +135,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gbl_settings.bookingLeadTime)))) {
+            minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -261,7 +261,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gbl_settings.locale, name: currency);
+        locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
     if (price.length == 0) {
@@ -395,7 +395,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                         style: new TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.w300),
-                                            variety: 'airport',);
+                                            variety: 'airport',noTrans: true);
                                   },
                                 ),
                               ],
@@ -438,7 +438,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                         style: new TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.w300),
-                                        variety: 'airport',);
+                                        variety: 'airport', noTrans: true,);
                                   },
                                 ),
                               ],

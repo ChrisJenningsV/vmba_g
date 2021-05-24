@@ -397,7 +397,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 new TextButton(
-                  child: new Text("Ok"),
+                  child: new Text("OK"),
                   onPressed: () {
                     // _error = '';
                     Navigator.of(context).pop();

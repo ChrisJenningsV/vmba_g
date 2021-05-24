@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
+import 'package:vmba/menu/login.dart';
 
 class AdsPage extends StatefulWidget {
   AdsPage();
@@ -29,16 +31,15 @@ class _AdsPageState extends State<AdsPage> {
                 primary: gblSystemColors.primaryButtonColor,
               ),
           onPressed:() {
-            gblIsAds = true;
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/FlightSearchPage', (Route<dynamic> route) => false);},
+            //Navigator.of(context).pushNamedAndRemoveUntil('/AdsFlightSearchPage', (Route<dynamic> route) => false);},
+            Navigator.push(context, SlideTopRoute(page: LoginPage()));
+          },
           child: TrText('Accept', style: new TextStyle(color: gblSystemColors.primaryButtonTextColor),)),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   primary: Colors.grey,
               ),
               onPressed:() {
-                gblIsAds = false;
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/HomePage', (Route<dynamic> route) => false);
               },
@@ -48,7 +49,7 @@ class _AdsPageState extends State<AdsPage> {
         body: Row( children: <Widget>[
           Expanded( child: WebViewWidget(
     title: 'Air Discount Scheme',
-        url: gbl_settings.adsTermsUrl)),
+        url: gblSettings.adsTermsUrl)),
 
     ]));  }
   }

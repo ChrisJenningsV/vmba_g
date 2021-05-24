@@ -117,9 +117,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   Future _sendVRSCommand(msg) async {
     final http.Response response = await http.post(
-        Uri.parse(gbl_settings.apiUrl + "/RunVRSCommand"),
+        Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
         headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: msg);
 
@@ -133,9 +133,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   Future _sendVRSCommandList(msg) async {
     final http.Response response = await http.post(
-        Uri.parse(gbl_settings.apiUrl + "/RunVRSCommandList"),
+        Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
         headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: msg);
 
@@ -194,7 +194,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     StringBuffer cmd = new StringBuffer();
     cmd.write('*${widget.rloc}^');
 
-    if (!gbl_settings.webCheckinNoSeatCharge) {
+    if (!gblSettings.webCheckinNoSeatCharge) {
       paxlist.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
           cmd.write(f.savedSeat == null || f.savedSeat == ''
@@ -206,8 +206,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       paxlist.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
           cmd.write(f.savedSeat == null || f.savedSeat == ''
-              ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[MmbFreeSeat=${gbl_settings.webCheckinNoSeatCharge}]^'
-              : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}][MmbFreeSeat=${gbl_settings.webCheckinNoSeatCharge}]^');
+              ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^'
+              : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}][MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^');
       });
     }
 
@@ -876,7 +876,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               )),
               child: Center(
                 child: Text(NumberFormat.simpleCurrency(
-                            locale: gbl_settings.locale,
+                            locale: gblSettings.locale,
                             name: currencyCode)
                         .format(double.parse(currentSeatPrice)) +
                     ' Seat Charge'),

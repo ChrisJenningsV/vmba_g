@@ -6,24 +6,12 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/mmb/widgets/flight_selection_summary.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
-//import '../../data/models/availability.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
-//import '../../availability/choose_flight.dart';
-//import '../../utilities/helper.dart';
-//import '../../menu/menu.dart';
-//import 'package:loganair/mmb/flightselectionsummary/flight_selection_summary.dart';
-//import '../../data/settings.dart';
-//import '../../availability/canned_fact.dart';
-//import '../../data/repository.dart';
-//import '../../utilities/widgets.dart';
-//import 'package:loganair/data/models/pnr.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -197,7 +185,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gbl_settings.bookingLeadTime)))) {
+            minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -405,7 +393,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gbl_settings.locale, name: currency);
+        locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
     if (price.length == 0) {

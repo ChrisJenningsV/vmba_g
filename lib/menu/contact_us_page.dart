@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/data/settingsData.dart';
 import 'package:vmba/menu/customerfiles/contact_us/contact_us.dart' as Default;
 import 'package:vmba/menu/customerfiles/contact_us/contact_us_lm.dart' as LM;
 import 'package:vmba/menu/customerfiles/contact_us/contact_us_si.dart' as SI;
 import 'package:vmba/menu/customerfiles/contact_us/contact_us_t6.dart' as T6;
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 
@@ -16,7 +14,7 @@ class ContactUsPage extends StatelessWidget {
         leading: Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Image.asset(
-                'lib/assets/${gblAppTitle}/images/appBarLeft.png',
+                'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
         brightness: gblSystemColors.statusBar,
@@ -37,7 +35,7 @@ class ContactUsPage extends StatelessWidget {
       body: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 16, 8, 8),
           child: (() {
-            switch (gbl_settings.aircode) {
+            switch (gblSettings.aircode) {
               case 'LM':
                 return LM.ContactUs();
                 break;
@@ -60,6 +58,6 @@ class ContactUsPageWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row( children: <Widget>[ Expanded( child: WebViewWidget(
         title: 'Contact Us',
-        url: gbl_settings.contactUsUrl))]);
+        url: gblSettings.contactUsUrl))]);
   }
 }

@@ -3,22 +3,13 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-//import 'package:loganair/data/models/settings.dart';
-//import '../data/models/apis.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vmba/data/models/apis.dart';
 import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
-//import '../utilities/helper.dart';
-//import '../data/settings.dart';
-//import '../data/repository.dart';
-//import '../data/models/apis_pnr.dart';
-//import '../menu/menu.dart';
 
 class ApisWidget extends StatefulWidget {
   ApisWidget({Key key, this.apisCmd, this.rloc}) : super(key: key);
@@ -48,8 +39,8 @@ class _ApisWidgetState extends State<ApisWidget> {
   }
 
   Future _loadData(String cmd) async {
-    String msg = gbl_settings.xmlUrl +
-        gbl_settings.xmlToken +
+    String msg = gblSettings.xmlUrl +
+        gblSettings.xmlToken +
         '&Command=' +
         cmd;
 
@@ -78,10 +69,10 @@ class _ApisWidgetState extends State<ApisWidget> {
   }
 
   Future _submitApis() async {
-    String url = gbl_settings.apisUrl;
+    String url = gblSettings.apisUrl;
     // 'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?';
     final response = await http.post(Uri.parse(url), body: {
-      'token': gbl_settings.xmlTokenPost,
+      'token': gblSettings.xmlTokenPost,
       'Command': 'DAX/',
       'FormData': apisForm.toXmlString()
     });
@@ -482,7 +473,7 @@ class _ApisWidgetState extends State<ApisWidget> {
               )),
           actions: <Widget>[
             new TextButton(
-              child: new Text("Ok"),
+              child: new Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
                 _updateApisData(sectionname, field.displayname,

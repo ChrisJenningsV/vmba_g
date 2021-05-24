@@ -8,21 +8,21 @@ import 'main.dart';
 import 'data/globals.dart';
 
 void main() {
-  config_lm();
+  configLM();
 
   var configuredApp = AppConfig(
       appTitle: 'loganair',
       child: App(),
       buildFlavor: 'LM',
       systemColors: gblSystemColors,
-      settings: gbl_settings,);
+      settings: gblSettings,);
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(configuredApp);
   });
 }
-void config_lm() {
+void configLM() {
   SystemColors _systemColors = SystemColors(
       primaryButtonColor: Colors.black,
       accentButtonColor: Colors.black,
@@ -41,12 +41,12 @@ void config_lm() {
   );
 
   gblSystemColors =_systemColors;
-  gbl_titleStyle =  new TextStyle( color: Colors.white) ;
+  gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
   gblAppTitle = 'loganair';
   gblBuildFlavor = 'LM';
 
-  gbl_settings = Settings (
+  gblSettings = Settings (
     latestBuildiOS: '1.0.5',
     latestBuildAndroid: '1.0.0.98',
     airlineName: "Logan Air",
@@ -62,7 +62,7 @@ void config_lm() {
   vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
   autoSeatOption: true,
   backgroundImageUrl:  'https://customertest.videcom.com/LoganAir/VARS/public/CustomerFiles/LoganAir/App/HOGMANAY_SALE1.png',
-  hostBaseUrl:  'https://customertest.videcom.com/LoganAir/VARS/public',
+  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
   androidAppId: 'uk.co.loganair.booking',
   fqtvName: 'Clan',
@@ -90,7 +90,7 @@ void config_lm() {
 //Staging setttings
   xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApi/api/',
+  apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApi/api/',  // InHouse
   creditCardProvider: 'videcard',
   wantPayStack: false,
   wantLeftLogo: false,

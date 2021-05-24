@@ -13,13 +13,10 @@ import 'package:vmba/data/settings.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/providers/paystack.dart';
 import 'package:vmba/payment/v2/CreditCardPage.dart';
-//import 'package:vmba/payment/payment.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:vmba/home/home_page.dart';
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -160,7 +157,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         Text(
             NumberFormat.simpleCurrency(
-                    locale: gbl_settings.locale,
+                    locale: gblSettings.locale,
                     name: this.pnrModel.pNR.basket.outstanding.cur)
                 .format((double.parse(
                         this.pnrModel.pNR.basket.outstanding.amount) ??
@@ -186,7 +183,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         Text('Total Tax: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(tax))
       ],
@@ -218,7 +215,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         Text('Net Fare:'),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(netFareTotal))
       ],
@@ -256,7 +253,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         Text('Flights Total: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(total))
         // (double.tryParse(fareStore.total) ?? 0.0))),
@@ -288,7 +285,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         children: <Widget>[
           Text('Discount: '),
           Text(NumberFormat.simpleCurrency(
-                  locale: gbl_settings.locale,
+                  locale: gblSettings.locale,
                   name: currencyCode)
               .format(total)),
         ],
@@ -387,7 +384,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           children: <Widget>[
             Text('Tax:'),
             Text(NumberFormat.simpleCurrency(
-                    locale: gbl_settings.locale,
+                    locale: gblSettings.locale,
                     name: currencyCode)
                 .format(taxTotal))
           ],
@@ -426,7 +423,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               children: <Widget>[
                 Text('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
                 Text(NumberFormat.simpleCurrency(
-                        locale: gbl_settings.locale,
+                        locale: gblSettings.locale,
                         name: seat.cur ?? currencyCode)
                     .format(double.parse(seat.amt) ?? 0.0))
               ],
@@ -502,7 +499,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -570,7 +567,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                    "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
             if (response == null) {
               setState(() {
@@ -633,7 +630,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         });
         response = await http
             .get(Uri.parse(
-                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});
 //[0]:"0SI2051Q28Sep20ABZBRSNN1/15001605(CAB=Y)[CB=Blue Flex]"
 
@@ -663,7 +660,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
       response = await http
           .get(Uri.parse(
-              "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {
@@ -753,7 +750,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             '=o';
         http.Response reponse = await http
             .get(Uri.parse(
-                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }
     }
@@ -778,7 +775,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -854,7 +851,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
       http.Response response = await http
           .get(Uri.parse(
-              "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {
@@ -1266,7 +1263,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       ),
     ));
 
-    if( gbl_settings.wantPayStack == true) {
+    if( gblSettings.wantPayStack == true) {
       paymentButtons.add(Padding(
         padding: EdgeInsets.only(top: 8.0),
       ));

@@ -9,11 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
-import 'package:vmba/data/settings.dart';
-import 'package:vmba/data/settingsData.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
@@ -219,9 +216,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
   Future _sendVRSCommand(msg) async {
     final http.Response response = await http.post(
-        Uri.parse(gbl_settings.apiUrl + "/RunVRSCommand"),
+        Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
         headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gbl_settings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey
         },
         body: msg);
 
@@ -283,7 +280,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       print(msg);
       response = await http
           .get(Uri.parse(
-              "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
       if (response == null) {
         setState(() {
@@ -327,7 +324,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                    "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
             if (response == null) {
               setState(() {
@@ -389,7 +386,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         });
         response = await http
             .get(Uri.parse(
-                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});
         return null;
       }
@@ -442,7 +439,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
       response = await http
           .get(Uri.parse(
-              "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {
@@ -513,7 +510,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             '=o';
         http.Response reponse = await http
             .get(Uri.parse(
-                "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }
     }
@@ -527,7 +524,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
     response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -603,7 +600,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
       http.Response response = await http
           .get(Uri.parse(
-              "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
 
       if (response == null) {
@@ -631,7 +628,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       buffer.write('MK($creditCardProviderStaging)');
     }
    */
-    buffer.write('MK($gbl_settings.creditCardProvider)');
+    buffer.write('MK($gblSettings.creditCardProvider)');
 
     //creditCardProviderStaging
     //buffer.write('MK(${gbl_settings.creditCardProvider})');
@@ -1121,10 +1118,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   decoration: InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 15.0),
-                                    hintText: gbl_settings.aircode == 'SI'
+                                    hintText: gblSettings.aircode == 'SI'
                                         ? 'Parish or County'
                                         : 'County or State',
-                                    labelText:  gbl_settings.aircode == 'SI'
+                                    labelText:  gblSettings.aircode == 'SI'
                                         ? 'Parish / County'
                                         : 'County/State',
                                     fillColor: Colors.white,

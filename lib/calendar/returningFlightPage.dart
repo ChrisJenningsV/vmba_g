@@ -11,6 +11,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class ReturnFlightSeletionPage extends StatefulWidget {
   ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
@@ -129,7 +130,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gbl_settings.bookingLeadTime)))) {
+            minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -189,7 +190,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: new Text("Returning Flight",
+        title: new TrText("Returning Flight",
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),
@@ -208,7 +209,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             CircularProgressIndicator(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Searching for Flights'),
+              child: TrText('Searching for Flights'),
             )
           ],
         ),
@@ -229,7 +230,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 primary: gblSystemColors.primaryButtonColor,
               ),
               onPressed: () => retrySearch(),
-              child: Text(
+              child: TrText(
                 'Retry Search',
                 style: new TextStyle(color: Colors.white),
               ),
@@ -267,7 +268,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
+              child: TrText(
                 'Your outbound flight is now after your original requested return date. You will need to select a new return date to contine.',
                 style: TextStyle(fontSize: 16),
               ),
@@ -284,7 +285,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 lastDate:
                     new DateTime.now().toUtc().add(new Duration(days: 363)),
               ).then((date) => _changeSearchDate(date)),
-              child: Text(
+              child: TrText(
                 'CHOOSE NEW DATE',
                 style: new TextStyle(color: Colors.white),
               ),
@@ -338,7 +339,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                       ? Colors.white
                                       : Colors.black),
                             ),
-                            new Text(
+                            new TrText(
                               'from',
                               style: TextStyle(
                                   color: isSearchDate(
@@ -361,7 +362,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               )
               .toList());
     } else {
-      return new Text('No Calender results');
+      return new TrText('No Calender results');
     }
   }
 
@@ -406,10 +407,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                   initialData: item.flt.first.dep.toString(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<String> text) {
-                                    return new Text(text.data,
+                                    return new TrText(text.data,
                                         style: new TextStyle(
                                             fontSize: 16.0,
-                                            fontWeight: FontWeight.w300));
+                                            fontWeight: FontWeight.w300),
+                                        variety: 'airport',noTrans: true);
                                   },
                                 ),
                               ],
@@ -448,10 +450,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                   initialData: item.flt.last.arr.toString(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<String> text) {
-                                    return new Text(text.data,
+                                    return new TrText(text.data,
                                         style: new TextStyle(
                                             fontSize: 16.0,
-                                            fontWeight: FontWeight.w300));
+                                            fontWeight: FontWeight.w300),
+                                        variety: 'airport',noTrans: true);
                                   },
                                 ),
                               ],
@@ -495,7 +498,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                             return AlertDialog(
                                                 actions: <Widget>[
                                                   new TextButton(
-                                                    child: new Text("OK"),
+                                                    child: new TrText("OK"),
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .pop();
@@ -845,7 +848,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gbl_settings.locale, name: currency);
+        locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
     if (price.length == 0) {

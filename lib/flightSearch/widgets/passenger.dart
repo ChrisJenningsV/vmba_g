@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
-import 'package:vmba/data/settings.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/data/globals.dart';
 
 class PassengerWidget extends StatefulWidget {
@@ -347,7 +345,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         ),
                       ],
                     ),
-                    gbl_settings.passengerTypes.youths
+                    gblSettings.passengerTypes.youths
                         ? new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:vmba/completed/CompletedPageV2.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
 import 'package:vmba/mmb/addBookingPage.dart';
 import 'package:vmba/mmb/myBookingsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:vmba/data/AppLanguage.dart';
-import 'package:vmba/data/app_localizations.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -23,15 +18,15 @@ void main() async {
   //AppLanguage appLanguage = AppLanguage();
   //await appLanguage.fetchLocale();
 
-  gbl_titleStyle =  new TextStyle( color: Colors.white) ;
+  gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
   if (gblAppTitle == null){
     switch(gblBuildFlavor){
       case 'LM':
-        config_lm();
+        configLM();
       break;
       case 'FL':
-        config_fl();
+        configFL();
         break;
       default:
         gblAppTitle='Test Title';
@@ -74,9 +69,9 @@ class App extends StatelessWidget {
             ),
         '/MyBookingsPage': (BuildContext context) => new MyBookingsPage(),
         '/AddBookingPage': (BuildContext context) => new AddBooking(),
-        /*   '/AdsFlightSearchPage': (BuildContext context) => new FlightSearchPage(
+        '/AdsFlightSearchPage': (BuildContext context) => new FlightSearchPage(
                        ads: true,
-                     ),*/
+                     ),
         '/AdsPage': (BuildContext context) => new AdsPage(),
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ProcessCommandsPage': (BuildContext context) =>

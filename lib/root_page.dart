@@ -29,7 +29,7 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     _displayProcessingIndicator = true;
-    gbl_NoNetwork = false;
+    gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
     var appVersion = 'Checking..';

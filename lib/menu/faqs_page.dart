@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/customerfiles/faqs/faqs_lm.dart' as LM;
 import 'package:vmba/menu/customerfiles/faqs/faqs_si.dart' as SI;
-import 'package:vmba/menu/customerfiles/faqs/faqs_t6.dart' as T6;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
@@ -14,7 +13,7 @@ class FAQsPage extends StatelessWidget {
         leading: Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Image.asset(
-                'lib/assets/${gblAppTitle}/images/appBarLeft.png',
+                'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)),
         brightness: gblSystemColors.statusBar,
@@ -36,7 +35,7 @@ class FAQsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 16, 8, 8),
         child: (() {
-          switch (gbl_settings.aircode) {
+          switch (gblSettings.aircode) {
             case 'LM':
               return SingleChildScrollView( child: LM.Faqs());
               break;
@@ -61,6 +60,6 @@ class FAQsPageWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row( children: <Widget>[ Expanded( child: WebViewWidget(
         title: 'FAQs',
-        url: gbl_settings.faqUrl))]);
+        url: gblSettings.faqUrl))]);
   }
   }

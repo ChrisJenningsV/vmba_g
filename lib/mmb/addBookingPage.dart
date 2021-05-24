@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/data/settings.dart';
 import 'dart:convert';
 import 'package:vmba/data/models/pnr.dart';
-//import 'package:flutter_redux/flutter_redux.dart';
-//import '../../authentication/states.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 
@@ -191,7 +187,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=*$_rloc~x'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$_rloc~x'"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -255,7 +251,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
 
     http.Response response = await http
         .get(Uri.parse(
-            "${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=DSP/$_rloc'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=DSP/$_rloc'"))
         .catchError((resp) {});
 
     if (response == null) {

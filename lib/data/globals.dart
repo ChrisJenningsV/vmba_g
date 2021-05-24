@@ -11,19 +11,21 @@ String gblLanguage = 'en' ;
 String gblLanguages ;
 String gblBuildFlavor = 'FL';
 String gblError = '';
+String gblSine = '';
 String gblVersion = '';
 String gblAction='';
+String gblMobileFlags = '';
+int gblSecurityLevel = 0;
 bool gblIsIos = true;
-bool gblIsAds = true;
 bool gblIsLive = false;
 SystemColors gblSystemColors;
 Map gblLangMap ;
-Settings gbl_settings;
-bool gbl_NoNetwork;
-bool gbl_verbose = true;
-bool  gbl_wantLogin = true;
-TextStyle gbl_titleStyle;
-List<String> gbl_titles = <String>[
+Settings gblSettings;
+bool gblNoNetwork;
+bool gblVerbose = true;
+bool  gblWantLogin = true;
+TextStyle gblTitleStyle;
+List<String> gblTitles = <String>[
   'Mr',
   'Mrs',
   'Ms',

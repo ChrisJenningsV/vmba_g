@@ -239,7 +239,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Total Tax: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(tax)),
       ],
@@ -272,7 +272,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Net Fare:'),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(netFareTotal)),
       ],
@@ -302,7 +302,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text('Flights Total: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gbl_settings.locale,
+                locale: gblSettings.locale,
                 name: currencyCode)
             .format(total))
         // (double.tryParse(fareStore.total) ?? 0.0))),
@@ -334,7 +334,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         children: <Widget>[
           Text('Discount: '),
           Text(NumberFormat.simpleCurrency(
-                  locale: gbl_settings.locale,
+                  locale: gblSettings.locale,
                   name: currencyCode)
               .format(total)),
         ],
@@ -356,7 +356,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text(
           NumberFormat.simpleCurrency(
-                  locale: gbl_settings.locale,
+                  locale: gblSettings.locale,
                   name: currencyCode)
               .format((double.tryParse(fareStore.total) ?? 0.0)),
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
@@ -457,7 +457,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             children: <Widget>[
               Text('Tax:'),
               Text(NumberFormat.simpleCurrency(
-                      locale: gbl_settings.locale,
+                      locale: gblSettings.locale,
                       name: currencyCode)
                   .format(taxTotal)),
             ],
@@ -678,7 +678,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   padding: EdgeInsets.only(top: 5),
                 ),
                 Divider(),
-                gbl_settings.hideFareRules
+                gblSettings.hideFareRules
                     ? Padding(
                         padding: EdgeInsets.only(top: 0),
                       )

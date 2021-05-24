@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/SystemColors.dart';
-import 'package:vmba/data/settings.dart';
-import 'package:vmba/data/models/passengerTypesDisplay.dart';
 
 import 'resources/app_config.dart';
 import 'main.dart';
@@ -29,7 +27,7 @@ void main() {
     child: App(),
     buildFlavor: 't6',
     systemColors: _systemColors,
-    settings: gbl_settings,
+    settings: gblSettings,
   );
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
