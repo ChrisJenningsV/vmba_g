@@ -757,12 +757,15 @@ class Repository {
        // print(f['departure']['airportCode']);
         if (f['departure']['airportCode'] == departure) {
           f['destinations'].forEach((dest) {
-            destinationCities.add(dest['airportCode'] +
+            String newDest = dest['airportCode'] +
                 "|" +
                 dest['airportName'] +
                 " (" +
                 dest['airportCode'] +
-                ")");
+                ")";
+            if( ! destinationCities.contains(newDest)){
+              destinationCities.add(newDest);
+            }
           });
         }
       });

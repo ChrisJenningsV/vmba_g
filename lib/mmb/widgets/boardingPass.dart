@@ -652,7 +652,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                               style: new TextStyle(
                                   fontSize: 12.0, fontWeight: FontWeight.w200)),
                           new Text(
-                              _boardingPass.fastTrack.toLowerCase() == 'true'
+                              _boardingPass.loungeAccess.toLowerCase() == 'true'
                                   ? "YES"
                                   : "NO",
                               style: new TextStyle(
