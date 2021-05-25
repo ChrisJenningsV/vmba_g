@@ -1,0 +1,6 @@
+/Applications/"Android Studio.app"/Contents/jre/jdk/Contents/Home/bin/keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+
+
+
+
+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
