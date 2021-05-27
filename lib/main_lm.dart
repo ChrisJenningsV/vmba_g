@@ -64,7 +64,7 @@ void configLM() {
   backgroundImageUrl:  'https://customertest.videcom.com/LoganAir/VARS/public/CustomerFiles/LoganAir/App/HOGMANAY_SALE1.png',
   hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
-  androidAppId: 'uk.co.loganair.booking',
+  androidAppId: 'uk.co.loganair.reservations',
   fqtvName: 'Clan',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',

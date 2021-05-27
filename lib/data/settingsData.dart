@@ -27,7 +27,7 @@ final String backgroundImageUrl =
 final String hostBaseUrl =
     'https://customertest.videcom.com/LoganAir/VARS/public';
 final String iOSAppId = '1457545908';
-final String androidAppId = 'uk.co.loganair.booking';
+final String androidAppId = 'uk.co.loganair.reservations';
 final String fqtvName = 'Clan';
 final String appFeedbackEmail = 'appfeedback@loganair.co.uk';
 final String groupsBookingsEmail = 'groups@loganair.co.uk';
@@ -90,7 +90,7 @@ final bool autoSeatOption = false;
 final String backgroundImageUrl = '';
 //'https://customertest.videcom.com/LoganAir/VARS/public/CustomerFiles/LoganAir/App/HOGMANAY_SALE1.png';
 final String iOSAppId = ''; //'1457545908';
-final String androidAppId = ''; //'uk.co.loganair.booking';
+final String androidAppId = ''; //'uk.co.loganair.reservations';
 final String fqtvName = 'FQTV';
 final String appFeedbackEmail = 'appfeedback@ibomair.com';
 final bool bpShowLoungeAccess = true;

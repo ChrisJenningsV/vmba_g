@@ -2,6 +2,6 @@
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/icon/loaganair_1024x1024.png"
+  image_path: "lib/assets/icon/loganair_1024x1024.png"
 
-# flutter pub run flutter_launcher_icons:main -f launch_icons_loganair
+# flutter pub run flutter_launcher_icons:main -f launch_icons_loganair.yaml

@@ -20,12 +20,22 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to your camera to a allow you to scan your credit card number and passport</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+    <string>This is not used</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This is not used</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This is not used</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen-AirSwift</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -41,15 +51,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>App requires access to your camera to a allow you to scan your credit card number and passport</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 </dict>
 </plist>
