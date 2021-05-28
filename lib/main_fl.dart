@@ -41,20 +41,21 @@ void configFL() {
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
+  gblIsLive = true;
   //gbl_language = 'en';
 
   gblSettings = Settings(
-    latestBuildiOS: '1.0.5',
-    latestBuildAndroid: '1.0.0.98',
+    latestBuildiOS: '1.0.8.15',
+    latestBuildAndroid: '1.0.8.15',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "FL",
 
-    termsAndConditionsUrl:  "https://www.airleap.se/sv/allt-for-resan/fore-resan/resebestammelser",
-    privacyPolicyUrl:  "https://www.airleap.se/sv/om-airleap/integritetspolicy",
-   faqUrl: "https://customertest.videcom.com/videcomair/vars/public/test/faq.html", //"https://www.airleap.se/en/travel-information",
-    contactUsUrl: "https://customertest.videcom.com/videcomair/vars/public/test/contactus.html", // "https://www.airleap.se/en/about-airleap/contact-us",
+    termsAndConditionsUrl:  " https://www.airleap.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
+    privacyPolicyUrl:  "https://www.airleap.se/sv/om-air-leap/integritetspolicy?app_mode=1",
+   faqUrl: "https://www.airleap.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
+    contactUsUrl: "https://www.airleap.se/sv/om-air-leap/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
     locale:  'en-EN',
     bookingLeadTime:  60,
     webCheckinNoSeatCharge:  false,
@@ -79,34 +80,23 @@ void configFL() {
     maxNumberOfPax:  8,
     hideFareRules:  true,
     fqtvEnabled:  false,
-//      xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-//      apisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//      apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-//      creditCardProviderProduction: 'worldpaydirect',
+// https://customer3.videcom.com/AirLeap/vars/public/
 
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
-    xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApi/api/',
+     xmlUrl:      "https://customer3.videcom.com/AirLeap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+ //   xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    apisUrl:       'https://customer3.videcom.com/AirLeap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+//    apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+      apiUrl: 'https://customer3.videcom.com/AirLeap/VARS/webApi/api/',
+//    apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
+//      creditCardProviderProduction: 'worldpaydirect',
     creditCardProvider: 'videcard',
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
 
-/*  final int maxNumberOfPax = 8;
-  final bool hideFareRules = false;
-  final bool fqtvEnabled = false;
-  final bool bpShowLoungeAccess = true;
-  final bool bpShowFastTrack = true;
-  final Color seatPlanColorEmergency = Colors.red; //Colors.yellow
-  final Color seatPlanColorAvailable = Colors.blue; //Colors.green
-  final Color seatPlanColorSelected = Colors.blue.shade900; //Colors.grey.shade600
-  final Color seatPlanColorUnavailable =
-      Colors.grey.shade300; //Colors.grey.shade300
-  final Color seatPlanColorRestricted = Colors.green[200]; //Colors.grey.shade300
-*/
   );
 
 

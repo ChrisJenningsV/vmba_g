@@ -93,13 +93,18 @@ class Repository {
 
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> initCities() async {
+
+    Map<String, String>  userHeader = {"Content-type": "application/json"};
+    if (gblSettings.apiKey.isNotEmpty) {
+      userHeader = {          'Content-Type': 'application/json',
+        'Videcom_ApiKey': gblSettings.apiKey      };
+    }
+
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     final http.Response response = await http.get(
         Uri.parse('${gblSettings.apiUrl}/cities/GetCityList'),
-        headers: {          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        }
+        headers: userHeader
     ).catchError((resp) {
       print('initcities error $resp');
     });

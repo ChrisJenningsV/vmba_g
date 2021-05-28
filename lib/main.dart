@@ -12,11 +12,20 @@ import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
 import 'main_lm.dart';
+import 'main_qi.dart';
+import 'main_si.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //AppLanguage appLanguage = AppLanguage();
   //await appLanguage.fetchLocale();
+
+  //  api keys
+//  Air North	4N	7d8a80fae6c6424c8d09d4b03098a10d
+//  Air Peace	P4	0dc43646b379435695a28688ee5c9468
+//  Blue Islands	SI	4d332cf7134f4a43958d954278474b41
+//  Air Leap	FL	2edd1519899a4e7fbf9a307a0db4c17a
+
 
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
@@ -27,6 +36,12 @@ void main() async {
       break;
       case 'FL':
         configFL();
+        break;
+      case 'QI':
+        configQI();
+        break;
+      case 'SI':
+        configSI();
         break;
       default:
         gblAppTitle='Test Title';

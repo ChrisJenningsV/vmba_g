@@ -203,7 +203,7 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
             brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
-            title: gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test Mode', style: gblTitleStyle,)]),
+            title: gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test', style: gblTitleStyle,)]),
             iconTheme: IconThemeData(
                 color:
                 gblSystemColors.headerTextColor)),

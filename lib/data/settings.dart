@@ -196,6 +196,7 @@ bool bpShowFastTrack;
     this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
+    this.wantMyAccount,
   });
 
 
