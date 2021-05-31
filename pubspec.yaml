@@ -90,6 +90,7 @@ flutter:
     - lib/assets/blueislands/json/countries.json
     - lib/assets/ibomair/images/appBar.png
     - lib/assets/ibomair/images/logo.png
+    - lib/assets/ibomair/images/loader.png
     - lib/assets/loganair/images/appBar.png
     - lib/assets/loganair/images/logo.png
     - lib/assets/loganair/images/background.png
@@ -102,6 +103,7 @@ flutter:
     - lib/assets/images/payment/paystack.png
     - lib/assets/airswift/images/appBar.png
     - lib/assets/airswift/images/logo.png
+    - lib/assets/airswift/images/loader.png
     - lib/assets/airswift/images/background.png
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
