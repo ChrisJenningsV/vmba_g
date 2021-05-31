@@ -1,0 +1,6 @@
+framework module open_appstore {
+  umbrella header "open_appstore-umbrella.h"
+
+  export *
+  module * { export * }
+}
