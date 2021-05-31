@@ -86,6 +86,7 @@ flutter:
     - lib/assets/blueislands/images/logo.png
     - lib/assets/blueislands/images/background.png
     - lib/assets/blueislands/images/appBarLeft.png
+    - lib/assets/blueislands/images/loader.png
     - lib/assets/blueislands/json/countries.json
     - lib/assets/ibomair/images/appBar.png
     - lib/assets/ibomair/images/logo.png
