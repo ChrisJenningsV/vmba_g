@@ -256,6 +256,125 @@ class Session {
   );
 }
 
+class ApiFqtvGetDetailsRequest {
+  String email;
+  String username;
+  String password;
+
+  ApiFqtvGetDetailsRequest( this.email, this.username, this.password);
+
+  Map toJson() {
+    Map map = new Map();
+    map['email'] = email;
+    map['username'] = username;
+    map['password'] = password;
+    return map;
+  }
+
+}
+
+class FqTvCommand extends Session {
+  FqtvMemberloginDetail cmd;
+
+  FqTvCommand(
+      Session session,
+      this.cmd,
+      ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
+
+  Map toJson() {
+    Map map = new Map();
+    map['sessionID'] = sessionId;
+    map['VARSSessionID'] = varsSessionId;
+    map['vrsServerNo'] = vrsServerNo == "" ? '0' : vrsServerNo;
+    map['fqtvMemberloginDetail'] = cmd;
+    return map;
+  }
+}
+
+class FqtvMemberloginDetail {
+  String email;
+  String username;
+  String password;
+
+  FqtvMemberloginDetail( this.email, this.username, this.password);
+
+  Map toJson() {
+    Map map = new Map();
+    map['email'] = email;
+    map['username'] = username;
+    map['password'] = password;
+    return map;
+  }
+}
+
+
+class ApiResponseStatus {
+  String statusCode;
+  String message;
+
+  ApiResponseStatus(
+      this.statusCode,
+      this.message      ) ;
+
+}
+
+class ApiFQTVMemberTransaction {
+  String pnr;
+  String flightNumber;
+  String flightDate;
+  String departureCityCode;
+  String arrivalCityCode;
+  String ticketNumber;
+
+  ApiFQTVMemberTransaction(this.pnr, this.flightNumber,
+      this.flightDate,
+      this.departureCityCode, this.arrivalCityCode,
+       this.ticketNumber);
+}
+
+class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
+  List<ApiFQTVMemberTransaction> transactions;
+
+  ApiFqtvMemberTransactionsResp(ApiResponseStatus status, this.transactions)
+      : super(status.statusCode, status.message);
+
+  ApiFqtvMemberTransactionsResp.fromJson(Map<String, dynamic> strJson)
+      : super('', '') {
+    try {
+      Map status = strJson['status'];
+      statusCode = status['statusCode'];
+      message = status['message'];
+      transactions = [];
+      for( Map tran in strJson['transactions']) {
+        transactions.add( new ApiFQTVMemberTransaction(tran['pnr'],
+              tran['flightNumber'], tran['flightDate'],
+              tran['departureCityCode'], tran['arrivalCityCode'],
+              tran['ticketNumber']) );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
+  int balance;
+
+  ApiFqtvMemberAirMilesResp( ApiResponseStatus status, this.balance)  : super(status.statusCode, status.message);
+
+  ApiFqtvMemberAirMilesResp.fromJson(Map<String, dynamic> strJson) : super('', '')  {
+    balance = strJson['balance'];
+    try {
+      Map status = strJson['status'];
+      statusCode = status['statusCode'];
+      message = status['message'];
+    } catch(e) {
+      print(e);
+    }
+  }
+}
+
+
 class RunVRSCommand extends Session {
   String cmd;
 

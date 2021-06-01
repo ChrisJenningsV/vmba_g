@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/models/cities.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 

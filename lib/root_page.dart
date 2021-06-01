@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
@@ -32,8 +31,6 @@ class _RootPageState extends State<RootPage> {
     gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
-    var appVersion = 'Checking..';
-    String projectVersion;
 
       loadData();
   }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/helper.dart';
 
 class MyFqtvPage extends StatefulWidget {
   MyFqtvPage(
@@ -28,7 +29,8 @@ class MyFqtvPage extends StatefulWidget {
 
 class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _fqtvTextEditingController =   TextEditingController();
-  TextEditingController _passwordController =   TextEditingController();
+  TextEditingController _passwordEditingController =   TextEditingController();
+  TextEditingController _emailEditingController =   TextEditingController();
 
   TextEditingController _titleTextEditingController = TextEditingController();
 
@@ -43,6 +45,12 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _adsNumberTextEditingController =   TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
   //TextEditingController _fqtvTextEditingController = TextEditingController();
+  Session session;
+  int balance = 0;
+  String fqtvEmail = '';
+  String fqtvNo = '';
+  String fqtvPass='';
+  List<ApiFQTVMemberTransaction> transactions;
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
@@ -109,12 +117,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           ElevatedButton(
             child: TrText("CONTINUE"),
             onPressed: () {
+               _fqtvLogin();
 
-              widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
-              //_sineIn(sine,pas).then( (result) {
-                setState(() {
-
-                });
               //});
 
              //Navigator.of(context).pop();
@@ -169,7 +173,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     // });
   }
 
-  contentBox(context){
+    contentBox(context){
     return Stack(
       children: <Widget>[
         Container(
@@ -202,9 +206,38 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   }
                 },
               ),
+              /*
               SizedBox(height: 15,),
               new TextFormField(
-                controller: _passwordController ,
+                decoration: InputDecoration(
+                  contentPadding:
+                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  labelText: 'Email',
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(15.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
+                controller: _emailEditingController,
+                keyboardType: TextInputType.phone,
+
+                // do not force phone no here
+                /*              validator: (value) => value.isEmpty
+                    ? 'Phone number can\'t be empty'
+                    : null,
+
+   */
+                onSaved: (value) {
+                  if (value != null) {
+                    //.contactInfomation.phonenumber = value.trim()
+                  }
+                },
+              ),
+              */
+              SizedBox(height: 15,),
+              new TextFormField(
+                controller: _passwordEditingController ,
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -273,7 +306,7 @@ if (widget.passengerDetail != null) {
                 new TrText("${gblSettings.fqtvName} Points",
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w700)),
-                new Text('0',
+                new Text(balance.toString(),
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w500)),
               ],
@@ -355,128 +388,86 @@ if (widget.passengerDetail != null) {
       ),
     ),);
 
+    widgets.add(ElevatedButton(
+      onPressed: () {
+        _showTransactions();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: gblSystemColors
+              .primaryButtonColor, //Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0))),
+      child: Row(
+        //mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+      /*    Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
 
+       */
+          Text(
+            'Show Transactions',
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    ));
+
+    if( transactions != null ) {
+
+      widgets.add(new SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+              columnSpacing: 20.0,
+            columns: <DataColumn>[
+              DataColumn(
+                label: Text('Pnr'),
+              ),
+              DataColumn(
+                label: Text('Flt No'),
+              ),
+              DataColumn(
+                label: Text('Dep'),
+              ),
+              DataColumn(label: Text('Dest'),),
+              DataColumn(label: Text('Date'),),
+            ],
+            rows:   _getDataCells()
+              ),
+        ),
+          ));
+   }
     return widgets;
   }
 
-  ListView optionListView() {
-    List<Widget> widgets = [];
-    //new List<Widget>();
-    gblTitles.forEach((title) =>
-        widgets.add(ListTile(
-            title: Text(title),
-            onTap: () {
-              Navigator.pop(context, title);
-              _updateTitle(title);
-            })));
-    return new ListView(
-      children: widgets,
+  List <DataRow> _getDataCells() {
+    List <DataRow> rows = [];
+
+    for(var tran in  transactions) {
+      DataRow row = new  DataRow(
+          cells: <DataCell>[
+          DataCell(Text( tran.pnr)),
+          DataCell(Text( tran.flightNumber)),
+        DataCell(Text( tran.departureCityCode)),
+        DataCell(Text( tran.arrivalCityCode)),
+        DataCell(Text( DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)))),
+          ]
     );
+      rows.add(row);
   }
-  void _updateTitle(String value) {
-    setState(() {
-      _titleTextEditingController.text = value;
-      FocusScope.of(context).requestFocus(new FocusNode());
-    });
+    return rows;
+
   }
+
   void formSave() {
     final form = formKey.currentState;
     form.save();
   }
 
-  _showCalenderDialog(PaxType paxType) {
-    DateTime dateTime;
-    DateTime _maximumDate;
-    DateTime _minimumDate;
-    DateTime _initialDateTime;
-    int _minimumYear;
-    int _maximumYear;
-    formSave();
-
-    switch (paxType) {
-      case PaxType.infant:
-        {
-          _initialDateTime = DateTime.now();
-          _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2)));
-        }
-        break;
-      case PaxType.child:
-        {
-          _initialDateTime = DateTime.now().subtract(Duration(days: 731));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
-        }
-        break;
-      case PaxType.youth:
-        {
-          _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
-        }
-        break;
-      case PaxType.adult:
-        {
-          _initialDateTime = DateTime.now();
-        }
-        break;
-    }
-    _maximumDate = _initialDateTime;
-    _minimumYear = _minimumDate.year;
-    _maximumYear = _initialDateTime.year;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          title: new Text('Date of Birth'),
-          content: SizedBox(
-            //padding: EdgeInsets.all(1),
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              child: CupertinoTheme(
-                data: CupertinoThemeData(
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                child: CupertinoDatePicker(
-                  initialDateTime: _initialDateTime,
-                  onDateTimeChanged: (DateTime newValue) {
-                    setState(() {
-                      print(newValue);
-                      dateTime = newValue;
-                    });
-                  },
-                  use24hFormat: true,
-                  maximumDate: _maximumDate,
-                  minimumYear: _minimumYear,
-                  maximumYear: _maximumYear,
-                  minimumDate: _minimumDate,
-                  mode: CupertinoDatePickerMode.date,
-                ),
-              )),
-          actions: <Widget>[
-            new TextButton(
-              child: new Text("Ok"),
-              onPressed: () {
-                Navigator.pop(context, dateTime);
-               // _updateDateOfBirth(dateTime);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  void _updateDateOfBirth(DateTime dateOfBirth) {
-    setState(() {
-      _dateOfBirthTextEditingController.text =
-          DateFormat('dd-MMM-yyyy').format(dateOfBirth);
-      FocusScope.of(context).requestFocus(new FocusNode());
-    });
-  }
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -485,93 +476,6 @@ if (widget.passengerDetail != null) {
       return 'Enter Valid Email';
     else
       return null;
-  }
-  void validateAndSubmit() async {
-    if (validateAndSave()) {
-      if (gblBuildFlavor == 'LM' && widget.isLeadPassenger &&
-          _adsPinTextEditingController.text.isNotEmpty && _adsPinTextEditingController.text.isNotEmpty) {
-        adsValidate();
-      } else {
-        try {
-          List<UserProfileRecord> _userProfileRecordList = [];
-          UserProfileRecord _profileRecord = new UserProfileRecord(
-              name: 'PAX1',
-              value: json.encode(widget.passengerDetail.toJson()).replaceAll('"', "'")
-          );
-
-          _userProfileRecordList.add(_profileRecord);
-          Repository.get().updateUserProfile(_userProfileRecordList);
-          Navigator.pop(context, widget.passengerDetail);
-        } catch (e) {
-          print('Error: $e');
-        }
-      }
-    }
-  }
-  bool validateAndSave() {
-    final form = formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<void> adsValidate() async {
-    setState(() {
-//      _loadingInProgress = true;
-    });
-
-//ZADSVERIFY/ADS4000000153501/7978
-
-    http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
-        .catchError((resp) {
-      print( resp);
-    });
-
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }
-
-    try {
-      String adsJson;
-      adsJson = response.body
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
-
-      Map map = json.decode(adsJson);
-
-      if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
-          'true') {
-        print('Login success');
-        List<UserProfileRecord> _userProfileRecordList = [];
-        UserProfileRecord _profileRecord = new UserProfileRecord(
-            name: 'PAX1',
-            value: json.encode(widget.passengerDetail.toJson()).replaceAll('"', "'")
-        );
-
-        _userProfileRecordList.add(_profileRecord);
-        Repository.get().updateUserProfile(_userProfileRecordList);
-        Navigator.pop(context, widget.passengerDetail);
-        //     Navigator.pop(context, widget.passengerDetail);
-      } else {
-        _error = 'Please check your details';
-        _actionCompleted();
-        _showDialog();
-      }
-    } catch (e) {
-      _actionCompleted();
-      _showDialog();
-    }
   }
   void _actionCompleted() {
     setState(() {
@@ -606,4 +510,82 @@ if (widget.passengerDetail != null) {
     );
   }
 
+  void _fqtvLogin() async {
+    await login().then((result) {
+      session =
+          Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
+    });
+    FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
+        _fqtvTextEditingController.text,
+        _passwordEditingController.text);
+    String msg = json.encode(FqTvCommand(session, fqtvMsg ).toJson());
+    String method = 'GetAirMilesBalance';
+
+   //print(msg);
+   _sendVRSCommand(msg, method).then((result){
+      Map map = json.decode(result);
+      ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(map);
+      if( resp.statusCode != 'OK') {
+        _error = resp.message;
+        _actionCompleted();
+        _showDialog();
+
+      } else {
+        widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
+        fqtvNo =  _fqtvTextEditingController.text;
+        fqtvEmail = _emailEditingController.text;
+        fqtvPass = _passwordEditingController.text;
+        balance = resp.balance;
+        setState(() {
+        });
+        }
+      });
+    }
+  Future _sendVRSCommand(msg, method) async {
+    final http.Response response = await http.post(
+        Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
+        headers: {'Content-Type': 'application/json',
+          'Videcom_ApiKey': gblSettings.apiKey
+        },
+        body: msg);
+
+    if (response.statusCode == 200) {
+      print('message send successfully: $msg' );
+      return response.body.trim();
+    } else {
+      print('failed: $msg');
+      _error = 'message failed';
+      try{
+        print (response.body);
+        _error = response.body;
+      } catch(e){}
+
+      _actionCompleted();
+      _showDialog();
+    }
+  }
+ void  _showTransactions() async {
+
+   ApiFqtvGetDetailsRequest fqtvMsg = ApiFqtvGetDetailsRequest(fqtvEmail,
+       fqtvNo,
+       fqtvPass);
+   String msg = json.encode(fqtvMsg.toJson());
+   String method = 'GetTransactions';
+
+   print(msg);
+   _sendVRSCommand(msg, method).then((result){
+     Map map = json.decode(result);
+     ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
+     if( resp.statusCode != 'OK') {
+       _error = resp.message;
+       _actionCompleted();
+       _showDialog();
+
+     } else {
+       transactions = resp.transactions;
+       setState(() {
+       });
+     }
+   });
+  }
 }

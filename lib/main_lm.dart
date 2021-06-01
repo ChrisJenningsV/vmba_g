@@ -90,7 +90,7 @@ void configLM() {
 //Staging setttings
   xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApi/api/',  // InHouse
+  apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
   creditCardProvider: 'videcard',
   wantPayStack: false,
   wantLeftLogo: false,
