@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vmba/components/trText.dart';
 import 'CountDownTimer.dart';
+import 'package:vmba/data/globals.dart';
 
 class TimerWidget extends StatelessWidget {
   final VoidCallback timerExpired;
@@ -9,7 +11,8 @@ class TimerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CountDownTimer>(context, listen: false).start();
+    if( gblTimerExpired == false ) {
+      Provider.of<CountDownTimer>(context, listen: false).start();
     return Consumer<CountDownTimer>(builder: (context, countDownTimer, child) {
       if (countDownTimer.formattedTime == '0:00') {
         timerExpired();
@@ -19,5 +22,9 @@ class TimerWidget extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
       );
     });
+  } else {
+      return TrText('expired');
+    }
+
   }
 }

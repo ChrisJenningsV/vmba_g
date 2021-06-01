@@ -119,6 +119,7 @@ class Settings {
   bool wantLeftLogo = false;
   bool wantMyAccount = false;
   bool wantProfileList = false;
+  bool wantFQTV = false;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -197,10 +198,12 @@ bool bpShowFastTrack;
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
     this.wantMyAccount,
+    this.wantFQTV,
+
   });
 
 
-
+/*
   Settings.fromJson(Map<String, dynamic> json) {
     xmlToken = json['xmlToken'];
     xmlTokenPost = json['xmlTokenPost'];
@@ -264,7 +267,8 @@ bool bpShowFastTrack;
     fqtvEnabled =
         json['fqtvEnabled'].toString().toLowerCase() == 'false' ? false : true;
   }
-
+*/
+  /*
   Map toJson() {
     Map map = new Map();
     map['xmlToken'] = xmlToken;
@@ -300,6 +304,7 @@ bool bpShowFastTrack;
     map['fqtvEnabled'] = fqtvEnabled;
     return map;
   }
+*/
 
   List<KeyPair> toList() {
     List<KeyPair> listKeyPair = [];

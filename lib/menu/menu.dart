@@ -3,6 +3,7 @@ import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
 import 'package:vmba/menu/faqs_page.dart';
 import 'package:vmba/menu/myAccountPage.dart';
+import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:package_info/package_info.dart';
@@ -115,6 +116,18 @@ class DrawerMenu extends StatelessWidget {
                 ));
               },
             ),
+            if(gblSettings.wantFQTV) ListTile(
+              title: _getMenuItem( Icons.person_pin, 'My ${gblSettings.fqtvName}' ),
+              onTap: () {
+                Navigator.push(
+                    context, SlideTopRoute(page: MyFqtvPage(
+                  isAdsBooking: false,
+                  isLeadPassenger: true,
+                )
+                ));
+              },
+            ),
+
             /* gbl_settings.specialAssistanceUrl.isNotEmpty ?
             ListTile(
               title: _getMenuItem( Icons.accessible_forward, 'Special assistance' ),

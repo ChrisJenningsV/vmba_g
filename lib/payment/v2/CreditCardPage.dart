@@ -192,7 +192,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .then((result) {
             print(result);
         if (result == 'Payment Complete') {
-
+          gblTimerExpired = true;
           // kill timer
           Provider.of<CountDownTimer>(context, listen: false)
               .stop();
@@ -431,6 +431,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .replaceAll('</string>', '');
 
         if (result.trim() == 'Payment Complete') {
+          gblTimerExpired = true;
           print('Payment success');
           // kill timer
  //         try {

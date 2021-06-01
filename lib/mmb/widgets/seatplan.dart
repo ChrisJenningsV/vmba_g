@@ -124,10 +124,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         body: msg);
 
     if (response.statusCode == 200) {
-      print('message send successfully');
+      print('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed');
+      print('failed: $msg');
     }
   }
 
@@ -140,10 +140,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         body: msg);
 
     if (response.statusCode == 200) {
-      print('message send successfully');
+      print('message send successfully: $msg');
       return response.body.trim();
     } else {
-      print('failed');
+      print('failed: $msg');
     }
   }
 

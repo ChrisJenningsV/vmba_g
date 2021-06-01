@@ -66,9 +66,9 @@ void configQI() {
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
     backgroundImageUrl: "",
-    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
+    hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
     iOSAppId: '1457545908',
-    androidAppId: 'se.airleap.booking',
+    androidAppId: 'se.ibomair.reservations',
 
     eVoucher: false,
     passengerTypes: PassengerTypes(
@@ -91,9 +91,9 @@ void configQI() {
 
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
-    xmlUrl: "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl: 'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl: 'https://customertest.videcom.com/airleap/VARS/webApi/api/',
+    xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
     creditCardProvider: 'videcard',
     wantPayStack: false,
     wantLeftLogo: false,

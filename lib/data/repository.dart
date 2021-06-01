@@ -137,6 +137,7 @@ class Repository {
     return true;
   }
 
+  /*
   Future getSettingsFromDatabase() async {
     List<KeyPair> _settings;
     //Get settings from db
@@ -153,7 +154,7 @@ class Repository {
       gblSettings = Settings.fromJson(map);
     }
   }
-
+*/
   Future getSettingsFromApi() async {
     var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
     try {
@@ -196,6 +197,10 @@ class Repository {
                   case 'titles':
                     gblTitles = item['value'].split(',');
                     break;
+                  case 'fqtvName':
+                    gblSettings.fqtvName = item['value'];
+                    break;
+
                 /*
                   BOOLS
                    */
@@ -208,6 +213,10 @@ class Repository {
                   case 'wantMyAccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;
+                  case 'wantFQTV':
+                    gblSettings.wantFQTV = parseBool(item['value']);
+                    break;
+
                 /*
                   URLs
                    */

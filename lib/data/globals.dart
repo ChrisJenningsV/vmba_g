@@ -18,6 +18,7 @@ String gblMobileFlags = '';
 int gblSecurityLevel = 0;
 bool gblIsIos = true;
 bool gblIsLive = false;
+bool gblTimerExpired = false;
 SystemColors gblSystemColors;
 Map gblLangMap ;
 Settings gblSettings;

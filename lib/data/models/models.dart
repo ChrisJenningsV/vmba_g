@@ -217,7 +217,7 @@ class LoginResponse extends Session {
   LoginResponse.fromJson(Map<String, dynamic> json) : super('', '', '') {
     sessionId = json['sessionId'];
     varsSessionId = json['varsSessionId'];
-    settings = Settings.fromJson(json['settings']);
+   // settings = Settings.fromJson(json['settings']);
     isSuccessful = json['isSuccessful'].toString().toLowerCase() == 'true';
     errorCode = json['errorCode'];
     errorMessage = json['errorCode'];

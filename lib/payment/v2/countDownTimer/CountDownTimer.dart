@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:vmba/data/globals.dart';
 
 class CountDownTimer extends ChangeNotifier {
   Timer timer;
@@ -10,23 +11,29 @@ class CountDownTimer extends ChangeNotifier {
   var _timeRemainingSeconds;
   double _timeRemaining;
   String formattedTime = '';
-  bool expired = false;
 
   void start() {
     _stopwatch.start();
+    gblTimerExpired = false;
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
 
   void stop() {
+    gblTimerExpired = true;
     _stopwatch.stop();
     _stopwatch = null;
     timer.cancel();
     timer = null;
-    expired = true;
+    gblTimerExpired = true;
   }
 
   void callback(Timer timer) {
-    if( _stopwatch != null ) {
+    if ( gblTimerExpired == true ) {
+      timer.cancel();
+      _stopwatch = null;
+      return;
+    }
+      if( _stopwatch != null ) {
       _timeRemaining = _timerStart - _stopwatch.elapsedMilliseconds;
       _timeRemainingMinutes = (_timeRemaining / (1000 * 60)) % 60;
       _timeRemainingSeconds = (_timeRemaining / (1000)) % 60;
@@ -46,8 +53,14 @@ class CountDownTimer extends ChangeNotifier {
   }
 
   void update() {
-    if ( ! expired ) {
+    if ( gblTimerExpired == false ) {
       notifyListeners();
+    } else {
+      _stopwatch.stop();
+      _stopwatch = null;
+      timer.cancel();
+      timer = null;
+
     }
   }
 }

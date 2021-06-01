@@ -58,7 +58,7 @@ Future sendVRSCommand(msg) async {
     print('message send successfully');
     return response.body.trim();
   } else {
-    print('failed');
+    print('failed: $msg');
   }
 }
 
