@@ -256,6 +256,18 @@ class Session {
   );
 }
 
+class ApiFqtvResetPasswordRequest {
+  String email;
+
+  ApiFqtvResetPasswordRequest( this.email);
+
+  Map toJson() {
+    Map map = new Map();
+    map['email'] = email;
+    return map;
+  }
+}
+
 class ApiFqtvChangePasswordRequest {
   String username;
   String existingPassword;
@@ -270,7 +282,6 @@ class ApiFqtvChangePasswordRequest {
     map['newPassword'] = newPassword;
     return map;
   }
-
 }
 
 class ApiFqtvGetDetailsRequest {

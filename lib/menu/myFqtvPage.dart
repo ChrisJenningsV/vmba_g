@@ -264,6 +264,16 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   }
                 },
               ),
+              new TextButton(
+                child: new Text(
+                  'Reset password',
+                  style: TextStyle(color: Colors.black),
+                ),
+                style: TextButton.styleFrom(primary: Colors.white),
+                onPressed: () {
+                  _resetPasswordDialog();
+                },
+              ),
             ],
           ),
         ),
@@ -511,6 +521,29 @@ if (widget.passengerDetail != null) {
     );
   }
 
+  void _fqtvResetPassword() async {
+    String msg = json.encode(ApiFqtvResetPasswordRequest(
+        _oldPasswordEditingController.text).toJson());
+    String method = 'ResetPassword';
+
+    //print(msg);
+    _sendVRSCommand(msg, method).then((result){
+      Map map = json.decode(result);
+      ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
+      if( resp.statusCode != 'OK') {
+        _error = resp.message;
+        _actionCompleted();
+        _showDialog();
+
+      } else {
+        _error = resp.message;
+        _actionCompleted();
+        Navigator.of(context).pop();
+      }
+    });
+
+  }
+
   void _fqtvChangePassword() async {
     String msg = json.encode(ApiFqtvChangePasswordRequest(fqtvNo,
           _oldPasswordEditingController.text,
@@ -565,6 +598,7 @@ if (widget.passengerDetail != null) {
         }
       });
     }
+
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
@@ -588,6 +622,7 @@ if (widget.passengerDetail != null) {
       _showDialog();
     }
   }
+
  void  _showTransactions() async {
 
    ApiFqtvGetDetailsRequest fqtvMsg = ApiFqtvGetDetailsRequest(fqtvEmail,
@@ -692,5 +727,67 @@ if (widget.passengerDetail != null) {
      ],
    );
    });
+ }
+
+ void _resetPasswordDialog() {
+   showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         return AlertDialog(
+           title: Row(
+               children:[
+                 Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/reset_password_icon.png',
+                   width: 50, height: 50, fit: BoxFit.contain,),
+                 TrText('Reset Password')
+               ]
+           ),
+           content:    Stack(
+             children: <Widget>[
+               Container(
+                 child: Column(
+                   mainAxisSize: MainAxisSize.min,
+                   children: <Widget>[
+                     new TextFormField(
+                       decoration: InputDecoration(
+                         contentPadding:
+                         new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                         labelText: 'Email',
+                         fillColor: Colors.white,
+                         border: new OutlineInputBorder(
+                           borderRadius: new BorderRadius.circular(15.0),
+                           borderSide: new BorderSide(),
+                         ),
+                       ),
+                       controller: _oldPasswordEditingController,
+                       keyboardType: TextInputType.phone,
+                     ),
+                     SizedBox(height: 15,),
+                    ],
+                 ),
+               ),
+             ],
+           ),
+           actions: <Widget>[
+             ElevatedButton(
+               style: ElevatedButton.styleFrom(primary: Colors.black12) ,
+               child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
+               onPressed: () {
+                 //Put your code here which you want to execute on Cancel button click.
+                 Navigator.of(context).pop();
+               },
+             ),
+             ElevatedButton(
+               child: TrText("CONTINUE"),
+               onPressed: () {
+                 _fqtvResetPassword();
+
+                 //});
+
+                 //Navigator.of(context).pop();
+               },
+             ),
+           ],
+         );
+       });
  }
 }

@@ -105,7 +105,7 @@ class DrawerMenu extends StatelessWidget {
                 ));
               },
             ),
-            if(gblSettings.wantMyAccount) ListTile(
+            if(gblSettings != null &&  gblSettings.wantMyAccount != null && gblSettings.wantMyAccount) ListTile(
               title: _getMenuItem( Icons.person_outline, 'My account' ),
               onTap: () {
                 Navigator.push(
@@ -116,7 +116,7 @@ class DrawerMenu extends StatelessWidget {
                 ));
               },
             ),
-            if(gblSettings.wantFQTV) ListTile(
+            if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) ListTile(
               title: _getMenuItem( Icons.person_pin, 'My ${gblSettings.fqtvName}' ),
               onTap: () {
                 Navigator.push(
