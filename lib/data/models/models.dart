@@ -256,6 +256,23 @@ class Session {
   );
 }
 
+class ApiFqtvChangePasswordRequest {
+  String username;
+  String existingPassword;
+  String newPassword;
+
+  ApiFqtvChangePasswordRequest( this.username, this.existingPassword, this.newPassword);
+
+  Map toJson() {
+    Map map = new Map();
+    map['username'] = username;
+    map['existingPassword'] = existingPassword;
+    map['newPassword'] = newPassword;
+    return map;
+  }
+
+}
+
 class ApiFqtvGetDetailsRequest {
   String email;
   String username;
@@ -316,6 +333,14 @@ class ApiResponseStatus {
       this.statusCode,
       this.message      ) ;
 
+  ApiResponseStatus.fromJson(Map<String, dynamic> strJson) {
+    try {
+      statusCode = strJson['statusCode'];
+      message = strJson['message'];
+    } catch(e) {
+      print(e);
+    }
+  }
 }
 
 class ApiFQTVMemberTransaction {
@@ -346,16 +371,25 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
       message = status['message'];
       transactions = [];
       for( Map tran in strJson['transactions']) {
-        transactions.add( new ApiFQTVMemberTransaction(tran['pnr'],
-              tran['flightNumber'], tran['flightDate'],
-              tran['departureCityCode'], tran['arrivalCityCode'],
-              tran['ticketNumber']) );
+        transactions.add( new ApiFQTVMemberTransaction(_getString(tran['pnr']),
+            _getString(tran['flightNumber']),
+            _getString(tran['flightDate']),
+            _getString(tran['departureCityCode']),
+            _getString(tran['arrivalCityCode']),
+            _getString(tran['ticketNumber'])) );
       }
     } catch (e) {
       print(e);
     }
   }
 }
+String _getString(String inStr) {
+  if( inStr != null ) {
+    return inStr;
+  }
+  return '';
+}
+
 
 class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
   int balance;

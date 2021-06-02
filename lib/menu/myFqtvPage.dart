@@ -31,6 +31,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _fqtvTextEditingController =   TextEditingController();
   TextEditingController _passwordEditingController =   TextEditingController();
   TextEditingController _emailEditingController =   TextEditingController();
+  TextEditingController _oldPasswordEditingController =   TextEditingController();
+  TextEditingController _newPasswordEditingController =   TextEditingController();
 
   TextEditingController _titleTextEditingController = TextEditingController();
 
@@ -397,23 +399,22 @@ if (widget.passengerDetail != null) {
               .primaryButtonColor, //Colors.black,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
-      child: Row(
-        //mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-      /*    Icon(
-            Icons.check,
-            color: Colors.white,
-          ),
-
-       */
+      child:
           Text(
             'Show Transactions',
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
+            style: TextStyle(color: Colors.white),)
     ));
+
+    widgets.add(ElevatedButton(
+        child: TrText("Change Password"),
+        onPressed: () {
+          _changePasswordDialog();
+          //Navigator.of(context).pop();
+        }));
+
+    if(_error != null && _error.isNotEmpty){
+      widgets.add(Text(_error));
+    }
 
     if( transactions != null ) {
 
@@ -510,6 +511,29 @@ if (widget.passengerDetail != null) {
     );
   }
 
+  void _fqtvChangePassword() async {
+    String msg = json.encode(ApiFqtvChangePasswordRequest(fqtvNo,
+          _oldPasswordEditingController.text,
+          _newPasswordEditingController.text).toJson());
+    String method = 'ChangePassword';
+
+    //print(msg);
+    _sendVRSCommand(msg, method).then((result){
+      Map map = json.decode(result);
+      ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
+      if( resp.statusCode != 'OK') {
+        _error = resp.message;
+        _actionCompleted();
+        _showDialog();
+
+      } else {
+        _error = resp.message;
+        _actionCompleted();
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
   void _fqtvLogin() async {
     await login().then((result) {
       session =
@@ -588,4 +612,85 @@ if (widget.passengerDetail != null) {
      }
    });
   }
+ void _changePasswordDialog() {
+   showDialog(
+       context: context,
+       builder: (BuildContext context) {
+   return AlertDialog(
+     title: Row(
+         children:[
+           Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/lock_user_man.png',
+             width: 50, height: 50, fit: BoxFit.contain,),
+           TrText('Change Password')
+         ]
+     ),
+     content:    Stack(
+   children: <Widget>[
+   Container(
+     child: Column(
+     mainAxisSize: MainAxisSize.min,
+     children: <Widget>[
+       new TextFormField(
+         decoration: InputDecoration(
+           contentPadding:
+           new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+           labelText: 'Old password',
+           fillColor: Colors.white,
+           border: new OutlineInputBorder(
+             borderRadius: new BorderRadius.circular(15.0),
+             borderSide: new BorderSide(),
+           ),
+         ),
+         controller: _oldPasswordEditingController,
+         keyboardType: TextInputType.phone,
+       ),
+        SizedBox(height: 15,),
+       new TextFormField(
+         controller: _newPasswordEditingController ,
+         decoration: InputDecoration(
+           contentPadding:
+           new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+           labelText: 'new Password',
+           fillColor: Colors.white,
+           border: new OutlineInputBorder(
+             borderRadius: new BorderRadius.circular(15.0),
+             borderSide: new BorderSide(),
+           ),
+         ),
+         keyboardType: TextInputType.visiblePassword,
+
+         onSaved: (value) {
+           if (value != null) {
+             //.contactInfomation.phonenumber = value.trim()
+           }
+         },
+       ),
+     ],
+   ),
+         ),
+         ],
+         ),
+     actions: <Widget>[
+       ElevatedButton(
+         style: ElevatedButton.styleFrom(primary: Colors.black12) ,
+         child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
+         onPressed: () {
+           //Put your code here which you want to execute on Cancel button click.
+           Navigator.of(context).pop();
+         },
+       ),
+       ElevatedButton(
+         child: TrText("CONTINUE"),
+         onPressed: () {
+           _fqtvChangePassword();
+
+           //});
+
+           //Navigator.of(context).pop();
+         },
+       ),
+     ],
+   );
+   });
+ }
 }
