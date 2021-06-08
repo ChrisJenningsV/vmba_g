@@ -11,7 +11,7 @@ description: Videcom Mobile Booking App.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.8+26
+version: 1.0.8+28
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -61,11 +61,12 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "lib/assets/icon/loganair_1024x1024.png"
+  image_path: "lib/assets/icon/AirSwift_1024x1024.png"
+#   image_path: "lib/assets/icon/loganair_1024x1024.png"
 #  image_path: "lib/assets/icon/AirLeap_1024x1024.png"
-
-# flutter pub run flutter_launcher_icons:main -f launch_icons_airleap
-# flutter pub run flutter_launcher_icons:main -f launch_icons_loganair
+# flutter pub run flutter_launcher_icons:main -f launch_icons_airleap.yaml
+# flutter pub run flutter_launcher_icons:main -f launch_icons_airswift.yaml
+# flutter pub run flutter_launcher_icons:main -f launch_icons_loganair.yaml
 
 
 # For information on the generic Dart part of this file, see the
@@ -105,6 +106,7 @@ flutter:
     - lib/assets/airswift/images/logo.png
     - lib/assets/airswift/images/loader.png
     - lib/assets/airswift/images/background.png
+    - lib/assets/airswift/json/countries.json
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
     - lib/assets/airleap/images/background.png
