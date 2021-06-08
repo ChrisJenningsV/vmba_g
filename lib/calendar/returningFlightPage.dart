@@ -63,6 +63,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     //if (this.widget.newBooking.isReturn) {
     //  buffer.write(',SingleSeg=s');
     //} else {
+    if( gblRedeemingAirmiles) {
+      buffer.write(',FQTV=True');
+    }
+
     buffer.write(',SingleSeg=r');
     //}
     buffer.write(',FGNoAv=True');

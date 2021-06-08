@@ -1268,8 +1268,10 @@ class PaxTax {
   String cur;
   String amnt;
   String curInf;
+  String desc;
+  String separate;
 
-  PaxTax({this.seg, this.pax, this.code, this.cur, this.amnt, this.curInf});
+  PaxTax({this.seg, this.pax, this.code, this.cur, this.amnt, this.curInf, this.desc, this.separate});
 
   PaxTax.fromJson(Map<String, dynamic> json) {
     seg = json['Seg'];
@@ -1278,6 +1280,8 @@ class PaxTax {
     cur = json['Cur'];
     amnt = json['Amnt'];
     curInf = json['CurInf'];
+    desc = json['desc'];
+    separate = json['separate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1288,6 +1292,8 @@ class PaxTax {
     data['Cur'] = this.cur;
     data['Amnt'] = this.amnt;
     data['CurInf'] = this.curInf;
+    data['desc'] = this.desc;
+    data['separate'] = this.separate;
     return data;
   }
 }

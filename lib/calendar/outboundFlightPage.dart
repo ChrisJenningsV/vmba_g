@@ -66,6 +66,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     buffer.write(',Vars=True');
     //&ClassBands=True
     buffer.write(',ClassBands=True');
+    if( gblRedeemingAirmiles) {
+      buffer.write(',FQTV=True');
+    }
     //&StartCity=ABZ
     buffer.write(',StartCity=${this.widget.newBooking.departure}');
     //&SingleSeg=s
@@ -259,15 +262,20 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
   }
 
-  String calenderPrice(String currency, String price) {
+  String calenderPrice(String currency, String price, String miles) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
         locale: gblSettings.locale, name: currency);
     String _currencySymbol;
     _currencySymbol = numberFormat.currencySymbol;
-    if (price.length == 0) {
-      return 'N/A';
+    if( gblRedeemingAirmiles== true && miles.isNotEmpty){
+      // print("Miles =$miles");
+      return '$miles ${translate("points")}';
     } else {
-      return _currencySymbol + price;
+      if (price.length == 0) {
+        return 'N/A';
+      } else {
+        return _currencySymbol + price;
+      }
     }
   }
 
@@ -331,7 +339,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                             ),
                             //new Text(item.cur + item.amt)
                             new Text(
-                              calenderPrice(item.cur, item.amt),
+                              calenderPrice(item.cur, item.amt, item.miles),
                               //textScaleFactor: 1.0,
                               style: TextStyle(
                                   fontSize: 14,
@@ -713,7 +721,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                                 (double.tryParse(current
                                                         .fltav.tax[index]) ??
                                                     0.0))
-                                        .toStringAsFixed(2)),
+                                        .toStringAsFixed(2),
+                                    item[0].fltav.miles[index]),
                                 style: new TextStyle(
                                   color: gblSystemColors
                                       .primaryButtonTextColor,
@@ -795,7 +804,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                                   (double.tryParse(current
                                                           .fltav.tax[index]) ??
                                                       0.0))
-                                          .toStringAsFixed(2)),
+                                          .toStringAsFixed(2),
+                                      item[0].fltav.miles[index]),
                                   style: new TextStyle(
                                     color: gblSystemColors
                                         .primaryButtonTextColor,

@@ -171,6 +171,48 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     );
   }
 
+
+  Widget taxTotal() {
+    double tax = 0.0;
+
+    List <Row> rows = [];
+
+    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+        if(  paxTax.separate == 'true'){
+          rows.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(paxTax.desc),
+              Text(NumberFormat.simpleCurrency(
+                  locale: gblSettings.locale,
+                  name: currencyCode)
+                  .format(double.tryParse(paxTax.amnt))),
+            ],
+          ));
+
+        } else {
+          tax += (double.tryParse(paxTax.amnt) ?? 0.0);
+        }
+      });
+    }
+
+    rows.add(Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text('Total Tax: '),
+        Text(NumberFormat.simpleCurrency(
+            locale: gblSettings.locale,
+            name: currencyCode)
+            .format(tax)),
+      ],
+    ));
+    return Column(
+      children: rows,
+    );
+  }
+
+  /*
   Row taxTotal() {
     double tax = 0.0;
     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
@@ -189,6 +231,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       ],
     );
   }
+
+   */
 
   Row netFareTotal() {
     double total = 0.0;
@@ -982,6 +1026,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                           )),
                     )
                   ]),
+                  // FQTV Here
                   Expanded(
                     child: new SingleChildScrollView(
                         padding: EdgeInsets.all(16.0),

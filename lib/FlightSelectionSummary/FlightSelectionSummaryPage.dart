@@ -226,23 +226,43 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     });
   }
 
-  Row taxTotal() {
+  Widget taxTotal() {
     double tax = 0.0;
+
+    List <Row> rows = [];
 
     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-        tax += (double.tryParse(paxTax.amnt) ?? 0.0);
+        if(  paxTax.separate == 'true'){
+          rows.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(paxTax.desc),
+              Text(NumberFormat.simpleCurrency(
+                  locale: gblSettings.locale,
+                  name: currencyCode)
+                  .format(double.tryParse(paxTax.amnt))),
+            ],
+          ));
+
+        } else {
+          tax += (double.tryParse(paxTax.amnt) ?? 0.0);
+        }
       });
     }
-    return Row(
+
+    rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Total Tax: '),
         Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
+            locale: gblSettings.locale,
+            name: currencyCode)
             .format(tax)),
       ],
+    ));
+    return Column(
+      children: rows,
     );
   }
 

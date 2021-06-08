@@ -64,3 +64,9 @@ class TrText extends StatelessWidget {
     }
   }
 }
+String translate( String str ) {
+  if( gblLangMap != null ) {
+    return gblLangMap[str];
+  }
+  return str;
+}

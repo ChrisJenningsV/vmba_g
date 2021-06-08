@@ -11,6 +11,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/flightSearch/widgets/evoucher.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads});
@@ -136,7 +137,18 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                       evoucherNo: booking.eVoucherCode,
                       onChanged: _handleEVoucherChanged,
                     )
-                  : Container()
+                  : Container(),
+              (gblFqtvBalance != null && gblFqtvBalance > 0)
+                ? CheckboxListTile(
+                title: TrText("Redeem ${gblSettings.fqtvName} points"),
+                value: gblRedeemingAirmiles,
+                onChanged: (newValue) {
+                  setState(() {
+                    gblRedeemingAirmiles = newValue;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+              ) : Container(),
             ],
           ),
         ));

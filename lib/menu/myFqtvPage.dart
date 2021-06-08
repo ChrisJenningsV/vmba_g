@@ -48,7 +48,6 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _adsPinTextEditingController = TextEditingController();
   //TextEditingController _fqtvTextEditingController = TextEditingController();
   Session session;
-  int balance = 0;
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
@@ -318,7 +317,7 @@ if (widget.passengerDetail != null) {
                 new TrText("${gblSettings.fqtvName} Points",
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w700)),
-                new Text(balance.toString(),
+                new Text(gblFqtvBalance.toString(),
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w500)),
               ],
@@ -590,9 +589,10 @@ if (widget.passengerDetail != null) {
       } else {
         widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
         fqtvNo =  _fqtvTextEditingController.text;
+        gblFqtvNumber =fqtvNo;
         fqtvEmail = _emailEditingController.text;
         fqtvPass = _passwordEditingController.text;
-        balance = resp.balance;
+        gblFqtvBalance = resp.balance;
         setState(() {
         });
         }
@@ -736,7 +736,7 @@ if (widget.passengerDetail != null) {
          return AlertDialog(
            title: Row(
                children:[
-                 Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/reset_password_icon.png',
+                 Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/reset_password.png',
                    width: 50, height: 50, fit: BoxFit.contain,),
                  TrText('Reset Password')
                ]
