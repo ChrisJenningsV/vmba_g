@@ -66,7 +66,7 @@ void configFL() {
     iOSAppId:  '1457545908',
     androidAppId:  'se.airleap.booking',
 
-    eVoucher:  false,
+    eVoucher:  true,
     passengerTypes:  PassengerTypes(
       adult: true,
       child: true,

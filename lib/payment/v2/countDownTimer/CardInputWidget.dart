@@ -523,7 +523,7 @@ void initState() {
                                 textInputAction: TextInputAction.next,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                      RegExp("[a-zA-Z- ]")),
+                                      RegExp("[a-zA-Z- (ÆØäöåÄÖÅ]")),
                                   LengthLimitingTextInputFormatter(50)
                                 ],
                               ),
