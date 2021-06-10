@@ -214,6 +214,18 @@ class Repository {
                   case 'wantFQTV':
                     gblSettings.wantFQTV = parseBool(item['value']);
                     break;
+                  case 'eVoucher':
+                    gblSettings.eVoucher =parseBool(item['value']);
+                    break;
+                  case 'bpShowFastTrack':
+                    gblSettings.bpShowFastTrack =parseBool(item['value']);
+                    break;
+                  case 'bpShowLoungeAccess':
+                    gblSettings.bpShowLoungeAccess =parseBool(item['value']);
+                    break;
+                  case 'HideFareRules':
+                    gblSettings.hideFareRules =parseBool(item['value']);
+                    break;
 
                 /*
                   URLs
@@ -248,6 +260,16 @@ class Repository {
                   case 'groupsBookingsEmail':
                     gblSettings.groupsBookingsEmail = item['value'];
                     break;
+                    /*
+                    integers
+                     */
+                  case 'bookingLeadTime':
+                    gblSettings.bookingLeadTime = parseInt(item['value']);
+                    break;
+                  case 'maxNumberOfPax':
+                    gblSettings.maxNumberOfPax = parseInt(item['value']);
+                    break;
+
                   default:
                     String param = item['parameter'];
                     if (param.startsWith('appVersion')) {
@@ -302,6 +324,16 @@ class Repository {
       return false;
     }
     return (str.toLowerCase() == 'true');
+  }
+
+  int parseInt( String str ){
+    if( str == null ) {
+      return 0;
+    }
+    if( str.isEmpty) {
+      return 0;
+    }
+    return int.parse(str);
   }
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> getCities() async {
