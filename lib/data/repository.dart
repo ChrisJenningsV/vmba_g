@@ -89,6 +89,73 @@ class Repository {
         response.statusCode, []..addAll(networkCities.values));
   }
 
+    initFqtv() async {
+    if( gblSettings.wantFQTV == false ){
+      return null;
+    }
+    database.getNamedUserProfile('PAX1').then((profile) {
+      if (profile != null) {
+
+        try {
+          Map map = json.decode(
+              profile.value.toString().replaceAll(
+                  "'", '"')); // .replaceAll(',}', '}')
+            gblPassengerDetail = PassengerDetail.fromJson(map);
+
+            if( gblPassengerDetail!= null &&
+                gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
+                gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty){
+              // get balance
+              if ( gblSession != null ){
+                FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(gblPassengerDetail.email,
+                    gblPassengerDetail.fqtv,
+                    gblPassengerDetail.fqtvPassword);
+                String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
+                String method = 'GetAirMilesBalance';
+
+                //print(msg);
+                _sendVRSCommand(msg, method).then((result){
+                  Map map = json.decode(result);
+                  ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(map);
+                  if( resp.statusCode != 'OK') {
+/*                    _error = resp.message;
+                    _actionCompleted();
+                    _showDialog();
+
+ */
+                  } else {
+                    gblFqtvBalance = resp.balance;
+                  }
+                });
+              }
+            }
+        } catch (e) {
+          print(e);
+        }
+      }
+    });
+  }
+  Future _sendVRSCommand(msg, method) async {
+    final http.Response response = await http.post(
+        Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
+        headers: {'Content-Type': 'application/json',
+          'Videcom_ApiKey': gblSettings.apiKey
+        },
+        body: msg);
+
+    if (response.statusCode == 200) {
+      print('message send successfully: $msg' );
+      return response.body.trim();
+    } else {
+      print('failed: $msg');
+      try{
+        print (response.body);
+      } catch(e){}
+
+    }
+  }
+
+
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> initCities() async {
 
@@ -169,6 +236,8 @@ class Repository {
         Map map = json.decode(response.body);
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
+          gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+
           List <dynamic> settingsJson;
           if (settingsString != null && settingsString.isNotEmpty) {
             settingsJson = json.decode(settingsString);

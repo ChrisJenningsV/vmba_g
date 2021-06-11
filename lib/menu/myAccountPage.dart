@@ -39,7 +39,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   TextEditingController _adsNumberTextEditingController =   TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
-  //TextEditingController _fqtvTextEditingController = TextEditingController();
+  TextEditingController _fqtvTextEditingController = TextEditingController();
+  TextEditingController _fqtvPasswordEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
@@ -68,6 +69,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
         _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
+
+        _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
+        _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
 
         _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
         _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
@@ -128,6 +132,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   List<Widget> _getWidgets() {
     List<Widget> widgets = [];
 
+    // title
     widgets.add( Padding(
       padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
       child: InkWell(
@@ -172,6 +177,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       ),
     ));
 
+    // first name
     widgets.add(Padding(
     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
     child: new Theme(
@@ -210,6 +216,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ),
     ),);
 
+    // last name
     widgets.add(Padding(
     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
     child: new Theme(
@@ -246,6 +253,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ),
     ),
     ));
+
+    // phone
     widgets.add(Padding(
     padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
     child: new Theme(
@@ -284,6 +293,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
     )
     ),
     ));
+
+    // email
     widgets.add(Padding(
     padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
     child: new Theme(
@@ -315,6 +326,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ),
     ),
     ));
+
+    // DOB
     widgets.add(Padding(
     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
     child: (widget.passengerDetail.paxType != PaxType.adult &&
@@ -360,6 +373,74 @@ class _MyAccountPageState extends State<MyAccountPage> {
         : Padding(padding: const EdgeInsets.all(0.0)),
     ));
 
+    // fqtv
+    if( gblSettings.wantFQTV ) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+            data: new ThemeData(
+              primaryColor: Colors.blueAccent,
+              primaryColorDark: Colors.blue,
+            ),
+            child: new TextFormField(
+              decoration: InputDecoration(
+                contentPadding:
+                new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                labelText: '${gblSettings.fqtvName} Number',
+                fillColor: Colors.white,
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: new BorderSide(),
+                ),
+              ),
+              controller: _fqtvTextEditingController,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+               onSaved: (value) {
+                if (value != null) {
+                  //.contactInfomation.phonenumber = value.trim()
+                  widget.passengerDetail.fqtv = value.trim();
+                }
+              },
+            )
+        ),
+      ));
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+            data: new ThemeData(
+              primaryColor: Colors.blueAccent,
+              primaryColorDark: Colors.blue,
+            ),
+            child: new TextFormField(
+              obscureText: true,
+              obscuringCharacter: "*",
+              decoration: InputDecoration(
+                contentPadding:
+                new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                labelText: '${gblSettings.fqtvName} Password',
+                fillColor: Colors.white,
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: new BorderSide(),
+                ),
+              ),
+              controller: _fqtvPasswordEditingController,
+              keyboardType: TextInputType.visiblePassword,
+              onSaved: (value) {
+                if (value != null) {
+                  widget.passengerDetail..fqtvPassword = value.trim();
+                }
+              },
+            )
+        ),
+      ));
+
+    }
+
+  // ADS for LM
     if( gblSettings.aircode == 'LM') {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),

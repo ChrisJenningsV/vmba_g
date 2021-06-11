@@ -35,6 +35,7 @@ Future<Session> login() async {
     LoginResponse loginResponse = new LoginResponse.fromJson(map);
     if (loginResponse.isSuccessful) {
       print('successful login');
+      gblSession = loginResponse.getSession();
       return loginResponse.getSession();
     }
   } else {

@@ -197,13 +197,17 @@ String bgImage ='lib/assets/$gblAppTitle/images/background.png';
       ));
     } else {
       //print(mainBackGroundImage);
+      var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
+      Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
+
       return new Scaffold(
 
         appBar: new AppBar(
             brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
-            title: gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test', style: gblTitleStyle,)]),
+            title:
+                gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test', style: gblTitleStyle,)]),
             iconTheme: IconThemeData(
                 color:
                 gblSystemColors.headerTextColor)),

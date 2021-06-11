@@ -51,6 +51,7 @@ class _RootPageState extends State<RootPage> {
         });
         return;
       });
+      Repository.get().initFqtv();
     }
 
    // await Repository.get().init();
@@ -90,6 +91,8 @@ class _RootPageState extends State<RootPage> {
                 _displayProcessingIndicator = false;
               });
             });
+
+    //Repository.get().initFqtv();
   }
 
   @override

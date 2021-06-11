@@ -138,7 +138,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                       onChanged: _handleEVoucherChanged,
                     )
                   : Container(),
-              (gblFqtvBalance != null && gblFqtvBalance > 0)
+              (_canDoRedeem())
                 ? CheckboxListTile(
                 title: TrText("Redeem ${gblSettings.fqtvName} points"),
                 value: gblRedeemingAirmiles,
@@ -154,6 +154,22 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         ));
   }
 
+  bool _canDoRedeem() {
+
+    if( gblPassengerDetail == null ) {
+      return false;
+    }
+
+    if( gblPassengerDetail.fqtv == null || gblPassengerDetail.fqtv.isEmpty) {
+      return false;
+    }
+
+
+    if( gblFqtvBalance != null && gblFqtvBalance > 0 ) {
+      return true;
+    }
+    return false;
+  }
   void _reloadSearch(NewBooking newBooking) {
     if (newBooking != null) {
       setState(() {

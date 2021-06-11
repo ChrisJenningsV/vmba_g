@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
@@ -22,7 +22,9 @@ bool gblIsLive = false;
 bool gblTimerExpired = false;
 bool gblRedeemingAirmiles = false;
 String gblFqtvNumber = '';
+PassengerDetail gblPassengerDetail;
 SystemColors gblSystemColors;
+Session gblSession;
 Map gblLangMap ;
 Settings gblSettings;
 bool gblNoNetwork;

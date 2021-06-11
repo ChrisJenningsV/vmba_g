@@ -71,6 +71,7 @@ void configT6() {
       child: true,
       infant: true,
       youth: true,
+      senior:  true,
   ),
 
 //Production setttings

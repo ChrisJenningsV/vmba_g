@@ -96,6 +96,7 @@ class PassengerDetail {
   String adsNumber = '';
   String adsPin = '';
   String fqtv = '';
+  String fqtvPassword = '';
 
   PassengerDetail( {this.title,
     this.firstName,
@@ -106,7 +107,8 @@ class PassengerDetail {
     this.email,
     this.adsNumber,
     this.adsPin,
-    this.fqtv  });
+    this.fqtv,
+    this.fqtvPassword,});
 
   Map<String, dynamic> toJson() {
       final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -144,6 +146,7 @@ class PassengerDetail {
       data['adsNumber'] = this.adsNumber;
       data['adsPin'] = this.adsPin;
       data['fqtv'] = this.fqtv;
+      data['fqtvPassword'] = this.fqtvPassword;
 
       return data;
     }
@@ -178,6 +181,7 @@ class PassengerDetail {
     adsNumber =  (json['adsNumber'] == null) ? '' :json['adsNumber'];
     adsPin =  json['adsPin'];
     fqtv =  json['fqtv'];
+    fqtvPassword = json['fqtvPassword'];
       }
   }
 

@@ -47,7 +47,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _adsNumberTextEditingController =   TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
   //TextEditingController _fqtvTextEditingController = TextEditingController();
-  Session session;
+  //Session session;
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
@@ -415,11 +415,29 @@ if (widget.passengerDetail != null) {
     ));
 
     widgets.add(ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: gblSystemColors
+                .primaryButtonColor, //Colors.black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
         child: TrText("Change Password"),
         onPressed: () {
           _changePasswordDialog();
           //Navigator.of(context).pop();
         }));
+
+    widgets.add(ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          primary: gblSystemColors
+              .primaryButtonColor, //Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0))),
+      child: TrText("Book a flight"),
+      onPressed: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/FlightSearchPage', (Route<dynamic> route) => false);
+      },
+    ));
 
     if(_error != null && _error.isNotEmpty){
       widgets.add(Text(_error));
@@ -567,14 +585,16 @@ if (widget.passengerDetail != null) {
   }
 
   void _fqtvLogin() async {
-    await login().then((result) {
-      session =
-          Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
-    });
+    if ( gblSession == null ) {
+      await login().then((result) {
+        gblSession =
+            Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
+      });
+    }
     FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
         _fqtvTextEditingController.text,
         _passwordEditingController.text);
-    String msg = json.encode(FqTvCommand(session, fqtvMsg ).toJson());
+    String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
     String method = 'GetAirMilesBalance';
 
    //print(msg);
@@ -724,6 +744,8 @@ if (widget.passengerDetail != null) {
            //Navigator.of(context).pop();
          },
        ),
+
+
      ],
    );
    });

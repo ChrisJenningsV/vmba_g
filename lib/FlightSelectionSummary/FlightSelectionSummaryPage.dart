@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget({Key key, this.newBooking}) : super(key: key);
@@ -265,6 +266,25 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: rows,
     );
   }
+Row airMiles() {
+
+    var miles = 0;
+  for ( FQItin fqi in  this.pnrModel.pNR.fareQuote.fQItin) {
+          miles =  miles + int.tryParse(fqi.miles) ?? 0;
+    };
+
+    return  Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      TrText('${gblSettings.fqtvName} Required '),
+      Text(NumberFormat.simpleCurrency(
+          locale: gblSettings.locale,
+          name: currencyCode)
+          .format(miles),
+        style: TextStyle(fontSize: 16),),
+    ],
+  );
+}
 
   Row netFareTotal() {
     double total = 0.0;
@@ -364,12 +384,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
   Row amountPayable() {
     FareStore fareStore = this
-        .pnrModel
-        .pNR
-        .fareQuote
-        .fareStore
-        .where((fareStore) => fareStore.fSID == 'Total')
-        .first;
+          .pnrModel
+          .pNR
+          .fareQuote
+          .fareStore
+          .where((fareStore) => fareStore.fSID == 'Total')
+          .first;
+
+    var amount = fareStore.total;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -378,7 +400,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
-              .format((double.tryParse(fareStore.total) ?? 0.0)),
+              .format((double.tryParse(amount) ?? 0.0)),
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ],
@@ -679,12 +701,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ),
                   ],
                 ),
-                netFareTotal(),
+                ( gblRedeemingAirmiles == true ) ?
+                  airMiles() : netFareTotal(),
                 taxTotal(),
-                grandTotal(),
+                ( gblRedeemingAirmiles != true ) ?
+                grandTotal() : Column(),
                 discountTotal(),
                 Divider(),
-                Row(
+                ( gblRedeemingAirmiles != true ) ? Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
@@ -692,8 +716,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ],
-                ),
-                amountPayable(),
+                ) : Column(),
+                ( gblRedeemingAirmiles != true ) ? amountPayable() : Column(),
                 Padding(
                   padding: EdgeInsets.only(top: 5),
                 ),

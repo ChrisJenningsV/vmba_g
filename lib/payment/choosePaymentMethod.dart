@@ -17,6 +17,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -1027,192 +1028,215 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                     )
                   ]),
                   // FQTV Here
-                  Expanded(
-                    child: new SingleChildScrollView(
-                        padding: EdgeInsets.all(16.0),
-                        child: new Form(
-                            key: formKey,
-                            child: new Column(children: [
-                              ExpansionTile(
-                                initiallyExpanded: false,
-                                title: Text(
-                                  'Total ' +
-                                      NumberFormat.simpleCurrency(
-                                              locale: GobalSettings
-                                                  .shared.settings.locale,
-                                              name: this
-                                                  .pnrModel
-                                                  .pNR
-                                                  .basket
-                                                  .outstanding
-                                                  .cur)
-                                          .format((double.parse(this
-                                                  .pnrModel
-                                                  .pNR
-                                                  .basket
-                                                  .outstanding
-                                                  .amount) ??
-                                              0.0)),
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                                children: [
-                                  _passengers.adults != 0
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text('No of adults: '),
-                                            Text(_passengers.adults.toString()),
-                                          ],
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                  _passengers.youths != 0
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text('No of youths: '),
-                                            Text(_passengers.youths.toString()),
-                                          ],
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                  _passengers.children != 0
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text('No of children: '),
-                                            Text(_passengers.children
-                                                .toString()),
-                                          ],
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                  _passengers.infants != 0
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text('No of infants: '),
-                                            Text(
-                                                _passengers.infants.toString()),
-                                          ],
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                  Divider(),
-                                  flightSegementSummary(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Summary',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
-                                  netFareTotal(),
-                                  taxTotal(),
-                                  grandTotal(),
-                                  discountTotal(),
-                                  Divider(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Amount outstanding',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[amountOutstanding()],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                  )
-                                ],
-                              ),
-                              Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text('Terms and Conditions'),
-                                  IconButton(
-                                    icon: Icon(Icons.keyboard_arrow_down),
-                                    onPressed: () => Navigator.push(
-                                        context,
-                                        SlideTopRoute(
-                                            page: WebViewWidget(
-                                                title: 'Terms & Conditions',
-                                                url: GobalSettings
-                                                    .shared
-                                                    .settings
-                                                    .termsAndConditionsUrl))),
-                                  )
-                                ],
-                              ),
-                              Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text('Privacy Policy'),
-                                  IconButton(
-                                    icon: Icon(Icons.keyboard_arrow_down),
-                                    onPressed: () => Navigator.push(
-                                        context,
-                                        SlideTopRoute(
-                                            page: WebViewWidget(
-                                                title: 'Privacy Policy',
-                                                url: GobalSettings
-                                                    .shared
-                                                    .settings
-                                                    .privacyPolicyUrl))),
-                                  )
-                                ],
-                              ),
-                              Divider(),
-                              this.isMmb &&
-                                      widget.pnrModel.pNR.basket.outstanding
-                                              .amount ==
-                                          '0'
-                                  ? ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0))),
-                                      onPressed: () =>
-                                          completeBookingNothingtoPay(),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                'AGREE AND MAKE CHANGES',
-                                                style: new TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : renderPaymentButtons()
-                              /* RaisedButton(
+                  _getMiles(),
+                  _getTotals(),
+                ],
+              ),
+            )),
+      );
+    }
+  }
+  Widget _getMiles() {
+    Column col = new Column();
+    if( gblRedeemingAirmiles == true && this.pnrModel.pNR != null) {
+      var miles = this.pnrModel.pNR.basket.outstandingairmiles.airmiles;
+      return Padding(
+          padding: const EdgeInsets.only(top: 8, left: 16.0),
+          child: Row(
+           children: <Widget>[
+          TrText( "${gblSettings.fqtvName} required ", style: TextStyle(fontWeight: FontWeight.w700) ),
+          Text(miles, style: TextStyle(fontSize: 16.0))]));
+    }
+    return col;
+  }
+
+    Widget _getTotals() {
+   String cur = this.pnrModel.pNR.basket.outstanding.cur;
+    String amount =   this.pnrModel.pNR.basket.outstanding.amount;
+
+    if( gblRedeemingAirmiles) {
+      // get tax amount
+      String cur = this.pnrModel.pNR.basket.outstandingairmiles.cur;
+      String amount =   this.pnrModel.pNR.basket.outstandingairmiles.amount;
+    }
+
+
+     return Expanded(
+      child: new SingleChildScrollView(
+          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+          child: new Form(
+              key: formKey,
+              child: new Column(children: [
+                ExpansionTile(
+                  initiallyExpanded: false,
+                  title: Text(
+                    'Total ' +
+                        NumberFormat.simpleCurrency(
+                            locale: GobalSettings
+                                .shared.settings.locale,
+                            name: cur)
+                            .format((double.parse(amount) ??
+                            0.0)),
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  children: [
+                    _passengers.adults != 0
+                        ? Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('No of adults: '),
+                        Text(_passengers.adults.toString()),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.zero,
+                    ),
+                    _passengers.youths != 0
+                        ? Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('No of youths: '),
+                        Text(_passengers.youths.toString()),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.zero,
+                    ),
+                    _passengers.children != 0
+                        ? Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('No of children: '),
+                        Text(_passengers.children
+                            .toString()),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.zero,
+                    ),
+                    _passengers.infants != 0
+                        ? Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('No of infants: '),
+                        Text(
+                            _passengers.infants.toString()),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.zero,
+                    ),
+                    Divider(),
+                    flightSegementSummary(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Summary',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                    netFareTotal(),
+                    taxTotal(),
+                    grandTotal(),
+                    discountTotal(),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Amount outstanding',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[amountOutstanding()],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    )
+                  ],
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Terms and Conditions'),
+                    IconButton(
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      onPressed: () => Navigator.push(
+                          context,
+                          SlideTopRoute(
+                              page: WebViewWidget(
+                                  title: 'Terms & Conditions',
+                                  url: GobalSettings
+                                      .shared
+                                      .settings
+                                      .termsAndConditionsUrl))),
+                    )
+                  ],
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Privacy Policy'),
+                    IconButton(
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      onPressed: () => Navigator.push(
+                          context,
+                          SlideTopRoute(
+                              page: WebViewWidget(
+                                  title: 'Privacy Policy',
+                                  url: GobalSettings
+                                      .shared
+                                      .settings
+                                      .privacyPolicyUrl))),
+                    )
+                  ],
+                ),
+                Divider(),
+                this.isMmb &&
+                    widget.pnrModel.pNR.basket.outstanding
+                        .amount ==
+                        '0'
+                    ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30.0))),
+                  onPressed: () =>
+                      completeBookingNothingtoPay(),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'AGREE AND MAKE CHANGES',
+                            style: new TextStyle(
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+                    : renderPaymentButtons()
+                /* RaisedButton(
                                       color: Colors.white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -1259,14 +1283,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                                         ],
                                       ),
                                     ), */
-                            ]))),
-                  ),
-                ],
-              ),
-            )),
-      );
-    }
+              ]))),
+    );
   }
+
 
   Column renderPaymentButtons() {
     List<Widget> paymentButtons = [];
