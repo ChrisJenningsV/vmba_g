@@ -87,14 +87,18 @@ class _HomeState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
-    appBarImage = Image.asset(      'lib/assets/$gblAppTitle/images/appBar.png',    );
-String bgImage ='lib/assets/$gblAppTitle/images/background.png';
-    mainBackGroundImage = AssetImage(bgImage);
-    logoImage = AssetImage('lib/assets/$gblAppTitle/images/loader.png');
-    precacheImage(appBarImage.image, context);
-    precacheImage(mainBackGroundImage, context);
-    precacheImage(logoImage, context);
+    try {
+      super.didChangeDependencies();
+      appBarImage = Image.asset('lib/assets/$gblAppTitle/images/appBar.png',);
+      String bgImage = 'lib/assets/$gblAppTitle/images/background.png';
+      mainBackGroundImage = AssetImage(bgImage);
+      logoImage = AssetImage('lib/assets/$gblAppTitle/images/loader.png');
+      precacheImage(appBarImage.image, context);
+      precacheImage(mainBackGroundImage, context);
+      precacheImage(logoImage, context);
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _updateAppDialog() {

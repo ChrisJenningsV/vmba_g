@@ -201,6 +201,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             primaryColorDark: Colors.blue,
           ),
           child: TextFormField(
+            maxLength: 50,
             decoration: InputDecoration(
               contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -238,6 +239,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             primaryColorDark: Colors.blue,
           ),
           child: TextFormField(
+            maxLength: 50,
             decoration: InputDecoration(
               contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -317,6 +319,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                   primaryColorDark: Colors.blue,
                 ),
                 child: TextFormField(
+                  maxLength: 20,
                   decoration: InputDecoration(
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 15.0),
@@ -351,6 +354,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           ? Padding(
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
               child: TextFormField(
+                maxLength: 20,
                 textCapitalization: TextCapitalization.characters,
                 decoration: InputDecoration(
                   contentPadding: new EdgeInsets.symmetric(
@@ -393,6 +397,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           ? Padding(
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
               child: TextFormField(
+                maxLength: 4,
                 textCapitalization: TextCapitalization.characters,
                 decoration: InputDecoration(
                   contentPadding: new EdgeInsets.symmetric(

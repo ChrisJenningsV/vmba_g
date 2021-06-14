@@ -92,6 +92,8 @@ flutter:
     - lib/assets/ibomair/images/appBar.png
     - lib/assets/ibomair/images/logo.png
     - lib/assets/ibomair/images/loader.png
+    - lib/assets/ibomair/images/background.png
+    - lib/assets/ibomair/json/countries.json
     - lib/assets/loganair/images/appBar.png
     - lib/assets/loganair/images/logo.png
     - lib/assets/loganair/images/background.png

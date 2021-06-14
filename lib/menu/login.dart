@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
               SizedBox(height: 15,),
               new TextFormField(
+                maxLength: 20,
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -88,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 15,),
               new TextFormField(
+                maxLength: 4,
                 controller: _adsPinTextEditingController,
                 decoration: InputDecoration(
                   contentPadding:

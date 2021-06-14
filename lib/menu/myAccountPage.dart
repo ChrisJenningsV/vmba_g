@@ -186,14 +186,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
     primaryColorDark: Colors.blue,
     ),
     child: TextFormField(
-    decoration: InputDecoration(
-    contentPadding:
-    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: 'First name (as Passport)',
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-    borderRadius: new BorderRadius.circular(25.0),
-    borderSide: new BorderSide(),
+      maxLength: 50,
+      decoration: InputDecoration(
+      contentPadding:
+        new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+      labelText: 'First name (as Passport)',
+      fillColor: Colors.white,
+      border: new OutlineInputBorder(
+      borderRadius: new BorderRadius.circular(25.0),
+      borderSide: new BorderSide(),
     ),
     ),
     controller: _firstNameTextEditingController,
@@ -225,6 +226,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     primaryColorDark: Colors.blue,
     ),
     child: TextFormField(
+      maxLength: 50,
     decoration: InputDecoration(
     contentPadding:
     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -263,6 +265,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     primaryColorDark: Colors.blue,
     ),
     child: new TextFormField(
+      maxLength: 30,
     decoration: InputDecoration(
     contentPadding:
     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -303,6 +306,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     primaryColorDark: Colors.blue,
     ),
     child: new TextFormField(
+      maxLength: 100,
     controller: _emailTextEditingController,
     decoration: InputDecoration(
     contentPadding:
@@ -383,6 +387,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               primaryColorDark: Colors.blue,
             ),
             child: new TextFormField(
+              maxLength: 50,
               decoration: InputDecoration(
                 contentPadding:
                 new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -415,6 +420,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               primaryColorDark: Colors.blue,
             ),
             child: new TextFormField(
+              maxLength: 50,
               obscureText: true,
               obscuringCharacter: "*",
               decoration: InputDecoration(
@@ -450,6 +456,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             primaryColorDark: Colors.blue,
           ),
           child: new TextFormField(
+            maxLength: 20,
             controller: _adsNumberTextEditingController,
             decoration: InputDecoration(
               contentPadding:
@@ -481,6 +488,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             primaryColorDark: Colors.blue,
           ),
           child: new TextFormField(
+            maxLength: 4,
             controller: _adsPinTextEditingController,
             decoration: InputDecoration(
               contentPadding:

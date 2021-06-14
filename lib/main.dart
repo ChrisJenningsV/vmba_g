@@ -15,6 +15,7 @@ import 'main_lm.dart';
 import 'main_qi.dart';
 import 'main_si.dart';
 import 'main_t6.dart';
+import 'main_z4.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,9 @@ void main() async {
     switch(gblBuildFlavor){
       case 'T6':
         configT6();
+        break;
+      case 'Z4':
+        configZ4();
         break;
 
         case 'LM':
