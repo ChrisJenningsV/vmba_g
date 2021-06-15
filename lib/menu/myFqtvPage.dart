@@ -62,34 +62,57 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   initState() {
     super.initState();
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
+    if( gblPassengerDetail != null &&
+        gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
+        gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty) {
+      widget.passengerDetail = gblPassengerDetail;
+    } else {
+      Repository.get()
+          .getNamedUserProfile('PAX1').then((profile) {
+        if (profile != null) {
+          widget.passengerDetail.firstName = profile.name.toString();
+          try {
+            Map map = json.decode(
+                profile.value.toString().replaceAll(
+                    "'", '"')); // .replaceAll(',}', '}')
+            widget.passengerDetail = PassengerDetail.fromJson(map);
+            gblPassengerDetail =widget.passengerDetail;
+          } catch (e) {
+            print(e);
+          }
+          _titleTextEditingController.text = widget.passengerDetail.title;
+          _firstNameTextEditingController.text =
+              widget.passengerDetail.firstName;
+          _lastNameTextEditingController.text = widget.passengerDetail.lastName;
+          _emailTextEditingController.text = widget.passengerDetail.email;
+          _phoneNumberTextEditingController.text =
+              widget.passengerDetail.phonenumber;
+          _dateOfBirthTextEditingController.text =
+              widget.passengerDetail.dateOfBirth.toString();
 
-    Repository.get()
-        .getNamedUserProfile('PAX1').then((profile) {
-      if (profile != null) {
-        widget.passengerDetail.firstName = profile.name.toString();
-        try {
-          Map map = json.decode(
-              profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
-          widget.passengerDetail = PassengerDetail.fromJson(map);
-        } catch(e) {
-          print(e);
+          _adsNumberTextEditingController.text =
+              widget.passengerDetail.adsNumber;
+          _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
+
+          if (widget.passengerDetail.paxType == null) {
+            widget.passengerDetail.paxType = PaxType.adult;
+          }
         }
-        _titleTextEditingController.text = widget.passengerDetail.title;
-        _firstNameTextEditingController.text = widget.passengerDetail.firstName;
-        _lastNameTextEditingController.text = widget.passengerDetail.lastName;
-        _emailTextEditingController.text = widget.passengerDetail.email;
-        _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
-        _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
-
-        _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
-        _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
-
-        if( widget.passengerDetail.paxType == null) {
-          widget.passengerDetail.paxType = PaxType.adult;
-        }
-      }
-    });
+      });
+    }
     // _displayProcessingIndicator = false;
+
+    if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null &&
+        gblPassengerDetail.fqtv.isNotEmpty &&
+        gblPassengerDetail.fqtvPassword != null &&
+        gblPassengerDetail.fqtvPassword.isNotEmpty) {
+      // set up for login
+      _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
+      _passwordEditingController.text = gblPassengerDetail.fqtvPassword;
+
+      _fqtvLogin();
+    }
+
   }
 
   @override
@@ -127,8 +150,6 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           ),
         ],
       );
-
-
     }
 
     return Scaffold(

@@ -402,6 +402,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
       //msg = '*$rLOC^';
       msg += getPaymentCmd(true);
 
+      try{
+        print( "Payment sent $msg");
+      } catch(e) {
+        print(e);
+      }
       response = await http
           .get(Uri.parse(
           "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))

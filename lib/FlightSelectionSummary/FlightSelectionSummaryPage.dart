@@ -276,12 +276,8 @@ Row airMiles() {
     return  Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
-      TrText('${gblSettings.fqtvName} Required '),
-      Text(NumberFormat.simpleCurrency(
-          locale: gblSettings.locale,
-          name: currencyCode)
-          .format(miles),
-        style: TextStyle(fontSize: 16),),
+      Text('${gblSettings.fqtvName}' + translate( ' Required points')),
+      Text('$miles'),
     ],
   );
 }

@@ -504,9 +504,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             keyboardType: TextInputType.number,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-              if (value.isNotEmpty) {
                 widget.passengerDetail.adsPin = value.trim();
-              }
             },
 
           ),
@@ -684,6 +682,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           _userProfileRecordList.add(_profileRecord);
           Repository.get().updateUserProfile(_userProfileRecordList);
           Navigator.pop(context, widget.passengerDetail);
+          gblPassengerDetail = widget.passengerDetail;
         } catch (e) {
           print('Error: $e');
         }

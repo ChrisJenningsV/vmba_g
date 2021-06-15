@@ -1,3 +1,10 @@
 In directory vmba
+# set up flavor
+edit data/globals.dart
+# set up correct images
+flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 
+
+
+# build android app bundle
 flutter build appbundle
