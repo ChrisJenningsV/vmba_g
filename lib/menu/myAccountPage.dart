@@ -378,7 +378,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ));
 
     // fqtv
-    if( gblSettings.wantFQTV ) {
+    if( gblSettings.wantFQTV == true ) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
