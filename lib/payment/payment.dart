@@ -628,6 +628,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       buffer.write('MK($creditCardProviderStaging)');
     }
    */
+    if( gblRedeemingAirmiles) {
+      buffer.write('MF-$gblFqtvNumber^');
+    }
     buffer.write('MK($gblSettings.creditCardProvider)');
 
     //creditCardProviderStaging

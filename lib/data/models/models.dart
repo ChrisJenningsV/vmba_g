@@ -364,12 +364,13 @@ class ApiFQTVMemberTransaction {
   String flightDate;
   String departureCityCode;
   String arrivalCityCode;
-  String ticketNumber;
+  String airMiles;
+  String description;
 
   ApiFQTVMemberTransaction(this.pnr, this.flightNumber,
       this.flightDate,
       this.departureCityCode, this.arrivalCityCode,
-       this.ticketNumber);
+       this.airMiles, this.description);
 }
 
 class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
@@ -391,7 +392,8 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
             _getString(tran['flightDate']),
             _getString(tran['departureCityCode']),
             _getString(tran['arrivalCityCode']),
-            _getString(tran['ticketNumber'])) );
+            _getNumber(tran['airMiles']),
+            _getString(tran['description'])) );
       }
     } catch (e) {
       print(e);
@@ -405,6 +407,12 @@ String _getString(String inStr) {
   return '';
 }
 
+String _getNumber(double inNo) {
+  if( inNo == null ) {
+    return '0';
+  }
+  return '$inNo';
+}
 
 class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
   int balance;
@@ -413,6 +421,85 @@ class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
 
   ApiFqtvMemberAirMilesResp.fromJson(Map<String, dynamic> strJson) : super('', '')  {
     balance = strJson['balance'];
+    try {
+      Map status = strJson['status'];
+      statusCode = status['statusCode'];
+      message = status['message'];
+    } catch(e) {
+      print(e);
+    }
+  }
+}
+class ApiFqtvMemberDetails {
+  String username;
+  String password;
+  String title;
+  String firstname;
+  String surname;
+  String address1;
+  String address2;
+  String address3;
+  String address4;
+  String postcode;
+  String country;
+  String email;
+  String phoneHome;
+  String phoneWork;
+  String phoneMobile;
+  String phoneMobile2;
+  String phoneHomeCountryCode;
+  String phoneWorkCountryCode;
+  String phoneMobileCountryCode;
+  String phoneMobileCountryCode2;
+  String dob;
+  String securityQuestion;
+  String securityQuestionAnswer;
+  String issueDate;
+
+  ApiFqtvMemberDetails(this.username,  this.password,  this.title,
+        this.firstname,  this.surname,  this.address1,
+        this.address2,  this.address3,  this.address4,
+        this.postcode,  this.country,  this.email,
+        this.phoneHome,  this.phoneWork,  this.phoneMobile,
+        this.phoneMobile2,  this.phoneHomeCountryCode,  this.phoneWorkCountryCode,
+        this.phoneMobileCountryCode,  this.phoneMobileCountryCode2,  this.dob,
+        this.securityQuestion,  this.securityQuestionAnswer,  this.issueDate);
+
+  ApiFqtvMemberDetails.fromJson(Map<String, dynamic> strJson)   {
+    username = strJson['username'];
+    password = strJson['password'];
+    title = strJson['title'];
+    firstname = strJson['firstname'];
+    surname = strJson['surname'];
+    address1 = strJson['address1'];
+    address2 = strJson['address2'];
+    address3 = strJson['address3'];
+    address4 = strJson['address4'];
+    postcode = strJson['postcode'];
+    country = strJson['country'];
+    email = strJson['email'];
+    phoneHome = strJson['phoneHome'];
+    phoneWork = strJson['phoneWork'];
+    phoneMobile = strJson['phoneMobile'];
+    phoneMobile2 = strJson['phoneMobile2'];
+    phoneHomeCountryCode = strJson['phoneHomeCountryCode'];
+    phoneWorkCountryCode = strJson['phoneWorkCountryCode'];
+    phoneMobileCountryCode = strJson['phoneMobileCountryCode'];
+    phoneMobileCountryCode2 = strJson['phoneMobileCountryCode2'];
+    dob = strJson['dob'];
+    securityQuestion = strJson['securityQuestion'];
+    securityQuestionAnswer = strJson['securityQuestionAnswer'];
+    issueDate = strJson['issueDate'];
+  }
+}
+
+class ApiFqtvMemberDetailsResponse extends ApiResponseStatus {
+  ApiFqtvMemberDetails member;
+
+  ApiFqtvMemberDetailsResponse( ApiResponseStatus status, this.member)  : super(status.statusCode, status.message);
+
+  ApiFqtvMemberDetailsResponse.fromJson(Map<String, dynamic> strJson) : super('', '')  {
+    member = ApiFqtvMemberDetails.fromJson(strJson['member']);
     try {
       Map status = strJson['status'];
       statusCode = status['statusCode'];

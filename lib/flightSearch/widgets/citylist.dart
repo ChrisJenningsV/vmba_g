@@ -95,88 +95,48 @@ class _DeparturesState extends State<Departures> {
   void initState() {
     super.initState();
 //    _loadingInProgress = true;
-    _loadData();
+     _loadData();
   }
   Future _loadData() async {
     //Repository.get().getAllDepartures().then((cityData) {
     if( _cityData == null ) {
       _cityData = await Repository.get().getAllDepartures();
     }
-     /* int i=0;
-      while( i < 10 && cityData.length == 0) {
-        // not finished - some bug in dart async stuff ??
-        sleep(Duration(milliseconds:100));
-        i = i+1;
-      }
-      _cityData = cityData;
-*/
 
-      if( _cityData.length > 0) {
-        setState(() {
-//          _loadingInProgress = false;
-        });
-      } else {
-//        _loadingInProgress = true;
-//        _loadingMsg = 'Reloading Cities...';
-          setState(() {
-        });
-      }
+    if (_cityData == null || _cityData.length==0) {
+      // delay
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (_cityData == null || _cityData.length == 0) {
+          print(" This line is execute after 100 ms - no cities");
+          setState(() {          });
+        } else {
+          print(" This line is execute after 100 ms - got cities");
+          setState(() {          });
+        }
+      });
+    }
+
+
 
   }
   @override
   Widget build(BuildContext context) {
 
-    if (_cityData == null || _cityData.length==0) {
-      return new Center(
-          child: new ElevatedButton(onPressed: () => _loadData(),
-            child: TrText("Load cities Failed, RETRY"),
-            )
-  /*      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText(_LoadingMsg),
-            )
-          ],
-        ),*/
 
-      );
+    if (_cityData == null || _cityData.length==0) {
+      return new Center( child: TrText("Loading...")
+         /* child: new ElevatedButton(onPressed: () => _loadData(),
+            child: TrText("Load cities Failed, RETRY"),
+            )*/
+        );
     } else {
       return DepartureList(routes: _cityData);
     }
-  }
+
 
   }
-  /*  return new FutureBuilder<List<String>>(
-      //future: fetchDepartureCities(),
-      future:  Repository.get().getAllDepartures(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
-        // cj new bit
-        if( snapshot.hasData && snapshot.data.length > 0) {
-          return DepartureList(routes: snapshot.data);
-        } else {
-          if(gbl_verbose) {
-            if (snapshot.hasData) {
-              var cs = snapshot.connectionState;
-              print(".. loading departures - bad hasData " );
-            } else {
-              print(".. loading departures");
-            }
-          }
-          return Center(child: CircularProgressIndicator());
-        }
 
-//        return snapshot.hasData
-//            ? DepartureList(routes: snapshot.data)
-//            : Center(child: CircularProgressIndicator());
-      },
-    );
-
-   */
-
+  }
 
 
 class DepartureList extends StatelessWidget {
@@ -204,35 +164,6 @@ class DepartureList extends StatelessWidget {
   }
 }
 
-/*
-class Arrivals extends StatelessWidget {
-  final String title;
-  final String departureCityCode;
-
-  Arrivals({Key key, this.title, this.departureCityCode}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new FutureBuilder<List<String>>(
-      //future: fetchCitylistData(http.Client()),
-      future: fetchDestinationCities(departureCityCode),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
-
-        if( snapshot.hasData ) {
-          return ArrivalList(
-            routes: snapshot.data,
-            departureCityCode: departureCityCode,
-          );
-        } else {
-          if(gbl_verbose) print("loading arrivals..");
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
-}
-*/
 class Arrivals extends StatefulWidget {
   final String title;
   final String departCityCode;
@@ -260,34 +191,36 @@ class _ArrivalsState extends State<Arrivals> {
     if ( _departCityData == null ) {
       _departCityData = await Repository.get().getDestinations(departCityCode);
     }
+    if (_departCityData == null || _departCityData.length==0) {
+      // delay
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (_departCityData == null || _departCityData.length == 0) {
+          print(" This line is execute after 100 ms - no cities");
+          setState(() {          });
+        } else {
+          print(" This line is execute after 100 ms - got cities");
+          setState(() {          });
+        }
+      });
+    }
+/*
     if( _departCityData.length > 0) {
       setState(() {
-//        _loadingInProgress = false;
       });
     } else {
-//      _loadingInProgress = true;
-//      _loadingMsg = 'Reloading Cities...';
       setState(() {
       });
     }
+
+ */
   }
   @override
   Widget build(BuildContext context) {
     if (_departCityData == null || _departCityData.length == 0) {
-      return new Center(
-          child: new ElevatedButton(onPressed: () => _loadData(),
+      return new Center( child: TrText("Loading...")
+    /* child: new ElevatedButton(onPressed: () => _loadData(),
             child: TrText("Load cities Failed, RETRY"),
-          )
-        /*      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText(_LoadingMsg),
-            )
-          ],
-        ),*/
+            )*/
 
       );
     } else {

@@ -47,7 +47,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   PaymentDetails paymentDetails = new PaymentDetails();
   String nostop = '';
 
-  bool _displayProcessingIndicator;
+  //bool _displayProcessingIndicator;
   String _displayProcessingText;
   PnrModel pnrModel;
   String _error;
@@ -123,7 +123,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   void _dataLoaded() {
     setState(() {
-      _displayProcessingIndicator = false;
+      //_displayProcessingIndicator = false;
     });
   }
   Future _sendVRSCommand(msg) async {
@@ -181,7 +181,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     http.Response response;
     setState(() {
       _displayProcessingText = 'Processing your payment...';
-      _displayProcessingIndicator = true;
+      //_displayProcessingIndicator = true;
     });
     if (widget.isMmb) {
       session = widget.session;
@@ -249,7 +249,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .catchError((resp) {});
       if (response == null) {
         setState(() {
-          _displayProcessingIndicator = false;
+          //_displayProcessingIndicator = false;
         });
         showSnackBar('Please check your internet connection');
         return null;
@@ -257,7 +257,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
       if (response.statusCode < 200 || response.statusCode >= 300) {
         setState(() {
-          _displayProcessingIndicator = false;
+          //_displayProcessingIndicator = false;
         });
         showSnackBar('Please check your internet connection');
         return null;
@@ -293,7 +293,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 .catchError((resp) {});
             if (response == null) {
               setState(() {
-                _displayProcessingIndicator = false;
+                //_displayProcessingIndicator = false;
               });
               showSnackBar('Please check your internet connection');
               return null;
@@ -302,7 +302,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             //If there was an error return an empty list
             if (response.statusCode < 200 || response.statusCode >= 300) {
               setState(() {
-                _displayProcessingIndicator = false;
+                //_displayProcessingIndicator = false;
               });
               showSnackBar('Please check your internet connection');
               return null;
@@ -340,7 +340,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       if (!flightsConfirmed) {
         setState(() {
-          _displayProcessingIndicator = false;
+          //_displayProcessingIndicator = false;
         });
         showSnackBar('Unable to confirm partner airlines flights.');
         //Cnx new flights
@@ -414,7 +414,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
       if (response == null) {
         setState(() {
-          _displayProcessingIndicator = false;
+          //_displayProcessingIndicator = false;
         });
         showSnackBar('Please check your internet connection');
         return null;
@@ -423,7 +423,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       //If there was an error return an empty list
       if (response.statusCode < 200 || response.statusCode >= 300) {
         setState(() {
-          _displayProcessingIndicator = false;
+          //_displayProcessingIndicator = false;
         });
         showSnackBar('Please check your internet connection');
         return null;
@@ -448,7 +448,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
           setState(() {
             _displayProcessingText = 'Completing your booking...';
-            _displayProcessingIndicator = true;
+            //_displayProcessingIndicator = true;
           });
           if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
@@ -463,7 +463,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
           _dataLoaded();
           _showDialog();
         } else {
-          _error = 'Declined';
+          print(result);
+          _error = 'Declined: ' + result;
           _dataLoaded();
           _showDialog();
         }
@@ -480,6 +481,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
     var buffer = new StringBuffer();
     //if (isLive) {
       //buffer.write('MK($creditCardProviderProduction)');
+    if( gblRedeemingAirmiles) {
+
+      if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
+        buffer.write('MF-${gblPassengerDetail.fqtv}^');
+      } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
+        buffer.write('MF-$gblFqtvNumber^');
+      }
+    }
       buffer.write('MK(${gblSettings.creditCardProvider})');
     //} else {
       //buffer.write('MK($creditCardProviderStaging)');
@@ -574,7 +583,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     if (response == null) {
       setState(() {
-        _displayProcessingIndicator = false;
+        //_displayProcessingIndicator = false;
       });
       showSnackBar('Please check your internet connection');
       return null;
@@ -583,7 +592,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       setState(() {
-        _displayProcessingIndicator = false;
+        //_displayProcessingIndicator = false;
       });
       showSnackBar('Please check your internet connection');
       return null;

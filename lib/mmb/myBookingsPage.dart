@@ -50,6 +50,13 @@ class _MyBookingsPageState extends State<MyBookingsPage> {
         //if (_pnrs.nextFlightSinceEpoch != 0) {
         if (_pnr.validate() && _pnr.hasFutureFlightsAddDayOffset(1)) {
           thispnrs.add(_pnrs);
+        } else {
+          // remove old booking
+          try {
+            Repository.get().deletePnr(item.rloc);
+          } catch(e) {
+            print(e);
+          }
         }
 
         //}

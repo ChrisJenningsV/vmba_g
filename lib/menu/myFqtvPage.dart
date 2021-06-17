@@ -51,6 +51,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
+  bool _isButtonDisabled;
+  ApiFqtvMemberDetailsResponse memberDetails;
   List<ApiFQTVMemberTransaction> transactions;
 
   List<UserProfileRecord> userProfileRecordList;
@@ -61,6 +63,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   @override
   initState() {
     super.initState();
+    _isButtonDisabled = false;
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
     if( gblPassengerDetail != null &&
         gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
@@ -111,6 +114,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       _passwordEditingController.text = gblPassengerDetail.fqtvPassword;
 
       _fqtvLogin();
+
     }
 
   }
@@ -118,7 +122,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   @override
   Widget build(BuildContext context) {
     if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
-        widget.passengerDetail.fqtv.isEmpty) {
+        widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
 
       return AlertDialog(
         title: Row(
@@ -139,10 +143,35 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
             },
           ),
           ElevatedButton(
-            child: TrText("CONTINUE"),
+            child: Row(
+                children: <Widget>[
+              (_isButtonDisabled) ?
+                new Transform.scale(
+                  scale: 0.5,
+                  child: CircularProgressIndicator(),
+                )   :
+                Icon(Icons.check,
+              color: Colors.white,
+            ),_isButtonDisabled ?  new TrText("Logging in...", style: TextStyle(color: Colors.white)) : TrText('CONTINUE',
+              style: TextStyle(color: Colors.white))]),
             onPressed: () {
-               _fqtvLogin();
+              if ( _isButtonDisabled == false ) {
+                if( _fqtvTextEditingController.text.isNotEmpty && _passwordEditingController.text.isNotEmpty) {
+                  _isButtonDisabled = true;
+                  setState(() {
 
+                  });
+                  _fqtvLogin();
+
+                } else {
+                  _error = "Please complete both fields";
+                  _isButtonDisabled = false ;
+                 // _actionCompleted();
+                  _showDialog();
+
+
+                }
+              }
               //});
 
              //Navigator.of(context).pop();
@@ -306,6 +335,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     String name = '';
     String email = '';
     String fqtv = '';
+    String joining = '' ;
 
 if (widget.passengerDetail != null) {
   if( widget.passengerDetail.firstName != null &&
@@ -320,6 +350,11 @@ if (widget.passengerDetail != null) {
   if ( widget.passengerDetail.fqtv != null ) {
     fqtv = widget.passengerDetail.fqtv;
   }
+}
+if ( memberDetails != null ) {
+  name = memberDetails.member.title + ' ' + memberDetails.member.firstname + ' ' + memberDetails.member.surname ;
+  email = memberDetails.member.email;
+  joining = DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate));
 }
 
 
@@ -411,7 +446,7 @@ if (widget.passengerDetail != null) {
               new TrText("Joining date",
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
-              new Text(DateTime.now().toString(),
+              new Text(joining,
                   style: new TextStyle(
                       fontSize: 14.0, fontWeight: FontWeight.w300)),
             ],
@@ -467,23 +502,25 @@ if (widget.passengerDetail != null) {
     if( transactions != null ) {
 
       widgets.add(new SingleChildScrollView(
+        padding: EdgeInsets.only(left: 1.0, right: 1.0),
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
-              columnSpacing: 20.0,
-            columns: <DataColumn>[
+              columnSpacing: 1.0,
+              columns: <DataColumn>[
               DataColumn(
-                label: Text('Pnr'),
+                label: Text('Pnr',  style: TextStyle(fontSize: 10.0)),
               ),
               DataColumn(
-                label: Text('Flt No'),
+                label: Text('Flt No', style: TextStyle(fontSize: 10.0)),
               ),
-              DataColumn(
-                label: Text('Dep'),
+              DataColumn(label: Text('Dep', style: TextStyle(fontSize: 10.0)),
               ),
-              DataColumn(label: Text('Dest'),),
-              DataColumn(label: Text('Date'),),
+              DataColumn(label: Text('Dest', style: TextStyle(fontSize: 10.0)),),
+              DataColumn(label: Text('Date', style: TextStyle(fontSize: 10.0)),),
+              DataColumn(label: Text('Miles', style: TextStyle(fontSize: 10.0)),),
+              DataColumn(label: Text('Desc', style: TextStyle(fontSize: 10.0)),),
             ],
             rows:   _getDataCells()
               ),
@@ -498,12 +535,15 @@ if (widget.passengerDetail != null) {
 
     for(var tran in  transactions) {
       DataRow row = new  DataRow(
+
           cells: <DataCell>[
-          DataCell(Text( tran.pnr)),
-          DataCell(Text( tran.flightNumber)),
-        DataCell(Text( tran.departureCityCode)),
-        DataCell(Text( tran.arrivalCityCode)),
-        DataCell(Text( DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)))),
+          DataCell(Text( tran.pnr, style: TextStyle(fontSize: 10.0),)),
+          DataCell(Text( tran.flightNumber, style: TextStyle(fontSize: 10.0))),
+          DataCell(Text( tran.departureCityCode, style: TextStyle(fontSize: 10.0))),
+          DataCell(Text( tran.arrivalCityCode, style: TextStyle(fontSize: 10.0))),
+          DataCell(Text( DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(fontSize: 10.0))),
+          DataCell(Text( tran.airMiles, style: TextStyle(fontSize: 10.0))),
+          DataCell(Text( tran.description, style: TextStyle(fontSize: 8.0))),
           ]
     );
       rows.add(row);
@@ -619,26 +659,52 @@ if (widget.passengerDetail != null) {
     String method = 'GetAirMilesBalance';
 
    //print(msg);
-   _sendVRSCommand(msg, method).then((result){
-      Map map = json.decode(result);
-      ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(map);
-      if( resp.statusCode != 'OK') {
-        _error = resp.message;
-        _actionCompleted();
-        _showDialog();
+   _sendVRSCommand(msg, method).then((result) {
+     Map map = json.decode(result);
+     ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(
+         map);
+     if (resp.statusCode != 'OK') {
+       _error = resp.message;
+       _isButtonDisabled = false;
+       _actionCompleted();
+       _showDialog();
+     } else {
+       widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
+       fqtvNo = _fqtvTextEditingController.text;
+       gblFqtvNumber = fqtvNo;
+       fqtvEmail = _emailEditingController.text;
+       fqtvPass = _passwordEditingController.text;
+       gblFqtvBalance = resp.balance;
 
-      } else {
-        widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
-        fqtvNo =  _fqtvTextEditingController.text;
-        gblFqtvNumber =fqtvNo;
-        fqtvEmail = _emailEditingController.text;
-        fqtvPass = _passwordEditingController.text;
-        gblFqtvBalance = resp.balance;
-        setState(() {
-        });
-        }
-      });
-    }
+       method = 'GetDetailsByUsername';
+       msg = json.encode(
+           ApiFqtvGetDetailsRequest(fqtvEmail, fqtvNo, fqtvPass).toJson());
+
+       _sendVRSCommand(msg, method).then((result) {
+         Map map = json.decode(result);
+
+         try {
+           ApiFqtvMemberDetailsResponse resp = new ApiFqtvMemberDetailsResponse
+               .fromJson(map);
+           if (resp.statusCode != 'OK') {
+             _error = resp.message;
+             _actionCompleted();
+             _isButtonDisabled = false;
+             _showDialog();
+           } else {
+             memberDetails = resp;
+             widget.passengerDetail.fqtvPassword = fqtvPass;
+             widget.passengerDetail.fqtv = fqtvNo;
+             gblPassengerDetail.fqtv = fqtvNo;
+             gblPassengerDetail.fqtvPassword = fqtvPass;
+             setState(() {});
+           }
+         } catch(e) {
+           print(e);
+         }
+       });
+     }});
+   }
 
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
@@ -718,7 +784,7 @@ if (widget.passengerDetail != null) {
            ),
          ),
          controller: _oldPasswordEditingController,
-         keyboardType: TextInputType.phone,
+         keyboardType: TextInputType.visiblePassword,
        ),
         SizedBox(height: 15,),
        new TextFormField(
@@ -799,10 +865,9 @@ if (widget.passengerDetail != null) {
                          border: new OutlineInputBorder(
                            borderRadius: new BorderRadius.circular(15.0),
                            borderSide: new BorderSide(),
-                         ),
-                       ),
+                         ),),
                        controller: _oldPasswordEditingController,
-                       keyboardType: TextInputType.phone,
+                      // keyboardType: TextInputType.text,
                      ),
                      SizedBox(height: 15,),
                     ],

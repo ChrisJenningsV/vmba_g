@@ -72,7 +72,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     int uncompletedItems;
     uncompletedItems = _passengerDetails
         .where((pax) =>
-            pax.title == '' || pax.firstName == '' || pax.lastName == '')
+            pax.title == '' || pax.title == null ||
+                pax.firstName == '' || pax.firstName == null||
+                pax.lastName == '' || pax.lastName == null)
         .length;
     if (uncompletedItems == 0) {
       setState(() {

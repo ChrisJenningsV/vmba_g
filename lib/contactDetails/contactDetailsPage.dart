@@ -482,6 +482,11 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     this.widget.newbooking.passengerDetails.asMap().forEach((index, pax) {
       if (pax.fqtv != null && pax.fqtv != '') {
         sb.write('4-${index + 1}FFQTV${pax.fqtv}^');
+      } else {
+        if( gblFqtvNumber != null && gblFqtvNumber.isNotEmpty && index == 0) {
+          sb.write('4-${index + 1}FFQTV$gblFqtvNumber^');
+
+        }
       }
     });
 
