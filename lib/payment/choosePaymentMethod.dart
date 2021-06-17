@@ -1013,7 +1013,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'Please complete you payment within ',
+                                    'Please complete your payment within ',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w300),
@@ -1179,9 +1179,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                           SlideTopRoute(
                               page: WebViewWidget(
                                   title: 'Terms & Conditions',
-                                  url: GobalSettings
-                                      .shared
-                                      .settings
+                                  url: gblSettings
                                       .termsAndConditionsUrl))),
                     )
                   ],
@@ -1199,9 +1197,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                           SlideTopRoute(
                               page: WebViewWidget(
                                   title: 'Privacy Policy',
-                                  url: GobalSettings
-                                      .shared
-                                      .settings
+                                  url: gblSettings
                                       .privacyPolicyUrl))),
                     )
                   ],
@@ -1393,7 +1389,7 @@ class TimerTextState extends State<TimerText> {
  */
     }
     if (stopwatch.isRunning) {
-      // setState(() {});
+       setState(() {});
     }
   }
 

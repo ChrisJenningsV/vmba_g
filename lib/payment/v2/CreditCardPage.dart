@@ -497,8 +497,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     //creditCardProviderStaging
     //buffer.write('MK(${gbl_settings.creditCardProvider})');
-    // buffer.write('${pnrModel.pNR.basket.outstanding.cur}');
-    // buffer.write('${pnrModel.pNR.basket.outstanding.amount}');
+    if( gblRedeemingAirmiles) {
+      // sb.AppendFormat("MK({0}){1}{2}", pSession.Payment.PaymentSchemeName, pSession.Payment.CurrentTransaction.PaymentCurrency, CDbl(pSession.Payment.CurrentTransaction.PaymentTotalAmount).ToString("#0.00"))
+      // sb.AppendFormat("/{0}", .CardNumber.Trim)
+      buffer.write('${pnrModel.pNR.basket.outstandingairmiles.cur}');
+      buffer.write('${pnrModel.pNR.basket.outstandingairmiles.amount}');
+    }
     buffer.write('/${this.paymentDetails.cardNumber.trim()}');
 
     buffer.write(
