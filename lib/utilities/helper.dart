@@ -62,11 +62,6 @@ Future sendVRSCommand(msg) async {
   }
 }
 
-Future<http.Response> post(Uri url,
-  {Map<String, String> headers, Object body, Encoding encoding}) {
-
-}
-
 Future sendVRSCommandList(msg) async {
   final http.Response response = await http.post(
       Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
@@ -94,7 +89,7 @@ Future<String> _loadCountrylistAsset() async {
           .loadString('lib/assets/loganair/json/countries.json');
       break;
     default:
-      return await rootBundle.loadString('lib/assets/${gblAppTitle}/json/countries.json');
+      return await rootBundle.loadString('lib/assets/$gblAppTitle/json/countries.json');
   }
 }
 

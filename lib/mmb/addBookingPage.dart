@@ -316,28 +316,11 @@ class _AddBookingFormState extends State<AddBookingForm> {
       return false;
     }
 
-    if (!pnr.validate()) {
+    _error = pnr.validate();
+    if (_error.isNotEmpty) {
       return false;
     }
 
-    // if (!hasItinerary(pnr.itinerary)) {
-    //   return false;
-    // }
-
-    // if (!validateItineraryStatus(pnr.itinerary)) {
-    //   return false;
-    // }
-
-    // if (!validatePayment(pnr.basket)) {
-    //   return false;
-    // }
-
-    // if (!hasTickets(pnr.tickets)) {
-    //   return false;
-    // }
-    // if (!validateTickets(pnr)) {
-    //   return false;
-    // }
 
     return true;
   }
@@ -480,7 +463,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Add Booking"),
+          title: new Text("Cannot Add Booking"),
           content: _error != null && _error != ''
               ? new Text(_error)
               : new Text("Booking not found"),

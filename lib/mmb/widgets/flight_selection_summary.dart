@@ -654,6 +654,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                                       mmbBooking: widget.mmbBooking,
                                       pnrModel: pnrModel,
                                       isMmb: true,
+                                      mmbAction: 'CHANGEFLT',
                                       mmbCmd: '',
                                     )));
                       } else {

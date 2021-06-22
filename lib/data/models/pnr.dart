@@ -108,27 +108,29 @@ class PnrModel {
     return flight;
   }
 
-  bool validate() {
+  String validate() {
+
     if (!hasItinerary(this.pNR.itinerary)) {
-      return false;
+      return 'No Flights';
+
     }
 
     if (!validateItineraryStatus(this.pNR.itinerary)) {
-      return false;
+      return 'Bad flight status';
     }
 
     if (!validatePayment(this.pNR.basket)) {
-      return false;
+      return 'Payment invalid';
     }
 
     if (!hasTickets(this.pNR.tickets)) {
-      return false;
+      return 'No Tickets';
     }
     if (!validateTickets(this.pNR)) {
-      return false;
+      return 'Tickets invalid';
     }
 
-    return true;
+    return '';
   }
 
   bool validateTickets(PNR pnr) {

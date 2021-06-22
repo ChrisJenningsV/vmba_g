@@ -213,11 +213,16 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
     cmd.write('MB');
     //Session session = Session('', '');
+    if ( gblSession == null ) {
+      await login().then((result) {
+        session =
+            Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
+        gblSession = session;
+      });
 
-    await login().then((result) {
-      session =
-          Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
-    });
+    } else {
+      session = gblSession;
+    }
     String msg = json
         .encode(RunVRSCommandList(session, cmd.toString().split('^')).toJson());
     print(msg);
@@ -262,7 +267,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       // Create the SelectionScreen in the next step.
       MaterialPageRoute(
           builder: (context) => ChoosePaymenMethodWidget(
-              pnrModel: pnrModel, isMmb: true, session: session)),
+              pnrModel: pnrModel, isMmb: true, session: session, mmbAction: 'SEAT',)),
     );
     if (result == true) {
       _cancelSeatSelection();

@@ -427,7 +427,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           context,
           MaterialPageRoute(
               builder: (context) => ChoosePaymenMethodWidget(
-                  newBooking: widget.newbooking, pnrModel: pnrModel)
+                  newBooking: widget.newbooking, pnrModel: pnrModel, isMmb: false,)
               //CreditCardExample()
               ));
     } catch (e) {

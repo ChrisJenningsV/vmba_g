@@ -26,6 +26,7 @@ class CreditCardPage extends StatefulWidget {
     this.stopwatch,
     this.isMmb=false,
     this.mmbBooking,
+    this.mmbAction,
     this.session,
   }) : super(key: key);
 
@@ -34,6 +35,7 @@ class CreditCardPage extends StatefulWidget {
   final Stopwatch stopwatch;
   final bool isMmb;
   final MmbBooking mmbBooking;
+  final mmbAction;
   final Session session;
 
   @override
@@ -48,7 +50,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   String nostop = '';
 
   //bool _displayProcessingIndicator;
-  String _displayProcessingText;
+ // String _displayProcessingText;
   PnrModel pnrModel;
   String _error;
   String rLOC = '';
@@ -180,7 +182,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     String msg = '';
     http.Response response;
     setState(() {
-      _displayProcessingText = 'Processing your payment...';
+      //_displayProcessingText = 'Processing your payment...';
       //_displayProcessingIndicator = true;
     });
     if (widget.isMmb) {
@@ -193,11 +195,22 @@ class _CreditCardPageState extends State<CreditCardPage> {
             print(result);
         if (result == 'Payment Complete') {
           gblTimerExpired = true;
-          // kill timer
-          Provider.of<CountDownTimer>(context, listen: false)
-              .stop();
+/*          if (pnrModel.pNR.tickets != null) {
+            await pullTicketControl(pnrModel.pNR.tickets);
+          }
+          ticketBooking();
 
-          _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
+ */   // need to re - ticket
+          // MMGBP25^
+          // is it a change flight action ?
+
+          //  EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~xMMGBP25^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x
+          // _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
+          var cmd = "EMT*R~x";
+          if( widget.mmbAction == 'CHANGEFLT') {
+            cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x";
+          }
+          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd)))
               .then((onValue) {
             Map map = json.decode(onValue);
             PnrModel pnrModel = new PnrModel.fromJson(map);
@@ -208,13 +221,15 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
             Repository.get()
                 .updatePnr(pnrDBCopy)
-                .then((n) => getArgs())
+                .then((n) => getArgs(pnrModel.pNR))
                 .then((arg) {
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/CompletedPage', (Route<dynamic> route) => false,
                   arguments: arg);
             });
           });
+
+
         } else {
           _error = 'Declined';
           _dataLoaded();
@@ -447,7 +462,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
          // }
 
           setState(() {
-            _displayProcessingText = 'Completing your booking...';
+            //_displayProcessingText = 'Completing your booking...';
             //_displayProcessingIndicator = true;
           });
           if (pnrModel.pNR.tickets != null) {
@@ -621,7 +636,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       Repository.get()
           .fetchApisStatus(this.pnrModel.pNR.rLOC)
           .then((_) => sendEmailConfirmation())
-          .then((_) => getArgs())
+          .then((_) => getArgs(this.pnrModel.pNR))
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
           '/CompletedPage', (Route<dynamic> route) => false,
           arguments: args
@@ -636,11 +651,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  getArgs() {
+  getArgs(PNR pNR) {
     List<String> args = [];
     // List<String>();
-    args.add(this.pnrModel.pNR.rLOC);
-    if (pnrModel.pNR.itinerary.itin
+    args.add(pNR.rLOC);
+    if (pNR.itinerary.itin
         .where((itin) =>
     itin.classBand.toLowerCase() != 'fly' &&
         itin.openSeating != 'True')

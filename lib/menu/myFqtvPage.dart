@@ -534,19 +534,26 @@ if ( memberDetails != null ) {
     List <DataRow> rows = [];
 
     for(var tran in  transactions) {
-      DataRow row = new  DataRow(
+      if( tran.airMiles != '0' && tran.airMiles != '0.0') {
+        DataRow row = new DataRow(
 
-          cells: <DataCell>[
-          DataCell(Text( tran.pnr, style: TextStyle(fontSize: 10.0),)),
-          DataCell(Text( tran.flightNumber, style: TextStyle(fontSize: 10.0))),
-          DataCell(Text( tran.departureCityCode, style: TextStyle(fontSize: 10.0))),
-          DataCell(Text( tran.arrivalCityCode, style: TextStyle(fontSize: 10.0))),
-          DataCell(Text( DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(fontSize: 10.0))),
-          DataCell(Text( tran.airMiles, style: TextStyle(fontSize: 10.0))),
-          DataCell(Text( tran.description, style: TextStyle(fontSize: 8.0))),
-          ]
-    );
-      rows.add(row);
+            cells: <DataCell>[
+              DataCell(Text(tran.pnr, style: TextStyle(fontSize: 10.0),)),
+              DataCell(
+                  Text(tran.flightNumber, style: TextStyle(fontSize: 10.0))),
+              DataCell(Text(
+                  tran.departureCityCode, style: TextStyle(fontSize: 10.0))),
+              DataCell(
+                  Text(tran.arrivalCityCode, style: TextStyle(fontSize: 10.0))),
+              DataCell(Text(
+                  DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)),
+                  style: TextStyle(fontSize: 10.0))),
+              DataCell(Text(tran.airMiles, style: TextStyle(fontSize: 10.0))),
+              DataCell(Text(tran.description, style: TextStyle(fontSize: 8.0))),
+            ]
+        );
+        rows.add(row);
+      }
   }
     return rows;
 
@@ -695,6 +702,9 @@ if ( memberDetails != null ) {
              memberDetails = resp;
              widget.passengerDetail.fqtvPassword = fqtvPass;
              widget.passengerDetail.fqtv = fqtvNo;
+             if( gblPassengerDetail == null ){
+               gblPassengerDetail =widget.passengerDetail;
+             }
              gblPassengerDetail.fqtv = fqtvNo;
              gblPassengerDetail.fqtvPassword = fqtvPass;
              setState(() {});

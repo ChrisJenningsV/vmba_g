@@ -24,15 +24,17 @@ class ChoosePaymenMethodWidget extends StatefulWidget {
       {Key key,
       this.newBooking,
       this.pnrModel,
-      this.isMmb = false,
+      this.isMmb ,
       this.mmbCmd,
       this.mmbBooking,
+      this.mmbAction,
       this.session})
       : super(key: key);
   final NewBooking newBooking;
   final PnrModel pnrModel;
   final bool isMmb ;
   final String mmbCmd;
+  final String mmbAction;
   final MmbBooking mmbBooking;
   final Session session;
 
@@ -1056,8 +1058,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     if( gblRedeemingAirmiles) {
       // get tax amount
-      String cur = this.pnrModel.pNR.basket.outstandingairmiles.cur;
-      String amount =   this.pnrModel.pNR.basket.outstandingairmiles.amount;
+      cur = this.pnrModel.pNR.basket.outstandingairmiles.cur;
+      amount =   this.pnrModel.pNR.basket.outstandingairmiles.amount;
     }
 
 
@@ -1297,7 +1299,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: pnrModel, session: session))),
+          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: pnrModel, session: session, isMmb: isMmb, mmbAction: widget.mmbAction,))),
       child: Column(
         children: <Widget>[
           Row(

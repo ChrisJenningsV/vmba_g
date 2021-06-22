@@ -125,6 +125,7 @@ class _CheckinBoardingPassesWidgetState
   int currentPaxNo;
   int currentJourneyNo;
 
+
   @override
   void initState() {
     super.initState();
@@ -176,7 +177,7 @@ class _CheckinBoardingPassesWidgetState
                 apisPnrStatus = _apisPnrStatus;
               });
             }))
-        .then((onValue) => pnr.validate() ? null : pnr = null)
+        .then((onValue) => (pnr.validate()=='') ? null : pnr = null)
         .then((onValue) => setState(() {
               objPNR = pnr;
               _loadingInProgress = false;
@@ -279,7 +280,7 @@ class _CheckinBoardingPassesWidgetState
                 apisPnrStatus = _apisPnrStatus;
               });
             })
-            .then((onValue) => pnr.validate() ? null : pnr = null)
+            .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
             .then((onValue) => setState(() {
                   objPNR = pnr;
                   _loadingInProgress = false;

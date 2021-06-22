@@ -3,9 +3,9 @@ import 'package:vmba/data/globals.dart';
 
 class TrText extends StatelessWidget {
   final String labelText;
-  TextStyle style;
-  String variety;
-  bool noTrans;
+  final TextStyle style;
+  final String variety;
+  final bool noTrans;
 
   TrText(this.labelText,  {this.style, this.variety, this.noTrans});
 

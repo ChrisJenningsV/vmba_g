@@ -26,6 +26,7 @@ class _MyBookingsPageState extends State<MyBookingsPage> {
   // new List<PnrDBCopy>();
   bool _loadingInProgress;
   Offset _tapPosition;
+String _error = '';
 
   @override
   void initState() {
@@ -48,7 +49,8 @@ class _MyBookingsPageState extends State<MyBookingsPage> {
             nextFlightSinceEpoch: _pnr.getnextFlightEpoch(),
             delete: item.delete);
         //if (_pnrs.nextFlightSinceEpoch != 0) {
-        if (_pnr.validate() && _pnr.hasFutureFlightsAddDayOffset(1)) {
+        _error = _pnr.validate();
+        if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(1)) {
           thispnrs.add(_pnrs);
         } else {
           // remove old booking
