@@ -25,6 +25,12 @@ void main() {
 void configT6() {
 
   SystemColors _systemColors = SystemColors(
+      textButtonTextColor: Colors.black54,
+     seatPlanColorEmergency: Colors.red, //Colors.yellow
+      seatPlanColorAvailable: Colors.blue, //Colors.green
+      seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
+      seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
+      seatPlanColorRestricted: Colors.green[200],
       primaryButtonColor: Color.fromRGBO(83, 40, 99, 1),
       accentButtonColor: Color.fromRGBO(83, 40, 99, 1),
          // Color.fromRGBO(73, 201, 245, 1), 

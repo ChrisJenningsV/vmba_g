@@ -9,7 +9,7 @@ import 'package:vmba/data/settings.dart';
 String gblAppTitle ;
 String gblLanguage = 'en' ;
 String gblLanguages ;
-String gblBuildFlavor = 'SI';
+String gblBuildFlavor = 'FL';
 String gblError = '';
 String gblSine = '';
 String gblVersion = '';
