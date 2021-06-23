@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:provider/provider.dart';
+import 'package:vmba/components/trText.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/payment/v2/countDownTimer/CardInputWidget.dart';
@@ -57,6 +58,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Session session;
 
   @override
+  initState() {
+    super.initState();
+
+    if( widget.pnrModel.pNR.basket.outstanding.amount == '0') {
+      signin().then((_) => completeBooking() );
+    }
+
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
@@ -101,6 +112,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   )),
             )
           ]),
+          widget.pnrModel.pNR.basket.outstanding
+              .amount ==
+              '0' ? TrText('Completing booking...') :
           CardInputWidget(
             payCallback: () {
               hasDataConnection().then((result) async {
@@ -129,6 +143,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
     });
   }
   Future _sendVRSCommand(msg) async {
+    print('_sendVRSCommand $msg');
+
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
         headers: {'Content-Type': 'application/json',
@@ -177,6 +193,40 @@ class _CreditCardPageState extends State<CreditCardPage> {
       );
     });
   }
+
+  Future completeBooking() async {
+    var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
+    gblTimerExpired = true;
+    _sendVRSCommand(json.encode(
+        RunVRSCommand(session, msg).toJson()))
+        .then((result) {
+/*        String vrsCommandList =
+    json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
+    print(msg);
+    sendVRSCommandList(vrsCommandList).then((result){
+
+ */
+        Map map = json.decode(result);
+        PnrModel pnrModel = new PnrModel.fromJson(map);
+        PnrDBCopy pnrDBCopy = new PnrDBCopy(
+            rloc: pnrModel.pNR.rLOC, //_rloc,
+            data: result,
+            delete: 0,
+            nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+
+        Repository.get().updatePnr(pnrDBCopy);
+        Repository.get()
+            .fetchApisStatus(pnrModel.pNR.rLOC)
+            .then((_) => sendEmailConfirmation())
+            .then((n) => getArgs(pnrModel.pNR))
+            .then((arg) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/CompletedPage', (Route<dynamic> route) => false,
+              arguments: arg);
+        });
+    });
+  }
+
 
   Future makePayment() async {
     String msg = '';
@@ -502,6 +552,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
         buffer.write('MF-${gblPassengerDetail.fqtv}^');
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
+      }
+
+    } else {
+      if(pnrModel.pNR.basket.outstanding.amount == '0') {
+        return '';
       }
     }
       buffer.write('MK(${gblSettings.creditCardProvider})');

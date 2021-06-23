@@ -93,11 +93,18 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Future<void> signin() async {
     await login().then((result) {
-      session = Session(
-        result.sessionId,
-        result.varsSessionId,
-        result.vrsServerNo,
-      );
+      if( result == null)
+        {
+          _error = 'login failed';
+          _dataLoaded();
+          _showDialog();
+        } else {
+        session = Session(
+          result.sessionId,
+          result.varsSessionId,
+          result.vrsServerNo,
+        );
+      }
     });
   }
 
@@ -122,10 +129,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
       msg += 'fg^fs1';
     }
+    if(msg.isNotEmpty) {
     String vrsCommandList =
         json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
     print(msg);
     sendVRSCommandList(vrsCommandList);
+    }
 
     //sendVRSCommand(
     //  json.encode(JsonEncoder().convert(new RunVRSCommand(session, msg))));
@@ -1208,7 +1217,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   ],
                 ),
                 Divider(),
-                // this.isMmb &&
+                 this.isMmb &&
                     widget.pnrModel.pNR.basket.outstanding
                         .amount ==
                         '0'
@@ -1218,8 +1227,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                       shape: RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(30.0))),
-                  onPressed: () =>
-                      completeBookingNothingtoPay(),
+                  onPressed: () => completeBookingNothingtoPay(),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -1307,23 +1315,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'AGREE AND PAY',
-                style: new TextStyle(color: Colors.black),
-              ),
-              Image.asset(
-                'lib/assets/images/payment/visa.png',
-                height: 40,
-              ),
-              Padding(
-                padding: EdgeInsets.all(4),
-              ),
-              Image.asset(
-                'lib/assets/images/payment/mastercard.png',
-                height: 40,
-              ),
-            ],
+            children: _getPayButton()
           ),
         ],
       ),
@@ -1365,7 +1357,37 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
     return Column(children: paymentButtons);
   }
+  List<Widget> _getPayButton() {
+    List<Widget> list = [];
+
+    if( widget.pnrModel.pNR.basket.outstanding
+        .amount ==
+        '0') {
+      list.add(Text('COMPLETE BOOKING' ,
+        style: new TextStyle(color: Colors.black),
+      ));
+
+    } else {
+      list.add(Text( 'AGREE AND PAY',
+      style: new TextStyle(color: Colors.black),
+      ));
+    list.add(Image.asset(
+    'lib/assets/images/payment/visa.png',
+    height: 40,
+    ));
+    list.add(Padding(
+    padding: EdgeInsets.all(4),
+    ));
+    list.add(Image.asset(
+    'lib/assets/images/payment/mastercard.png',
+    height: 40,
+    ));
+    }
+    return list;
+
+  }
 }
+
 
 class TimerText extends StatefulWidget {
   TimerText({this.stopwatch});

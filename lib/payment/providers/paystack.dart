@@ -84,7 +84,7 @@ class Paystack {
         },
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {
-      print('message send successfully');
+      print('message send successfully: $msg');
       InitPaymentResponse initPaymentResponse =
           new InitPaymentResponse.fromJson(json.decode(response.body));
 
@@ -105,7 +105,8 @@ class Paystack {
         },
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {
-      print('message send successfully');
+      print('message send successfully: $msg');
+
       PaymentStatusResponse paymentStatusResponse =
           new PaymentStatusResponse.fromJson(json.decode(response.body));
       return paymentStatusResponse.transactionStatus;

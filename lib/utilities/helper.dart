@@ -22,25 +22,29 @@ import 'package:vmba/data/globals.dart';
 Future<Session> login() async {
   var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
 
-  final http.Response response = await http.post(
-      Uri.parse(gblSettings.apiUrl + "/login"),
-      headers: {
-        'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },
-      body: JsonEncoder().convert(body));
+  try {
+    final http.Response response = await http.post(
+        Uri.parse(gblSettings.apiUrl + "/login"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Videcom_ApiKey': gblSettings.apiKey
+        },
+        body: JsonEncoder().convert(body));
 
-  if (response.statusCode == 200) {
-    Map map = json.decode(response.body);
-    LoginResponse loginResponse = new LoginResponse.fromJson(map);
-    if (loginResponse.isSuccessful) {
-      print('successful login');
-      gblSession = loginResponse.getSession();
-      return loginResponse.getSession();
+    if (response.statusCode == 200) {
+      Map map = json.decode(response.body);
+      LoginResponse loginResponse = new LoginResponse.fromJson(map);
+      if (loginResponse.isSuccessful) {
+        print('successful login');
+        gblSession = loginResponse.getSession();
+        return loginResponse.getSession();
+      }
+    } else {
+      print('failed');
+      //return  LoginResponse();
     }
-  } else {
-    print('failed');
-    //return  LoginResponse();
+  } catch(e) {
+    print(e.toString());
   }
   return null;
 }
@@ -55,7 +59,7 @@ Future sendVRSCommand(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully');
+    print('message send successfully: $msg');
     return response.body.trim();
   } else {
     print('failed: $msg');
@@ -71,7 +75,7 @@ Future sendVRSCommandList(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully');
+    print('message send successfully: $msg');
     return response.body.trim();
   } else {
     print('failed');
