@@ -509,6 +509,13 @@ class AppDatabase {
         '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = ${record
         .rloc} AND ${DatabaseRecord.dbDelete} =  1 ');
   }
+  Future deletePnrApis(String rloc) async {
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM '
+        '$tableNamePnrApisStatus WHERE ${DatabaseRecord.dbRloc} = "$rloc" ');
+    //await db.rawQuery('DELETE FROM '
+    //'$tableNamePNRs WHERE ${PnrDBCopy.dbRloc} = ${pnr.rloc} AND ${PnrDBCopy.dbDelete} =  1 ');
+  }
 
   Future deletePnrsApisStatus(List<DatabaseRecord> records) async {
     var db = await _getDb();

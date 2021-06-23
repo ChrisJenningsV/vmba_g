@@ -320,9 +320,12 @@ class _AddBookingFormState extends State<AddBookingForm> {
     if (_error.isNotEmpty) {
       return false;
     }
+    if( pnr.hasFutureFlightsAddDayOffset(1)) {
+      return true;
+    }
 
-
-    return true;
+    _error = 'No furture flights';
+    return false;
   }
 
   bool validateRlocWithName(List<PAX> passengers) {

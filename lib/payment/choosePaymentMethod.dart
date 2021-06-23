@@ -532,12 +532,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     //New code
     String msg = '';
-    msg = '*${widget.mmbBooking.rloc}';
-    widget.mmbBooking.newFlights.forEach((flt) {
-      print(flt);
-      msg += '^' + flt;
-    });
-    msg += '^e*r~x';
+    if( this.isMmb) {
+      msg = '*${widget.mmbBooking.rloc}';
+      widget.mmbBooking.newFlights.forEach((flt) {
+        print(flt);
+        msg += '^' + flt;
+      });
+      msg += '^';
+    }
+    msg += 'e*r~x';
 
 //End of new code
 
@@ -1205,7 +1208,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   ],
                 ),
                 Divider(),
-                this.isMmb &&
+                // this.isMmb &&
                     widget.pnrModel.pNR.basket.outstanding
                         .amount ==
                         '0'
@@ -1224,7 +1227,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'AGREE AND MAKE CHANGES',
+                            this.isMmb ? 'AGREE AND MAKE CHANGES' : 'COMPLETE BOOKING',
                             style: new TextStyle(
                                 color: Colors.black),
                           ),
@@ -1391,7 +1394,7 @@ class TimerTextState extends State<TimerText> {
  */
     }
     if (stopwatch.isRunning) {
-       setState(() {});
+       //setState(() {});
     }
   }
 

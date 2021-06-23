@@ -56,6 +56,7 @@ String _error = '';
           // remove old booking
           try {
             Repository.get().deletePnr(item.rloc);
+            Repository.get().deleteApisPnr(item.rloc);
           } catch(e) {
             print(e);
           }

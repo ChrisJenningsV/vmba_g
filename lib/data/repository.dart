@@ -630,6 +630,9 @@ class Repository {
   Future deletePnr(String rloc) async {
     await database.deletePnr(rloc);
   }
+  Future deleteApisPnr(String rloc) async {
+    await database.deletePnrApis(rloc);
+  }
 
   //Apis status
   Future updatePnrApisStatus(DatabaseRecord apisPnr) async {
