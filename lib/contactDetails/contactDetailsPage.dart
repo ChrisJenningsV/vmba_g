@@ -328,6 +328,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         print('makeBooking $_error');
         //_showDialog();
         _gotoPreviousPage();
+        return;
       } else {
         String pnrJson = response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -377,6 +378,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               _dataLoaded();
               //_showDialog();
               _gotoPreviousPage();
+              return;
             } else {
               String pnrJson = response.body
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')

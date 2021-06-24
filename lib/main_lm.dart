@@ -80,11 +80,14 @@ void configLM() {
   ),
 
 //Production setttings
-/*  xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  /*
+  xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-  creditCardProvider: 'worldpaydirect',
- */
+  apiUrl: 'https://booking.loganair.co.uk/VARS/webApiv2/api/',
+
+   */
+//  creditCardProvider: 'worldpaydirect',
+
   eVoucher: true,
 
 //Staging setttings
@@ -101,6 +104,8 @@ void configLM() {
   creditCardProvider: 'videcard',
   wantPayStack: false,
   wantLeftLogo: false,
+  wantMyAccount: true,
+  wantFQTV: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',
   maxNumberOfPax: 8,
   hideFareRules: false,
