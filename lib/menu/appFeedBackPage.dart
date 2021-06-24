@@ -320,6 +320,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               ),
               SizedBox(height: 15,),
               new TextFormField(
+                obscureText: true,
+                obscuringCharacter: "*",
                 controller: _passwordController ,
                 decoration: InputDecoration(
                   contentPadding:

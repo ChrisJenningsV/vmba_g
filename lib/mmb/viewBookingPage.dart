@@ -170,6 +170,13 @@ class _CheckinBoardingPassesWidgetState
         .then((onValue) =>
             //GET APIS STATUS
             Repository.get().getPnrApisStatus(widget.rloc).then((record) {
+              if(record == null || record.data == null || record.data.isEmpty) {
+                objPNR = null;
+                _loadingInProgress = false;
+                _displayProcessingText = '';
+
+                return;
+              }
               Map<String, dynamic> map = jsonDecode(record.data);
               ApisPnrStatusModel _apisPnrStatus =
                   new ApisPnrStatusModel.fromJson(map);

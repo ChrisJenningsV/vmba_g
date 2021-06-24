@@ -59,11 +59,13 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   final formKey = new GlobalKey<FormState>();
 //  bool _loadingInProgress = false;
   String _error;
+  bool _isHidden = true;
 
   @override
   initState() {
     super.initState();
     _isButtonDisabled = false;
+    _isHidden = true;
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
     if( gblPassengerDetail != null &&
         gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
@@ -245,49 +247,18 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 controller: _fqtvTextEditingController,
                 keyboardType: TextInputType.phone,
 
-                // do not force phone no here
-                /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
 
-   */
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
                   }
                 },
               ),
-              /*
+
               SizedBox(height: 15,),
               new TextFormField(
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Email',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                controller: _emailEditingController,
-                keyboardType: TextInputType.phone,
-
-                // do not force phone no here
-                /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
-
-   */
-                onSaved: (value) {
-                  if (value != null) {
-                    //.contactInfomation.phonenumber = value.trim()
-                  }
-                },
-              ),
-              */
-              SizedBox(height: 15,),
-              new TextFormField(
+                obscureText: _isHidden,
+                obscuringCharacter: "*",
                 controller: _passwordEditingController ,
                 decoration: InputDecoration(
                   contentPadding:
@@ -298,15 +269,15 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                     borderRadius: new BorderRadius.circular(15.0),
                     borderSide: new BorderSide(),
                   ),
+                  suffix: InkWell(
+                    onTap: _togglePasswordView,
+                    child: Icon( Icons.visibility),
+                  ),
                 ),
                 keyboardType: TextInputType.visiblePassword,
 
-                // do not force phone no here
-                /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
 
-   */
+
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
@@ -328,6 +299,11 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         ),
       ],
     );
+  }
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 
   List<Widget> _getWidgets() {
@@ -794,6 +770,8 @@ if ( memberDetails != null ) {
            ),
          ),
          controller: _oldPasswordEditingController,
+         obscureText: _isHidden,
+         obscuringCharacter: "*",
          keyboardType: TextInputType.visiblePassword,
        ),
         SizedBox(height: 15,),
@@ -809,6 +787,8 @@ if ( memberDetails != null ) {
              borderSide: new BorderSide(),
            ),
          ),
+         obscureText: _isHidden,
+         obscuringCharacter: "*",
          keyboardType: TextInputType.visiblePassword,
 
          onSaved: (value) {

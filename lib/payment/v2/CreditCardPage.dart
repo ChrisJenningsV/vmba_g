@@ -258,10 +258,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
           // _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
           var cmd = "EMT*R~x";
           if( widget.mmbAction == 'CHANGEFLT') {
-            cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x";
+            // get tickets
+            cmd = "*${widget.pnrModel.pNR.rLOC}^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x";
           }
-          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd)))
+          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
               .then((onValue) {
+                // Server Exception ?
             Map map = json.decode(onValue);
             PnrModel pnrModel = new PnrModel.fromJson(map);
             PnrDBCopy pnrDBCopy = new PnrDBCopy(
@@ -555,7 +557,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
 
     } else {
-      if(pnrModel.pNR.basket.outstanding.amount == '0') {
+      if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
+        {
+          return '';
+        }
+      if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount == '0') {
         return '';
       }
     }
@@ -570,8 +576,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if( gblRedeemingAirmiles) {
       // sb.AppendFormat("MK({0}){1}{2}", pSession.Payment.PaymentSchemeName, pSession.Payment.CurrentTransaction.PaymentCurrency, CDbl(pSession.Payment.CurrentTransaction.PaymentTotalAmount).ToString("#0.00"))
       // sb.AppendFormat("/{0}", .CardNumber.Trim)
-      buffer.write('${pnrModel.pNR.basket.outstandingairmiles.cur}');
-      buffer.write('${pnrModel.pNR.basket.outstandingairmiles.amount}');
+      if( pnrModel != null ) {
+        buffer.write('${pnrModel.pNR.basket.outstandingairmiles.cur}');
+        buffer.write('${pnrModel.pNR.basket.outstandingairmiles.amount}');
+      } else if (widget.pnrModel != null ) {
+        buffer.write('${widget.pnrModel.pNR.basket.outstandingairmiles.cur}');
+        buffer.write('${widget.pnrModel.pNR.basket.outstandingairmiles.amount}');
+
+      }
     }
     buffer.write('/${this.paymentDetails.cardNumber.trim()}');
 
@@ -745,7 +757,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
     } catch (e) {
-      print(e.toString());
+      print('sendEmailConfirmation: ' + e.toString());
     }
   }
 

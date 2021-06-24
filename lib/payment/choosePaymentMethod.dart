@@ -600,12 +600,28 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         // _dataLoaded();
         // return null;
 
-        print(_error);
+        print('completeBookingNothingtoPay: ' + _error);
 
         _error =
-            'Unnable to change booking'; //response.body; // 'Please check your details';
+        'Unnable to change booking'; //response.body; // 'Please check your details';
         _dataLoaded();
         _showDialog();
+        return null;
+      } else if (response.body.contains('ERROR:')) {
+        _error = response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', '')
+            .replaceAll('ERROR: ', '')
+            .trim();
+        // _dataLoaded();
+        // return null;
+
+        print('completeBookingNothingtoPay: ' + _error);
+
+        _dataLoaded();
+        _showDialog();
+        return null;
       } else {
         String pnrJson = response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -778,14 +794,22 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         //   _showDialog();
         // }
       } catch (e) {
-        _error = response.body; // 'Please check your details';
+        _error = response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', ''); // 'Please check your details';
         _dataLoaded();
         _showDialog();
+        return null;
       }
     } catch (e) {
-      _error = response.body; // 'Please check your details';
-      _dataLoaded();
+      _error = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''); // 'Please
+           _dataLoaded();
       _showDialog();
+      return null;
     }
     // setState(() {
     //   _displayProcessingText = 'Completing your booking...';

@@ -162,7 +162,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     }
 
     cmd += 'fg^fs1^*r~x';
-    print(cmd);
+    print('buildCmd: ' + cmd);
     return cmd;
   }
 
