@@ -248,7 +248,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 /*          if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
           }
-          ticketBooking();
+         ticketBooking ();
 
  */   // need to re - ticket
           // MMGBP25^
@@ -259,7 +259,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
           var cmd = "EMT*R~x";
           if( widget.mmbAction == 'CHANGEFLT') {
             // get tickets
-            cmd = "*${widget.pnrModel.pNR.rLOC}^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x";
+            cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R~x"; // server exception
+            //cmd = "EZV*[E][ZWEB]^E*R~x"; // good, no tickets
+            //cmd = "EZV*[E][ZWEB]^EZT*R~x"; // good
+            //cmd = "EZV*[E][ZWEB]^EZT^EMT*R~x"; //
           }
           _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
               .then((onValue) {
