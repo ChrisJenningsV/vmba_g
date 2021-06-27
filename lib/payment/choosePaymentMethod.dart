@@ -186,12 +186,22 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Widget taxTotal() {
     double tax = 0.0;
+    double sepTax1 = 0.0;
+    String desc1 = '';
+    double sepTax2 = 0.0;
+    String desc2 = '';
+
 
     List <Row> rows = [];
 
     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         if(  paxTax.separate == 'true'){
+          if( desc1 == '' || desc1 == paxTax.desc) {
+            desc1 = paxTax.desc;
+            sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
+          }
+          /*
           rows.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -203,13 +213,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             ],
           ));
 
+           */
+
         } else {
           tax += (double.tryParse(paxTax.amnt) ?? 0.0);
         }
       });
     }
-
-    rows.add(Row(
+     rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Total Tax: '),
@@ -219,6 +230,28 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             .format(tax)),
       ],
     ));
+
+    if( sepTax1 > 0) {
+      rows.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          TrText('Additional Item(s) '),
+        ],
+      ));
+
+      rows.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(desc1),
+          Text(NumberFormat.simpleCurrency(
+              locale: gblSettings.locale,
+              name: currencyCode)
+              .format(sepTax1)),
+        ],
+      ));
+    }
+
+
     return Column(
       children: rows,
     );
@@ -831,8 +864,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             '/' +
             pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
-        http.Response reponse = await http
-            .get(Uri.parse(
+//        http.Response reponse = await http
+        await http.get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }

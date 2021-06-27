@@ -60,12 +60,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
   @override
   initState() {
     super.initState();
-
+      double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+      if( am <= 0 ) {
+        signin().then((_) => completeBooking() );
+      }
+    }
+/*
     if( widget.pnrModel.pNR.basket.outstanding.amount == '0') {
       signin().then((_) => completeBooking() );
     }
+ */
 
-  }
+
 
     @override
   Widget build(BuildContext context) {
@@ -560,12 +566,19 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
 
     } else {
-      if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
+      //if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
+      if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstanding.amount != null )
         {
+          double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+          if( am <= 0 ) {
+            return '';
+          }
+        }
+      if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount != null) {
+        double am = double.parse(pnrModel.pNR.basket.outstanding.amount);
+        if( am <= 0 ) {
           return '';
         }
-      if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount == '0') {
-        return '';
       }
     }
       buffer.write('MK(${gblSettings.creditCardProvider})');
@@ -651,8 +664,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
             '/' +
             pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
-        http.Response reponse = await http
-            .get(Uri.parse(
+//        http.Response reponse = await http
+        await http.get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }

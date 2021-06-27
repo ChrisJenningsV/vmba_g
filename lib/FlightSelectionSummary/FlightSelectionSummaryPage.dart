@@ -229,29 +229,20 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
   Widget taxTotal() {
     double tax = 0.0;
+    double sepTax1 = 0.0;
+
 
     List <Row> rows = [];
 
     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         if(  paxTax.separate == 'true'){
-          rows.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(paxTax.desc),
-              Text(NumberFormat.simpleCurrency(
-                  locale: gblSettings.locale,
-                  name: currencyCode)
-                  .format(double.tryParse(paxTax.amnt))),
-            ],
-          ));
-
+            sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
         } else {
           tax += (double.tryParse(paxTax.amnt) ?? 0.0);
         }
       });
     }
-
     rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -262,6 +253,21 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             .format(tax)),
       ],
     ));
+
+    if( sepTax1 > 0) {
+
+      rows.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          TrText('Additional Item(s) '),
+          Text(NumberFormat.simpleCurrency(
+              locale: gblSettings.locale,
+              name: currencyCode)
+              .format(sepTax1)),
+        ],
+      ));
+    }
+
     return Column(
       children: rows,
     );
@@ -485,7 +491,9 @@ Row airMiles() {
             .paxTax
             .where((paxTax) => paxTax.seg == (i + 1).toString())
             .forEach((paxTax) {
-          taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
+              if( paxTax.separate == 'false' ) {
+                taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
+              }
         });
       }
       if (taxTotal != 0.0) {
@@ -502,6 +510,35 @@ Row airMiles() {
           ),
         );
       }
+
+      double sepTax1 = 0.0;
+      String desc1 = '';
+
+      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+        this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+          if(  paxTax.separate == 'true'){
+            if( desc1 == '' || desc1 == paxTax.desc) {
+              desc1 = paxTax.desc;
+              sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
+            }
+          }
+        });
+      }
+      if (sepTax1 != 0.0) {
+        widgets.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(desc1),
+              Text(NumberFormat.simpleCurrency(
+                  locale: gblSettings.locale,
+                  name: currencyCode)
+                  .format(sepTax1)),
+            ],
+          ),
+        );
+      }
+
 
       widgets.add(Divider());
     }

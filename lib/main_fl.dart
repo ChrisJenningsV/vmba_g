@@ -75,6 +75,7 @@ void configFL() {
       senior: true,
     ),
     fqtvName:  "",
+    wantFQTV: true,
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",

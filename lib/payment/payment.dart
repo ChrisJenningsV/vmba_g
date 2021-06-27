@@ -508,8 +508,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             '/' +
             pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
-        http.Response reponse = await http
-            .get(Uri.parse(
+//        http.Response reponse = await http
+        await http.get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
       }

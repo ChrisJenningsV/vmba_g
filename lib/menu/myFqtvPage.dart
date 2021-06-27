@@ -592,6 +592,7 @@ if ( memberDetails != null ) {
       Map map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       if( resp.statusCode != 'OK') {
+        _isButtonDisabled = false;
         _error = resp.message;
         _actionCompleted();
         _showDialog();
@@ -829,6 +830,8 @@ if ( memberDetails != null ) {
  }
 
  void _resetPasswordDialog() {
+   bool _isButtonDisabled = false;
+
    showDialog(
        context: context,
        builder: (BuildContext context) {
@@ -877,8 +880,10 @@ if ( memberDetails != null ) {
              ElevatedButton(
                child: TrText("CONTINUE"),
                onPressed: () {
-                 _fqtvResetPassword();
-
+                 if( !_isButtonDisabled ) {
+                   _isButtonDisabled = true;
+                   _fqtvResetPassword();
+                 }
                  //});
 
                  //Navigator.of(context).pop();
