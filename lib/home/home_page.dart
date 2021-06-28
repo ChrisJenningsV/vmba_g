@@ -201,8 +201,8 @@ class _HomeState extends State<HomePage> {
       ));
     } else {
       //print(mainBackGroundImage);
-      var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
-      Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
+      //var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
+      //Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
 
       return new Scaffold(
 

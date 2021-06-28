@@ -627,7 +627,26 @@ if ( memberDetails != null ) {
         _error = resp.message;
         _actionCompleted();
         gblPassengerDetail.fqtvPassword = _newPasswordEditingController.text;
+        // save new password in profile
+        Repository.get().getNamedUserProfile('PAX1').then((profile) {
+          if (profile != null) {
+            Map map = json.decode(
+                profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
+            var passengerDetail = PassengerDetail.fromJson(map);
+            passengerDetail.fqtvPassword = _newPasswordEditingController.text;
+            // now save it
+            List<UserProfileRecord> _userProfileRecordList = [];
+            UserProfileRecord _profileRecord = new UserProfileRecord(
+                name: 'PAX1',
+                value: json.encode(passengerDetail.toJson()).replaceAll('"', "'")
+            );
+            _userProfileRecordList.add(_profileRecord);
+            Repository.get().updateUserProfile(_userProfileRecordList);
+
+          }
+
         Navigator.of(context).pop();
+      });
       }
     });
   }
