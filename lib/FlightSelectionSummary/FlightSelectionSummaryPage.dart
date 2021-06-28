@@ -519,7 +519,7 @@ Row airMiles() {
 
       if (this.pnrModel.pNR.fareQuote.fareTax != null) {
         this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-          if(  paxTax.separate == 'true'){
+          if(  paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()){ //
             if( desc1 == '' || desc1 == paxTax.desc) {
               desc1 = paxTax.desc;
               sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);

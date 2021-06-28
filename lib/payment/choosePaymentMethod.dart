@@ -464,7 +464,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             .paxTax
             .where((paxTax) => paxTax.seg == (i + 1).toString())
             .forEach((paxTax) {
-          taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
+          if( paxTax.separate == 'false' ) {
+            taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
+          }
+
         });
       }
       widgets.add(
@@ -479,6 +482,37 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ],
         ),
       );
+      double sepTax1 = 0.0;
+      String desc1 = '';
+
+      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+        this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+          if(  paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()){ //
+            if( desc1 == '' || desc1 == paxTax.desc) {
+              desc1 = paxTax.desc;
+              sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
+            }
+          }
+        });
+      }
+      if (sepTax1 != 0.0) {
+        widgets.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(desc1),
+              Text(NumberFormat.simpleCurrency(
+                  locale: gblSettings.locale,
+                  name: currencyCode)
+                  .format(sepTax1)),
+            ],
+          ),
+        );
+      }
+
+
+
+
       String cityPair =
           '${pnrModel.pNR.itinerary.itin[i].depart}${pnrModel.pNR.itinerary.itin[i].arrive}';
       if (pnrModel.pNR.aPFAX != null &&

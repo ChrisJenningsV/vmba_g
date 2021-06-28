@@ -626,6 +626,7 @@ if ( memberDetails != null ) {
       } else {
         _error = resp.message;
         _actionCompleted();
+        gblPassengerDetail.fqtvPassword = _newPasswordEditingController.text;
         Navigator.of(context).pop();
       }
     });
