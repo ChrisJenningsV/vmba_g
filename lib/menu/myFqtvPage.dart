@@ -591,8 +591,8 @@ if ( memberDetails != null ) {
     _sendVRSCommand(msg, method).then((result){
       Map map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
+      _isButtonDisabled = false;
       if( resp.statusCode != 'OK') {
-        _isButtonDisabled = false;
         _error = resp.message;
         _actionCompleted();
         _showDialog();
@@ -600,7 +600,9 @@ if ( memberDetails != null ) {
       } else {
         _error = resp.message;
         _actionCompleted();
+        _error = 'Reset email sent';
         Navigator.of(context).pop();
+        _showDialog();
       }
     });
 
@@ -830,7 +832,6 @@ if ( memberDetails != null ) {
  }
 
  void _resetPasswordDialog() {
-   bool _isButtonDisabled = false;
 
    showDialog(
        context: context,
@@ -860,6 +861,8 @@ if ( memberDetails != null ) {
                            borderSide: new BorderSide(),
                          ),),
                        controller: _oldPasswordEditingController,
+                       keyboardType: TextInputType.emailAddress,
+                       //validator: (value) => validateEmail(value.trim()),
                       // keyboardType: TextInputType.text,
                      ),
                      SizedBox(height: 15,),
@@ -880,9 +883,13 @@ if ( memberDetails != null ) {
              ElevatedButton(
                child: TrText("CONTINUE"),
                onPressed: () {
-                 if( !_isButtonDisabled ) {
-                   _isButtonDisabled = true;
+                 var str = validateEmail(_oldPasswordEditingController.text);
+                 if( str == null ) {
                    _fqtvResetPassword();
+                 } else {
+                   _error = str;
+                   _actionCompleted();
+                   _showDialog();
                  }
                  //});
 
