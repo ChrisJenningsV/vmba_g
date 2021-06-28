@@ -587,6 +587,16 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                 ],
                               )
                             ]),
+                            Column(children: [
+                              Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(item.flt[0].fltdet.airid + item.flt[0].fltdet.fltno),
+                                  )
+                                ],
+                              )
+                            ]),
                             Column(
                               children: <Widget>[
                                 item.flt.length > 1
