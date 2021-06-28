@@ -394,6 +394,9 @@ Row airMiles() {
           .first;
 
     var amount = fareStore.total;
+    if( double.parse(amount) <= 0 ) {
+      amount = "0";
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,

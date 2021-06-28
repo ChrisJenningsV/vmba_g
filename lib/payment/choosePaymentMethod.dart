@@ -1124,7 +1124,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     Widget _getTotals() {
    String cur = this.pnrModel.pNR.basket.outstanding.cur;
     String amount =   this.pnrModel.pNR.basket.outstanding.amount;
-
+   var dAmount =double.parse(amount);
+   if( dAmount <= 0 ) {
+     dAmount = 0.0;
+     amount = '0';
+   }
     if( gblRedeemingAirmiles) {
       // get tax amount
       cur = this.pnrModel.pNR.basket.outstandingairmiles.cur;
@@ -1275,9 +1279,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                 ),
                 Divider(),
                  this.isMmb &&
-                    widget.pnrModel.pNR.basket.outstanding
-                        .amount ==
-                        '0'
+                    amount == '0'
                     ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,

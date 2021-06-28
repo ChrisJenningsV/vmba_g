@@ -290,6 +290,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   }
 
   Row amountPayable() {
+    var amount = this.pnrModel.pNR.basket.outstanding.amount;
+    var dAmount =double.parse(amount);
+    if( dAmount <= 0 ) {
+      dAmount = 0.0;
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -297,9 +302,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
-              .format((double.tryParse(
-                      this.pnrModel.pNR.basket.outstanding.amount) ??
-                  0.0)),
+              .format(dAmount),
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ],
