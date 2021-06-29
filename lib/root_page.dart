@@ -7,6 +7,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
 //import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/menu/stopPage.dart';
+import 'package:vmba/menu/updatePage.dart';
 
 
 class RootPage extends StatefulWidget {
@@ -142,6 +143,7 @@ class _RootPageState extends State<RootPage> {
         case 'LOGIN':
           break;
         case 'UPDATE':
+          return new UpdatePage();
           break;
         case 'SUSSPEND':
         case 'STOP':

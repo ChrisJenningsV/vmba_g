@@ -269,6 +269,18 @@ class Repository {
                   case 'fqtvName':
                     gblSettings.fqtvName = item['value'];
                     break;
+                  case 'latestBuildAndroid':
+                    gblSettings.latestBuildAndroid = item['value'];
+                    break;
+                  case 'latestBuildiOS':
+                    gblSettings.latestBuildiOS = item['value'];
+                    break;
+                  case 'Mobile_reqUpdateMsg':
+                    gblSettings.reqUpdateMsg = item['value'];
+                    break;
+                  case 'Mobile_optUpdateMsg':
+                    gblSettings.optUpdateMsg = item['value'];
+                    break;
 
                 /*
                   BOOLS

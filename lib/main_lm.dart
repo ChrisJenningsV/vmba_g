@@ -47,8 +47,8 @@ void configLM() {
   gblBuildFlavor = 'LM';
 
   gblSettings = Settings (
-    latestBuildiOS: '1.0.5',
-    latestBuildAndroid: '1.0.0.98',
+//    latestBuildiOS: '1.0.5',
+//    latestBuildAndroid: '1.0.0.98',
     airlineName: "Logan Air",
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

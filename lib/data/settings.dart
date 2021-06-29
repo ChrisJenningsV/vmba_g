@@ -139,6 +139,8 @@ class Settings {
   String androidAppId;
   String latestBuildiOS = '1.0.5';
   String latestBuildAndroid = '1.0.0.98';
+  String reqUpdateMsg;
+  String optUpdateMsg;
   String xmlUrl;
   String apisUrl;
   String apiUrl;
@@ -204,6 +206,8 @@ bool bpShowFastTrack;
     this.wantFQTV,
     this.searchDateOut,
     this.searchDateBack,
+    this.reqUpdateMsg,
+    this.optUpdateMsg,
 
   });
 

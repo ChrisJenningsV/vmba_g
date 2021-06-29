@@ -59,21 +59,54 @@ class _HomeState extends State<HomePage> {
   }
 
   checkForLatestVersion() {
-    Version currentVersion;
-    Version latestVersion;
+   // Version currentVersion;
+   // Version latestVersion;
+    String latestVersion;
+
+    if( gblAction == 'UPDATEAVAILABLE') {
+      _updateAppDialog();
+      return;
+    }
 
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
             packageInfo.version + '.' + packageInfo.buildNumber)
         .then((String version) {
+
+      latestVersion = Platform.isIOS
+          ? gblSettings.latestBuildiOS
+          : gblSettings.latestBuildAndroid;
+
+      if( latestVersion == null ){
+        // no new version
+        return;
+      }
+      int cMajor = int.parse(version.split('.')[0]);
+      int cMinor= int.parse(version.split('.')[1]);
+      int cPatch= int.parse(version.split('.')[2]);
+      int cBuild= int.parse(version.split('.')[3]);
+      int lMajor= int.parse(latestVersion.split('.')[0]);
+      int lMinor= int.parse(latestVersion.split('.')[1]);
+      int lPatch= int.parse(latestVersion.split('.')[2]);
+      int lBuild= int.parse(latestVersion.split('.')[3]);
+
+
+      /*
       currentVersion = Version.parse(version);
       latestVersion = Version.parse(Platform.isIOS
           ? gblSettings.latestBuildiOS
           : gblSettings.latestBuildAndroid);
-
+*/
       gblVersion = version;
       gblIsIos = Platform.isIOS;
-      if (latestVersion > currentVersion) {
+
+      bool bNewBuilsAvailable = false;
+      if( lMajor > cMajor ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor > cMinor ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor == cMinor && lPatch > cPatch ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor == cMinor && lPatch == cPatch && lBuild > cBuild ) { bNewBuilsAvailable = true;}
+
+      if( bNewBuilsAvailable == true){
         _updateAppDialog();
       }
     });
@@ -103,13 +136,17 @@ class _HomeState extends State<HomePage> {
   }
 
   void _updateAppDialog() {
+    var txt = '';
+    if( gblSettings.optUpdateMsg != null && gblSettings.optUpdateMsg.isNotEmpty) {
+      txt = gblSettings.optUpdateMsg;
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
             title: Text('Update App'),
             content:
-                Text('A newer version of the app is available to download'),
+                Text('A newer version of the app is available to download' + '\n' + txt),
             actions: <Widget>[
               new TextButton(
                 child: new Text(
@@ -126,7 +163,10 @@ class _HomeState extends State<HomePage> {
                   'Update',
                   style: TextStyle(color: Colors.white),
                 ),
-                style: TextButton.styleFrom(primary: Colors.black),
+                style: TextButton.styleFrom(
+                    backgroundColor: gblSystemColors.primaryButtonColor ,
+                    side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                    primary: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
                   OpenAppstore.launch(
                       androidAppId: gblSettings.androidAppId,
