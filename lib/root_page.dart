@@ -5,6 +5,8 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
+//import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/menu/stopPage.dart';
 
 
 class RootPage extends StatefulWidget {
@@ -143,7 +145,7 @@ class _RootPageState extends State<RootPage> {
           break;
         case 'SUSSPEND':
         case 'STOP':
-         // Navigator.push(context, SlideTopRoute(page: StopPageWeb()));
+          return new StopPageWeb();
           break;
       }
 
