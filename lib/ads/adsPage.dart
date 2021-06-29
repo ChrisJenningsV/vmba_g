@@ -7,7 +7,7 @@ import 'package:vmba/menu/login.dart';
 
 
 /*
-The ADS Login: ADS4000000153501
+The ADS Login: ADS40 00 00 01 53 501
 PIN: 7978
 
 

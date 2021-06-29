@@ -30,9 +30,15 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     booking = new NewBooking();
     adsTermsAccepted = false;
     if (widget.ads) {
-      Repository.get().getADSDetails().then((v) {
-        booking.ads = v;
-      });
+      if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&
+          gblPassengerDetail.adsPin != null && gblPassengerDetail.adsPin.isNotEmpty
+      ) {
+        booking.ads = new ADS(gblPassengerDetail.adsPin,gblPassengerDetail.adsNumber);
+      } else {
+        Repository.get().getADSDetails().then((v) {
+          booking.ads = v;
+        });
+      }
     }
   }
 
