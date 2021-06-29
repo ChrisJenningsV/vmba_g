@@ -45,8 +45,8 @@ void configFL() {
   //gbl_language = 'en';
 
   gblSettings = Settings(
-    latestBuildiOS: '1.0.8.15',
-    latestBuildAndroid: '1.0.8.15',
+   // latestBuildiOS: '1.0.8.40',
+   // latestBuildAndroid: '1.0.8.40',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
@@ -98,6 +98,9 @@ void configFL() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+    searchDateOut: 1,
+    searchDateBack: 6,
+
 
   );
 

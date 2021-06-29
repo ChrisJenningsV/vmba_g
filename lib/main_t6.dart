@@ -61,7 +61,6 @@ void configT6() {
       webCheckinNoSeatCharge: false,
       vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
       autoSeatOption: true,
-      //backgroundImageUrl:  'https://customertest.videcom.com/LoganAir/VARS/public/CustomerFiles/LoganAir/App/HOGMANAY_SALE1.png',
       hostBaseUrl:  'https://customertest.videcom.com/airswift/VARS/public',
       iOSAppId: '1457545908',
       androidAppId: 'com.airswift.reservations',
@@ -105,5 +104,8 @@ void configT6() {
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',
   maxNumberOfPax: 8,
   hideFareRules: false,
-  fqtvEnabled: false);
+  fqtvEnabled: false,
+    searchDateOut: 1,
+    searchDateBack: 6,
+  );
 }

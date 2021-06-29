@@ -30,6 +30,7 @@ class _HomeState extends State<HomePage> {
   AssetImage logoImage;
   bool _displayProcessingIndicator;
   Image alternativeBackgroundImage;
+  bool gotBG = false;
 
   @override
   void initState() {
@@ -58,21 +59,54 @@ class _HomeState extends State<HomePage> {
   }
 
   checkForLatestVersion() {
-    Version currentVersion;
-    Version latestVersion;
+   // Version currentVersion;
+   // Version latestVersion;
+    String latestVersion;
+
+    if( gblAction == 'UPDATEAVAILABLE') {
+      _updateAppDialog();
+      return;
+    }
 
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
             packageInfo.version + '.' + packageInfo.buildNumber)
         .then((String version) {
+
+      latestVersion = Platform.isIOS
+          ? gblSettings.latestBuildiOS
+          : gblSettings.latestBuildAndroid;
+
+      if( latestVersion == null ){
+        // no new version
+        return;
+      }
+      int cMajor = int.parse(version.split('.')[0]);
+      int cMinor= int.parse(version.split('.')[1]);
+      int cPatch= int.parse(version.split('.')[2]);
+      int cBuild= int.parse(version.split('.')[3]);
+      int lMajor= int.parse(latestVersion.split('.')[0]);
+      int lMinor= int.parse(latestVersion.split('.')[1]);
+      int lPatch= int.parse(latestVersion.split('.')[2]);
+      int lBuild= int.parse(latestVersion.split('.')[3]);
+
+
+      /*
       currentVersion = Version.parse(version);
       latestVersion = Version.parse(Platform.isIOS
           ? gblSettings.latestBuildiOS
           : gblSettings.latestBuildAndroid);
-
+*/
       gblVersion = version;
       gblIsIos = Platform.isIOS;
-      if (latestVersion > currentVersion) {
+
+      bool bNewBuilsAvailable = false;
+      if( lMajor > cMajor ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor > cMinor ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor == cMinor && lPatch > cPatch ) { bNewBuilsAvailable = true;}
+      if( lMajor == cMajor && lMinor == cMinor && lPatch == cPatch && lBuild > cBuild ) { bNewBuilsAvailable = true;}
+
+      if( bNewBuilsAvailable == true){
         _updateAppDialog();
       }
     });
@@ -102,13 +136,17 @@ class _HomeState extends State<HomePage> {
   }
 
   void _updateAppDialog() {
+    var txt = '';
+    if( gblSettings.optUpdateMsg != null && gblSettings.optUpdateMsg.isNotEmpty) {
+      txt = gblSettings.optUpdateMsg;
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
             title: Text('Update App'),
             content:
-                Text('A newer version of the app is available to download'),
+                Text('A newer version of the app is available to download' + '\n' + txt),
             actions: <Widget>[
               new TextButton(
                 child: new Text(
@@ -125,7 +163,10 @@ class _HomeState extends State<HomePage> {
                   'Update',
                   style: TextStyle(color: Colors.white),
                 ),
-                style: TextButton.styleFrom(primary: Colors.black),
+                style: TextButton.styleFrom(
+                    backgroundColor: gblSystemColors.primaryButtonColor ,
+                    side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                    primary: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
                   OpenAppstore.launch(
                       androidAppId: gblSettings.androidAppId,
@@ -137,8 +178,9 @@ class _HomeState extends State<HomePage> {
     );
   }
 
-  Future<Widget> getImage() async {
-    return Container(
+  //Future<Widget> getImage() async {
+    Widget getImage()  {
+      return Container(
       //  decoration: BoxDecoration(
       //               image: DecorationImage(
       //                   image: mainBackGroundImage, fit: BoxFit.fitWidth))
@@ -163,6 +205,13 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var buttonShape;
+
+    if( gblSettings.backgroundImageUrl != null && gblSettings.backgroundImageUrl.isNotEmpty) {
+      var newImg  = Image.network(gblSettings.backgroundImageUrl);
+      if (newImg.image != null ) {
+        gotBG = true;
+      }
+    }
    // var appLanguage = new AppLanguage();
  //   appLanguage.changeLanguage('fr');
 
@@ -184,6 +233,7 @@ class _HomeState extends State<HomePage> {
       default:
         buttonShape = null;
     }
+
     if (_displayProcessingIndicator) {
       return Scaffold(
           body: Center(
@@ -217,9 +267,10 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
+            gotBG == true ?  getImage() :
             Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image:  DecorationImage(
                         image: mainBackGroundImage, fit: BoxFit.fitWidth))),
             Container(
               //This container stops the alternative image from scrolling

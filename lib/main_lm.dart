@@ -47,8 +47,8 @@ void configLM() {
   gblBuildFlavor = 'LM';
 
   gblSettings = Settings (
-    latestBuildiOS: '1.0.5',
-    latestBuildAndroid: '1.0.0.98',
+//    latestBuildiOS: '1.0.5',
+//    latestBuildAndroid: '1.0.0.98',
     airlineName: "Logan Air",
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
@@ -61,7 +61,6 @@ void configLM() {
   webCheckinNoSeatCharge: false,
   vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
   autoSeatOption: true,
-  backgroundImageUrl:  'https://customertest.videcom.com/LoganAir/VARS/public/CustomerFiles/LoganAir/App/HOGMANAY_SALE1.png',
   hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
   androidAppId: 'uk.co.loganair.reservations',
@@ -70,6 +69,8 @@ void configLM() {
   groupsBookingsEmail: 'groups@loganair.co.uk',
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+    searchDateOut: 1,
+    searchDateBack: 6,
 
 
     passengerTypes: PassengerTypes(

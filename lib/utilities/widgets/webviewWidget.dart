@@ -6,7 +6,8 @@ import 'package:vmba/components/trText.dart';
 class WebViewWidget extends StatefulWidget {
   final url;
   final title;
-WebViewWidget({this.url, this.title});
+  final canNotClose;
+WebViewWidget({this.url, this.title, this.canNotClose});
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();
@@ -32,7 +33,7 @@ void _handleLoad() {
         title: TrText(widget.title),
         automaticallyImplyLeading: false,
        
-        actions: <Widget>[
+        actions: (widget.canNotClose != null) ? <Widget>[Text(' ')] :  <Widget>[
           IconButton(icon: Icon(Icons.close
           ),
           onPressed: () => Navigator.pop(context),

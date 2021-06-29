@@ -452,7 +452,8 @@ class _CheckinBoardingPassesWidgetState
           ' ' +
           mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
 
-      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate)) {
+      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) &&
+          pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
         list.add(Row(
           children: <Widget>[
@@ -849,12 +850,13 @@ class _CheckinBoardingPassesWidgetState
       //     ? true
       //     : false)
       {
-        if (hasSeatSelected(
+        if ( pnr.pNR.itinerary.itin[journeyNo].status != 'QQ' &&
+            (hasSeatSelected(
                 pnr.pNR.aPFAX,
                 pnr.pNR.names.pAX[paxNo].paxNo.toString(),
                 journeyNo + 1,
                 pnr.pNR.names) ||
-            pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True') {
+            pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True')) {
           //Checkin Button
           return new TextButton(
             onPressed: () {
@@ -1110,7 +1112,7 @@ class _CheckinBoardingPassesWidgetState
                 new Divider(),
                 (pnr.pNR.itinerary.itin[journey].status == 'QQ') ?
                   new Row( children: [
-                    Text('Flight Not Operating' , style: TextStyle( color: Colors.red , fontSize: 18.0 ),)],) : Text(''),
+                    Text('Flight Not Operating, contact airline' , style: TextStyle( color: Colors.red , fontSize: 18.0 ),)],) : Text(''),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

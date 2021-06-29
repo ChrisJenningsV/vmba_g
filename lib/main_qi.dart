@@ -99,6 +99,9 @@ void configQI() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+    searchDateOut: 1,
+    searchDateBack: 6,
+
 
   );
 }

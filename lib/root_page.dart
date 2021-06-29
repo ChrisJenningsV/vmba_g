@@ -5,11 +5,10 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
+//import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/menu/stopPage.dart';
+import 'package:vmba/menu/updatePage.dart';
 
-
-//import 'package:vmba/resources/app_config.dart';
-
-// import 'package:loganair/data/repository.dart';
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -135,6 +134,23 @@ class _RootPageState extends State<RootPage> {
               ),
             ));
     } else {
+      // check special actions
+      switch (gblAction) {
+        case 'LIVE':
+          break;
+        case 'TEST':
+          break;
+        case 'LOGIN':
+          break;
+        case 'UPDATE':
+          return new UpdatePage();
+          break;
+        case 'SUSSPEND':
+        case 'STOP':
+          return new StopPageWeb();
+          break;
+      }
+
       return new HomePage();
     }
           }

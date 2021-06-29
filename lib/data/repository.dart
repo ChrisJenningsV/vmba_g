@@ -244,6 +244,8 @@ class Repository {
           }
           LoginResponse loginResponse = new LoginResponse.fromJson(map);
           if (loginResponse.isSuccessful) {
+            String exactMatchVersioAction = '';
+            String mainMatchVersioAction = '';
             //If has settings update GobalSettings with these
             // cj bad vals from server!
 
@@ -266,6 +268,18 @@ class Repository {
                     break;
                   case 'fqtvName':
                     gblSettings.fqtvName = item['value'];
+                    break;
+                  case 'latestBuildAndroid':
+                    gblSettings.latestBuildAndroid = item['value'];
+                    break;
+                  case 'latestBuildiOS':
+                    gblSettings.latestBuildiOS = item['value'];
+                    break;
+                  case 'Mobile_reqUpdateMsg':
+                    gblSettings.reqUpdateMsg = item['value'];
+                    break;
+                  case 'Mobile_optUpdateMsg':
+                    gblSettings.optUpdateMsg = item['value'];
                     break;
 
                 /*
@@ -320,6 +334,9 @@ class Repository {
                   case 'contactUsUrl':
                     gblSettings.contactUsUrl =  item['value'];
                     break;
+                  case 'stopUrl':
+                    gblSettings.stopUrl = item['value'];
+                    break;
                 /*
                   EMAILS
                    */
@@ -338,26 +355,24 @@ class Repository {
                   case 'maxNumberOfPax':
                     gblSettings.maxNumberOfPax = parseInt(item['value']);
                     break;
+                  case 'searchDateOut' :
+                    gblSettings.searchDateOut = parseInt(item['value']);
+                    break;
+
+                  case 'searchDateBack':
+                    gblSettings.searchDateBack = parseInt(item['value']);
+                    break;
+
 
                   default:
                     String param = item['parameter'];
                     if (param.startsWith('appVersion')) {
                       String vers = param.replaceAll('appVersion_', '');
                       if (vers == gblVersion) {
-                        gblAction = item['value'].toString().toUpperCase();
-                        switch (item['value'].toString().toUpperCase()) {
-                          case 'LIVE':
-                            break;
-                          case 'TEST':
-                            break;
-                          case 'LOGIN':
-                            break;
-                          case 'UPDATE':
-                            break;
-                          case 'SUSSPEND':
-                          case 'STOP':
-                            break;
-                        }
+                        exactMatchVersioAction =  item['value'].toString().toUpperCase();
+
+                      } else if ( gblVersion.startsWith(vers)) {
+                        mainMatchVersioAction =  item['value'].toString().toUpperCase();
                       }
                     } else {
                       print('Parameter not found ${item["parameter"]}');
@@ -366,6 +381,13 @@ class Repository {
               }
             }
             print('successful login');
+
+            if( exactMatchVersioAction.isNotEmpty) {
+              gblAction = exactMatchVersioAction;
+
+            } else if ( mainMatchVersioAction.isNotEmpty){
+              gblAction =mainMatchVersioAction;
+            }
           }
           else {
             gblError = response.body;
