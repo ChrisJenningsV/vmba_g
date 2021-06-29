@@ -182,10 +182,16 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                       primary: gblSystemColors.textButtonTextColor),
-                  child: const Text('Reload settings'),
-                  onPressed: () {/* ... */},
+                  child: gblNewDatepicker ?  Text('Old Datepicker') : Text('New Datepicker') ,
+                  onPressed: () {
+                    gblNewDatepicker = !gblNewDatepicker;
+                    setState(() {
+
+                    });
+                  },
                 ),
                 const SizedBox(width: 8),
+                /*
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -193,6 +199,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   child: Text(btnText),
                   onPressed: () {/* ... */},
                 ),
+
+                 */
                 const SizedBox(width: 8),
               ],
             ),
@@ -304,7 +312,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   ),
                 ),
                 controller: _sineController,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.number ,
 
                 // do not force phone no here
                 /*              validator: (value) => value.isEmpty

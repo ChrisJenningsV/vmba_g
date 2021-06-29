@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/models/models.dart';
 import 'dart:ui';
 import 'package:vmba/components/trText.dart';
 
@@ -24,6 +25,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String title = 'Login';
+  String _error;
   String descriptions = 'descriptions';
   TextEditingController _adsNumberTextEditingController = TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
@@ -73,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 controller: _adsNumberTextEditingController,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.streetAddress,
 
                 // do not force phone no here
                 /*              validator: (value) => value.isEmpty
@@ -175,8 +177,8 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
     }
+    String adsJson;
     try {
-      String adsJson;
       adsJson = response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -189,13 +191,50 @@ class _LoginPageState extends State<LoginPage> {
         print('Login success');
         Navigator.of(context).pushNamedAndRemoveUntil(
             '/AdsFlightSearchPage', (Route<dynamic> route) => false);
+
+        if( gblPassengerDetail == null ) {
+          gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
+        }
+        gblPassengerDetail.adsNumber = _adsNumberTextEditingController.text;
+        gblPassengerDetail.adsPin = _adsPinTextEditingController.text;
       } else {
 
       }
     } catch (e) {
+      _error = adsJson;
+      _showDialog();
       print(e);
     }
   }
+
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Error"),
+          content: _error != null && _error != ''
+              ? new Text(_error)
+              : new Text("Please try again"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              child: new Text("Close"),
+              onPressed: () {
+                _error = '';
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
 
 

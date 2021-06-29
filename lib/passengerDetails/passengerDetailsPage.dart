@@ -38,6 +38,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     }
 
     //.then((result) result == true ? loadProfileIntoPaxDetails: {});
+
     Repository.get()
         .getNamedUserProfile('PAX1')
         .then((profile) {
@@ -48,10 +49,18 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         if(isUserProfileComplete()) {
           preloadProfile(context);
         }
+        if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null &&
+            gblPassengerDetail.adsNumber.isNotEmpty && gblPassengerDetail.adsPin != null &&
+            gblPassengerDetail.adsPin.isNotEmpty ) {
+          passengerDetailRecord.adsNumber = gblPassengerDetail.adsNumber;
+          passengerDetailRecord.adsPin = gblPassengerDetail.adsPin;
+        }
       } catch(e) {
         print(e);
       }
     });
+
+
   }
 
   showSnackBar(String message) {

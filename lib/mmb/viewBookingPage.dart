@@ -895,6 +895,9 @@ class _CheckinBoardingPassesWidgetState
         } else {
           if (pnr.pNR.itinerary.itin[journeyNo].secID != '') {
             return Text('');
+          } else if (pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
+              pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty != gblSettings.aircode)  {
+              return Text('Check-in with partner airline');
           } else if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
               pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
             bool chargeForPreferredSeating =
@@ -923,6 +926,10 @@ class _CheckinBoardingPassesWidgetState
           pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() == 'fly'
               ? true
               : false;
+      if( pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
+          pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty != gblSettings.aircode)  {
+        return Text('Check-in with partner airline');
+      }
       if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
           pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
         return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,chargeForPreferredSeating);
