@@ -126,6 +126,7 @@ class Settings {
   String specialAssistanceUrl;
   String faqUrl;
   String contactUsUrl;
+  String stopUrl;
   String locale = 'en-EN';
   int bookingLeadTime = 60;
   bool webCheckinNoSeatCharge;
@@ -154,6 +155,8 @@ class Settings {
   int maxNumberOfPax;
   bool fqtvEnabled;
   bool bpShowLoungeAccess;
+  int searchDateOut;
+  int searchDateBack;
 
 bool bpShowFastTrack;
   Settings({
@@ -199,6 +202,8 @@ bool bpShowFastTrack;
     this.bpShowLoungeAccess,
     this.wantMyAccount,
     this.wantFQTV,
+    this.searchDateOut,
+    this.searchDateBack,
 
   });
 

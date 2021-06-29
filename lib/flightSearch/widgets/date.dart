@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/rangePickerPage.dart';
 import 'package:vmba/datePickers/datePickerPage.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
@@ -16,9 +17,9 @@ class JourneyDateWidget extends StatefulWidget {
 
 class _JourneyDateWidgetState extends State<JourneyDateWidget> {
   DateTime _departingingDate =
-      new DateTime.now().add(new Duration(days: 5)); //new DateTime.now();
+      new DateTime.now().add(new Duration(days: gblSettings.searchDateOut)); //new DateTime.now();
   DateTime _returningDate =
-      new DateTime.now().add(new Duration(days: 10)); //new DateTime.now();
+      new DateTime.now().add(new Duration(days: gblSettings.searchDateBack)); //new DateTime.now();
   bool dateSelected = false;
 
   void _selectedDate(FlightDates _flightDates) {
@@ -37,8 +38,8 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
   Widget build(BuildContext context) {
     if (widget.isReturn) {
       if (_returningDate == null) {
-        _departingingDate = new DateTime.now().add(new Duration(days: 5));
-        _returningDate = new DateTime.now().add(new Duration(days: 10));
+        _departingingDate = new DateTime.now().add(new Duration(days: gblSettings.searchDateOut));
+        _returningDate = new DateTime.now().add(new Duration(days: gblSettings.searchDateBack));
         dateSelected = false;
       }
     } else {

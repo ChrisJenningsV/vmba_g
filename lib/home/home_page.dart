@@ -30,6 +30,7 @@ class _HomeState extends State<HomePage> {
   AssetImage logoImage;
   bool _displayProcessingIndicator;
   Image alternativeBackgroundImage;
+  bool gotBG = false;
 
   @override
   void initState() {
@@ -137,8 +138,9 @@ class _HomeState extends State<HomePage> {
     );
   }
 
-  Future<Widget> getImage() async {
-    return Container(
+  //Future<Widget> getImage() async {
+    Widget getImage()  {
+      return Container(
       //  decoration: BoxDecoration(
       //               image: DecorationImage(
       //                   image: mainBackGroundImage, fit: BoxFit.fitWidth))
@@ -163,6 +165,13 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var buttonShape;
+
+    if( gblSettings.backgroundImageUrl != null && gblSettings.backgroundImageUrl.isNotEmpty) {
+      var newImg  = Image.network(gblSettings.backgroundImageUrl);
+      if (newImg.image != null ) {
+        gotBG = true;
+      }
+    }
    // var appLanguage = new AppLanguage();
  //   appLanguage.changeLanguage('fr');
 
@@ -184,6 +193,7 @@ class _HomeState extends State<HomePage> {
       default:
         buttonShape = null;
     }
+
     if (_displayProcessingIndicator) {
       return Scaffold(
           body: Center(
@@ -217,9 +227,10 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
+            gotBG == true ?  getImage() :
             Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image:  DecorationImage(
                         image: mainBackGroundImage, fit: BoxFit.fitWidth))),
             Container(
               //This container stops the alternative image from scrolling

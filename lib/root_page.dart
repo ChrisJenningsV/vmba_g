@@ -7,10 +7,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
 
 
-//import 'package:vmba/resources/app_config.dart';
-
-// import 'package:loganair/data/repository.dart';
-
 class RootPage extends StatefulWidget {
   RootPage();
 
@@ -135,6 +131,22 @@ class _RootPageState extends State<RootPage> {
               ),
             ));
     } else {
+      // check special actions
+      switch (gblAction) {
+        case 'LIVE':
+          break;
+        case 'TEST':
+          break;
+        case 'LOGIN':
+          break;
+        case 'UPDATE':
+          break;
+        case 'SUSSPEND':
+        case 'STOP':
+         // Navigator.push(context, SlideTopRoute(page: StopPageWeb()));
+          break;
+      }
+
       return new HomePage();
     }
           }

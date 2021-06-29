@@ -412,7 +412,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           }
         }
 
-        // widget.mmbBooking.journeys
+        // widget.mmbBooking.journeys'
         //     .journey[widget.mmbBooking.journeyToChange - 1].itin.reversed
         //     .forEach((f) {
         //   //msg += 'X${f.line}^';

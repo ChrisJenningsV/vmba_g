@@ -97,5 +97,8 @@ void configSI() {
   bpShowFastTrack: false,
   bpShowLoungeAccess: false,
   wantMyAccount: true,
-);
+    searchDateOut: 1,
+    searchDateBack: 6,
+
+  );
 }
