@@ -78,25 +78,24 @@ void configZ4() {
   ),
 
 //Production setttings
-/*  xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-  creditCardProvider: 'worldpaydirect',
- */
+  live_xmlUrl:      "https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  live_apisUrl:      'https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  live_apiUrl: 'https://booking.ibomair.com/VARS/webApiV2/api/',
+  live_creditCardProvider: 'worldpaydirect',
+
   eVoucher: true,
 
 //Staging setttings
-  xmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  apisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl:      'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',  // InHouse
+  test_xmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  test_apisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  test_apiUrl:      'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',  // InHous
+  test_creditCardProvider: 'videcard',
 
-/*
-    xmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',  // InHouse
+    xmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    apisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    apiUrl:      'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',  // InHouse
+    creditCardProvider: 'videcard',
 
- */
-  creditCardProvider: 'videcard',
   wantPayStack: false,
   wantLeftLogo: false,
   apiKey: 'a4768447e0ae4e4688b6783377bed3b6',

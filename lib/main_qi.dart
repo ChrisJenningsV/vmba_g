@@ -84,17 +84,23 @@ void configQI() {
     maxNumberOfPax: 8,
     hideFareRules: true,
     fqtvEnabled: false,
-//      xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-//      apisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//      apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-//      creditCardProviderProduction: 'worldpaydirect',
+    live_xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    live_apisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    live_apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
+    live_creditCardProvider: 'worldpaydirect',
 
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
+    test_xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    test_apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    test_apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
+    test_creditCardProvider: 'videcard',
+
     xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
     creditCardProvider: 'videcard',
+
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
