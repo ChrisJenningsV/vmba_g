@@ -860,7 +860,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Please complete you payment within ',
+                                  'Please complete your payment within ',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w300),

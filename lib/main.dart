@@ -62,7 +62,7 @@ void main() async {
     }
   }
 
-  if(gblIsLive == true) {
+/*  if(gblIsLive == true) {
     gblSettings.xmlUrl = gblSettings.live_xmlUrl;
     gblSettings.apisUrl = gblSettings.live_apisUrl;
     gblSettings.apiUrl = gblSettings.live_apiUrl;
@@ -73,6 +73,8 @@ void main() async {
     gblSettings.apiUrl = gblSettings.test_apiUrl;
     gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
   }
+
+ */
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -86,6 +88,17 @@ class App extends StatelessWidget {
   App();
   @override
   Widget build(BuildContext context) {
+    if(gblIsLive == true) {
+      gblSettings.xmlUrl = gblSettings.live_xmlUrl;
+      gblSettings.apisUrl = gblSettings.live_apisUrl;
+      gblSettings.apiUrl = gblSettings.live_apiUrl;
+      gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
+    } else {
+      gblSettings.xmlUrl = gblSettings.test_xmlUrl;
+      gblSettings.apisUrl = gblSettings.test_apisUrl;
+      gblSettings.apiUrl = gblSettings.test_apiUrl;
+      gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
+    }
     return MaterialApp(
 //      locale: model.appLocal,
        debugShowCheckedModeBanner: false,
