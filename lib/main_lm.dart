@@ -84,7 +84,7 @@ void configLM() {
 
   live_xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   live_apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  live_apiUrl: 'https://booking.loganair.co.uk/VARS/webApiv2/api/',
+  live_apiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
 
   live_creditCardProvider: 'worldpaydirect',
 
@@ -110,7 +110,7 @@ void configLM() {
   wantPayStack: false,
   wantLeftLogo: false,
   wantMyAccount: true,
-  wantFQTV: true,
+  wantFQTV: false,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',
   maxNumberOfPax: 8,
   hideFareRules: false,

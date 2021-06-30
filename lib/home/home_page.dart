@@ -207,9 +207,13 @@ class _HomeState extends State<HomePage> {
     var buttonShape;
 
     if( gblSettings.backgroundImageUrl != null && gblSettings.backgroundImageUrl.isNotEmpty) {
-      var newImg  = Image.network(gblSettings.backgroundImageUrl);
-      if (newImg.image != null ) {
-        gotBG = true;
+      try {
+        var newImg = Image.network(gblSettings.backgroundImageUrl);
+        if (newImg.image != null) {
+          gotBG = true;
+        }
+      } catch(e) {
+        gotBG = false;
       }
     }
    // var appLanguage = new AppLanguage();
@@ -267,11 +271,12 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
-            gotBG == true ?  getImage() :
+  //           gotBG == true ?  getImage() :
             Container(
                 decoration: BoxDecoration(
                     image:  DecorationImage(
                         image: mainBackGroundImage, fit: BoxFit.fitWidth))),
+            ClipRRect(child: getImage()),
             Container(
               //This container stops the alternative image from scrolling
               child: Text(''),

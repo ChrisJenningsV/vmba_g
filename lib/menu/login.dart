@@ -198,7 +198,8 @@ class _LoginPageState extends State<LoginPage> {
         gblPassengerDetail.adsNumber = _adsNumberTextEditingController.text;
         gblPassengerDetail.adsPin = _adsPinTextEditingController.text;
       } else {
-
+        _error = 'Ads login failed - check details and try again';
+        _showDialog();
       }
     } catch (e) {
       _error = adsJson;
