@@ -62,6 +62,17 @@ void main() async {
     }
   }
 
+  if(gblIsLive == true) {
+    gblSettings.xmlUrl = gblSettings.live_xmlUrl;
+    gblSettings.apisUrl = gblSettings.live_apisUrl;
+    gblSettings.apiUrl = gblSettings.live_apiUrl;
+    gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
+  } else {
+    gblSettings.xmlUrl = gblSettings.test_xmlUrl;
+    gblSettings.apisUrl = gblSettings.test_apisUrl;
+    gblSettings.apiUrl = gblSettings.test_apiUrl;
+    gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
+  }
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

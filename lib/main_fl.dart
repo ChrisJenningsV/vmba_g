@@ -86,14 +86,21 @@ void configFL() {
 
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
- //    xmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    live_xmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    live_apisUrl:       'https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    live_apiUrl: 'https://booking.airleap.se/VARS/webApiV2/api/',
+    live_creditCardProvider: 'worldpaydirect',
+
     xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
- //   apisUrl:       'https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-   apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//      apiUrl: 'https://booking.airleap.se/VARS/webApiV2/api/',
-   apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
-//      creditCardProviderProduction: 'worldpaydirect',
+    apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     creditCardProvider: 'videcard',
+
+    test_xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    test_apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    test_apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
+    test_creditCardProvider: 'videcard',
+
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,

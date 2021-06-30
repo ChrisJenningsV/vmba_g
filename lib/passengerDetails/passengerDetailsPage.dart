@@ -34,7 +34,16 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
         i++) {
-      _passengerDetails.add(new PassengerDetail());
+      var pax = new PassengerDetail();
+      if(i==0) {
+        if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null &&
+            gblPassengerDetail.adsNumber.isNotEmpty && gblPassengerDetail.adsPin != null &&
+            gblPassengerDetail.adsPin.isNotEmpty ) {
+          pax.adsNumber = gblPassengerDetail.adsNumber;
+          pax.adsPin = gblPassengerDetail.adsPin;
+        }
+      }
+      _passengerDetails.add(pax);
     }
 
     //.then((result) result == true ? loadProfileIntoPaxDetails: {});
@@ -46,21 +55,21 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         Map map = json.decode(
             profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
         passengerDetailRecord = PassengerDetail.fromJson(map);
-        if(isUserProfileComplete()) {
-          preloadProfile(context);
-        }
+
         if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null &&
             gblPassengerDetail.adsNumber.isNotEmpty && gblPassengerDetail.adsPin != null &&
             gblPassengerDetail.adsPin.isNotEmpty ) {
           passengerDetailRecord.adsNumber = gblPassengerDetail.adsNumber;
           passengerDetailRecord.adsPin = gblPassengerDetail.adsPin;
         }
+        if(isUserProfileComplete()) {
+          preloadProfile(context);
+        }
+
       } catch(e) {
         print(e);
       }
     });
-
-
   }
 
   showSnackBar(String message) {

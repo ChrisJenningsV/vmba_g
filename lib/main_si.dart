@@ -82,10 +82,11 @@ void configSI() {
   maxNumberOfPax:  8,
   hideFareRules:  true,
   fqtvEnabled:  false,
-//      xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-//      apisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//      apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-//      creditCardProviderProduction: 'worldpaydirect',
+
+  live_xmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  live_apisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  live_apiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
+  live_creditCardProvider: 'citypaydirect',
 
   apiKey: '4d332cf7134f4a43958d954278474b41', // '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
@@ -93,6 +94,12 @@ void configSI() {
   apisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
   creditCardProvider: 'videcard', // citypaydirect
+
+  test_xmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  test_apisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  test_apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
+  test_creditCardProvider: 'videcard', // citypaydirect
+
   wantPayStack: false,
   bpShowFastTrack: false,
   bpShowLoungeAccess: false,

@@ -80,25 +80,25 @@ void configT6() {
   ),
 
 //Production setttings
-/*  xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-  creditCardProvider: 'worldpaydirect',
- */
+  live_xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  live_apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  live_apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
+  live_creditCardProvider: 'worldpaydirect',
+
   eVoucher: true,
 
 //Staging setttings
   xmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   apiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
-
-/*
-    xmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',  // InHouse
-
- */
   creditCardProvider: 'videcard',
+
+  test_xmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  test_apisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  test_apiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
+  test_creditCardProvider: 'videcard',
+
+
   wantPayStack: false,
   wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',

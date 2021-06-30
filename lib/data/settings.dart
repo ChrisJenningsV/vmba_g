@@ -114,7 +114,6 @@ class Settings {
   String xmlTokenPost;
   String aircode;
   String airlineName;
-  String creditCardProvider;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
   bool wantMyAccount = false;
@@ -141,10 +140,23 @@ class Settings {
   String latestBuildAndroid = '1.0.0.98';
   String reqUpdateMsg;
   String optUpdateMsg;
+
   String xmlUrl;
   String apisUrl;
   String apiUrl;
   String apiKey;
+  String creditCardProvider;
+
+  String test_xmlUrl;
+  String test_apisUrl;
+  String test_apiUrl;
+  String test_creditCardProvider;
+
+  String live_xmlUrl;
+  String live_apisUrl;
+  String live_apiUrl;
+  String live_creditCardProvider;
+
   bool eVoucher;
   PassengerTypes passengerTypes;
 
@@ -208,6 +220,17 @@ bool bpShowFastTrack;
     this.searchDateBack,
     this.reqUpdateMsg,
     this.optUpdateMsg,
+
+    this.test_xmlUrl,
+    this.test_apisUrl,
+    this.test_apiUrl,
+    this.test_creditCardProvider,
+
+    this.live_xmlUrl,
+    this.live_apisUrl,
+    this.live_apiUrl,
+    this.live_creditCardProvider,
+
 
   });
 

@@ -132,7 +132,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   onPressed: () {},
                 ),
               ),
-               (gblSecurityLevel > 0 ) ? _getSinedInOptions()
+               (gblSecurityLevel > 90 ) ? _getSinedInOptions()
 /*               Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                   child: TrText('Sined in' ),)
@@ -191,16 +191,16 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   },
                 ),
                 const SizedBox(width: 8),
-                /*
+
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                       primary: gblSystemColors.textButtonTextColor),
                   child: Text(btnText),
-                  onPressed: () {/* ... */},
+                  onPressed: () {_swapLiveTest();},
                 ),
 
-                 */
+
                 const SizedBox(width: 8),
               ],
             ),
@@ -208,6 +208,26 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         ),
       ),
     );
+  }
+
+  void _swapLiveTest() {
+    gblIsLive = !gblIsLive;
+
+    if(gblIsLive == true) {
+      gblSettings.xmlUrl = gblSettings.live_xmlUrl;
+      gblSettings.apisUrl = gblSettings.live_apisUrl;
+      gblSettings.apiUrl = gblSettings.live_apiUrl;
+      gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
+    } else {
+      gblSettings.xmlUrl = gblSettings.test_xmlUrl;
+      gblSettings.apisUrl = gblSettings.test_apisUrl;
+      gblSettings.apiUrl = gblSettings.test_apiUrl;
+      gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
+    }
+
+    setState(() {
+
+    });
   }
 
   void processCompleted() {
