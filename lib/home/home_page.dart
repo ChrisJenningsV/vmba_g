@@ -8,7 +8,6 @@ import 'package:package_info/package_info.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_appstore/open_appstore.dart';
-import 'package:version/version.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 
@@ -276,7 +275,7 @@ class _HomeState extends State<HomePage> {
                 decoration: BoxDecoration(
                     image:  DecorationImage(
                         image: mainBackGroundImage, fit: BoxFit.fitWidth))),
-            ClipRRect(child: getImage()),
+            if (gotBG ) ClipRRect(child: getImage()),
             Container(
               //This container stops the alternative image from scrolling
               child: Text(''),
