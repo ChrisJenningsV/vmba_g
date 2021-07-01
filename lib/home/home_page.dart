@@ -8,7 +8,6 @@ import 'package:package_info/package_info.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_appstore/open_appstore.dart';
-import 'package:version/version.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 
@@ -189,11 +188,10 @@ class _HomeState extends State<HomePage> {
         // reverse: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          //image: mainBackGroundImage
           children: <Widget>[
             Image(
-              image: Image.network(
-                      gblSettings.backgroundImageUrl)
-                  .image,
+                image: NetworkImage(gblSettings.backgroundImageUrl),
               fit: BoxFit.fitWidth,
             ),
           ],
@@ -271,12 +269,11 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
-  //           gotBG == true ?  getImage() :
             Container(
                 decoration: BoxDecoration(
                     image:  DecorationImage(
                         image: mainBackGroundImage, fit: BoxFit.fitWidth))),
-            ClipRRect(child: getImage()),
+            if (gotBG ) ClipRRect(child: getImage()),
             Container(
               //This container stops the alternative image from scrolling
               child: Text(''),
