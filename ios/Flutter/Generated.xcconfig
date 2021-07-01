@@ -1,13 +1,12 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/chrisjennings/Documents/dev/flutter
-FLUTTER_APPLICATION_PATH=/Users/chrisjennings/Documents/Mobile App/vmba
-FLUTTER_TARGET=/Users/chrisjennings/Documents/Mobile App/vmba/lib/main_fl.dart
+FLUTTER_APPLICATION_PATH=/Users/chrisjennings/StudioProjects/vmba
+FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 FLUTTER_BUILD_NAME=1.0.8
-FLUTTER_BUILD_NUMBER=14
-DART_DEFINES=flutter.inspector.structuredErrors%3Dtrue
+FLUTTER_BUILD_NUMBER=34
 DART_OBFUSCATION=false
-TRACK_WIDGET_CREATION=true
-TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=/Users/chrisjennings/Documents/Mobile App/vmba/.dart_tool/package_config.json
+TRACK_WIDGET_CREATION=false
+TREE_SHAKE_ICONS=true
+PACKAGE_CONFIG=/Users/chrisjennings/StudioProjects/vmba/.dart_tool/package_config.json

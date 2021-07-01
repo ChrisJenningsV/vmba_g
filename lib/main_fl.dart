@@ -41,7 +41,7 @@ void configFL() {
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
-  //gbl_language = 'en';
+   //gbl_language = 'en';
 
   gblSettings = Settings(
    // latestBuildiOS: '1.0.8.40',
