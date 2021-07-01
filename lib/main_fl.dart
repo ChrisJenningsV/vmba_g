@@ -41,7 +41,6 @@ void configFL() {
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
-  gblIsLive = true;
   //gbl_language = 'en';
 
   gblSettings = Settings(
@@ -75,7 +74,7 @@ void configFL() {
       senior: true,
     ),
     fqtvName:  "",
-    wantFQTV: true,
+    wantFQTV: false,
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",
