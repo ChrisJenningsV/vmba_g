@@ -188,11 +188,10 @@ class _HomeState extends State<HomePage> {
         // reverse: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          //image: mainBackGroundImage
           children: <Widget>[
             Image(
-              image: Image.network(
-                      gblSettings.backgroundImageUrl)
-                  .image,
+                image: NetworkImage(gblSettings.backgroundImageUrl),
               fit: BoxFit.fitWidth,
             ),
           ],
@@ -270,7 +269,6 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: <Widget>[
-  //           gotBG == true ?  getImage() :
             Container(
                 decoration: BoxDecoration(
                     image:  DecorationImage(
