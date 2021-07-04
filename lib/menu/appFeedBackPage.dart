@@ -214,15 +214,15 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     gblIsLive = !gblIsLive;
 
     if(gblIsLive == true) {
-      gblSettings.xmlUrl = gblSettings.live_xmlUrl;
-      gblSettings.apisUrl = gblSettings.live_apisUrl;
-      gblSettings.apiUrl = gblSettings.live_apiUrl;
-      gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
+      gblSettings.xmlUrl = gblSettings.liveXmlUrl;
+      gblSettings.apisUrl = gblSettings.liveApisUrl;
+      gblSettings.apiUrl = gblSettings.liveApiUrl;
+      gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
     } else {
-      gblSettings.xmlUrl = gblSettings.test_xmlUrl;
-      gblSettings.apisUrl = gblSettings.test_apisUrl;
-      gblSettings.apiUrl = gblSettings.test_apiUrl;
-      gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
+      gblSettings.xmlUrl = gblSettings.testXmlUrl;
+      gblSettings.apisUrl = gblSettings.testApisUrl;
+      gblSettings.apiUrl = gblSettings.testApiUrl;
+      gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
     }
 
     setState(() {
@@ -432,7 +432,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         gblSine = sine;
         gblMobileFlags = sineMap['mobileflags'];
         gblSecurityLevel = int.parse(sineMap['securitylevel'].toString());
-        print('successful login');
+        if( gblVerbose == true ) {print('successful login'); }
         return 'OK';
       } catch (e) {
         print(e);

@@ -33,7 +33,13 @@ void configFL() {
       textButtonTextColor: Colors.black54  ,
       primaryHeaderColor: Color.fromRGBO(0x1C, 0x37,0x48,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
       headerTextColor: Colors.white,
-      statusBar: Brightness.dark);
+      statusBar: Brightness.dark,
+    seatPlanColorEmergency: Colors.red, //Colors.yellow
+    seatPlanColorAvailable: Colors.blue, //Colors.green
+    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
+    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
+    seatPlanColorRestricted: Colors.green[200],
+  );
 
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
@@ -74,7 +80,7 @@ void configFL() {
       senior: true,
     ),
     fqtvName:  "",
-    wantFQTV: false,
+    wantFQTV: true,
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",
@@ -85,20 +91,20 @@ void configFL() {
 
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
-    live_xmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    live_apisUrl:       'https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    live_apiUrl: 'https://booking.airleap.se/VARS/webApiV2/api/',
-    live_creditCardProvider: 'worldpaydirect',
+    liveXmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveApisUrl:       'https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl: 'https://booking.airleap.se/VARS/webApiV2/api/',
+    liveCreditCardProvider: 'worldpaydirect',
 
     xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     creditCardProvider: 'videcard',
 
-    test_xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    test_apisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    test_apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
-    test_creditCardProvider: 'videcard',
+    testXmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testApisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
+    testCreditCardProvider: 'videcard',
 
     wantPayStack: false,
     wantLeftLogo: false,

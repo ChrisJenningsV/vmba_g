@@ -138,6 +138,7 @@ class Settings {
   String androidAppId;
   String latestBuildiOS = '1.0.5';
   String latestBuildAndroid = '1.0.0.98';
+  String fQTVpointsName = 'airmiles';
   String reqUpdateMsg;
   String optUpdateMsg;
 
@@ -147,15 +148,15 @@ class Settings {
   String apiKey;
   String creditCardProvider;
 
-  String test_xmlUrl;
-  String test_apisUrl;
-  String test_apiUrl;
-  String test_creditCardProvider;
+  String testXmlUrl;
+  String testApisUrl;
+  String testApiUrl;
+  String testCreditCardProvider;
 
-  String live_xmlUrl;
-  String live_apisUrl;
-  String live_apiUrl;
-  String live_creditCardProvider;
+  String liveXmlUrl;
+  String liveApisUrl;
+  String liveApiUrl;
+  String liveCreditCardProvider;
 
   bool eVoucher;
   PassengerTypes passengerTypes;
@@ -221,16 +222,16 @@ bool bpShowFastTrack;
     this.reqUpdateMsg,
     this.optUpdateMsg,
 
-    this.test_xmlUrl,
-    this.test_apisUrl,
-    this.test_apiUrl,
-    this.test_creditCardProvider,
+    this.testXmlUrl,
+    this.testApisUrl,
+    this.testApiUrl,
+    this.testCreditCardProvider,
 
-    this.live_xmlUrl,
-    this.live_apisUrl,
-    this.live_apiUrl,
-    this.live_creditCardProvider,
-
+    this.liveXmlUrl,
+    this.liveApisUrl,
+    this.liveApiUrl,
+    this.liveCreditCardProvider,
+    this.fQTVpointsName,
 
   });
 

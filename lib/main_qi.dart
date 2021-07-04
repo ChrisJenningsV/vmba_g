@@ -38,7 +38,13 @@ void configQI() {
       primaryHeaderColor: Color.fromRGBO(0x1C, 0x37, 0x48, 1),
       // orange Color.fromRGBO(0xF0, 0x81,0,1),
       headerTextColor: Colors.white,
-      statusBar: Brightness.light);
+      statusBar: Brightness.light,
+    seatPlanColorEmergency: Colors.red, //Colors.yellow
+    seatPlanColorAvailable: Colors.blue, //Colors.green
+    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
+    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
+    seatPlanColorRestricted: Colors.green[200],
+  );
 
   gblSystemColors = _systemColors;
   gblTitleStyle = new TextStyle(color: Colors.white);
@@ -84,17 +90,17 @@ void configQI() {
     maxNumberOfPax: 8,
     hideFareRules: true,
     fqtvEnabled: false,
-    live_xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    live_apisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    live_apiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
-    live_creditCardProvider: 'worldpaydirect',
+    liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveApisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
+    liveCreditCardProvider: 'worldpaydirect',
 
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
-    test_xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    test_apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    test_apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
-    test_creditCardProvider: 'videcard',
+    testXmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testApisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
+    testCreditCardProvider: 'videcard',
 
     xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

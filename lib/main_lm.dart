@@ -82,11 +82,11 @@ void configLM() {
 
 //Production setttings
 
-  live_xmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  live_apisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  live_apiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
+  liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveApisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
 
-  live_creditCardProvider: 'worldpaydirect',
+  liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,
     xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -94,9 +94,9 @@ void configLM() {
     apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
 
 //Staging setttings
-  test_xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  test_apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  test_apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
+  testXmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  testApisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
 
 /*
     xmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -105,12 +105,12 @@ void configLM() {
 
  */
   creditCardProvider: 'videcard',
-  test_creditCardProvider: 'videcard',
+  testCreditCardProvider: 'videcard',
 
   wantPayStack: false,
   wantLeftLogo: false,
   wantMyAccount: true,
-  wantFQTV: false,
+  wantFQTV: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',
   maxNumberOfPax: 8,
   hideFareRules: false,

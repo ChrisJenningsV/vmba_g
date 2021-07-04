@@ -12,6 +12,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 class ReturnFlightSeletionPage extends StatefulWidget {
   ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
@@ -353,7 +354,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                       : Colors.black),
                             ),
                             new Text(
-                              calenderPrice(item.cur, item.amt),
+                              calenderPrice(item.cur, item.amt, item.miles),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),
@@ -698,7 +699,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                 (double.tryParse(current
                                                         .fltav.tax[index]) ??
                                                     0.0))
-                                        .toStringAsFixed(2)),
+                                        .toStringAsFixed(2),
+                                    item[0].fltav.miles[index]),
                                 style: new TextStyle(
                                   color: gblSystemColors
                                       .primaryButtonTextColor,
@@ -723,6 +725,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
       } else if (item[0].fltav.pri.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
+      } else {
+        _mainAxisAlignment = MainAxisAlignment.spaceAround;
       }
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,
@@ -781,7 +785,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                   (double.tryParse(current
                                                           .fltav.tax[index]) ??
                                                       0.0))
-                                          .toStringAsFixed(2)),
+                                          .toStringAsFixed(2),
+                                      item[0].fltav.miles[index]),
                                   style: new TextStyle(
                                     color: gblSystemColors
                                         .primaryButtonTextColor,
@@ -850,6 +855,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     });
   }
 
+  /*
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
         locale: gblSettings.locale, name: currency);
@@ -861,4 +867,6 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       return _currencySymbol + price;
     }
   }
+
+   */
 }

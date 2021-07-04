@@ -519,11 +519,11 @@ void initState() {
                                   ),
                                   labelText: 'Card Holder',
                                 ),
-                                keyboardType: TextInputType.text,
+                                //keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                      RegExp("[a-zA-Z- ÆØäöåÄÖÅ]")),
+                                      RegExp("[a-zA-Z- ÆØäöåÄÖÅæ]")),
                                   LengthLimitingTextInputFormatter(50)
                                 ],
                               ),

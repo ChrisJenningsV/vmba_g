@@ -879,6 +879,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
       } else if (item[0].fltav.pri.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
+      } else {
+        _mainAxisAlignment = MainAxisAlignment.spaceAround;
       }
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,

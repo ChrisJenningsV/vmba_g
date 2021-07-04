@@ -78,18 +78,18 @@ void configZ4() {
   ),
 
 //Production setttings
-  live_xmlUrl:      "https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  live_apisUrl:      'https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  live_apiUrl: 'https://booking.ibomair.com/VARS/webApiV2/api/',
-  live_creditCardProvider: 'worldpaydirect',
+  liveXmlUrl:      "https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveApisUrl:      'https://booking.ibomair.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl: 'https://booking.ibomair.com/VARS/webApiV2/api/',
+  liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,
 
 //Staging setttings
-  test_xmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  test_apisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  test_apiUrl:      'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',  // InHous
-  test_creditCardProvider: 'videcard',
+  testXmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  testApisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  testApiUrl:      'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',  // InHous
+  testCreditCardProvider: 'videcard',
 
     xmlUrl:      "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

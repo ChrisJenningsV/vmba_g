@@ -48,28 +48,36 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
     //.then((result) result == true ? loadProfileIntoPaxDetails: {});
 
-    Repository.get()
-        .getNamedUserProfile('PAX1')
-        .then((profile) {
-      try {
-        Map map = json.decode(
-            profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
-        passengerDetailRecord = PassengerDetail.fromJson(map);
+    if(isUserProfileComplete()) {
+      loadProfileIntoPaxDetails();
+    } else {
+      Repository.get()
+          .getNamedUserProfile('PAX1')
+          .then((profile) {
+        try {
+          Map map = json.decode(
+              profile.value.toString().replaceAll(
+                  "'", '"')); // .replaceAll(',}', '}')
+          passengerDetailRecord = PassengerDetail.fromJson(map);
 
-        if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null &&
-            gblPassengerDetail.adsNumber.isNotEmpty && gblPassengerDetail.adsPin != null &&
-            gblPassengerDetail.adsPin.isNotEmpty ) {
-          passengerDetailRecord.adsNumber = gblPassengerDetail.adsNumber;
-          passengerDetailRecord.adsPin = gblPassengerDetail.adsPin;
+          if (gblPassengerDetail != null &&
+              gblPassengerDetail.adsNumber != null &&
+              gblPassengerDetail.adsNumber.isNotEmpty &&
+              gblPassengerDetail.adsPin != null &&
+              gblPassengerDetail.adsPin.isNotEmpty) {
+            passengerDetailRecord.adsNumber = gblPassengerDetail.adsNumber;
+            passengerDetailRecord.adsPin = gblPassengerDetail.adsPin;
+          }
+          if (isUserProfileComplete()) {
+            setState(() {
+              preloadProfile(context);
+            });
+          }
+        } catch (e) {
+          print(e);
         }
-        if(isUserProfileComplete()) {
-          preloadProfile(context);
-        }
-
-      } catch(e) {
-        print(e);
-      }
-    });
+      });
+    }
   }
 
   showSnackBar(String message) {
@@ -134,7 +142,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   loadProfileIntoPaxDetails() {
     int paxNo = 0;
-    setState(() {
+//    setState(() {
       if (passengerDetailRecord.title != null && passengerDetailRecord.title.length > 0) {
         _passengerDetails[paxNo].title = passengerDetailRecord.title;
       }
@@ -162,13 +170,27 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       if (passengerDetailRecord.adsPin != null && passengerDetailRecord.adsPin != 'null' && passengerDetailRecord.adsPin.length > 0) {
         _passengerDetails[paxNo].adsPin =passengerDetailRecord.adsPin;
       }
+    if (passengerDetailRecord.email != null && passengerDetailRecord.email != 'null' && passengerDetailRecord.email.length > 0) {
+      _passengerDetails[paxNo].email =passengerDetailRecord.email;
+    }
+    if (passengerDetailRecord.phonenumber != null && passengerDetailRecord.phonenumber != 'null' && passengerDetailRecord.phonenumber.length > 0) {
+      _passengerDetails[paxNo].phonenumber =passengerDetailRecord.phonenumber;
+    }
+    preLoadDetails = true;
+    showContinueButton();
 
-    });
+//    });
   }
 
   bool isUserProfileComplete() {
-    if( (passengerDetailRecord.firstName.length ==            0) ||
-        (passengerDetailRecord.firstName ==            '')) {
+    if( passengerDetailRecord == null ) {
+      if( gblPassengerDetail == null ) {
+        return false;
+      }
+      passengerDetailRecord = gblPassengerDetail;
+    }
+    if( (passengerDetailRecord.firstName.length == 0) ||
+        (passengerDetailRecord.firstName == '')) {
       return false;
     }
 

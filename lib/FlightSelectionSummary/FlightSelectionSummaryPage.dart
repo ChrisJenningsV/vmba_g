@@ -29,6 +29,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   bool _noInternet;
   bool _eVoucherNotValid;
   bool _hasError;
+  String _error ;
+  var miles = 0;
 
   @override
   initState() {
@@ -37,7 +39,16 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _noInternet = false;
     _eVoucherNotValid = false;
     _hasError = false;
+    _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
+
+    /*
+  for ( FQItin fqi in  this.pnrModel.pNR.fareQuote.fQItin) {
+          miles =  miles + int.tryParse(fqi.miles) ?? 0;
+    };
+
+     */
+
   }
 
   String buildAddPaxCmd() {
@@ -171,6 +182,20 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       if (rs.isOk()) {
         pnrModel = rs.body;
         setCurrencyCode();
+        if ( gblRedeemingAirmiles == true ) {
+          miles =
+              int.tryParse(this.pnrModel.pNR.basket.outstandingairmiles.airmiles) ??
+                  0;
+          if (gblFqtvBalance < miles) {
+            setState(() {
+              _loadingInProgress = false;
+              _eVoucherNotValid = false;
+              _hasError = true;
+              _error =
+              'You do not have enough ${gblSettings.fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings.fQTVpointsName} required = $miles';
+            });
+          }
+        }
         _dataLoaded();
       } else {
         setState(() {
@@ -274,10 +299,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   }
 Row airMiles() {
 
-    var miles = 0;
-  for ( FQItin fqi in  this.pnrModel.pNR.fareQuote.fQItin) {
-          miles =  miles + int.tryParse(fqi.miles) ?? 0;
-    };
+
 
     return  Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -639,8 +661,7 @@ Row airMiles() {
                   padding: const EdgeInsets.all(8.0),
                   child: _eVoucherNotValid
                       ? Text('Promo code not vaild')
-                      : Text(
-                          'We are unable to proceed with this request. Please contact customer services to make your booking',
+                      : Text( _error                          ,
                           textAlign: TextAlign.center,
                         ),
                 ),
@@ -659,7 +680,19 @@ Row airMiles() {
                           style: new TextStyle(color: Colors.white),
                         ),
                       )
-                    : Text(''),
+                    :               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      primary: Colors.black),
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/FlightSearchPage', (Route<dynamic> route) => false);
+                    },
+                    child: Text('Restart booking',
+                    style: new TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
           ));

@@ -35,7 +35,7 @@ Future<Session> login() async {
       Map map = json.decode(response.body);
       LoginResponse loginResponse = new LoginResponse.fromJson(map);
       if (loginResponse.isSuccessful) {
-        print('successful login');
+        if( gblVerbose == true ) { print('successful login'); }
         gblSession = loginResponse.getSession();
         return loginResponse.getSession();
       }

@@ -89,16 +89,21 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(gblIsLive == true) {
-      gblSettings.xmlUrl = gblSettings.live_xmlUrl;
-      gblSettings.apisUrl = gblSettings.live_apisUrl;
-      gblSettings.apiUrl = gblSettings.live_apiUrl;
-      gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
+      gblSettings.xmlUrl = gblSettings.liveXmlUrl;
+      gblSettings.apisUrl = gblSettings.liveApisUrl;
+      gblSettings.apiUrl = gblSettings.liveApiUrl;
+      gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
     } else {
-      gblSettings.xmlUrl = gblSettings.test_xmlUrl;
-      gblSettings.apisUrl = gblSettings.test_apisUrl;
-      gblSettings.apiUrl = gblSettings.test_apiUrl;
-      gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
+      gblSettings.xmlUrl = gblSettings.testXmlUrl;
+      gblSettings.apisUrl = gblSettings.testApisUrl;
+      gblSettings.apiUrl = gblSettings.testApiUrl;
+      gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
     }
+    // check for invalid settings
+    if(gblSettings.fQTVpointsName== null || gblSettings.fQTVpointsName.isEmpty){
+      gblSettings.fQTVpointsName = 'airmiles';
+    }
+
     return MaterialApp(
 //      locale: model.appLocal,
        debugShowCheckedModeBanner: false,

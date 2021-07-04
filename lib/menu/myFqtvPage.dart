@@ -11,6 +11,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/components/showDialog.dart';
 
 class MyFqtvPage extends StatefulWidget {
   MyFqtvPage(
@@ -60,11 +61,14 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 //  bool _loadingInProgress = false;
   String _error;
   bool _isHidden = true;
+  bool _loadingInProgress = false;
+
 
   @override
   initState() {
     super.initState();
     _isButtonDisabled = false;
+   // _loadingInProgress = true;
     _isHidden = true;
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
     if( gblPassengerDetail != null &&
@@ -123,14 +127,29 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 
   @override
   Widget build(BuildContext context) {
-    if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
+    if (_loadingInProgress) {
+      return Scaffold(
+        body: new Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Text("Checking details..."),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
         widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
 
       return AlertDialog(
         title: Row(
             children:[
               Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/lock_user_man.png',
-                width: 50, height: 50, fit: BoxFit.contain,),
+                width: 25, height: 25, fit: BoxFit.contain,),
               TrText('${gblSettings.fqtvName} LOGIN')
             ]
         ),
@@ -160,6 +179,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               if ( _isButtonDisabled == false ) {
                 if( _fqtvTextEditingController.text.isNotEmpty && _passwordEditingController.text.isNotEmpty) {
                   _isButtonDisabled = true;
+                  _loadingInProgress = true;
                   setState(() {
 
                   });
@@ -167,6 +187,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 
                 } else {
                   _error = "Please complete both fields";
+                  _loadingInProgress = false;
                   _isButtonDisabled = false ;
                  // _actionCompleted();
                   _showDialog();
@@ -476,7 +497,15 @@ if ( memberDetails != null ) {
     }
 
     if( transactions != null ) {
-
+      widgets.add(new SingleChildScrollView(
+        padding: EdgeInsets.only(left: 1.0, right: 1.0),
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+            child: _getTrans()
+        ),
+      ));
+      /*
       widgets.add(new SingleChildScrollView(
         padding: EdgeInsets.only(left: 1.0, right: 1.0),
         scrollDirection: Axis.vertical,
@@ -502,10 +531,64 @@ if ( memberDetails != null ) {
               ),
         ),
           ));
+
+       */
    }
     return widgets;
   }
+Widget _getTrans() {
+  List<Widget> tranWidgets = [];
 
+  for(var tran in  transactions) {
+    if( tran.airMiles != '0' && tran.airMiles != '0.0') {
+
+      tranWidgets.add(Container(
+        width: MediaQuery.of(context).size.width * 0.95 ,
+        margin: EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          border: Border.all(),
+          borderRadius: BorderRadius.all(Radius.circular(3.0))
+        ),
+        child: Column(
+
+          // this makes the column height hug its content
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+      // first row
+      Row(
+      children: [
+      //Padding(padding: EdgeInsets.only(right: 8.0),child: Icon(Icons.favorite,color: Colors.green,),),
+        Text( tran.flightNumber), Text(' '),
+        Text(tran.departureCityCode ,style: TextStyle(color: Colors.white,  )), Text(' '),
+        Text(tran.arrivalCityCode), Text(' '),
+        Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(color: Colors.white,  )),
+
+        ],  ),
+
+  // second row (single item)
+          Row(
+              children: [Text(tran.description ,
+          style: TextStyle( color: Colors.white, ), )]),
+            // third row
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            Text(tran.airMiles,style: TextStyle(color: Colors.white, ) ),
+            Text(tran.pnr + '      ',style: TextStyle(color: Colors.black,  ),  ),
+        ],
+          )]
+      )
+      )
+
+      );
+
+    }
+  }
+
+      return new Column(children: tranWidgets.toList());
+}
   List <DataRow> _getDataCells() {
     List <DataRow> rows = [];
 
@@ -556,8 +639,10 @@ if ( memberDetails != null ) {
   }
 
   void _showDialog() {
+    showAlertDialog(context, 'Error', _error);
+    return;
     // flutter defined function
-    showDialog(
+/*    showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -580,6 +665,8 @@ if ( memberDetails != null ) {
         );
       },
     );
+
+ */
   }
 
   void _fqtvResetPassword() async {
@@ -664,11 +751,19 @@ if ( memberDetails != null ) {
     String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
     String method = 'GetAirMilesBalance';
 
-   //print(msg);
+   print(msg);
    _sendVRSCommand(msg, method).then((result) {
+     if( result == null || result == ''){
+       _error = 'Bad server response logging on';
+       _isButtonDisabled = false;
+       _actionCompleted();
+       _showDialog();
+       return;
+     }
      Map map = json.decode(result);
      ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(
          map);
+     _loadingInProgress = false;
      if (resp.statusCode != 'OK') {
        _error = resp.message;
        _isButtonDisabled = false;
@@ -706,9 +801,19 @@ if ( memberDetails != null ) {
              }
              gblPassengerDetail.fqtv = fqtvNo;
              gblPassengerDetail.fqtvPassword = fqtvPass;
+             gblPassengerDetail.title = memberDetails.member.title;
+             gblPassengerDetail.firstName = memberDetails.member.firstname;
+             gblPassengerDetail.lastName = memberDetails.member.surname;
+             gblPassengerDetail.phonenumber = memberDetails.member.phoneMobile;
+             if( gblPassengerDetail.phonenumber == null || gblPassengerDetail.phonenumber.isEmpty  ) {
+               gblPassengerDetail.phonenumber = memberDetails.member.phoneHome;
+             }
+
+             gblPassengerDetail.email = memberDetails.member.email;
              setState(() {});
            }
          } catch(e) {
+           _loadingInProgress = false;
            print(e);
          }
        });

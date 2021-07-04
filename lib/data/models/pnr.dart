@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:vmba/data/globals.dart';
 import 'models.dart';
 
 class PnrModel {
@@ -120,7 +121,8 @@ class PnrModel {
     }
 
     if (!validatePayment(this.pNR.basket)) {
-      return 'Payment invalid';
+      return 'Please contact ${gblSettings.airlineName} to complete booking';
+      //return 'Payment invalid';
     }
 
     if (!hasTickets(this.pNR.tickets)) {

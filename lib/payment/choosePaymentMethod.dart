@@ -188,8 +188,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     double tax = 0.0;
     double sepTax1 = 0.0;
     String desc1 = '';
-    double sepTax2 = 0.0;
-    String desc2 = '';
 
 
     List <Row> rows = [];

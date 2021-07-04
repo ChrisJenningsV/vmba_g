@@ -71,7 +71,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
 
         _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
+
         _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
+
 
         _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
         _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
@@ -80,8 +82,43 @@ class _MyAccountPageState extends State<MyAccountPage> {
           widget.passengerDetail.paxType = PaxType.adult;
         }
       }
+      _populateFromGlobalProfile();
     });
     // _displayProcessingIndicator = false;
+  }
+void _populateFromGlobalProfile() {
+  if( gblPassengerDetail == null ){
+    return;
+  }
+
+  if( _titleTextEditingController.text == null || _titleTextEditingController.text.isEmpty){
+      _titleTextEditingController.text = gblPassengerDetail.title;
+  }
+  if( _firstNameTextEditingController.text == null || _firstNameTextEditingController.text.isEmpty){
+    _firstNameTextEditingController.text = gblPassengerDetail.firstName;
+  }
+  if( _lastNameTextEditingController.text == null || _lastNameTextEditingController.text.isEmpty){
+    _lastNameTextEditingController.text = gblPassengerDetail.lastName;
+  }
+
+  if( _phoneNumberTextEditingController.text == null || _phoneNumberTextEditingController.text.isEmpty){
+    _phoneNumberTextEditingController.text = gblPassengerDetail.phonenumber;
+  }
+  if( _emailTextEditingController.text == null || _emailTextEditingController.text.isEmpty){
+    _emailTextEditingController.text = gblPassengerDetail.email;
+  }
+
+
+
+  if( _fqtvTextEditingController.text == null || _fqtvTextEditingController.text.isEmpty){
+      _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
+  }
+  if( _fqtvPasswordEditingController.text == null || _fqtvPasswordEditingController.text.isEmpty){
+      _fqtvPasswordEditingController.text = gblPassengerDetail.fqtvPassword;
+  }
+
+
+
   }
 
   @override

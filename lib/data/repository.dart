@@ -275,12 +275,16 @@ class Repository {
                   case 'latestBuildiOS':
                     gblSettings.latestBuildiOS = item['value'];
                     break;
-                  case 'Mobile_reqUpdateMsg':
+                  case 'reqUpdateMsg':
                     gblSettings.reqUpdateMsg = item['value'];
                     break;
-                  case 'Mobile_optUpdateMsg':
+                  case 'optUpdateMsg':
                     gblSettings.optUpdateMsg = item['value'];
                     break;
+                  case 'FQTVpointsName':
+                    gblSettings.fQTVpointsName = item['value'];
+                    break;
+
 
                 /*
                   BOOLS
@@ -310,11 +314,13 @@ class Repository {
                     gblSettings.hideFareRules =parseBool(item['value']);
                     break;
 
+
                 /*
                   URLs
                    */
                   case 'backgroundImageUrl':
                     gblSettings.backgroundImageUrl = item['value'];
+                    print(gblSettings.backgroundImageUrl);
                     break;
                   case 'adsTermsUrl':
                     gblSettings.adsTermsUrl = item['value'];
@@ -375,12 +381,12 @@ class Repository {
                         mainMatchVersioAction =  item['value'].toString().toUpperCase();
                       }
                     } else {
-                      print('Parameter not found ${item["parameter"]}');
+                      if( gblVerbose == true ) {print('Parameter not found ${item["parameter"]}');}
                     }
                 }
               }
             }
-            print('successful login');
+            if( gblVerbose == true ) {print('successful login');}
 
             if( exactMatchVersioAction.isNotEmpty) {
               gblAction = exactMatchVersioAction;
@@ -413,6 +419,9 @@ class Repository {
     }
     if( str.isEmpty) {
       return false;
+    }
+    if( str == '-1') {
+      return true;
     }
     return (str.toLowerCase() == 'true');
   }

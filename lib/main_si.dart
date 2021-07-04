@@ -36,7 +36,13 @@ void configSI() {
       textButtonTextColor: Colors.black54  ,
       primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
       headerTextColor: Colors.white,
-      statusBar: Brightness.dark);
+      statusBar: Brightness.dark,
+    seatPlanColorEmergency: Colors.red, //Colors.yellow
+    seatPlanColorAvailable: Colors.blue, //Colors.green
+    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
+    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
+    seatPlanColorRestricted: Colors.green[200],
+  );
 
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
@@ -83,10 +89,10 @@ void configSI() {
   hideFareRules:  true,
   fqtvEnabled:  false,
 
-  live_xmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  live_apisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  live_apiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
-  live_creditCardProvider: 'citypaydirect',
+  liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveApisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
+  liveCreditCardProvider: 'citypaydirect',
 
   apiKey: '4d332cf7134f4a43958d954278474b41', // '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
@@ -95,10 +101,10 @@ void configSI() {
   apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
   creditCardProvider: 'videcard', // citypaydirect
 
-  test_xmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  test_apisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  test_apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
-  test_creditCardProvider: 'videcard', // citypaydirect
+  testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
+  testCreditCardProvider: 'videcard', // citypaydirect
 
   wantPayStack: false,
   bpShowFastTrack: false,

@@ -44,13 +44,15 @@ class _HomeState extends State<HomePage> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      checkForLatestVersion();
+      if (shownUpdate == false) {
+        checkForLatestVersion();
+      }
     });
   }
 
-   initLang(String lang) async {
+  initLang(String lang) async {
     //Future<Countrylist> getCountrylist() async {
-    if( gblLanguage != 'en') {
+    if (gblLanguage != 'en') {
       String jsonString = await rootBundle.loadString(
           'lib/assets/lang/$gblLanguage.json');
       gblLangMap = json.decode(jsonString);
@@ -58,36 +60,35 @@ class _HomeState extends State<HomePage> {
   }
 
   checkForLatestVersion() {
-   // Version currentVersion;
-   // Version latestVersion;
+    // Version currentVersion;
+    // Version latestVersion;
     String latestVersion;
 
-    if( gblAction == 'UPDATEAVAILABLE') {
+    if (gblAction == 'UPDATEAVAILABLE') {
       _updateAppDialog();
       return;
     }
 
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
-            packageInfo.version + '.' + packageInfo.buildNumber)
+    packageInfo.version + '.' + packageInfo.buildNumber)
         .then((String version) {
-
       latestVersion = Platform.isIOS
           ? gblSettings.latestBuildiOS
           : gblSettings.latestBuildAndroid;
 
-      if( latestVersion == null ){
+      if (latestVersion == null) {
         // no new version
         return;
       }
       int cMajor = int.parse(version.split('.')[0]);
-      int cMinor= int.parse(version.split('.')[1]);
-      int cPatch= int.parse(version.split('.')[2]);
-      int cBuild= int.parse(version.split('.')[3]);
-      int lMajor= int.parse(latestVersion.split('.')[0]);
-      int lMinor= int.parse(latestVersion.split('.')[1]);
-      int lPatch= int.parse(latestVersion.split('.')[2]);
-      int lBuild= int.parse(latestVersion.split('.')[3]);
+      int cMinor = int.parse(version.split('.')[1]);
+      int cPatch = int.parse(version.split('.')[2]);
+      int cBuild = int.parse(version.split('.')[3]);
+      int lMajor = int.parse(latestVersion.split('.')[0]);
+      int lMinor = int.parse(latestVersion.split('.')[1]);
+      int lPatch = int.parse(latestVersion.split('.')[2]);
+      int lBuild = int.parse(latestVersion.split('.')[3]);
 
 
       /*
@@ -100,12 +101,21 @@ class _HomeState extends State<HomePage> {
       gblIsIos = Platform.isIOS;
 
       bool bNewBuilsAvailable = false;
-      if( lMajor > cMajor ) { bNewBuilsAvailable = true;}
-      if( lMajor == cMajor && lMinor > cMinor ) { bNewBuilsAvailable = true;}
-      if( lMajor == cMajor && lMinor == cMinor && lPatch > cPatch ) { bNewBuilsAvailable = true;}
-      if( lMajor == cMajor && lMinor == cMinor && lPatch == cPatch && lBuild > cBuild ) { bNewBuilsAvailable = true;}
+      if (lMajor > cMajor) {
+        bNewBuilsAvailable = true;
+      }
+      if (lMajor == cMajor && lMinor > cMinor) {
+        bNewBuilsAvailable = true;
+      }
+      if (lMajor == cMajor && lMinor == cMinor && lPatch > cPatch) {
+        bNewBuilsAvailable = true;
+      }
+      if (lMajor == cMajor && lMinor == cMinor && lPatch == cPatch &&
+          lBuild > cBuild) {
+        bNewBuilsAvailable = true;
+      }
 
-      if( bNewBuilsAvailable == true){
+      if (bNewBuilsAvailable == true) {
         _updateAppDialog();
       }
     });
@@ -136,16 +146,19 @@ class _HomeState extends State<HomePage> {
 
   void _updateAppDialog() {
     var txt = '';
-    if( gblSettings.optUpdateMsg != null && gblSettings.optUpdateMsg.isNotEmpty) {
+    if (gblSettings.optUpdateMsg != null &&
+        gblSettings.optUpdateMsg.isNotEmpty) {
       txt = gblSettings.optUpdateMsg;
     }
+    shownUpdate = true;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
             title: Text('Update App'),
             content:
-                Text('A newer version of the app is available to download' + '\n' + txt),
+            Text('A newer version of the app is available to download' + '\n' +
+                txt),
             actions: <Widget>[
               new TextButton(
                 child: new Text(
@@ -163,8 +176,9 @@ class _HomeState extends State<HomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 style: TextButton.styleFrom(
-                    backgroundColor: gblSystemColors.primaryButtonColor ,
-                    side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                    backgroundColor: gblSystemColors.primaryButtonColor,
+                    side: BorderSide(
+                        color: gblSystemColors.textButtonTextColor, width: 1),
                     primary: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
                   OpenAppstore.launch(
@@ -178,8 +192,8 @@ class _HomeState extends State<HomePage> {
   }
 
   //Future<Widget> getImage() async {
-    Widget getImage()  {
-      return Container(
+  Widget getImage() {
+    return Container(
       //  decoration: BoxDecoration(
       //               image: DecorationImage(
       //                   image: mainBackGroundImage, fit: BoxFit.fitWidth))
@@ -191,7 +205,7 @@ class _HomeState extends State<HomePage> {
           //image: mainBackGroundImage
           children: <Widget>[
             Image(
-                image: NetworkImage(gblSettings.backgroundImageUrl),
+              image: NetworkImage(gblSettings.backgroundImageUrl),
               fit: BoxFit.fitWidth,
             ),
           ],
@@ -204,18 +218,19 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     var buttonShape;
 
-    if( gblSettings.backgroundImageUrl != null && gblSettings.backgroundImageUrl.isNotEmpty) {
+    if (gblSettings.backgroundImageUrl != null &&
+        gblSettings.backgroundImageUrl.isNotEmpty) {
       try {
         var newImg = Image.network(gblSettings.backgroundImageUrl);
         if (newImg.image != null) {
           gotBG = true;
         }
-      } catch(e) {
+      } catch (e) {
         gotBG = false;
       }
     }
-   // var appLanguage = new AppLanguage();
- //   appLanguage.changeLanguage('fr');
+    // var appLanguage = new AppLanguage();
+    //   appLanguage.changeLanguage('fr');
 
     switch (gblSettings.aircode.toUpperCase()) {
       case 'SI':
@@ -239,18 +254,18 @@ class _HomeState extends State<HomePage> {
     if (_displayProcessingIndicator) {
       return Scaffold(
           body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText('Loading...'),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TrText('Loading...'),
+                ),
+              ],
             ),
-          ],
-        ),
-      ));
+          ));
     } else {
       //print(mainBackGroundImage);
       //var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
@@ -263,23 +278,31 @@ class _HomeState extends State<HomePage> {
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             title:
-                gblIsLive ? appBarImage : Row( children: <Widget>[appBarImage, Text('Test', style: gblTitleStyle,)]),
+            gblIsLive ? appBarImage : Row(children: <Widget>[
+              appBarImage,
+              Text('Test', style: gblTitleStyle,)
+            ]),
             iconTheme: IconThemeData(
                 color:
                 gblSystemColors.headerTextColor)),
         body: Stack(
-          children: <Widget>[
-            Container(
-                decoration: BoxDecoration(
-                    image:  DecorationImage(
-                        image: mainBackGroundImage, fit: BoxFit.fitWidth))),
-            if (gotBG ) ClipRRect(child: getImage()),
+          children: _getBackImage(buttonShape),
+            /*
             Container(
               //This container stops the alternative image from scrolling
               child: Text(''),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
             ),
+
+             */
+            /*
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -293,10 +316,13 @@ class _HomeState extends State<HomePage> {
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   shape: buttonShape,
-                                  backgroundColor: gblSystemColors.primaryButtonColor),
-                              onPressed: () => Navigator.of(context)
-                                  .pushNamedAndRemoveUntil('/FlightSearchPage',
-                                      (Route<dynamic> route) => false),
+                                  backgroundColor: gblSystemColors
+                                      .primaryButtonColor),
+                              onPressed: () =>
+                                  Navigator.of(context)
+                                      .pushNamedAndRemoveUntil(
+                                      '/FlightSearchPage',
+                                          (Route<dynamic> route) => false),
                               child: Container(
                                 height: 60,
                                 child: Row(
@@ -310,8 +336,8 @@ class _HomeState extends State<HomePage> {
                                       ),
                                     ),
                                     TrText(
-                                       'Book a flight',
-                                       style: TextStyle(
+                                      'Book a flight',
+                                      style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -326,44 +352,46 @@ class _HomeState extends State<HomePage> {
                   ),
                   gblBuildFlavor == 'LM'
                       ? Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: TextButton(
-                                    style: TextButton.styleFrom(
-                                        shape: buttonShape,
-                                        backgroundColor: gblSystemColors.primaryButtonColor),
-                                    onPressed: () => Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/AdsPage',
-                                            (Route<dynamic> route) => false),
-                                    child: Container(
-                                      height: 60,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 5),
-                                            child: Icon(
-                                              Icons.flight_takeoff,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          TrText(
-                                            'Book an ADS Flight',
-                                               style: TextStyle(color: Colors.white),
-                                          ),
-                                        ],
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                  shape: buttonShape,
+                                  backgroundColor: gblSystemColors
+                                      .primaryButtonColor),
+                              onPressed: () =>
+                                  Navigator.of(context)
+                                      .pushNamedAndRemoveUntil('/AdsPage',
+                                          (Route<dynamic> route) => false),
+                              child: Container(
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5),
+                                      child: Icon(
+                                        Icons.flight_takeoff,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ),
+                                    TrText(
+                                      'Book an ADS Flight',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                          ],
-                        )
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                       : Row(),
                   Row(
                     children: <Widget>[
@@ -376,9 +404,11 @@ class _HomeState extends State<HomePage> {
                                   shape: buttonShape,
                                   backgroundColor: gblSystemColors
                                       .primaryButtonColor),
-                              onPressed: () => Navigator.of(context)
-                                  .pushNamedAndRemoveUntil('/MyBookingsPage',
-                                      (Route<dynamic> route) => false),
+                              onPressed: () =>
+                                  Navigator.of(context)
+                                      .pushNamedAndRemoveUntil(
+                                      '/MyBookingsPage',
+                                          (Route<dynamic> route) => false),
                               child: Container(
                                 height: 60,
                                 child: Row(
@@ -410,19 +440,201 @@ class _HomeState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(8),
                   ),
-                  gblNoNetwork ? Row( children: <Widget>[ Expanded( child: new Text( 'No Network Connection',
-                        style: TextStyle( backgroundColor: Colors.red, color: Colors.white, fontSize: 18.0, ))) ]): Text(''),
+                  gblNoNetwork ? Row(children: <Widget>[
+                    Expanded(child: new Text('No Network Connection',
+                        style: TextStyle(backgroundColor: Colors.red,
+                          color: Colors.white,
+                          fontSize: 18.0,)))
+                  ]) : Text(''),
                 ],
               ),
             ),
-          ],
+
+             */
+
         ),
         endDrawer: new DrawerMenu(),
       );
     }
   }
-}
 
+  List<Widget> _getBackImage(var buttonShape) {
+    List<Widget> list = [];
+
+    if (gblSettings.aircode == 'FL') {
+      list.add( ClipRRect(child: getImage()));
+    } else {
+      list.add(Container(
+    decoration: BoxDecoration(
+    image: DecorationImage(
+    image: mainBackGroundImage, fit: BoxFit.fitWidth))));
+
+      if (gotBG ) {
+        list.add(ClipRRect(child: getImage()));
+      }
+    }
+    list.add(Container(
+      //This container stops the alternative image from scrolling
+      child: Text(''),
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
+    ));
+
+    list.add(           Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          gblNoNetwork ? Text('') : Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                          shape: buttonShape,
+                          backgroundColor: gblSystemColors
+                              .primaryButtonColor),
+                      onPressed: () =>
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil(
+                              '/FlightSearchPage',
+                                  (Route<dynamic> route) => false),
+                      child: Container(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.flight_takeoff,
+                                color: Colors.white,
+                              ),
+                            ),
+                            TrText(
+                              'Book a flight',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          gblBuildFlavor == 'LM'
+              ? Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                          shape: buttonShape,
+                          backgroundColor: gblSystemColors
+                              .primaryButtonColor),
+                      onPressed: () =>
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/AdsPage',
+                                  (Route<dynamic> route) => false),
+                      child: Container(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.flight_takeoff,
+                                color: Colors.white,
+                              ),
+                            ),
+                            TrText(
+                              'Book an ADS Flight',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
+              : Row(),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                          shape: buttonShape,
+                          backgroundColor: gblSystemColors
+                              .primaryButtonColor),
+                      onPressed: () =>
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil(
+                              '/MyBookingsPage',
+                                  (Route<dynamic> route) => false),
+                      child: Container(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.card_travel,
+                                color: Colors.white,
+                              ),
+                            ),
+                            TrText(
+                              'My Bookings & Check-in',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+          ),
+          gblNoNetwork ? Row(children: <Widget>[
+            Expanded(child: new Text('No Network Connection',
+                style: TextStyle(backgroundColor: Colors.red,
+                  color: Colors.white,
+                  fontSize: 18.0,)))
+          ]) : Text(''),
+        ],
+      ),
+    ));
+    return list;
+  }
+}
 Widget home() {
   return new Container(
     child: new Center(

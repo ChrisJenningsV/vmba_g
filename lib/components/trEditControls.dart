@@ -4,6 +4,7 @@ import 'package:vmba/data/models/models.dart';
 
 class TrTitleControl extends IgnorePointer {
   final PassengerDetail passengerDetail;
+
   TextEditingController _titleTextEditingController = TextEditingController();
 
   TrTitleControl(  this.passengerDetail);

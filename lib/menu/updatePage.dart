@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 class UpdatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String title = "App Update Available";
-    String btnLabel = "Update Now";
+    //String title = "App Update Available";
+    //String btnLabel = "Update Now";
       return  Scaffold(
           body: Container(
             color: Colors.white, constraints: BoxConstraints.expand(),

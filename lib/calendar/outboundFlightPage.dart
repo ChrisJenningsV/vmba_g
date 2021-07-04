@@ -13,6 +13,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 class FlightSeletionPage extends StatefulWidget {
   FlightSeletionPage({Key key, this.newBooking}) : super(key: key);
@@ -261,7 +262,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       return flightSelection();
     }
   }
-
+/*
   String calenderPrice(String currency, String price, String miles) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
         locale: gblSettings.locale, name: currency);
@@ -278,6 +279,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       }
     }
   }
+
+ */
 
   Widget getCalenderWidget() {
     if (objAv != null || objAv.availability.cal != null) {

@@ -218,9 +218,9 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               widget.passengerDetail.firstName = value;
             },
             textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.text,
+            // keyboardType: TextInputType.text,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØäöåÄÖÅæ]"))
             ],
             validator: (value) =>
                 value.isEmpty ? 'First name can\'t be empty' : null,
@@ -251,10 +251,9 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                 borderSide: new BorderSide(),
               ),
             ),
-            keyboardType: TextInputType.text,
             controller: _lastNameTextEditingController,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØäöåÄÖÅæ]"))
             ],
             onFieldSubmitted: (value) {
               widget.passengerDetail.lastName = value;

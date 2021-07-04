@@ -22,6 +22,7 @@ bool gblIsLive = false;
 bool gblTimerExpired = false;
 bool gblRedeemingAirmiles = false;
 bool gblNewDatepicker = true;
+bool shownUpdate = false;
 String gblFqtvNumber = '';
 //String gblAdsNo = '';
 //String gblAdsPin = '';
