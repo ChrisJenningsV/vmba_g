@@ -11,7 +11,7 @@ description: Videcom Mobile Booking App.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.0+40
+version: 2.0.1+105
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -84,21 +84,21 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    
+    - lib/assets/images/bg.png
     - lib/assets/blueislands/images/appBar.png
     - lib/assets/blueislands/images/logo.png
-    - lib/assets/blueislands/images/background.png
+#    - lib/assets/blueislands/images/background.png
     - lib/assets/blueislands/images/appBarLeft.png
     - lib/assets/blueislands/images/loader.png
     - lib/assets/blueislands/json/countries.json
     - lib/assets/ibomair/images/appBar.png
     - lib/assets/ibomair/images/logo.png
     - lib/assets/ibomair/images/loader.png
-    - lib/assets/ibomair/images/background.png
+#    - lib/assets/ibomair/images/background.png
     - lib/assets/ibomair/json/countries.json
     - lib/assets/loganair/images/appBar.png
     - lib/assets/loganair/images/logo.png
-    - lib/assets/loganair/images/background.png
+ #   - lib/assets/loganair/images/background.png
     - lib/assets/loganair/json/countries.json
     - lib/assets/loganair/images/appBarLeft.png
     - lib/assets/loganair/images/loader.png
@@ -109,11 +109,11 @@ flutter:
     - lib/assets/airswift/images/appBar.png
     - lib/assets/airswift/images/logo.png
     - lib/assets/airswift/images/loader.png
-    - lib/assets/airswift/images/background.png
+ #   - lib/assets/airswift/images/background.png
     - lib/assets/airswift/json/countries.json
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
-    - lib/assets/airleap/images/background.png
+ #   - lib/assets/airleap/images/background.png
     - lib/assets/airleap/json/countries.json
     - lib/assets/airleap/images/appBarLeft.png
     - lib/assets/airleap/images/loader.png

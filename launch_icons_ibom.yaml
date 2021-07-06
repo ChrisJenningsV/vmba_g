@@ -5,3 +5,7 @@ flutter_icons:
   image_path: "lib/assets/icon/Ibom_1024x1024.png"
 
 # flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
+#
+#
+# copy /y lib\assets\ibom\images\bg.png lib\assets\images
+#

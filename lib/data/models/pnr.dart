@@ -129,7 +129,9 @@ class PnrModel {
       return 'No Tickets';
     }
     if (!validateTickets(this.pNR)) {
-      return 'Tickets invalid';
+      return 'Please contact ${gblSettings.airlineName} to complete booking';
+
+//      return 'Tickets invalid';
     }
 
     return '';

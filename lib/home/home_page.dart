@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_appstore/open_appstore.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/menu/myFqtvPage.dart';
+import 'package:vmba/utilities/helper.dart';
 
 
 
@@ -133,11 +135,15 @@ class _HomeState extends State<HomePage> {
     try {
       super.didChangeDependencies();
       appBarImage = Image.asset('lib/assets/$gblAppTitle/images/appBar.png',);
-      String bgImage = 'lib/assets/$gblAppTitle/images/background.png';
-      mainBackGroundImage = AssetImage(bgImage);
       logoImage = AssetImage('lib/assets/$gblAppTitle/images/loader.png');
-      precacheImage(appBarImage.image, context);
+
+      //     if( gblSettings.aircode == 'LM') {
+//        String bgImage = 'lib/assets/$gblAppTitle/images/background.png';
+      String bgImage = 'lib/assets/images/bg.png';
+      mainBackGroundImage = AssetImage(bgImage);
       precacheImage(mainBackGroundImage, context);
+      //   }
+      precacheImage(appBarImage.image, context);
       precacheImage(logoImage, context);
     } catch (e) {
       print(e);
@@ -206,7 +212,7 @@ class _HomeState extends State<HomePage> {
           children: <Widget>[
             Image(
               image: NetworkImage(gblSettings.backgroundImageUrl),
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.fill,
             ),
           ],
         ),
@@ -287,171 +293,6 @@ class _HomeState extends State<HomePage> {
                 gblSystemColors.headerTextColor)),
         body: Stack(
           children: _getBackImage(buttonShape),
-            /*
-            Container(
-              //This container stops the alternative image from scrolling
-              child: Text(''),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-            ),
-
-             */
-            /*
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  gblNoNetwork ? Text('') : Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shape: buttonShape,
-                                  backgroundColor: gblSystemColors
-                                      .primaryButtonColor),
-                              onPressed: () =>
-                                  Navigator.of(context)
-                                      .pushNamedAndRemoveUntil(
-                                      '/FlightSearchPage',
-                                          (Route<dynamic> route) => false),
-                              child: Container(
-                                height: 60,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                      child: Icon(
-                                        Icons.flight_takeoff,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    TrText(
-                                      'Book a flight',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  gblBuildFlavor == 'LM'
-                      ? Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shape: buttonShape,
-                                  backgroundColor: gblSystemColors
-                                      .primaryButtonColor),
-                              onPressed: () =>
-                                  Navigator.of(context)
-                                      .pushNamedAndRemoveUntil('/AdsPage',
-                                          (Route<dynamic> route) => false),
-                              child: Container(
-                                height: 60,
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                      child: Icon(
-                                        Icons.flight_takeoff,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    TrText(
-                                      'Book an ADS Flight',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                      : Row(),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shape: buttonShape,
-                                  backgroundColor: gblSystemColors
-                                      .primaryButtonColor),
-                              onPressed: () =>
-                                  Navigator.of(context)
-                                      .pushNamedAndRemoveUntil(
-                                      '/MyBookingsPage',
-                                          (Route<dynamic> route) => false),
-                              child: Container(
-                                height: 60,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                      child: Icon(
-                                        Icons.card_travel,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    TrText(
-                                      'My Bookings & Check-in',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                  ),
-                  gblNoNetwork ? Row(children: <Widget>[
-                    Expanded(child: new Text('No Network Connection',
-                        style: TextStyle(backgroundColor: Colors.red,
-                          color: Colors.white,
-                          fontSize: 18.0,)))
-                  ]) : Text(''),
-                ],
-              ),
-            ),
-
-             */
-
         ),
         endDrawer: new DrawerMenu(),
       );
@@ -461,18 +302,18 @@ class _HomeState extends State<HomePage> {
   List<Widget> _getBackImage(var buttonShape) {
     List<Widget> list = [];
 
-    if (gblSettings.aircode == 'FL') {
-      list.add( ClipRRect(child: getImage()));
-    } else {
-      list.add(Container(
-    decoration: BoxDecoration(
-    image: DecorationImage(
-    image: mainBackGroundImage, fit: BoxFit.fitWidth))));
-
-      if (gotBG ) {
-        list.add(ClipRRect(child: getImage()));
-      }
+    //   if( gblSettings.aircode == 'LM') {
+    list.add(Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: mainBackGroundImage, fit: BoxFit.fill))));
+    if (gotBG) {
+      list.add(ClipRRect(child: getImage()));
     }
+//    } else {
+    //    list.add(ClipRRect(child: getImage()));
+    //}
+
     list.add(Container(
       //This container stops the alternative image from scrolling
       child: Text(''),
@@ -486,155 +327,218 @@ class _HomeState extends State<HomePage> {
           .height,
     ));
 
-    list.add(           Container(
+    list.add(Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          gblNoNetwork ? Text('') : Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          shape: buttonShape,
-                          backgroundColor: gblSystemColors
-                              .primaryButtonColor),
-                      onPressed: () =>
-                          Navigator.of(context)
-                              .pushNamedAndRemoveUntil(
-                              '/FlightSearchPage',
-                                  (Route<dynamic> route) => false),
-                      child: Container(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.flight_takeoff,
-                                color: Colors.white,
-                              ),
-                            ),
-                            TrText(
-                              'Book a flight',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          gblBuildFlavor == 'LM'
-              ? Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          shape: buttonShape,
-                          backgroundColor: gblSystemColors
-                              .primaryButtonColor),
-                      onPressed: () =>
-                          Navigator.of(context)
-                              .pushNamedAndRemoveUntil('/AdsPage',
-                                  (Route<dynamic> route) => false),
-                      child: Container(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.flight_takeoff,
-                                color: Colors.white,
-                              ),
-                            ),
-                            TrText(
-                              'Book an ADS Flight',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
-              : Row(),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          shape: buttonShape,
-                          backgroundColor: gblSystemColors
-                              .primaryButtonColor),
-                      onPressed: () =>
-                          Navigator.of(context)
-                              .pushNamedAndRemoveUntil(
-                              '/MyBookingsPage',
-                                  (Route<dynamic> route) => false),
-                      child: Container(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.card_travel,
-                                color: Colors.white,
-                              ),
-                            ),
-                            TrText(
-                              'My Bookings & Check-in',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-          ),
-          gblNoNetwork ? Row(children: <Widget>[
-            Expanded(child: new Text('No Network Connection',
-                style: TextStyle(backgroundColor: Colors.red,
-                  color: Colors.white,
-                  fontSize: 18.0,)))
-          ]) : Text(''),
-        ],
+        children: _getButtons(context, buttonShape),
       ),
     ));
     return list;
   }
 }
+
+  List <Widget> _getButtons(BuildContext context, var buttonShape) {
+    List <Widget> list = [];
+
+    if (gblNoNetwork == false) {
+      list.add(Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      shape: buttonShape,
+                      backgroundColor: gblSystemColors
+                          .primaryButtonColor),
+                  onPressed: () =>
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil(
+                          '/FlightSearchPage',
+                              (Route<dynamic> route) => false),
+                  child: Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.flight_takeoff,
+                            color: Colors.white,
+                          ),
+                        ),
+                        TrText(
+                          'Book a flight',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ));
+    };
+
+    if( gblBuildFlavor == 'LM' ) {
+      list.add(Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      shape: buttonShape,
+                      backgroundColor: gblSystemColors
+                          .primaryButtonColor),
+                  onPressed: () =>
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/AdsPage',
+                              (Route<dynamic> route) => false),
+                  child: Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.flight_takeoff,
+                            color: Colors.white,
+                          ),
+                        ),
+                        TrText(
+                          'Book an ADS Flight',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ));
+    }
+    list.add(Row(
+    children: <Widget>[
+    Expanded(
+    child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Center(
+    child: TextButton(
+    style: TextButton.styleFrom(
+    shape: buttonShape,
+    backgroundColor: gblSystemColors
+        .primaryButtonColor),
+    onPressed: () =>
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(
+    '/MyBookingsPage',
+    (Route<dynamic> route) => false),
+    child: Container(
+    height: 60,
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+    Padding(
+    padding: EdgeInsets.only(right: 5),
+    child: Icon(
+    Icons.card_travel,
+    color: Colors.white,
+    ),
+    ),
+    TrText(
+    'My Bookings & Check-in',
+    style: TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold),
+    ),
+    ],
+    ),
+    ),
+    ),
+    ),
+    ),
+    )
+    ],
+
+    ));
+
+    if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
+      list.add(Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      shape: buttonShape,
+                      backgroundColor: gblSystemColors
+                          .primaryButtonColor),
+                  onPressed: () =>
+                      Navigator.push(
+                        context, SlideTopRoute(page: MyFqtvPage(
+                        isAdsBooking: false,
+                        isLeadPassenger: true,))),
+                  child: Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.person_pin,
+                            color: Colors.white,
+                          ),
+                        ),
+                        TrText(
+                          'My ${gblSettings.fqtvName}' ,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+
+      ));
+    }
+
+    list.add(Padding(
+    padding: EdgeInsets.all(8),
+    ));
+
+    if( gblNoNetwork ) {
+      list.add(Row(children: <Widget>[
+        Expanded(child: new Text('No Network Connection',
+            style: TextStyle(backgroundColor: Colors.red,
+              color: Colors.white,
+              fontSize: 18.0,)))
+      ]));
+    }
+
+
+    return    list;
+
+}
+
 Widget home() {
   return new Container(
     child: new Center(

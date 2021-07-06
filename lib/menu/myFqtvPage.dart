@@ -564,7 +564,7 @@ Widget _getTrans() {
         Text( tran.flightNumber), Text(' '),
         Text(tran.departureCityCode ,style: TextStyle(color: Colors.white,  )), Text(' '),
         Text(tran.arrivalCityCode), Text(' '),
-        Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(color: Colors.white,  )),
+        if(tran.flightDate.isNotEmpty && (!tran.flightDate.startsWith(('0001')))  )Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(color: Colors.white,  )),
 
         ],  ),
 
@@ -689,7 +689,8 @@ Widget _getTrans() {
         _actionCompleted();
         _error = 'Reset email sent';
         Navigator.of(context).pop();
-        _showDialog();
+        //_showDialog();
+        showAlertDialog(context, 'Information', _error);
       }
     });
 
@@ -770,6 +771,7 @@ Widget _getTrans() {
        _actionCompleted();
        _showDialog();
      } else {
+       _error ='';
        widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
        fqtvNo = _fqtvTextEditingController.text;
        gblFqtvNumber = fqtvNo;

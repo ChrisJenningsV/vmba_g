@@ -5,3 +5,7 @@ flutter_icons:
   image_path: "lib/assets/icon/BlueIslands_1024x1024.png"
 
 # flutter pub run flutter_launcher_icons:main -f launch_icons_blueislands.yaml
+#
+#
+# copy /y lib\assets\blueislands\images\bg.png lib\assets\images
+#
