@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
+import 'package:vmba/components/trText.dart';
 
 class RangePickerPage extends StatefulWidget {
   RangePickerPage(
@@ -96,7 +97,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
                     padding: const EdgeInsets.all(6.0),
                     child: Column(
                       children: <Widget>[
-                        Text('Departing',
+                        TrText('Departing',
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                             )),
@@ -120,7 +121,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
                     padding: const EdgeInsets.all(6.0),
                     child: Column(
                       children: <Widget>[
-                        Text('Returning',
+                        TrText('Returning',
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                             )),

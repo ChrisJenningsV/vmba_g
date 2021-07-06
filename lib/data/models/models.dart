@@ -4,8 +4,14 @@ import 'package:vmba/data/settings.dart';
 class Passengers {
   int adults; // = 1;
   int children; // = 0;
+  int smallChildren; // = 0;
   int infants; // = 0;
+  int seatedInfants; // = 0;
   int youths;
+  int students;
+  int teachers;
+  int seniors;
+
 
   Passengers(this.adults, this.children, this.infants, this.youths);
   int totalSeated() {
@@ -83,7 +89,7 @@ class Journey {
   }
 }
 
-enum PaxType { adult, child, infant, youth }
+enum PaxType { adult, child, smallChild, infant, seatedInfant,  youth, student, senior, teacher }
 
 class PassengerDetail {
   String title = '';
@@ -129,7 +135,22 @@ class PassengerDetail {
         case PaxType.adult:
           data['paxType'] = 'AD';
           break;
-          default:
+        case PaxType.seatedInfant:
+          data['paxType'] = 'IS';
+          break;
+        case PaxType.senior:
+          data['paxType'] = 'CD';
+          break;
+        case PaxType.smallChild:
+          data['paxType'] = 'CS';
+          break;
+        case PaxType.student:
+          data['paxType'] = 'SD';
+          break;
+        case PaxType.teacher:
+          data['paxType'] = 'TD';
+          break;
+        default:
             data['paxType'] = 'AD';
             break;
       }
@@ -160,9 +181,25 @@ class PassengerDetail {
       case 'IN':
         paxType = PaxType.infant;
         break;
+      case 'IS':
+        paxType =PaxType.seatedInfant;
+        break;
       case 'CH':
         paxType =PaxType.child;
         break;
+      case 'CS':
+        paxType =PaxType.smallChild;
+        break;
+      case 'CD':
+        paxType =PaxType.senior;
+        break;
+      case 'TD':
+        paxType =PaxType.teacher;
+        break;
+      case 'SD':
+        paxType =PaxType.student;
+        break;
+
       case 'TH':
         paxType = PaxType.youth;
         break;

@@ -109,6 +109,7 @@ void configLM() {
 
   wantPayStack: false,
   wantLeftLogo: false,
+  wantCurrencySymbols: true,
   wantMyAccount: true,
   wantFQTV: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',

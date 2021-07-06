@@ -119,6 +119,7 @@ class Settings {
   bool wantMyAccount = false;
   bool wantProfileList = false;
   bool wantFQTV = false;
+  bool wantCurrencySymbols = false;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -182,6 +183,7 @@ bool bpShowFastTrack;
     this.creditCardProvider,
     this.wantPayStack,
     this.wantLeftLogo,
+    this.wantCurrencySymbols,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
