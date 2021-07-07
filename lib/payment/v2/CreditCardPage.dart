@@ -558,13 +558,25 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //if (isLive) {
       //buffer.write('MK($creditCardProviderProduction)');
     if( gblRedeemingAirmiles) {
-
-      if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
+      if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != null ) {
+        double am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.airmiles);
+        if( am <= 0 ) {
+          return '';
+        }
+        if(pnrModel != null && pnrModel.pNR.basket.outstandingairmiles.airmiles != null) {
+          double am = double.parse(pnrModel.pNR.basket.outstandingairmiles.airmiles);
+          if( am <= 0 ) {
+            return '';
+          }
+        }
+        buffer.write('MF-$am^');
+      }
+/*      if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
         buffer.write('MF-${gblPassengerDetail.fqtv}^');
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
       }
-
+*/
     } else {
       //if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
       if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstanding.amount != null )

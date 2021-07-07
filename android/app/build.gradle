@@ -58,7 +58,7 @@ android {
         Loganair {
             dimension "version"
             resValue "string", "flavored_app_name", "Loganair"
-            applicationId "uk.co.loganair.reservations"
+            applicationId "uk.co.loganair.booking"
         }
 
         BlueIslands {

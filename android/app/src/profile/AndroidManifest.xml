@@ -2,6 +2,11 @@
     package="com.example.vmba">
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
+         for air leap
+             package="com.example.vmba">
+
+         for Logan - NOT NEEDED !
+              package = "uk.co.loganair.booking"
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
