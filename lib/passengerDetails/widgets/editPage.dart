@@ -573,6 +573,11 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           _initialDateTime = DateTime.now();
         }
         break;
+      default:
+        {
+          _initialDateTime = DateTime.now();
+        }
+        break;
     }
     _maximumDate = _initialDateTime;
     _minimumYear = _minimumDate.year;
@@ -631,8 +636,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     DateTime _maximumDate;
     DateTime _minimumDate;
     DateTime _initialDateTime;
-    int _minimumYear;
-    int _maximumYear;
+//    int _minimumYear;
+//    int _maximumYear;
     formSave();
 
     switch (paxType) {
@@ -660,10 +665,15 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           _initialDateTime = DateTime.now();
         }
         break;
+      default:
+        {
+          _initialDateTime = DateTime.now();
+        }
+        break;
     }
     _maximumDate = _initialDateTime;
-    _minimumYear = _minimumDate.year;
-    _maximumYear = _initialDateTime.year;
+//    _minimumYear = _minimumDate.year;
+//    _maximumYear = _initialDateTime.year;
 
     showDialog(
       context: context,

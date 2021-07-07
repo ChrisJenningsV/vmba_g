@@ -15,7 +15,7 @@ class ProfileListPage extends StatefulWidget {
 
   _ProfileListPageState createState() => _ProfileListPageState();
 
-  PassengerDetail passengerDetail;
+  final PassengerDetail passengerDetail;
   final bool isAdsBooking;
   final bool isLeadPassenger;
 }

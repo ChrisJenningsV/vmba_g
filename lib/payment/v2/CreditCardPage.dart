@@ -145,6 +145,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   void _dataLoaded() {
     setState(() {
+      gblPayBtnDisabled = false;
       //_displayProcessingIndicator = false;
     });
   }
@@ -531,20 +532,24 @@ class _CreditCardPageState extends State<CreditCardPage> {
           }
           ticketBooking();
         } else if (result.contains('ERROR')) {
+          gblTimerExpired = true;
           _error = result;
           _dataLoaded();
           _showDialog();
         } else if (result.contains('Payment not')) {
+          gblTimerExpired = true;
           _error = result;
           _dataLoaded();
           _showDialog();
         } else {
+          gblTimerExpired = true;
           print(result);
           _error = 'Declined: ' + result;
           _dataLoaded();
           _showDialog();
         }
       } catch (e) {
+        gblTimerExpired = true;
         _error = response.body; // 'Please check your details';
         _dataLoaded();
         _showDialog();
@@ -558,7 +563,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //if (isLive) {
       //buffer.write('MK($creditCardProviderProduction)');
     if( gblRedeemingAirmiles) {
-      if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != null ) {
+/*      if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != null ) {
         double am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.airmiles);
         if( am <= 0 ) {
           return '';
@@ -571,12 +576,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
         }
         buffer.write('MF-$am^');
       }
-/*      if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
+
+ */
+      if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
         buffer.write('MF-${gblPassengerDetail.fqtv}^');
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
       }
-*/
+
     } else {
       //if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
       if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstanding.amount != null )

@@ -635,6 +635,11 @@ void _populateFromGlobalProfile() {
           _initialDateTime = DateTime.now();
         }
         break;
+      default:
+        {
+          _initialDateTime = DateTime.now();
+        }
+        break;
     }
     _maximumDate = _initialDateTime;
     _minimumYear = _minimumDate.year;

@@ -589,6 +589,7 @@ Widget _getTrans() {
 
       return new Column(children: tranWidgets.toList());
 }
+/*
   List <DataRow> _getDataCells() {
     List <DataRow> rows = [];
 
@@ -617,7 +618,7 @@ Widget _getTrans() {
     return rows;
 
   }
-
+*/
   void formSave() {
     final form = formKey.currentState;
     form.save();

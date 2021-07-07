@@ -27,7 +27,6 @@ class _CardInputWidgetState extends State<CardInputWidget> {
   String cardHolderName = '';
   String expiryDate = '';
   String cvvCode = '';
-  bool _isButtonDisabled;
 
   String street = '';
   String town = '';
@@ -38,7 +37,7 @@ class _CardInputWidgetState extends State<CardInputWidget> {
   String aircode = '';
 @override
 void initState() {
-  _isButtonDisabled = false;
+  gblPayBtnDisabled = false;
 }
 
   @override
@@ -65,8 +64,8 @@ void initState() {
                 showPayButton()
                     ? ElevatedButton(
                         onPressed: () {
-                          if ( _isButtonDisabled == false ) {
-                            _isButtonDisabled = true;
+                          if ( gblPayBtnDisabled == false ) {
+                            gblPayBtnDisabled = true;
                             saveSettings();
                             widget.payCallback();
                           }
@@ -80,7 +79,7 @@ void initState() {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            (_isButtonDisabled) ?
+                            (gblPayBtnDisabled ) ?
                               new Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(),
@@ -88,7 +87,7 @@ void initState() {
                             Icon(Icons.check,
                               color: Colors.white,
                             ),
-                            _isButtonDisabled ?  new TrText("Completing Payment...", style: TextStyle(color: Colors.white)) : TrText('PAY NOW',
+                            gblPayBtnDisabled ?  new TrText("Completing Payment...", style: TextStyle(color: Colors.white)) : TrText('PAY NOW',
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
