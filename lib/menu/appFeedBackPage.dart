@@ -172,7 +172,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
           children: <Widget>[
             ListTile(
               leading: Icon(ico),
-              title: new Text( 'Sined In: ' + gblSine),
+              title: new TrText( 'Sined In: ' + gblSine),
               subtitle: Text(title),
             ),
             Row(
@@ -196,7 +196,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                       primary: gblSystemColors.textButtonTextColor),
-                  child: Text(btnText),
+                  child: TrText(btnText),
                   onPressed: () {_swapLiveTest();},
                 ),
 

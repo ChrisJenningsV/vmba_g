@@ -55,6 +55,7 @@ dependencies:
   #core_card_io: ^0.0.2
   flutter_paystack: ^1.0.4+1
   flutter_holo_date_picker: ^0.3.4+1
+  barcode_widget: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:vmba/components/trText.dart';
 
 class EditDetailsWidget extends StatefulWidget {
   EditDetailsWidget(
@@ -69,6 +70,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
     _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
     _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
+    gblRememberMe = false;
   }
 
   @override
@@ -151,8 +153,9 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   //Widget renderFields(int paxNo, PaxType paxType) {
 
   Widget renderFields() {
-    return Column(children: <Widget>[
-      Padding(
+    List <Widget> list = [];
+    //return Column(children: <Widget>[
+      list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
         child: InkWell(
           onTap: () {
@@ -193,8 +196,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             ),
           ),
         ),
-      ),
-      Padding(
+      ));
+      list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
           data: new ThemeData(
@@ -231,8 +234,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             },
           ),
         ),
-      ),
-      Padding(
+      ));
+      list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
           data: new ThemeData(
@@ -267,8 +270,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             },
           ),
         ),
-      ),
-      Padding(
+      ));
+      list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: widget.passengerDetail.paxType != PaxType.adult
             ? InkWell(
@@ -310,10 +313,10 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                 ),
               )
             : Padding(padding: const EdgeInsets.all(0.0)),
-      ),
-      widget.passengerDetail.paxType == PaxType.adult &&
-              gblSettings.fqtvEnabled
-          ? Padding(
+      ));
+      if( widget.passengerDetail.paxType == PaxType.adult &&
+              gblSettings.fqtvEnabled ) {
+          list.add(Padding(
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
               child: new Theme(
                 data: new ThemeData(
@@ -350,94 +353,107 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                   },
                 ),
               ),
-            )
-          : Padding(padding: const EdgeInsets.all(0.0)),
-      widget.isAdsBooking
-          ? Padding(
-              padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-              child: TextFormField(
-                maxLength: 20,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(
-                  contentPadding: new EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 15.0),
-                  labelText: 'ADS number',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                keyboardType: TextInputType.text,
-                controller: _adsNumberTextEditingController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
-                ],
-                onFieldSubmitted: (value) {
-                  widget.passengerDetail.adsNumber = value;
-                },
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'An ADS number is required';
-                  } else if (!value.toUpperCase().startsWith('ADS') ||
-                      value.length != 16 ||
-                      !isNumeric(value.substring(3))) {
-                    return 'ADS not valid';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (value) {
-                  if (value != null) {
-                    widget.passengerDetail.adsNumber = value.trim();
-                  }
-                },
+            ));
+
+      }
+      if(widget.isAdsBooking) {
+        list.add(Padding(
+          padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+          child: TextFormField(
+            maxLength: 20,
+            textCapitalization: TextCapitalization.characters,
+            decoration: InputDecoration(
+              contentPadding: new EdgeInsets.symmetric(
+                  vertical: 15.0, horizontal: 15.0),
+              labelText: 'ADS number',
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
               ),
-            )
-          : Padding(padding: EdgeInsets.zero),
-      widget.isAdsBooking && widget.isLeadPassenger
-          ? Padding(
-              padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-              child: TextFormField(
-                maxLength: 4,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(
-                  contentPadding: new EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 15.0),
-                  labelText: 'ADS Pin',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                controller: _adsPinTextEditingController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                ],
-                onFieldSubmitted: (value) {
-                  widget.passengerDetail.adsPin = value;
-                },
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'ADS Pin is required';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (value) {
-                  if (value != null) {
-                    widget.passengerDetail.adsPin = value.trim();
-                  }
-                },
-              ),
-            )
-          : Padding(
-              padding: EdgeInsets.zero,
             ),
-    ]);
+            keyboardType: TextInputType.text,
+            controller: _adsNumberTextEditingController,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
+            ],
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.adsNumber = value;
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'An ADS number is required';
+              } else if (!value.toUpperCase().startsWith('ADS') ||
+                  value.length != 16 ||
+                  !isNumeric(value.substring(3))) {
+                return 'ADS not valid';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.adsNumber = value.trim();
+              }
+            },
+          ),
+        ));
+      }
+      if(widget.isAdsBooking && widget.isLeadPassenger) {
+    list.add( Padding(
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+    child: TextFormField(
+    maxLength: 4,
+    textCapitalization: TextCapitalization.characters,
+    decoration: InputDecoration(
+    contentPadding: new EdgeInsets.symmetric(
+    vertical: 15.0, horizontal: 15.0),
+    labelText: 'ADS Pin',
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+    borderRadius: new BorderRadius.circular(25.0),
+    borderSide: new BorderSide(),
+    ),
+    ),
+    keyboardType: TextInputType.text,
+    obscureText: true,
+    controller: _adsPinTextEditingController,
+    inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+    ],
+    onFieldSubmitted: (value) {
+    widget.passengerDetail.adsPin = value;
+    },
+    validator: (value) {
+    if (value.isEmpty) {
+    return 'ADS Pin is required';
+    } else {
+    return null;
+    }
+
+    },
+    onSaved: (value) {
+    if (value != null) {
+    widget.passengerDetail.adsPin = value.trim();
+    }
+    },
+    ),
+    ));
+    }
+      if( gblSettings.wantRememberMe && widget.isLeadPassenger && (widget.passengerDetail.lastName == null || widget.passengerDetail.lastName.isEmpty) ) {
+        // add check box
+        list.add(CheckboxListTile(
+          title: TrText("Remember me"),
+          value: gblRememberMe,
+          onChanged: (newValue) {
+            setState(() {
+              gblRememberMe = newValue;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+        ));
+      }
+   return Column(children: list);
   }
 
   ListView optionListView() {

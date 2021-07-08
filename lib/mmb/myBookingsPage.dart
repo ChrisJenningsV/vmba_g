@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
-//import 'package:vmba/resources/app_config.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-//import 'package:loganair/mmb/checkin_boarding_passes.dart';
 import 'package:vmba/menu/menu.dart';
-//import 'package:vmba/resources/app_config.dart';
-//import 'package:vmba/data/settings.dart';
-//import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/components/trText.dart';
+
 
 class MyBookingsPage extends StatefulWidget {
   MyBookingsPage({Key key}) : super(key: key);
@@ -85,7 +82,7 @@ String _error = '';
             new CircularProgressIndicator(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Text('Loading your bookings...'),
+              child: new TrText('Loading your bookings...'),
             ),
           ],
         ),
@@ -105,8 +102,8 @@ String _error = '';
   }
 
   Widget myTrips() {
-    Center noFutureBookingsFound = const Center(
-        child: Text('No future bookings found',
+    Center noFutureBookingsFound =  Center(
+        child: TrText('No future bookings found',
             style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
 
     if (pnrs.length == 0) return noFutureBookingsFound;
@@ -228,7 +225,7 @@ String _error = '';
         PopupMenuItem(
           child: TextButton.icon(
             icon: Icon(Icons.delete_outline),
-            label: Text('Remove booking'),
+            label: TrText('Remove booking'),
             onPressed: () {
               Repository.get()
                   .deletePnr(rloc)

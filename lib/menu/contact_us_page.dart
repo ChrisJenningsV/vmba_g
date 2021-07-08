@@ -5,6 +5,8 @@ import 'package:vmba/menu/customerfiles/contact_us/contact_us_si.dart' as SI;
 import 'package:vmba/menu/customerfiles/contact_us/contact_us_t6.dart' as T6;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
+import 'package:vmba/components/trText.dart';
+
 
 class ContactUsPage extends StatelessWidget {
   @override
@@ -21,7 +23,7 @@ class ContactUsPage extends StatelessWidget {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: Text('Contact Us',
+        title: TrText('Contact Us',
             style: TextStyle(
                 color: gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,

@@ -138,8 +138,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             objAv.availability.itin[i].flt.first.time.ddaygmt +
                 ' ' +
                 objAv.availability.itin[i].flt.first.time.dtimgmt);
-        if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
-            minutes: gblSettings.bookingLeadTime)))) {
+        //DateTime utcNow = DateTime.now().toUtc().subtract(Duration(minutes: gblSettings.bookingLeadTime));
+        DateTime utcNow = DateTime.now().toUtc().add(Duration(minutes: gblSettings.bookingLeadTime));
+        if (fltDate.isBefore(utcNow)) {
           objAv.availability.itin.removeAt(i);
         }
       }
@@ -362,7 +363,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget flightAvailability() {
-    if (objAv != null && objAv.availability.itin != null) {
+    if (objAv != null && objAv.availability.itin != null && objAv.availability.itin.length > 0) {
       return new ListView(
           scrollDirection: Axis.vertical,
           children: (objAv.availability.itin

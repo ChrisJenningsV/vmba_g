@@ -14,6 +14,8 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -385,7 +387,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: Text('Boarding Pass',
+          title: TrText('Boarding Pass',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -398,7 +400,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text('Loading your boarding pass...'),
+                child: new TrText('Loading your boarding pass...'),
               ),
             ],
           ),
@@ -412,7 +414,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: Text('Boarding Pass',
+          title: TrText('Boarding Pass',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -457,7 +459,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Text("FLIGHT", //snapshot.data['passengers'][i],
+                                TrText("FLIGHT", //snapshot.data['passengers'][i],
                                     style: new TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w200)),
@@ -471,7 +473,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Text("DATE", //snapshot.data['passengers'][i],
+                              TrText("DATE", //snapshot.data['passengers'][i],
                                   style: new TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w200)),
@@ -538,10 +540,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text("PASSENGER",
+              new TrText("PASSENGER",
                   style: new TextStyle(
                       fontSize: 12.0, fontWeight: FontWeight.w200)),
-              new Text('CLASS',
+              new TrText('CLASS',
                   style: new TextStyle(
                       fontSize: 12.0, fontWeight: FontWeight.w200))
             ],
@@ -572,7 +574,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Text('SEAT',
+                  new TrText('SEAT',
                       style: new TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.w200)),
                   new Text(_boardingPass.seat,
@@ -583,7 +585,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("GATE ",
+                  new TrText("GATE ",
                       style: new TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.w200)),
                   new Text(_boardingPass.gate,
@@ -594,7 +596,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("BOARDING TIME", //snapshot.data['passengers'][i],
+                  new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
                       style: new TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.w200)),
                   new Text(
@@ -609,7 +611,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  new Text("DEPARTS", //snapshot.data['passengers'][i],
+                  new TrText("DEPARTS", //snapshot.data['passengers'][i],
                       style: new TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.w200)),
                   new Text(
@@ -701,17 +703,28 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 ),
                               ),
                             ),
-                            // Container(
-                            //   child: Center(
-                            //     child: BarcodeGenerator(
-                            //       witdth: _currentBarcode == 1 ? 300 : 1,
-                            //       height: 0.15 * bodyHeight,
-                            //       //backgroundColor: Colors.red,
-                            //       fromString: _boardingPass.barcodedata,
-                            //       codeType: BarCodeType.kBarcodeFormatPDF417,
-                            //     ),
-                            //   ),
-                            // ),
+                            /* old 2d barcode */
+                             Container(
+                               child: Center(
+                                 child:
+                                 BarcodeWidget(
+                                   barcode: Barcode.pdf417(), // Barcode type and settings
+                                   data: _boardingPass.barcodedata, // Content
+                                   width: _currentBarcode == 1 ? 300 : 1,
+                                   height: 0.15 * bodyHeight,
+                                 ),
+/*                                 BarcodeGenerator(
+                                   witdth: _currentBarcode == 1 ? 300 : 1,
+                                   height: 0.15 * bodyHeight,
+                                   //backgroundColor: Colors.red,
+                                   fromString: _boardingPass.barcodedata,
+                                   codeType: BarCodeType.kBarcodeFormatPDF417,
+                                 ),
+
+ */
+                               ),
+                             ),
+                            /* end 2d barcode */
                           ],
                         ),
                         Column(
@@ -792,6 +805,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                   child: Text(
                                     "This barcode did not scan",
                                     style: TextStyle(
+                                      color: gblSystemColors.textButtonTextColor,
                                       fontSize: 12.0,
                                       decoration: TextDecoration.underline,
                                     ),

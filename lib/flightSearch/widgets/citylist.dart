@@ -107,10 +107,10 @@ class _DeparturesState extends State<Departures> {
       // delay
       Future.delayed(Duration(milliseconds: 100), () {
         if (_cityData == null || _cityData.length == 0) {
-          print(" This line is execute after 100 ms - no cities");
+          if( gblVerbose) print(" This line is execute after 100 ms - no cities");
           setState(() {          });
         } else {
-          print(" This line is execute after 100 ms - got cities");
+          if( gblVerbose) print(" This line is execute after 100 ms - got cities");
           setState(() {          });
         }
       });
@@ -195,10 +195,10 @@ class _ArrivalsState extends State<Arrivals> {
       // delay
       Future.delayed(Duration(milliseconds: 100), () {
         if (_departCityData == null || _departCityData.length == 0) {
-          print(" This line is execute after 100 ms - no cities");
+          if( gblVerbose) print(" This line is execute after 100 ms - no cities");
           setState(() {          });
         } else {
-          print(" This line is execute after 100 ms - got cities");
+          if( gblVerbose) print(" This line is execute after 100 ms - got cities");
           setState(() {          });
         }
       });

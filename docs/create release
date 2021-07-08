@@ -3,7 +3,8 @@ In directory vmba
 edit data/globals.dart
 # set up correct images
 flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
-
+# check androidid correct in build.gradle
+#  android\app\build.gradle
 
 
 # build android app bundle

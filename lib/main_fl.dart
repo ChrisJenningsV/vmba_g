@@ -52,6 +52,7 @@ void configFL() {
   gblSettings = Settings(
    // latestBuildiOS: '1.0.8.40',
    // latestBuildAndroid: '1.0.8.40',
+    wantRememberMe: false,
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
@@ -69,7 +70,7 @@ void configFL() {
     backgroundImageUrl:  "",
     hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
-    androidAppId:  'se.airleap.booking',
+    androidAppId:   'se.airleap.booking', //  'se.airleap.booking',
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(

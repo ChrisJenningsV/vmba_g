@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class CompletedPageV2 extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class CompletedPageV2 extends StatelessWidget {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: Text("Payment Completed",
+          title: TrText("Payment Completed",
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -24,7 +25,7 @@ class CompletedPageV2 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Text(
+              new TrText(
                 "Thank you for your booking",
                 style: TextStyle(fontSize: 18),
               ),
@@ -46,7 +47,7 @@ class CompletedPageV2 extends StatelessWidget {
                       gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
-                  child: Text(
+                  child: TrText(
                     args[1] == 'true'
                         ? 'View booking and choose a seat'
                         : 'View booking',

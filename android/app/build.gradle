@@ -64,7 +64,7 @@ android {
         BlueIslands {
             dimension "version"
             resValue "string", "flavored_app_name", "Blue Islands"
-            applicationId "com.blueislands.booking"
+            applicationId "com.blueislands.reservations"
         }
 
         AirSwift {

@@ -8,6 +8,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class ProcessCommandsPage extends StatefulWidget {
   ProcessCommandsPage({Key key, this.runVRSCommandArgs}) : super(key: key);
@@ -55,7 +56,7 @@ class _ProcessCommandsWidgetState extends State<ProcessCommandsPage> {
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Processing',
+          title: new TrText('Processing',
               style: TextStyle(
                   color: gblSystemColors.headerTextColor)),
         ),

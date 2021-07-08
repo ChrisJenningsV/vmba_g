@@ -295,6 +295,9 @@ class Repository {
                   case 'wantProfileList':
                     gblSettings.wantProfileList = parseBool(item['value']);
                     break;
+                  case 'wantRememberMe':
+                    gblSettings.wantRememberMe = parseBool(item['value']);
+                    break;
                   case 'wantMyAccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;

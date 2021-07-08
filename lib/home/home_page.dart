@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
-  Image appBarImage;
+  AssetImage appBarImage;
   Image appBarImageLeft;
   AssetImage mainBackGroundImage;
   AssetImage logoImage;
@@ -134,7 +134,7 @@ class _HomeState extends State<HomePage> {
   void didChangeDependencies() {
     try {
       super.didChangeDependencies();
-      appBarImage = Image.asset('lib/assets/$gblAppTitle/images/appBar.png',);
+      appBarImage = AssetImage('lib/assets/$gblAppTitle/images/appBar.png');
       logoImage = AssetImage('lib/assets/$gblAppTitle/images/loader.png');
 
       //     if( gblSettings.aircode == 'LM') {
@@ -143,7 +143,7 @@ class _HomeState extends State<HomePage> {
       mainBackGroundImage = AssetImage(bgImage);
       precacheImage(mainBackGroundImage, context);
       //   }
-      precacheImage(appBarImage.image, context);
+      precacheImage(appBarImage, context);
       precacheImage(logoImage, context);
     } catch (e) {
       print(e);
@@ -284,10 +284,7 @@ class _HomeState extends State<HomePage> {
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             title:
-            gblIsLive ? appBarImage : Row(children: <Widget>[
-              appBarImage,
-              Text('Test', style: gblTitleStyle,)
-            ]),
+             _getLogo() ,
             iconTheme: IconThemeData(
                 color:
                 gblSystemColors.headerTextColor)),
@@ -298,6 +295,34 @@ class _HomeState extends State<HomePage> {
       );
     }
   }
+Widget _getLogo(){
+
+  //: Row(children: <Widget>[
+  //_getLogo(),
+  //Text('Test', style: gblTitleStyle,)
+  //])
+    String txt = ' ';
+    if( gblIsLive == false ) {
+      txt = 'Test';
+    }
+  return new Row( children: [
+    FittedBox(
+      child: Image.asset('lib/assets/$gblAppTitle/images/appBar.png'),
+      fit: BoxFit.fitHeight,
+    ),
+  /*  Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment(-1,0),
+              image: appBarImage, fit: BoxFit.fill),
+      ),
+  ),
+
+   */
+   Text(txt, style: gblTitleStyle),
+
+  ]);
+}
 
   List<Widget> _getBackImage(var buttonShape) {
     List<Widget> list = [];

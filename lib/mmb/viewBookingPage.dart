@@ -21,6 +21,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -70,7 +71,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: Text("My Booking",
+            title: TrText("My Booking",
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -229,7 +230,7 @@ class _CheckinBoardingPassesWidgetState
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
+              child: TrText(
                 'Sorry your booking can\'t be loaded',
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
@@ -237,7 +238,7 @@ class _CheckinBoardingPassesWidgetState
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
+              child: TrText(
                 'Please contact the airline to view this booking on the mobile app',
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
@@ -251,7 +252,7 @@ class _CheckinBoardingPassesWidgetState
                   primary: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
-              child: Text(
+              child: TrText(
                 'Reload booking',
                 style: TextStyle(color: gblSystemColors.textButtonTextColor),
               ),

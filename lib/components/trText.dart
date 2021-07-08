@@ -6,8 +6,9 @@ class TrText extends StatelessWidget {
   final TextStyle style;
   final String variety;
   final bool noTrans;
+  final TextAlign textAlign;
 
-  TrText(this.labelText,  {this.style, this.variety, this.noTrans});
+  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign});
 
   build(BuildContext context) {
     var txt = labelText;
@@ -58,9 +59,9 @@ class TrText extends StatelessWidget {
           }
           break;
       }
-      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize));
+      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign);
     } else {
-      return Text( txt ,style: style);
+      return Text( txt ,style: style, textAlign: textAlign);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class CustomRowModel {
   bool selected;
@@ -62,7 +63,7 @@ dialogContent(BuildContext context) {
         Container(
           margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
           color: Colors.white,
-          child: Text(
+          child: TrText(
             "Select your preferred language",
             style: TextStyle( fontSize: 20.0, fontWeight: FontWeight.bold),
             //labelColor: AppColors.dialogTitleColor,

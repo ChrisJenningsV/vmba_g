@@ -1,5 +1,3 @@
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -13,6 +11,7 @@ import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -72,7 +71,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Payment',
+          title: new TrText('Payment',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -100,7 +99,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Contact Details',
+            title: new TrText('Contact Details',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
