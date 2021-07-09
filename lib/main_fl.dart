@@ -53,6 +53,7 @@ void configFL() {
    // latestBuildiOS: '1.0.8.40',
    // latestBuildAndroid: '1.0.8.40',
     wantRememberMe: false,
+    wantHomeFQTVButton: true,
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

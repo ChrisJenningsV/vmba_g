@@ -289,6 +289,20 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 initialDate: _departureDate,
                 lastDate:
                     new DateTime.now().toUtc().add(new Duration(days: 363)),
+                builder: (BuildContext context, Widget child) {
+                return Theme(
+                    data: ThemeData.light().copyWith(
+                    //primarySwatch: gblSystemColors.primaryHeaderColor,//OK/Cancel button text color
+
+                    primaryColor: gblSystemColors.primaryHeaderColor,//Head background
+                    accentColor: gblSystemColors.primaryHeaderColor, //selection color
+                    colorScheme: ColorScheme.light(primary: gblSystemColors.primaryHeaderColor),
+                  buttonTheme: ButtonThemeData(
+                  textTheme: ButtonTextTheme.primary
+                  ),
+                  ),
+                  child: child,
+                  );},
               ).then((date) => _changeSearchDate(date)),
               child: TrText(
                 'CHOOSE NEW DATE',
@@ -855,18 +869,5 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     });
   }
 
-  /*
-  String calenderPrice(String currency, String price) {
-    NumberFormat numberFormat = NumberFormat.simpleCurrency(
-        locale: gblSettings.locale, name: currency);
-    String _currencySymbol;
-    _currencySymbol = numberFormat.currencySymbol;
-    if (price.length == 0) {
-      return 'N/A';
-    } else {
-      return _currencySymbol + price;
-    }
-  }
 
-   */
 }

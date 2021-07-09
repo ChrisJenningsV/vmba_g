@@ -298,6 +298,9 @@ class Repository {
                   case 'wantRememberMe':
                     gblSettings.wantRememberMe = parseBool(item['value']);
                     break;
+                  case 'wantHomeFQTVButton':
+                    gblSettings.wantHomeFQTVButton = parseBool(item['value']);
+                    break;
                   case 'wantMyAccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;

@@ -246,14 +246,17 @@ class _CheckinBoardingPassesWidgetState
             ),
             ElevatedButton(
               onPressed: () {
-                _refreshBooking();
+                //_refreshBooking();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/MyBookingsPage', (Route<dynamic> route) => false);
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               child: TrText(
-                'Reload booking',
+                //'Reload booking',
+                'Return to My Bookings',
                 style: TextStyle(color: gblSystemColors.textButtonTextColor),
               ),
             ),

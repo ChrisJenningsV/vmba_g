@@ -121,6 +121,7 @@ class Settings {
   bool wantFQTV = false;
   bool wantCurrencySymbols = false;
   bool wantRememberMe = false;
+  bool wantHomeFQTVButton = false;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -186,6 +187,7 @@ bool bpShowFastTrack;
     this.wantLeftLogo,
     this.wantCurrencySymbols,
     this.wantRememberMe,
+    this.wantHomeFQTVButton,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,

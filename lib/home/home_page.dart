@@ -281,13 +281,11 @@ class _HomeState extends State<HomePage> {
 
         appBar: new AppBar(
             brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            title:
-             _getLogo() ,
-            iconTheme: IconThemeData(
-                color:
-                gblSystemColors.headerTextColor)),
+            //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
+            backgroundColor:gblSystemColors.primaryHeaderColor,
+            title:_getLogo() ,
+            //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
+            ),
         body: Stack(
           children: _getBackImage(buttonShape),
         ),
@@ -296,32 +294,37 @@ class _HomeState extends State<HomePage> {
     }
   }
 Widget _getLogo(){
+  String txt = ' ';
+  if( gblIsLive == false ) {
+    txt = 'Test';
+  }
 
+ /* return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Image.asset(
+        'lib/assets/$gblAppTitle/images/appBar.png',
+        fit: BoxFit.contain,
+        height: 40,
+      ),
+       Text(txt)
+    ],
+  );
+*/
   //: Row(children: <Widget>[
   //_getLogo(),
   //Text('Test', style: gblTitleStyle,)
   //])
-    String txt = ' ';
-    if( gblIsLive == false ) {
-      txt = 'Test';
-    }
-  return new Row( children: [
-    FittedBox(
-      child: Image.asset('lib/assets/$gblAppTitle/images/appBar.png'),
-      fit: BoxFit.fitHeight,
-    ),
-  /*  Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment(-1,0),
-              image: appBarImage, fit: BoxFit.fill),
-      ),
-  ),
-
-   */
-   Text(txt, style: gblTitleStyle),
-
-  ]);
+  double height = 50;
+  if(gblSettings.aircode == 'LM') {
+    height = 70;
+  }
+  List<Widget> list = [];
+  list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
+  if( gblIsLive == false) {
+    list.add(Text(txt, style: gblTitleStyle));
+  }
+  return new Row( children: list   );
 }
 
   List<Widget> _getBackImage(var buttonShape) {
@@ -499,7 +502,7 @@ Widget _getLogo(){
 
     ));
 
-    if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
+    if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV && gblSettings.wantHomeFQTVButton ) {
       list.add(Row(
         children: <Widget>[
           Expanded(
@@ -529,7 +532,7 @@ Widget _getLogo(){
                           ),
                         ),
                         TrText(
-                          'My ${gblSettings.fqtvName}' ,
+                          '${gblSettings.fqtvName}' ,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold),

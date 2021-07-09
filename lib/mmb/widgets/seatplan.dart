@@ -880,10 +880,15 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                 right: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
               )),
               child: Center(
-                child: Text(NumberFormat.simpleCurrency(
+                child: Text(
+                  formatPrice(currencyCode, double.parse(currentSeatPrice)) +
+/*
+                    NumberFormat.simpleCurrency(
                             locale: gblSettings.locale,
                             name: currencyCode)
                         .format(double.parse(currentSeatPrice)) +
+
+ */
                     ' Seat Charge'),
               ),
             ),

@@ -185,10 +185,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Total Tax: '),
-        Text(NumberFormat.simpleCurrency(
+        Text(formatPrice(currencyCode, tax)),
+/*        Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
                 name: currencyCode)
             .format(tax)),
+
+ */
       ],
     );
   }
@@ -218,10 +221,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Net Fare:'),
-        Text(NumberFormat.simpleCurrency(
+          Text(formatPrice(currencyCode,netFareTotal)),
+/*        Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
                 name: currencyCode)
             .format(netFareTotal)),
+
+ */
       ],
     );
   }
@@ -248,11 +254,15 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Flights Total: '),
+        Text(formatPrice(currencyCode,total)),
+/*
         Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
                 name: currencyCode)
             .format(total))
         // (double.tryParse(fareStore.total) ?? 0.0))),
+
+ */
       ],
     );
   }
@@ -280,10 +290,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Discount: '),
+          Text(formatPrice(currencyCode,total)),
+/*
           Text(NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
               .format(total)),
+
+ */
         ],
       );
     }
@@ -299,10 +313,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          NumberFormat.simpleCurrency(
+          formatPrice(currencyCode,dAmount),
+/*          NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
               .format(dAmount),
+
+ */
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ],
@@ -400,10 +417,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text('Tax:'),
+              Text(formatPrice(currencyCode,taxTotal)),
+/*
               Text(NumberFormat.simpleCurrency(
                       locale: gblSettings.locale,
                       name: currencyCode)
                   .format(taxTotal)),
+
+ */
             ],
           ),
         );

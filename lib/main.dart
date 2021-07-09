@@ -112,6 +112,8 @@ class App extends StatelessWidget {
         brightness: Brightness.light,
         primaryColor: gblSystemColors.primaryColor,
         accentColor: gblSystemColors.accentColor,
+        colorScheme: ColorScheme.light(primary: Colors.black),
+        //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
       home: new RootPage(),
       routes: <String, WidgetBuilder>{

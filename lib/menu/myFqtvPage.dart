@@ -570,12 +570,18 @@ Widget _getTrans() {
 
   // second row (single item)
           Row(
-              children: [Text(tran.description ,
-          style: TextStyle( color: Colors.white, ), )]),
+              children: [
+        Expanded(
+          child: Container(
+            child: Text(tran.description ,
+            maxLines: 5,
+            style: TextStyle( color: Colors.white, ), overflow: TextOverflow.ellipsis,)))]),
             // third row
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-            Text(tran.airMiles,style: TextStyle(color: Colors.white, ) ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+            Text(tran.airMiles,style: TextStyle(color: Colors.white, ) ,
+    ),
+
             Text(tran.pnr + '      ',style: TextStyle(color: Colors.black,  ),  ),
         ],
           )]

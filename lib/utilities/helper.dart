@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'package:loganair/data/repository.dart';
+import 'package:intl/intl.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -10,10 +10,8 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/calendar/widgets/langConstants.dart';
 
-//import 'package:loganair/data/models/cities.dart';
-//import 'package:url_launcher/url_launcher.dart';
-//import 'package:connectivity/connectivity.dart';
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
@@ -350,4 +348,15 @@ bool isSearchDate(DateTime itemDate, DateTime searchDate) {
   } else {
     return false;
   }
+}
+
+String formatPrice(String currency, double price) {
+  String _currencySymbol = currency;
+  var formatCurrency = new NumberFormat.simpleCurrency();
+
+  if( gblSettings.wantCurrencySymbols == true ) {
+    _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
+  }
+  return _currencySymbol + price.toStringAsFixed(2);
+ // return _currencySymbol + formatCurrency.format(price);
 }

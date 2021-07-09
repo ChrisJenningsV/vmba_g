@@ -50,6 +50,7 @@ void configT6() {
       latestBuildiOS: '1.0.5',
       latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
+    wantHomeFQTVButton: true,
       airlineName: "Air Swift",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

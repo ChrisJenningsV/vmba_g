@@ -12,6 +12,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -395,6 +396,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     }
   }
 
+  /*
   String calenderPrice(String currency, String price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(
         locale: gblSettings.locale, name: currency);
@@ -406,6 +408,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       return _currencySymbol + price;
     }
   }
+
+   */
 
   Widget getCalenderWidget() {
     if (objAv != null || objAv.availability.cal != null) {
@@ -461,7 +465,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             ),
                             //new Text(item.cur + item.amt)
                             new Text(
-                              calenderPrice(item.cur, item.amt),
+                              calenderPrice(item.cur, item.amt, '0'),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),
@@ -736,7 +740,11 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       children: <Widget>[
         new Container(
           margin: EdgeInsets.symmetric(vertical: 1.0),
-          height: 60.0,
+          //height: 60.0,
+          constraints: new BoxConstraints(
+            minHeight: 60.0,
+            maxHeight: 80.0,
+          ),
           child: getCalenderWidget(),
         ),
         new Expanded(
@@ -855,7 +863,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                                 (double.tryParse(current
                                                         .fltav.tax[index]) ??
                                                     0.0))
-                                        .toStringAsFixed(2)),
+                                        .toStringAsFixed(2),'0'),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.0,
@@ -939,7 +947,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                                   (double.tryParse(current
                                                           .fltav.tax[index]) ??
                                                       0.0))
-                                          .toStringAsFixed(2)),
+                                          .toStringAsFixed(2),'0'),
                                   style: new TextStyle(
                                     color: gblSystemColors
                                         .primaryButtonTextColor,

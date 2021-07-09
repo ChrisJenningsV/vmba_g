@@ -50,6 +50,7 @@ void configZ4() {
       latestBuildAndroid: '1.0.0.98',
       airlineName: "Ibom Air",
       wantRememberMe: false,
+    wantHomeFQTVButton: true,
       xmlToken: "token=jgxD8XX48HgiBqGbkqmR2qmq6WzfWaQCi59Aa3s1StA%3D",
       xmlTokenPost: "jgxD8XX48HgiBqGbkqmR2qmq6WzfWaQCi59Aa3s1StA=",
       aircode: 'Z4',

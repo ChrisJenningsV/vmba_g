@@ -168,12 +168,16 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-            NumberFormat.simpleCurrency(
+            formatPrice(this.pnrModel.pNR.basket.outstanding.cur, double.parse(this.pnrModel.pNR.basket.outstanding.amount) ?? 0.0),
+/*
+                NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
                     name: this.pnrModel.pNR.basket.outstanding.cur)
                 .format((double.parse(
                         this.pnrModel.pNR.basket.outstanding.amount) ??
                     0.0)),
+
+ */
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)
             // Text(
             //  '£${(double.parse(this.pnrModel.pNR.basket.outstanding.amount) ?? 0.0).toStringAsFixed(2)}',
@@ -222,10 +226,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Total Tax: '),
+       Text(formatPrice(currencyCode, tax) ),
+/*
         Text(NumberFormat.simpleCurrency(
             locale: gblSettings.locale,
             name: currencyCode)
             .format(tax)),
+
+ */
       ],
     ));
 
@@ -241,10 +249,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(desc1),
+          Text(formatPrice(currencyCode, sepTax1) ),
+
+          /*
           Text(NumberFormat.simpleCurrency(
               locale: gblSettings.locale,
               name: currencyCode)
               .format(sepTax1)),
+
+           */
         ],
       ));
     }
@@ -301,10 +314,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Net Fare:'),
+        Text(formatPrice(currencyCode, netFareTotal) ),
+/*
         Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
                 name: currencyCode)
             .format(netFareTotal))
+
+ */
       ],
     );
   }
@@ -339,10 +356,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('Flights Total: '),
+        Text(formatPrice(currencyCode, total) ),
+/*
         Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
                 name: currencyCode)
             .format(total))
+
+ */
         // (double.tryParse(fareStore.total) ?? 0.0))),
       ],
     );
@@ -371,10 +392,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Discount: '),
+          Text(formatPrice(currencyCode, total) ),
+/*
           Text(NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
               .format(total)),
+
+ */
         ],
       );
     }
@@ -473,10 +498,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text('Tax:'),
+            Text(formatPrice(currencyCode, taxTotal) ),
+/*
             Text(NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
                     name: currencyCode)
                 .format(taxTotal))
+
+ */
           ],
         ),
       );
@@ -499,10 +528,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(desc1),
+              Text(formatPrice(currencyCode, sepTax1) ),
+/*
               Text(NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
                   name: currencyCode)
                   .format(sepTax1)),
+
+ */
             ],
           ),
         );
@@ -543,10 +576,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
+                Text(formatPrice(seat.cur ?? currencyCode, double.parse(seat.amt) ?? 0.0) ),
+/*
                 Text(NumberFormat.simpleCurrency(
                         locale: gblSettings.locale,
                         name: seat.cur ?? currencyCode)
                     .format(double.parse(seat.amt) ?? 0.0))
+
+ */
               ],
             ),
           );
@@ -1178,12 +1215,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   initiallyExpanded: false,
                   title: Text(
                     'Total ' +
+                        formatPrice(cur, double.parse(amount) ?? 0.0) ,
+
+                    /*
                         NumberFormat.simpleCurrency(
                             locale: GobalSettings
                                 .shared.settings.locale,
                             name: cur)
                             .format((double.parse(amount) ??
                             0.0)),
+
+                         */
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   children: [

@@ -53,7 +53,8 @@ void configSI() {
 
   gblSettings = Settings(
       wantLeftLogo:  true,
-    wantRememberMe: true,
+    wantRememberMe: false,
+    wantHomeFQTVButton: true,
       latestBuildiOS: '1.0.8.15',
       latestBuildAndroid: '1.0.8.15',
       airlineName: "Blue Islands",
