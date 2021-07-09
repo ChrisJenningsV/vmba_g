@@ -290,11 +290,20 @@ class Session {
   String sessionId;
   String varsSessionId;
   String vrsServerNo;
+  DateTime createTime = DateTime.now();
   Session(
     this.sessionId,
     this.varsSessionId,
     this.vrsServerNo,
   );
+
+  bool isTimedOut() {
+    var currentTime = DateTime.now();
+    if( currentTime.difference(createTime).inMinutes > 20  ) {
+      return true;
+    }
+    return false;
+  }
 }
 
 class ApiFqtvResetPasswordRequest {

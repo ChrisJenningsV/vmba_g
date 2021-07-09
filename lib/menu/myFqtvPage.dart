@@ -747,10 +747,11 @@ Widget _getTrans() {
   }
 
   void _fqtvLogin() async {
-    if ( gblSession == null ) {
+    if ( gblSession == null || gblSession.isTimedOut()) {
       await login().then((result) {
         gblSession =
             Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
+        print('new session');
       });
     }
     FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
