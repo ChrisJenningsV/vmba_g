@@ -25,21 +25,30 @@ void main() {
 }
 void configFL() {
   SystemColors _systemColors = SystemColors(
-      primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
+     primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
       accentButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
       accentColor: Colors.black,
-      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
-      primaryButtonTextColor: Colors.white,
-      textButtonTextColor: Colors.black54  ,
+/*      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
+      textButtonTextColor: Colors.black54  , */
       primaryHeaderColor: Color.fromRGBO(0x1C, 0x37,0x48,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
-      headerTextColor: Colors.white,
-      statusBar: Brightness.dark,
+
+
+    primaryColor: Colors.red,
+    textButtonTextColor: Colors.black54,
+    primaryButtonTextColor: Colors.white,
+ //   primaryHeaderColor: Colors.red,
+    headerTextColor: Colors.white,
+    statusBar: Brightness.dark,
+
+
+
     seatPlanColorEmergency: Colors.red, //Colors.yellow
     seatPlanColorAvailable: Colors.blue, //Colors.green
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200],
   );
+//  _systemColors.setDefaults();
 
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;

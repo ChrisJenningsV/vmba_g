@@ -331,7 +331,7 @@ class _CheckinBoardingPassesWidgetState
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text("Booking reference",
+                new TrText("Booking reference",
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w700)),
                     new Text(rLOC,
@@ -489,7 +489,7 @@ class _CheckinBoardingPassesWidgetState
     child: Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-    Text(
+    TrText(
     'Reload',
     style: TextStyle(
     color: gblSystemColors.primaryButtonTextColor),
@@ -528,7 +528,7 @@ class _CheckinBoardingPassesWidgetState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            TrText(
               'Change Flight',
               style: TextStyle(
                   color: gblSystemColors

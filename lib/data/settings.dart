@@ -119,6 +119,7 @@ class Settings {
   bool wantMyAccount = false;
   bool wantProfileList = false;
   bool wantFQTV = false;
+  bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;

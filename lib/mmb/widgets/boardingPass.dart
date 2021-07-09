@@ -1,4 +1,3 @@
-//import 'package:barcode_generator/barcode_generator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -30,20 +29,10 @@ class BoardingPassWidget extends StatefulWidget {
 
 class BoardingPassWidgetState extends State<BoardingPassWidget> {
   bool _loadingInProgress;
-  // static const double _topSectionTopPadding = 50.0;
-  // static const double _topSectionBottomPadding = 20.0;
-  // static const double _topSectionHeight = 50.0;
   int _currentBarcode = 1;
   bool _barCodeScanError = false;
   GlobalKey globalKey = new GlobalKey();
-  //String _dataString = "BPPLM0354:23Feb2019:LSI:EDI:AAWBGS1";
-  //String _dataString; //=
-  //"M1HEDDLE/ROBERT       EAAVVCF EDIKOILM 0397 053Y9C       113>20000T230054787802";
 
-  //String _inputErrorText = '';
-  //final TextEditingController _textController = TextEditingController();
-
-  //bool _loadingInProgress;
   String barCodeData;
   //String cmd = "BPPLM0037:10Apr2019:KOI:ABZ:AATPCR1";
 
@@ -633,7 +622,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 //                 gbl_settings.bpShowFastTrack                    ? ... : Text('')
-                children: <Widget>[ new Text('FAST TRACK',
+                children: <Widget>[ new TrText('FAST TRACK',
                               style: new TextStyle(
                                   fontSize: 12.0, fontWeight: FontWeight.w200)),
                           new Text(
@@ -800,9 +789,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          (gblSettings.aircode == 'LM')
+                          (gblSettings.want2Dbarcode ) // gblSettings.aircode == 'LM'
                               ? TextButton(
-                                  child: Text(
+                                  child: TrText(
                                     "This barcode did not scan",
                                     style: TextStyle(
                                       color: gblSystemColors.textButtonTextColor,

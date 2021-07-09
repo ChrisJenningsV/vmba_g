@@ -10,6 +10,7 @@ import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget(
@@ -184,7 +185,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Total Tax: '),
+        TrText('Total Tax: '),
         Text(formatPrice(currencyCode, tax)),
 /*        Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
@@ -220,7 +221,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Net Fare:'),
+        TrText('Net Fare:'),
           Text(formatPrice(currencyCode,netFareTotal)),
 /*        Text(NumberFormat.simpleCurrency(
                 locale: gblSettings.locale,
@@ -253,7 +254,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Flights Total: '),
+        TrText('Flights Total: '),
         Text(formatPrice(currencyCode,total)),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -289,7 +290,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('Discount: '),
+          TrText('Discount: '),
           Text(formatPrice(currencyCode,total)),
 /*
           Text(NumberFormat.simpleCurrency(
@@ -344,7 +345,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
             ),
-            Text(
+            TrText(
               ' to ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
@@ -367,7 +368,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Flight No:'),
+            TrText('Flight No:'),
             Text(
                 '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}')
           ],
@@ -377,7 +378,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Departure Time:'),
+            TrText('Departure Time:'),
             Text(DateFormat('dd MMM kk:mm').format(DateTime.parse(
                 pnrModel.pNR.itinerary.itin[i].depDate +
                     ' ' +
@@ -389,7 +390,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Fare Type:'),
+            TrText('Fare Type:'),
             Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
@@ -416,7 +417,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Tax:'),
+              TrText('Tax:'),
               Text(formatPrice(currencyCode,taxTotal)),
 /*
               Text(NumberFormat.simpleCurrency(
@@ -447,7 +448,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Summary',
+          title: new TrText('Summary',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -460,7 +461,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text("Calculating your price..."),
+                child: new TrText("Calculating your price..."),
               ),
             ],
           ),
@@ -475,7 +476,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -487,7 +488,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Please check your internet connection'),
+                  child: TrText('Please check your internet connection'),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -495,7 +496,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                           borderRadius: BorderRadius.circular(30.0)),
                       primary: Colors.black),
                   onPressed: () => retryBooking(),
-                  child: Text(
+                  child: TrText(
                     'Retry booking',
                     style: new TextStyle(color: Colors.white),
                   ),
@@ -512,7 +513,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -525,11 +526,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _eVoucherNotValid
-                      ? Text(
+                      ? TrText(
                           'Your Promo code will no longer be valid for this booking. To make changes please contact customer services',
                           textAlign: TextAlign.center,
                         )
-                      : Text(
+                      : TrText(
                           'We are unable to proceed with this request. To make changes please contact customer services',
                           textAlign: TextAlign.center,
                         ),
@@ -541,7 +542,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       primary: Colors.black),
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
-                  child: Text(
+                  child: TrText(
                     'Return to my bookings',
                     style: new TextStyle(color: Colors.white),
                   ),
@@ -558,7 +559,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -571,7 +572,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of adults: '),
+                          TrText('No of adults: '),
                           Text(widget.mmbBooking.passengers.adults.toString()),
                         ],
                       )
@@ -582,7 +583,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of youths: '),
+                          TrText('No of youths: '),
                           Text(widget.mmbBooking.passengers.youths.toString()),
                         ],
                       )
@@ -593,7 +594,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of children: '),
+                          TrText('No of children: '),
                           Text(
                               widget.mmbBooking.passengers.children.toString()),
                         ],
@@ -605,7 +606,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of infants: '),
+                          TrText('No of infants: '),
                           Text(widget.mmbBooking.passengers.infants.toString()),
                         ],
                       )
@@ -617,7 +618,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    TrText(
                       'Summary',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
@@ -631,7 +632,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    TrText(
                       'Amount payable',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
@@ -649,7 +650,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Fare Rules'),
+                          TrText('Fare Rules'),
                           IconButton(
                             icon: Icon(Icons.keyboard_arrow_down),
                             onPressed: () => Navigator.push(
@@ -695,7 +696,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                         color: gblSystemColors
                             .primaryButtonTextColor,
                       ),
-                      Text(
+                      TrText(
                         'CONFIRM CHANGES',
                         style: TextStyle(
                           color: gblSystemColors

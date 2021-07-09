@@ -301,6 +301,9 @@ class Repository {
                   case 'wantHomeFQTVButton':
                     gblSettings.wantHomeFQTVButton = parseBool(item['value']);
                     break;
+                  case 'want2Dbarcode':
+                    gblSettings.want2Dbarcode = parseBool(item['value']);
+                    break;
                   case 'wantMyAccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;
