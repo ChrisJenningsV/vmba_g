@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/components/selectLang.dart';
 
 class AppFeedBackPage extends StatefulWidget {
   AppFeedBackPage({Key key, this.version}) : super(key: key);
@@ -198,6 +199,20 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                       primary: gblSystemColors.textButtonTextColor),
                   child: TrText(btnText),
                   onPressed: () {_swapLiveTest();},
+                ),
+
+
+                const SizedBox(width: 8),
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Language'),
+                  onPressed: () {
+                    Navigator.push(
+                        context, SlideTopRoute(page: LanguageSelection()
+                    ));
+                    },
                 ),
 
 

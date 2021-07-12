@@ -92,6 +92,7 @@ void configFL() {
     ),
     fqtvName:  "",
     wantFQTV: true,
+    wantFQTVNumber: true,
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",

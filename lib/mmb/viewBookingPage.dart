@@ -740,7 +740,7 @@ class _CheckinBoardingPassesWidgetState
             primary: gblSystemColors.textButtonTextColor),
         child: Row(
           children: <Widget>[
-            Text(
+            TrText(
               'Boarding Pass',
               style: TextStyle(
                   color:
@@ -792,9 +792,11 @@ class _CheckinBoardingPassesWidgetState
               primary: Colors.black),
           child: Row(
             children: <Widget>[
-              Text(
+              TrText(
                 'Add Passport',
-                style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color:
+                      gblSystemColors.textButtonTextColor)
               ),
               Padding(
                 padding: EdgeInsets.only(left: 5.0),
@@ -871,7 +873,7 @@ class _CheckinBoardingPassesWidgetState
                 primary: gblSystemColors.textButtonTextColor),
             child: Row(
               children: <Widget>[
-                Text(
+                TrText(
                   'Check-in',
                   style: TextStyle(
                       color: gblSystemColors
@@ -901,7 +903,7 @@ class _CheckinBoardingPassesWidgetState
             return Text('');
           } else if (pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
               pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode)  {
-              return Text('Check-in with partner airline');
+              return TrText('Check-in with partner airline');
           } else if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
               pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
             bool chargeForPreferredSeating =
@@ -913,12 +915,12 @@ class _CheckinBoardingPassesWidgetState
           } else if (pnr.pNR.names.pAX[paxNo].paxType == 'IN') {
             return new Padding(
               padding: EdgeInsets.all(20),
-              child: new Text('No seat option'),
+              child: new TrText('No seat option'),
             );
           } else if (pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True') {
             return new Padding(
               padding: EdgeInsets.all(20),
-              child: new Text('Open seating'),
+              child: new TrText('Open seating'),
             );
           }
         }
@@ -932,7 +934,7 @@ class _CheckinBoardingPassesWidgetState
               : false;
       if( pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
           pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode)  {
-        return Text('Check-in with partner airline');
+        return TrText('Check-in with partner airline');
       }
       if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
           pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
@@ -944,7 +946,7 @@ class _CheckinBoardingPassesWidgetState
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: Text('Open seating'),
+              child: TrText('Open seating'),
             )
           ],
         );
@@ -1123,7 +1125,7 @@ class _CheckinBoardingPassesWidgetState
                 new Divider(),
                 (pnr.pNR.itinerary.itin[journey].status == 'QQ') ?
                   new Row( children: [
-                    Text('Flight Not Operating, contact airline' , style: TextStyle( color: Colors.red , fontSize: 18.0 ),)],) : Text(''),
+                    TrText('Flight Not Operating, contact airline' , style: TextStyle( color: Colors.red , fontSize: 18.0 ),)],) : Text(''),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

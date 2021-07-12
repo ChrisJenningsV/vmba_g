@@ -74,7 +74,7 @@ void configSI() {
       backgroundImageUrl:  "",
       hostBaseUrl: 'https://customertest.videcom.com/BlueIslands/VARS/public',
       iOSAppId:  '1521495071',
-      androidAppId:  'com.blueislands.reservations',
+      androidAppId:  'com.blueislands',
 
       eVoucher:  false,
       passengerTypes:  PassengerTypes(

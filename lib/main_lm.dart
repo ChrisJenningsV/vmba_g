@@ -114,6 +114,7 @@ void configLM() {
   wantCurrencySymbols: true,
   wantMyAccount: true,
   wantFQTV: true,
+  wantFQTVNumber: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',
   maxNumberOfPax: 8,
   hideFareRules: false,

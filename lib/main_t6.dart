@@ -65,7 +65,7 @@ void configT6() {
       autoSeatOption: true,
       hostBaseUrl:  'https://customertest.videcom.com/airswift/VARS/public',
       iOSAppId: '1457545908',
-      androidAppId: 'com.airswift.reservations',
+      androidAppId: 'com.airswift',
       fqtvName: 'Clan',
       appFeedbackEmail: 'appfeedback@airswift.com',
       groupsBookingsEmail: 'groups@airswift.com',

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:http/http.dart' as http;
+import 'package:vmba/data/globals.dart';
 
 class CustomRowModel {
   bool selected;
@@ -42,9 +44,15 @@ class CustomRow extends StatelessWidget {
 initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
   if (gblLanguage != 'en') {
-    String jsonString = await rootBundle.loadString(
-        'lib/assets/lang/$gblLanguage.json');
-    gblLangMap = json.decode(jsonString);
+    if ( gblTranslationFile != null && gblTranslationFile.isNotEmpty) {
+      final jsonString = await http.get(Uri.parse(gblTranslationFile));
+      gblLangMap = json.decode(jsonString.body);
+    } else {
+      String jsonString;
+      jsonString = await rootBundle.loadString(
+          'lib/assets/lang/$gblLanguage.json');
+      gblLangMap = json.decode(jsonString);
+    }
   }
 }
 dialogContent(BuildContext context) {
@@ -145,6 +153,10 @@ class _MyDialogContentState extends State<MyDialogContent> {
   @override
   void initState() {
     super.initState();
+    if( gblLanguages == null || gblLanguages.isEmpty ) {
+      // test data
+      gblLanguages = 'en,English,fr,French';
+    }
 
     List<String> langs = gblLanguages.split(',');
     var count = langs.length /2;

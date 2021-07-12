@@ -64,13 +64,13 @@ android {
         BlueIslands {
             dimension "version"
             resValue "string", "flavored_app_name", "Blue Islands"
-            applicationId "com.blueislands.reservations"
+            applicationId "com.blueislands"
         }
 
         AirSwift {
             dimension "version"
             resValue "string", "flavored_app_name", "AirSwift"
-            applicationId "com.airswift.reservations"
+            applicationId "com.airswift"
         }
 
         IbomAir {

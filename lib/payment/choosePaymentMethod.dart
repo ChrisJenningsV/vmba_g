@@ -225,7 +225,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
      rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Total Tax: '),
+        TrText('Total Tax: '),
        Text(formatPrice(currencyCode, tax) ),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -313,7 +313,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Net Fare:'),
+        TrText('Net Fare:'),
         Text(formatPrice(currencyCode, netFareTotal) ),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -355,7 +355,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Flights Total: '),
+        TrText('Flights Total: '),
         Text(formatPrice(currencyCode, total) ),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -391,7 +391,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('Discount: '),
+          TrText('Discount: '),
           Text(formatPrice(currencyCode, total) ),
 /*
           Text(NumberFormat.simpleCurrency(
@@ -423,7 +423,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
             ),
-            Text(
+            TrText(
               ' to ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
@@ -446,7 +446,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Flight No:'),
+            TrText('Flight No:'),
             Text(
                 '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}')
           ],

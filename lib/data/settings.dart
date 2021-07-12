@@ -119,6 +119,7 @@ class Settings {
   bool wantMyAccount = false;
   bool wantProfileList = false;
   bool wantFQTV = false;
+  bool wantFQTVNumber = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantRememberMe = false;
@@ -224,6 +225,7 @@ bool bpShowFastTrack;
     this.bpShowLoungeAccess,
     this.wantMyAccount,
     this.wantFQTV,
+    this.wantFQTVNumber,
     this.searchDateOut,
     this.searchDateBack,
     this.reqUpdateMsg,

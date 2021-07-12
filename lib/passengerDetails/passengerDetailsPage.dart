@@ -9,6 +9,7 @@ import 'package:vmba/passengerDetails/widgets/editPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key, this.newBooking}) : super(key: key);
@@ -115,18 +116,18 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Load Details"),
-          content: Text("Would you like to preload your details?"),
+          title: new TrText("Load Details"),
+          content: TrText("Would you like to preload your details?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(
-              child: new Text("NO"),
+              child: new TrText("NO"),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             new TextButton(
-              child: new Text("YES"),
+              child: new TrText("YES"),
               onPressed: () {
                 preLoadDetails = true;
                 loadProfileIntoPaxDetails();
@@ -212,7 +213,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: new Text('Passengers Details',
+        title: new TrText('Passengers Details',
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),
@@ -311,7 +312,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               Icons.check,
               color: Colors.white,
             ),
-            Text(
+            TrText(
               'CONTINUE',
               style: TextStyle(color: Colors.white),
             ),
@@ -433,13 +434,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           builder: (BuildContext context) {
             // return object of type Dialog
             return AlertDialog(
-              title: new Text("Error"),
+              title: new TrText("Error"),
               content:
-                  error != '' ? new Text(error) : new Text("Please try again"),
+                  error != '' ? new Text(error) : new TrText("Please try again"),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 new TextButton(
-                  child: new Text("OK"),
+                  child: new TrText("OK"),
                   onPressed: () {
                     // _error = '';
                     Navigator.of(context).pop();

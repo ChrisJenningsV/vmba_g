@@ -263,6 +263,9 @@ class Repository {
                   case 'Languages':
                     gblLanguages = item['value'];
                     break;
+                  case 'translationFile':
+                    gblTranslationFile = item['value'];
+                    break;
                   case 'titles':
                     gblTitles = item['value'].split(',');
                     break;
@@ -309,6 +312,9 @@ class Repository {
                     break;
                   case 'wantFQTV':
                     gblSettings.wantFQTV = parseBool(item['value']);
+                    break;
+                  case 'wantFQTVNumber':
+                    gblSettings.wantFQTVNumber = parseBool(item['value']);
                     break;
                   case 'eVoucher':
                     gblSettings.eVoucher =parseBool(item['value']);

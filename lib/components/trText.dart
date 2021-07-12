@@ -30,7 +30,7 @@ class TrText extends StatelessWidget {
             txt2.toString().isNotEmpty) {
           txt = testTxt + txt2;
         } else {
-          var msg = 'need trans for $txt';
+          var msg = 'need trans for "$txt"';
           print(msg);
         }
       }
