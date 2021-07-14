@@ -86,9 +86,20 @@ android {
         }
         AirGotland {
             dimension "version"
-            resValue "string", "flavored_app_name", "Air Leap"
+            resValue "string", "flavored_app_name", "Air Gotland"
             applicationId "se.airgotland.booking"
         }
+        AirHalland {
+            dimension "version"
+            resValue "string", "flavored_app_name", "Air Halland"
+            applicationId "se.airhalland.booking"
+        }
+        AirSkane {
+            dimension "version"
+            resValue "string", "flavored_app_name", "Air Skane"
+            applicationId "se.airskane.booking"
+        }
+
     }
 
     signingConfigs {

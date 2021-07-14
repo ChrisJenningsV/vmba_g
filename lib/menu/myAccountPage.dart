@@ -125,12 +125,12 @@ void _populateFromGlobalProfile() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
+        leading: gblSettings.wantLeftLogo ? Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Image.asset(
                 'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
-                colorBlendMode: BlendMode.modulate)),
+                colorBlendMode: BlendMode.modulate)) : Text(''),
         brightness: gblSystemColors.statusBar,
         backgroundColor:
         gblSystemColors.primaryHeaderColor,
@@ -440,7 +440,7 @@ void _populateFromGlobalProfile() {
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-               onSaved: (value) {
+              onSaved: (value) {
                 if (value != null) {
                   //.contactInfomation.phonenumber = value.trim()
                   widget.passengerDetail.fqtv = value.trim();
@@ -449,6 +449,8 @@ void _populateFromGlobalProfile() {
             )
         ),
       ));
+    }
+    if( gblSettings.wantFQTV == true) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(

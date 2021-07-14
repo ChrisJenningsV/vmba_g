@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/components/trText.dart';
 
 class EVoucherWidget extends StatefulWidget {
   EVoucherWidget({Key key, this.evoucherNo, this.onChanged}) : super(key: key);
@@ -26,7 +27,7 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Promo Code',
+        TrText('Promo Code',
             style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
         TextField(
           controller: _textEditingController,

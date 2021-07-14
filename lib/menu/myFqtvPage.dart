@@ -148,7 +148,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       return AlertDialog(
         title: Row(
             children:[
-              Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/lock_user_man.png',
+              Image.network('$gblServerFiles/images/lock_user_man.png',
                 width: 25, height: 25, fit: BoxFit.contain,),
               TrText('${gblSettings.fqtvName} LOGIN')
             ]
@@ -206,12 +206,12 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
+        leading: gblSettings.wantLeftLogo ? Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Image.asset(
                 'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
-                colorBlendMode: BlendMode.modulate)),
+                colorBlendMode: BlendMode.modulate)) : Text(''),
         brightness: gblSystemColors.statusBar,
         backgroundColor:
         gblSystemColors.primaryHeaderColor,
@@ -886,7 +886,7 @@ Widget _getTrans() {
    return AlertDialog(
      title: Row(
          children:[
-           Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/lock_user_man.png',
+           Image.network('$gblServerFiles/images/lock_user_man.png',
              width: 50, height: 50, fit: BoxFit.contain,),
            TrText('Change Password')
          ]
@@ -975,7 +975,7 @@ Widget _getTrans() {
          return AlertDialog(
            title: Row(
                children:[
-                 Image.network('https://customertest.videcom.com/videcomair/vars/public/test/images/reset_password.png',
+                 Image.network('$gblServerFiles/reset_password.png',
                    width: 50, height: 50, fit: BoxFit.contain,),
                  TrText('Reset Password')
                ]

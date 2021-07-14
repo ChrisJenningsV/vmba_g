@@ -35,7 +35,7 @@ void configAG() {
     primaryHeaderColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
 
 
-    primaryColor: Colors.red,
+    primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
     //   primaryHeaderColor: Colors.red,
@@ -69,20 +69,21 @@ void configAG() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "FL",
+    brandID: "AG",
 
     termsAndConditionsUrl:  " https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airgotland.se/sv/om-air-leap/integritetspolicy?app_mode=1",
     faqUrl: "https://www.airgotland.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
     contactUsUrl: "https://www.airgotland.se/sv/om-air-leap/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
-    locale:  'en-EN',
-    bookingLeadTime:  60,
+//    locale:  'en-EN',
+ //   bookingLeadTime:  60,
     webCheckinNoSeatCharge:  false,
     vrsGuid:  '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption:  true,
-    backgroundImageUrl:  "",
+//    backgroundImageUrl:  "",
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
-    androidAppId:   'se.airgotland.booking', //  'se.airleap.booking',
+    androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
@@ -98,10 +99,10 @@ void configAG() {
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",
-    maxNumberOfPax:  8,
+//    maxNumberOfPax:  9,
     hideFareRules:  true,
     fqtvEnabled:  false,
-
+    wantMyAccount: true,
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
     liveXmlUrl:      "https://booking.airgotland.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -123,11 +124,10 @@ void configAG() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
-    searchDateOut: 1,
-    searchDateBack: 6,
-
-
+//    searchDateOut: 1,
+//    searchDateBack: 6,
   );
+  gblSettings.setDefaults();
 
 
 }

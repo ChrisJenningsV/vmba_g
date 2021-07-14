@@ -33,7 +33,7 @@ void configFL() {
       primaryHeaderColor: Color.fromRGBO(0x1C, 0x37,0x48,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
 
 
-    primaryColor: Colors.red,
+    primaryColor: Color.fromRGBO(0x1C, 0x37,0x48,1),
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
  //   primaryHeaderColor: Colors.red,
@@ -96,10 +96,10 @@ void configFL() {
     appFeedbackEmail:  "",
     prohibitedItemsNoticeUrl: null,
     groupsBookingsEmail:  "",
-    maxNumberOfPax:  8,
+    maxNumberOfPax:  9,
     hideFareRules:  true,
-    fqtvEnabled:  false,
-
+    fqtvEnabled:  true,
+    wantMyAccount: true,
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
     liveXmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -123,9 +123,7 @@ void configFL() {
     bpShowLoungeAccess: true,
     searchDateOut: 1,
     searchDateBack: 6,
-
-
   );
-
+  gblSettings.setDefaults();
 
 }

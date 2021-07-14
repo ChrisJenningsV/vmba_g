@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class PassengerWidget extends StatefulWidget {
   PassengerWidget({Key key, this.systemColors, this.passengers, this.onChanged})
@@ -95,7 +96,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                new Text("Adults (16+)",
+                new TrText("Adults (16+)",
                     style: new TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 15.0)),
                 new Row(
@@ -134,7 +135,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
           child: new Container(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              new Text("Children & Infants",
+              new TrText("Children & Infants",
                   style: new TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15.0)),
               new GestureDetector(
@@ -149,7 +150,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
                     children: <Widget>[
                       Expanded(
                         child: (infants + children + youths) == 0
-                            ? Text("Select",
+                            ? TrText("Select",
                                 style: new TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 20.0,
@@ -274,7 +275,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Add Passengers',
+          title: new TrText('Add Passengers',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -287,7 +288,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: Text(
+                    label: TrText(
                       'DONE',
                       style: TextStyle(
                           color: gblSystemColors
@@ -315,12 +316,12 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            TrText(
                               'Adults',
                               style: new TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w700),
                             ),
-                            Text(
+                            TrText(
                               '16 years and above',
                               style: new TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w300),
@@ -352,13 +353,13 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
+                                  TrText(
                                     'Youths',
                                     style: new TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  Text(
+                                  TrText(
                                     '12 to 15 years',
                                     style: new TextStyle(
                                         fontSize: 14,
@@ -394,12 +395,12 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            TrText(
                               'Children',
                               style: new TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w700),
                             ),
-                            Text(
+                            TrText(
                               '2 to 11 years',
                               style: new TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w300),
@@ -431,12 +432,12 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            TrText(
                               'Infants',
                               style: new TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w700),
                             ),
-                            Text(
+                            TrText(
                               'Under 2 years',
                               style: new TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w300),

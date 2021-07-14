@@ -222,13 +222,17 @@ class Repository {
 */
   Future getSettingsFromApi() async {
     var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
+    Map<String, String>       headers = {'Content-Type': 'application/json',
+        'Videcom_ApiKey': gblSettings.apiKey};
+
+    if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty) {
+       body = {"AgentGuid": "${gblSettings.vrsGuid}",
+                "BrandId": "${gblSettings.brandID}"};
+    }
     try {
       final http.Response response = await http.post(
           Uri.parse(gblSettings.apiUrl + "/login"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Videcom_ApiKey': gblSettings.apiKey
-          },
+          headers: headers,
           //       headers: {'Content-Type': 'application/json'},
           body: JsonEncoder().convert(body));
 
@@ -263,8 +267,8 @@ class Repository {
                   case 'Languages':
                     gblLanguages = item['value'];
                     break;
-                  case 'translationFile':
-                    gblTranslationFile = item['value'];
+                  case 'Mobile_ServerFiles':
+                    gblServerFiles = item['value'];
                     break;
                   case 'titles':
                     gblTitles = item['value'].split(',');

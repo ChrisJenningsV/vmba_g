@@ -118,7 +118,16 @@ flutter:
     - lib/assets/airgotland/images/appBar.png
     - lib/assets/airgotland/images/logo.png
     - lib/assets/airgotland/images/loader.png
- #   - lib/assets/airleap/images/background.png
+    - lib/assets/airskane/json/countries.json
+    - lib/assets/airskane/images/appBar.png
+    - lib/assets/airskane/images/logo.png
+    - lib/assets/airskane/images/loader.png
+    - lib/assets/airhalland/json/countries.json
+    - lib/assets/airhalland/images/appBar.png
+    - lib/assets/airhalland/images/logo.png
+    - lib/assets/airhalland/images/loader.png
+
+    #   - lib/assets/airleap/images/background.png
     - lib/assets/airleap/json/countries.json
     - lib/assets/airleap/images/appBarLeft.png
     - lib/assets/airleap/images/loader.png

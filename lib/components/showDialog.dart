@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 
 
@@ -66,7 +67,7 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
                               backgroundColor: gblSystemColors.primaryButtonColor ,
                               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                               primary: gblSystemColors.primaryButtonTextColor),
-                          child: new Text("Close"),
+                          child: new TrText("Close"),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },

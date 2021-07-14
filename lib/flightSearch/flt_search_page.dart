@@ -205,10 +205,10 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Children & Infants",
+                  TrText("Children & Infants",
                       style: new TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15.0)),
-                  Text("Select",
+                  TrText("Select",
                       style: new TextStyle(
                           fontWeight: FontWeight.w200,
                           fontSize: 17.0,

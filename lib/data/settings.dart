@@ -113,6 +113,7 @@ class Settings {
   String xmlToken;
   String xmlTokenPost;
   String aircode;
+  String brandID;
   String airlineName;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
@@ -183,6 +184,7 @@ bool bpShowFastTrack;
     this.xmlToken,
     this.xmlTokenPost,
     this.aircode,
+    this.brandID,
     this.airlineName,
     this.creditCardProvider,
     this.wantPayStack,
@@ -243,110 +245,28 @@ bool bpShowFastTrack;
     this.fQTVpointsName,
 
   });
-
-
-/*
-  Settings.fromJson(Map<String, dynamic> json) {
-    xmlToken = json['xmlToken'];
-    xmlTokenPost = json['xmlTokenPost'];
-    aircode = json['aircode'];
-    creditCardProvider = json['creditCardProvider'];
-    termsAndConditionsUrl = json['termsAndConditionsUrl'];
-    privacyPolicyUrl = json['privacyPolicyUrl'];
-    locale = json['locale'];
-    bookingLeadTime = int.parse(json['bookingLeadTime'].toString());
-    webCheckinNoSeatCharge =
-        json['webCheckinNoSeatCharge'].toString().toLowerCase() == 'true'
-            ? true
-            : false;
-    vrsGuid = json['vrsGuid'];
-    previousVrsGuid = json['previousVrsGuid'];
-    autoSeatOption = json['autoSeatOption'].toString().toLowerCase() == 'true'
-        ? true
-        : false;
-    backgroundImageUrl = json['backgroundImageUrl'];
-    hostBaseUrl = json['hostBaseUrl'];
-    iOSAppId = json['iOSAppId'];
-    androidAppId = json['androidAppId'];
-    latestBuildiOS = json['latestBuildiOS'];
-    latestBuildAndroid = json['latestBuildAndroid'];
-    xmlUrl = json['xmlUrl'];
-    apisUrl = json['apisUrl'];
-    apiUrl = json['apiUrl'];
-    apiKey = json['apiKey'];
-
-    eVoucher =
-        json['eVoucher'].toString().toLowerCase() == 'true' ? true : false;
-    passengerTypes = json['passengerTypes'] != null
-        ? new PassengerTypes.fromJson(myJson.json
-            .decode(json['passengerTypes'].toString().replaceAll("'", '"')))
-        : PassengerTypes();
-
-    if (json['fqtvName'].toString() != "null") {
-      fqtvName = json['fqtvName'];
+  void setDefaults() {
+    if( searchDateOut == null || searchDateOut == 0) {
+      searchDateOut = 1;
+    }
+    if( searchDateBack == null || searchDateBack == 0) {
+      searchDateBack = 6;
     }
 
-    if (json['appFeedbackEmail'].toString() != "null") {
-      appFeedbackEmail = json['appFeedbackEmail'];
+    if( maxNumberOfPax == null || maxNumberOfPax == 0) {
+      maxNumberOfPax = 9;
     }
-    if (json['prohibitedItemsNoticeUrl'].toString() != "null") {
-      prohibitedItemsNoticeUrl = json['prohibitedItemsNoticeUrl'];
-    }
-
-    if (json['groupsBookingsEmail'].toString() != "null") {
-      groupsBookingsEmail = json['groupsBookingsEmail'];
+    if( bookingLeadTime == null ||bookingLeadTime == 0) {
+      bookingLeadTime = 60;
     }
 
-    if (json['maxNumberOfPax'].toString() != "null" &&
-        json['maxNumberOfPax'].toString() != "0") {
-      maxNumberOfPax = int.parse(json['maxNumberOfPax'].toString());
-    } else {
-      maxNumberOfPax = 8;
+    if( locale == null || locale.isEmpty){
+      locale = 'en-EN';
     }
-    hideFareRules =
-        json['hideFareRules'].toString().toLowerCase() == 'true' ? true : false;
-
-    fqtvEnabled =
-        json['fqtvEnabled'].toString().toLowerCase() == 'false' ? false : true;
+    if( backgroundImageUrl == null ) {
+      backgroundImageUrl = '';
+    }
   }
-*/
-  /*
-  Map toJson() {
-    Map map = new Map();
-    map['xmlToken'] = xmlToken;
-    map['xmlTokenPost'] = xmlTokenPost;
-    map['aircode'] = aircode;
-    map['creditCardProvider'] = creditCardProvider;
-    map['termsAndConditionsUrl'] = termsAndConditionsUrl;
-    map['privacyPolicyUrl'] = privacyPolicyUrl;
-    map['locale'] = locale;
-    map['bookingLeadTime'] = bookingLeadTime;
-    map['webCheckinNoSeatCharge'] = webCheckinNoSeatCharge;
-    map['vrsGuid'] = vrsGuid;
-    map['previousVrsGuid'] = previousVrsGuid;
-    map['autoSeatOption'] = autoSeatOption;
-    map['backgroundImageUrl'] = backgroundImageUrl;
-    map['hostBaseUrl'] = hostBaseUrl;
-    map['iOSAppId'] = iOSAppId;
-    map['androidAppId'] = androidAppId;
-    map['latestBuildiOS'] = latestBuildiOS;
-    map['latestBuildAndroid'] = latestBuildAndroid;
-    map['xmlUrl'] = xmlUrl;
-    map['apisUrl'] = apisUrl;
-    map['apiUrl'] = apiUrl;
-    map['apiKey'] = apiKey;
-    map['eVoucher'] = eVoucher;
-    map['passengerTypes'] = passengerTypes.toJson();
-    map['fqtvName'] = fqtvName;
-    map['appFeedbackEmail'] = appFeedbackEmail;
-    map['prohibitedItemsNoticeUrl'] = prohibitedItemsNoticeUrl;
-    map['groupsBookingsEmail'] = groupsBookingsEmail;
-    map['maxNumberOfPax'] = maxNumberOfPax;
-    map['hideFareRules'] = hideFareRules;
-    map['fqtvEnabled'] = fqtvEnabled;
-    return map;
-  }
-*/
 
   List<KeyPair> toList() {
     List<KeyPair> listKeyPair = [];

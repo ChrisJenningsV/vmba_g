@@ -7,6 +7,7 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/mmb/changeFlightPage.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class MmbDatePickerWidget extends StatefulWidget {
   MmbDatePickerWidget(
@@ -78,7 +79,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: TrText(
             'New Travel Date',
             style: TextStyle(letterSpacing: 1.15),
           ),
@@ -102,7 +103,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: Text('DONE',style: TextStyle(color: gblSystemColors.primaryButtonTextColor),),
+                    label: TrText('DONE',style: TextStyle(color: gblSystemColors.primaryButtonTextColor),),
                     icon: Icon(Icons.check, color: gblSystemColors.primaryButtonTextColor,),
                     backgroundColor: gblSystemColors.primaryButtonColor,
                     onPressed: () {

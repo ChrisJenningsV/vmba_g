@@ -6,12 +6,12 @@ import 'package:vmba/components/trText.dart';
 AppBar appBar(BuildContext context, String title) {
   if( gblSettings.wantLeftLogo) {
     return AppBar(
-      leading: Padding(
+      leading: gblSettings.wantLeftLogo ? Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: Image.asset(
               'lib/assets/$gblAppTitle/images/appBarLeft.png',
               color: Color.fromRGBO(255, 255, 255, 0.1),
-              colorBlendMode: BlendMode.modulate)),
+              colorBlendMode: BlendMode.modulate)) :Text(''),
       brightness: gblSystemColors.statusBar,
       backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(

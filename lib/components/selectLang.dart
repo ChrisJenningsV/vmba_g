@@ -44,9 +44,9 @@ class CustomRow extends StatelessWidget {
 initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
   if (gblLanguage != 'en') {
-    if ( gblTranslationFile != null && gblTranslationFile.isNotEmpty) {
+    if ( gblServerFiles != null && gblServerFiles.isNotEmpty) {
       try {
-        final jsonString = await http.get(Uri.parse('$gblTranslationFile$lang.json'));
+        final jsonString = await http.get(Uri.parse('$gblServerFiles$lang.json'));
         String data = jsonString.body;
         if( data.startsWith('{')) {
           gblLangMap = json.decode(jsonString.body);
@@ -64,6 +64,8 @@ initLang(String lang) async {
 }
 dialogContent(BuildContext context) {
   return Container(
+//    color: Colors.grey,
+  height: 200,
     child: Column(
       children: <Widget>[
         Container(
@@ -76,7 +78,7 @@ dialogContent(BuildContext context) {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+          margin: EdgeInsets.only(top: 5.0, bottom: 10.0),
           color: Colors.white,
           child: TrText(
             "Select your preferred language",
@@ -128,13 +130,51 @@ class LanguageSelection extends StatefulWidget {
 class LanguageSelectionState extends State<LanguageSelection> {
   @override
   void initState() {
+    selectedLang = gblLanguage;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    /*
+    return AlertDialog(
+      title: Row(
+          children: [
+            Image.network('$gblServerFiles/images/world.png',
+              width: 25, height: 25, fit: BoxFit.contain,),
+            TrText('Select preferred language')
+          ]
+      ),
+      content: myContent(),
+//    Text('test'), //contentBox(context),MyDialogContent(), //
+      actions: <Widget>[
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.black12),
+          child: TrText("CANCEL", style: TextStyle(
+              backgroundColor: Colors.black12, color: Colors.black),),
+          onPressed: () {
+            //Put your code here which you want to execute on Cancel button click.
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          child:
+          new TrText("Save", style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            gblLanguage = selectedLang;
+            initLang(gblLanguage);
+            saveLang(gblLanguage);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+
+     */
+
     return Container(
-      margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+      //margin: EdgeInsets.only(top: 50.0, bottom: 150.0),
       alignment: Alignment.center,
       child: Dialog(
         shape: RoundedRectangleBorder(
@@ -147,8 +187,51 @@ class LanguageSelectionState extends State<LanguageSelection> {
         child: dialogContent(context),
       ),
     );
+
+  }
+
+  Widget myContent() {
+    List<CustomRowModel> sampleData = [];
+    if (gblLanguages == null || gblLanguages.isEmpty) {
+      // test data
+      gblLanguages = 'en,English,fr,French';
+    }
+
+    List<String> langs = gblLanguages.split(',');
+    List<Widget> list = [];
+    var count = langs.length / 2;
+    for (var i = 0; i <= count; i += 2) {
+      var selected = false;
+      if (langs[i] == selectedLang) {
+        selected = true;
+      }
+      //sampleData.add(CustomRowModel(title: langs[i+1], selected: selected, code: langs[i]));
+      var ink = new InkWell(
+        //highlightColor: Colors.red,
+        //splashColor: Colors.blueAccent,
+        onTap: () {
+          setState(() {
+            sampleData.forEach((element) => element.selected = false);
+            //sampleData[i].selected = true;
+            selectedLang = sampleData[i].code;
+          });
+        },
+        child: new CustomRow(CustomRowModel(
+            title: langs[i + 1], selected: selected, code: langs[i]))
+      );
+      list.add(ink);
+    }
+
+/*  list.add(Text('text 1'));
+  list.add(Text('text 2'));
+  list.add(Text('text 3'));
+
+ */
+
+    return Container(height: 200, child: Column(children: list,));
   }
 }
+
 
 class MyDialogContent extends StatefulWidget {
   @override
@@ -169,7 +252,11 @@ class _MyDialogContentState extends State<MyDialogContent> {
     List<String> langs = gblLanguages.split(',');
     var count = langs.length /2;
     for( var i = 0 ; i <= count; i+=2){
-      sampleData.add(CustomRowModel(title: langs[i+1], selected: false, code: langs[i]));
+      var selected = false;
+      if( langs[i] == gblLanguage) {
+        selected=true;
+      }
+      sampleData.add(CustomRowModel(title: langs[i+1], selected: selected, code: langs[i]));
     }
 
 /*    sampleData.add(CustomRowModel(title: "English", selected: false, code: 'en'));

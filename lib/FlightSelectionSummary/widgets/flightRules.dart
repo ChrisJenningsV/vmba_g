@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class FlightRulesWidget extends StatefulWidget {
   final List<FQItin> fQItin;
@@ -91,7 +92,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: Text("Flight Rules",
+            title: TrText("Flight Rules",
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -110,7 +111,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
                 CircularProgressIndicator(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Getting the flight rules'),
+                  child: TrText('Getting the flight rules'),
                 )
               ],
             ),
@@ -123,7 +124,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: Text("Flight Rules",
+          title: TrText("Flight Rules",
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),

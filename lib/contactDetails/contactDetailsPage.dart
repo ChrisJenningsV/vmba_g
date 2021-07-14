@@ -288,7 +288,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         widget.newbooking.eVoucherCode.trim() != '') {
       msg += '4-1FDISC${widget.newbooking.eVoucherCode.trim()}^';
     }
-
+    if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty){
+      msg += 'zbrandid=${gblSettings.brandID}^';
+    }
     msg += 'fg^fs1^8M/20^e*r~x';
 
     http.Response response = await http
