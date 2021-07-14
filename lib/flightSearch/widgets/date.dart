@@ -4,6 +4,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/rangePickerPage.dart';
 import 'package:vmba/datePickers/datePickerPage.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
+import 'package:vmba/components/trText.dart';
 
 class JourneyDateWidget extends StatefulWidget {
   JourneyDateWidget({Key key, this.isReturn: false, this.onChanged})
@@ -147,7 +148,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(_displayText,
+                          child: TrText(_displayText,
                               style: new TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w300,

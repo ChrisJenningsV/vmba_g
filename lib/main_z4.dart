@@ -62,7 +62,7 @@ void configZ4() {
       webCheckinNoSeatCharge: false,
       vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
       autoSeatOption: true,
-      hostBaseUrl:  'https://customertest.videcom.com/ibom/VARS/public',
+ //     hostBaseUrl:  'https://customertest.videcom.com/ibom/VARS/public',
       iOSAppId: '1457545908',
       androidAppId: 'com.ibom.reservations',
       fqtvName: 'FQTV',

@@ -8,7 +8,6 @@ import 'package:vmba/menu/menu.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:vmba/mmb/widgets/seatPlanPassengers.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -729,6 +728,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     // new List<Widget>();
 
     String currentSeatPrice;
+    String currencyCode;
     String previousSeatPrice;
     bool selectableSeat = true;
     for (var indexRow = 1; indexRow <= rows; indexRow++) {
@@ -749,6 +749,10 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         var seat =
             seats.firstWhere((f) => f.sCol == indexColumn, orElse: () => null);
         selectableSeat = true;
+        currentSeatPrice = seat.sScprice;
+        currencyCode = seat.sCur;
+
+
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
           row.add(Padding(
@@ -814,7 +818,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                 )),
           );
         } else {
-          currentSeatPrice = seat.sScprice;
           var color;
           switch (seat.sCellDescription) {
             case 'EmergencySeat':
@@ -867,7 +870,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         //add row price
         if (previousSeatPrice != currentSeatPrice) {
           //TODO: Get currency code from object
-          String currencyCode = 'GBP';
           obj.add(
             Container(
               decoration: BoxDecoration(

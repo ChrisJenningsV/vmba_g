@@ -8,7 +8,7 @@ import 'package:package_info/package_info.dart';
 //import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
-
+import 'package:vmba/data/language.dart';
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -35,6 +35,8 @@ class _RootPageState extends State<RootPage> {
   }
 
   loadData() async {
+    initLangs();
+
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
     packageInfo.version + '.' + packageInfo.buildNumber)
@@ -52,23 +54,8 @@ class _RootPageState extends State<RootPage> {
       });
       Repository.get().initFqtv();
     }
-
-   // await Repository.get().init();
- /*   await Repository.get().settings().catchError((e){
-      setState(() {
-        _displayProcessingText = 'Error loading : ' + e.toString();
-        _displayFinalError = true;
-        _displayProcessingIndicator = false;
-      });
-      return;
-    }
-*/
       );
-   /* GobalSettings.shared
-        .init()
-        .then((b) =>
 
-    */
         Repository.get().initCities().then((_) {
               Repository.get()
                   .initRoutes()
@@ -127,7 +114,7 @@ class _RootPageState extends State<RootPage> {
                     CircularProgressIndicator(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TrText(_displayProcessingText + ' ' + gblVersion),
+                      child: TrText(_displayProcessingText),
                     ),
                   ],
                 ),
@@ -153,5 +140,5 @@ class _RootPageState extends State<RootPage> {
 
       return new HomePage();
     }
-          }
+  }
 }

@@ -138,7 +138,7 @@ class Settings {
   String previousVrsGuid;
   bool autoSeatOption;
   String backgroundImageUrl;
-  String hostBaseUrl;
+ // String hostBaseUrl;
   String iOSAppId;
   String androidAppId;
   String latestBuildiOS = '1.0.5';
@@ -203,7 +203,7 @@ bool bpShowFastTrack;
     this.previousVrsGuid,
     this.autoSeatOption,
     this.backgroundImageUrl,
-    this.hostBaseUrl,
+//    this.hostBaseUrl,
     this.iOSAppId,
     this.androidAppId,
     this.latestBuildiOS,
@@ -377,7 +377,7 @@ bool bpShowFastTrack;
         new KeyPair(key: 'autoSeatOption', value: autoSeatOption.toString()));
     listKeyPair
         .add(new KeyPair(key: 'backgroundImageUrl', value: backgroundImageUrl));
-    listKeyPair.add(new KeyPair(key: 'hostBaseUrl', value: hostBaseUrl));
+ //   listKeyPair.add(new KeyPair(key: 'hostBaseUrl', value: hostBaseUrl));
     listKeyPair.add(new KeyPair(key: 'iOSAppId', value: iOSAppId));
     listKeyPair.add(new KeyPair(key: 'androidAppId', value: androidAppId));
     listKeyPair.add(new KeyPair(key: 'latestBuildiOS', value: latestBuildiOS));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/SystemColors.dart';
+import 'package:vmba/components/trText.dart';
 
 class JourneyTypeWidget extends StatefulWidget {
   JourneyTypeWidget({Key key,this.systemColors, this.isReturn: false, this.onChanged})
@@ -45,7 +46,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
                     topLeft: const Radius.circular(7.0),
                     bottomLeft: const Radius.circular(7.0))),
             padding: new EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 5.0),
-            child: new Text('Return',
+            child: new TrText('Return',
                 style: new TextStyle(
                   color: widget.isReturn ? selectedText : unselectedText,
                 )),
@@ -63,7 +64,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
                       topRight: const Radius.circular(7.0),
                       bottomRight: const Radius.circular(7.0))),
               padding: new EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 5.0),
-              child: new Text('One Way',
+              child: new TrText('One Way',
                   style: new TextStyle(
                       color:
                           !widget.isReturn ? selectedText : unselectedText))),

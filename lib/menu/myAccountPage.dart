@@ -415,7 +415,7 @@ void _populateFromGlobalProfile() {
     ));
 
     // fqtv
-    if( gblSettings.wantFQTV == true ) {
+    if( gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true ) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(

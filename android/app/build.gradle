@@ -84,6 +84,11 @@ android {
             resValue "string", "flavored_app_name", "Air Leap"
             applicationId "se.airleap.booking"
         }
+        AirGotland {
+            dimension "version"
+            resValue "string", "flavored_app_name", "Air Leap"
+            applicationId "se.airgotland.booking"
+        }
     }
 
     signingConfigs {

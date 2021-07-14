@@ -271,6 +271,7 @@ class Repository {
                     break;
                   case 'fqtvName':
                     gblSettings.fqtvName = item['value'];
+                    print('load FQTV name [${gblSettings.fqtvName}]');
                     break;
                   case 'latestBuildAndroid':
                     gblSettings.latestBuildAndroid = item['value'];
@@ -303,6 +304,7 @@ class Repository {
                     break;
                   case 'wantHomeFQTVButton':
                     gblSettings.wantHomeFQTVButton = parseBool(item['value']);
+                    print('wantHomeFQTVButton = ${gblSettings.wantHomeFQTVButton}');
                     break;
                   case 'want2Dbarcode':
                     gblSettings.want2Dbarcode = parseBool(item['value']);

@@ -74,7 +74,7 @@ void configQI() {
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
     backgroundImageUrl: "",
-    hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
+ //   hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
     iOSAppId: '1457545908',
     androidAppId: 'se.ibomair.reservations',
 

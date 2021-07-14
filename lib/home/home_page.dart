@@ -503,6 +503,8 @@ Widget _getLogo(){
     ));
 
     if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV && gblSettings.wantHomeFQTVButton ) {
+      print('home FQTV name [${gblSettings.fqtvName}]');
+
       list.add(Row(
         children: <Widget>[
           Expanded(
@@ -532,7 +534,7 @@ Widget _getLogo(){
                           ),
                         ),
                         TrText(
-                          '${gblSettings.fqtvName}' ,
+                          '${gblSettings.fqtvName}       ' ,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold),

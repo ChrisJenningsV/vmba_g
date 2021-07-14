@@ -1,0 +1,11 @@
+ create main_<airline>.dart
+
+add flavor to android/app/build.gradle
+add images to pubspec.yaml
+create launch_icons_<airline>.yaml
+
+add config
+lib/assets/<airline>/json/countries.json
+
+add images
+lib/assets/<airline>/images/appBar.png

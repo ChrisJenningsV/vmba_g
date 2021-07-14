@@ -765,6 +765,7 @@ Widget _getTrans() {
      if( result == null || result == ''){
        _error = 'Bad server response logging on';
        _isButtonDisabled = false;
+       _loadingInProgress = false;
        _actionCompleted();
        _showDialog();
        return;

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -352,7 +351,7 @@ bool isSearchDate(DateTime itemDate, DateTime searchDate) {
 
 String formatPrice(String currency, double price) {
   String _currencySymbol = currency;
-  var formatCurrency = new NumberFormat.simpleCurrency();
+  //var formatCurrency = new NumberFormat.simpleCurrency();
 
   if( gblSettings.wantCurrencySymbols == true ) {
     _currencySymbol = simpleCurrencySymbols[currency] ?? currency;

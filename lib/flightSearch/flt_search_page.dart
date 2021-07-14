@@ -195,7 +195,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  new Text("Adults (16+)",
+                  new TrText("Adults (16+)",
                       style: new TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15.0)),
                 ],

@@ -16,6 +16,7 @@ import 'main_qi.dart';
 import 'main_si.dart';
 import 'main_t6.dart';
 import 'main_z4.dart';
+import 'main_gotland.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,9 @@ void main() async {
 
   if (gblAppTitle == null){
     switch(gblBuildFlavor){
+      case 'AG':
+        configAG();
+        break;
       case 'T6':
         configT6();
         break;

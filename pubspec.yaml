@@ -11,7 +11,7 @@ description: Videcom Mobile Booking App.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.1+113
+version: 2.0.1+115
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -114,6 +114,10 @@ flutter:
     - lib/assets/airswift/json/countries.json
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
+    - lib/assets/airgotland/json/countries.json
+    - lib/assets/airgotland/images/appBar.png
+    - lib/assets/airgotland/images/logo.png
+    - lib/assets/airgotland/images/loader.png
  #   - lib/assets/airleap/images/background.png
     - lib/assets/airleap/json/countries.json
     - lib/assets/airleap/images/appBarLeft.png

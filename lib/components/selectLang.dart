@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:http/http.dart' as http;
-import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/language.dart';
 
 class CustomRowModel {
   bool selected;
@@ -45,8 +45,15 @@ initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
   if (gblLanguage != 'en') {
     if ( gblTranslationFile != null && gblTranslationFile.isNotEmpty) {
-      final jsonString = await http.get(Uri.parse(gblTranslationFile));
-      gblLangMap = json.decode(jsonString.body);
+      try {
+        final jsonString = await http.get(Uri.parse('$gblTranslationFile$lang.json'));
+        String data = jsonString.body;
+        if( data.startsWith('{')) {
+          gblLangMap = json.decode(jsonString.body);
+        }
+      } catch(e) {
+        print(e);
+      }
     } else {
       String jsonString;
       jsonString = await rootBundle.loadString(
@@ -95,6 +102,7 @@ dialogContent(BuildContext context) {
             onPressed: () {
               gblLanguage=selectedLang;
               initLang(gblLanguage);
+              saveLang(gblLanguage);
               Navigator.of(context).pop();
               },
             child: Text("Submit"

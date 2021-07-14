@@ -78,7 +78,7 @@ void configFL() {
     vrsGuid:  '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption:  true,
     backgroundImageUrl:  "",
-    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
+//    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airleap.booking', //  'se.airleap.booking',
 
@@ -99,7 +99,6 @@ void configFL() {
     maxNumberOfPax:  8,
     hideFareRules:  true,
     fqtvEnabled:  false,
-// https://customer3.videcom.com/AirLeap/vars/public/
 
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings

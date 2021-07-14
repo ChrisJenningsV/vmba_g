@@ -10,7 +10,7 @@ String gblAppTitle ;
 String gblLanguage = 'en' ;
 String gblLanguages ;
 String gblTranslationFile;
-String gblBuildFlavor = 'T6';
+String gblBuildFlavor = 'FL';
 String gblError = '';
 String gblSine = '';
 String gblVersion = '';

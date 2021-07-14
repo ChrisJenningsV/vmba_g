@@ -53,12 +53,12 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          leading: Padding(
+          leading: gblSettings.wantLeftLogo ? Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Image.asset(
                   'lib/assets/$gblAppTitle/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate)),
+                  colorBlendMode: BlendMode.modulate)) : Text(''),
           brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
@@ -85,12 +85,12 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: Padding(
+          leading: gblSettings.wantLeftLogo ? Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Image.asset(
                   'lib/assets/$gblAppTitle/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate)),
+                  colorBlendMode: BlendMode.modulate)) : Text(''),
           brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
@@ -227,6 +227,9 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
   void _swapLiveTest() {
     gblIsLive = !gblIsLive;
+
+    // cannot reuse session after swap
+    gblSession = null;
 
     if(gblIsLive == true) {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
