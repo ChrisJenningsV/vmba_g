@@ -65,6 +65,8 @@ void configAG() {
   gblSettings = Settings(
     wantRememberMe: false,
     wantHomeFQTVButton: true,
+    wantCurrencyPicker: true,
+    currency: 'NOK',
     airlineName: "Air Gotland",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

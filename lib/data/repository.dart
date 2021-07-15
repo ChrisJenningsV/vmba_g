@@ -267,7 +267,7 @@ class Repository {
                   case 'Languages':
                     gblLanguages = item['value'];
                     break;
-                  case 'Mobile_ServerFiles':
+                  case 'ServerFiles':
                     gblServerFiles = item['value'];
                     break;
                   case 'titles':
@@ -291,6 +291,9 @@ class Repository {
                     break;
                   case 'FQTVpointsName':
                     gblSettings.fQTVpointsName = item['value'];
+                    break;
+                  case 'currency':
+                    gblSettings.currency = item['value'];
                     break;
 
 
@@ -321,6 +324,9 @@ class Repository {
                     break;
                   case 'wantFQTVNumber':
                     gblSettings.wantFQTVNumber = parseBool(item['value']);
+                    break;
+                  case 'wantCurrencyPicker':
+                    gblSettings.wantCurrencyPicker = parseBool(item['value']);
                     break;
                   case 'eVoucher':
                     gblSettings.eVoucher =parseBool(item['value']);

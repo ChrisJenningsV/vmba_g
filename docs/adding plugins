@@ -1,0 +1,5 @@
+flutter pub add currency_picker
+flutter pub add barcode_widget
+flutter pub add country_icons
+
+

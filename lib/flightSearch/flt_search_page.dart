@@ -12,6 +12,7 @@ import 'package:vmba/flightSearch/widgets/evoucher.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:country_icons/country_icons.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads});
@@ -28,6 +29,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   initState() {
     super.initState();
     booking = new NewBooking();
+    booking.currency = gblSettings.currency;
     adsTermsAccepted = false;
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&
@@ -108,6 +110,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                   height: 0.0,
                 ),
               ),
+              gblSettings.wantCurrencyPicker ?
+                  _CurrencyPicker() : Container(),
               JourneyWidget(
                 onChanged: _handleFlightselectedChanged,
               ),
@@ -158,6 +162,39 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             ],
           ),
         ));
+  }
+
+  Widget _CurrencyPicker() {
+    List<String> _currencies = ['SEK', 'NOK', 'DKK', 'EUR', 'GBP'];
+    Map<String, String> countryCodes = {'SEK': 'se', 'NOK': 'no', 'DKK': 'dk', 'EUR': 'eu', 'GBP': 'gb'};
+
+    return Row(
+        children: <Widget>[
+    new TrText(
+    'Currency',
+        style: new TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15.0,
+        )),
+        SizedBox(width: 50,),
+        DropdownButton(
+      hint: TrText('Currency'), // Not necessary for Option 1
+      value: booking.currency,
+      onChanged: (newValue) {
+        setState(() {
+          booking.currency = newValue;
+        });
+      },
+      items: _currencies.map((currency) {
+        return DropdownMenuItem(
+          child: Row(children: <Widget>[
+            Image.asset('icons/flags/png/${countryCodes[currency]}.png', package: 'country_icons', width: 20,height: 20,),
+            SizedBox(width: 10,),
+             new Text(currency)]),
+          value: currency,
+        );
+      }).toList())]
+    );
   }
 
   bool _canDoRedeem() {

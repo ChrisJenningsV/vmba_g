@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
@@ -11,6 +12,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
+import 'package:vmba/menu/currency_select.dart';
 
 
 class DrawerMenu extends StatelessWidget {
@@ -96,6 +98,14 @@ class DrawerMenu extends StatelessWidget {
                 ));
               },
             )  ,
+
+            if(gblSettings.wantCurrencyPicker != null && gblSettings.wantCurrencyPicker == true)
+              ListTile(
+                title: _getMenuItem( Icons.money, 'Currency' ),
+                onTap: () {
+            //      currencyPicker(context);
+                },
+              )  ,
 
             if(gblSettings.wantProfileList) ListTile(
               title: _getMenuItem( Icons.list_alt_outlined, 'Profile list' ),

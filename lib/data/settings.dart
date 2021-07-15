@@ -123,6 +123,7 @@ class Settings {
   bool wantFQTVNumber = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
+  bool wantCurrencyPicker = false;
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   String termsAndConditionsUrl="";
@@ -153,6 +154,7 @@ class Settings {
   String apiUrl;
   String apiKey;
   String creditCardProvider;
+  String currency;
 
   String testXmlUrl;
   String testApisUrl;
@@ -190,6 +192,7 @@ bool bpShowFastTrack;
     this.wantPayStack,
     this.wantLeftLogo,
     this.wantCurrencySymbols,
+    this.wantCurrencyPicker,
     this.wantRememberMe,
     this.wantHomeFQTVButton,
     this.termsAndConditionsUrl,
@@ -216,6 +219,7 @@ bool bpShowFastTrack;
     this.apiKey,
     this.eVoucher,
     this.passengerTypes,
+    this.currency,
     this.fqtvName,
     this.appFeedbackEmail,
     this.prohibitedItemsNoticeUrl,

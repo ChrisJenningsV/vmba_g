@@ -32,6 +32,7 @@ class NewBooking {
   bool isReturn = true;
   String departure;
   String arrival;
+  String currency;
   DateTime departureDate;
   DateTime returnDate;
   Passengers passengers = new Passengers(1, 0, 0, 0);

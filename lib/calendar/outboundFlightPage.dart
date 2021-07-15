@@ -70,6 +70,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }
+    if(this.widget.newBooking.currency != null && this.widget.newBooking.currency.isNotEmpty) {
+      buffer.write(',QuoteCurrency=${this.widget.newBooking.currency}');
+    }
     //&StartCity=ABZ
     buffer.write(',StartCity=${this.widget.newBooking.departure}');
     //&SingleSeg=s
