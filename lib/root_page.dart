@@ -5,10 +5,8 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
-//import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
-import 'package:vmba/data/language.dart';
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -84,7 +82,7 @@ class RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    //MaterialLocalizations localizations = MaterialLocalizations.of(context);
     if (_displayFinalError || (gblError != null && gblError.isNotEmpty) ) {
       return Scaffold(
           body: Container(

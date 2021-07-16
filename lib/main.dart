@@ -1,9 +1,7 @@
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
@@ -13,7 +11,8 @@ import 'package:vmba/mmb/myBookingsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
-import 'package:vmba/data/language.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -92,13 +91,25 @@ void main() async {
   });
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {  //}StatelessWidget {
  // final AppLanguage appLanguage;
-
   App();
+
+  @override
+  State<StatefulWidget> createState() => new AppState();
+}
+
+class AppState extends State<App> {
+
+  @override
+  void initState() {
+    super.initState();
+    _initLangs();
+  }
+
   @override
   Widget build(BuildContext context) {
-    initLangs();
+
 
     if(gblIsLive == true) {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
@@ -131,13 +142,15 @@ class App extends StatelessWidget {
       Locale('fi', ''),
     ];
 
+    print('create app lang=$gblLanguage');
+
     return ChangeNotifierProvider(
       create: (_) => new LocaleModel(),
       child: Consumer<LocaleModel>(
           builder: (context, provider, child) => MaterialApp(
       localizationsDelegates: localizationsDelegates,
       //locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
-      locale: Provider.of<LocaleModel>(context).locale,
+      locale: Provider.of<LocaleModel>(context).getLocale(),
       supportedLocales: locales,
 
        debugShowCheckedModeBanner: false,
@@ -169,17 +182,35 @@ class App extends StatelessWidget {
        )
       ));
   }
+  void _initLangs() async {
+    try {
+      var prefs = await SharedPreferences.getInstance();
+      if (prefs.getString('language_code') == null) {
+        gblLanguage = 'en';
+        return ;
+      }
+      gblLanguage= prefs.getString('language_code');
+      setState(() {
+        //gblLanguage= prefs.getString('language_code');
+      });
+    } catch(e){
+      print('initLang error: $e');
+    }
+  }
 
   }
 
 class AddBookingPage {}
 
 class LocaleModel with ChangeNotifier {
-  Locale locale = Locale('en');
-  Locale get getlocale => locale;
 
+  Locale getLocale() {
+    Locale locale = Locale(gblLanguage);
+    return locale;
+  }
   void changelocale(Locale l) {
-    locale = l;
+    //locale = l;
+    //Locale locale = Locale(gblLanguage);
     notifyListeners();
     initializeDateFormatting();
   }

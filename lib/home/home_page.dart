@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path/path.dart' as p;
@@ -217,6 +215,14 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var buttonShape;
+    /*
+    Locale myLocale = Localizations.localeOf(context);
+    if( myLocale.countryCode != gblLanguage ){
+      Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(gblLanguage));
+    }
+
+     */
+
 
     if (gblSettings.backgroundImageUrl != null &&
         gblSettings.backgroundImageUrl.isNotEmpty) {

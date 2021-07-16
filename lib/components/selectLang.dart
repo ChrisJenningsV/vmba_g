@@ -76,6 +76,8 @@ initLang(String lang) async {
   }
 
 }
+
+
 dialogContent(BuildContext context) {
   return Container(
 //  height: 270,

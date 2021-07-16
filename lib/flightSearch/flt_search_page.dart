@@ -12,7 +12,6 @@ import 'package:vmba/flightSearch/widgets/evoucher.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:country_icons/country_icons.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads});

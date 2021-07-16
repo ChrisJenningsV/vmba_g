@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/data/app_localizations.dart';
-import 'package:vmba/data/globals.dart';
 
 
 String translate(BuildContext context, String msg) {
@@ -13,7 +12,7 @@ String translate(BuildContext context, String msg) {
   // return input
   return msg;
 }
-
+/*
 void initLangs() async {
   try {
   var prefs = await SharedPreferences.getInstance();
@@ -26,6 +25,8 @@ void initLangs() async {
     print('initLang error: $e');
   }
 }
+
+ */
 
 void saveLang(String code) async {
   try {

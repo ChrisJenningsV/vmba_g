@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:vmba/data/globals.dart';
 
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
@@ -42,21 +39,23 @@ class _DayPickerPageState extends State<DayPickerPage> {
       _lastDate = DateTime.now().add(Duration(days: 364));
     }
 
-    // _firstDate = DateTime.parse(
-    //     DateFormat('y-MM-dd').format(DateTime.now()) + ' 00:00:00');
     if (widget.lastDate != null) {
       _lastDate = widget.lastDate;
     } else {
       _lastDate = DateTime.now().add(Duration(days: 364));
     }
+
+ /*
     try {
       initializeDateFormatting(gblLanguage, null);
-      //Intl.defaultLocale =gblLanguage;
-
     } catch(e) {
       print(e);
     }
+
+  */
   }
+
+
 
   @override
   void didChangeDependencies() {
@@ -69,6 +68,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
 
   @override
   Widget build(BuildContext context) {
+   // Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(gblLanguage));
     // add selected colors to default settings
     dp.DatePickerStyles styles = dp.DatePickerStyles(
         selectedDateStyle: Theme.of(context)
