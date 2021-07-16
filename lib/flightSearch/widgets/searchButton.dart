@@ -6,6 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 // ignore: must_be_immutable
 class SearchButtonWidget extends StatelessWidget {
@@ -96,7 +97,7 @@ class SearchButtonWidget extends StatelessWidget {
             new FloatingActionButton.extended(
               elevation: 0.0,
               isExtended: true,
-              label: Text(
+              label: TrText(
                 'SEARCH FLIGHTS',
                 style: TextStyle(color: systemColors.primaryButtonTextColor),
               ),

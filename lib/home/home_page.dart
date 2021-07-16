@@ -12,6 +12,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/components/selectLang.dart';
 
 
 
@@ -52,14 +53,7 @@ class _HomeState extends State<HomePage> {
     });
   }
 
-  initLang(String lang) async {
-    //Future<Countrylist> getCountrylist() async {
-    if (gblLanguage != 'en') {
-      String jsonString = await rootBundle.loadString(
-          'lib/assets/lang/$gblLanguage.json');
-      gblLangMap = json.decode(jsonString);
-    }
-  }
+
 
   checkForLatestVersion() {
     // Version currentVersion;

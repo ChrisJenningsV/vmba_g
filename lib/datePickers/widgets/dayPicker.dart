@@ -46,6 +46,13 @@ class _DayPickerPageState extends State<DayPickerPage> {
     } else {
       _lastDate = DateTime.now().add(Duration(days: 364));
     }
+    try {
+//      initializeDateFormatting(gblLanguage, null);
+//      Intl.defaultLocale =gblLanguage;
+
+    } catch(e) {
+      print(e);
+    }
   }
 
   @override

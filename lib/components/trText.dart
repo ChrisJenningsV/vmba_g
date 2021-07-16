@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
+import 'dart:developer';
 
 class TrText extends StatelessWidget {
   final String labelText;
@@ -17,7 +18,7 @@ class TrText extends StatelessWidget {
       if (gblLanguage != 'en') {
         var testTxt = '';
         if( variety == 'title' && gblIsLive == false) {
-            if( gblLangMap['Test Mode: ']) {
+            if( gblLangMap['Test Mode: '] != null && gblLangMap['Test Mode: '].isNotEmpty ) {
               testTxt = gblLangMap['Test Mode: '];
             } else {
               testTxt = 'Test Mode: ';
@@ -30,8 +31,10 @@ class TrText extends StatelessWidget {
             txt2.toString().isNotEmpty) {
           txt = testTxt + txt2;
         } else {
-          var msg = 'need trans for "$txt"';
-          print(msg);
+          //var msg = 'need trans for "$txt"';
+          var msg = ' "$txt": ""';
+          //print(msg);
+          log(msg);
         }
       }
     }
@@ -66,8 +69,15 @@ class TrText extends StatelessWidget {
   }
 }
 String translate( String str ) {
-  if( gblLangMap != null ) {
+  if (gblLanguage == 'en') {
+    return str;
+  }
+
+  if( gblLangMap != null && gblLangMap[str] != null && gblLangMap[str].isNotEmpty ) {
     return gblLangMap[str];
   }
+  var msg = ' "$str": ""';
+  //print(msg);
+  log(msg);
   return str;
 }

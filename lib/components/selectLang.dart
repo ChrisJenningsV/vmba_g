@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/language.dart';
+import 'package:intl/intl.dart';
+
 
 class CustomRowModel {
   bool selected;
@@ -44,12 +47,21 @@ class CustomRow extends StatelessWidget {
 initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
   if (gblLanguage != 'en') {
-    if ( gblServerFiles != null && gblServerFiles.isNotEmpty) {
+    if ( gblSettings.gblServerFiles != null && gblSettings.gblServerFiles.isNotEmpty) {
       try {
-        final jsonString = await http.get(Uri.parse('$gblServerFiles$lang.json'));
-        String data = jsonString.body;
+
+        final jsonString = await http.get(Uri.parse('${gblSettings.gblServerFiles}/$lang.json'), headers: {HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.acceptEncodingHeader: 'gzip,deflate,br'}); // , HttpHeaders.acceptCharsetHeader: "utf-8"
+
+        // need to use byte and decode here otherwise special characters corrupted !
+        String data = utf8.decode(jsonString.bodyBytes);
         if( data.startsWith('{')) {
-          gblLangMap = json.decode(jsonString.body);
+          gblLangMap = json.decode(data);
+        } else {
+          String jsn = await rootBundle.loadString(
+              'lib/assets/lang/$gblLanguage.json');
+           gblLangMap = json.decode(jsn);
+
         }
       } catch(e) {
         print(e);
@@ -64,44 +76,47 @@ initLang(String lang) async {
 }
 dialogContent(BuildContext context) {
   return Container(
-//    color: Colors.grey,
-  height: 200,
+//  height: 270,
+    constraints: BoxConstraints(
+      maxHeight: double.infinity,
+    ),
     child: Column(
       children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(5.0),
-          alignment: Alignment.topRight,
-          child: Icon(
-            Icons.close,
-            color: Colors.grey,
-            size: 20.0,
-          ),
+    AppBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
         ),
-        Container(
-          margin: EdgeInsets.only(top: 5.0, bottom: 10.0),
-          color: Colors.white,
-          child: TrText(
-            "Select your preferred language",
-            style: TextStyle( fontSize: 20.0, fontWeight: FontWeight.bold),
-            //labelColor: AppColors.dialogTitleColor,
-            //fontWeight: FontWeight.bold,
-          ),
+      ),
+    brightness: gblSystemColors.statusBar,
+      backgroundColor: gblSystemColors.primaryHeaderColor,
+      iconTheme: IconThemeData(
+          color: gblSystemColors.headerTextColor),
+      title: new TrText('Select language',
+        style: TextStyle(
+            fontSize: 20.0, fontWeight: FontWeight.bold,
+            color: gblSystemColors.headerTextColor),
         ),
-        Flexible(
+    ),
+
+
+
+        Container( //) Flexible(
           child: new MyDialogContent(),//Custom ListView
         ),
         SizedBox(
-          height: 50,
+          height: 70,
           width: double.infinity,
           child: Padding(
               padding:
-            const EdgeInsets.only(left: 8.0, right: 8.0, top: 3.0, bottom: 3.0),
+            const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
             child: TextButton(
             style: TextButton.styleFrom(
                 backgroundColor: gblSystemColors.primaryButtonColor ,
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                 primary: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
+              Intl.defaultLocale =selectedLang;
               gblLanguage=selectedLang;
               initLang(gblLanguage);
               saveLang(gblLanguage);
@@ -190,14 +205,15 @@ class LanguageSelectionState extends State<LanguageSelection> {
 
   }
 
+  /*
   Widget myContent() {
     List<CustomRowModel> sampleData = [];
-    if (gblLanguages == null || gblLanguages.isEmpty) {
+    if (gblSettings.gblLanguages == null || gblSettings.gblLanguages.isEmpty) {
       // test data
-      gblLanguages = 'en,English,fr,French';
+      gblSettings.gblLanguages = 'en,English,fr,French';
     }
 
-    List<String> langs = gblLanguages.split(',');
+    List<String> langs = gblSettings.gblLanguages.split(',');
     List<Widget> list = [];
     var count = langs.length / 2;
     for (var i = 0; i <= count; i += 2) {
@@ -228,9 +244,13 @@ class LanguageSelectionState extends State<LanguageSelection> {
 
  */
 
-    return Container(height: 200, child: Column(children: list,));
+    return Container( child: Column(children: list,)); // height: 200,
   }
+
+   */
 }
+
+
 
 
 class MyDialogContent extends StatefulWidget {
@@ -244,14 +264,14 @@ class _MyDialogContentState extends State<MyDialogContent> {
   @override
   void initState() {
     super.initState();
-    if( gblLanguages == null || gblLanguages.isEmpty ) {
+    if( gblSettings.gblLanguages == null || gblSettings.gblLanguages.isEmpty ) {
       // test data
-      gblLanguages = 'en,English,fr,French';
+      gblSettings.gblLanguages = 'en,English,fr,French';
     }
 
-    List<String> langs = gblLanguages.split(',');
-    var count = langs.length /2;
-    for( var i = 0 ; i <= count; i+=2){
+    List<String> langs = gblSettings.gblLanguages.split(',');
+    var count = langs.length;
+    for( var i = 0 ; i < count; i+=2){
       var selected = false;
       if( langs[i] == gblLanguage) {
         selected=true;
@@ -271,6 +291,7 @@ class _MyDialogContentState extends State<MyDialogContent> {
     return sampleData.length == 0
         ? Container()
         : Container(
+      padding: EdgeInsets.all(10) ,
       child: ListView.separated(
         separatorBuilder: (context, index) => Divider(
           color: Colors.grey,

@@ -148,7 +148,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       return AlertDialog(
         title: Row(
             children:[
-              Image.network('$gblServerFiles/images/lock_user_man.png',
+              Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
                 width: 25, height: 25, fit: BoxFit.contain,),
               TrText('${gblSettings.fqtvName} LOGIN')
             ]
@@ -886,7 +886,7 @@ Widget _getTrans() {
    return AlertDialog(
      title: Row(
          children:[
-           Image.network('$gblServerFiles/images/lock_user_man.png',
+           Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
              width: 50, height: 50, fit: BoxFit.contain,),
            TrText('Change Password')
          ]
@@ -975,7 +975,7 @@ Widget _getTrans() {
          return AlertDialog(
            title: Row(
                children:[
-                 Image.network('$gblServerFiles/reset_password.png',
+                 Image.network('${gblSettings.gblServerFiles}/reset_password.png',
                    width: 50, height: 50, fit: BoxFit.contain,),
                  TrText('Reset Password')
                ]

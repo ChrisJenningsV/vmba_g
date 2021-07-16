@@ -299,7 +299,7 @@ String _error = '';
                 future: cityCodeToName(journey.first.depart),
                 initialData: journey.first.depart.toString(),
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text('from ${text.data}',
+                  return new Text(translate('from ') + text.data,
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },

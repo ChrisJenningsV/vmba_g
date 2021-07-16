@@ -155,6 +155,10 @@ class Settings {
   String apiKey;
   String creditCardProvider;
   String currency;
+  String gblLanguages ;
+  String currencies;
+  String gblServerFiles;
+
 
   String testXmlUrl;
   String testApisUrl;
@@ -220,6 +224,10 @@ bool bpShowFastTrack;
     this.eVoucher,
     this.passengerTypes,
     this.currency,
+    this.gblLanguages,
+    this.currencies,
+    this.gblServerFiles,
+
     this.fqtvName,
     this.appFeedbackEmail,
     this.prohibitedItemsNoticeUrl,

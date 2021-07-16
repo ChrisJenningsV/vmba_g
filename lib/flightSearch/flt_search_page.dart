@@ -111,7 +111,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                 ),
               ),
               gblSettings.wantCurrencyPicker ?
-                  _CurrencyPicker() : Container(),
+                  _currencyPicker() : Container(),
               JourneyWidget(
                 onChanged: _handleFlightselectedChanged,
               ),
@@ -164,9 +164,20 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         ));
   }
 
-  Widget _CurrencyPicker() {
-    List<String> _currencies = ['SEK', 'NOK', 'DKK', 'EUR', 'GBP'];
-    Map<String, String> countryCodes = {'SEK': 'se', 'NOK': 'no', 'DKK': 'dk', 'EUR': 'eu', 'GBP': 'gb'};
+  Widget _currencyPicker() {
+    List<String> _currencies = []; //['SEK', 'NOK', 'DKK', 'EUR', 'GBP'];
+    Map<String, String> countryCodes = {}; // {'S
+    var curArray = gblSettings.currencies.split(','); // EK': 'se', 'NOK': 'no', 'DKK': 'dk', 'EUR': 'eu', 'GBP': 'gb'};
+    var count = curArray.length ;
+    for( var i = 0 ; i < count; i+=2) {
+//      var selected = false;
+      _currencies.add(curArray[i+1]);
+      countryCodes[curArray[i+1]] = curArray[i];
+//      if (langs[i] == gblLanguage) {
+//        selected = true;
+//      }
+    }
+
 
     return Row(
         children: <Widget>[

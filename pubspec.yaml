@@ -41,6 +41,7 @@ dependencies:
   provider: ^5.0.0
   shared_preferences: ^0.5.3+4
   flutter_launcher_icons: ^0.8.0
+  html_unescape: ^1.0.2
 
   #barcode_generator: ^0.2.7
   # barcode_generator:

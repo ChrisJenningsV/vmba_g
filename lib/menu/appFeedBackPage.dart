@@ -292,7 +292,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         return AlertDialog(
           title: Row(
               children:[
-                Image.network('$gblServerFiles/images/lock_user_man.png',
+                Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
                   width: 50, height: 50, fit: BoxFit.contain,),
                 TrText('LOGIN')
               ]

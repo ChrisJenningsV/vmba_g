@@ -12,6 +12,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -291,7 +292,10 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty){
       msg += 'zbrandid=${gblSettings.brandID}^';
     }
-    msg += 'fg^fs1^8M/20^e*r~x';
+    msg += addFg(widget.newbooking.currency, true);
+    msg += addFareStore(true);
+    //msg += 'fg^fs1^8M/20^e*r~x';
+    msg += '8M/20^e*r~x';
 
     http.Response response = await http
         .get(Uri.parse(

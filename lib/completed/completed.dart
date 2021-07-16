@@ -29,8 +29,8 @@ class CompletedPage extends StatelessWidget {
                 "Thank you for your booking",
                 style: TextStyle(fontSize: 18),
               ),
-              new TrText(
-                "Your reference is ${args[0]}",
+              new Text(
+                translate("Your reference is ") + args[0],
                 style: TextStyle(fontSize: 18),
               ),
               // args[1] == 'true'

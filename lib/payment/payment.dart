@@ -16,6 +16,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class PaymentWidget extends StatefulWidget {
   PaymentWidget({
@@ -431,7 +432,11 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         //   msg += flt + '^';
         // });
 
-        msg += 'fg^fs1^e*r^';
+        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFareStore(true);
+
+        msg += 'e*r^';
+        //msg += 'fg^fs1^e*r^';
       }
 
       //msg = '*$rLOC^';

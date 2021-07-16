@@ -12,7 +12,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
-import 'package:vmba/menu/currency_select.dart';
 
 
 class DrawerMenu extends StatelessWidget {
@@ -89,7 +88,7 @@ class DrawerMenu extends StatelessWidget {
                     '/AddBookingPage', (Route<dynamic> route) => false);
               },
             ),
-            if(gblLanguages != null)
+            if(gblSettings.gblLanguages != null)
             ListTile(
               title: _getMenuItem( Icons.flag, 'Language' ),
               onTap: () {
@@ -99,13 +98,6 @@ class DrawerMenu extends StatelessWidget {
               },
             )  ,
 
-            if(gblSettings.wantCurrencyPicker != null && gblSettings.wantCurrencyPicker == true)
-              ListTile(
-                title: _getMenuItem( Icons.money, 'Currency' ),
-                onTap: () {
-            //      currencyPicker(context);
-                },
-              )  ,
 
             if(gblSettings.wantProfileList) ListTile(
               title: _getMenuItem( Icons.list_alt_outlined, 'Profile list' ),

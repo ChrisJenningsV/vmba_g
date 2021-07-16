@@ -265,10 +265,13 @@ class Repository {
                     gblIsLive = parseBool(item['value']);
                     break;
                   case 'Languages':
-                    gblLanguages = item['value'];
+                    gblSettings.gblLanguages = item['value'];
+                    break;
+                  case 'currencies':
+                    gblSettings.currencies = item['value'];
                     break;
                   case 'ServerFiles':
-                    gblServerFiles = item['value'];
+                    gblSettings.gblServerFiles = item['value'];
                     break;
                   case 'titles':
                     gblTitles = item['value'].split(',');

@@ -74,13 +74,13 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
             children: <Widget>[
               Row(children: <Widget>[
                 Expanded(
-                    child: Text('Departing',
+                    child: TrText('Departing',
                         style: new TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.0))),
                 Expanded(
                     child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(_returningText,
+                  child: TrText(_returningText,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15.0)),
                 ))

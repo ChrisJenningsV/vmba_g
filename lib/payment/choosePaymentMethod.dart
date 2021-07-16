@@ -16,6 +16,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -124,8 +125,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         print(flt);
         msg += flt + '^';
       });
-
-      msg += 'fg^fs1';
+      msg += addFg(widget.newBooking.currency, true);
+      msg += addFareStore(false);
+      //msg += 'fg^fs1';
     }
     if(msg.isNotEmpty) {
     String vrsCommandList =
@@ -629,7 +631,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       cmd += flt + '^';
     });
     // cmd += nostop;
-    cmd += 'fg^fs1^e';
+    cmd += addFg(widget.newBooking.currency, true);
+    cmd += addFareStore(true);
+
+    cmd += 'e';
+    //cmd += 'fg^fs1^e';
     return cmd;
   }
 
@@ -831,7 +837,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             nostop += ".${f.line}X^";
           }
         }
-        msg += 'fg^fs1^e*r~x';
+        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFareStore(true);
+
+        msg += 'e*r~x';
+        //msg += 'fg^fs1^e*r~x';
       }
       response = await http
           .get(Uri.parse(
@@ -1282,7 +1292,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        TrText(
                           'Summary',
                           style: TextStyle(
                               fontWeight: FontWeight.w700),

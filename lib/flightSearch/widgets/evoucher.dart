@@ -33,7 +33,7 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
           controller: _textEditingController,
           onChanged: widget.onChanged,
           decoration: InputDecoration(
-              border: InputBorder.none, hintText: 'Enter your code'),
+              border: InputBorder.none, hintText: translate('Enter your code')),
           style: new TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w300,

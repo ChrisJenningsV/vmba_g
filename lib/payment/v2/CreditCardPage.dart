@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:payment_page_v2/CountDownTimer/CardInputWidget.dart';
-//import 'package:payment_page_v2/CountDownTimer/timerWidget.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,6 +17,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({    Key key,
@@ -472,8 +471,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
         //   print(flt);
         //   msg += flt + '^';
         // });
+        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFareStore(true);
 
-        msg += 'fg^fs1^e*r^';
+        msg += 'e*r^';
+        //msg += 'fg^fs1^e*r^';
       }
 
       //msg = '*$rLOC^';
@@ -562,49 +564,37 @@ class _CreditCardPageState extends State<CreditCardPage> {
     var buffer = new StringBuffer();
     //if (isLive) {
       //buffer.write('MK($creditCardProviderProduction)');
+    double am = 0.0;
+    String currency;
     if( gblRedeemingAirmiles) {
-/*      if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != null ) {
-        double am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.airmiles);
-        if( am <= 0 ) {
-          return '';
-        }
-        if(pnrModel != null && pnrModel.pNR.basket.outstandingairmiles.airmiles != null) {
-          double am = double.parse(pnrModel.pNR.basket.outstandingairmiles.airmiles);
-          if( am <= 0 ) {
-            return '';
-          }
-        }
-        buffer.write('MF-$am^');
-      }
-
- */
       if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty) {
         buffer.write('MF-${gblPassengerDetail.fqtv}^');
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
       }
-
+      am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount );
+      currency = widget.pnrModel.pNR.basket.outstandingairmiles.cur;
     } else {
       //if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
       if(widget.pnrModel != null && widget.pnrModel.pNR.basket.outstanding.amount != null )
         {
-          double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+          am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+          currency = widget.pnrModel.pNR.basket.outstanding.cur;
           if( am <= 0 ) {
             return '';
           }
         }
       if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount != null) {
-        double am = double.parse(pnrModel.pNR.basket.outstanding.amount);
+        am = double.parse(pnrModel.pNR.basket.outstanding.amount);
+        currency = pnrModel.pNR.basket.outstanding.cur;
         if( am <= 0 ) {
           return '';
         }
       }
     }
-      buffer.write('MK(${gblSettings.creditCardProvider})');
-    //} else {
-      //buffer.write('MK($creditCardProviderStaging)');
-      //buffer.write('MK(${gbl_settings.creditCardProvider})');
-    //}
+
+      buffer.write( addCreditCard( currency, am, gblSettings.creditCardProvider));
+    //buffer.write('MK(${gblSettings.creditCardProvider})');
 
     //creditCardProviderStaging
     //buffer.write('MK(${gbl_settings.creditCardProvider})');

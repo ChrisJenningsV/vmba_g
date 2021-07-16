@@ -11,6 +11,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget(
@@ -101,7 +102,12 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
     // cmd += removeVoucher();
-    cmd += 'fg^fs1^*r~x';
+
+    cmd += addFg(widget.mmbBooking.currency, true);
+    cmd += addFareStore(true);
+
+    cmd += '*r~x';
+    //cmd += 'fg^fs1^*r~x';
     //cmd += 'fg/LHR^fs1^*r~x';
 
     //cmd += '*r~x';

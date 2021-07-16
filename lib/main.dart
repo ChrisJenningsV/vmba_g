@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
@@ -107,9 +109,23 @@ class App extends StatelessWidget {
     if(gblSettings.fQTVpointsName== null || gblSettings.fQTVpointsName.isEmpty){
       gblSettings.fQTVpointsName = 'airmiles';
     }
+    final localizationsDelegates = <LocalizationsDelegate>[
+      //   AppLocalizationsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+//      CupertinoLocalizationsDelegate()
+    ];
 
     return MaterialApp(
-//      locale: model.appLocal,
+      localizationsDelegates: localizationsDelegates,
+      locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
+      supportedLocales: const [
+        Locale('fr', ''),
+        Locale('en', ''),
+        Locale('se', ''),
+        Locale('dk', ''),
+        Locale('no', ''),
+      ],
        debugShowCheckedModeBanner: false,
       title: gblAppTitle, //'Loganair',
       theme: ThemeData(

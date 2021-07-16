@@ -30,7 +30,7 @@ class CompletedPageV2 extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               new Text(
-                "Your reference is " + args[0],
+                translate("Your reference is ") + args[0],
                 style: TextStyle(fontSize: 18),
               ),
               // args[1] == 'true'

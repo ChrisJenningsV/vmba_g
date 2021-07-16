@@ -14,10 +14,10 @@ class RootPage extends StatefulWidget {
   RootPage();
 
   @override
-  State<StatefulWidget> createState() => new _RootPageState();
+  State<StatefulWidget> createState() => new RootPageState();
 }
 
-class _RootPageState extends State<RootPage> {
+class RootPageState extends State<RootPage> {
   bool appInitalized = false;
   bool _displayProcessingIndicator;
   bool _displayFinalError;
@@ -69,6 +69,7 @@ class _RootPageState extends State<RootPage> {
               }).then((_) {});
               setState(() {
                 _displayProcessingText = 'Loading routes...';
+
               });
             }).catchError((e) {
               setState(() {

@@ -11,6 +11,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget({Key key, this.newBooking}) : super(key: key);
@@ -171,8 +172,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         widget.newBooking.eVoucherCode.trim() != '') {
       cmd += '4-1FDISC${widget.newBooking.eVoucherCode.trim()}^';
     }
-
-    cmd += 'fg^fs1^*r~x';
+    cmd += addFg(widget.newBooking.currency, true);
+    cmd += addFareStore(true);
+    cmd += '*r~x';
+//    cmd += 'fg^fs1^*r~x';
     print('buildCmd: ' + cmd);
     return cmd;
   }
@@ -615,7 +618,7 @@ Row airMiles() {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Summary',
+          title: new TrText('Summary',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -643,7 +646,7 @@ Row airMiles() {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -680,7 +683,7 @@ Row airMiles() {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -738,7 +741,7 @@ Row airMiles() {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Summary',
+            title: new TrText('Summary',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -797,7 +800,7 @@ Row airMiles() {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    TrText(
                       'Summary',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
