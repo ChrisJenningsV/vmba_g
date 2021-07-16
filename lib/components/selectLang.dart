@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/language.dart';
-import 'package:intl/intl.dart';
+import 'package:vmba/main.dart';
 
 
 class CustomRowModel {
@@ -116,7 +117,8 @@ dialogContent(BuildContext context) {
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                 primary: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
-              Intl.defaultLocale =selectedLang;
+              //Intl.defaultLocale =selectedLang;
+              Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(selectedLang));
               gblLanguage=selectedLang;
               initLang(gblLanguage);
               saveLang(gblLanguage);
@@ -151,42 +153,6 @@ class LanguageSelectionState extends State<LanguageSelection> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    return AlertDialog(
-      title: Row(
-          children: [
-            Image.network('$gblServerFiles/images/world.png',
-              width: 25, height: 25, fit: BoxFit.contain,),
-            TrText('Select preferred language')
-          ]
-      ),
-      content: myContent(),
-//    Text('test'), //contentBox(context),MyDialogContent(), //
-      actions: <Widget>[
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colors.black12),
-          child: TrText("CANCEL", style: TextStyle(
-              backgroundColor: Colors.black12, color: Colors.black),),
-          onPressed: () {
-            //Put your code here which you want to execute on Cancel button click.
-            Navigator.of(context).pop();
-          },
-        ),
-        ElevatedButton(
-          child:
-          new TrText("Save", style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            gblLanguage = selectedLang;
-            initLang(gblLanguage);
-            saveLang(gblLanguage);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-
-
-     */
 
     return Container(
       //margin: EdgeInsets.only(top: 50.0, bottom: 150.0),
@@ -278,12 +244,6 @@ class _MyDialogContentState extends State<MyDialogContent> {
       }
       sampleData.add(CustomRowModel(title: langs[i+1], selected: selected, code: langs[i]));
     }
-
-/*    sampleData.add(CustomRowModel(title: "English", selected: false, code: 'en'));
-    sampleData.add(CustomRowModel(title: "French", selected: false, code: 'fr'));
-    sampleData.add(CustomRowModel(title: "Swedish", selected: false, code: 'sw'));
-
- */
   }
 
   @override

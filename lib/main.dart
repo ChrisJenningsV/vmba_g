@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
@@ -116,16 +117,23 @@ class App extends StatelessWidget {
 //      CupertinoLocalizationsDelegate()
     ];
 
-    return MaterialApp(
+    List<Locale> locales =[
+      Locale('fr', ''),
+      Locale('en', ''),
+      Locale('sv', ''),
+      Locale('da', ''),
+      Locale('no', ''),
+    ];
+
+    return ChangeNotifierProvider(
+      create: (_) => new LocaleModel(),
+      child: Consumer<LocaleModel>(
+          builder: (context, provider, child) => MaterialApp(
       localizationsDelegates: localizationsDelegates,
-      locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
-      supportedLocales: const [
-        Locale('fr', ''),
-        Locale('en', ''),
-        Locale('se', ''),
-        Locale('dk', ''),
-        Locale('no', ''),
-      ],
+      //locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
+      locale: Provider.of<LocaleModel>(context).locale,
+      supportedLocales: locales,
+
        debugShowCheckedModeBanner: false,
       title: gblAppTitle, //'Loganair',
       theme: ThemeData(
@@ -152,9 +160,19 @@ class App extends StatelessWidget {
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),
       },
-          );
+       )
+      ));
   }
 
   }
 
 class AddBookingPage {}
+
+class LocaleModel with ChangeNotifier {
+  Locale locale = Locale('fr');
+  Locale get getlocale => locale;
+  void changelocale(Locale l) {
+    locale = l;
+    notifyListeners();
+  }
+}
