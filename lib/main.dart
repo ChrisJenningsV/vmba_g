@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,6 +13,7 @@ import 'package:vmba/mmb/myBookingsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
+import 'package:vmba/data/language.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -95,6 +98,8 @@ class App extends StatelessWidget {
   App();
   @override
   Widget build(BuildContext context) {
+    initLangs();
+
     if(gblIsLive == true) {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
@@ -123,6 +128,7 @@ class App extends StatelessWidget {
       Locale('sv', ''),
       Locale('da', ''),
       Locale('no', ''),
+      Locale('fi', ''),
     ];
 
     return ChangeNotifierProvider(
@@ -169,10 +175,12 @@ class App extends StatelessWidget {
 class AddBookingPage {}
 
 class LocaleModel with ChangeNotifier {
-  Locale locale = Locale('fr');
+  Locale locale = Locale('en');
   Locale get getlocale => locale;
+
   void changelocale(Locale l) {
     locale = l;
     notifyListeners();
+    initializeDateFormatting();
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:vmba/data/globals.dart';
 
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
@@ -47,8 +50,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
       _lastDate = DateTime.now().add(Duration(days: 364));
     }
     try {
-//      initializeDateFormatting(gblLanguage, null);
-//      Intl.defaultLocale =gblLanguage;
+      initializeDateFormatting(gblLanguage, null);
+      //Intl.defaultLocale =gblLanguage;
 
     } catch(e) {
       print(e);

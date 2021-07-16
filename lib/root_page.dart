@@ -35,7 +35,7 @@ class RootPageState extends State<RootPage> {
   }
 
   loadData() async {
-    initLangs();
+    //initLangs();
 
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>

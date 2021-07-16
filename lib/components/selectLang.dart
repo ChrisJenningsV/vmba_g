@@ -74,6 +74,7 @@ initLang(String lang) async {
       gblLangMap = json.decode(jsonString);
     }
   }
+
 }
 dialogContent(BuildContext context) {
   return Container(
