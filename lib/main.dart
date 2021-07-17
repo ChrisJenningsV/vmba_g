@@ -1,4 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -100,7 +102,7 @@ class App extends StatefulWidget {  //}StatelessWidget {
 }
 
 class AppState extends State<App> {
-
+bool bFirstTime = true;
   @override
   void initState() {
     super.initState();
@@ -109,8 +111,8 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-
-
+   // Locale myLocale = Localizations.localeOf(context);
+    bFirstTime = false;
     if(gblIsLive == true) {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
@@ -141,7 +143,21 @@ class AppState extends State<App> {
       Locale('no', ''),
       Locale('fi', ''),
     ];
+    if( gblSettings.gblLanguages != null && gblSettings.gblLanguages.isNotEmpty) {
+      // sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French
+      locales = [];
+      var langs = gblSettings.gblLanguages.split(',');
+      var count = langs.length;
+      for( var i = 0 ; i < count; i+=2){
+        var selected = false;
+        if( langs[i] == gblLanguage) {
+          selected=true;
+        }
+        locales.add(new Locale( langs[i]));
+      }
 
+
+    }
     print('create app lang=$gblLanguage');
 
     return ChangeNotifierProvider(
@@ -185,8 +201,19 @@ class AppState extends State<App> {
   void _initLangs() async {
     try {
       var prefs = await SharedPreferences.getInstance();
-      if (prefs.getString('language_code') == null) {
-        gblLanguage = 'en';
+      // reset
+      //prefs.setString('language_code', '');
+      //String l =  Intl.getCurrentLocale();
+      String localeStr = Platform.localeName;
+     // var prefs = await SharedPreferences.getInstance();
+      if (prefs.getString('language_code') == null || prefs.getString('language_code').isEmpty) {
+        if( localeStr != null && localeStr.isNotEmpty) {
+          gblLanguage = localeStr.split('_')[0];
+          setState(() {
+          });
+        } else {
+          gblLanguage = 'en';
+        }
         return ;
       }
       gblLanguage= prefs.getString('language_code');

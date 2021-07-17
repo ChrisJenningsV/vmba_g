@@ -60,7 +60,6 @@ void configAG() {
 
   gblAppTitle = 'airgotland';
   gblBuildFlavor = 'AG';
-  //gbl_language = 'en';
 
   gblSettings = Settings(
     wantRememberMe: false,
@@ -86,6 +85,8 @@ void configAG() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
+    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
+
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
