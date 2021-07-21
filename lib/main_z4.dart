@@ -107,6 +107,6 @@ void configZ4() {
     searchDateOut: 1,
     searchDateBack: 6,
   );
-
+  gblSettings.setDefaults();
 
 }

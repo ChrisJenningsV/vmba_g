@@ -129,4 +129,5 @@ void configLM() {
   seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
  */
   );
+  gblSettings.setDefaults();
 }

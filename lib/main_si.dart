@@ -117,4 +117,5 @@ void configSI() {
     searchDateBack: 6,
 
   );
+  gblSettings.setDefaults();
 }

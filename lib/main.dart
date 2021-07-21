@@ -224,11 +224,12 @@ bool bFirstTime = true;
         //gblLanguage= prefs.getString('language_code');
       });
     } catch(e){
-      print('initLang error: $e');
+      print('initLangs error: $e');
     }
   }
 
   bool _localeSupported(String locale) {
+    if( locale == null ) {return false;}
     String language = locale.split('_')[0];
     var langs = gblSettings.gblLanguages.split(',');
     var count = langs.length;

@@ -111,4 +111,5 @@ void configT6() {
     searchDateOut: 1,
     searchDateBack: 6,
   );
+  gblSettings.setDefaults();
 }

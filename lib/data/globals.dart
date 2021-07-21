@@ -10,7 +10,7 @@ String gblAppTitle ;
 String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
-String gblBuildFlavor = 'FL';
+String gblBuildFlavor = 'AH';
 String gblError = '';
 String gblSine = '';
 String gblVersion = '';

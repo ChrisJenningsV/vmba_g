@@ -118,5 +118,6 @@ void configQI() {
 
 
   );
+  gblSettings.setDefaults();
 }
 

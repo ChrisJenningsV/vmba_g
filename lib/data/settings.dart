@@ -285,6 +285,9 @@ bool bpShowFastTrack;
     if( wantCurrencyPicker == null ) {
       wantCurrencyPicker = false;
     }
+    if( gblLanguages == null ) {
+      gblLanguages = 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French';
+    }
   }
 
   List<KeyPair> toList() {

@@ -15,6 +15,7 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
 
@@ -160,7 +161,19 @@ class Repository {
 
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> initCities() async {
-  logit('initCities');
+    var prefs = await SharedPreferences.getInstance();
+    logit('initCities');
+    var cacheTime = prefs.getString('cache_time');
+    if( cacheTime!= null && cacheTime.isNotEmpty){
+      var cached = DateTime.parse(cacheTime);
+
+      if( cached.isAfter(DateTime.now().subtract(Duration(hours: 2)))) {
+        // change to 2 days!
+        logit('city cache good');
+        return null;
+      }
+    }
+
     Map<String, String>  userHeader = {"Content-type": "application/json"};
     if (gblSettings.apiKey.isNotEmpty) {
       userHeader = {          'Content-Type': 'application/json',
@@ -188,7 +201,10 @@ class Repository {
     Map map = jsonDecode('{ \"Cities\":' + response.body + '}');
     Cities networkCities = Cities.fromJson(map);
 
+    // cache age
+    prefs.setString('cache_time', DateTime.now().toString());
     await database.updateCities(networkCities);
+    logit('cache cities');
 
     return new ParsedResponse(response.statusCode, networkCities.cities);
   }

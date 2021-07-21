@@ -59,7 +59,7 @@ initLangCached(String lang) async {
     File file = File(filePath);
     if( file.existsSync()) {
       var modified = file.lastModifiedSync();
-      if( modified.isBefore(DateTime.now().subtract(Duration(minutes: 10)))){
+      if( modified.isBefore(DateTime.now().subtract(Duration(hours: 2)))){
         // change to 2 days!
         // out of date - get new copy
         logit('lang file out of date');
