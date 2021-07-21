@@ -288,6 +288,9 @@ bool bpShowFastTrack;
     if( gblLanguages == null ) {
       gblLanguages = 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French';
     }
+    if( gblServerFiles == null ) {
+      gblServerFiles = '';
+    }
   }
 
   List<KeyPair> toList() {

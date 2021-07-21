@@ -119,7 +119,7 @@ void configAH() {
     testApisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',
-
+    gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles/',
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,

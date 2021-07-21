@@ -245,7 +245,8 @@ class Repository {
 
     if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty) {
        body = {"AgentGuid": "${gblSettings.vrsGuid}",
-                "BrandId": "${gblSettings.brandID}"};
+                "BrandId": "${gblSettings.brandID}",
+                "AppFile": 'sv.json'};  // ${gblLanguage}
     }
     try {
       logit('getSettingsFromApi - login');
@@ -260,6 +261,7 @@ class Repository {
         Map map = json.decode(response.body);
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
+          String modifyString = map["appFileModifyTime"];
           gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
 
           List <dynamic> settingsJson;
