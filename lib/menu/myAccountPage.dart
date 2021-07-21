@@ -179,7 +179,7 @@ void _populateFromGlobalProfile() {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: new Text('Salutation'),
+                title: new TrText('Salutation'),
                 content: new Container(
                   width: double.maxFinite,
                   child: optionListView(),
@@ -194,7 +194,7 @@ void _populateFromGlobalProfile() {
               contentPadding:
               new EdgeInsets.symmetric(
                   vertical: 15.0, horizontal: 15.0),
-              labelText: 'Title',
+              labelText: translate('title'),
               fillColor: Colors.white,
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
@@ -227,7 +227,7 @@ void _populateFromGlobalProfile() {
       decoration: InputDecoration(
       contentPadding:
         new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-      labelText: 'First name (as Passport)',
+      labelText: translate('First name (as Passport)'),
       fillColor: Colors.white,
       border: new OutlineInputBorder(
       borderRadius: new BorderRadius.circular(25.0),
@@ -267,7 +267,7 @@ void _populateFromGlobalProfile() {
     decoration: InputDecoration(
     contentPadding:
     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: 'Last name (as Passport)',
+    labelText: translate('Last name (as Passport)'),
     fillColor: Colors.white,
     border: new OutlineInputBorder(
     borderRadius: new BorderRadius.circular(25.0),
@@ -306,7 +306,7 @@ void _populateFromGlobalProfile() {
     decoration: InputDecoration(
     contentPadding:
     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: 'Phone Number',
+    labelText: translate('Phone Number'),
     fillColor: Colors.white,
     border: new OutlineInputBorder(
     borderRadius: new BorderRadius.circular(25.0),
@@ -348,7 +348,7 @@ void _populateFromGlobalProfile() {
     decoration: InputDecoration(
     contentPadding:
     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: 'Email',
+    labelText: translate('Email'),
     fillColor: Colors.white,
     border: new OutlineInputBorder(
     borderRadius: new BorderRadius.circular(25.0),
@@ -382,7 +382,7 @@ void _populateFromGlobalProfile() {
     decoration: new InputDecoration(
     contentPadding: new EdgeInsets.symmetric(
     vertical: 15.0, horizontal: 15.0),
-    labelText: 'Date of Birth',
+    labelText: translate('Date of Birth'),
     fillColor: Colors.white,
     border: new OutlineInputBorder(
     borderRadius: new BorderRadius.circular(25.0),
@@ -428,7 +428,7 @@ void _populateFromGlobalProfile() {
               decoration: InputDecoration(
                 contentPadding:
                 new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                labelText: '${gblSettings.fqtvName} Number',
+                labelText: '${gblSettings.fqtvName} ' + translate('number'),
                 fillColor: Colors.white,
                 border: new OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -465,7 +465,7 @@ void _populateFromGlobalProfile() {
               decoration: InputDecoration(
                 contentPadding:
                 new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                labelText: '${gblSettings.fqtvName} Password',
+                labelText: '${gblSettings.fqtvName} ' + translate('Password'),
                 fillColor: Colors.white,
                 border: new OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -567,7 +567,7 @@ void _populateFromGlobalProfile() {
     Icons.check,
     color: Colors.white,
     ),
-    Text(
+    TrText(
     'SAVE',
     style: TextStyle(color: Colors.white),
     ),
@@ -583,7 +583,7 @@ void _populateFromGlobalProfile() {
     //new List<Widget>();
     gblTitles.forEach((title) =>
         widgets.add(ListTile(
-            title: Text(title),
+            title: TrText(title),
             onTap: () {
               Navigator.pop(context, title);
               _updateTitle(title);
@@ -653,7 +653,7 @@ void _populateFromGlobalProfile() {
         // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.all(0),
-          title: new Text('Date of Birth'),
+          title: new TrText('Date of Birth'),
           content: SizedBox(
             //padding: EdgeInsets.all(1),
               height: MediaQuery.of(context).copyWith().size.height / 3,
@@ -683,7 +683,7 @@ void _populateFromGlobalProfile() {
               )),
           actions: <Widget>[
             new TextButton(
-              child: new Text("Ok"),
+              child: new TrText("Ok"),
               onPressed: () {
                 Navigator.pop(context, dateTime);
                 _updateDateOfBirth(dateTime);
@@ -789,7 +789,7 @@ void _populateFromGlobalProfile() {
         Navigator.pop(context, widget.passengerDetail);
    //     Navigator.pop(context, widget.passengerDetail);
       } else {
-        _error = 'Please check your details';
+        _error = translate('Please check your details');
         _actionCompleted();
         _showDialog();
       }
@@ -814,11 +814,11 @@ void _populateFromGlobalProfile() {
           title: new Text("ADS Login"),
           content: _error != null && _error != ''
               ? new Text(_error)
-              : new Text("Please try again"),
+              : new TrText("Please try again"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(
-              child: new Text("Close"),
+              child: new TrText("Close"),
               onPressed: () {
                 _error = '';
 

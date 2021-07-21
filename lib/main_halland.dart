@@ -27,12 +27,11 @@ void main() {
 }
 void configAH() {
   SystemColors _systemColors = SystemColors(
-    primaryButtonColor: Color.fromRGBO(0X1d, 0x61, 0xa1, 1),
+    primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
+//    primaryButtonColor: Color.fromRGBO(0X1d, 0x61, 0xa1, 1),
     accentButtonColor: Color.fromRGBO(0X1d, 0x61, 0xa1, 1),
     accentColor: Colors.black,
-/*      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
-      textButtonTextColor: Colors.black54  , */
-    primaryHeaderColor: Color.fromRGBO(0X1d, 0x61, 0xa1,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
+    primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
 
     primaryColor: Color.fromRGBO(0X1d, 0x61, 0xa1,1),
@@ -63,7 +62,7 @@ void configAH() {
 
   gblSettings = Settings(
     wantRememberMe: false,
-    wantHomeFQTVButton: true,
+    wantHomeFQTVButton: false,
     airlineName: "Air Halland",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
@@ -83,6 +82,8 @@ void configAH() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
+    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
+    currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
@@ -92,7 +93,7 @@ void configAH() {
       youth: true,
       senior: true,
     ),
-    fqtvName:  "",
+    fqtvName:  "Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",

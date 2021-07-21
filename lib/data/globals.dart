@@ -8,6 +8,8 @@ import 'package:vmba/data/settings.dart';
 //
 String gblAppTitle ;
 String gblLanguage = 'en' ;
+bool gblLangFileLoaded = false;
+bool gblSaveLangsFile = true;
 String gblBuildFlavor = 'FL';
 String gblError = '';
 String gblSine = '';
@@ -22,7 +24,7 @@ bool gblTimerExpired = false;
 bool gblPayBtnDisabled = false;
 bool gblRememberMe = false;
 bool gblRedeemingAirmiles = false;
-bool gblNewDatepicker = true;
+bool gblNewDatepicker = false;
 bool shownUpdate = false;
 String gblFqtvNumber = '';
 //String gblAdsNo = '';

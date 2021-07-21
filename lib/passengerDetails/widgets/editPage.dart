@@ -136,7 +136,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             Icons.check,
             color: Colors.white,
           ),
-          Text(
+          TrText(
             'SAVE',
             style: TextStyle(color: Colors.white),
           ),
@@ -164,7 +164,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: new Text('Salutation'),
+                  title: new TrText('Salutation'),
                   content: new Container(
                     width: double.maxFinite,
                     child: optionListView(),
@@ -178,7 +178,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               decoration: new InputDecoration(
                 contentPadding:
                     new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                labelText: 'Title',
+                labelText: translate('Title'),
                 fillColor: Colors.white,
                 border: new OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -187,7 +187,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               ),
               controller: _titleTextEditingController,
               validator: (value) =>
-                  value.isEmpty ? 'Title can\'t be empty' : null,
+                  value.isEmpty ? translate('Title cannot be empty') : null,
               onSaved: (value) {
                 if (value != null) {
                   widget.passengerDetail.title = value.trim();
@@ -209,7 +209,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             decoration: InputDecoration(
               contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              labelText: 'First name (as Passport)',
+              labelText: translate('First name (as Passport)'),
               fillColor: Colors.white,
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
@@ -226,7 +226,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
             ],
             validator: (value) =>
-                value.isEmpty ? 'First name can\'t be empty' : null,
+                value.isEmpty ? translate('First name cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.firstName = value.trim();
@@ -247,7 +247,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             decoration: InputDecoration(
               contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              labelText: 'Last name (as Passport)',
+              labelText: translate('Last name (as Passport)'),
               fillColor: Colors.white,
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
@@ -285,7 +285,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                     decoration: new InputDecoration(
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 15.0),
-                      labelText: 'Date of Birth',
+                      labelText: translate('Date of Birth'),
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -330,7 +330,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                         vertical: 15.0, horizontal: 15.0),
                     labelText: gblSettings.fqtvName == null
                         ? 'FQTV number'
-                        : '${gblSettings.fqtvName} number',
+                        : '${gblSettings.fqtvName} ' + translate('number'),
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -460,7 +460,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     List<Widget> widgets = [];
     //new List<Widget>();
     gblTitles.forEach((title) => widgets.add(ListTile(
-        title: Text(title),
+        title: TrText(title),
         onTap: () {
           Navigator.pop(context, title);
           _updateTitle(title);
@@ -599,25 +599,38 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     _minimumYear = _minimumDate.year;
     _maximumYear = _initialDateTime.year;
 
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    bool isDark = brightnessValue == Brightness.dark;
+    Color bgColour = Colors.white;
+    Color txtColor = Colors.black;
+    if (isDark) {
+      bgColour = Colors.black;
+      txtColor = Colors.white;
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.all(0),
-          title: new Text('Date of Birth'),
+          backgroundColor: bgColour,
+          title: new TrText('Date of Birth', style: TextStyle(color: txtColor),),
           content: SizedBox(
               //padding: EdgeInsets.all(1),
               height: MediaQuery.of(context).copyWith().size.height / 3,
               child: CupertinoTheme(
                 data: CupertinoThemeData(
+                  brightness: brightnessValue,
                   textTheme: CupertinoTextThemeData(
                     dateTimePickerTextStyle: TextStyle(
                       fontSize: 16,
                     ),
+
                   ),
                 ),
                 child: CupertinoDatePicker(
+                  backgroundColor: bgColour,
                   initialDateTime: _initialDateTime,
                   onDateTimeChanged: (DateTime newValue) {
                     setState(() {
@@ -635,7 +648,12 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               )),
           actions: <Widget>[
             new TextButton(
-              child: new Text("OK"),
+              style: TextButton.styleFrom(
+                  backgroundColor:bgColour ,
+                  side: BorderSide(color:  txtColor, width: 1),
+                  primary:txtColor),
+              child: new TrText("OK", style: TextStyle(color: txtColor),
+              ),
               onPressed: () {
                 Navigator.pop(context, dateTime);
                 _updateDateOfBirth(dateTime);
@@ -697,7 +715,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
         // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.all(0),
-          title: new Text('Date of Birth'),
+          title: new TrText('Date of Birth'),
           content: SizedBox(
             //padding: EdgeInsets.all(1),
               height: MediaQuery.of(context).copyWith().size.height / 3,

@@ -31,7 +31,7 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          title,
+                          translate(title),
                           style: TextStyle(fontSize: 24.0),
                         ),
                       ],
@@ -78,30 +78,7 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
                 ),
               ),
             );
-      /*
-      return AlertDialog(
-        title: new Text(title),
-        content: new Text(msg),
-        actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[ TextButton(
-            style: TextButton.styleFrom(
-                backgroundColor: gblSystemColors.primaryButtonColor ,
-                side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                primary: gblSystemColors.primaryButtonTextColor),
-            child: new Text("Close"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )]),
-        ],
-      );
 
-       */
     },
   );
 }

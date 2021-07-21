@@ -62,6 +62,7 @@ void configSI() {
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
       aircode:  "SI",
       termsAndConditionsUrl:  "https://www.blueislands.com/terms-and-conditions/",
+      buttonStyle: 'OFFSET',
 
       privacyPolicyUrl:  "https://www.blueislands.com/privacy-policy/",
       faqUrl: "",

@@ -103,7 +103,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: TrText('DONE',style: TextStyle(color: gblSystemColors.primaryButtonTextColor),),
+                    label: TrText('Done',style: TextStyle(color: gblSystemColors.primaryButtonTextColor),),
                     icon: Icon(Icons.check, color: gblSystemColors.primaryButtonTextColor,),
                     backgroundColor: gblSystemColors.primaryButtonColor,
                     onPressed: () {

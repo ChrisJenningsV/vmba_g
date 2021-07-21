@@ -329,15 +329,16 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   Row paxEntryHeader(PaxType paxType, bool single) {
-    String _passenger = 'Passengers';
+    String _passenger = translate('Passengers');
     if (single) {
-      _passenger = 'Passenger';
+      _passenger = translate('Passenger');
     }
+    String pType = translate(capitalize(paxType.toString().split('.')[1]));
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          '${capitalize(paxType.toString().split('.')[1])} $_passenger',
+          '$pType $_passenger',
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
       ],
@@ -375,7 +376,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('Add new ${paxType.toString().split('.')[1]} passenger'),
+          Text(translate('Add new') + ' ${paxType.toString().split('.')[1]} ' + translate('passenger')),
           IconButton(
               onPressed: () {
                 Navigator.push(
@@ -417,7 +418,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                       )));
           displayError(_error);
         } else {
-          showSnackBar('Please check your internet connection');
+          //showSnackBar('Please, check your internet connection');
+          noInternetSnackBar(context);
         }
       });
     } catch (e) {

@@ -81,7 +81,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: new Text('Payment',
+        title: new TrText('Payment',
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),
@@ -99,7 +99,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
+                          TrText(
                             'Please complete your payment within ',
                             style: TextStyle(
                                 color: Colors.white,
@@ -131,7 +131,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   setState(() {
                     // _displayProcessingIndicator = false;
                   });
-                  showSnackBar('Please check your internet connection');
+                  //showSnackBar(translate('Please, check your internet connection'));
+                  noInternetSnackBar(context);
                 }
               });
             },
@@ -327,7 +328,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         setState(() {
           //_displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -335,7 +337,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         setState(() {
           //_displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -371,7 +374,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
               setState(() {
                 //_displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
 
@@ -380,7 +384,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
               setState(() {
                 //_displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
             if (response.body.contains('ERROR - ')) {
@@ -418,7 +423,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         setState(() {
           //_displayProcessingIndicator = false;
         });
-        showSnackBar('Unable to confirm partner airlines flights.');
+        showSnackBar(translate('Unable to confirm partner airlines flights.'));
         //Cnx new flights
         msg = '*${widget.mmbBooking.rloc}';
         widget.mmbBooking.newFlights.forEach((flt) {
@@ -495,7 +500,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         setState(() {
           //_displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -504,7 +510,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         setState(() {
           //_displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -696,7 +703,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       setState(() {
         //_displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -705,7 +713,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       setState(() {
         //_displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 

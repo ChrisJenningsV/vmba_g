@@ -22,6 +22,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -1002,26 +1003,27 @@ class _CheckinBoardingPassesWidgetState
       departureDateTime = DateTime.parse(itin.depDate + ' ' + itin.depTime);
       now = new DateTime.now();
       if (itin.secRLoc != '') {
-        response = 'Check-in with other airline ';
+        response = translate('Check-in with other airline ');
       } else if ( city.webCheckinEnabled == 0 ) {
-        response = 'no Check-in online for this city ';
+        response = translate('no Check-in online for this city ');
       } else if (now.isBefore(checkinClosed) &&
           now.isAfter(checkinOpens) &&
           itin.airID != gblSettings.aircode) {
-        response = 'Check-in with other airline ';
+        response = translate('Check-in with other airline ');
       } else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
-        response = 'Online check-in open ';
+        response = translate('Online check-in open ');
       } else if (now.isBefore(checkinOpens) &&
           itin.airID != gblSettings.aircode) {
-        response = 'Check-in with other airline ';
+        response = translate('Check-in with other airline ');
       } else if (now.isBefore(checkinOpens)) {
-        response = 'Online check-in opens at ' +
-            DateFormat('H:mm a dd MMM').format(checkinOpens);
+        response = translate('Online check-in opens at ') +
+            getIntlDate('H:mm a dd MMM', checkinOpens);
+            //DateFormat('H:mm a dd MMM').format(checkinOpens);
       } else if (now.isAfter(checkinClosed) &&
           now.isBefore(departureDateTime)) {
-        response = 'Online check-in closed ';
+        response = translate('Online check-in closed ');
       } else {
-        response = 'Flight closed ';
+        response = translate('Flight closed ');
       }
     }
 
@@ -1059,13 +1061,9 @@ class _CheckinBoardingPassesWidgetState
                       new Icon(Icons.date_range),
                       new Padding(
                         child: new Text(
-                            new DateFormat('EEE dd MMM h:mm a')
-                                .format(DateTime.parse(pnr
-                                        .pNR.itinerary.itin[journey].depDate +
-                                    ' ' +
-                                    pnr.pNR.itinerary.itin[journey].depTime))
-                                .toString()
-                                .substring(0, 10),
+                            //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime))
+                              //  .toString().substring(0, 10),
+                            getIntlDate('EEE dd MMM', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)),
                             style: new TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w300)),
                         padding: EdgeInsets.only(left: 8.0),
@@ -1147,14 +1145,10 @@ class _CheckinBoardingPassesWidgetState
                         new Padding(
                           padding: EdgeInsets.only(left: 5.0),
                           child: new Text(
-                              'Depart ' +
-                                  (new DateFormat('h:mm a').format(
-                                          DateTime.parse(pnr.pNR.itinerary
-                                                  .itin[journey].depDate +
-                                              ' ' +
-                                              pnr.pNR.itinerary.itin[journey]
-                                                  .depTime)))
-                                      .replaceAll('12:00 AM', '00:00 AM'),
+                              translate('Depart') + ' ' +
+                                  //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                                  //            ' ' + pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
+                              getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate  + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).replaceFirst('12:00 AM', '00:00 AM'),
                               style: new TextStyle(
                                   fontSize: 14.0, fontWeight: FontWeight.w500)),
                         ),
@@ -1178,14 +1172,10 @@ class _CheckinBoardingPassesWidgetState
                         new Padding(
                             padding: EdgeInsets.only(left: 5.0),
                             child: new Text(
-                              'Arrival ' +
-                                  (new DateFormat('h:mm a').format(
-                                          DateTime.parse(pnr.pNR.itinerary
-                                                  .itin[journey].depDate +
-                                              ' ' +
-                                              pnr.pNR.itinerary.itin[journey]
-                                                  .arrTime)))
-                                      .replaceFirst('12:00 AM', '00:00 AM'),
+                                translate('Arrival') + ' ' +
+                                  //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +
+                                   //           pnr.pNR.itinerary.itin[journey].arrTime))).replaceFirst('12:00 AM', '00:00 AM'),
+                                    getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime)).replaceFirst('12:00 AM', '00:00 AM'),
 
                               //'Arrival ${snapshot.data['arrivalTimes'][journey]}',
                               style: new TextStyle(
@@ -1315,13 +1305,10 @@ class _CheckinBoardingPassesWidgetState
                         new Icon(Icons.date_range),
                         new Padding(
                           child: new Text(
-                              new DateFormat('EEE dd MMM h:mm a')
-                                  .format(DateTime.parse(pnr
-                                          .pNR.itinerary.itin[journey].depDate +
-                                      ' ' +
-                                      pnr.pNR.itinerary.itin[journey].depTime))
-                                  .toString()
-                                  .substring(0, 10),
+                              //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                               //       ' ' + pnr.pNR.itinerary.itin[journey].depTime)).toString().substring(0, 10),
+                              getIntlDate('EEE dd MMM', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                                  ' ' + pnr.pNR.itinerary.itin[journey].depTime)),
                               style: new TextStyle(
                                   fontSize: 18.0, fontWeight: FontWeight.w300)),
                           padding: EdgeInsets.only(left: 8.0),
@@ -1424,21 +1411,10 @@ class _CheckinBoardingPassesWidgetState
                                 new Padding(
                                   padding: EdgeInsets.only(left: 5.0),
                                   child: new Text(
-                                      'Depart ' +
-                                          (new DateFormat('h:mm a').format(
-                                                  DateTime.parse(pnr
-                                                          .pNR
-                                                          .itinerary
-                                                          .itin[journey]
-                                                          .depDate +
-                                                      ' ' +
-                                                      pnr
-                                                          .pNR
-                                                          .itinerary
-                                                          .itin[journey]
-                                                          .depTime)))
-                                              .replaceAll(
-                                                  '12:00 AM', '00:00 AM'),
+                                      translate('Depart') + ' '+
+                                          //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                                          //            ' ' +pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
+                                          getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +pnr.pNR.itinerary.itin[journey].depTime)).replaceAll('12:00 AM', '00:00 AM'),
                                       style: new TextStyle(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w500)),
@@ -1463,22 +1439,11 @@ class _CheckinBoardingPassesWidgetState
                                 new Padding(
                                     padding: EdgeInsets.only(left: 5.0),
                                     child: new Text(
-                                      'Arrival ' +
-                                          (new DateFormat('h:mm a').format(
-                                                  DateTime.parse(pnr
-                                                          .pNR
-                                                          .itinerary
-                                                          .itin[journey]
-                                                          .depDate +
-                                                      ' ' +
-                                                      pnr
-                                                          .pNR
-                                                          .itinerary
-                                                          .itin[journey]
-                                                          .arrTime)))
-                                              .replaceFirst(
-                                                  '12:00 AM', '00:00 AM'),
-
+                                      translate('Arrival') + ' ' +
+                                          //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                                           //           ' ' + pnr.pNR.itinerary.itin[journey].arrTime))).replaceFirst('12:00 AM', '00:00 AM'),
+                                      getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                                          ' ' + pnr.pNR.itinerary.itin[journey].arrTime)).replaceFirst('12:00 AM', '00:00 AM'),
                                       //'Arrival ${snapshot.data['arrivalTimes'][journey]}',
                                       style: new TextStyle(
                                           fontSize: 14.0,

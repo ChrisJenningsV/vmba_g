@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
 
 class AppFeedBackPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class AppFeedBackPage extends StatefulWidget {
 }
 
 class _AppFeedBackPageState extends State<AppFeedBackPage> {
+  String _msg = '';
+
   List<Widget> render() {
     List<Widget> widgets = [];
     // List<Widget>();
@@ -23,7 +26,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     email = gblSettings.appFeedbackEmail;
 
     textSpliter(
-            'We’re interested in how we can improve our app. Please email specific app feedback to')
+            translate('We’re interested in how we can improve our app. Please email specific app feedback to'))
         .forEach((widget) {
       widgets.add(widget);
     });
@@ -120,7 +123,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: TrText('App version: ' + widget.version),
+                child: Text(translate('App version: ') + widget.version),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -176,9 +179,11 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               title: new TrText( 'Sined In: ' + gblSine),
               subtitle: Text(title),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                /*
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -192,6 +197,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   },
                 ),
                 const SizedBox(width: 8),
+
+                 */
 
                 TextButton(
                   style: TextButton.styleFrom(
@@ -207,22 +214,37 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                       primary: gblSystemColors.textButtonTextColor),
-                  child: TrText('Language'),
+                  child: TrText('Reset Language'),
                   onPressed: () {
-                    Navigator.push(
+                    _resetLangs();
+                    deleteLang();
+ /*                   Navigator.push(
                         context, SlideTopRoute(page: LanguageSelection()
                     ));
+
+  */
                     },
+
                 ),
 
 
                 const SizedBox(width: 8),
               ],
             ),
+
+
           ],
         ),
       ),
     );
+  }
+  void _resetLangs() async {
+    var prefs = await SharedPreferences.getInstance();
+    // reset
+    prefs.setString('language_code', '');
+    setState(() {
+      _msg = 'Language reset';
+    });
   }
 
   void _swapLiveTest() {

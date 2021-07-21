@@ -47,7 +47,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     print(flight);
   }
 
-  Passengers pax = new Passengers(1, 0, 0, 0);
+  Passengers pax = new Passengers(1, 0, 0, 0, 0, 0, 0);
   bool _isReturn = true;
 
   void _handleReturnToggleChanged(bool newValue) {

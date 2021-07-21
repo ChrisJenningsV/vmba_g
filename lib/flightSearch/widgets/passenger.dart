@@ -20,6 +20,9 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   int children = 0;
   int infants = 0;
   int youths = 0;
+  int students = 0;
+  int seniors = 0;
+  int teachers = 0;
 
   @override
   initState() {
@@ -29,6 +32,9 @@ class _PassengerWidgetState extends State<PassengerWidget> {
       children = widget.passengers.children;
       infants = widget.passengers.infants;
       youths = widget.passengers.youths;
+      students = widget.passengers.students;
+      seniors = widget.passengers.seniors;
+      teachers = widget.passengers.teachers;
     }
   }
 
@@ -77,10 +83,16 @@ class _PassengerWidgetState extends State<PassengerWidget> {
         children = value.children;
         infants = value.infants;
         youths = value.youths;
+        students = value.students;
+        seniors = value.seniors;
+        teachers = value.teachers;
         widget.passengers.adults = value.adults;
         widget.passengers.children = value.children;
         widget.passengers.infants = value.infants;
         widget.passengers.youths = value.youths;
+        widget.passengers.students = value.students;
+        widget.passengers.seniors = value.seniors;
+        widget.passengers.teachers = value.teachers;
       });
     }
     widget.onChanged(widget.passengers);
@@ -175,7 +187,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   }
 
   _navigateToNewScreen(BuildContext context) async {
-    Passengers pax = new Passengers(adults, children, infants, youths);
+    Passengers pax = new Passengers(adults, children, infants, youths, seniors, students, teachers);
     Passengers results = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -212,7 +224,10 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
         widget.passengers.adults,
         widget.passengers.children,
         widget.passengers.infants,
-        widget.passengers.youths);
+        widget.passengers.youths,
+        widget.passengers.seniors,
+        widget.passengers.students,
+        widget.passengers.teachers);
   }
 
   void _removeAdult() {
@@ -235,12 +250,32 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
       passengers.youths -= 1;
     });
   }
-
+  void _removeSenior() {
+    setState(() {
+      passengers.seniors -= 1;
+    });
+  }
+  void _removeStudent() {
+    setState(() {
+      passengers.students -= 1;
+    });
+  }
   void _addYouth() {
     setState(() {
       passengers.youths += 1;
     });
   }
+  void _addSenior() {
+    setState(() {
+      passengers.seniors += 1;
+    });
+  }
+  void _addStudent() {
+    setState(() {
+      passengers.students += 1;
+    });
+  }
+
 
   void _removeChild() {
     setState(() {
@@ -289,7 +324,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                     elevation: 0.0,
                     isExtended: true,
                     label: TrText(
-                      'DONE',
+                      'Done',
                       style: TextStyle(
                           color: gblSystemColors
                               .primaryButtonTextColor),
@@ -389,6 +424,94 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         : Padding(
                             padding: EdgeInsets.all(0),
                           ),
+                    gblSettings.passengerTypes.senior
+                        ? new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TrText(
+                              'Seniors',
+                              style: new TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            TrText(
+                              'over 55',
+                              style: new TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            new IconButton(
+                              icon: Icon(
+                                Icons.remove_circle_outline,
+                              ),
+                              onPressed: passengers.seniors == 0
+                                  ? null
+                                  : _removeSenior,
+                            ),
+                            new Text(passengers.seniors.toString()),
+                            new IconButton(
+                              icon: Icon(Icons.add_circle_outline),
+                              onPressed: _addSenior,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.all(0),
+                    ),
+
+                    gblSettings.passengerTypes.student
+                        ? new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TrText(
+                              'Students',
+                              style: new TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            TrText(
+                              'in full time education',
+                              style: new TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            new IconButton(
+                              icon: Icon(
+                                Icons.remove_circle_outline,
+                              ),
+                              onPressed: passengers.students == 0
+                                  ? null
+                                  : _removeStudent,
+                            ),
+                            new Text(passengers.students.toString()),
+                            new IconButton(
+                              icon: Icon(Icons.add_circle_outline),
+                              onPressed: _addStudent,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                        : Padding(
+                      padding: EdgeInsets.all(0),
+                    ),
+
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

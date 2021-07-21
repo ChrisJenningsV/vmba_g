@@ -13,13 +13,13 @@ class Passengers {
   int seniors;
 
 
-  Passengers(this.adults, this.children, this.infants, this.youths);
+  Passengers(this.adults, this.children, this.infants, this.youths, this.seniors, this.students, this.teachers);
   int totalSeated() {
-    return this.adults + this.children + this.youths;
+    return this.adults + this.children + this.youths + this.students + this.seniors + this.teachers;
   }
 
   int totalPassengers() {
-    return this.adults + this.children + this.youths + this.infants;
+    return this.adults + this.children + this.youths + this.infants  + this.students + this.seniors + this.teachers;
   }
 }
 
@@ -35,7 +35,7 @@ class NewBooking {
   String currency;
   DateTime departureDate;
   DateTime returnDate;
-  Passengers passengers = new Passengers(1, 0, 0, 0);
+  Passengers passengers = new Passengers(1, 0, 0, 0, 0, 0, 0);
   List<String> outboundflight = [];
   // List<String>();
   List<String> returningflight = [];
@@ -58,7 +58,7 @@ class MmbBooking {
   //String arrival;
   //DateTime departureDate;
   //DateTime returnDate;
-  Passengers passengers = new Passengers(1, 0, 0, 0);
+  Passengers passengers = new Passengers(1, 0, 0, 0, 0,0,0);
   int journeyToChange;
   List<String> oldFlights = [];
   // List<String>();

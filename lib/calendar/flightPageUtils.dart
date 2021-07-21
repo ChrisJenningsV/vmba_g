@@ -1,7 +1,7 @@
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
-
+import 'package:intl/intl.dart';
 
 
 
@@ -28,4 +28,11 @@ String calenderPrice(String currency, String price, String miles) {
       return _currencySymbol + price;
     }
   }
+}
+
+String getIntlDate(String format, DateTime dt ) {
+  Intl.defaultLocale = gblLanguage;
+  String formattedDate = DateFormat(format).format(dt);
+  Intl.defaultLocale = 'en';
+  return formattedDate;
 }

@@ -76,7 +76,7 @@ void _handleLoad() {
               
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child:  Text('Loading ${widget.title}'),
+                child:  Text(translate('Loading') + ' '  + translate('${widget.title}')),
               ),
             ],
           ),

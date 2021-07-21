@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/language.dart';
 import 'package:vmba/main.dart';
+import 'package:vmba/utilities/helper.dart';
 
 
 class CustomRowModel {
@@ -45,9 +47,51 @@ class CustomRow extends StatelessWidget {
   }
 }
 
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
+}
+initLangCached(String lang) async {
+  if( gblSaveLangsFile) {
+    final path = await _localPath;
+    String filePath = '$path/lang.json';
+    File file = File(filePath);
+    if( file.existsSync()) {
+      var modified = file.lastModifiedSync();
+      if( modified.isBefore(DateTime.now().subtract(Duration(minutes: 10)))){
+        // change to 2 days!
+        // out of date - get new copy
+        logit('lang file out of date');
+        initLang(lang);
+        return;
+      }
+
+      readLang( lang).then((result ) {
+        gblLangMap = json.decode(result);
+        gblLangFileLoaded = true;
+        logit('using internal copy of $filePath');
+        return;
+      });
+    } else {
+      logit('no cached lang file');
+      initLang(lang);
+      return;
+      }
+
+    } else {
+      initLang(lang);
+    }
+  }
+
+
+
+
 initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
   if (gblLanguage != 'en') {
+    logit('load lang $lang');
+
     if ( gblSettings.gblServerFiles != null && gblSettings.gblServerFiles.isNotEmpty) {
       try {
 
@@ -58,7 +102,25 @@ initLang(String lang) async {
         String data = utf8.decode(jsonString.bodyBytes);
         if( data.startsWith('{')) {
           gblLangMap = json.decode(data);
+          gblLangFileLoaded = true;
+          logit('got lang file $lang');
+          // save local file
+          if( gblSaveLangsFile) {
+            try {
+              //var bytes = await consolidateHttpClientResponseBytes(response);
+              final path = await _localPath;
+              String filePath = '$path/lang.json';
+              File file = File(filePath);
+              await file.writeAsString(data);
+              logit('saved lang file $filePath');
+
+            } catch(e) {
+              logit( 'save file error:$e');
+            }
+
+          }
         } else {
+          logit('lang file  data error ' + data.substring(0,20));
           String jsn = await rootBundle.loadString(
               'lib/assets/lang/$gblLanguage.json');
            gblLangMap = json.decode(jsn);
@@ -68,13 +130,50 @@ initLang(String lang) async {
         print(e);
       }
     } else {
+      logit('lang file error server files =' +gblSettings.gblServerFiles);
+
       String jsonString;
       jsonString = await rootBundle.loadString(
           'lib/assets/lang/$gblLanguage.json');
       gblLangMap = json.decode(jsonString);
     }
   }
+}
+Future<bool> langFileExists(String lang) async {
+  final path = await _localPath;
+  String filePath = '$path/lang.json';
+  File file = File(filePath);
+  if( file.existsSync()){
+    return true;
+  }
+  return false;
+}
 
+Future<void> deleteLang() async {
+  final path = await _localPath;
+  String filePath = '$path/lang.json';
+  File file = File(filePath);
+  if( file.existsSync()){
+    file.delete();
+  }
+}
+
+
+
+Future<String> readLang(String lang) async {
+  try {
+    final path = await _localPath;
+    String filePath = '$path/lang.json';
+    File file = File(filePath);
+
+    // Read the file
+    final contents = await file.readAsString();
+
+    return contents;
+  } catch (e) {
+    // If encountering an error, return 0
+    return null;
+  }
 }
 
 
@@ -123,6 +222,7 @@ dialogContent(BuildContext context) {
               //Intl.defaultLocale =selectedLang;
               Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(selectedLang));
               gblLanguage=selectedLang;
+              gblLangFileLoaded = false;
               initLang(gblLanguage);
               saveLang(gblLanguage);
               Navigator.of(context).pop();

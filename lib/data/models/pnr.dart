@@ -451,6 +451,9 @@ class Names {
       pAX.where((p) => p.paxType == 'CH').length,
       pAX.where((p) => p.paxType == 'IN').length,
       pAX.where((p) => p.paxType == 'TH').length,
+      pAX.where((p) => p.paxType == 'CD').length,
+      pAX.where((p) => p.paxType == 'SD').length,
+      pAX.where((p) => p.paxType == 'TD').length
     );
   }
 

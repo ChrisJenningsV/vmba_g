@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/rangePickerPage.dart';
 import 'package:vmba/datePickers/datePickerPage.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
+
 
 class JourneyDateWidget extends StatefulWidget {
   JourneyDateWidget({Key key, this.isReturn: false, this.onChanged})
@@ -93,19 +94,15 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                                DateFormat('E d')
-                                    .format(_departingingDate)
-                                    .toString(), //'Wed 3',
+                            Text(getIntlDate('E d', _departingingDate),
+                                //DateFormat('E d').format(_departingingDate).toString(), //'Wed 3',
                                 style: new TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 18.0,
                                     //color: Colors.grey,
                                     )),
-                            Text(
-                                DateFormat('MMMM yyyy')
-                                    .format(_departingingDate)
-                                    .toString(), //'July 2019',
+                            Text(getIntlDate('MMMM yyyy', _departingingDate),
+                                //DateFormat('MMMM yyyy').format(_departingingDate).toString(), //'July 2019',
                                 style: new TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 18.0,
@@ -119,19 +116,15 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: //<Widget>[
-                             widget.isReturn ? [Text(
-                                  DateFormat('E d')
-                                      .format(_returningDate)
-                                      .toString(), //'Sun 7',
+                             widget.isReturn ? [Text(getIntlDate('E d', _returningDate),
+                                  //DateFormat('E d').format(_returningDate).toString(), //'Sun 7',
                                   style: new TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 18.0,
                                       //color: Colors.grey,
                                       )),
-                              Text(
-                                  DateFormat('MMMM yyyy')
-                                      .format(_returningDate)
-                                      .toString(), //'July 2019',
+                              Text(getIntlDate('MMMM yyyy', _returningDate),
+                                  //DateFormat('MMMM yyyy').format(_returningDate).toString(), //'July 2019',
                                   style: new TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 18.0,

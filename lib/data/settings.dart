@@ -175,6 +175,7 @@ class Settings {
 
   String fqtvName="";
   String appFeedbackEmail="";
+  String buttonStyle;
 
   String prohibitedItemsNoticeUrl="";
   String groupsBookingsEmail ="";
@@ -255,7 +256,7 @@ bool bpShowFastTrack;
     this.liveApiUrl,
     this.liveCreditCardProvider,
     this.fQTVpointsName,
-
+    this.buttonStyle,
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {
@@ -277,6 +278,12 @@ bool bpShowFastTrack;
     }
     if( backgroundImageUrl == null ) {
       backgroundImageUrl = '';
+    }
+    if( buttonStyle== null ){
+      buttonStyle = 'RO';
+    }
+    if( wantCurrencyPicker == null ) {
+      wantCurrencyPicker = false;
     }
   }
 

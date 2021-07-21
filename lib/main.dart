@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +14,7 @@ import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vmba/utilities/helper.dart';
 
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
@@ -132,7 +133,7 @@ bool bFirstTime = true;
       //   AppLocalizationsDelegate(),
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
-//      CupertinoLocalizationsDelegate()
+      GlobalCupertinoLocalizations.delegate
     ];
 
     List<Locale> locales =[
@@ -149,16 +150,12 @@ bool bFirstTime = true;
       var langs = gblSettings.gblLanguages.split(',');
       var count = langs.length;
       for( var i = 0 ; i < count; i+=2){
-        var selected = false;
-        if( langs[i] == gblLanguage) {
-          selected=true;
-        }
         locales.add(new Locale( langs[i]));
       }
 
 
     }
-    print('create app lang=$gblLanguage');
+    logit('CREATE APP lang=$gblLanguage');
 
     return ChangeNotifierProvider(
       create: (_) => new LocaleModel(),
@@ -170,13 +167,19 @@ bool bFirstTime = true;
       supportedLocales: locales,
 
        debugShowCheckedModeBanner: false,
-      title: gblAppTitle, //'Loganair',
+      title: gblAppTitle,
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: gblSystemColors.primaryColor,
         accentColor: gblSystemColors.accentColor,
         colorScheme: ColorScheme.light(primary: Colors.black),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
+      ),
+      darkTheme: ThemeData(
+        //brightness: Brightness.dark,
+        primaryColor: gblSystemColors.primaryColor,
+        accentColor: gblSystemColors.accentColor,
+        colorScheme: ColorScheme.light(primary: Colors.black),
       ),
       home: new RootPage(),
       routes: <String, WidgetBuilder>{
@@ -207,7 +210,7 @@ bool bFirstTime = true;
       String localeStr = Platform.localeName;
      // var prefs = await SharedPreferences.getInstance();
       if (prefs.getString('language_code') == null || prefs.getString('language_code').isEmpty) {
-        if( localeStr != null && localeStr.isNotEmpty) {
+        if( localeStr != null && localeStr.isNotEmpty && _localeSupported(localeStr)) {
           gblLanguage = localeStr.split('_')[0];
           setState(() {
           });
@@ -223,6 +226,18 @@ bool bFirstTime = true;
     } catch(e){
       print('initLang error: $e');
     }
+  }
+
+  bool _localeSupported(String locale) {
+    String language = locale.split('_')[0];
+    var langs = gblSettings.gblLanguages.split(',');
+    var count = langs.length;
+    for( var i = 0 ; i < count; i+=2){
+      if( langs[i] == language) {
+        return true;
+      }
+    }
+    return false;
   }
 
   }

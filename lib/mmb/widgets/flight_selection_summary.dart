@@ -55,7 +55,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           getFareQuote();
         });
       } else {
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
       }
     });
   }
@@ -91,6 +92,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
   String buildCmd() {
     //Cancel journey
+    Intl.defaultLocale = 'en';
     String cmd = '';
     cmd = '*${widget.mmbBooking.rloc}^';
     widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
@@ -111,6 +113,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     //cmd += 'fg/LHR^fs1^*r~x';
 
     //cmd += '*r~x';
+    //Intl.defaultLocale = gblLanguage;
     return cmd;
   }
 
@@ -549,7 +552,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
                   child: TrText(
-                    'Return to my bookings',
+                    'Return to My Bookings',
                     style: new TextStyle(color: Colors.white),
                   ),
                 )
@@ -578,7 +581,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          TrText('No of adults: '),
+                          Text(translate('No of ') + translate('Adults') + ': '),
                           Text(widget.mmbBooking.passengers.adults.toString()),
                         ],
                       )
@@ -589,7 +592,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          TrText('No of youths: '),
+                          Text(translate('No of ') + translate('Youths') + ': '),
                           Text(widget.mmbBooking.passengers.youths.toString()),
                         ],
                       )
@@ -600,7 +603,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          TrText('No of children: '),
+                          Text(translate('No of ') + translate('Children') + ': '),
                           Text(
                               widget.mmbBooking.passengers.children.toString()),
                         ],
@@ -612,7 +615,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          TrText('No of infants: '),
+                          Text(translate('No of ') + translate('Infants') + ': '),
                           Text(widget.mmbBooking.passengers.infants.toString()),
                         ],
                       )
@@ -689,7 +692,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                                       mmbCmd: '',
                                     )));
                       } else {
-                        showSnackBar('Please check your internet connection');
+                        //showSnackBar(translate('Please,, check your internet connection'));
+                        noInternetSnackBar(context);
                       }
                     });
                   },

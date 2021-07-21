@@ -200,7 +200,7 @@ void initState() {
                       Row(
                         children: <Widget>[
                           Text(
-                            'Expiry',
+                            translate('Expiry'),
                             style: TextStyle(
                               fontSize: 9,
                             ),
@@ -244,7 +244,7 @@ void initState() {
                       const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: Text(
                     cardHolderName.isEmpty || cardHolderName == null
-                        ? 'CARD HOLDER'
+                        ? translate('Card Holder').toUpperCase()
                         : cardHolderName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -272,7 +272,7 @@ void initState() {
     cardDetails.add(Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
+        TrText(
           "Card Billing Address",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
@@ -288,7 +288,7 @@ void initState() {
           Container(
             padding: const EdgeInsets.all(8.0),
             child: street.isEmpty
-                ? Text('Add card details')
+                ? TrText('Add card details')
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -365,7 +365,7 @@ void initState() {
                           children: <Widget>[
                             Container(
                                 padding: const EdgeInsets.only(bottom: 20.0),
-                                child: Text('Enter your Card Details',
+                                child: TrText('Enter your Card Details',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20))),
@@ -376,11 +376,11 @@ void initState() {
                               child: TextFormField(
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Card number can\'t be empty';
+                                    return translate('Card number cannot be empty');
                                   }
 
                                   if (value.length < 15) {
-                                    return 'Card number not valid';
+                                    return translate('Card number not valid');
                                   }
 
                                   return null;
@@ -399,7 +399,7 @@ void initState() {
                                         new BorderRadius.circular(25.0),
                                     borderSide: new BorderSide(),
                                   ),
-                                  labelText: 'Card number',
+                                  labelText: translate('Card number'),
                                   hintText: 'xxxx xxxx xxxx xxxx',
                                   fillColor: Colors.white,
                                 ),
@@ -417,10 +417,10 @@ void initState() {
                               child: TextFormField(
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Expiry date can\'t be empty';
+                                    return translate('Expiry date cannot be empty');
                                   }
                                   if (value.length < 5) {
-                                    return 'Expiry date not valid';
+                                    return translate('Expiry date not valid');
                                   }
 
                                   int expiryYear =
@@ -429,21 +429,21 @@ void initState() {
                                       int.parse(value.split('/')[0]);
 
                                   if (expiryYear < DateTime.now().year) {
-                                    return 'Expiry date not valid';
+                                    return translate('Expiry date not valid');
                                   }
 
                                   if (expiryMonth > 12) {
-                                    return 'Expiry date not valid';
+                                    return translate('Expiry date not valid');
                                   }
 
                                   if (expiryYear == DateTime.now().year) {
                                     if (expiryMonth < DateTime.now().month)
-                                      return 'Expiry date not valid';
+                                      return translate('Expiry date not valid');
                                   }
 
                                   if ((int.parse(value.split('/')[1]) + 2000) <
                                       DateTime.now().year) {
-                                    return 'Expiry date not valid';
+                                    return translate('Expiry date not valid');
                                   }
 
                                   return null;
@@ -456,7 +456,7 @@ void initState() {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(25.0)),
-                                    labelText: 'Expired Date',
+                                    labelText: translate('Expired Date'),
                                     hintText: 'MM/YY'),
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
@@ -473,10 +473,10 @@ void initState() {
                                 // focusNode: cvvFocusNode,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Security code can\'t be empty';
+                                    return translate('Security code cannot be empty');
                                   }
                                   if (value.length < 3) {
-                                    return 'Security code not valid';
+                                    return translate('Security code not valid');
                                   }
                                   return null;
                                 },
@@ -487,7 +487,7 @@ void initState() {
                                   border: OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(25.0)),
-                                  labelText: 'Security Code',
+                                  labelText: translate('Security Code'),
                                   hintText: 'XXXX',
                                 ),
                                 keyboardType: TextInputType.number,
@@ -504,7 +504,7 @@ void initState() {
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: TextFormField(
                                 validator: (value) => value.isEmpty
-                                    ? 'Card holder name can\'t be empty'
+                                    ? translate('Card holder name cannot be empty')
                                     : null,
                                 onSaved: (value) =>
                                     cardHolderName = value.trim(),
@@ -516,7 +516,7 @@ void initState() {
                                         new BorderRadius.circular(25.0),
                                     borderSide: new BorderSide(),
                                   ),
-                                  labelText: 'Card Holder',
+                                  labelText: translate('Card Holder'),
                                 ),
                                 //keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
@@ -544,7 +544,7 @@ void initState() {
                                       Icons.check,
                                       color: Colors.white,
                                     ),
-                                    Text(
+                                    TrText(
                                       'Done',
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -629,7 +629,7 @@ void initState() {
         builder: (BuildContext context) {
           // return object of type Dialog
           return AlertDialog(
-              title: new Text('Country'),
+              title: new TrText('Country'),
               content: new FutureBuilder(
                 future: getCountrylist(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -683,7 +683,7 @@ void initState() {
                         children: <Widget>[
                           Container(
                               padding: const EdgeInsets.only(bottom: 20.0),
-                              child: Text('Card Billing Details',
+                              child: TrText('Card Billing Details',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 20))),
@@ -692,7 +692,7 @@ void initState() {
                             //margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
                             child: TextFormField(
                               validator: (value) => value.isEmpty
-                                  ? 'Address field required'
+                                  ? translate('Address field required')
                                   : null,
 
                               onSaved: (value) => street = value.trim(),
@@ -705,8 +705,8 @@ void initState() {
                                 border: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(25.0)),
-                                hintText: 'Address line 1',
-                                labelText: 'Address line 1',
+                                hintText: translate('Address line') + ' 1',
+                                labelText: translate('Address line') + ' 1',
                               ),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
@@ -721,7 +721,7 @@ void initState() {
                             //  margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                             child: TextFormField(
                               validator: (value) => value.isEmpty
-                                  ? 'Address field required'
+                                  ? translate('Address field required')
                                   : null,
                               onSaved: (value) => town = value.trim(),
 
@@ -734,8 +734,8 @@ void initState() {
                                   border: OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(25.0)),
-                                  hintText: 'Town or City',
-                                  labelText: 'Town/City'),
+                                  hintText: translate('Town or City'),
+                                  labelText: translate('Town or City')),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
@@ -750,7 +750,7 @@ void initState() {
                             child: TextFormField(
                               // focusNode: cvvFocusNode,
                               validator: (value) => value.isEmpty
-                                  ? 'Address field required'
+                                  ? translate('Address field required')
                                   : null,
                               onSaved: (value) => state = value.trim(),
                               controller: _stateTextEditingController,
@@ -812,7 +812,7 @@ void initState() {
                                   decoration: new InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 15.0),
-                                    labelText: 'Country',
+                                    labelText: translate('Country'),
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
@@ -852,7 +852,7 @@ void initState() {
                                     Icons.check,
                                     color: Colors.white,
                                   ),
-                                  Text(
+                                  TrText(
                                     'Done',
                                     style: TextStyle(color: Colors.white),
                                   ),

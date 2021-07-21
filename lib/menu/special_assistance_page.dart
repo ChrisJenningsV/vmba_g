@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class SpecialAssistancePage extends StatelessWidget {
   List<Widget> render() {
@@ -8,7 +9,7 @@ class SpecialAssistancePage extends StatelessWidget {
     // List<Widget>();
 
     textSpliter(
-            'If you need a little more help when travelling, we’ll do our best to ensure that help is on hand. Please call us on')
+            translate('If you need a little more help when travelling, we’ll do our best to ensure that help is on hand. Please call us on'))
         .forEach((widget) {
       widgets.add(widget);
     });

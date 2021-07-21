@@ -3,6 +3,7 @@ import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class RangePickerWidget extends StatefulWidget {
   RangePickerWidget({Key key, this.departureDate, this.returnDate})
@@ -51,7 +52,7 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
               onPressed: () => Navigator.pop(context),
             )
           ],
-          title: Text(
+          title: TrText(
             'Travel Dates',
             style: TextStyle(letterSpacing: 1.15),
           ),
@@ -68,7 +69,7 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
                 new FloatingActionButton.extended(
                     elevation: 0.0,
                     isExtended: true,
-                    label: Text('DONE',style: TextStyle(color: gblSystemColors
+                    label: TrText('Done',style: TextStyle(color: gblSystemColors
                               .primaryButtonTextColor),),
                     icon: Icon(Icons.check, color: gblSystemColors
                               .primaryButtonTextColor,),

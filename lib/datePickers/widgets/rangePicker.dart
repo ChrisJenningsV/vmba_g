@@ -3,6 +3,7 @@ import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 class RangePickerPage extends StatefulWidget {
   RangePickerPage(
@@ -101,9 +102,8 @@ class _RangePickerPageState extends State<RangePickerPage> {
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                             )),
-                        Text(
-                          DateFormat("dd MMM yyy")
-                              .format(_selectedPeriod.start),
+                        Text(getIntlDate('dd MMM yyy', _selectedPeriod.start),
+                          //DateFormat("dd MMM yyy").format(_selectedPeriod.start),
                           style: TextStyle(fontSize: 16),
                         )
                       ],
@@ -125,9 +125,8 @@ class _RangePickerPageState extends State<RangePickerPage> {
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                             )),
-                        Text(
-                            DateFormat("dd MMM yyy")
-                                .format(_selectedPeriod.end),
+                        Text(getIntlDate('dd MMM yyy', _selectedPeriod.end),
+                            //DateFormat("dd MMM yyy").format(_selectedPeriod.end),
                             style: TextStyle(fontSize: 16))
                       ],
                     ),

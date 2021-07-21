@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/home/home_page.dart';
@@ -7,6 +9,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:package_info/package_info.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
+import 'package:vmba/utilities/helper.dart';
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -16,25 +19,58 @@ class RootPage extends StatefulWidget {
 }
 
 class RootPageState extends State<RootPage> {
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
   bool appInitalized = false;
   bool _displayProcessingIndicator;
   bool _displayFinalError;
+  bool _dataLoaded = false;
   String _displayProcessingText;
 
   @override
   void initState() {
     super.initState();
+    logit('init RootPageState');
+
     _displayProcessingIndicator = true;
     gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
 
-      loadData();
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+      if (_source.keys.toList()[0] != ConnectivityResult.none) {
+        if( _dataLoaded == false ) {
+          loadData();
+        }
+      } else {
+        gblNoNetwork = true;
+      }
+    });
+    //   loadData();
+  }
+
+  retryLoadData() {
+    _displayProcessingIndicator = true;
+    gblNoNetwork = false;
+    _displayFinalError = false;
+    _displayProcessingText = 'Loading settings...';
+
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+      if( _source.keys.toList()[0] != ConnectivityResult.none ){
+        loadData();
+      } else {
+        gblNoNetwork = true;
+      }
+    });
   }
 
   loadData() async {
-    //initLangs();
-
+    _dataLoaded = true;
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
     packageInfo.version + '.' + packageInfo.buildNumber)
@@ -47,6 +83,7 @@ class RootPageState extends State<RootPage> {
           _displayProcessingText = 'Error loading : ' + e.toString();
           _displayFinalError = true;
           _displayProcessingIndicator = false;
+          _dataLoaded = false;
         });
         return;
       });
@@ -55,6 +92,13 @@ class RootPageState extends State<RootPage> {
       );
 
         Repository.get().initCities().then((_) {
+            if( gblNoNetwork == true) {
+              setState(() {
+                _displayProcessingIndicator = false;
+                _dataLoaded = false;
+              });
+              return;
+            }
               Repository.get()
                   .initRoutes()
                   .then((_) => setState(() {
@@ -63,6 +107,7 @@ class RootPageState extends State<RootPage> {
                   .catchError((e) {
                 setState(() {
                   _displayProcessingIndicator = false;
+                  _dataLoaded = false;
                 });
               }).then((_) {});
               setState(() {
@@ -74,6 +119,7 @@ class RootPageState extends State<RootPage> {
                 _displayProcessingText = 'Error loading routes: ' + e.toString() ;
                 _displayFinalError = true;
                 _displayProcessingIndicator = false;
+                _dataLoaded = false;
               });
             });
 
@@ -89,12 +135,110 @@ class RootPageState extends State<RootPage> {
             color: Colors.white, constraints: BoxConstraints.expand(),
             child: Center(
               child:
-             Column(
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TrText(_displayProcessingText + gblError, style: TextStyle(fontSize: 14.0)),
+                    child: TrText(_displayProcessingText + gblError,
+                        style: TextStyle(fontSize: 14.0)),
+                  ),
+                ],
+              ),
+            ),
+          ));
+    } else if( gblNoNetwork == true) {
+      return Scaffold(
+          body: Container(
+            color: Colors.white, constraints: BoxConstraints.expand(),
+            child: Center(
+              child:
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('lib/assets/images/noNetwork.png'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TrText('No Internet Connection.',
+                    style: TextStyle(fontSize: 16),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TrText('Please check your connection.'),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                              //shape: buttonShape,
+                              backgroundColor: gblSystemColors
+                                  .primaryButtonColor),
+                          onPressed: () =>
+                              Navigator.of(context)
+                                  .pushNamedAndRemoveUntil(
+                                  '/MyBookingsPage',
+                                      (Route<dynamic> route) => false),
+                          child: Container(
+                            height: 60,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(
+                                    Icons.card_travel,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                TrText(
+                                  'My Bookings & Check-in',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          //shape: buttonShape,
+                            backgroundColor: gblSystemColors
+                                .primaryButtonColor),
+                        onPressed: () {
+                          retryLoadData();
+                        },
+                        child: Container(
+                          height: 60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(right: 5),
+                                child: Icon(
+                                  Icons.refresh,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              TrText(
+                                'Retry connection',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -136,8 +280,48 @@ class RootPageState extends State<RootPage> {
           return new StopPageWeb();
           break;
       }
-
+      _connectivity.disposeStream();
       return new HomePage();
     }
   }
+}
+
+class MyConnectivity {
+  MyConnectivity._internal();
+
+  static final MyConnectivity _instance = MyConnectivity._internal();
+
+  static MyConnectivity get instance => _instance;
+
+  Connectivity connectivity = Connectivity();
+
+  StreamController controller = StreamController.broadcast();
+
+  Stream get myStream => controller.stream;
+
+  void initialise() async {
+    ConnectivityResult result = await connectivity.checkConnectivity();
+    _checkStatus(result);
+    connectivity.onConnectivityChanged.listen((result) {
+      _checkStatus(result);
+    });
+  }
+
+  void _checkStatus(ConnectivityResult result) async {
+    bool isOnline = false;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        isOnline = true;
+      } else
+        isOnline = false;
+    } on SocketException catch (_) {
+      isOnline = false;
+    }
+    try {
+      controller.sink.add({result: isOnline});
+    } catch(e) {}
+  }
+
+  void disposeStream() => controller.close();
 }

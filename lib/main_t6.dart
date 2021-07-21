@@ -46,6 +46,7 @@ void configT6() {
   gblAppTitle = 'airswift';
   gblBuildFlavor = 'T6';
 
+
   gblSettings = Settings (
       latestBuildiOS: '1.0.5',
       latestBuildAndroid: '1.0.0.98',
@@ -71,7 +72,7 @@ void configT6() {
       groupsBookingsEmail: 'groups@airswift.com',
       bpShowFastTrack: true,
       bpShowLoungeAccess: true,
-
+      buttonStyle: 'RO1',
 
       passengerTypes: PassengerTypes(
       adult: true,

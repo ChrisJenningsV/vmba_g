@@ -8,6 +8,7 @@ import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 class AddBooking extends StatelessWidget {
   @override
@@ -81,7 +82,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                 children: <Widget>[
                   new Padding(
                     padding: EdgeInsets.all(10),
-                    child: new Text(
+                    child: new TrText(
                         'Add an existing booking using your booking reference and passenger last name',
                         style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   ),
@@ -89,7 +90,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                     textCapitalization: TextCapitalization.characters,
                     //maxLength: 6,
                     decoration: InputDecoration(
-                      labelText: "Enter your booking reference",
+                      labelText: translate("Enter your booking reference"),
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -98,10 +99,10 @@ class _AddBookingFormState extends State<AddBookingForm> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter a booking reference';
+                        return translate('Please enter a booking reference');
                       }
                       if (value.trim().length != 6) {
-                        return 'Your booking reference is 6 charactors long';
+                        return translate('Your booking reference is 6 charactors long');
                       }
                       return null;
                     },
@@ -111,7 +112,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                   TextFormField(
                     textCapitalization: TextCapitalization.characters,
                     decoration: new InputDecoration(
-                      labelText: "Enter your surname",
+                      labelText: translate("Enter your surname"),
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -120,7 +121,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter a surmane';
+                        return translate('Please enter a surmane');
                       } else {
                         return null;
                       }
@@ -139,7 +140,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                       child: new MaterialButton(
                         minWidth: 180,
                         height: 50.0,
-                        child: Text(
+                        child: TrText(
                           'ADD BOOKING',
                           style: new TextStyle(
                               fontSize: 16.0,
@@ -160,26 +161,6 @@ class _AddBookingFormState extends State<AddBookingForm> {
           ));
     }
   }
-
-  // Widget btnAddBooking() {
-  //   return new StoreConnector<SessionState, String>(
-  //       converter: (store) => store.state.uidToken,
-  //       builder: (context, viewModel) {
-  //         return RaisedButton(
-  //           color: Colors.black,
-  //           onPressed: () {
-  //             if (formKey.currentState.validate()) {
-  //               print(viewModel);
-  //               _loadPnr();
-  //             }
-  //           },
-  //           child: Text(
-  //             'ADD BOOKING',
-  //             style: new TextStyle(color: Colors.white),
-  //           ),
-  //         );
-  //       });
-  // }
 
   Future<void> fetchBooking() async {
     //AATMRA
@@ -466,14 +447,14 @@ class _AddBookingFormState extends State<AddBookingForm> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Cannot Add Booking"),
+          title: new TrText("Cannot Add Booking"),
           content: _error != null && _error != ''
-              ? new Text(_error)
-              : new Text("Booking not found"),
+              ? new TrText(_error)
+              : new TrText("Booking not found"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(
-              child: new Text("Close"),
+              child: new TrText("Close"),
               onPressed: () {
                 _error = '';
                 _pnrLoaded();

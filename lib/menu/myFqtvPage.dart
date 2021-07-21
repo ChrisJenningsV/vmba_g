@@ -136,7 +136,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text("Checking details..."),
+                child: new TrText("Checking details..."),
               ),
             ],
           ),
@@ -150,7 +150,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
             children:[
               Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
                 width: 25, height: 25, fit: BoxFit.contain,),
-              TrText('${gblSettings.fqtvName} LOGIN')
+              Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'))
             ]
         ),
         content: contentBox(context),
@@ -258,7 +258,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: '${gblSettings.fqtvName} Number',
+                  labelText: '${gblSettings.fqtvName} ' + translate('number'),
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -284,7 +284,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Password',
+                  labelText: translate('Password'),
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -306,7 +306,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 },
               ),
               new TextButton(
-                child: new Text(
+                child: new TrText(
                   'Reset password',
                   style: TextStyle(color: Colors.black),
                 ),
@@ -462,7 +462,7 @@ if ( memberDetails != null ) {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
       child:
-          Text(
+          TrText(
             'Show Transactions',
             style: TextStyle(color: Colors.white),)
     ));
@@ -505,34 +505,6 @@ if ( memberDetails != null ) {
             child: _getTrans()
         ),
       ));
-      /*
-      widgets.add(new SingleChildScrollView(
-        padding: EdgeInsets.only(left: 1.0, right: 1.0),
-        scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-              columnSpacing: 1.0,
-              columns: <DataColumn>[
-              DataColumn(
-                label: Text('Pnr',  style: TextStyle(fontSize: 10.0)),
-              ),
-              DataColumn(
-                label: Text('Flt No', style: TextStyle(fontSize: 10.0)),
-              ),
-              DataColumn(label: Text('Dep', style: TextStyle(fontSize: 10.0)),
-              ),
-              DataColumn(label: Text('Dest', style: TextStyle(fontSize: 10.0)),),
-              DataColumn(label: Text('Date', style: TextStyle(fontSize: 10.0)),),
-              DataColumn(label: Text('Miles', style: TextStyle(fontSize: 10.0)),),
-              DataColumn(label: Text('Desc', style: TextStyle(fontSize: 10.0)),),
-            ],
-            rows:   _getDataCells()
-              ),
-        ),
-          ));
-
-       */
    }
     return widgets;
   }
@@ -595,36 +567,7 @@ Widget _getTrans() {
 
       return new Column(children: tranWidgets.toList());
 }
-/*
-  List <DataRow> _getDataCells() {
-    List <DataRow> rows = [];
 
-    for(var tran in  transactions) {
-      if( tran.airMiles != '0' && tran.airMiles != '0.0') {
-        DataRow row = new DataRow(
-
-            cells: <DataCell>[
-              DataCell(Text(tran.pnr, style: TextStyle(fontSize: 10.0),)),
-              DataCell(
-                  Text(tran.flightNumber, style: TextStyle(fontSize: 10.0))),
-              DataCell(Text(
-                  tran.departureCityCode, style: TextStyle(fontSize: 10.0))),
-              DataCell(
-                  Text(tran.arrivalCityCode, style: TextStyle(fontSize: 10.0))),
-              DataCell(Text(
-                  DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)),
-                  style: TextStyle(fontSize: 10.0))),
-              DataCell(Text(tran.airMiles, style: TextStyle(fontSize: 10.0))),
-              DataCell(Text(tran.description, style: TextStyle(fontSize: 8.0))),
-            ]
-        );
-        rows.add(row);
-      }
-  }
-    return rows;
-
-  }
-*/
   void formSave() {
     final form = formKey.currentState;
     form.save();
@@ -649,31 +592,6 @@ Widget _getTrans() {
     showAlertDialog(context, 'Error', _error);
     return;
     // flutter defined function
-/*    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("${gblSettings.fqtvName} Login"),
-          content: _error != null && _error != ''
-              ? new Text(_error)
-              : new Text("Please try again"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new TextButton(
-              child: new Text("Close"),
-              onPressed: () {
-                _error = '';
-
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-
- */
   }
 
   void _fqtvResetPassword() async {
@@ -763,7 +681,7 @@ Widget _getTrans() {
    print(msg);
    _sendVRSCommand(msg, method).then((result) {
      if( result == null || result == ''){
-       _error = 'Bad server response logging on';
+       _error = translate('Bad server response logging on');
        _isButtonDisabled = false;
        _loadingInProgress = false;
        _actionCompleted();
@@ -844,7 +762,7 @@ Widget _getTrans() {
       return response.body.trim();
     } else {
       print('failed: $msg');
-      _error = 'message failed';
+      _error = translate('message failed');
       try{
         print (response.body);
         _error = response.body;
@@ -901,7 +819,7 @@ Widget _getTrans() {
          decoration: InputDecoration(
            contentPadding:
            new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-           labelText: 'Old password',
+           labelText: translate('Old password'),
            fillColor: Colors.white,
            border: new OutlineInputBorder(
              borderRadius: new BorderRadius.circular(15.0),
@@ -919,7 +837,7 @@ Widget _getTrans() {
          decoration: InputDecoration(
            contentPadding:
            new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-           labelText: 'new Password',
+           labelText: translate('new Password'),
            fillColor: Colors.white,
            border: new OutlineInputBorder(
              borderRadius: new BorderRadius.circular(15.0),
@@ -990,7 +908,7 @@ Widget _getTrans() {
                        decoration: InputDecoration(
                          contentPadding:
                          new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                         labelText: 'Email',
+                         labelText: translate('Email'),
                          fillColor: Colors.white,
                          border: new OutlineInputBorder(
                            borderRadius: new BorderRadius.circular(15.0),

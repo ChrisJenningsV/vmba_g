@@ -72,7 +72,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     //}
     buffer.write(',FGNoAv=True');
     String _paxSeatsRequire = (this.widget.newBooking.passengers.adults +
-            this.widget.newBooking.passengers.children +
+        this.widget.newBooking.passengers.seniors +
+        this.widget.newBooking.passengers.students +
+        this.widget.newBooking.passengers.children +
             this.widget.newBooking.passengers.youths)
         .toString();
     buffer.write(',qtyseats=$_paxSeatsRequire');
@@ -348,9 +350,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                       child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            new Text(
-                              new DateFormat('EEE dd')
-                                  .format(DateTime.parse(item.daylcl)),
+                            new Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+                              //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),
@@ -403,12 +404,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt[0].time.ddaylcl))
-                                        .toString()
-                                        .substring(0, 10),
+                                Text(getIntlDate('EEE dd MMM', DateTime.parse(item.flt[0].time.ddaylcl)),
+                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse( item.flt[0].time.ddaylcl)).toString().substring(0, 10),
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -446,12 +443,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt.last.time.adaylcl))
-                                        .toString()
-                                        .substring(0, 10),
+                                Text(getIntlDate('EEE dd MMM',DateTime.parse(item.flt.last.time.adaylcl)),
+                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse( item.flt.last.time.adaylcl)).toString().substring(0, 10),
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -688,7 +681,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
-                        Text(
+                        TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'
@@ -721,7 +714,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                   fontSize: 12.0,
                                 ),
                               )
-                            : new Text('No Seats',
+                            : new TrText('No Seats',
                                 style: new TextStyle(
                                   color: gblSystemColors
                                       .primaryButtonTextColor,
@@ -766,7 +759,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          new Text(
+                          new TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'
@@ -807,7 +800,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                     fontSize: 12.0,
                                   ),
                                 )
-                              : new Text('No Seats',
+                              : new TrText('No Seats',
                                   style: new TextStyle(
                                     color: gblSystemColors
                                         .primaryButtonTextColor,
@@ -831,6 +824,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           flts: flts, //objAv.availability.itin[0].flt,
           seats: widget.newBooking.passengers.adults +
               widget.newBooking.passengers.youths +
+              widget.newBooking.passengers.seniors +
+              widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
     flightSelected(selectedFlt);
@@ -853,7 +848,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                   builder: (context) => FlightSelectionSummaryWidget(
                       newBooking: this.widget.newBooking)));
         } else {
-          showSnackBar('Please check your internet connection');
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
         }
       });
     }

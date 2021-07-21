@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
@@ -52,6 +51,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //String _salesCity = 'ABZ';
     //String _equalsSafeString = '%3D';
     //String _commaSafeString = '%2C';
+    //Intl.defaultLocale = 'en'; // VRS need UK format
     buffer.write('A');
     buffer.write(
         new DateFormat('dd').format(this.widget.newBooking.departureDate));
@@ -87,7 +87,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //&qtyseats=1
     String _paxSeatsRequire = (this.widget.newBooking.passengers.adults +
             this.widget.newBooking.passengers.children +
-            this.widget.newBooking.passengers.youths)
+            this.widget.newBooking.passengers.youths +
+            this.widget.newBooking.passengers.seniors +
+            this.widget.newBooking.passengers.students)
         .toString();
     buffer.write(',qtyseats=$_paxSeatsRequire');
     //&journey=ABZ-KOI
@@ -106,6 +108,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
+    //Intl.defaultLocale = gblLanguage;
 
     return buffer
         .toString()
@@ -149,13 +152,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       }
     }
   }
-
+/*
   showSnackBar(String message) {
     final _snackbar = snackbar(message);
     ScaffoldMessenger.of(context).showSnackBar(_snackbar);
     //_key.currentState.showSnackBar(_snackbar);
   }
-
+*/
   void _dataLoaded() {
     int calenderWidgetSelectedItem;
     double animateTo = 250;
@@ -281,11 +284,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                       color: !isSearchDate(DateTime.parse(item.daylcl),
                               widget.newBooking.departureDate)
                           ? Colors.white
-                          : gblSystemColors
-                              .accentButtonColor //Colors.red,
+                          : gblSystemColors.accentButtonColor //Colors.red,
                       ),
-                  width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(
-                          DateFormat('y-MM-dd').format(DateTime.now().toUtc())))
+                  width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())))
                       ? 0
                       : 120.0,
                   child: new TextButton(
@@ -294,18 +295,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                           if (result == true) {
                             _changeSearchDate(DateTime.parse(item.daylcl));
                           } else {
-                            showSnackBar(
-                                'Please check your internet connection');
+                            //showSnackBar('Please, check your internet connection');
+                            noInternetSnackBar(context);
                           }
                         });
                       },
                       child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            new Text(
-                              new DateFormat('EEE dd')
-                                  .format(DateTime.parse(item.daylcl)),
-                              //textScaleFactor: 1.0,
+                            new Text( getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+                              //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
                               style: TextStyle(
                                   fontSize: 14,
                                   color: isSearchDate(
@@ -364,12 +363,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt[0].time.ddaylcl))
-                                        .toString()
-                                        .substring(0, 10),
+                                Text(getIntlDate('EEE dd MMM', DateTime.parse(item.flt[0].time.ddaylcl)),
+                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt[0].time.ddaylcl)).toString().substring(0, 10),
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -387,7 +382,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                   initialData: item.flt.first.dep.toString(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<String> text) {
-                                    return new TrText(text.data,
+                                    return TrText(text.data,
                                         style: new TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.w300),
@@ -407,12 +402,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
+                                Text( getIntlDate('EEE dd MMM',DateTime.parse(item.flt.last.time.adaylcl)),
+                                    /*new DateFormat('EEE dd MMM h:mm a')
                                         .format(DateTime.parse(
                                             item.flt.last.time.adaylcl))
                                         .toString()
-                                        .substring(0, 10),
+                                        .substring(0, 10),*/
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -629,6 +624,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           flts: flts, //objAv.availability.itin[0].flt,
           seats: widget.newBooking.passengers.adults +
               widget.newBooking.passengers.youths +
+              widget.newBooking.passengers.seniors +
+              widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
     flightSelected(selectedFlt, flts);
@@ -660,7 +657,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                         newBooking: this.widget.newBooking)));
           }
         } else {
-          showSnackBar('Please check your internet connection');
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
         }
       });
     }
@@ -684,7 +682,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
-                        Text(
+                        TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'
@@ -759,7 +757,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          new Text(
+                          new TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'

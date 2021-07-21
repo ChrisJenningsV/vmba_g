@@ -51,7 +51,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Stopwatch stopwatch = new Stopwatch();
   int timeout = 15;
   String _error;
-  Passengers _passengers = new Passengers(1, 0, 0, 0);
+  Passengers _passengers = new Passengers(1, 0, 0, 0,0, 0, 0);
   String nostop = '';
   bool isMmb = false;
 
@@ -456,7 +456,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Departure Time:'),
+            TrText('Departure Time:'),
             Text(DateFormat('dd MMM kk:mm').format(DateTime.parse(
                 pnrModel.pNR.itinerary.itin[i].depDate +
                     ' ' +
@@ -468,7 +468,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Fare Type:'),
+            TrText('Fare Type:'),
             Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
@@ -671,7 +671,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -680,7 +681,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -754,7 +756,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
 
@@ -763,7 +766,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
             if (response.body.contains('ERROR - ')) {
@@ -801,7 +805,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Unable to confirm partner airlines flights.');
+        showSnackBar(translate('Unable to confirm partner airlines flights.'));
 
         //Cnx new flights
         msg = '*${widget.mmbBooking.rloc}';
@@ -852,7 +856,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -861,7 +866,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
       String result = response.body
@@ -975,7 +981,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -984,7 +991,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -1120,7 +1128,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text(_displayProcessingText),
+                child: new TrText(_displayProcessingText),
               ),
             ],
           ),
@@ -1141,7 +1149,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               iconTheme: IconThemeData(
                   color:
                   gblSystemColors.headerTextColor),
-              title: new Text('Payment',
+              title: new TrText('Payment',
                   style: TextStyle(
                       color: gblSystemColors
                           .headerTextColor)),
@@ -1160,7 +1168,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
+                                  TrText(
                                     'Please complete your payment within ',
                                     style: TextStyle(
                                         color: Colors.white,
@@ -1242,7 +1250,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                       mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('No of adults: '),
+                        Text(translate('No of ') + translate('Adults') + ': '),
                         Text(_passengers.adults.toString()),
                       ],
                     )
@@ -1254,7 +1262,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                       mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('No of youths: '),
+                        Text(translate('No of ') + translate('Youths') + ': '),
                         Text(_passengers.youths.toString()),
                       ],
                     )
@@ -1266,7 +1274,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                       mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('No of children: '),
+                        Text(translate('No of ') + translate('Children') + ': '),
                         Text(_passengers.children
                             .toString()),
                       ],
@@ -1279,7 +1287,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                       mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('No of infants: '),
+                        Text(translate('No of ') + translate('Infants') + ': '),
                         Text(
                             _passengers.infants.toString()),
                       ],
@@ -1307,7 +1315,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        TrText(
                           'Amount outstanding',
                           style: TextStyle(
                               fontWeight: FontWeight.w700),
@@ -1328,7 +1336,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   mainAxisAlignment:
                   MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Terms and Conditions'),
+                    TrText('Terms & Conditions'),
                     IconButton(
                       icon: Icon(Icons.keyboard_arrow_down),
                       onPressed: () => Navigator.push(
@@ -1346,14 +1354,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   mainAxisAlignment:
                   MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Privacy Policy'),
+                    TrText('Privacy Policy'),
                     IconButton(
                       icon: Icon(Icons.keyboard_arrow_down),
                       onPressed: () => Navigator.push(
                           context,
                           SlideTopRoute(
                               page: WebViewWidget(
-                                  title: 'Privacy Policy',
+                                  title: translate('Privacy Policy'),
                                   url: gblSettings
                                       .privacyPolicyUrl))),
                     )
@@ -1376,7 +1384,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            this.isMmb ? 'AGREE AND MAKE CHANGES' : 'COMPLETE BOOKING',
+                            this.isMmb ? translate('AGREE AND MAKE CHANGES') : translate('COMPLETE BOOKING'),
                             style: new TextStyle(
                                 color: Colors.black),
                           ),
@@ -1479,7 +1487,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
+                TrText(
                   'AGREE AND PAY',
                   style: new TextStyle(color: Colors.black),
                 ),
@@ -1509,7 +1517,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       ));
 
     } else {
-      list.add(Text( 'AGREE AND PAY',
+      list.add(TrText( 'AGREE AND PAY',
       style: new TextStyle(color: Colors.black),
       ));
     list.add(Image.asset(

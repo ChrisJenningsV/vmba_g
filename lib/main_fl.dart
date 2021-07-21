@@ -90,7 +90,7 @@ void configFL() {
       youth: true,
       senior: true,
     ),
-    fqtvName:  "",
+    fqtvName:  "Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",

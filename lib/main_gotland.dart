@@ -27,13 +27,14 @@ void main() {
 }
 void configAG() {
   SystemColors _systemColors = SystemColors(
-    primaryButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
-    accentButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
-    accentColor: Colors.black,
-/*      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
-      textButtonTextColor: Colors.black54  , */
-    primaryHeaderColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
+ //   primaryButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
+    primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
+    otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
+  accentButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
+    accentColor: Colors.black,
+//    primaryHeaderColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
+    primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
     primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
     textButtonTextColor: Colors.black54,
@@ -63,7 +64,7 @@ void configAG() {
 
   gblSettings = Settings(
     wantRememberMe: false,
-    wantHomeFQTVButton: true,
+    wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
     currency: 'NOK',
     airlineName: "Air Gotland",
@@ -71,6 +72,7 @@ void configAG() {
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "FL",
     brandID: "AG",
+    buttonStyle: 'RO2',
 
     termsAndConditionsUrl:  " https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airgotland.se/sv/om-air-leap/integritetspolicy?app_mode=1",
@@ -86,6 +88,8 @@ void configAG() {
     iOSAppId:  '1457545908',
     androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
     gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
+    currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
 
 
     eVoucher:  true,
@@ -95,8 +99,10 @@ void configAG() {
       infant: true,
       youth: true,
       senior: true,
+      student: true,
+      umnr: true,
     ),
-    fqtvName:  "",
+    fqtvName:  "Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",

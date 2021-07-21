@@ -65,6 +65,16 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         youths++) {
       sb.write("-TTTT${convertNumberIntoWord(youths)}/YouthMr.TH15^");
     }
+    for (var seniors = 1;
+        seniors < widget.newBooking.passengers.seniors + 1;
+        seniors++) {
+      sb.write("-TTTT${convertNumberIntoWord(seniors)}/SeniorMr.CD^");
+    }
+    for (var students = 1;
+          students < widget.newBooking.passengers.students + 1;
+          students++) {
+      sb.write("-TTTT${convertNumberIntoWord(students)}/StudentMr.SD^");
+    }
     for (var child = 1;
         child < widget.newBooking.passengers.children + 1;
         child++) {
@@ -100,7 +110,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           getFareQuote();
         });
       } else {
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
       }
     });
   }
@@ -274,7 +285,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Total Tax: '),
+        TrText('Total Tax: '),
         Text(formatPrice(currencyCode,tax)),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -345,7 +356,7 @@ Row airMiles() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Net Fare:'),
+        TrText('Net Fare:'),
         Text(formatPrice(currencyCode,netFareTotal)),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -379,7 +390,7 @@ Row airMiles() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Flights Total: '),
+        TrText('Flights Total: '),
         Text(formatPrice(currencyCode,total)),
 /*
         Text(NumberFormat.simpleCurrency(
@@ -415,7 +426,7 @@ Row airMiles() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('Discount: '),
+          TrText('Discount: '),
           Text(formatPrice(currencyCode,total)),
           /*
           Text(NumberFormat.simpleCurrency(
@@ -503,7 +514,7 @@ Row airMiles() {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Flight No:'),
+            TrText('Flight No:'),
             Text(
                 '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}')
           ],
@@ -513,7 +524,7 @@ Row airMiles() {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Departure Time:'),
+            TrText('Departure Time:'),
             Text(DateFormat('dd MMM kk:mm').format(DateTime.parse(
                 pnrModel.pNR.itinerary.itin[i].depDate +
                     ' ' +
@@ -525,7 +536,7 @@ Row airMiles() {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Fare Type:'),
+            TrText('Fare Type:'),
             Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
@@ -554,7 +565,7 @@ Row airMiles() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Tax:'),
+              TrText('Tax:'),
               Text(formatPrice(currencyCode,taxTotal)),
 /*
               Text(NumberFormat.simpleCurrency(
@@ -631,7 +642,7 @@ Row airMiles() {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text("Calculating your price..."),
+                child: new TrText("Calculating your price..."),
               ),
             ],
           ),
@@ -754,7 +765,7 @@ Row airMiles() {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of adults: '),
+                          Text(translate('No of ') + translate('Adults') + ': '),
                           Text(widget.newBooking.passengers.adults.toString()),
                         ],
                       )
@@ -765,13 +776,35 @@ Row airMiles() {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of youths: '),
+                          Text(translate('No of ') + translate('Youths') + ': '),
                           Text(widget.newBooking.passengers.youths.toString()),
                         ],
                       )
                     : Padding(
                         padding: EdgeInsets.zero,
                       ),
+                widget.newBooking.passengers.students != 0
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(translate('No of ') + translate('Students') + ': '),
+                    Text(widget.newBooking.passengers.students.toString()),
+                  ],
+                )
+                    : Padding(
+                  padding: EdgeInsets.zero,
+                ),
+                widget.newBooking.passengers.seniors != 0
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(translate('No of ') + translate('Seniors') + ': '),
+                    Text(widget.newBooking.passengers.seniors.toString()),
+                  ],
+                )
+                    : Padding(
+                  padding: EdgeInsets.zero,
+                ),
                 widget.newBooking.passengers.children != 0
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -788,7 +821,7 @@ Row airMiles() {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of infants: '),
+                          Text(translate('No of ') + translate('Infants') +': '),
                           Text(widget.newBooking.passengers.infants.toString()),
                         ],
                       )
@@ -816,7 +849,7 @@ Row airMiles() {
                 ( gblRedeemingAirmiles != true ) ? Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    TrText(
                       'Amount payable',
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
@@ -862,7 +895,8 @@ Row airMiles() {
                                 builder: (context) => PassengerDetailsWidget(
                                     newBooking: widget.newBooking)));
                       } else {
-                        showSnackBar('Please check your internet connection');
+                        //showSnackBar(translate('Please, check your internet connection'));
+                        noInternetSnackBar(context);
                       }
                     });
                   },
@@ -874,7 +908,7 @@ Row airMiles() {
                         Icons.check,
                         color: Colors.white,
                       ),
-                      Text(
+                      TrText(
                         'CONTINUE',
                         style: TextStyle(color: Colors.white),
                       ),

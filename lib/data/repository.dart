@@ -1,5 +1,6 @@
 import 'dart:async' show Future;
 import 'dart:convert';
+import 'dart:developer';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
@@ -13,6 +14,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/helper.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
 
@@ -158,7 +160,7 @@ class Repository {
 
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> initCities() async {
-
+  logit('initCities');
     Map<String, String>  userHeader = {"Content-type": "application/json"};
     if (gblSettings.apiKey.isNotEmpty) {
       userHeader = {          'Content-Type': 'application/json',
@@ -230,6 +232,8 @@ class Repository {
                 "BrandId": "${gblSettings.brandID}"};
     }
     try {
+      logit('getSettingsFromApi - login');
+
       final http.Response response = await http.post(
           Uri.parse(gblSettings.apiUrl + "/login"),
           headers: headers,
@@ -278,7 +282,7 @@ class Repository {
                     break;
                   case 'fqtvName':
                     gblSettings.fqtvName = item['value'];
-                    print('load FQTV name [${gblSettings.fqtvName}]');
+                    logit('load FQTV name [${gblSettings.fqtvName}]');
                     break;
                   case 'latestBuildAndroid':
                     gblSettings.latestBuildAndroid = item['value'];
@@ -415,6 +419,10 @@ class Repository {
                     }
                 }
               }
+            } else {
+              print('settingsJson == null');
+              log('[settings string]' + settingsString);
+              log('[body]' + response.body);
             }
             if( gblVerbose == true ) {print('successful login');}
 
@@ -426,10 +434,12 @@ class Repository {
             }
           }
           else {
+            print(response.body);
             gblError = response.body;
             gblNoNetwork = true;
           }
         } else {
+          print(response.body);
           gblError = response.body;
           gblNoNetwork = true;
 
@@ -469,6 +479,7 @@ class Repository {
   Future<ParsedResponse<List<City>>> getCities() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
+    logit('get cities');
     http.Response response = await http
         .get(
             //"${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmacitylist")
@@ -872,6 +883,7 @@ class Repository {
   Future<ParsedResponse<RoutesModel>> initRoutes() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
+    logit('initRoutes');
     final http.Response response = await http.get(
         Uri.parse(
             '${gblSettings.apiUrl}/cities/Getroutelist'),

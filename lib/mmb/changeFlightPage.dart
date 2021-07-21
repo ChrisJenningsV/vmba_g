@@ -13,6 +13,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/components/trText.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -78,6 +79,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   String getAvCommand() {
+    //Intl.defaultLocale = 'en';
     var buffer = new StringBuffer();
     buffer.write('A');
     buffer.write(new DateFormat('dd').format(this.widget.departureDate));
@@ -155,7 +157,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
-
+    //Intl.defaultLocale = gblLanguage;
     return buffer
         .toString()
         .replaceAll('=', '%3D')
@@ -436,17 +438,16 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                           if (result == true) {
                             _changeSearchDate(DateTime.parse(item.daylcl));
                           } else {
-                            showSnackBar(
-                                'Please check your internet connection');
+                            //showSnackBar('Please, check your internet connection');
+                            noInternetSnackBar(context);
                           }
                         });
                       },
                       child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            new Text(
-                              new DateFormat('EEE dd')
-                                  .format(DateTime.parse(item.daylcl)),
+                            new Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+                              //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),
@@ -500,12 +501,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt[0].time.ddaylcl))
-                                        .toString()
-                                        .substring(0, 10),
+                                Text(getIntlDate('EEE dd MMM', DateTime.parse(item.flt[0].time.ddaylcl)),
+                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt[0].time.ddaylcl)).toString().substring(0, 10),
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -542,12 +539,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Text(
-                                    new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt.last.time.adaylcl))
-                                        .toString()
-                                        .substring(0, 10),
+                                Text(getIntlDate('EEE dd MMM',DateTime.parse(item.flt.last.time.adaylcl)),
+                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt.last.time.adaylcl)).toString().substring(0, 10),
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w300)),
@@ -814,7 +807,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                         //intJourney: widget.journey,
                       )));
         } else {
-          showSnackBar('Please check your internet connection');
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
         }
       });
     }
@@ -838,7 +832,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: <Widget>[
-                        Text(
+                        TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'
@@ -869,7 +863,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                   fontSize: 12.0,
                                 ),
                               )
-                            : new Text('No Seats',
+                            : new TrText('No Seats',
                                 style: new TextStyle(
                                   color: gblSystemColors
                                       .primaryButtonTextColor,
@@ -914,7 +908,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          new Text(
+                          new TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
                                     'Fly Flex Plus'
@@ -954,7 +948,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                     fontSize: 12.0,
                                   ),
                                 )
-                              : new Text('No Seats',
+                              : new TrText('No Seats',
                                   style: new TextStyle(
                                     color: gblSystemColors
                                         .primaryButtonTextColor,

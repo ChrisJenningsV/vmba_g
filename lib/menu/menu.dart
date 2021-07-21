@@ -51,7 +51,7 @@ class DrawerMenu extends StatelessWidget {
                 //Navigator.pop(context);
               },
             ),
-            ListTile(
+            gblNoNetwork == false ? ListTile(
               title: _getMenuItem( Icons.flight_takeoff, 'Book a flight' ),
               onTap: () {
                 // Update the state of the app
@@ -60,7 +60,7 @@ class DrawerMenu extends StatelessWidget {
                     '/FlightSearchPage', (Route<dynamic> route) => false);
                 //Navigator.pop(context);
               },
-            ),
+            ): Padding(padding: EdgeInsets.all(0)),
             gblBuildFlavor == 'LM' ?
             ListTile(
               // contentPadding: EdgeInsets.zero,
@@ -71,7 +71,7 @@ class DrawerMenu extends StatelessWidget {
             ): Padding(padding: EdgeInsets.all(0)),
             //Divider(),
             ListTile(
-              title: _getMenuItem( Icons.card_travel, 'My bookings' ),
+              title: _getMenuItem( Icons.card_travel, 'My Bookings' ),
               onTap: () {
                 // Update the state of the app
                 // ...
@@ -79,7 +79,7 @@ class DrawerMenu extends StatelessWidget {
                     '/MyBookingsPage', (Route<dynamic> route) => false);
               },
             ),
-            ListTile(
+            gblNoNetwork == false ? ListTile(
               title: _getMenuItem( Icons.add, 'Add an existing booking' ),
               onTap: () {
                 // Update the state of the app
@@ -87,8 +87,8 @@ class DrawerMenu extends StatelessWidget {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/AddBookingPage', (Route<dynamic> route) => false);
               },
-            ),
-            if(gblSettings.gblLanguages != null)
+            ): Padding(padding: EdgeInsets.all(0)),
+            if(gblSettings.gblLanguages != null && gblNoNetwork == false )
             ListTile(
               title: _getMenuItem( Icons.flag, 'Language' ),
               onTap: () {
@@ -118,7 +118,7 @@ class DrawerMenu extends StatelessWidget {
                 ));
               },
             ),
-            if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) ListTile(
+            if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) ListTile(
               title: _getMenuItem( Icons.person_pin, 'My ${gblSettings.fqtvName}' ),
               onTap: () {
                 Navigator.push(
@@ -141,7 +141,7 @@ class DrawerMenu extends StatelessWidget {
             ) : '',
 
              */
-            ListTile(
+            if(gblNoNetwork == false) ListTile(
               title: _getMenuItem( Icons.live_help, 'FAQs' ),
               onTap: () {
                 switch (gblSettings.aircode) {
@@ -156,7 +156,7 @@ class DrawerMenu extends StatelessWidget {
                 }
               },
             ),
-            ListTile(
+            if( gblNoNetwork == false ) ListTile(
               title: _getMenuItem( Icons.phone, 'Contact us' ),
               onTap: () {
                 //Navigator.push(context, SlideTopRoute(page: ContactUsPage()

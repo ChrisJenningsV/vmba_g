@@ -9,6 +9,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 
 
 class MyBookingsPage extends StatefulWidget {
@@ -89,7 +90,7 @@ String _error = '';
       ));
     } else {
       return Scaffold(
-          appBar: appBar(context, "My Bookings")
+          appBar: appBar(context, translate("My Bookings"))
           //AppBar(
           //     brightness: AppConfig.of(context).systemColors.statusBar,
           //     backgroundColor: AppConfig.of(context).systemColors.primaryHeaderColor,
@@ -327,10 +328,10 @@ String _error = '';
                       //       journey.first.fltNo,
                       new Text(
                         isFltPassedDate(journey)
-                            ? 'departed'
+                            ? translate('departed')
                             : journey.length > 1
-                                ? '${journey.length - 1} connection'
-                                : 'direct flight',
+                                ? '${journey.length - 1} ' + translate('connection')
+                                : translate('Direct Flight'),
                         style: new TextStyle(
                             fontSize: 14.0, fontWeight: FontWeight.w300),
                       ),
@@ -354,20 +355,17 @@ String _error = '';
         padding: EdgeInsets.only(left: 5.0),
       ));
       list.add(Text(
-          (DateFormat('EEE dd MMM h:mm a')
-                  .format(
-                      DateTime.parse(journey.depDate + ' ' + journey.depTime))
-                  .toString())
-              .replaceFirst('12:00 AM', '00:00 AM'),
+          //(DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(journey.depDate + ' ' + journey.depTime)).toString()).replaceFirst('12:00 AM', '00:00 AM'),
+          getIntlDate('EEE dd MMM h:mm a', DateTime.parse(journey.depDate + ' ' + journey.depTime)).replaceFirst('12:00 AM', '00:00 AM'),
           style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)));
     } else {
       if (journey.status == 'QQ') {
-        list.add(Text('Flight Not Operating',
+        list.add(TrText('Flight Not Operating',
             style: new TextStyle(fontSize: 16.0,
                 color: Colors.red,
                 fontWeight: FontWeight.bold)));
       } else {
-        list.add(Text('Flight Problem',
+        list.add(TrText('Flight Problem',
             style: new TextStyle(fontSize: 14.0,
                 color: Colors.red,
                 fontWeight: FontWeight.bold)));

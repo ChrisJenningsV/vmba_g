@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class SystemColors {
   final Color primaryButtonColor;
   final Color primaryButtonTextColor;
+  final Color otherButtonTextColor;
   final Color accentButtonColor;
 
   //final Color buttonColor; // = Color.fromRGBO(243, 135, 57, 1);
   final Color primaryColor; // = Colors.white;
+   Color otherButtonColor;
    Color textButtonTextColor;
    Color accentColor; // = Colors.white;
 
@@ -31,6 +33,8 @@ class SystemColors {
     @required this.accentButtonColor,
     @required this.primaryColor,
     @required this.accentColor,
+    this.otherButtonColor,
+    this.otherButtonTextColor,
     this.primaryButtonTextColor,
     this.textButtonTextColor,
     this.primaryHeaderColor,
@@ -61,7 +65,8 @@ class SystemColors {
     if( seatPlanColorSelected == null ) seatPlanColorSelected = Colors.blue.shade900;
     if(seatPlanColorEmergency == null) seatPlanColorEmergency= Colors.red;
     if(seatPlanColorAvailable == null) seatPlanColorAvailable = Colors.blue;
-      if(seatPlanColorUnavailable == null) seatPlanColorUnavailable =Colors.grey.shade300;
-        if(seatPlanColorRestricted == null) seatPlanColorRestricted = Colors.green[200];
+    if(seatPlanColorUnavailable == null) seatPlanColorUnavailable =Colors.grey.shade300;
+    if(seatPlanColorRestricted == null) seatPlanColorRestricted = Colors.green[200];
+    if( otherButtonColor == null ) otherButtonColor = primaryButtonColor;
   }
 }

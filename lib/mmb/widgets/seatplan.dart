@@ -13,6 +13,7 @@ import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/trText.dart';
 
 enum SeatType { regular, emergency }
 
@@ -411,7 +412,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       borderRadius: BorderRadius.circular(30.0)),
                   primary: Colors.black),
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: TrText(
                 'OK',
                 style: new TextStyle(color: Colors.white),
               ),
@@ -645,7 +646,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     );
 
     Widget continueButton = TextButton(
-      child: Text('OK'),
+      child: TrText('OK'),
       onPressed: () {
         Navigator.of(context).pop();
         _seatSelected(selectedSeat);
@@ -653,7 +654,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     );
 
     Widget okButton = TextButton(
-      child: Text('OK'),
+      child: TrText('OK'),
       onPressed: () {
         Navigator.of(context).pop();
       },

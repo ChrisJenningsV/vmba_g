@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -10,6 +11,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
+import 'package:vmba/components/trText.dart';
 
 
 // Future<String> _loadCitylistAsset() async {
@@ -17,6 +19,8 @@ import 'package:vmba/calendar/widgets/langConstants.dart';
 // }
 
 Future<Session> login() async {
+  logit('login');
+
   var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
 
   try {
@@ -117,6 +121,7 @@ Future<String> cityCodeToName(String code) async {
   return city == null ? code : city.name; */
 }
 
+/*
 class Citylist {
   List<Cities> cities;
 
@@ -159,6 +164,8 @@ class Cities {
     return data;
   }
 }
+
+ */
 
 Future<Countrylist> getCountrylist() async {
   String jsonString = await _loadCountrylistAsset();
@@ -358,4 +365,38 @@ String formatPrice(String currency, double price) {
   }
   return _currencySymbol + price.toStringAsFixed(2);
  // return _currencySymbol + formatCurrency.format(price);
+}
+noInternetSnackBar(BuildContext context) {
+  final snackBar = SnackBar(
+    content: Text(translate('No Internet Connection.'), style: TextStyle(color: Colors.red),),
+    duration: const Duration(hours: 1),
+    action: SnackBarAction(
+      label: translate('OK'),
+      onPressed: () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        // Some code to undo the change.
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+showSnackBar(String message,BuildContext context) {
+  final snackBar = SnackBar(
+    content: Text(message),
+    action: SnackBarAction(
+      label: 'Undo',
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+        // Some code to undo the change.
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void logit(String msg) {
+  var now = DateTime.now();
+
+  log( '${now.hour}:${now.minute}:${now.second}:${now.millisecond} $msg', name: ':');
+
 }

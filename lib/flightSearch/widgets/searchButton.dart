@@ -22,35 +22,37 @@ class SearchButtonWidget extends StatelessWidget {
     errors.clear();
     bool isValid = true;
     if (newBooking.departure == null || newBooking.departure == '') {
-      errors.add('Departure airport is missing.');
+      errors.add(translate('Departure airport is missing.'));
       isValid = false;
     }
 
     if (newBooking.arrival == null || newBooking.arrival == '') {
-      errors.add('Arrival airport is missing.');
+      errors.add(translate('Arrival airport is missing.'));
       isValid = false;
     }
 
     if (newBooking.departureDate == null) {
-      errors.add('Departure date is missing.');
+      errors.add(translate('Departure date is missing.'));
       isValid = false;
     }
 
     if (newBooking.isReturn && (newBooking.returnDate == null)) {
-      errors.add('Return date is missing.');
+      errors.add(translate('Return date is missing.'));
       isValid = false;
     }
 
     if (newBooking.passengers.adults +
             newBooking.passengers.youths +
-            newBooking.passengers.children >
+            newBooking.passengers.seniors +
+          newBooking.passengers.students +
+        newBooking.passengers.children >
         gblSettings.maxNumberOfPax) {
       String email = gblSettings.groupsBookingsEmail != null
           ? gblSettings.groupsBookingsEmail
           : 'groups@videcom.com';
-      errors.add('If booking more than ' +
-          gblSettings.maxNumberOfPax.toString() +
-          ' passengers, please contact ' +
+      errors.add(translate('If booking more than')  + ' '+
+          gblSettings.maxNumberOfPax.toString() + ' ' +
+          translate('passengers, please contact') + ' ' +
           email +
           '.');
       // 'If booking more than 8 passengers, please contact groups@loganair.co.uk.');
@@ -59,7 +61,7 @@ class SearchButtonWidget extends StatelessWidget {
 
     if (newBooking.passengers.infants > newBooking.passengers.adults) {
       errors.add(
-          'The number of infants cannot be greater than the number of adult passengers.');
+          translate('The number of infants cannot be greater than the number of adult passengers.'));
       isValid = false;
     }
     return isValid;
@@ -115,8 +117,8 @@ class SearchButtonWidget extends StatelessWidget {
                                     newBooking: newBooking))))
                         : _ackErrorAlert(context);
                   } else {
-                    showSnackBar(
-                        context, 'Please check your internet connection');
+                    //showSnackBar(context, translate('Please, check your internet connection'));
+                    noInternetSnackBar(context);
                   }
                 });
               },
@@ -130,7 +132,7 @@ class SearchButtonWidget extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Oops'),
+          title: TrText('Oops'),
           content: Text(errors
               .join('\n')), //const Text('This item is no longer available'),
           actions: <Widget>[

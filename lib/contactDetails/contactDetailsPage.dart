@@ -85,7 +85,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               new CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text(_displayProcessingText),
+                child: new TrText(_displayProcessingText),
               ),
             ],
           ),
@@ -122,7 +122,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                             ),
                             child: new TextFormField(
                               decoration: InputDecoration(
-                                labelText: 'Phone Number',
+                                labelText: translate('Phone Number'),
                                 fillColor: Colors.white,
                                 border: new OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(25.0),
@@ -135,7 +135,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               validator: (value) => value.isEmpty
-                                  ? 'Phone number can\'t be empty'
+                                  ? translate('Phone number can\'t be empty')
                                   : null,
                               onSaved: (value) => widget.newbooking
                                   .contactInfomation.phonenumber = value.trim(),
@@ -151,7 +151,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                             ),
                             child: new TextFormField(
                               decoration: InputDecoration(
-                                labelText: 'Email',
+                                labelText: translate('Email'),
                                 fillColor: Colors.white,
                                 border: new OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(25.0),
@@ -170,7 +170,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                           padding: EdgeInsets.all(8),
                           child: Wrap(
                             children: <Widget>[
-                              Text(
+                              TrText(
                                   'A contact number and email address is required to send you check-in advice, and any updates concerning changes to your flights including flight status updates.')
                             ],
                           ),
@@ -184,7 +184,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                   new FloatingActionButton.extended(
                       elevation: 0.0,
                       isExtended: true,
-                      label: Text(
+                      label: TrText(
                         'PROCEED TO PAYMENT',
                         style: TextStyle(
                             color: gblSystemColors
@@ -241,7 +241,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           setState(() {
             _displayProcessingIndicator = false;
           });
-          showSnackBar('Please check your internet connection');
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
         }
       });
     }
@@ -307,7 +308,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -316,7 +318,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
       // return new ParsedResponse(response.statusCode, []);
     }
@@ -361,7 +364,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
 
@@ -370,7 +374,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
             if (response.body.contains('ERROR - ')) {
@@ -414,7 +419,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Unable to confirm partner airlines flights.');
+        showSnackBar(translate('Unable to confirm partner airlines flights.'));
         return null;
       }
     } catch (e) {

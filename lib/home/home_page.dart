@@ -35,7 +35,11 @@ class _HomeState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    initLang(gblLanguage);
+    logit('init HomeState');
+    if( gblLangFileLoaded == false ) {
+      //initLang(gblLanguage);
+      initLangCached(gblLanguage);
+    }
     _displayProcessingIndicator = true;
     waitAndThenHideProcessingIndicator();
   }
@@ -238,7 +242,7 @@ class _HomeState extends State<HomePage> {
     // var appLanguage = new AppLanguage();
     //   appLanguage.changeLanguage('fr');
 
-    switch (gblSettings.aircode.toUpperCase()) {
+/*    switch (gblSettings.aircode.toUpperCase()) {
       case 'SI':
         buttonShape = RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -255,6 +259,32 @@ class _HomeState extends State<HomePage> {
         break;
       default:
         buttonShape = null;
+    }
+
+ */
+    switch (gblSettings.buttonStyle.toUpperCase()){
+      case 'OFFSET':
+        buttonShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(60.0),
+                topRight: Radius.circular(60.0)));
+        break;
+      case 'RO1':
+        buttonShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(60.0),
+                bottomLeft: Radius.circular(60.0),
+                topLeft: Radius.circular(60.0),
+                topRight: Radius.circular(60.0)));
+        break;
+      case 'RO2':
+        buttonShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(20.0),
+                bottomLeft: Radius.circular(20.0),
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0)));
+        break;
     }
 
     if (_displayProcessingIndicator) {
@@ -502,7 +532,8 @@ Widget _getLogo(){
 
     ));
 
-    if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV && gblSettings.wantHomeFQTVButton ) {
+    if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV &&
+        gblSettings.wantHomeFQTVButton && gblSettings.fqtvName.isNotEmpty ) {
       print('home FQTV name [${gblSettings.fqtvName}]');
 
       list.add(Row(

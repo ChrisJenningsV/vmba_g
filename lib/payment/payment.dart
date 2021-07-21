@@ -17,6 +17,7 @@ import '../data/repository.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/components/trText.dart';
 
 class PaymentWidget extends StatefulWidget {
   PaymentWidget({
@@ -287,7 +288,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -295,7 +297,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -331,7 +334,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
 
@@ -340,7 +344,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               setState(() {
                 _displayProcessingIndicator = false;
               });
-              showSnackBar('Please check your internet connection');
+              //showSnackBar(translate('Please, check your internet connection'));
+              noInternetSnackBar(context);
               return null;
             }
             if (response.body.contains('ERROR - ')) {
@@ -378,7 +383,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Unable to confirm partner airlines flights.');
+        showSnackBar(translate('Unable to confirm partner airlines flights.'));
         //Cnx new flights
         msg = '*${widget.mmbBooking.rloc}';
         widget.mmbBooking.newFlights.forEach((flt) {
@@ -451,7 +456,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar('Please, check your internet connection');
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -460,7 +466,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar('Please check your internet connection');
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
         return null;
       }
 
@@ -536,7 +543,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -545,7 +553,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      showSnackBar('Please check your internet connection');
+      //showSnackBar(translate('Please, check your internet connection'));
+      noInternetSnackBar(context);
       return null;
     }
 
@@ -711,7 +720,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           setState(() {
             _displayProcessingIndicator = false;
           });
-          showSnackBar('Please check your internet connection');
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
         }
       });
     }
@@ -729,7 +739,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-            title: new Text('Country'),
+            title: new TrText('Country'),
             content: new FutureBuilder(
               future: getCountrylist(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -793,7 +803,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Payment',
+          title: new TrText('Payment',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -845,7 +855,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new Text('Payment',
+            title: new TrText('Payment',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -864,7 +874,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(
+                                TrText(
                                   'Please complete your payment within ',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -1093,8 +1103,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   decoration: InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 15.0),
-                                    hintText: 'Town or City',
-                                    labelText: 'Town/City',
+                                    hintText: translate('Town or City'),
+                                    labelText: translate('Town/City'),
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
@@ -1198,7 +1208,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     decoration: new InputDecoration(
                                       contentPadding: new EdgeInsets.symmetric(
                                           vertical: 15.0, horizontal: 15.0),
-                                      labelText: 'Country',
+                                      labelText: translate('Country'),
                                       fillColor: Colors.white,
                                       border: new OutlineInputBorder(
                                         borderRadius:
