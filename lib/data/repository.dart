@@ -243,11 +243,24 @@ class Repository {
     Map<String, String>       headers = {'Content-Type': 'application/json',
         'Videcom_ApiKey': gblSettings.apiKey};
 
+
     if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty) {
+     // body["BrandId"] = "${gblSettings.brandID}";
        body = {"AgentGuid": "${gblSettings.vrsGuid}",
-                "BrandId": "${gblSettings.brandID}",
-                "AppFile": 'sv.json'};  // ${gblLanguage}
+                "BrandId": "${gblSettings.brandID}"};  // ${gblLanguage}
+      if( gblLanguage!= null && gblLanguage.isNotEmpty && gblLanguage != 'en') {
+        body = {"AgentGuid": "${gblSettings.vrsGuid}",
+          "BrandId": "${gblSettings.brandID}",
+          "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
+      }
+    } else {
+      if( gblLanguage!= null && gblLanguage.isNotEmpty && gblLanguage != 'en') {
+        body = {"AgentGuid": "${gblSettings.vrsGuid}",
+          "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
+      }
     }
+
+
     try {
       logit('getSettingsFromApi - login');
 
@@ -261,7 +274,11 @@ class Repository {
         Map map = json.decode(response.body);
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
-          String modifyString = map["appFileModifyTime"];
+          String langFileModifyString = map["appFileModifyTime"];
+          // get language file last modified
+          if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
+            gblLangFileModTime = langFileModifyString;
+          }
           gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
 
           List <dynamic> settingsJson;
@@ -453,11 +470,13 @@ class Repository {
           }
           else {
             print(response.body);
+            gblErrorTitle = 'Login';
             gblError = response.body;
             gblNoNetwork = true;
           }
         } else {
           print(response.body);
+          gblErrorTitle = 'Login:';
           gblError = response.body;
           gblNoNetwork = true;
 
@@ -465,6 +484,7 @@ class Repository {
       }
     } catch (e) {
       print(e);
+      gblErrorTitle = 'Login-';
       gblError = e.toString();
       gblNoNetwork = true;
       rethrow;
@@ -901,7 +921,18 @@ class Repository {
   Future<ParsedResponse<RoutesModel>> initRoutes() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
+    var prefs = await SharedPreferences.getInstance();
     logit('initRoutes');
+    var cacheTime = prefs.getString('route_cache_time');
+    if( cacheTime!= null && cacheTime.isNotEmpty){
+      var cached = DateTime.parse(cacheTime);
+
+      if( cached.isAfter(DateTime.now().subtract(Duration(hours: 2)))) {
+        // change to 2 days!
+        logit('route cache good');
+        return null;
+      }
+    }
     final http.Response response = await http.get(
         Uri.parse(
             '${gblSettings.apiUrl}/cities/Getroutelist'),
@@ -919,6 +950,8 @@ class Repository {
       return new ParsedResponse(response.statusCode, null);
     }
     Map map = jsonDecode('{ \"Routes\":' + response.body + '}');
+    prefs.setString('route_cache_time', DateTime.now().toString());
+
     RoutesModel networkRoutes = RoutesModel.fromJson(map);
     await database.updateRoutes('{ \"Routes\":' + response.body + '}');
     return new ParsedResponse(response.statusCode, networkRoutes);

@@ -58,13 +58,24 @@ initLangCached(String lang) async {
     String filePath = '$path/lang.json';
     File file = File(filePath);
     if( file.existsSync()) {
-      var modified = file.lastModifiedSync();
-      if( modified.isBefore(DateTime.now().subtract(Duration(hours: 2)))){
+      DateTime modified = file.lastModifiedSync();
+
+      if( modified.isBefore(DateTime.now().subtract(Duration(hours: 24)))){
         // change to 2 days!
         // out of date - get new copy
         logit('lang file out of date');
         initLang(lang);
         return;
+      }
+      // is serverfile modified
+      if( gblLangFileModTime != null && gblLangFileModTime.isNotEmpty){
+        var serverFile = parseUkDateTime(gblLangFileModTime);
+        if(modified.isBefore( serverFile )) {
+          logit('lang new server file available');
+          initLang(lang);
+          return;
+
+        }
       }
 
       readLang( lang).then((result ) {

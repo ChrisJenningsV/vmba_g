@@ -90,7 +90,7 @@ String _error = '';
       ));
     } else {
       return Scaffold(
-          appBar: appBar(context, translate("My Bookings"))
+          appBar: appBar(context, "My Bookings") // translated in appBar
           //AppBar(
           //     brightness: AppConfig.of(context).systemColors.statusBar,
           //     backgroundColor: AppConfig.of(context).systemColors.primaryHeaderColor,

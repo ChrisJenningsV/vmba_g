@@ -23,7 +23,9 @@ class RootPageState extends State<RootPage> {
   MyConnectivity _connectivity = MyConnectivity.instance;
 
   bool appInitalized = false;
-  bool _displayProcessingIndicator;
+  bool _displayProcessingIndicatorS;
+  bool _displayProcessingIndicatorC;
+  bool _displayProcessingIndicatorR;
   bool _displayFinalError;
   bool _dataLoaded = false;
   String _displayProcessingText;
@@ -33,7 +35,9 @@ class RootPageState extends State<RootPage> {
     super.initState();
     logit('init RootPageState');
 
-    _displayProcessingIndicator = true;
+    _displayProcessingIndicatorS = true;
+    _displayProcessingIndicatorC = true;
+    _displayProcessingIndicatorR = true;
     gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
@@ -53,7 +57,9 @@ class RootPageState extends State<RootPage> {
   }
 
   retryLoadData() {
-    _displayProcessingIndicator = true;
+    _displayProcessingIndicatorS = true;
+    _displayProcessingIndicatorC = true;
+    _displayProcessingIndicatorR = true;
     gblNoNetwork = false;
     _displayFinalError = false;
     _displayProcessingText = 'Loading settings...';
@@ -78,11 +84,17 @@ class RootPageState extends State<RootPage> {
       gblVersion = version;
       gblIsIos = Platform.isIOS;
       // await Repository.get().init();
-      await Repository.get().settings().catchError((e) {
+      await Repository.get().settings().then((_){
+        setState(() {
+          _displayProcessingIndicatorS = false;
+          _dataLoaded = true;
+        });
+      }
+      ).catchError((e) {
         setState(() {
           _displayProcessingText = 'Error loading : ' + e.toString();
           _displayFinalError = true;
-          _displayProcessingIndicator = false;
+          _displayProcessingIndicatorS = false;
           _dataLoaded = false;
         });
         return;
@@ -92,9 +104,9 @@ class RootPageState extends State<RootPage> {
       );
 
         Repository.get().initCities().then((_) {
+          _displayProcessingIndicatorC = false;
             if( gblNoNetwork == true) {
               setState(() {
-                _displayProcessingIndicator = false;
                 _dataLoaded = false;
               });
               return;
@@ -102,11 +114,11 @@ class RootPageState extends State<RootPage> {
               Repository.get()
                   .initRoutes()
                   .then((_) => setState(() {
-                        _displayProcessingIndicator = false;
+                        _displayProcessingIndicatorR = false;
                       }))
                   .catchError((e) {
                 setState(() {
-                  _displayProcessingIndicator = false;
+                  _displayProcessingIndicatorR = false;
                   _dataLoaded = false;
                 });
               }).then((_) {});
@@ -118,7 +130,7 @@ class RootPageState extends State<RootPage> {
               setState(() {
                 _displayProcessingText = 'Error loading routes: ' + e.toString() ;
                 _displayFinalError = true;
-                _displayProcessingIndicator = false;
+                _displayProcessingIndicatorR = false;
                 _dataLoaded = false;
               });
             });
@@ -138,6 +150,7 @@ class RootPageState extends State<RootPage> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Text(gblErrorTitle ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TrText(_displayProcessingText + gblError,
@@ -244,7 +257,7 @@ class RootPageState extends State<RootPage> {
               ),
             ),
           ));
-    } else if (_displayProcessingIndicator) {
+    } else if (_displayProcessingIndicatorC || _displayProcessingIndicatorS || _displayProcessingIndicatorR) {
         return Scaffold(
             body: Container(
               color: Colors.white, constraints: BoxConstraints.expand(),

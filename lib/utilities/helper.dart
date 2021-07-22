@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:intl/intl.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -399,4 +400,12 @@ void logit(String msg) {
 
   log( '${now.hour}:${now.minute}:${now.second}:${now.millisecond} $msg', name: ':');
 
+}
+// convert UK dd/mm/yyyy G
+DateTime parseUkDateTime(String str) {
+  DateFormat inputFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
+  DateTime dateTime = inputFormat.parse(str,true);
+
+  DateTime converted = dateTime.toLocal();
+return converted;
 }
