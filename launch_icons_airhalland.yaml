@@ -2,7 +2,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/icon/AirGotland_1024x1024.png"
+  image_path: "lib/assets/icon/AirHalland_1024x1024.png"
 
 # flutter pub run flutter_launcher_icons:main -f launch_icons_airhalland.yaml
 #

@@ -26,6 +26,7 @@ import 'main_t6.dart';
 import 'main_z4.dart';
 import 'main_gotland.dart';
 import 'main_halland.dart';
+import 'main_skane.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +49,9 @@ void main() async {
         break;
       case 'AH':
         configAH();
+        break;
+      case 'AS':
+        configAS();
         break;
       case 'T6':
         configT6();

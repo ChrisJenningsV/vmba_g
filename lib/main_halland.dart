@@ -68,6 +68,7 @@ void configAH() {
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "FL",
     brandID: "AH",
+    buttonStyle: 'RO2',
 
     termsAndConditionsUrl:  " https://www.airhalland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airhalland.se/sv/om-air-leap/integritetspolicy?app_mode=1",

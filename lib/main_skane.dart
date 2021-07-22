@@ -10,7 +10,7 @@ import 'data/globals.dart';
 // brand id AG
 
 void main() {
-  configAG();
+  configAS();
 
 
   var configuredApp = AppConfig(
@@ -25,17 +25,15 @@ void main() {
     runApp(configuredApp);
   });
 }
-void configAG() {
+void configAS() {
   SystemColors _systemColors = SystemColors(
-    primaryButtonColor: Color.fromRGBO(0Xfa, 0xb6, 0x00, 1),
+    primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
     accentButtonColor: Color.fromRGBO(0Xfa, 0xb6, 0x00, 1),
     accentColor: Colors.black,
-/*      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
-      textButtonTextColor: Colors.black54  , */
-    primaryHeaderColor: Color.fromRGBO(0Xfa, 0xb6, 0x00,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),
+    primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
 
-    primaryColor:  Color.fromRGBO(0Xfa, 0xb6, 0x00, 1), // colour for datepicker header // Colors.red,
+    primaryColor:  Color.fromRGBO(0X00, 0x37, 0x55, 1), // colour for datepicker header // Colors.red,
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
     //   primaryHeaderColor: Colors.red,
@@ -55,12 +53,13 @@ void configAG() {
 
   gblSettings = Settings(
     wantRememberMe: false,
-    wantHomeFQTVButton: true,
+    wantHomeFQTVButton: false,
     airlineName: "Air Skane",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "FL",
     brandID: "AS",
+    buttonStyle: 'RO2',
 
     termsAndConditionsUrl:  " https://www.airskane.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airskane.se/sv/om-air-leap/integritetspolicy?app_mode=1",
@@ -75,6 +74,9 @@ void configAG() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airskane.booking', //  'se.airleap.booking',
+    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
+    currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(

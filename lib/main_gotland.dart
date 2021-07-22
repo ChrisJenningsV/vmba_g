@@ -36,7 +36,7 @@ void configAG() {
 //    primaryHeaderColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
     primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
-    primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
+    primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),// colour for datepicker header
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
     //   primaryHeaderColor: Colors.red,

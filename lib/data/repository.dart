@@ -167,7 +167,7 @@ class Repository {
     if( cacheTime!= null && cacheTime.isNotEmpty){
       var cached = DateTime.parse(cacheTime);
 
-      if( cached.isAfter(DateTime.now().subtract(Duration(hours: 2)))) {
+      if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {
         // change to 2 days!
         logit('city cache good');
         return null;
@@ -927,7 +927,7 @@ class Repository {
     if( cacheTime!= null && cacheTime.isNotEmpty){
       var cached = DateTime.parse(cacheTime);
 
-      if( cached.isAfter(DateTime.now().subtract(Duration(hours: 2)))) {
+      if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {
         // change to 2 days!
         logit('route cache good');
         return null;
