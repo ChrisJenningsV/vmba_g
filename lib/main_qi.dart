@@ -45,7 +45,7 @@ void configQI() {
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200],
   );
-
+  _systemColors.setDefaults();
   gblSystemColors = _systemColors;
   gblTitleStyle = new TextStyle(color: Colors.white);
 
@@ -55,8 +55,8 @@ void configQI() {
   //gbl_language = 'en';
 
   gblSettings = Settings(
-    latestBuildiOS: '1.0.8.15',
-    latestBuildAndroid: '1.0.8.15',
+    latestBuildiOS: '105',
+    latestBuildAndroid: '15',
     wantRememberMe: false,
     wantHomeFQTVButton: true,
     airlineName: "IBOM Air",

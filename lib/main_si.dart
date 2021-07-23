@@ -25,10 +25,10 @@ void main() {
 }
 
 void configSI() {
+  /*
   SystemColors _systemColors = SystemColors(
       primaryButtonColor: Color.fromRGBO(12, 59, 111, 1),
-      accentButtonColor:
-      Color.fromRGBO(241, 182, 0, 1), //Color.fromRGBO(243, 135, 57, 1),
+      accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
       accentColor: Color.fromRGBO(
           241, 182, 0, 1), //Color.fromRGBO(0, 83, 55, 1), //Colors.white,
       primaryColor: Colors.white,
@@ -44,6 +44,25 @@ void configSI() {
     seatPlanColorRestricted: Colors.green[200],
   );
 
+   */
+  SystemColors _systemColors = SystemColors(
+    primaryButtonColor: Color.fromRGBO(12, 59, 111, 1),
+    primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
+
+    otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
+
+    accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
+    accentColor: Colors.black,
+
+    primaryColor: Colors.white,// colour for datepicker header
+    textButtonTextColor: Colors.black54,
+    primaryButtonTextColor: Colors.white,
+    //   primaryHeaderColor: Colors.red,
+    headerTextColor: Colors.white,
+    statusBar: Brightness.dark,
+  );
+
+  _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
@@ -55,8 +74,8 @@ void configSI() {
       wantLeftLogo:  true,
     wantRememberMe: false,
     wantHomeFQTVButton: true,
-      latestBuildiOS: '1.0.8.15',
-      latestBuildAndroid: '1.0.8.15',
+      latestBuildiOS: '105',
+      latestBuildAndroid: '105',
       airlineName: "Blue Islands",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

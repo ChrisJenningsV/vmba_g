@@ -144,8 +144,8 @@ class Settings {
  // String hostBaseUrl;
   String iOSAppId;
   String androidAppId;
-  String latestBuildiOS = '1.0.5';
-  String latestBuildAndroid = '1.0.0.98';
+  String latestBuildiOS = '1';
+  String latestBuildAndroid = '1';
   String fQTVpointsName = 'airmiles';
   String reqUpdateMsg;
   String optUpdateMsg;

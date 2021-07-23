@@ -39,7 +39,7 @@ void configLM() {
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
   );
-
+  _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 

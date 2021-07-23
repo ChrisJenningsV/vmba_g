@@ -331,8 +331,10 @@ Widget _getLogo(){
   //Text('Test', style: gblTitleStyle,)
   //])
   double height = 50;
-  if(gblSettings.aircode == 'LM') {
+  if(gblSettings.aircode == 'LM' ) {
     height = 70;
+  } else if (gblSettings.aircode == 'SI' ) {
+    height = 40;
   }
   List<Widget> list = [];
   list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
@@ -534,7 +536,7 @@ Widget _getLogo(){
                         isAdsBooking: false,
                         isLeadPassenger: true,))),
                   child: Container(
-                    height: 60,
+                    height: buttonHeight,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

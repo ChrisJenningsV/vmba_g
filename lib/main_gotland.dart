@@ -27,13 +27,11 @@ void main() {
 }
 void configAG() {
   SystemColors _systemColors = SystemColors(
- //   primaryButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
     primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
   accentButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
     accentColor: Colors.black,
-//    primaryHeaderColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),
     primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
     primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),// colour for datepicker header
@@ -42,16 +40,6 @@ void configAG() {
     //   primaryHeaderColor: Colors.red,
     headerTextColor: Colors.white,
     statusBar: Brightness.dark,
-
-
-/*
-    seatPlanColorEmergency: Colors.red, //Colors.yellow
-    seatPlanColorAvailable: Colors.blue, //Colors.green
-    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
-    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
-    seatPlanColorRestricted: Colors.green[200],
-    */
-
   );
   _systemColors.setDefaults();
 

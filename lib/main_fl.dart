@@ -49,7 +49,7 @@ void configFL() {
     seatPlanColorRestricted: Colors.green[200],
   );
 //  _systemColors.setDefaults();
-
+  _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 

@@ -48,8 +48,8 @@ void configT6() {
 
 
   gblSettings = Settings (
-      latestBuildiOS: '1.0.5',
-      latestBuildAndroid: '1.0.0.98',
+      latestBuildiOS: '105',
+      latestBuildAndroid: '108',
     wantRememberMe: false,
     wantHomeFQTVButton: true,
       airlineName: "Air Swift",

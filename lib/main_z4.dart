@@ -46,8 +46,8 @@ void configZ4() {
   gblBuildFlavor = 'Z4';
 
   gblSettings = Settings (
-      latestBuildiOS: '1.0.5',
-      latestBuildAndroid: '1.0.0.98',
+      latestBuildiOS: '105',
+      latestBuildAndroid: '18',
       airlineName: "Ibom Air",
       wantRememberMe: false,
     wantHomeFQTVButton: true,
