@@ -248,6 +248,7 @@ class _HomeState extends State<HomePage> {
     buttonHeight = 60;
     switch (gblSettings.buttonStyle.toUpperCase()){
       case 'OFFSET':
+        buttonHeight = 30;
         buttonShape = RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(60.0),
@@ -295,6 +296,7 @@ class _HomeState extends State<HomePage> {
       return new Scaffold(
 
         appBar: new AppBar(
+            centerTitle: gblCentreTitle,
             brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
             backgroundColor:gblSystemColors.primaryHeaderColor,
@@ -333,11 +335,13 @@ Widget _getLogo(){
   double height = 50;
   if(gblSettings.aircode == 'LM' ) {
     height = 70;
-  } else if (gblSettings.aircode == 'SI' ) {
-    height = 40;
-  }
+   }
   List<Widget> list = [];
-  list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
+  if ( height > 0 ) {
+    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
+  } else {
+    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
+  }
   if( gblIsLive == false) {
     list.add(Text(txt, style: gblTitleStyle));
   }

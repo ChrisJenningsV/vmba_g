@@ -47,14 +47,13 @@ void configSI() {
    */
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(12, 59, 111, 1),
-    primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
-
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
     accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
     accentColor: Colors.black,
+    primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
 
-    primaryColor: Colors.white,// colour for datepicker header
+    primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),// colour for datepicker header
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
     //   primaryHeaderColor: Colors.red,
@@ -65,7 +64,7 @@ void configSI() {
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
-
+  gblCentreTitle = true;
 
   gblAppTitle = 'blueislands';
   gblBuildFlavor = 'SI';

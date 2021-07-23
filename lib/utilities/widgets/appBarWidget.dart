@@ -6,6 +6,7 @@ import 'package:vmba/components/trText.dart';
 AppBar appBar(BuildContext context, String title) {
   if( gblSettings.wantLeftLogo) {
     return AppBar(
+      centerTitle: gblCentreTitle,
       leading: gblSettings.wantLeftLogo ? Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: Image.asset(
