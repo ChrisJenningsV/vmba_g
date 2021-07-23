@@ -248,7 +248,7 @@ class _HomeState extends State<HomePage> {
     buttonHeight = 60;
     switch (gblSettings.buttonStyle.toUpperCase()){
       case 'OFFSET':
-        buttonHeight = 30;
+        buttonHeight = 40;
         buttonShape = RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(60.0),
@@ -311,7 +311,7 @@ class _HomeState extends State<HomePage> {
     }
   }
 Widget _getLogo(){
-  String txt = ' ';
+  String txt = '';
   if( gblIsLive == false ) {
     txt = 'Test';
   }
@@ -335,11 +335,16 @@ Widget _getLogo(){
   double height = 50;
   if(gblSettings.aircode == 'LM' ) {
     height = 70;
+  } else if(gblSettings.aircode == 'SI' ) {
+    height = 40;
    }
   List<Widget> list = [];
   if ( height > 0 ) {
+    if( gblIsLive == true) {
+      return Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height);
+    }
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
-  } else {
+    } else {
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
   }
   if( gblIsLive == false) {
