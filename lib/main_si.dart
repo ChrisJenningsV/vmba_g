@@ -79,10 +79,10 @@ void configSI() {
 
       eVoucher:  false,
       passengerTypes:  PassengerTypes(
-      adult: true,
+      adults: true,
       child: true,
       infant: true,
-      youth: true,
+      youths: true,
   ),
   fqtvName:  "",
   appFeedbackEmail:  "webmaster@blueislands.com",

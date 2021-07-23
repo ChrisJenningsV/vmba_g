@@ -23,6 +23,7 @@ Future<Session> login() async {
   logit('login');
 
   var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
+      //"AppFile": '${gblLanguage}.json' };   // temp fix
 
   try {
     final http.Response response = await http.post(
@@ -42,7 +43,8 @@ Future<Session> login() async {
         return loginResponse.getSession();
       }
     } else {
-      print('failed');
+      logit('logib failed');
+      logit('status code ${response.statusCode} ');
       //return  LoginResponse();
     }
   } catch(e) {

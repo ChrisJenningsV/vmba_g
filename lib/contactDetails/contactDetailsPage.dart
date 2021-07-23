@@ -30,6 +30,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   //ContactInfomation _contactInfomation = ContactInfomation();
   GlobalKey<ScaffoldState> _key = GlobalKey();
   bool _displayProcessingIndicator;
+  bool _tooManyUmnr;
   String _displayProcessingText = 'Making your Booking...';
   PnrModel pnrModel;
   String _error;
@@ -41,6 +42,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   initState() {
     super.initState();
     _displayProcessingIndicator = false;
+    _tooManyUmnr = false;
     widget.newbooking.contactInfomation = new ContactInfomation();
     //_emailTextEditingController.text = widget.passengerDetail.title;
     //_phoneTextEditingController.text = widget.passengerDetail.firstName;
@@ -91,6 +93,44 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           ),
         ),
       );
+    } else if (_tooManyUmnr) {
+      return new Scaffold(
+          key: _key,
+          appBar: new AppBar(
+          brightness: gblSystemColors.statusBar,
+          backgroundColor:
+          gblSystemColors.primaryHeaderColor,
+          iconTheme: IconThemeData(
+          color: gblSystemColors.headerTextColor),
+    title: new TrText('Contact Details',
+    style: TextStyle(
+    color: gblSystemColors
+        .headerTextColor)),
+    ),
+    endDrawer: DrawerMenu(),
+    body:  AlertDialog(
+          title: new TrText("Too Many UMNR Passengers on flight"),
+          content: TrText("Would you like to restart your booking?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              child: new TrText("NO"),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/HomePage', (Route<dynamic> route) => false);
+              },
+            ),
+            new TextButton(
+              child: new TrText("Restart booking"),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/FlightSearchPage', (Route<dynamic> route) => false);
+
+              },
+            ),
+          ],
+        )
+    );
     } else {
       return new Scaffold(
           key: _key,
@@ -325,13 +365,21 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     }
     try {
       bool flightsConfirmed = true;
-      if (response.body.contains('ERROR - ')) {
+      if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
         _error = response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '')
             .replaceAll('ERROR - ', '')
             .trim(); // 'Please check your details';
+
+        if ( response.body.contains('TOO MANY UMNR') ) {
+          setState(() {
+            _displayProcessingIndicator = false;
+            _tooManyUmnr = true;
+          });
+          return null;
+        }
         _dataLoaded();
         print('makeBooking $_error');
         //_showDialog();
@@ -377,8 +425,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               //showSnackBar(translate('Please, check your internet connection'));
               noInternetSnackBar(context);
               return null;
-            }
-            if (response.body.contains('ERROR - ')) {
+
+            } else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
               _error = response.body
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')

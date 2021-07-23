@@ -75,10 +75,10 @@ void configT6() {
       buttonStyle: 'RO1',
 
       passengerTypes: PassengerTypes(
-      adult: true,
+      adults: true,
       child: true,
       infant: true,
-      youth: true,
+      youths: true,
       senior:  true,
   ),
 

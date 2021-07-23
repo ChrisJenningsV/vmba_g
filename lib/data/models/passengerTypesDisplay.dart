@@ -1,14 +1,13 @@
 class PassengerTypes {
-  bool adults = true;
-  bool youths = true;
-  bool child = true;
-  bool infant = true;
-  bool senior = true;
-  bool student = false;
-  bool umnr = false;
+  bool adults ;
+  bool youths;
+  bool child ;
+  bool infant;
+  bool senior;
+  bool student;
+//  bool umnr = false;
 
-  PassengerTypes(
-      {bool adult, bool infant, bool youth, bool child, bool senior, bool student, bool umnr});
+  PassengerTypes({this.adults, this.infant, this.youths, this.child, this.senior, this.student});
 
   PassengerTypes.fromJson(Map<String, dynamic> json) {
       this.adults = ['adults'] != null &&
@@ -43,11 +42,13 @@ class PassengerTypes {
               'true'
           ? true
           : false;
-      this.umnr = json['umnrs'] != null &&
+/*      this.umnr = json['umnrs'] != null &&
           json['umnrs'].toString().toLowerCase() ==
               'true'
           ? true
           : false;
+
+ */
   }
 
     Map<String, dynamic> toJson() {
@@ -59,7 +60,7 @@ class PassengerTypes {
     data['infants'] = this.infant.toString();
     data['seniors'] = this.senior.toString();
     data['students'] = this.student.toString();
-    data['umnrs'] = this.umnr.toString();
+    //data['umnrs'] = this.umnr.toString();
 
     return data;
   }

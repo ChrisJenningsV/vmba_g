@@ -63,6 +63,7 @@ void configAG() {
   gblBuildFlavor = 'AG';
 
   gblSettings = Settings(
+//    latestBuildAndroid: '120', // for test
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
@@ -90,18 +91,17 @@ void configAG() {
     gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
     currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
-
-
-    eVoucher:  true,
     passengerTypes:  PassengerTypes(
-      adult: true,
+      adults: true,
       child: true,
       infant: true,
-      youth: true,
+      youths: true,
       senior: true,
       student: true,
-      umnr: true,
     ),
+
+    eVoucher:  true,
+    wantUmnr: true,
     fqtvName:  "Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,
@@ -136,6 +136,8 @@ void configAG() {
 //    searchDateOut: 1,
 //    searchDateBack: 6,
   );
+
+
   gblSettings.setDefaults();
 
 

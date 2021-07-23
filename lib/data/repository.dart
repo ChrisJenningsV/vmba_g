@@ -247,14 +247,14 @@ class Repository {
     if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty) {
      // body["BrandId"] = "${gblSettings.brandID}";
        body = {"AgentGuid": "${gblSettings.vrsGuid}",
-                "BrandId": "${gblSettings.brandID}"};  // ${gblLanguage}
+                "BrandId": "${gblSettings.brandID}"};
       if( gblLanguage!= null && gblLanguage.isNotEmpty && gblLanguage != 'en') {
         body = {"AgentGuid": "${gblSettings.vrsGuid}",
           "BrandId": "${gblSettings.brandID}",
           "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
       }
     } else {
-      if( gblLanguage!= null && gblLanguage.isNotEmpty && gblLanguage != 'en') {
+      if( gblLanguage!= null  && gblLanguage.isNotEmpty && gblLanguage != 'en') {
         body = {"AgentGuid": "${gblSettings.vrsGuid}",
           "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
       }
@@ -469,20 +469,25 @@ class Repository {
             }
           }
           else {
+            logit('login failed');
             print(response.body);
             gblErrorTitle = 'Login';
             gblError = response.body;
             gblNoNetwork = true;
           }
         } else {
+          logit('login - map null');
           print(response.body);
           gblErrorTitle = 'Login:';
           gblError = response.body;
           gblNoNetwork = true;
 
         }
+      } else {
+        logit('login - status=${response.statusCode}');
       }
     } catch (e) {
+      logit('login - catch error');
       print(e);
       gblErrorTitle = 'Login-';
       gblError = e.toString();

@@ -61,8 +61,12 @@ class _HomeState extends State<HomePage> {
     // Version currentVersion;
     // Version latestVersion;
     String latestVersion;
+    if( shownUpdate == true ) {
+      return;
+    }
 
     if (gblAction == 'UPDATEAVAILABLE') {
+      shownUpdate = true;
       _updateAppDialog();
       return;
     }
@@ -79,41 +83,19 @@ class _HomeState extends State<HomePage> {
         // no new version
         return;
       }
-      int cMajor = int.parse(version.split('.')[0]);
-      int cMinor = int.parse(version.split('.')[1]);
-      int cPatch = int.parse(version.split('.')[2]);
+
       int cBuild = int.parse(version.split('.')[3]);
-      int lMajor = int.parse(latestVersion.split('.')[0]);
-      int lMinor = int.parse(latestVersion.split('.')[1]);
-      int lPatch = int.parse(latestVersion.split('.')[2]);
-      int lBuild = int.parse(latestVersion.split('.')[3]);
 
-
-      /*
-      currentVersion = Version.parse(version);
-      latestVersion = Version.parse(Platform.isIOS
-          ? gblSettings.latestBuildiOS
-          : gblSettings.latestBuildAndroid);
-*/
       gblVersion = version;
       gblIsIos = Platform.isIOS;
 
       bool bNewBuilsAvailable = false;
-      if (lMajor > cMajor) {
-        bNewBuilsAvailable = true;
-      }
-      if (lMajor == cMajor && lMinor > cMinor) {
-        bNewBuilsAvailable = true;
-      }
-      if (lMajor == cMajor && lMinor == cMinor && lPatch > cPatch) {
-        bNewBuilsAvailable = true;
-      }
-      if (lMajor == cMajor && lMinor == cMinor && lPatch == cPatch &&
-          lBuild > cBuild) {
-        bNewBuilsAvailable = true;
-      }
 
+      if( int.parse(latestVersion) > cBuild) {
+        bNewBuilsAvailable = true;
+      }
       if (bNewBuilsAvailable == true) {
+        shownUpdate = true;
         _updateAppDialog();
       }
     });
@@ -219,6 +201,7 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var buttonShape;
+    double buttonHeight;
     /*
     Locale myLocale = Localizations.localeOf(context);
     if( myLocale.countryCode != gblLanguage ){
@@ -262,6 +245,7 @@ class _HomeState extends State<HomePage> {
     }
 
  */
+    buttonHeight = 60;
     switch (gblSettings.buttonStyle.toUpperCase()){
       case 'OFFSET':
         buttonShape = RoundedRectangleBorder(
@@ -278,6 +262,7 @@ class _HomeState extends State<HomePage> {
                 topRight: Radius.circular(60.0)));
         break;
       case 'RO2':
+        buttonHeight = 50;
         buttonShape = RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(20.0),
@@ -317,7 +302,7 @@ class _HomeState extends State<HomePage> {
             //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
             ),
         body: Stack(
-          children: _getBackImage(buttonShape),
+          children: _getBackImage(buttonShape, buttonHeight),
         ),
         endDrawer: new DrawerMenu(),
       );
@@ -357,7 +342,7 @@ Widget _getLogo(){
   return new Row( children: list   );
 }
 
-  List<Widget> _getBackImage(var buttonShape) {
+  List<Widget> _getBackImage(var buttonShape, var buttonHeight) {
     List<Widget> list = [];
 
     //   if( gblSettings.aircode == 'LM') {
@@ -388,14 +373,14 @@ Widget _getLogo(){
     list.add(Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: _getButtons(context, buttonShape),
+        children: _getButtons(context, buttonShape, buttonHeight),
       ),
     ));
     return list;
   }
 }
 
-  List <Widget> _getButtons(BuildContext context, var buttonShape) {
+  List <Widget> _getButtons(BuildContext context, var buttonShape, var buttonHeight) {
     List <Widget> list = [];
 
     if (gblNoNetwork == false) {
@@ -416,7 +401,7 @@ Widget _getLogo(){
                           '/FlightSearchPage',
                               (Route<dynamic> route) => false),
                   child: Container(
-                    height: 60,
+                    height: buttonHeight,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -461,7 +446,7 @@ Widget _getLogo(){
                           .pushNamedAndRemoveUntil('/AdsPage',
                               (Route<dynamic> route) => false),
                   child: Container(
-                    height: 60,
+                    height: buttonHeight,
                     child: Row(
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -487,35 +472,31 @@ Widget _getLogo(){
         ],
       ));
     }
-    list.add(Row(
+  list.add(Row(
     children: <Widget>[
-    Expanded(
-    child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Center(
-    child: TextButton(
-    style: TextButton.styleFrom(
-    shape: buttonShape,
-    backgroundColor: gblSystemColors
-        .primaryButtonColor),
-    onPressed: () =>
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(
-    '/MyBookingsPage',
-    (Route<dynamic> route) => false),
-    child: Container(
-    height: 60,
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-    Padding(
-    padding: EdgeInsets.only(right: 5),
-    child: Icon(
-    Icons.card_travel,
-    color: Colors.white,
-    ),
-    ),
-    TrText(
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  shape: buttonShape,
+                  backgroundColor: gblSystemColors.primaryButtonColor),
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/MyBookingsPage', (Route<dynamic> route) => false),
+              child: Container(
+                height: buttonHeight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Icon(
+                        Icons.card_travel,
+                        color: Colors.white,
+                      ),
+                    ),
+                    TrText(
     'My Bookings & Check-in',
     style: TextStyle(
     color: Colors.white,

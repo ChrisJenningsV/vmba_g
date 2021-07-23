@@ -39,6 +39,13 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   }
 
   void _removeAdult() {
+    if( widget.passengers.adults == 1 && gblSettings.wantUmnr == false) {
+     return;
+    }
+    if( widget.passengers.adults == 0) {
+      return;
+    }
+
     widget.passengers.adults -= 1;
     setState(() {
       adults -= 1;
@@ -231,6 +238,13 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
   }
 
   void _removeAdult() {
+    if( widget.passengers.adults == 1 && gblSettings.wantUmnr == false) {
+      return;
+    }
+    if( widget.passengers.adults == 0) {
+      return;
+    }
+
     setState(() {
       passengers.adults -= 1;
       // passengers.adults -= 1;
@@ -370,7 +384,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                                 Icons.remove_circle_outline,
                               ),
                               onPressed:
-                                  passengers.adults == 1 ? null : _removeAdult,
+                                   _removeAdult,
                             ),
                             new Text(passengers.adults.toString()),
                             new IconButton(
@@ -438,7 +452,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                                   fontWeight: FontWeight.w700),
                             ),
                             TrText(
-                              'over 55',
+                              'over 65',
                               style: new TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300),

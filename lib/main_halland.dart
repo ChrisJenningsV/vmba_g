@@ -88,12 +88,14 @@ void configAH() {
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
-      adult: true,
+      adults: true,
       child: true,
       infant: true,
-      youth: true,
+      youths: true,
       senior: true,
+      student: true,
     ),
+    wantUmnr: true,
     fqtvName:  "Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,

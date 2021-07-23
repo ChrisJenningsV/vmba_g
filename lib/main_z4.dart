@@ -73,10 +73,10 @@ void configZ4() {
 
 
       passengerTypes: PassengerTypes(
-      adult: true,
+      adults: true,
       child: true,
       infant: true,
-      youth: true,
+      youths: true,
   ),
 
 //Production setttings

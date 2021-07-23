@@ -29,6 +29,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String currencyCode;
   bool _noInternet;
   bool _eVoucherNotValid;
+  bool _tooManyUmnr;
   bool _hasError;
   String _error ;
   var miles = 0;
@@ -39,6 +40,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _loadingInProgress = true;
     _noInternet = false;
     _eVoucherNotValid = false;
+    _tooManyUmnr = false;
     _hasError = false;
     _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
@@ -107,6 +109,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           _loadingInProgress = true;
           _noInternet = false;
           _eVoucherNotValid = false;
+          _tooManyUmnr = false;
           getFareQuote();
         });
       } else {
@@ -204,6 +207,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             setState(() {
               _loadingInProgress = false;
               _eVoucherNotValid = false;
+              _tooManyUmnr = false;
               _hasError = true;
               _error =
               'You do not have enough ${gblSettings.fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings.fQTVpointsName} required = $miles';
@@ -226,6 +230,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         if (_error.contains('ERROR: E-VOUCHER ')) {
           setState(() {
             _loadingInProgress = false;
+            _eVoucherNotValid = true;
+          });
+        } else if(_error.contains('TOO MANY UMNR ')) {
+          setState(() {
+            _tooManyUmnr = true;
             _eVoucherNotValid = true;
           });
         } else {
@@ -685,7 +694,7 @@ Row airMiles() {
               ],
             ),
           ));
-    } else if (_eVoucherNotValid || _hasError) {
+    } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
@@ -707,7 +716,7 @@ Row airMiles() {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _eVoucherNotValid
-                      ? Text('Promo code not vaild')
+                      ? TrText('Promo code not vaild')
                       : Text( _error                          ,
                           textAlign: TextAlign.center,
                         ),
@@ -722,7 +731,7 @@ Row airMiles() {
                           widget.newBooking.eVoucherCode = '';
                           retryBooking();
                         },
-                        child: Text(
+                        child: TrText(
                           'Remove and retry booking',
                           style: new TextStyle(color: Colors.white),
                         ),
@@ -736,7 +745,7 @@ Row airMiles() {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/FlightSearchPage', (Route<dynamic> route) => false);
                     },
-                    child: Text('Restart booking',
+                    child: TrText('Restart booking',
                     style: new TextStyle(color: Colors.white),
                   ),
                 ),
@@ -918,4 +927,5 @@ Row airMiles() {
               ])));
     }
   }
+
 }
