@@ -53,7 +53,7 @@ void configSI() {
     accentColor: Colors.black,
     primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
 
-    primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),// colour for datepicker header
+    primaryColor: Colors.white,// colour for datepicker header - also it changes menu icon color !!
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
     //   primaryHeaderColor: Colors.red,

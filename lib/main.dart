@@ -179,14 +179,14 @@ bool bFirstTime = true;
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: gblSystemColors.primaryColor,
-        accentColor: gblSystemColors.accentColor,
+        accentColor: gblSystemColors.accentColor, // if white - changes menu icon colour
         colorScheme: ColorScheme.light(primary: Colors.black),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
       darkTheme: ThemeData(
         //brightness: Brightness.dark,
         primaryColor: gblSystemColors.primaryColor,
-        accentColor: gblSystemColors.accentColor,
+        accentColor: gblSystemColors.accentColor,// if white - changes menu icon colour
         colorScheme: ColorScheme.light(primary: Colors.black),
       ),
       home: new RootPage(),

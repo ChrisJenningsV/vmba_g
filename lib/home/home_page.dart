@@ -79,7 +79,7 @@ class _HomeState extends State<HomePage> {
           ? gblSettings.latestBuildiOS
           : gblSettings.latestBuildAndroid;
 
-      if (latestVersion == null) {
+      if (latestVersion == null || latestVersion.contains('.')) {
         // no new version
         return;
       }
@@ -301,7 +301,9 @@ class _HomeState extends State<HomePage> {
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
             backgroundColor:gblSystemColors.primaryHeaderColor,
             title:_getLogo() ,
-            //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
+            iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
+
+          //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
             ),
         body: Stack(
           children: _getBackImage(buttonShape, buttonHeight),
