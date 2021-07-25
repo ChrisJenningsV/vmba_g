@@ -3,8 +3,11 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 //class CustomWidget {
-AppBar appBar(BuildContext context, String title) {
-  if( gblSettings.wantLeftLogo) {
+AppBar appBar(BuildContext context, String title,
+    {Widget leading, bool automaticallyImplyLeading, List<Widget> actions}) {
+  if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
+
+  if( gblSettings.wantLeftLogo && leading == null ) {
     return AppBar(
       centerTitle: gblCentreTitle,
       leading: gblSettings.wantLeftLogo ? Padding(
@@ -21,10 +24,14 @@ AppBar appBar(BuildContext context, String title) {
           style: TextStyle(
               color: gblSystemColors.headerTextColor),
           variety: 'title'),
+      actions: actions,
     );
 
   } else {
-    return AppBar(
+    Widget ab = AppBar(
+      leading: leading,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      centerTitle: gblCentreTitle,
       brightness: gblSystemColors.statusBar,
       backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
@@ -33,7 +40,9 @@ AppBar appBar(BuildContext context, String title) {
           style: TextStyle(
               color: gblSystemColors.headerTextColor),
               variety: 'title',),
+        actions: actions,
     );
+    return ab;
   }
 }
 

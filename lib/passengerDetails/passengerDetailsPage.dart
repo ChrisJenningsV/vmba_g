@@ -10,6 +10,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key, this.newBooking}) : super(key: key);
@@ -208,7 +209,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
     return new Scaffold(
       key: _key,
-      appBar: new AppBar(
+      appBar: appBar(context, 'Passengers Details'), /*new AppBar(
         brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
@@ -217,7 +218,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),
-      ),
+      ),*/
       endDrawer: DrawerMenu(),
       body: new Form(
         key: formKey,

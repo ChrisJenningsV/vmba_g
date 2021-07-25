@@ -9,6 +9,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class EditDetailsWidget extends StatefulWidget {
   EditDetailsWidget(
@@ -76,7 +77,15 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
+      appBar: appBar(context, 'Edit Details',automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+      /*new AppBar(
         brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
@@ -93,6 +102,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           )
         ],
       ),
+
+       */
       //endDrawer: DrawerMenu(),
       body: _loadingInProgress
           ? new Center(

@@ -13,6 +13,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class ReturnFlightSeletionPage extends StatefulWidget {
   ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
@@ -192,7 +193,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _key,
-      appBar: new AppBar(
+      appBar: appBar(context,"Returning Flight"),
+    /*new AppBar(
         brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
@@ -202,6 +204,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 color:
                 gblSystemColors.headerTextColor)),
       ),
+
+     */
       endDrawer: DrawerMenu(),
       body: _buildBody(),
     );

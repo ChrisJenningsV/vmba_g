@@ -13,6 +13,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class FlightSeletionPage extends StatefulWidget {
   FlightSeletionPage({Key key, this.newBooking}) : super(key: key);
@@ -205,7 +206,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _key,
-      appBar: new AppBar(
+      appBar: appBar(context,  "Outbound Flight", leading: new IconButton(
+        icon: new Icon(Icons.arrow_back),
+        onPressed: () async {
+          Navigator.pop(context, widget.newBooking);
+        },
+      )),
+      /*new AppBar(
         brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
@@ -221,6 +228,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 color:
                 gblSystemColors.headerTextColor)),
       ),
+       */
       endDrawer: DrawerMenu(),
       body: _buildBody(),
     );

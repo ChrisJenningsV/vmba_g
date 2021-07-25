@@ -12,6 +12,7 @@ import '../data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget({Key key, this.newBooking}) : super(key: key);
@@ -632,7 +633,8 @@ Row airMiles() {
   Widget build(BuildContext context) {
     if (_loadingInProgress) {
       return Scaffold(
-        appBar: new AppBar(
+        appBar: appBar(context, 'Summary') ,
+        /*new AppBar(
           brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
@@ -643,6 +645,7 @@ Row airMiles() {
                   color:
                   gblSystemColors.headerTextColor)),
         ),
+        */
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -660,7 +663,7 @@ Row airMiles() {
     } else if (_noInternet) {
       return Scaffold(
           key: _key,
-          appBar: new AppBar(
+          appBar: appBar(context, 'Summary'), /*new AppBar(
             brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
@@ -670,7 +673,7 @@ Row airMiles() {
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
-          ),
+          ),*/
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -697,7 +700,7 @@ Row airMiles() {
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
-          appBar: new AppBar(
+          appBar: appBar(context, 'Summary'), /* new AppBar(
             brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
@@ -708,6 +711,7 @@ Row airMiles() {
                     color: gblSystemColors
                         .headerTextColor)),
           ),
+          */
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -755,7 +759,7 @@ Row airMiles() {
     } else {
       return new Scaffold(
           key: _key,
-          appBar: new AppBar(
+          appBar: appBar(context, 'Summary'), /*new AppBar(
             brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
@@ -766,6 +770,7 @@ Row airMiles() {
                     color: gblSystemColors
                         .headerTextColor)),
           ),
+          */
           endDrawer: DrawerMenu(),
           body: new Container(
               padding: EdgeInsets.all(16.0),
