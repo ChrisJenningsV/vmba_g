@@ -155,8 +155,12 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
     if (this.widget.pnr.pNR.aDS == 'True') buffer.write(',ads=true');
 
+    buffer.write(getPaxTypeCounts(this.widget.mmbBooking.passengers ));
+
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
+
+
     //Intl.defaultLocale = gblLanguage;
     return buffer
         .toString()

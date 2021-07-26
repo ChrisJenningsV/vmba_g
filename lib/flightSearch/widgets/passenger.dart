@@ -168,13 +168,13 @@ class _PassengerWidgetState extends State<PassengerWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: (infants + children + youths) == 0
+                        child: (infants + children + youths + seniors + students + teachers) == 0
                             ? TrText("Select",
                                 style: new TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 20.0,
                                     color: Colors.grey))
-                            : Text((infants + children + youths).toString(),
+                            : Text((infants + children + youths + seniors + students + teachers ).toString(),
                                 style: new TextStyle(
                                   //fontWeight: FontWeight.w300,
                                   fontSize: 20.0,

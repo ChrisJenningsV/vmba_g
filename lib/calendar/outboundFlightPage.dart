@@ -107,12 +107,15 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     if (this.widget.newBooking.ads.pin != '' &&
         this.widget.newBooking.ads.number != '') buffer.write(',ads=true');
 
+
+    buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
+
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
     //Intl.defaultLocale = gblLanguage;
 
-    return buffer
-        .toString()
+    String msg =buffer.toString();
+    return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')
         .replaceAll('/', '%2F')
@@ -672,7 +675,25 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
   }
 
+  bool isUmnr() {
+    if( this.widget.newBooking.passengers.adults == 0 &&
+        this.widget.newBooking.passengers.teachers == 0 &&
+        this.widget.newBooking.passengers.students == 0 &&
+        this.widget.newBooking.passengers.children == 1 &&
+        this.widget.newBooking.passengers.seniors == 0
+    ) {
+      return true;
+    }
+    return false;
+  }
+  bool hasClassAseats(Flt item) {
+
+  }
+
   Widget pricebuttons(List<Flt> item) {
+    if( isUmnr() ) {
+
+    }
     if (item[0].fltav.pri.length > 3) {
       return Wrap(
           spacing: 8.0, // gap between adjacent chips

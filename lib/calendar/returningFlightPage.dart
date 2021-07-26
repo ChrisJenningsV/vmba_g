@@ -92,8 +92,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     if (this.widget.newBooking.ads.pin != '' &&
         this.widget.newBooking.ads.number != '') buffer.write(',ads=true');
 
+    buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
+
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(this.widget.newBooking.departureDate)}]');
+
 
     return buffer
         .toString()
