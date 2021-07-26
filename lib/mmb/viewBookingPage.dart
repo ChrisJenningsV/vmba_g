@@ -1575,8 +1575,7 @@ class _CheckinBoardingPassesWidgetState
                   ? appLinkWidget(
                       gblSettings.prohibitedItemsNoticeUrl,
                       Text(
-                          GobalSettings
-                              .shared.settings.prohibitedItemsNoticeUrl,
+                          gblSettings.prohibitedItemsNoticeUrl,
                           style: TextStyle(
                             decoration: TextDecoration.underline,
                           )))

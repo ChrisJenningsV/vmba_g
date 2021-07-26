@@ -253,6 +253,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       paxWidgets.add(Divider());
     }
     //Adult end
+
     //Youth start
     if (pax.youths == 1) {
       paxWidgets.add(paxEntryHeader(PaxType.youth, true));
@@ -266,6 +267,34 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       paxWidgets.add(Divider());
     }
     //Youth end
+
+    //studentstart
+    if (pax.students == 1) {
+      paxWidgets.add(paxEntryHeader(PaxType.student, true));
+    } else if (pax.students > 1) {
+      paxWidgets.add(paxEntryHeader(PaxType.student, false));
+    }
+    for (var students = 1; students < pax.students + 1; students++) {
+      paxWidgets.add(renderFieldsV2(i += 1, PaxType.student));
+    }
+    if (pax.students != 0) {
+      paxWidgets.add(Divider());
+    }
+    //student
+
+    //senior start
+    if (pax.seniors == 1) {
+      paxWidgets.add(paxEntryHeader(PaxType.senior, true));
+    } else if (pax.seniors > 1) {
+      paxWidgets.add(paxEntryHeader(PaxType.senior, false));
+    }
+    for (var seniors = 1; seniors < pax.seniors + 1; seniors++) {
+      paxWidgets.add(renderFieldsV2(i += 1, PaxType.senior));
+    }
+    if (pax.seniors != 0) {
+      paxWidgets.add(Divider());
+    }
+    //senior
 
     //Child start
     if (pax.children == 1) {

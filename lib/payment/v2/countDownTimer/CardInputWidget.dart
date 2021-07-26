@@ -763,11 +763,11 @@ void initState() {
                                     borderRadius:
                                         new BorderRadius.circular(25.0)),
                                 hintText: aircode == 'SI'
-                                    ? 'Parish or County'
-                                    : 'County or State',
+                                    ? translate('Parish or County')
+                                    : translate('County or State'),
                                 labelText: aircode == 'SI'
-                                    ? 'Parish / County'
-                                    : 'County/State',
+                                    ? translate('Parish / County')
+                                    : translate('County/State'),
                               ),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,

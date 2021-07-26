@@ -284,7 +284,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
       ));
       list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: widget.passengerDetail.paxType != PaxType.adult
+        child: ( widget.passengerDetail.paxType != PaxType.adult && widget.passengerDetail.paxType != PaxType.senior && widget.passengerDetail.paxType != PaxType.student)
             ? InkWell(
                 onTap: () {
                   gblNewDatepicker ?
@@ -595,6 +595,22 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
         }
         break;
+/*      case PaxType.student:
+        {
+          _initialDateTime =
+              DateTime.now().subtract(new Duration(days: (4015)));
+          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
+        }
+        break;
+      case PaxType.senior:
+        {
+          _initialDateTime =
+              DateTime.now().subtract(new Duration(days: (4015)));
+          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
+        }
+        break;
+
+ */
       case PaxType.adult:
         {
           _initialDateTime = DateTime.now();

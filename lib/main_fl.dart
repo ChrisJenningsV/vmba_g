@@ -64,6 +64,7 @@ void configFL() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
+    currency: 'SEK',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",

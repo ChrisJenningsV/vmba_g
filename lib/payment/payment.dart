@@ -1137,11 +1137,11 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     contentPadding: new EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 15.0),
                                     hintText: gblSettings.aircode == 'SI'
-                                        ? 'Parish or County'
-                                        : 'County or State',
-                                    labelText:  gblSettings.aircode == 'SI'
-                                        ? 'Parish / County'
-                                        : 'County/State',
+                                        ? translate('Parish or County')
+                                        : translate('County or State'),
+                                    labelText: gblSettings.aircode == 'SI'
+                                        ? translate('Parish / County')
+                                        : translate('County/State'),
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:

@@ -750,9 +750,10 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         var seat =
             seats.firstWhere((f) => f.sCol == indexColumn, orElse: () => null);
         selectableSeat = true;
-        currentSeatPrice = seat.sScprice;
-        currencyCode = seat.sCur;
-
+        if( seat != null ) {
+          currentSeatPrice = seat.sScprice;
+          currencyCode = seat.sCur;
+        }
 
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
