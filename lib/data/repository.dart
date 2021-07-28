@@ -251,12 +251,12 @@ class Repository {
       if( gblLanguage!= null && gblLanguage.isNotEmpty && gblLanguage != 'en') {
         body = {"AgentGuid": "${gblSettings.vrsGuid}",
           "BrandId": "${gblSettings.brandID}",
-          "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
+          "AppFile": '$gblLanguage.json'};  // ${gblLanguage}
       }
     } else {
       if( gblLanguage!= null  && gblLanguage.isNotEmpty && gblLanguage != 'en') {
         body = {"AgentGuid": "${gblSettings.vrsGuid}",
-          "AppFile": '${gblLanguage}.json'};  // ${gblLanguage}
+          "AppFile": '$gblLanguage.json'};  // ${gblLanguage}
       }
     }
 

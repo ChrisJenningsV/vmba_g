@@ -602,6 +602,14 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           String _dob =
               DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
           sb.write('($_dob)');
+        } else {
+           if (pax.paxType == PaxType.student) {
+            sb.write('.SD');
+            } else if (pax.paxType == PaxType.senior) {
+              sb.write('.CD');
+            } else if (pax.paxType == PaxType.youth) {
+             sb.write('.TH17');
+            }
         }
       }
       sb.write('^');

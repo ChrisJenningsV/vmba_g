@@ -16,7 +16,6 @@ class AppFeedBackPage extends StatefulWidget {
 }
 
 class _AppFeedBackPageState extends State<AppFeedBackPage> {
-  String _msg = '';
 
   List<Widget> render() {
     List<Widget> widgets = [];
@@ -243,7 +242,6 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     // reset
     prefs.setString('language_code', '');
     setState(() {
-      _msg = 'Language reset';
     });
   }
 

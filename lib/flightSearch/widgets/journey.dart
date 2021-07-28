@@ -21,9 +21,9 @@ class JourneyWidget extends StatefulWidget {
 }
 
 class _JourneyWidgetState extends State<JourneyWidget> {
-  String departureAirport = 'Select departure airport';
+  String departureAirport = translate('Select departure airport');
   String departureCode = '';
-  String arrivalAirport = 'Select arrival airport';
+  String arrivalAirport = translate('Select arrival airport');
   String arrivalCode = '';
   SelectedRoute route;
 
@@ -38,7 +38,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
       setState(() {
         departureCode = newValue.split('|')[0];
         departureAirport = newValue.split('|')[1];
-        arrivalAirport = 'Select arrival airport';
+        arrivalAirport = translate('Select arrival airport');
         route.departure = departureCode;
         route.arrival = arrivalCode;
         widget.onChanged(route);
@@ -154,6 +154,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
         fit: BoxFit.contain,
         child: TrText(
       airportName,
+      noTrans: true,
       style: new TextStyle(
           fontWeight: fw,
           color: c,

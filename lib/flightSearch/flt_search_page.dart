@@ -252,7 +252,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TrText("Children & Infants",
+                  TrText("Other Passengers", // """Children & Infants",
                       style: new TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15.0)),
                   TrText("Select",

@@ -39,9 +39,6 @@ String getIntlDate(String format, DateTime dt ) {
   return formattedDate;
 }
 
-String getPaxTypeCounts2( NewBooking newBooking) {
-
-}
 
 String getPaxTypeCounts(Passengers passengers ) {
   var buffer = new StringBuffer();

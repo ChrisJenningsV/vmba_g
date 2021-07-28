@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/pax.dart';
-import 'package:vmba/data/settings.dart';
 import 'package:vmba/mmb/widgets/apis.dart';
 import 'package:vmba/mmb/widgets/boardingPass.dart';
 import 'dart:math' as math;

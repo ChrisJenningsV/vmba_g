@@ -1014,7 +1014,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       Repository.get().updatePnr(pnrDBCopy);
       Repository.get()
           .fetchApisStatus(this.pnrModel.pNR.rLOC)
-          .then((_) => sendEmailConfirmation())
+          .then((_) => sendEmailConfirmation(pnrModel))
           .then((_) => getArgs())
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
               '/CompletedPage', (Route<dynamic> route) => false,
@@ -1047,6 +1047,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return args;
   }
 
+  /*
   sendEmailConfirmation() async {
     try {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
@@ -1071,6 +1072,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       print(e.toString());
     }
   }
+
+   */
 
   void _showDialog() {
     // flutter defined function

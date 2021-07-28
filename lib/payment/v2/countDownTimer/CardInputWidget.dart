@@ -456,7 +456,7 @@ void initState() {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(25.0)),
-                                    labelText: translate('Expired Date'),
+                                    labelText: translate('Expiry Date'),
                                     hintText: 'MM/YY'),
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,

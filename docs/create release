@@ -9,3 +9,5 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 
 # build android app bundle
 flutter build appbundle
+
+# output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar

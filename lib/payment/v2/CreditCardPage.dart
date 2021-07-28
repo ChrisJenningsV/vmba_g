@@ -224,7 +224,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         Repository.get().updatePnr(pnrDBCopy);
         Repository.get()
             .fetchApisStatus(pnrModel.pNR.rLOC)
-            .then((_) => sendEmailConfirmation())
+            .then((_) => sendEmailConfirmation(pnrModel))
             .then((n) => getArgs(pnrModel.pNR))
             .then((arg) {
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -736,7 +736,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       Repository.get().updatePnr(pnrDBCopy);
       Repository.get()
           .fetchApisStatus(this.pnrModel.pNR.rLOC)
-          .then((_) => sendEmailConfirmation())
+          .then((_) => sendEmailConfirmation(pnrModel))
           .then((_) => getArgs(this.pnrModel.pNR))
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
           '/CompletedPage', (Route<dynamic> route) => false,
@@ -770,6 +770,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
 
+  /*
   sendEmailConfirmation() async {
     try {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
@@ -794,6 +795,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       print('sendEmailConfirmation: ' + e.toString());
     }
   }
+     */
 
   showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(snackbar(message));

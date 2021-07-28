@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/globals.dart';
@@ -238,10 +239,10 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
   }
 
   void _removeAdult() {
-    if( widget.passengers.adults == 1 && gblSettings.wantUmnr == false) {
+    if( (widget.passengers.adults == 1 || passengers.adults == 1) && gblSettings.wantUmnr == false) {
       return;
     }
-    if( widget.passengers.adults == 0) {
+    if( passengers.adults == 0) {
       return;
     }
 
@@ -349,7 +350,11 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                     backgroundColor: widget.systemColors
                         .primaryButtonColor, //new Color(0xFF000000),
                     onPressed: () {
-                      Navigator.pop(context, passengers);
+                      if ( passengers.totalPassengers() > 0) {
+                        Navigator.pop(context, passengers);
+                      } else {
+                        showAlertDialog(context, 'Alert', 'Please select who is travelling');
+                      }
                     }),
               ],
             )),

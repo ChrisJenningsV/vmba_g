@@ -4,7 +4,6 @@ import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';

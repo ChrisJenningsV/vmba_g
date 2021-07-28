@@ -576,7 +576,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       Repository.get().updatePnr(pnrDBCopy);
       Repository.get()
           .fetchApisStatus(this.pnrModel.pNR.rLOC)
-          .then((_) => sendEmailConfirmation())
+          .then((_) => sendEmailConfirmation(pnrModel))
           .then((_) => getArgs())
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
               '/CompletedPage', (Route<dynamic> route) => false,
@@ -609,6 +609,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     return args;
   }
 
+  /*
   sendEmailConfirmation() async {
     try {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
@@ -633,6 +634,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       print(e.toString());
     }
   }
+   */
 
   String getPaymentCmd(bool makeHtmlSafe) {
     var buffer = new StringBuffer();

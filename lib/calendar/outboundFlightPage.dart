@@ -686,9 +686,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
     return false;
   }
-  bool hasClassAseats(Flt item) {
 
-  }
 
   Widget pricebuttons(List<Flt> item) {
     if( isUmnr() ) {
