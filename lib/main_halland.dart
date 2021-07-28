@@ -85,6 +85,9 @@ void configAH() {
     androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
     gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
     currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    currency: 'SEK',
+    wantCurrencyPicker: true,
+
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(

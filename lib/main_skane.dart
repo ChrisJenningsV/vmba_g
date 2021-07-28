@@ -76,6 +76,9 @@ void configAS() {
     androidAppId:   'se.airskane.booking', //  'se.airleap.booking',
     gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
     currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    currency: 'SEK',
+    wantCurrencyPicker: true,
+
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
 
     eVoucher:  true,
