@@ -15,7 +15,7 @@ class TrText extends StatelessWidget {
     var txt = labelText;
 
     if( gblLangMap != null && noTrans != true) {
-      if (gblLanguage != 'en') {
+      if (gblLanguage != 'en' || gblSettings.wantEnglishTranslation ) {
         var testTxt = '';
         if( variety == 'title' && gblIsLive == false) {
             if( gblLangMap['Test Mode: '] != null && gblLangMap['Test Mode: '].isNotEmpty ) {

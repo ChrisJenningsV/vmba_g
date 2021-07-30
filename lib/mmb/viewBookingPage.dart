@@ -54,8 +54,6 @@ class _ViewBookingPage extends State<ViewBookingPage> {
   @override
   initState() {
     super.initState();
-    // currentJourneyNo = 0;
-    // currentPaxNo = 0;
   }
 
   @override
@@ -1030,6 +1028,13 @@ class _CheckinBoardingPassesWidgetState
   }
 
   Widget getFlightViewWidgets(PnrModel pnr, int journey) {
+    var timeFormat = 'h:mm a';
+    /*
+    if( gblSettings.want24HourClock ){
+      timeFormat = 'HH:mm';
+    }
+*/
+
     bool isFltPassedDate(Itin journey, int offset) {
       DateTime now = DateTime.now();
       var fltDate;
@@ -1043,7 +1048,6 @@ class _CheckinBoardingPassesWidgetState
 
       return result;
     }
-
     if (!isFltPassedDate(pnr.pNR.itinerary.itin[journey], 24)) {
       return Container(
         margin: EdgeInsets.only(bottom: 10.0),
@@ -1147,7 +1151,7 @@ class _CheckinBoardingPassesWidgetState
                               translate('Depart') + ' ' +
                                   //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
                                   //            ' ' + pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
-                              getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate  + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).replaceFirst('12:00 AM', '00:00 AM'),
+                              getIntlDate(timeFormat, DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate  + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).replaceFirst('12:00 AM', '00:00 AM'),
                               style: new TextStyle(
                                   fontSize: 14.0, fontWeight: FontWeight.w500)),
                         ),
@@ -1267,6 +1271,13 @@ class _CheckinBoardingPassesWidgetState
 
 //new collapsable items
   Widget getFlightViewCollapsableWidgets(PnrModel pnr, int journey) {
+    var timeFormat = 'h:mm a';
+    /*
+    if( gblSettings.want24HourClock ){
+      timeFormat = 'HH:mm';
+    }
+*/
+
     bool isFltPassedDate(Itin journey, int offset) {
       DateTime now = DateTime.now();
       var fltDate;
@@ -1413,7 +1424,7 @@ class _CheckinBoardingPassesWidgetState
                                       translate('Depart') + ' '+
                                           //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
                                           //            ' ' +pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
-                                          getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +pnr.pNR.itinerary.itin[journey].depTime)).replaceAll('12:00 AM', '00:00 AM'),
+                                          getIntlDate(timeFormat, DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +pnr.pNR.itinerary.itin[journey].depTime)).replaceAll('12:00 AM', '00:00 AM'),
                                       style: new TextStyle(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w500)),

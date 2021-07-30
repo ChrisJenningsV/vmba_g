@@ -100,7 +100,7 @@ initLangCached(String lang) async {
 
 initLang(String lang) async {
   //Future<Countrylist> getCountrylist() async {
-  if (gblLanguage != 'en') {
+  if (gblLanguage != 'en' || gblSettings.wantEnglishTranslation  ) {
     logit('load lang $lang');
 
     if ( gblSettings.gblServerFiles != null && gblSettings.gblServerFiles.isNotEmpty) {
@@ -132,9 +132,14 @@ initLang(String lang) async {
           }
         } else {
           logit('lang file  data error ' + data.substring(0,20));
-          String jsn = await rootBundle.loadString(
-              'lib/assets/lang/$gblLanguage.json');
-           gblLangMap = json.decode(jsn);
+          try {
+            String jsn = await rootBundle.loadString(
+                'lib/assets/$gblAppTitle/lang/$gblLanguage.json');
+            gblLangMap = json.decode(jsn);
+          } catch(e) {
+            print(e);
+
+          }
 
         }
       } catch(e) {
@@ -145,7 +150,7 @@ initLang(String lang) async {
 
       String jsonString;
       jsonString = await rootBundle.loadString(
-          'lib/assets/lang/$gblLanguage.json');
+          'lib/assets/$gblAppTitle/lang/$gblLanguage.json');
       gblLangMap = json.decode(jsonString);
     }
   }
@@ -230,6 +235,8 @@ dialogContent(BuildContext context) {
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                 primary: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
+              // remove cached lang file
+              deleteLang();
               //Intl.defaultLocale =selectedLang;
               Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(selectedLang));
               gblLanguage=selectedLang;
@@ -249,6 +256,7 @@ dialogContent(BuildContext context) {
   );
 
 }
+
 
 
 class LanguageSelection extends StatefulWidget {

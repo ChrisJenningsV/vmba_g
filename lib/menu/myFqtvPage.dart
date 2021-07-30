@@ -307,7 +307,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               ),
               new TextButton(
                 child: new TrText(
-                  'Reset password',
+                  'Reset Password',
                   style: TextStyle(color: Colors.black),
                 ),
                 style: TextButton.styleFrom(primary: Colors.white),

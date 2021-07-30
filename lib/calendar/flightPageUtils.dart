@@ -34,6 +34,10 @@ String calenderPrice(String currency, String price, String miles) {
 
 String getIntlDate(String format, DateTime dt ) {
   Intl.defaultLocale = gblLanguage;
+  if ( gblSettings.want24HourClock ) {
+    format = format.replaceFirst('H:mm a', 'HH:mm');
+    format = format.replaceFirst('h:mm a', 'HH:mm');
+  }
   String formattedDate = DateFormat(format).format(dt);
   Intl.defaultLocale = 'en';
   return formattedDate;

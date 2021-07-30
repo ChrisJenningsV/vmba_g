@@ -127,6 +127,8 @@ class Settings {
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
+  bool wantEnglishTranslation = false;
+  bool want24HourClock;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -202,6 +204,8 @@ bool bpShowFastTrack;
     this.wantRememberMe,
     this.wantHomeFQTVButton,
     this.wantUmnr,
+    this.want24HourClock,
+    this.wantEnglishTranslation,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
@@ -292,6 +296,12 @@ bool bpShowFastTrack;
     }
     if( gblServerFiles == null ) {
       gblServerFiles = '';
+    }
+    if( wantEnglishTranslation == null) {
+      wantEnglishTranslation = false;
+    }
+    if( want24HourClock == null ) {
+      want24HourClock = false;
     }
   }
 

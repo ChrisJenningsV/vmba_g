@@ -364,6 +364,12 @@ class Repository {
                   case 'wantFQTV':
                     gblSettings.wantFQTV = parseBool(item['value']);
                     break;
+                  case 'wantEnglishTranslation':
+                    gblSettings.wantEnglishTranslation = parseBool(item['value']);
+                    break;
+                  case 'want24HourClock':
+                    gblSettings.want24HourClock = parseBool(item['value']);
+                    break;
                   case 'wantFQTVNumber':
                     gblSettings.wantFQTVNumber = parseBool(item['value']);
                     break;

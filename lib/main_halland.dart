@@ -83,11 +83,12 @@ void configAH() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airhalland.booking', //  'se.airleap.booking',
-    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
-    currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
+    wantEnglishTranslation: true,
+    currencies: 'se,SEK,no,NOK,eu,EUR',
     currency: 'SEK',
     wantCurrencyPicker: true,
-
+    want24HourClock: true,
 
     eVoucher:  true,
     passengerTypes:  PassengerTypes(

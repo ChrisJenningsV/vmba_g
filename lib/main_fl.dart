@@ -64,6 +64,8 @@ void configFL() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
+    want24HourClock: true,
+
     currency: 'SEK',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -84,10 +86,10 @@ void configFL() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airleap.booking', //  'se.airleap.booking',
-    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
-    currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
+    gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
+    wantEnglishTranslation: true,
+    currencies: 'se,SEK,no,NOK,eu,EUR',
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
-
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
       adults: true,

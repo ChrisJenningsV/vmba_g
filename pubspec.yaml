@@ -119,18 +119,22 @@ flutter:
     - lib/assets/airswift/json/countries.json
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
+    - lib/assets/airleap/lang/en.json
     - lib/assets/airgotland/json/countries.json
     - lib/assets/airgotland/images/appBar.png
     - lib/assets/airgotland/images/logo.png
     - lib/assets/airgotland/images/loader.png
+    - lib/assets/airgotland/lang/en.json
     - lib/assets/airskane/json/countries.json
     - lib/assets/airskane/images/appBar.png
     - lib/assets/airskane/images/logo.png
     - lib/assets/airskane/images/loader.png
+    - lib/assets/airskane/lang/en.json
     - lib/assets/airhalland/json/countries.json
     - lib/assets/airhalland/images/appBar.png
     - lib/assets/airhalland/images/logo.png
     - lib/assets/airhalland/images/loader.png
+    - lib/assets/airhalland/lang/en.json
 
     #   - lib/assets/airleap/images/background.png
     - lib/assets/airleap/json/countries.json

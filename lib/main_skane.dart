@@ -74,10 +74,12 @@ void configAS() {
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
     androidAppId:   'se.airskane.booking', //  'se.airleap.booking',
-    gblLanguages: 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French',
+    gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
+    wantEnglishTranslation: true,
     currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
     currency: 'SEK',
     wantCurrencyPicker: true,
+    want24HourClock: true,
 
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
 
