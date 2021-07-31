@@ -115,6 +115,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //Intl.defaultLocale = gblLanguage;
 
     String msg =buffer.toString();
+    logit('getAvCommand: ' + msg);
     return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')

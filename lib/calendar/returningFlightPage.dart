@@ -68,6 +68,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }
+    if(this.widget.newBooking.currency != null && this.widget.newBooking.currency.isNotEmpty) {
+      buffer.write(',QuoteCurrency=${this.widget.newBooking.currency}');
+    }
 
     buffer.write(',SingleSeg=r');
     //}

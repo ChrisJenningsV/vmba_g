@@ -63,3 +63,17 @@ class ContactUsPageWeb extends StatelessWidget {
         url: gblSettings.contactUsUrl))]);
   }
 }
+
+
+class CustomPageWeb extends StatelessWidget {
+  CustomPageWeb(this.title, this.url);
+  final String title;
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row( children: <Widget>[ Expanded( child: WebViewWidget(
+        title: title,
+        url: url))]);
+  }
+}

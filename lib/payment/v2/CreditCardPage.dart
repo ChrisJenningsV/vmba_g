@@ -18,6 +18,7 @@ import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/components/showDialog.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({    Key key,
@@ -60,6 +61,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   initState() {
     super.initState();
       double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+      gblError = '';
       if( am <= 0 ) {
         signin().then((_) => completeBooking() );
       }
@@ -74,6 +76,41 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     @override
   Widget build(BuildContext context) {
+      if( gblError != null && gblError.isNotEmpty){
+        return Scaffold(
+          key: _key,
+          appBar: new AppBar(
+            brightness: gblSystemColors.statusBar,
+            backgroundColor:
+            gblSystemColors.primaryHeaderColor,
+            iconTheme: IconThemeData(
+                color: gblSystemColors.headerTextColor),
+            title: new Text('Payment Selection',
+                style: TextStyle(
+                    color:
+                    gblSystemColors.headerTextColor)),
+          ),
+          endDrawer: DrawerMenu(),
+          body: new Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new TrText('Payment Error', style: TextStyle(fontSize: 16.0)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new TrText(gblError, style: TextStyle(fontSize: 16.0),),
+                ),
+              ],
+            ),
+          ),
+        );
+
+        // showAlertDialog(context, 'Error making payment', gblError);
+        // return null;
+      }
     return Scaffold(
       key: _key,
       appBar: AppBar(
@@ -207,32 +244,40 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _sendVRSCommand(json.encode(
         RunVRSCommand(session, msg).toJson()))
         .then((result) {
-/*        String vrsCommandList =
-    json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
-    print(msg);
-    sendVRSCommandList(vrsCommandList).then((result){
+          try{
+            if(! result.toString().startsWith('{')){
+              gblError = result;
+              gblErrorTitle = 'Payment Error';
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/ErrorPage', (Route<dynamic> route) => false);
+              return null;
+            }
+      Map map = json.decode(result);
+      PnrModel pnrModel = new PnrModel.fromJson(map);
+      PnrDBCopy pnrDBCopy = new PnrDBCopy(
+          rloc: pnrModel.pNR.rLOC, //_rloc,
+          data: result,
+          delete: 0,
+          nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
 
- */
-        Map map = json.decode(result);
-        PnrModel pnrModel = new PnrModel.fromJson(map);
-        PnrDBCopy pnrDBCopy = new PnrDBCopy(
-            rloc: pnrModel.pNR.rLOC, //_rloc,
-            data: result,
-            delete: 0,
-            nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+      Repository.get().updatePnr(pnrDBCopy);
+      Repository.get()
+          .fetchApisStatus(pnrModel.pNR.rLOC)
+          .then((_) => sendEmailConfirmation(pnrModel))
+          .then((n) => getArgs(pnrModel.pNR))
+          .then((arg) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/CompletedPage', (Route<dynamic> route) => false,
+            arguments: arg);
+      });
+    } catch(e)
+    {
+      print(e);
+    }
 
-        Repository.get().updatePnr(pnrDBCopy);
-        Repository.get()
-            .fetchApisStatus(pnrModel.pNR.rLOC)
-            .then((_) => sendEmailConfirmation(pnrModel))
-            .then((n) => getArgs(pnrModel.pNR))
-            .then((arg) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/CompletedPage', (Route<dynamic> route) => false,
-              arguments: arg);
-        });
-    });
-  }
+      });
+    }
+
 
 
   Future makePayment() async {

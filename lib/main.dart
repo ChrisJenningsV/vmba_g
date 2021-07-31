@@ -27,6 +27,7 @@ import 'main_z4.dart';
 import 'main_gotland.dart';
 import 'main_halland.dart';
 import 'main_skane.dart';
+import 'package:vmba/menu/errorPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -202,6 +203,7 @@ bool bFirstTime = true;
                        ads: true,
                      ),
         '/AdsPage': (BuildContext context) => new AdsPage(),
+        '/ErrorPage': (BuildContext context) => new ErrorPage(),
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),

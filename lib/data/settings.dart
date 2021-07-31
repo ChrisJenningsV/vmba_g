@@ -143,6 +143,10 @@ class Settings {
   String previousVrsGuid;
   bool autoSeatOption;
   String backgroundImageUrl;
+  String customMenu1;
+  String customMenu2;
+  String customMenu3;
+
  // String hostBaseUrl;
   String iOSAppId;
   String androidAppId;

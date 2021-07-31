@@ -389,10 +389,23 @@ class Repository {
                     gblSettings.hideFareRules =parseBool(item['value']);
                     break;
 
+                  /* custom menu items
+
+                   */
+                  case 'customMenu1':
+                    gblSettings.customMenu1 = item['value'];
+                    break;
+                  case 'customMenu2':
+                    gblSettings.customMenu2 = item['value'];
+                    break;
+                  case 'customMenu3':
+                    gblSettings.customMenu3 = item['value'];
+                    break;
 
                 /*
                   URLs
                    */
+
                   case 'backgroundImageUrl':
                     gblSettings.backgroundImageUrl = item['value'];
                     print(gblSettings.backgroundImageUrl);
