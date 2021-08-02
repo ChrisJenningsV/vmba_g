@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/globals.dart';
+
 
 class TabPage extends StatefulWidget {
   TabPage({Key key})
@@ -29,6 +31,93 @@ class TabPageState extends State<TabPage>  with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+        body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled)
+    {
+      return [
+        SliverAppBar(
+          pinned: false,
+          backgroundColor: Colors.white,
+          flexibleSpace: FlexibleSpaceBar(
+            collapseMode: CollapseMode.pin,
+            background: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 200.0,
+                  width: double.infinity,
+                  color: Colors.grey,
+                  child: FlutterLogo(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Business Office',
+                    style: TextStyle(fontSize: 25.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Open now\nStreet Address, 299\nCity, State',
+                    style: TextStyle(fontSize: 15.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                /*
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(Icons.share),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Icon(Icons.favorite),
+                      ),
+                    ],
+                  ),
+                )
+
+                 */
+              ],
+            ),
+          ),
+          expandedHeight: 380.0,
+          bottom: TabBar(
+            indicatorColor: Colors.amberAccent,
+            isScrollable: true,
+            labelColor: Colors.black,
+            tabs: [
+             // Tab(icon: Icon(Icons.flight), text: 'class one',),
+              _getTab('Class one', '£123.00'),
+              _getTab('ECO', '£153.00'),
+              _getTab('Super Green', '£223.00'),
+              _getTab('plush', '£243.00'),
+              _getTab('Business', '£333.00'),
+            ],
+            controller: _controller,
+          ),
+        )
+      ];
+    },
+     body: TabBarView(
+        controller: _controller,
+            children: [
+            _getClassBand(context, 'Class one', '1'),
+      _getClassBand(context, 'Eco', '2'),
+      _getClassBand(context, 'Super green', '3'),
+      _getClassBand(context, 'Plush', '4'),
+      _getClassBand(context, 'Business', '5'),
+      ],
+    ),
+
+    ));
+
+
+    /*
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -61,6 +150,15 @@ class TabPageState extends State<TabPage>  with TickerProviderStateMixin {
         ),
       ),
     );
+
+     */
+  }
+  Widget _getTab( String title, String price) {
+    return Column( children: [
+      TrText(title),
+      TrText('from', style: TextStyle(fontSize: 8.0),),
+      Text(price)
+    ]);
   }
 
   Widget _getClassBand(BuildContext context, String title,  String lineNo ) {
