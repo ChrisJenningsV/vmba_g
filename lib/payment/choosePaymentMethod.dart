@@ -75,12 +75,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     pnrModel = widget.pnrModel;
     setCurrencyCode();
-    if( session == null || session.varsSessionId == "" ) {
-      signin().then((_) => makeMmbBooking());
-    } else {
- //     makeMmbBooking();
+    if( widget.isMmb ) {
+      if (session == null || session.varsSessionId == "") {
+        signin().then((_) => makeMmbBooking());
+      } else {
+        //     makeMmbBooking();
+      }
     }
-
     stopwatch.start();
   }
 

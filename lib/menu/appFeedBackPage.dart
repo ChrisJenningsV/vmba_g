@@ -7,6 +7,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
+import 'package:vmba/calendar/TabPage.dart';
 
 class AppFeedBackPage extends StatefulWidget {
   AppFeedBackPage({Key key, this.version}) : super(key: key);
@@ -217,17 +218,24 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   onPressed: () {
                     _resetLangs();
                     deleteLang();
- /*                   Navigator.push(
-                        context, SlideTopRoute(page: LanguageSelection()
-                    ));
-
-  */
                     },
 
                 ),
 
 
                 const SizedBox(width: 8),
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Demo Page'),
+                  onPressed: () {
+                    Navigator.push(
+                      context, SlideTopRoute(page: TabPage())
+                    );
+                  },
+
+                ),
               ],
             ),
 

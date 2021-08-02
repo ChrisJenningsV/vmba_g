@@ -190,11 +190,14 @@ class DrawerMenu extends StatelessWidget {
       var pageText = gblSettings.customMenu1.split(',')[1];
       var url = gblSettings.customMenu1.split(',')[2];
       if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
-        list.add(ListTile(
+        // SizedBox(height: 24,
+        //             child:
+        list.add( ListTile(
             title: _getMenuItem(Icons.web, menuText),
             onTap: () {
               Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
-            }));
+            })
+        );
       }
           } catch(e) {
         logit(e);

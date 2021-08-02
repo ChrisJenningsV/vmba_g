@@ -73,7 +73,7 @@ void configFL() {
     aircode:  "FL",
     brandID: 'FL',
 
-    termsAndConditionsUrl:  " https://www.airleap.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
+    termsAndConditionsUrl:  "https://www.airleap.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airleap.se/sv/om-air-leap/integritetspolicy?app_mode=1",
    faqUrl: "https://www.airleap.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
     contactUsUrl: "https://www.airleap.se/sv/om-air-leap/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",

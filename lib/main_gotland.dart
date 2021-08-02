@@ -63,10 +63,10 @@ void configAG() {
     brandID: "AG",
     buttonStyle: 'RO2',
 
-    termsAndConditionsUrl:  " https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
-    privacyPolicyUrl:  "https://www.airgotland.se/sv/om-air-leap/integritetspolicy?app_mode=1",
+    termsAndConditionsUrl:  "https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
+    privacyPolicyUrl:  "https://www.airgotland.se/sv/om-air-gotland/integritetspolicy?app_mode=1",
     faqUrl: "https://www.airgotland.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
-    contactUsUrl: "https://www.airgotland.se/sv/om-air-leap/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
+    contactUsUrl: "https://www.airgotland.se/sv/om-air-gotland/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
 //    locale:  'en-EN',
  //   bookingLeadTime:  60,
     webCheckinNoSeatCharge:  false,

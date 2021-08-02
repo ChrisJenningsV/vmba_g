@@ -70,10 +70,10 @@ void configAH() {
     brandID: "AH",
     buttonStyle: 'RO2',
 
-    termsAndConditionsUrl:  " https://www.airhalland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
-    privacyPolicyUrl:  "https://www.airhalland.se/sv/om-air-leap/integritetspolicy?app_mode=1",
+    termsAndConditionsUrl:  "https://www.airhalland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
+    privacyPolicyUrl:  "https://www.airhalland.se/sv/om-air-halland/integritetspolicy?app_mode=1",
     faqUrl: "https://www.airhalland.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
-    contactUsUrl: "https://www.airhalland.se/sv/om-air-leap/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
+    contactUsUrl: "https://www.airhalland.se/sv/om-air-halland/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
 //    locale:  'en-EN',
     bookingLeadTime:  60,
     webCheckinNoSeatCharge:  false,

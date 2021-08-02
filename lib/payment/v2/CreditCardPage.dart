@@ -235,6 +235,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         result.varsSessionId,
         result.vrsServerNo,
       );
+      gblSession = session;
     });
   }
 
