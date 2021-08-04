@@ -1175,8 +1175,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   decoration: InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 15.0),
-                                    hintText: 'Post code / Zip Code',
-                                    labelText: 'Post code / Zip Code',
+                                    hintText: translate('Post code / Zip Code'),
+                                    labelText: translate('Post code / Zip Code'),
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
