@@ -116,8 +116,20 @@ class _JourneyWidgetState extends State<JourneyWidget> {
                   },
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      new TrText('Fly to',
+                    children: [ (gblWantCitySwap && departureAirport.isNotEmpty && arrivalAirport.isNotEmpty) ?
+                        Row( children: [
+                          TrText('Fly to',style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
+                          IconButton( icon: Icon(Icons.import_export), color: Colors.blueGrey,
+                            tooltip: translate('Swap Origin and Destination'),
+                            onPressed: () {
+                            setState(() {
+                              var dest = departureAirport;
+                              departureAirport =arrivalAirport;
+                              arrivalAirport = dest;
+                            });
+                            },)
+                        ],)
+                        :new TrText('Fly to',
                           style: new TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15.0)),
                   _getAirportText(arrivalAirport,arrivalCode),

@@ -11,7 +11,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'AG';
+String gblBuildFlavor = 'AH';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
@@ -39,7 +39,10 @@ Map gblLangMap ;
 Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
+
 bool  gblWantLogin = true;
+bool gblWantCitySwap = true;
+
 TextStyle gblTitleStyle;
 List<String> gblTitles = <String>[
   'Mr',
