@@ -108,7 +108,6 @@ void configSI() {
   groupsBookingsEmail:  "groups@blueislands.com",
   maxNumberOfPax:  8,
   hideFareRules:  true,
-  fqtvEnabled:  false,
 
   liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   liveApisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

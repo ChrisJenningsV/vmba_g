@@ -24,18 +24,7 @@ class EditDetailsWidget extends StatefulWidget {
 }
 
 class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
-/*  List<String> _titles = <String>[
-    'Mr',
-    'Mrs',
-    'Ms',
-    'Dr',
-    'Miss',
-    'Mstr',
-    'Prof',
-    'Rev'
-  ];
 
- */
   bool _loadingInProgress = false;
   final formKey = new GlobalKey<FormState>();
   String _error;
@@ -284,7 +273,10 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
       ));
       list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: ( widget.passengerDetail.paxType != PaxType.adult && widget.passengerDetail.paxType != PaxType.senior && widget.passengerDetail.paxType != PaxType.student)
+        child: ( widget.passengerDetail.paxType != PaxType.adult &&
+            widget.passengerDetail.paxType != PaxType.senior &&
+            widget.passengerDetail.paxType != PaxType.student &&
+            !(widget.passengerDetail.paxType == PaxType.youth && gblSettings.passengerTypes.wantYouthDOB == false))
             ? InkWell(
                 onTap: () {
                   gblNewDatepicker ?
@@ -326,7 +318,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             : Padding(padding: const EdgeInsets.all(0.0)),
       ));
       if( widget.passengerDetail.paxType == PaxType.adult &&
-              gblSettings.fqtvEnabled ) {
+              gblSettings.wantFQTV ) {
           list.add(Padding(
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
               child: new Theme(
@@ -591,8 +583,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
       case PaxType.youth:
         {
           _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
+              DateTime.now().subtract(new Duration(days: (gblSettings.passengerTypes.youthMinAge * 365)));
+          _minimumDate = DateTime.now().subtract(new Duration(days: (gblSettings.passengerTypes.youthMaxAge * 365)));
         }
         break;
 /*      case PaxType.student:

@@ -126,7 +126,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
                         return null;
                       }
                     },
-                    onSaved: (value) => _surname = value.trim(),
+                    onSaved: (value) => _surname = value.trim().toUpperCase(),
                   ),
                   Center(
                       child: Padding(
@@ -301,7 +301,7 @@ class _AddBookingFormState extends State<AddBookingForm> {
     if (_error.isNotEmpty) {
       return false;
     }
-    if( pnr.hasFutureFlightsAddDayOffset(1)) {
+    if( pnr.hasFutureFlightsAddDayOffset(1) || pnr.hasFutureFlightsMinusDayOffset(7)) {
       return true;
     }
 

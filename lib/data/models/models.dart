@@ -93,6 +93,7 @@ class Journey {
 enum PaxType { adult, child, smallChild, infant, seatedInfant,  youth, student, senior, teacher }
 
 class PassengerDetail {
+  String paxNumber;
   String title = '';
   String firstName = '';
   String lastName = '';
@@ -104,6 +105,9 @@ class PassengerDetail {
   String adsPin = '';
   String fqtv = '';
   String fqtvPassword = '';
+  String country ='';
+  String seniorID = '';
+  String disabilityID = '';
 
   PassengerDetail( {this.title,
     this.firstName,

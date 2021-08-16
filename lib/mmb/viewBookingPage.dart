@@ -1572,11 +1572,11 @@ class _CheckinBoardingPassesWidgetState
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Online Check-in"),
+          title: new TrText("Online Check-in"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
+              TrText(
                   "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."),
               Padding(
                 padding: EdgeInsets.all(4),
@@ -1605,7 +1605,7 @@ class _CheckinBoardingPassesWidgetState
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(
-              child: new Text("Decline",
+              child: new TrText("Decline",
                   style: new TextStyle(color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -1641,7 +1641,7 @@ class _CheckinBoardingPassesWidgetState
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Online Check-in"),
+          title: new TrText("Online Check-in"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -1671,7 +1671,7 @@ class _CheckinBoardingPassesWidgetState
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(
-              child: new Text("Decline",
+              child: new TrText("Decline",
                   style: new TextStyle(color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();

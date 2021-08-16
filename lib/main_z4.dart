@@ -103,7 +103,6 @@ void configZ4() {
   apiKey: 'a4768447e0ae4e4688b6783377bed3b6',
   maxNumberOfPax: 8,
   hideFareRules: false,
-  fqtvEnabled: false,
     searchDateOut: 1,
     searchDateBack: 6,
   );

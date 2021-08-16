@@ -35,7 +35,9 @@ class DrawerMenu extends StatelessWidget {
     ));
 
     // Home
+    bool dense = true;
     list.add(  ListTile(
+      dense: dense,
         title: _getMenuItem( Icons.home, 'Home' ),
         onTap: () {
           // Update the state of the app
@@ -49,6 +51,7 @@ class DrawerMenu extends StatelessWidget {
 
     if( gblNoNetwork == false ) {
       list.add(ListTile(
+        dense: dense,
         title: _getMenuItem(Icons.flight_takeoff, 'Book a flight'),
         onTap: () {
           // Update the state of the app
@@ -62,15 +65,18 @@ class DrawerMenu extends StatelessWidget {
 
       if(  gblBuildFlavor == 'LM' ) {
         list.add(ListTile(
+          dense: dense,
           // contentPadding: EdgeInsets.zero,
           title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS flight'),
           onTap: () {
             Navigator.push(context, SlideTopRoute(page: AdsPage()));
           },
         ));
+      }
 
         //Divider(),
         list.add(ListTile(
+          dense: dense,
           title: _getMenuItem(Icons.card_travel, 'My Bookings'),
           onTap: () {
             // Update the state of the app
@@ -79,9 +85,9 @@ class DrawerMenu extends StatelessWidget {
                 '/MyBookingsPage', (Route<dynamic> route) => false);
           },
         ));
-      }
         if( gblNoNetwork == false ) {
           list.add(ListTile(
+            dense: dense,
             title: _getMenuItem( Icons.add, 'Add an existing booking' ),
             onTap: () {
               // Update the state of the app
@@ -94,6 +100,7 @@ class DrawerMenu extends StatelessWidget {
 
         if(gblSettings.gblLanguages != null && gblNoNetwork == false ) {
           list.add(ListTile(
+            dense: dense,
             title: _getMenuItem(Icons.flag, 'Language'),
             onTap: () {
               Navigator.push(
@@ -105,6 +112,7 @@ class DrawerMenu extends StatelessWidget {
 
     if(gblSettings.wantProfileList) {
       list.add(ListTile(
+        dense: dense,
         title: _getMenuItem(Icons.list_alt_outlined, 'Profile list'),
         onTap: () {
           Navigator.push(
@@ -117,6 +125,7 @@ class DrawerMenu extends StatelessWidget {
     // My Account
     if(gblSettings != null &&  gblSettings.wantMyAccount != null && gblSettings.wantMyAccount) {
       list.add(ListTile(
+        dense: dense,
         title: _getMenuItem(Icons.person_outline, 'My account'),
         onTap: () {
           Navigator.push(
@@ -132,6 +141,7 @@ class DrawerMenu extends StatelessWidget {
     //FQTV
     if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
       list.add(ListTile(
+        dense: dense,
         title: _getMenuItem( Icons.person_pin, 'My ${gblSettings.fqtvName}' ),
         onTap: () {
           Navigator.push(
@@ -147,6 +157,7 @@ class DrawerMenu extends StatelessWidget {
     // FAQ
     if(gblNoNetwork == false) {
       list.add(ListTile(
+        dense: dense,
         title: _getMenuItem( Icons.live_help, 'FAQs' ),
         onTap: () {
           switch (gblSettings.aircode) {
@@ -166,6 +177,7 @@ class DrawerMenu extends StatelessWidget {
     // contact us
     if( gblNoNetwork == false ) {
       list.add(ListTile(
+        dense: dense,
     title: _getMenuItem( Icons.phone, 'Contact us' ),
     onTap: () {
     //Navigator.push(context, SlideTopRoute(page: ContactUsPage()
@@ -193,6 +205,7 @@ class DrawerMenu extends StatelessWidget {
         // SizedBox(height: 24,
         //             child:
         list.add( ListTile(
+            dense: dense,
             title: _getMenuItem(Icons.web, menuText),
             onTap: () {
               Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
@@ -212,6 +225,7 @@ class DrawerMenu extends StatelessWidget {
         var url = gblSettings.customMenu2.split(',')[2];
         if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
           list.add(ListTile(
+              dense: dense,
               title: _getMenuItem(Icons.web, menuText),
               onTap: () {
                 Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
@@ -245,18 +259,8 @@ class DrawerMenu extends StatelessWidget {
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
+         // itemExtent: 50,
           children: list,
-            /* gbl_settings.specialAssistanceUrl.isNotEmpty ?
-            ListTile(
-              title: _getMenuItem( Icons.accessible_forward, 'Special assistance' ),
-              onTap: () {
-                Navigator.push(
-                    context, SlideTopRoute(page: SpecialAssistancePage()
-                    ));
-              },
-            ) : '',
-
-             */
         ),
       ),
     );

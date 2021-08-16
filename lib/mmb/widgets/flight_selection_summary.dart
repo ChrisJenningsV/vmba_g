@@ -265,14 +265,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         TrText('Flights Total: '),
         Text(formatPrice(currencyCode,total)),
-/*
-        Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
-            .format(total))
-        // (double.tryParse(fareStore.total) ?? 0.0))),
 
- */
       ],
     );
   }
@@ -301,13 +294,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         children: <Widget>[
           TrText('Discount: '),
           Text(formatPrice(currencyCode,total)),
-/*
-          Text(NumberFormat.simpleCurrency(
-                  locale: gblSettings.locale,
-                  name: currencyCode)
-              .format(total)),
-
- */
         ],
       );
     }
@@ -324,12 +310,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       children: <Widget>[
         Text(
           formatPrice(currencyCode,dAmount),
-/*          NumberFormat.simpleCurrency(
-                  locale: gblSettings.locale,
-                  name: currencyCode)
-              .format(dAmount),
-
- */
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ],
@@ -428,13 +408,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             children: <Widget>[
               TrText('Tax:'),
               Text(formatPrice(currencyCode,taxTotal)),
-/*
-              Text(NumberFormat.simpleCurrency(
-                      locale: gblSettings.locale,
-                      name: currencyCode)
-                  .format(taxTotal)),
-
- */
             ],
           ),
         );
@@ -622,6 +595,28 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                     : Padding(
                         padding: EdgeInsets.zero,
                       ),
+                widget.mmbBooking.passengers.seniors != 0
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(translate('No of ') + translate('Seniors') + ': '),
+                    Text(widget.mmbBooking.passengers.seniors.toString()),
+                  ],
+                )
+                    : Padding(
+                  padding: EdgeInsets.zero,
+                ),
+                widget.mmbBooking.passengers.students != 0
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(translate('No of ') + translate('Students') + ': '),
+                    Text(widget.mmbBooking.passengers.students.toString()),
+                  ],
+                )
+                    : Padding(
+                  padding: EdgeInsets.zero,
+                ),
                 Divider(),
                 flightSegementSummary(),
                 Row(

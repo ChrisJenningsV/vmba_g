@@ -44,67 +44,11 @@ class GobalSettings {
   }
 
   Future _init() async {
-    //get inital settings
-    /*
-    settings.xmlToken = xmlToken;
-    settings.xmlTokenPost = xmlTokenPost;
-    settings.aircode = aircode;
-
-    settings.termsAndConditionsUrl = termsAndConditionsUrl;
-    settings.privacyPolicyUrl = privacyPolicyUrl;
-    settings.locale = locale;
-    settings.bookingLeadTime = bookingLeadTime;
-    settings.webCheckinNoSeatCharge = webCheckinNoSeatCharge;
-    settings.vrsGuid = vrsGuid;
-    settings.autoSeatOption = autoSeatOption;
-    settings.backgroundImageUrl = backgroundImageUrl;
-    settings.hostBaseUrl = hostBaseUrl;
-    settings.iOSAppId = iOSAppId;
-    settings.androidAppId = androidAppId;
-
-    settings.latestBuildiOS = latestBuildiOS;
-    settings.latestBuildAndroid = latestBuildAndroid;
-
-    settings.eVoucher = eVoucher;
-    settings.passengerTypes = passengerTypes;
-    settings.fqtvName = fqtvName;
-    settings.appFeedbackEmail = appFeedbackEmail;
-    settings.prohibitedItemsNoticeUrl = prohibitedItemsNoticeUrl;
-    settings.groupsBookingsEmail = groupsBookingsEmail;
-    settings.maxNumberOfPax = maxNumberOfPax;
-    settings.hideFareRules = hideFareRules;
-    settings.fqtvEnabled = fqtvEnabled;
-
-    if (isLive) {
-      setToLive();
-    } else {
-      setToTest();
-    }
-    */
 
     return await Repository.get().settings();
   }
 
-  void setToLive() {
- /*   settings.xmlUrl = xmlUrlProduction;
-    settings.apisUrl = apiUrlProduction;
-    settings.apiUrl = apiUrlProduction;
-    settings.apiKey= apiKey;
-    settings.creditCardProvider = creditCardProviderProduction;
 
-  */
-  }
-
-  void setToTest() {
-    /*
-    settings.xmlUrl = xmlUrlStaging;
-    settings.apisUrl = apisUrlStaging;
-    settings.apiUrl = apiUrlStaging;
-    settings.apiKey= apiKey;
-    settings.creditCardProvider = creditCardProviderStaging;
-
-     */
-  }
 
   Settings settings = Settings();
 }
@@ -129,6 +73,14 @@ class Settings {
   bool wantUmnr = false;
   bool wantEnglishTranslation = false;
   bool want24HourClock;
+  bool wantNewEditPax;
+  bool wantMaterialControls;
+  bool wantCitySwap;
+  bool wantCityImages;
+  bool wantBags;
+  bool wantCovidWarning;
+  bool wantCountry;
+
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -146,6 +98,7 @@ class Settings {
   String customMenu1;
   String customMenu2;
   String customMenu3;
+  String pageImageMap;
 
  // String hostBaseUrl;
   String iOSAppId;
@@ -165,6 +118,7 @@ class Settings {
   String gblLanguages ;
   String currencies;
   String gblServerFiles;
+  String covidText;
 
 
   String testXmlUrl;
@@ -188,7 +142,7 @@ class Settings {
   String groupsBookingsEmail ="";
   bool hideFareRules;
   int maxNumberOfPax;
-  bool fqtvEnabled;
+//  bool fqtvEnabled;
   bool bpShowLoungeAccess;
   int searchDateOut;
   int searchDateBack;
@@ -201,15 +155,23 @@ bool bpShowFastTrack;
     this.brandID,
     this.airlineName,
     this.creditCardProvider,
-    this.wantPayStack,
-    this.wantLeftLogo,
+    this.wantPayStack = false,
+    this.wantLeftLogo = false,
     this.wantCurrencySymbols,
-    this.wantCurrencyPicker,
-    this.wantRememberMe,
-    this.wantHomeFQTVButton,
-    this.wantUmnr,
-    this.want24HourClock,
-    this.wantEnglishTranslation,
+    this.wantCurrencyPicker = false,
+    this.wantRememberMe = false ,
+    this.wantHomeFQTVButton = false,
+    this.wantUmnr = false,
+    this.want24HourClock = false,
+    this.wantNewEditPax = false,
+    this.wantMaterialControls = false,
+    this.wantCitySwap = false,
+    this.wantCityImages = false,
+    this.wantBags = false,
+    this.wantCovidWarning = false,
+    this.wantCountry = false,
+
+    this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
@@ -236,8 +198,10 @@ bool bpShowFastTrack;
     this.passengerTypes,
     this.currency,
     this.gblLanguages,
+    this.covidText,
     this.currencies,
     this.gblServerFiles,
+    this.pageImageMap,
 
     this.fqtvName,
     this.appFeedbackEmail,
@@ -245,12 +209,12 @@ bool bpShowFastTrack;
     this.groupsBookingsEmail,
     this.maxNumberOfPax,
     this.hideFareRules,
-    this.fqtvEnabled,
+    //this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
-    this.wantMyAccount,
-    this.wantFQTV,
-    this.wantFQTVNumber,
+    this.wantMyAccount = false,
+    this.wantFQTV = false,
+    this.wantFQTVNumber = false,
     this.searchDateOut,
     this.searchDateBack,
     this.reqUpdateMsg,
@@ -296,7 +260,7 @@ bool bpShowFastTrack;
       wantCurrencyPicker = false;
     }
     if( gblLanguages == null ) {
-      gblLanguages = 'sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French';
+      gblLanguages =  '' ; //'''sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French';
     }
     if( gblServerFiles == null ) {
       gblServerFiles = '';
@@ -307,6 +271,32 @@ bool bpShowFastTrack;
     if( want24HourClock == null ) {
       want24HourClock = false;
     }
+    if( wantNewEditPax == null ) {
+      wantNewEditPax = false;
+    }
+    if( wantCitySwap == null ) {
+      wantCitySwap= false;
+    }
+    if(wantMaterialControls == null ){
+      wantMaterialControls= false;
+    }
+    if( wantCityImages == null ) {
+      wantCityImages = false;
+    }
+    if (passengerTypes.student == null  ){
+      passengerTypes.student = false;
+    }
+    if (passengerTypes.senior == null  ){
+      passengerTypes.senior = false;
+    }
+    if (passengerTypes.youths == null  ){
+      passengerTypes.youths = false;
+    }
+    if (passengerTypes.child  == null  ){
+      passengerTypes.child = false;
+    }
+
+
   }
 
   List<KeyPair> toList() {
@@ -370,8 +360,8 @@ bool bpShowFastTrack;
         key: 'maxNumberOfPax', value: myJson.json.encode(maxNumberOfPax)));
     listKeyPair.add(new KeyPair(
         key: 'hideFareRules', value: myJson.json.encode(hideFareRules)));
-    listKeyPair.add(new KeyPair(
-        key: 'fqtvEnabled', value: myJson.json.encode(fqtvEnabled)));
+//    listKeyPair.add(new KeyPair(
+  //      key: 'fqtvEnabled', value: myJson.json.encode(fqtvEnabled)));
 
     return listKeyPair;
   }

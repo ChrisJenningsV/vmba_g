@@ -10,6 +10,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
+//import 'package:vmba/utilities/helper.dart';
 
 class MyAccountPage extends StatefulWidget {
   MyAccountPage(
@@ -21,46 +22,44 @@ class MyAccountPage extends StatefulWidget {
   PassengerDetail passengerDetail;
   final bool isAdsBooking;
   final bool isLeadPassenger;
-
-
 }
-
 
 class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _titleTextEditingController = TextEditingController();
-
-  TextEditingController _firstNameTextEditingController =   TextEditingController();
-
-  TextEditingController _lastNameTextEditingController =  TextEditingController();
-  TextEditingController _emailTextEditingController =  TextEditingController();
-  TextEditingController _phoneNumberTextEditingController =  TextEditingController();
-
-  TextEditingController _dateOfBirthTextEditingController =  TextEditingController();
-
-  TextEditingController _adsNumberTextEditingController =   TextEditingController();
+  TextEditingController _firstNameTextEditingController = TextEditingController();
+  TextEditingController _lastNameTextEditingController = TextEditingController();
+  TextEditingController _emailTextEditingController = TextEditingController();
+  TextEditingController _phoneNumberTextEditingController = TextEditingController();
+  TextEditingController _dateOfBirthTextEditingController = TextEditingController();
+  TextEditingController _adsNumberTextEditingController = TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
   TextEditingController _fqtvTextEditingController = TextEditingController();
   TextEditingController _fqtvPasswordEditingController = TextEditingController();
+  TextEditingController _seniorIDTextEditingController = TextEditingController();
+  TextEditingController _disabilityTextEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
+
+
+
 //  bool _loadingInProgress = false;
   String _error;
 
   @override
   initState() {
     super.initState();
-    widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
+    widget.passengerDetail = new PassengerDetail(email: '', phonenumber: '');
 
-    Repository.get()
-        .getNamedUserProfile('PAX1').then((profile) {
+    Repository.get().getNamedUserProfile('PAX1').then((profile) {
       if (profile != null) {
         widget.passengerDetail.firstName = profile.name.toString();
         try {
-          Map map = json.decode(
-              profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
+          Map map = json.decode(profile.value
+              .toString()
+              .replaceAll("'", '"')); // .replaceAll(',}', '}')
           widget.passengerDetail = PassengerDetail.fromJson(map);
-        } catch(e) {
+        } catch (e) {
           print(e);
         }
         _titleTextEditingController.text = widget.passengerDetail.title;
@@ -69,16 +68,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
         _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
-
         _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
-
         _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
-
 
         _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
         _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
 
-        if( widget.passengerDetail.paxType == null) {
+        _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
+        _disabilityTextEditingController.text = widget.passengerDetail.disabilityID;
+
+        if (widget.passengerDetail.paxType == null) {
           widget.passengerDetail.paxType = PaxType.adult;
         }
       }
@@ -86,37 +85,51 @@ class _MyAccountPageState extends State<MyAccountPage> {
     });
     // _displayProcessingIndicator = false;
   }
-void _populateFromGlobalProfile() {
-  if( gblPassengerDetail == null ){
-    return;
-  }
 
-  if( _titleTextEditingController.text == null || _titleTextEditingController.text.isEmpty){
+  void _populateFromGlobalProfile() {
+    if (gblPassengerDetail == null) {
+      return;
+    }
+
+    if (_titleTextEditingController.text == null ||
+        _titleTextEditingController.text.isEmpty) {
       _titleTextEditingController.text = gblPassengerDetail.title;
-  }
-  if( _firstNameTextEditingController.text == null || _firstNameTextEditingController.text.isEmpty){
-    _firstNameTextEditingController.text = gblPassengerDetail.firstName;
-  }
-  if( _lastNameTextEditingController.text == null || _lastNameTextEditingController.text.isEmpty){
-    _lastNameTextEditingController.text = gblPassengerDetail.lastName;
-  }
+    }
+    if (_firstNameTextEditingController.text == null ||
+        _firstNameTextEditingController.text.isEmpty) {
+      _firstNameTextEditingController.text = gblPassengerDetail.firstName;
+    }
+    if (_lastNameTextEditingController.text == null ||
+        _lastNameTextEditingController.text.isEmpty) {
+      _lastNameTextEditingController.text = gblPassengerDetail.lastName;
+    }
 
-  if( _phoneNumberTextEditingController.text == null || _phoneNumberTextEditingController.text.isEmpty){
-    _phoneNumberTextEditingController.text = gblPassengerDetail.phonenumber;
-  }
-  if( _emailTextEditingController.text == null || _emailTextEditingController.text.isEmpty){
-    _emailTextEditingController.text = gblPassengerDetail.email;
-  }
+    if (_phoneNumberTextEditingController.text == null ||
+        _phoneNumberTextEditingController.text.isEmpty) {
+      _phoneNumberTextEditingController.text = gblPassengerDetail.phonenumber;
+    }
+    if (_emailTextEditingController.text == null ||
+        _emailTextEditingController.text.isEmpty) {
+      _emailTextEditingController.text = gblPassengerDetail.email;
+    }
 
-
-
-  if( _fqtvTextEditingController.text == null || _fqtvTextEditingController.text.isEmpty){
+    if (_fqtvTextEditingController.text == null ||
+        _fqtvTextEditingController.text.isEmpty) {
       _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
-  }
-  if( _fqtvPasswordEditingController.text == null || _fqtvPasswordEditingController.text.isEmpty){
+    }
+    if (_fqtvPasswordEditingController.text == null ||
+        _fqtvPasswordEditingController.text.isEmpty) {
       _fqtvPasswordEditingController.text = gblPassengerDetail.fqtvPassword;
-  }
+    }
 
+    if (_seniorIDTextEditingController.text == null ||
+        _seniorIDTextEditingController.text.isEmpty) {
+      _seniorIDTextEditingController.text = gblPassengerDetail.seniorID;
+    }
+    if (_disabilityTextEditingController.text == null ||
+        _disabilityTextEditingController.text.isEmpty) {
+      _disabilityTextEditingController.text = gblPassengerDetail.disabilityID;
+    }
 
 
   }
@@ -125,21 +138,19 @@ void _populateFromGlobalProfile() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: gblSettings.wantLeftLogo ? Padding(
-            padding: EdgeInsets.only(left: 10.0),
-            child: Image.asset(
-                'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                color: Color.fromRGBO(255, 255, 255, 0.1),
-                colorBlendMode: BlendMode.modulate)) : Text(''),
+        leading: gblSettings.wantLeftLogo
+            ? Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Image.asset(
+                    'lib/assets/$gblAppTitle/images/appBarLeft.png',
+                    color: Color.fromRGBO(255, 255, 255, 0.1),
+                    colorBlendMode: BlendMode.modulate))
+            : Text(''),
         brightness: gblSystemColors.statusBar,
-        backgroundColor:
-        gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
+        backgroundColor: gblSystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
         title: TrText('My Account',
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
+            style: TextStyle(color: gblSystemColors.headerTextColor)),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -148,18 +159,16 @@ void _populateFromGlobalProfile() {
           )
         ],
       ),
-      body:
-        new Form(
+      body: new Form(
         key: formKey,
         child: new SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Column(
-        children:  _getWidgets()
-         ,
-    ),
-    ),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              children: _getWidgets(),
+            ),
+          ),
         ),
       ),
     );
@@ -168,9 +177,13 @@ void _populateFromGlobalProfile() {
 
   List<Widget> _getWidgets() {
     List<Widget> widgets = [];
+    ThemeData _theme =    new ThemeData(
+      primaryColor: Colors.blueAccent,
+      primaryColorDark: Colors.blue,
+    );
 
     // title
-    widgets.add( Padding(
+    widgets.add(Padding(
       padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
       child: InkWell(
         onTap: () {
@@ -190,20 +203,11 @@ void _populateFromGlobalProfile() {
         },
         child: IgnorePointer(
           child: TextFormField(
-            decoration: new InputDecoration(
-              contentPadding:
-              new EdgeInsets.symmetric(
-                  vertical: 15.0, horizontal: 15.0),
-              labelText: translate('title'),
-              fillColor: Colors.white,
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: new BorderSide(),
-              ),
-            ),
-            controller: _titleTextEditingController, // TextEditingController(text: widget.passengerDetail.title ),
+            decoration: _getDecoration('title'),
+            controller: _titleTextEditingController,
+            // TextEditingController(text: widget.passengerDetail.title ),
             validator: (value) =>
-            value.isEmpty ? 'Title can\'t be empty' : null,
+                value.isEmpty ? 'Title can\'t be empty' : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.title = value.trim();
@@ -215,186 +219,119 @@ void _populateFromGlobalProfile() {
     ));
 
     // first name
-    widgets.add(Padding(
-    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-    child: new Theme(
-    data: new ThemeData(
-    primaryColor: Colors.blueAccent,
-    primaryColorDark: Colors.blue,
-    ),
-    child: TextFormField(
-      maxLength: 50,
-      decoration: InputDecoration(
-      contentPadding:
-        new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-      labelText: translate('First name (as Passport)'),
-      fillColor: Colors.white,
-      border: new OutlineInputBorder(
-      borderRadius: new BorderRadius.circular(25.0),
-      borderSide: new BorderSide(),
-    ),
-    ),
-    controller: _firstNameTextEditingController,
-    onFieldSubmitted: (value) {
-    widget.passengerDetail.firstName = value;
-    },
-    textInputAction: TextInputAction.done,
-    keyboardType: TextInputType.text,
-    inputFormatters: [
-    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-    ],
-    validator: (value) =>
-    value.isEmpty ? 'First name can\'t be empty' : null,
-    onSaved: (value) {
-    if (value != null) {
-    widget.passengerDetail.firstName = value.trim();
-    }
-    },
-    ),
-    ),
-    ),);
+    widgets.add(
+      Padding(
+        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: TextFormField(
+            maxLength: 50,
+            decoration: _getDecoration('First name (as Passport)'),
+            controller: _firstNameTextEditingController,
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.firstName = value;
+            },
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.text,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+            ],
+            validator: (value) =>
+                value.isEmpty ? 'First name can\'t be empty' : null,
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.firstName = value.trim();
+              }
+            },
+          ),
+        ),
+      ),
+    );
 
     // last name
     widgets.add(Padding(
-    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-    child: new Theme(
-    data: new ThemeData(
-    primaryColor: Colors.blueAccent,
-    primaryColorDark: Colors.blue,
-    ),
-    child: TextFormField(
-      maxLength: 50,
-    decoration: InputDecoration(
-    contentPadding:
-    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: translate('Last name (as Passport)'),
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-    borderRadius: new BorderRadius.circular(25.0),
-    borderSide: new BorderSide(),
-    ),
-    ),
-    keyboardType: TextInputType.text,
-    controller: _lastNameTextEditingController,
-    inputFormatters: [
-    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-    ],
-    onFieldSubmitted: (value) {
-    widget.passengerDetail.lastName = value;
-    },
-    validator: (value) =>
-    value.isEmpty ? 'Last name can\'t be empty' : null,
-    onSaved: (value) {
-    if (value != null) {
-    widget.passengerDetail.lastName = value.trim();
-    }
-    },
-    ),
-    ),
+      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+      child: new Theme(
+        data: _theme,
+        child: TextFormField(
+          maxLength: 50,
+          decoration: _getDecoration('Last name (as Passport)'),
+          keyboardType: TextInputType.text,
+          controller: _lastNameTextEditingController,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+          ],
+          onFieldSubmitted: (value) {
+            widget.passengerDetail.lastName = value;
+          },
+          validator: (value) =>
+              value.isEmpty ? 'Last name can\'t be empty' : null,
+          onSaved: (value) {
+            if (value != null) {
+              widget.passengerDetail.lastName = value.trim();
+            }
+          },
+        ),
+      ),
     ));
 
     // phone
     widgets.add(Padding(
-    padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-    child: new Theme(
-    data: new ThemeData(
-    primaryColor: Colors.blueAccent,
-    primaryColorDark: Colors.blue,
-    ),
-    child: new TextFormField(
-      maxLength: 30,
-    decoration: InputDecoration(
-    contentPadding:
-    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: translate('Phone Number'),
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-    borderRadius: new BorderRadius.circular(25.0),
-    borderSide: new BorderSide(),
-    ),
-    ),
-    controller:  _phoneNumberTextEditingController,  //' widget.passengerDetail.phonenumber,
-    keyboardType: TextInputType.phone,
-    inputFormatters: [
-    FilteringTextInputFormatter.digitsOnly,
-    ],
-    // do not force phone no here
-    /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
-
-   */
-    onSaved: (value) {
-    if (value != null) {
-    //.contactInfomation.phonenumber = value.trim()
-    widget.passengerDetail.phonenumber = value.trim();
-    }
-    },
-    )
-    ),
+      padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+      child: new Theme(
+          data: _theme,
+          child: new TextFormField(
+            maxLength: 30,
+            decoration: _getDecoration('Phone Number'),
+            controller: _phoneNumberTextEditingController,
+            keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            onSaved: (value) {
+              if (value != null) {
+                //.contactInfomation.phonenumber = value.trim()
+                widget.passengerDetail.phonenumber = value.trim();
+              }
+            },
+          )),
     ));
 
     // email
     widgets.add(Padding(
-    padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-    child: new Theme(
-    data: new ThemeData(
-    primaryColor: Colors.blueAccent,
-    primaryColorDark: Colors.blue,
-    ),
-    child: new TextFormField(
-      maxLength: 100,
-    controller: _emailTextEditingController,
-    decoration: InputDecoration(
-    contentPadding:
-    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: translate('Email'),
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-    borderRadius: new BorderRadius.circular(25.0),
-    borderSide: new BorderSide(),
-    ),
-    ),
-    // controller: _emailTextEditingController,
-    keyboardType: TextInputType.emailAddress,
-//                validator: (value) => validateEmail(value.trim()),
-    onSaved:(value) {
-    if( value.isNotEmpty) {
-    widget.passengerDetail.email = value.trim();
-    }
-    },
-
-    ),
-    ),
+      padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+      child: new Theme(
+        data: _theme,
+        child: new TextFormField(
+          maxLength: 100,
+          controller: _emailTextEditingController,
+          decoration: _getDecoration('Email'),
+          keyboardType: TextInputType.emailAddress,
+          onSaved: (value) {
+            if (value.isNotEmpty) {
+              widget.passengerDetail.email = value.trim();
+            }
+          },
+        ),
+      ),
     ));
+
+ //   return widgets;
 
     // DOB
     widgets.add(Padding(
-    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-    child: (widget.passengerDetail.paxType != PaxType.adult &&
-    widget.passengerDetail.paxType != null)
-    ? InkWell(
-    onTap: () {
-    _showCalenderDialog(widget.passengerDetail.paxType);
-    },
-    child: IgnorePointer(
-    child: TextFormField(
-    decoration: new InputDecoration(
-    contentPadding: new EdgeInsets.symmetric(
-    vertical: 15.0, horizontal: 15.0),
-    labelText: translate('Date of Birth'),
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-    borderRadius: new BorderRadius.circular(25.0),
-    borderSide: new BorderSide(),
-    ),
-    ),
-    //initialValue: field.value,
-    controller: _dateOfBirthTextEditingController, //
-    /*  validator: (value) =>
-                  value.isEmpty ? 'Date of Birth is required' : null,
-
-                 */
+      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+      child: (widget.passengerDetail.paxType != PaxType.adult &&
+              widget.passengerDetail.paxType != null)
+          ? InkWell(
+              onTap: () {
+                _showCalenderDialog(widget.passengerDetail.paxType);
+              },
+              child: IgnorePointer(
+                child: TextFormField(
+                  decoration: _getDecoration('date of Birth'),
+                  //initialValue: field.value,
+                  controller: _dateOfBirthTextEditingController, //
 /*                  onSaved: (value) {
                     if (value != '') {
                       var date = value.split('-')[2] +
@@ -407,34 +344,23 @@ void _populateFromGlobalProfile() {
                     }
                   },
 */
-    // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
-    ),
-    ),
-    )
-        : Padding(padding: const EdgeInsets.all(0.0)),
+                  // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
+                ),
+              ),
+            )
+          : Padding(padding: const EdgeInsets.all(0.0)),
     ));
 
     // fqtv
-    if( gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true ) {
+    if (gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
-            data: new ThemeData(
-              primaryColor: Colors.blueAccent,
-              primaryColorDark: Colors.blue,
-            ),
+            data: _theme,
             child: new TextFormField(
               maxLength: 50,
-              decoration: InputDecoration(
-                contentPadding:
-                new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                labelText: '${gblSettings.fqtvName} ' + translate('number'),
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-              ),
+              decoration: _getDecoration(
+                  '${gblSettings.fqtvName} ' + translate('number')),
               controller: _fqtvTextEditingController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
@@ -446,32 +372,20 @@ void _populateFromGlobalProfile() {
                   widget.passengerDetail.fqtv = value.trim();
                 }
               },
-            )
-        ),
+            )),
       ));
     }
-    if( gblSettings.wantFQTV == true) {
+    if (gblSettings.wantFQTV == true) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
-            data: new ThemeData(
-              primaryColor: Colors.blueAccent,
-              primaryColorDark: Colors.blue,
-            ),
+            data: _theme,
             child: new TextFormField(
               maxLength: 50,
               obscureText: true,
               obscuringCharacter: "*",
-              decoration: InputDecoration(
-                contentPadding:
-                new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                labelText: '${gblSettings.fqtvName} ' + translate('Password'),
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-              ),
+              decoration: _getDecoration(
+                  '${gblSettings.fqtvName} ' + translate('Password')),
               controller: _fqtvPasswordEditingController,
               keyboardType: TextInputType.visiblePassword,
               onSaved: (value) {
@@ -479,34 +393,20 @@ void _populateFromGlobalProfile() {
                   widget.passengerDetail..fqtvPassword = value.trim();
                 }
               },
-            )
-        ),
+            )),
       ));
-
     }
 
-  // ADS for LM
-    if( gblSettings.aircode == 'LM') {
+    // ADS for LM
+    if (gblSettings.aircode == 'LM') {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
-          data: new ThemeData(
-            primaryColor: Colors.blueAccent,
-            primaryColorDark: Colors.blue,
-          ),
+          data: _theme,
           child: new TextFormField(
             maxLength: 20,
             controller: _adsNumberTextEditingController,
-            decoration: InputDecoration(
-              contentPadding:
-              new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              labelText: 'ADS Number',
-              fillColor: Colors.white,
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: new BorderSide(),
-              ),
-            ),
+            decoration: _getDecoration('ADS Number'),
             // controller: _emailTextEditingController,
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
@@ -515,64 +415,87 @@ void _populateFromGlobalProfile() {
                 widget.passengerDetail.adsNumber = value.trim();
               }
             },
-
           ),
         ),
       ));
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
-          data: new ThemeData(
-            primaryColor: Colors.blueAccent,
-            primaryColorDark: Colors.blue,
-          ),
+          data: _theme,
           child: new TextFormField(
             maxLength: 4,
             controller: _adsPinTextEditingController,
-            decoration: InputDecoration(
-              contentPadding:
-              new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              labelText: 'ADS Pin',
-              fillColor: Colors.white,
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: new BorderSide(),
-              ),
-            ),
+            decoration: _getDecoration('ADS Pin'),
             // controller: _emailTextEditingController,
             keyboardType: TextInputType.number,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-                widget.passengerDetail.adsPin = value.trim();
+              widget.passengerDetail.adsPin = value.trim();
             },
-
+          ),
+        ),
+      ));
+    } // end LM
+    if (gblSettings.aircode == 'T6') {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: new TextFormField(
+            maxLength: 20,
+            controller: _seniorIDTextEditingController,
+            decoration: _getDecoration('Senior Citizen ID'),
+            keyboardType: TextInputType.streetAddress,
+//                validator: (value) => validateEmail(value.trim()),
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.seniorID = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: new TextFormField(
+            maxLength: 20,
+            controller: _disabilityTextEditingController,
+            decoration: _getDecoration('Disability ID'),
+            keyboardType: TextInputType.streetAddress,
+//                validator: (value) => validateEmail(value.trim()),
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.disabilityID = value.trim();
+              }
+            },
           ),
         ),
       ));
     }
     widgets.add(ElevatedButton(
-    onPressed: () {
-    validateAndSubmit();
-    },
-    style: ElevatedButton.styleFrom(
-    primary: gblSystemColors
-        .primaryButtonColor, //Colors.black,
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30.0))),
-    child: Row(
-    //mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-    Icon(
-    Icons.check,
-    color: Colors.white,
-    ),
-    TrText(
-    'SAVE',
-    style: TextStyle(color: Colors.white),
-    ),
-    ],
-    ),
+      onPressed: () {
+        validateAndSubmit();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: gblSystemColors.primaryButtonColor, //Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0))),
+      child: Row(
+        //mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          TrText(
+            'SAVE',
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
     ));
 
     return widgets;
@@ -581,23 +504,24 @@ void _populateFromGlobalProfile() {
   ListView optionListView() {
     List<Widget> widgets = [];
     //new List<Widget>();
-    gblTitles.forEach((title) =>
-        widgets.add(ListTile(
-            title: TrText(title),
-            onTap: () {
-              Navigator.pop(context, title);
-              _updateTitle(title);
-            })));
+    gblTitles.forEach((title) => widgets.add(ListTile(
+        title: TrText(title),
+        onTap: () {
+          Navigator.pop(context, title);
+          _updateTitle(title);
+        })));
     return new ListView(
       children: widgets,
     );
   }
+
   void _updateTitle(String value) {
     setState(() {
       _titleTextEditingController.text = value;
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
+
   void formSave() {
     final form = formKey.currentState;
     form.save();
@@ -655,7 +579,7 @@ void _populateFromGlobalProfile() {
           contentPadding: EdgeInsets.all(0),
           title: new TrText('Date of Birth'),
           content: SizedBox(
-            //padding: EdgeInsets.all(1),
+              //padding: EdgeInsets.all(1),
               height: MediaQuery.of(context).copyWith().size.height / 3,
               child: CupertinoTheme(
                 data: CupertinoThemeData(
@@ -694,6 +618,7 @@ void _populateFromGlobalProfile() {
       },
     );
   }
+
   void _updateDateOfBirth(DateTime dateOfBirth) {
     setState(() {
       _dateOfBirthTextEditingController.text =
@@ -701,6 +626,7 @@ void _populateFromGlobalProfile() {
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
+
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -710,18 +636,22 @@ void _populateFromGlobalProfile() {
     else
       return null;
   }
+
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      if (gblBuildFlavor == 'LM' && widget.isLeadPassenger &&
-          _adsPinTextEditingController.text.isNotEmpty && _adsPinTextEditingController.text.isNotEmpty) {
+      if (gblBuildFlavor == 'LM' &&
+          widget.isLeadPassenger &&
+          _adsPinTextEditingController.text.isNotEmpty &&
+          _adsPinTextEditingController.text.isNotEmpty) {
         adsValidate();
       } else {
         try {
           List<UserProfileRecord> _userProfileRecordList = [];
           UserProfileRecord _profileRecord = new UserProfileRecord(
               name: 'PAX1',
-              value: json.encode(widget.passengerDetail.toJson()).replaceAll('"', "'")
-          );
+              value: json
+                  .encode(widget.passengerDetail.toJson())
+                  .replaceAll('"', "'"));
 
           _userProfileRecordList.add(_profileRecord);
           Repository.get().updateUserProfile(_userProfileRecordList);
@@ -733,6 +663,7 @@ void _populateFromGlobalProfile() {
       }
     }
   }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form.validate()) {
@@ -752,9 +683,9 @@ void _populateFromGlobalProfile() {
 
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
         .catchError((resp) {
-          print( resp);
+      print(resp);
     });
 
     if (response == null) {
@@ -781,13 +712,14 @@ void _populateFromGlobalProfile() {
         List<UserProfileRecord> _userProfileRecordList = [];
         UserProfileRecord _profileRecord = new UserProfileRecord(
             name: 'PAX1',
-            value: json.encode(widget.passengerDetail.toJson()).replaceAll('"', "'")
-        );
+            value: json
+                .encode(widget.passengerDetail.toJson())
+                .replaceAll('"', "'"));
 
         _userProfileRecordList.add(_profileRecord);
         Repository.get().updateUserProfile(_userProfileRecordList);
         Navigator.pop(context, widget.passengerDetail);
-   //     Navigator.pop(context, widget.passengerDetail);
+        //     Navigator.pop(context, widget.passengerDetail);
       } else {
         _error = translate('Please check your details');
         _actionCompleted();
@@ -798,6 +730,7 @@ void _populateFromGlobalProfile() {
       _showDialog();
     }
   }
+
   void _actionCompleted() {
     setState(() {
 //      _loadingInProgress = false;
@@ -830,5 +763,47 @@ void _populateFromGlobalProfile() {
       },
     );
   }
+  InputDecoration _getDecoration(String label) {
+   // var borderRadius = 10.0;
 
+    if ( gblSettings.wantMaterialControls == true ) {
+      return InputDecoration(
+        fillColor: Colors.grey.shade100,
+        filled: true,
+        counter: Container(),
+        labelStyle: TextStyle(color: Colors.grey),
+        //    contentPadding:
+        //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+        labelText: translate(label),
+
+//        fillColor: Colors.white,
+      );
+
+    }
+
+    return InputDecoration(
+        contentPadding:
+        new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+        labelText: translate(label),
+        fillColor: Colors.white,
+        border: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: new BorderSide(),
+        )
+    );
+    // old style
+/*    return InputDecoration(
+      counter: Spacer(),
+      contentPadding:
+      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+      labelText: translate(label),
+      fillColor: Colors.white,
+      border: new OutlineInputBorder(
+        borderRadius: new BorderRadius.circular(borderRadius),
+        borderSide: new BorderSide(),
+      ),
+    );
+
+ */
+  }
 }

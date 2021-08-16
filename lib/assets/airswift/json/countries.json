@@ -1,10 +1,17 @@
 {
   "countries": [
     {
+      "num_code": "608",
+      "alpha_2_code": "PH",
+      "alpha_3_code": "PHL",
+      "en_short_name": "Philippines",
+      "nationality": "Philippine, Filipino"
+    },
+    {
       "num_code": "826",
       "alpha_2_code": "GB",
       "alpha_3_code": "GBR",
-      "en_short_name": "United Kingdom of Great Britain and Northern Ireland",
+      "en_short_name": "United Kingdom",
       "nationality": "British, UK"
     },
     {
@@ -1225,13 +1232,6 @@
       "alpha_3_code": "PER",
       "en_short_name": "Peru",
       "nationality": "Peruvian"
-    },
-    {
-      "num_code": "608",
-      "alpha_2_code": "PH",
-      "alpha_3_code": "PHL",
-      "en_short_name": "Philippines",
-      "nationality": "Philippine, Filipino"
     },
     {
       "num_code": "612",

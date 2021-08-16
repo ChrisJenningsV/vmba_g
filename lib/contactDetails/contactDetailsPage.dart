@@ -13,6 +13,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -34,6 +35,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   String _displayProcessingText = 'Making your Booking...';
   PnrModel pnrModel;
   String _error;
+
 
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _phoneTextEditingController = TextEditingController();
@@ -59,6 +61,10 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               widget.passengerDetailRecord.phonenumber;
         }
       }
+    if( gblSettings.wantNewEditPax) {
+      _displayProcessingIndicator = true;
+      makeBooking();
+    }
   }
 
   final formKey = new GlobalKey<FormState>();
@@ -68,17 +74,23 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     if (_displayProcessingIndicator) {
       return Scaffold(
         key: _key,
-        appBar: new AppBar(
+        appBar: appBar(context, 'Payment',
+          imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
+/*        appBar: new AppBar(
           brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
+
           title: new TrText('Payment',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
         ),
+
+ */
+
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -288,11 +300,12 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     }
   }
 
-  createPnr() {}
+  //createPnr() {}
 
   _gotoPreviousPage() {
     Navigator.pop(context, _error);
   }
+
 
   Future makeBooking() async {
     String msg = '';
@@ -596,6 +609,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             sb.write('.CH');
           } else if (pax.paxType == PaxType.youth) {
             sb.write('.TH');
+          } else if (pax.paxType == PaxType.senior) {
+            sb.write('.CD');
           } else if (pax.paxType == PaxType.infant) {
             sb.write('.IN');
           }
@@ -613,6 +628,22 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         }
       }
       sb.write('^');
+      if( gblSettings.aircode == 'T6') {
+        // phlippines specials
+        if( pax.country != null && pax.country.toUpperCase() == 'PHILIPPINES'){
+          sb.write('3-${pax.paxNumber}FCNTY${pax.country}^');
+          // add disability
+          if(  pax.disabilityID != null && pax.disabilityID.isNotEmpty ) {
+            sb.write('ZDPWD-${pax.paxNumber}/${pax.disabilityID}^');
+          }
+
+          // add senior id
+          if( pax.paxType == PaxType.senior && pax.seniorID != null && pax.seniorID.isNotEmpty ){
+            sb.write('ZDSEN-${pax.paxNumber}/${pax.seniorID}^');
+          }
+        }
+
+      }
     });
     return sb.toString();
   }

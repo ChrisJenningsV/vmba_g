@@ -82,6 +82,19 @@ class PnrModel {
       return true;
     }
   }
+  bool hasFutureFlightsMinusDayOffset(int days) {
+    DateTime now = DateTime.now();
+    var fltDate;
+    fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
+        ' ' +
+        this.pNR.itinerary.itin.last.depTime)
+        .add(Duration(days: days));
+    if (now.isAfter(fltDate)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   int getnextFlightEpoch() {
     Itin flt = getNextFlight();

@@ -18,7 +18,6 @@ import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
-import 'package:vmba/components/showDialog.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({    Key key,
@@ -339,7 +338,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
 
         } else {
-          _error = 'Declined';
+          _error = translate('Declined');
           _dataLoaded();
           _showDialog();
         }
@@ -599,7 +598,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         } else {
           gblTimerExpired = true;
           print(result);
-          _error = 'Declined: ' + result;
+          _error = translate('Declined') + ': ' + result;
           _dataLoaded();
           _showDialog();
         }

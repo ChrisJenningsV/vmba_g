@@ -337,6 +337,12 @@ class Repository {
                   case 'currency':
                     gblSettings.currency = item['value'];
                     break;
+                  case 'covidText':
+                    gblSettings.covidText = item['value'];
+                    break;
+                  case 'pageImageMap':
+                    gblSettings.pageImageMap = item['value'];
+                    break;
 
 
                 /*
@@ -345,6 +351,15 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
+                  case 'wantCityImages':
+                    gblSettings.wantCityImages = parseBool(item['value']);
+                    break;
+                  case 'wantCitySwap':
+                    gblSettings.wantCitySwap = parseBool(item['value']);
+                    break;
+                  case 'wantMaterialControls':
+                    gblSettings.wantMaterialControls = parseBool(item['value']);
+                    break;
                   case 'wantProfileList':
                     gblSettings.wantProfileList = parseBool(item['value']);
                     break;

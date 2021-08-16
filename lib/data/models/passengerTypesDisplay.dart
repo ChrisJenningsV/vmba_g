@@ -5,9 +5,43 @@ class PassengerTypes {
   bool infant;
   bool senior;
   bool student;
+
+  bool wantInfantDOB;
+  bool wantChildDOB ;
+  bool wantYouthDOB;
+  bool wantSeniorDOB;
+  bool wantStudentDOB;
+
+  int infantMinAge;
+  int childMinAge ;
+  int youthMinAge;
+  int studentMinAge;
+  int seniorMinAge;
+
+  int infantMaxAge;
+  int childMaxAge ;
+  int youthMaxAge;
+  int studentMaxAge;
+  int seniorMaxAge;
 //  bool umnr = false;
 
-  PassengerTypes({this.adults, this.infant, this.youths, this.child, this.senior, this.student});
+  PassengerTypes({this.adults=true, this.infant=false, this.youths=false, this.child=false, this.senior=false, this.student=false,
+    this.wantInfantDOB=true,
+    this.wantChildDOB=true,
+    this.wantYouthDOB=false,
+    this.wantStudentDOB=false,
+    this.wantSeniorDOB=false,
+    this.infantMinAge=0,
+    this.childMinAge=0,
+    this.youthMinAge=11,
+    this.studentMinAge=0,
+    this.seniorMinAge=0,
+    this.infantMaxAge=0,
+    this.childMaxAge=0,
+    this.youthMaxAge=16,
+    this.studentMaxAge=0,
+    this.seniorMaxAge=0,
+  });
 
   PassengerTypes.fromJson(Map<String, dynamic> json) {
       this.adults = ['adults'] != null &&
@@ -65,3 +99,4 @@ class PassengerTypes {
     return data;
   }
 }
+

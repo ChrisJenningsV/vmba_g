@@ -633,19 +633,9 @@ Row airMiles() {
   Widget build(BuildContext context) {
     if (_loadingInProgress) {
       return Scaffold(
-        appBar: appBar(context, 'Summary') ,
-        /*new AppBar(
-          brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-          iconTheme: IconThemeData(
-              color: gblSystemColors.headerTextColor),
-          title: new TrText('Summary',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.headerTextColor)),
-        ),
-        */
+        appBar: appBar(context, 'Summary',
+        imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+        extendBodyBehindAppBar: gblSettings.wantCityImages,
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -663,17 +653,9 @@ Row airMiles() {
     } else if (_noInternet) {
       return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary'), /*new AppBar(
-            brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: new TrText('Summary',
-                style: TextStyle(
-                    color: gblSystemColors
-                        .headerTextColor)),
-          ),*/
+          appBar: appBar(context, 'Summary',
+            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+          extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -700,18 +682,9 @@ Row airMiles() {
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary'), /* new AppBar(
-            brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: new TrText('Summary',
-                style: TextStyle(
-                    color: gblSystemColors
-                        .headerTextColor)),
-          ),
-          */
+          appBar: appBar(context, 'Summary',
+            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+          extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -759,18 +732,9 @@ Row airMiles() {
     } else {
       return new Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary'), /*new AppBar(
-            brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: new TrText('Summary',
-                style: TextStyle(
-                    color: gblSystemColors
-                        .headerTextColor)),
-          ),
-          */
+          appBar: appBar(context, 'Summary',
+            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+          //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: new Container(
               padding: EdgeInsets.all(16.0),

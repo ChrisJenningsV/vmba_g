@@ -91,7 +91,6 @@ void configQI() {
     groupsBookingsEmail: "",
     maxNumberOfPax: 8,
     hideFareRules: true,
-    fqtvEnabled: false,
     liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     liveApisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',

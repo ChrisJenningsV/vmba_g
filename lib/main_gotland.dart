@@ -88,6 +88,9 @@ void configAG() {
       youths: true,
       senior: true,
       student: true,
+      wantYouthDOB: true,
+      youthMaxAge: 25,
+      youthMinAge: 12,
     ),
 
     eVoucher:  true,
@@ -100,7 +103,6 @@ void configAG() {
     groupsBookingsEmail:  "",
 //    maxNumberOfPax:  9,
     hideFareRules:  true,
-    fqtvEnabled:  false,
     wantMyAccount: true,
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings

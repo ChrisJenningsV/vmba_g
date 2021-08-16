@@ -3,12 +3,16 @@ import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
+import 'package:vmba/data/models/apis_pnr.dart';
 import 'dart:convert';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/data/globals.dart';
+import 'package:http/http.dart' as http;
+import 'package:vmba/components/showDialog.dart';
 
 
 class MyBookingsPage extends StatefulWidget {
@@ -18,17 +22,26 @@ class MyBookingsPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _MyBookingsPageState();
 }
 
-class _MyBookingsPageState extends State<MyBookingsPage> {
-  List<PnrDBCopy> pnrs = [];
+class _MyBookingsPageState extends State<MyBookingsPage> with TickerProviderStateMixin  {
+  List<PnrDBCopy> activePnrs = [];
+  List<PnrDBCopy> recentPnrs = [];
   // new List<PnrDBCopy>();
   bool _loadingInProgress;
   Offset _tapPosition;
 String _error = '';
+  TabController _controller;
+  final formKey = GlobalKey<FormState>();
+  String _rloc;
+  String _surname;
+
 
   @override
   void initState() {
     super.initState();
     _loadingInProgress = true;
+    var tablen = 3;
+    _controller = TabController(length: tablen, vsync: this);
+
     getmyookings();
     Repository.get().getAllCities().then((cities) {});
   }
@@ -36,6 +49,7 @@ String _error = '';
   void getmyookings() {
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
+      List<PnrDBCopy> thisOldpnrs = [];
       // new List<PnrDBCopy>();
       for (var item in pnrsDBCopy) {
         Map<String, dynamic> map = jsonDecode(item.data);
@@ -49,6 +63,8 @@ String _error = '';
         _error = _pnr.validate();
         if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(1)) {
           thispnrs.add(_pnrs);
+        } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {
+          thisOldpnrs.add(_pnrs);
         } else {
           // remove old booking
           try {
@@ -65,7 +81,8 @@ String _error = '';
       thispnrs.sort(
           (a, b) => a.nextFlightSinceEpoch.compareTo(b.nextFlightSinceEpoch));
       setState(() {
-        pnrs = thispnrs;
+        activePnrs = thispnrs;
+        recentPnrs = thisOldpnrs;
         _loadingInProgress = false;
       });
     });
@@ -73,6 +90,7 @@ String _error = '';
 
   @override
   Widget build(BuildContext context) {
+
     if (_loadingInProgress) {
       return Scaffold(
           body: new Center(
@@ -89,23 +107,143 @@ String _error = '';
       ));
     } else {
       return Scaffold(
-          appBar: appBar(context, "My Bookings") // translated in appBar
-          //AppBar(
-          //     brightness: AppConfig.of(context).systemColors.statusBar,
-          //     backgroundColor: AppConfig.of(context).systemColors.primaryHeaderColor,
-          // iconTheme: IconThemeData(color: AppConfig.of(context).systemColors.primaryHeaderOnColor),
-          //     title: Text("My Bookings" ,style: TextStyle(color: AppConfig.of(context).systemColors.primaryHeaderOnColor)),)
-          ,
+          appBar: appBar(context, "My Bookings",
+          bottom:  new PreferredSize(
+          preferredSize: new Size.fromHeight(30.0),
+    child: new Container(
+    height: 30.0, child:        TabBar(
+
+          indicatorColor: Colors.amberAccent,
+          isScrollable: true,
+          labelColor: Colors.black,
+          tabs: [
+              TrText('Active'),
+              TrText('Recent'),
+              TrText('Add'),
+          ],
+          controller: _controller),
+          ),
+          ),
+          ),// translated in appBar
           endDrawer: DrawerMenu(),
-          body: new Container(child: myTrips()));
+          body: TabBarView(
+              controller: _controller,
+              children: [
+                  new Container(child: myTrips(true)),
+                  new Container(child: myTrips(false)),
+                  new Container(child: addBooking())
+              ]
+      ),
+
+    );
     }
   }
 
-  Widget myTrips() {
+  Widget addBooking() {
+    return Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(10.0),
+          child: new Theme(
+            data: new ThemeData(
+              primaryColor: Colors.blueAccent,
+              primaryColorDark: Colors.blue,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Padding(
+                  padding: EdgeInsets.all(10),
+                  child: new TrText(
+                      'Add an existing booking using your booking reference and passenger last name',
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                ),
+                new TextFormField(
+                  textCapitalization: TextCapitalization.characters,
+                  //maxLength: 6,
+                  decoration: InputDecoration(
+                    labelText: translate("Enter your booking reference"),
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return translate('Please enter a booking reference');
+                    }
+                    if (value.trim().length != 6) {
+                      return translate(
+                          'Your booking reference is 6 charactors long');
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _rloc = value.trim(),
+                ),
+                new Padding(padding: EdgeInsets.all(10)),
+                TextFormField(
+                  textCapitalization: TextCapitalization.characters,
+                  decoration: new InputDecoration(
+                    labelText: translate("Enter your surname"),
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return translate('Please enter a surmane');
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (value) => _surname = value.trim().toUpperCase(),
+                ),
+                Center(
+                    child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: gblSystemColors.primaryButtonColor,
+                    borderRadius: BorderRadius.circular(25.0),
+                    shadowColor: Colors.grey.shade100,
+                    elevation: 5.0,
+                    child: new MaterialButton(
+                      minWidth: 180,
+                      height: 50.0,
+                      child: TrText(
+                        'ADD BOOKING',
+                        style: new TextStyle(
+                            fontSize: 16.0,
+                            color: gblSystemColors.primaryButtonTextColor),
+                      ),
+                      onPressed: () {
+                        if (formKey.currentState.validate()) {
+                          _loadPnr();
+                        }
+                      },
+                    ),
+                  ),
+                )),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget myTrips(bool showActive) {
+    List<PnrDBCopy> pnrs = activePnrs;
+
     Center noFutureBookingsFound =  Center(
         child: TrText('No future bookings found',
             style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
-
+    if( showActive == false  ) {
+      pnrs = recentPnrs;
+      noFutureBookingsFound =  Center(
+        child: TrText('No recent bookings found',
+            style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
+    }
     if (pnrs.length == 0) return noFutureBookingsFound;
 
     ListView listViewOfBookings = ListView.builder(
@@ -372,4 +510,181 @@ String _error = '';
     }
     return list;
   }
+  void _loadPnr() async {
+    setState(() {
+      _loadingInProgress = true;
+    });
+    validateAndSubmit();
+    // _pnrLoaded();
+  }
+
+  void _pnrLoaded() {
+    setState(() {
+      _loadingInProgress = false;
+    });
+  }
+
+  Future<void> fetchBooking() async {
+    //AATMRA
+    //AATKK7
+
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$_rloc~x'"))
+        .catchError((resp) {});
+
+    if (response == null) {
+      //return new ParsedResponse(NO_INTERNET, []);
+    }
+
+    //If there was an error return an empty list
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      //return new ParsedResponse(response.statusCode, []);
+    }
+
+    String pnrJson;
+    Map pnrMap;
+    // await for (String pnrRaw in resStream) {
+
+    if (response.body.contains('ERROR - RECORD NOT FOUND -')) {
+      _error = 'Please check your details';
+      _pnrLoaded();
+      //_showDialog();
+      showAlertDialog(context, 'Alert', _error);
+
+    } else {
+      pnrJson = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+
+      pnrMap = json.decode(pnrJson);
+      // }
+
+      try {
+        pnrMap = json.decode(pnrJson);
+        print('Loaded PNR');
+        var objPnr = new PnrModel.fromJson(pnrMap);
+        if (validate(objPnr)) {
+          PnrDBCopy pnrDBCopy = new PnrDBCopy(
+              rloc: objPnr.pNR.rLOC,
+              data: pnrJson,
+              delete: 0,
+              nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+          Repository.get().updatePnr(pnrDBCopy).then((w) {
+            fetchApisStatus();
+            //Navigator.of(context).pop();
+          });
+
+          print('matched rloc and name');
+          //   Navigator.of(context).pop();
+        } else {
+          _pnrLoaded();
+          //_showDialog();
+          showAlertDialog(context, 'Alert', _error);
+
+          print('didn\'t matched rloc and name');
+        }
+      } catch (e) {
+
+        showAlertDialog(context, 'Alert', _error);
+        //_showDialog();
+        print('$e');
+      }
+    }
+  }
+
+  Future<void> fetchApisStatus() async {
+    //AATMRA
+    //AATKK7
+
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=DSP/$_rloc'"))
+        .catchError((resp) {});
+
+    if (response == null) {
+      //return new ParsedResponse(NO_INTERNET, []);
+    }
+
+    //If there was an error return an empty list
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      //return new ParsedResponse(response.statusCode, []);
+    }
+
+    String apisStatusJson;
+    //Map map;
+    // await for (String pnrRaw in resStream) {
+    apisStatusJson = response.body
+        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+        .replaceAll('<string xmlns="http://videcom.com/">', '')
+        .replaceAll('</string>', '')
+        .trim();
+    try {
+      Map map = json.decode(apisStatusJson);
+      print('Loaded APIS status');
+      ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
+      DatabaseRecord databaseRecord = new DatabaseRecord(
+          rloc: apisPnrStatus.xml.pnrApis.pnr, //_rloc,
+          data: apisStatusJson,
+          delete: 0);
+      Repository.get().updatePnrApisStatus(databaseRecord).then(
+              (v) => //Navigator.of(context).pop()
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/MyBookingsPage', (Route<dynamic> route) => false));
+    } catch (e) {
+      showAlertDialog(context, 'Alert', e);
+      //_showDialog();
+      print('$e');
+    }
+  }
+
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmit() async {
+    if (validateAndSave()) {
+      try {
+        fetchBooking();
+        //fetchApisStatus();
+        print('Getting PNR');
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
+  bool validate(PnrModel pnr) {
+    if (!validateRlocWithName(pnr.pNR.names.pAX)) {
+      return false;
+    }
+
+    _error = pnr.validate();
+    if (_error.isNotEmpty) {
+      return false;
+    }
+    if( pnr.hasFutureFlightsAddDayOffset(1) || pnr.hasFutureFlightsMinusDayOffset(7)) {
+      return true;
+    }
+
+    _error = 'No furture flights';
+    return false;
+  }
+
+  bool validateRlocWithName(List<PAX> passengers) {
+    for (PAX pAX in passengers) {
+      if (pAX.surname == _surname.toUpperCase()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

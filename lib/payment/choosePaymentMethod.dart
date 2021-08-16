@@ -17,6 +17,8 @@ import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
+
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -54,6 +56,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Passengers _passengers = new Passengers(1, 0, 0, 0,0, 0, 0);
   String nostop = '';
   bool isMmb = false;
+  NetworkImage smallBag;
+  NetworkImage cabinBag;
+  NetworkImage holdBag;
+
 
   Session session ;
 
@@ -83,6 +89,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     }
     stopwatch.start();
+    smallBag = _getBagImage('smallBag');
+    cabinBag = _getBagImage('cabinBag');
+    holdBag = _getBagImage('holdBag');
   }
 
   @override
@@ -269,27 +278,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     );
   }
 
-  /*
-  Row taxTotal() {
-    double tax = 0.0;
-    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-        tax += (double.tryParse(paxTax.amnt) ?? 0.0);
-      });
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text('Total Tax: '),
-        Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
-            .format(tax))
-      ],
-    );
-  }
-
-   */
 
   Row netFareTotal() {
     double total = 0.0;
@@ -316,13 +304,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         TrText('Net Fare:'),
         Text(formatPrice(currencyCode, netFareTotal) ),
-/*
-        Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
-            .format(netFareTotal))
 
- */
       ],
     );
   }
@@ -1113,17 +1095,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     if (_displayProcessingIndicator) {
       return Scaffold(
         key: _key,
-        appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-          iconTheme: IconThemeData(
-              color: gblSystemColors.headerTextColor),
-          title: new Text('Payment Selection',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.headerTextColor)),
-        ),
+        appBar: appBar(context, 'Payment',
+          imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -1141,23 +1114,20 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     } else {
       return WillPopScope(
         onWillPop: () {
-          Navigator.pop(context, true);
+          if( gblSettings.wantNewEditPax ){
+            // double pop
+            var nav = Navigator.of(context);
+            nav.pop();
+            nav.pop();
+          } else {
+            Navigator.pop(context, true);
+          }
           return true as Future<bool>;
         },
         child: new Scaffold(
             key: _key,
-            appBar: new AppBar(
-              brightness: gblSystemColors.statusBar,
-              backgroundColor:
-              gblSystemColors.primaryHeaderColor,
-              iconTheme: IconThemeData(
-                  color:
-                  gblSystemColors.headerTextColor),
-              title: new TrText('Payment',
-                  style: TextStyle(
-                      color: gblSystemColors
-                          .headerTextColor)),
-            ),
+            appBar: appBar(context, 'Payment',
+            imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
             endDrawer: DrawerMenu(),
             body: SafeArea(
               child: Column(
@@ -1230,14 +1200,20 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
           child: new Form(
               key: formKey,
-              child: new Column(children: [
-                ExpansionTile(
-                  initiallyExpanded: false,
-                  title: Text(
-                    'Total ' +
-                        formatPrice(cur, double.parse(amount) ?? 0.0) ,
+              child: new Column(children: getPayOptions(amount, cur),))),
+    );
+  }
+List<Widget> getPayOptions(String amount, String cur) {
+    List<Widget> list = [];
 
-                    /*
+
+     list.add( ExpansionTile(
+        initiallyExpanded: false,
+        title: Text(
+          'Total ' +
+              formatPrice(cur, double.parse(amount) ?? 0.0) ,
+
+          /*
                         NumberFormat.simpleCurrency(
                             locale: GobalSettings
                                 .shared.settings.locale,
@@ -1246,209 +1222,219 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                             0.0)),
 
                          */
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  children: [
-                    _passengers.adults != 0
-                        ? Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(translate('No of ') + translate('Adults') + ': '),
-                        Text(_passengers.adults.toString()),
-                      ],
-                    )
-                        : Padding(
-                      padding: EdgeInsets.zero,
-                    ),
-                    _passengers.youths != 0
-                        ? Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(translate('No of ') + translate('Youths') + ': '),
-                        Text(_passengers.youths.toString()),
-                      ],
-                    )
-                        : Padding(
-                      padding: EdgeInsets.zero,
-                    ),
-                    _passengers.children != 0
-                        ? Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(translate('No of ') + translate('Children') + ': '),
-                        Text(_passengers.children
-                            .toString()),
-                      ],
-                    )
-                        : Padding(
-                      padding: EdgeInsets.zero,
-                    ),
-                    _passengers.infants != 0
-                        ? Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(translate('No of ') + translate('Infants') + ': '),
-                        Text(
-                            _passengers.infants.toString()),
-                      ],
-                    )
-                        : Padding(
-                      padding: EdgeInsets.zero,
-                    ),
-                    Divider(),
-                    flightSegementSummary(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        TrText(
-                          'Summary',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    netFareTotal(),
-                    taxTotal(),
-                    grandTotal(),
-                    discountTotal(),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        TrText(
-                          'Amount outstanding',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[amountOutstanding()],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 5),
-                    )
-                  ],
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TrText('Terms & Conditions'),
-                    IconButton(
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      onPressed: () => Navigator.push(
-                          context,
-                          SlideTopRoute(
-                              page: WebViewWidget(
-                                  title: 'Terms & Conditions',
-                                  url: gblSettings
-                                      .termsAndConditionsUrl))),
-                    )
-                  ],
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TrText('Privacy Policy'),
-                    IconButton(
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      onPressed: () => Navigator.push(
-                          context,
-                          SlideTopRoute(
-                              page: WebViewWidget(
-                                  title: translate('Privacy Policy'),
-                                  url: gblSettings
-                                      .privacyPolicyUrl))),
-                    )
-                  ],
-                ),
-                Divider(),
-                 this.isMmb &&
-                    amount == '0'
-                    ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(30.0))),
-                  onPressed: () => completeBookingNothingtoPay(),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            this.isMmb ? translate('AGREE AND MAKE CHANGES') : translate('COMPLETE BOOKING'),
-                            style: new TextStyle(
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-                    : renderPaymentButtons()
-                /* RaisedButton(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0)),
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  /*PaymentWidget(
-                                                    newBooking:
-                                                        widget.newBooking,
-                                                    pnrModel: pnrModel,
-                                                    stopwatch: stopwatch,
-                                                    mmbBooking:
-                                                        widget.mmbBooking,
-                                                    isMmb: this.isMmb,
-                                                    session: widget.session,
-                                                  ),*/
-                                                  CreditCardPage())),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                'AGREE AND PAY',
-                                                style: new TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              Image.asset(
-                                                'lib/assets/images/payment/visa.png',
-                                                height: 40,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(4),
-                                              ),
-                                              Image.asset(
-                                                'lib/assets/images/payment/mastercard.png',
-                                                height: 40,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ), */
-              ]))),
-    );
-  }
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+        children: [
+          _passengers.adults != 0
+              ? Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(translate('No of ') + translate('Adults') + ': '),
+              Text(_passengers.adults.toString()),
+            ],
+          )
+              : Padding(
+            padding: EdgeInsets.zero,
+          ),
+          _passengers.youths != 0
+              ? Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(translate('No of ') + translate('Youths') + ': '),
+              Text(_passengers.youths.toString()),
+            ],
+          )
+              : Padding(
+            padding: EdgeInsets.zero,
+          ),
+          _passengers.children != 0
+              ? Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(translate('No of ') + translate('Children') + ': '),
+              Text(_passengers.children
+                  .toString()),
+            ],
+          )
+              : Padding(
+            padding: EdgeInsets.zero,
+          ),
+          _passengers.infants != 0
+              ? Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(translate('No of ') + translate('Infants') + ': '),
+              Text(
+                  _passengers.infants.toString()),
+            ],
+          )
+              : Padding(
+            padding: EdgeInsets.zero,
+          ),
+          Divider(),
+          flightSegementSummary(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              TrText(
+                'Summary',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          netFareTotal(),
+          taxTotal(),
+          grandTotal(),
+          discountTotal(),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              TrText(
+                'Amount outstanding',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[amountOutstanding()],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5),
+          )
+        ],
+      ));
+      list.add(Divider());
+    list.add(Row(
+        mainAxisAlignment:
+        MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          TrText('Terms & Conditions'),
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_down),
+            onPressed: () => Navigator.push(
+                context,
+                SlideTopRoute(
+                    page: WebViewWidget(
+                        title: 'Terms & Conditions',
+                        url: gblSettings
+                            .termsAndConditionsUrl))),
+          )
+        ],
+      ));
+    list.add(Divider());
+    list.add(Row(
+        mainAxisAlignment:
+        MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          TrText('Privacy Policy'),
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_down),
+            onPressed: () => Navigator.push(
+                context,
+                SlideTopRoute(
+                    page: WebViewWidget(
+                        title: translate('Privacy Policy'),
+                        url: gblSettings
+                            .privacyPolicyUrl))),
+          )
+        ],
+      ));
+    list.add(Divider());
 
+    if( gblSettings.wantBags) {
+      list.add(ExpansionTile(
+        tilePadding: EdgeInsets.only(left: 0),
+        initiallyExpanded: false,
+        title: Text(
+          'Baggage options',
+        ),
+        children: getBagOptions(),));
+       list.add(Divider());
+    }
+      if( this.isMmb && amount == '0') {
+      list.add(ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
+        onPressed: () => completeBookingNothingtoPay(),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  this.isMmb
+                      ? translate('AGREE AND MAKE CHANGES')
+                      : translate('COMPLETE BOOKING'),
+                  style: new TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ));
+    } else {
+        list.add(  renderPaymentButtons());
+    }
+
+
+    return list;
+}
+
+List<Widget> getBagOptions() {
+    List<Widget> list = [];
+
+    if ( widget.newBooking != null ) {
+    widget.newBooking.passengerDetails.forEach((pax) {
+      list.add(Row(children: [
+        Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+            translate('allowance'),
+            textScaleFactor: 1.25)
+      ])
+      );
+      });
+    list.add(getBaggageRow(smallBag, '1','Hand Luggage'));
+    list.add(Divider());
+    list.add(getBaggageRow(cabinBag, '1','Cabin Luggage'));
+    list.add(Divider());
+    list.add(getBaggageRow(holdBag, '1','Checked Luggage'));
+
+    } else if ( widget.mmbBooking != null ) {
+   /*   widget.mmbBooking.passengers.forEach((pax) {
+        list.add(Row(children: [
+          Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+              translate('allowance'),
+              textScaleFactor: 1.25)
+        ])
+        );
+      });
+      */
+
+    }
+   return list;
+  }
+  Row getBaggageRow(NetworkImage img, String count, String title) {
+    return Row( children: [
+      Container(
+        width: 60,
+      child: Image(
+        image: img,
+        fit: BoxFit.fill,
+      )),
+      Text(count + ' '),
+      TrText(title),
+    ]);
+
+  }
 
   Column renderPaymentButtons() {
     List<Widget> paymentButtons = [];
@@ -1588,5 +1574,12 @@ class TimerTextState extends State<TimerText> {
 
     return new Text(formattedTime,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300));
+  }
+}
+NetworkImage _getBagImage(String name){
+  try {
+    return NetworkImage('${gblSettings.gblServerFiles}/bags/$name.png');
+  } catch(e) {
+    logit(e);
   }
 }

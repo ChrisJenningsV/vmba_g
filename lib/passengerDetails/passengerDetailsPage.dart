@@ -6,6 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/widgets/editPage.dart';
+import 'package:vmba/passengerDetails/widgets/editPax.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -57,6 +58,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           .getNamedUserProfile('PAX1')
           .then((profile) {
         try {
+          if( profile == null ) {
+            print('profile null ');
+            return;
+          }
           Map map = json.decode(
               profile.value.toString().replaceAll(
                   "'", '"')); // .replaceAll(',}', '}')
@@ -134,6 +139,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 loadProfileIntoPaxDetails();
                 showContinueButton();
                 Navigator.pop(context);
+                setState(() {
+                });
               },
             ),
           ],
@@ -178,6 +185,18 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     if (passengerDetailRecord.phonenumber != null && passengerDetailRecord.phonenumber != 'null' && passengerDetailRecord.phonenumber.length > 0) {
       _passengerDetails[paxNo].phonenumber =passengerDetailRecord.phonenumber;
     }
+
+    if (passengerDetailRecord.disabilityID != null && passengerDetailRecord.disabilityID != 'null' && passengerDetailRecord.disabilityID.length > 0) {
+      _passengerDetails[paxNo].disabilityID =passengerDetailRecord.disabilityID;
+    }
+    if (passengerDetailRecord.seniorID != null && passengerDetailRecord.seniorID != 'null' && passengerDetailRecord.seniorID.length > 0) {
+      _passengerDetails[paxNo].seniorID =passengerDetailRecord.seniorID;
+    }
+    if (passengerDetailRecord.country != null && passengerDetailRecord.country != 'null' && passengerDetailRecord.country.length > 0) {
+      _passengerDetails[paxNo].country =passengerDetailRecord.country;
+    }
+
+
     preLoadDetails = true;
     showContinueButton();
 
@@ -206,19 +225,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     //Show dialog
+    print('build');
 
     return new Scaffold(
       key: _key,
-      appBar: appBar(context, 'Passengers Details'), /*new AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        title: new TrText('Passengers Details',
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),*/
+      appBar: appBar(context, 'Passengers Details',
+          imageName:  gblSettings.wantCityImages ? 'happypax': null ),
+//      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
       body: new Form(
         key: formKey,
@@ -237,8 +250,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   List<Widget> renderPax(Passengers pax) {
     List<Widget> paxWidgets = [];
+    print('renderPax');
     // List<Widget>();
     int i = 0;
+//    paxWidgets.add(Padding(padding: EdgeInsets.all(50),));
 
     //Adult start
     if (pax.adults == 1) {
@@ -353,12 +368,14 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));
+    print('end renderPax');
     return paxWidgets;
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   Row paxEntryHeader(PaxType paxType, bool single) {
+    print('paxEntryHeader');
     String _passenger = translate('Passengers');
     if (single) {
       _passenger = translate('Passenger');
@@ -373,11 +390,15 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         ),
       ],
     );
+    print('end paxEntryHeader');
   }
 
   Widget renderFieldsV2(int paxNo, PaxType paxType) {
+    print('renderFieldsV2');
+
     bool isLeadPassenger = paxNo == 1 ? true : false;
     _passengerDetails[paxNo - 1].paxType = paxType;
+    _passengerDetails[paxNo - 1].paxNumber = paxNo.toString();
     if (_passengerDetails[paxNo - 1].firstName != '' && _passengerDetails[paxNo - 1].firstName != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,16 +407,31 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               '${_passengerDetails[paxNo - 1].title} ${_passengerDetails[paxNo - 1].firstName} ${_passengerDetails[paxNo - 1].lastName}'),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  SlideTopRoute(
-                      page: EditDetailsWidget(
-                    passengerDetail: _passengerDetails[paxNo - 1],
-                    isAdsBooking: widget.newBooking.ads.isAdsBooking(),
-                    isLeadPassenger: isLeadPassenger,
-                  ))).then((passengerDetails) {
-                updatePassengerDetails(passengerDetails, paxNo - 1);
-              });
+              if (gblSettings.wantNewEditPax) {
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: EditPaxWidget(
+                      passengerDetail: _passengerDetails[paxNo - 1],
+                      isAdsBooking: widget.newBooking.ads.isAdsBooking(),
+                      isLeadPassenger: isLeadPassenger,
+                      destination: widget.newBooking.arrival,
+                    ))).then((passengerDetails) {
+                  updatePassengerDetails(passengerDetails, paxNo - 1);
+                });
+              } else {
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: EditDetailsWidget(
+                          passengerDetail: _passengerDetails[paxNo - 1],
+                          isAdsBooking: widget.newBooking.ads.isAdsBooking(),
+                          isLeadPassenger: isLeadPassenger,
+                        ))).then((passengerDetails) {
+                  updatePassengerDetails(passengerDetails, paxNo - 1);
+                });
+
+              }
             },
             icon: Icon(Icons.edit),
             iconSize: 20,
@@ -409,23 +445,39 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           Text(translate('Add new') + ' ${paxType.toString().split('.')[1]} ' + translate('passenger')),
           IconButton(
               onPressed: () {
-                Navigator.push(
-                        context,
-                        SlideTopRoute(
-                            page: EditDetailsWidget(
-                                passengerDetail: _passengerDetails[paxNo - 1],
-                                isAdsBooking:
-                                    widget.newBooking.ads.isAdsBooking(),
-                                isLeadPassenger: isLeadPassenger)))
-                    .then((passengerDetails) {
-                  updatePassengerDetails(passengerDetails, paxNo - 1);
-                });
+                if (gblSettings.wantNewEditPax) {
+                  Navigator.push(
+                      context,
+                      SlideTopRoute(
+                          page: EditPaxWidget(
+                              passengerDetail: _passengerDetails[paxNo - 1],
+                              isAdsBooking:
+                              widget.newBooking.ads.isAdsBooking(),
+                              isLeadPassenger: isLeadPassenger,
+                              destination: widget.newBooking.arrival)))
+                      .then((passengerDetails) {
+                    updatePassengerDetails(passengerDetails, paxNo - 1);
+                  });
+                } else {
+                  Navigator.push(
+                      context,
+                      SlideTopRoute(
+                          page: EditDetailsWidget(
+                              passengerDetail: _passengerDetails[paxNo - 1],
+                              isAdsBooking:
+                              widget.newBooking.ads.isAdsBooking(),
+                              isLeadPassenger: isLeadPassenger)))
+                      .then((passengerDetails) {
+                    updatePassengerDetails(passengerDetails, paxNo - 1);
+                  });
+                }
               },
               icon: Icon(Icons.add_circle),
               iconSize: 20)
         ],
       );
     }
+    print('end renderFieldsV2');
   }
 
   void validateAndSubmit() async {
@@ -438,15 +490,17 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
       hasDataConnection().then((result) async {
         if (result == true) {
-          var _error = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ContactDetailsWidget(
-                        newbooking: widget.newBooking,
-                        preLoadDetails: preLoadDetails,
-                      passengerDetailRecord: passengerDetailRecord,
-                      )));
-          displayError(_error);
+            var _error = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ContactDetailsWidget(
+                          newbooking: widget.newBooking,
+                          preLoadDetails: preLoadDetails,
+                          passengerDetailRecord: passengerDetailRecord,
+                        )));
+            displayError(_error);
+
         } else {
           //showSnackBar('Please, check your internet connection');
           noInternetSnackBar(context);

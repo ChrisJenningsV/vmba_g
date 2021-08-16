@@ -11,7 +11,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'FL';
+String gblBuildFlavor = 'T6';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
@@ -21,7 +21,7 @@ String gblMobileFlags = '';
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
 bool gblIsIos = false;
-bool gblIsLive = true;
+bool gblIsLive = false;
 bool gblTimerExpired = false;
 bool gblPayBtnDisabled = false;
 bool gblRememberMe = false;
@@ -41,7 +41,6 @@ bool gblNoNetwork;
 bool gblVerbose = false;
 
 bool  gblWantLogin = true;
-bool gblWantCitySwap = true;
 
 TextStyle gblTitleStyle;
 List<String> gblTitles = <String>[

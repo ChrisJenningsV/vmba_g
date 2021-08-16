@@ -146,61 +146,21 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
 
       return AlertDialog(
-        title: Row(
-            children:[
-              Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
-                width: 25, height: 25, fit: BoxFit.contain,),
-              Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'))
-            ]
-        ),
+        titlePadding: EdgeInsets.only(top: 0),
+        contentPadding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 0),
+        title: Column(
+            children: [
+              ListTile(
+          leading: Icon(Icons.person_pin, color: Colors.blue, size: 40,),
+            title: Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN')),
+            ),
+              Divider(
+                color: Colors.grey,
+                height: 4.0,
+              ),
+        ]),
         content: contentBox(context),
-        actions: <Widget>[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.black12) ,
-            child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
-            onPressed: () {
-              //Put your code here which you want to execute on Cancel button click.
-              Navigator.of(context).pop();
-            },
-          ),
-          ElevatedButton(
-            child: Row(
-                children: <Widget>[
-              (_isButtonDisabled) ?
-                new Transform.scale(
-                  scale: 0.5,
-                  child: CircularProgressIndicator(),
-                )   :
-                Icon(Icons.check,
-              color: Colors.white,
-            ),_isButtonDisabled ?  new TrText("Logging in...", style: TextStyle(color: Colors.white)) : TrText('CONTINUE',
-              style: TextStyle(color: Colors.white))]),
-            onPressed: () {
-              if ( _isButtonDisabled == false ) {
-                if( _fqtvTextEditingController.text.isNotEmpty && _passwordEditingController.text.isNotEmpty) {
-                  _isButtonDisabled = true;
-                  _loadingInProgress = true;
-                  setState(() {
-
-                  });
-                  _fqtvLogin();
-
-                } else {
-                  _error = "Please complete both fields";
-                  _loadingInProgress = false;
-                  _isButtonDisabled = false ;
-                 // _actionCompleted();
-                  _showDialog();
-
-
-                }
-              }
-              //});
-
-             //Navigator.of(context).pop();
-            },
-          ),
-        ],
+        //actions: <Widget>[)    ]
       );
     }
 
@@ -248,27 +208,15 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   }
 
     contentBox(context){
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: Column(
+    return
+        Stack(
+          children: <Widget>[ Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new TextFormField(
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: '${gblSettings.fqtvName} ' + translate('number'),
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
+                decoration: getDecoration( '${gblSettings.fqtvName} ' + translate('number')),
                 controller: _fqtvTextEditingController,
                 keyboardType: TextInputType.phone,
-
-
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
@@ -281,24 +229,13 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 obscureText: _isHidden,
                 obscuringCharacter: "*",
                 controller: _passwordEditingController ,
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: translate('Password'),
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    borderSide: new BorderSide(),
-                  ),
-                  suffix: InkWell(
+                decoration:getDecoration(translate('Password')),
+/*                  suffix: InkWell(
                     onTap: _togglePasswordView,
                     child: Icon( Icons.visibility),
                   ),
-                ),
+                ),*/
                 keyboardType: TextInputType.visiblePassword,
-
-
-
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
@@ -310,23 +247,77 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   'Reset Password',
                   style: TextStyle(color: Colors.black),
                 ),
-                style: TextButton.styleFrom(primary: Colors.white),
+                style: TextButton.styleFrom(primary: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
                   _resetPasswordDialog();
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.grey.shade100),
+                    child: TrText(
+                      "CANCEL",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () {
+                      //Put your code here which you want to execute on Cancel button click.
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(width: 20,),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                    child: Row(children: <Widget>[
+                      (_isButtonDisabled)
+                          ? new Transform.scale(
+                        scale: 0.5,
+                        child: CircularProgressIndicator(),
+                      )
+                          : Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
+                      _isButtonDisabled
+                          ? new TrText("Logging in...",
+                          style: TextStyle(color: Colors.white))
+                          : TrText('CONTINUE', style: TextStyle(color: Colors.white))
+                    ]),
+                    onPressed: () {
+                      if (_isButtonDisabled == false) {
+                        if (_fqtvTextEditingController.text.isNotEmpty &&
+                            _passwordEditingController.text.isNotEmpty) {
+                          _isButtonDisabled = true;
+                          _loadingInProgress = true;
+                          setState(() {});
+                          _fqtvLogin();
+                        } else {
+                          _error = "Please complete both fields";
+                          _loadingInProgress = false;
+                          _isButtonDisabled = false;
+                          // _actionCompleted();
+                          _showDialog();
+                        }
+                      }
+                      //});
+
+                      //Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
             ],
-          ),
-        ),
-      ],
-    );
+          )],
+        );
   }
+  /*
   void _togglePasswordView() {
     setState(() {
       _isHidden = !_isHidden;
     });
   }
-
+*/
   List<Widget> _getWidgets() {
     List<Widget> widgets = [];
     String name = '';
@@ -487,8 +478,10 @@ if ( memberDetails != null ) {
               borderRadius: BorderRadius.circular(30.0))),
       child: TrText("Book a flight"),
       onPressed: () {
+        List<String> args = [];
+        args.add('wantRedeemMiles');
         Navigator.of(context).pushNamedAndRemoveUntil(
-            '/FlightSearchPage', (Route<dynamic> route) => false);
+            '/FlightSearchPage', (Route<dynamic> route) => false, arguments: args);
       },
     ));
 
@@ -536,7 +529,8 @@ Widget _getTrans() {
         Text( tran.flightNumber), Text(' '),
         Text(tran.departureCityCode ,style: TextStyle(color: Colors.white,  )), Text(' '),
         Text(tran.arrivalCityCode), Text(' '),
-        if(tran.flightDate.isNotEmpty && (!tran.flightDate.startsWith(('0001')))  )Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)), style: TextStyle(color: Colors.white,  )),
+        if(tran.flightDate.isNotEmpty && (!tran.flightDate.startsWith(('0001')))  )Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)),
+            style: TextStyle(color: Colors.white,  )),
 
         ],  ),
 
@@ -551,7 +545,7 @@ Widget _getTrans() {
             // third row
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            Text(tran.airMiles,style: TextStyle(color: Colors.white, ) ,
+            Text(cleanInt(tran.airMiles),style: TextStyle(color: Colors.white, ) ,
     ),
 
             Text(tran.pnr + '      ',style: TextStyle(color: Colors.black,  ),  ),
@@ -802,13 +796,18 @@ Widget _getTrans() {
        context: context,
        builder: (BuildContext context) {
    return AlertDialog(
-     title: Row(
-         children:[
-           Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
-             width: 50, height: 50, fit: BoxFit.contain,),
-           TrText('Change Password')
-         ]
-     ),
+     titlePadding: EdgeInsets.only(top: 0),
+     title: Column(
+         children: [
+           ListTile(
+             leading: Icon(Icons.person_pin, color: Colors.red, size: 40,),
+             title: Text(translate('Change Password')),
+           ),
+           Divider(
+             color: Colors.grey,
+             height: 4.0,
+           ),
+         ]),
      content:    Stack(
    children: <Widget>[
    Container(
@@ -816,16 +815,7 @@ Widget _getTrans() {
      mainAxisSize: MainAxisSize.min,
      children: <Widget>[
        new TextFormField(
-         decoration: InputDecoration(
-           contentPadding:
-           new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-           labelText: translate('Old password'),
-           fillColor: Colors.white,
-           border: new OutlineInputBorder(
-             borderRadius: new BorderRadius.circular(15.0),
-             borderSide: new BorderSide(),
-           ),
-         ),
+         decoration: getDecoration('Old password'),
          controller: _oldPasswordEditingController,
          obscureText: _isHidden,
          obscuringCharacter: "*",
@@ -834,16 +824,7 @@ Widget _getTrans() {
         SizedBox(height: 15,),
        new TextFormField(
          controller: _newPasswordEditingController ,
-         decoration: InputDecoration(
-           contentPadding:
-           new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-           labelText: translate('new Password'),
-           fillColor: Colors.white,
-           border: new OutlineInputBorder(
-             borderRadius: new BorderRadius.circular(15.0),
-             borderSide: new BorderSide(),
-           ),
-         ),
+         decoration: getDecoration('new Password'),
          obscureText: _isHidden,
          obscuringCharacter: "*",
          keyboardType: TextInputType.visiblePassword,
@@ -891,13 +872,19 @@ Widget _getTrans() {
        context: context,
        builder: (BuildContext context) {
          return AlertDialog(
-           title: Row(
-               children:[
-                 Image.network('${gblSettings.gblServerFiles}/reset_password.png',
-                   width: 50, height: 50, fit: BoxFit.contain,),
-                 TrText('Reset Password')
-               ]
-           ),
+           titlePadding: EdgeInsets.only(top: 0),
+           title: Column(
+               children: [
+                 ListTile(
+                   leading: Icon(Icons.person_pin, color: Colors.red, size: 40,),
+                   title: TrText('Reset Password'),
+                 ),
+                 Divider(
+                   color: Colors.grey,
+                   height: 4.0,
+                 ),
+               ]),
+
            content:    Stack(
              children: <Widget>[
                Container(

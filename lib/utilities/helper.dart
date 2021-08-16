@@ -411,3 +411,90 @@ DateTime parseUkDateTime(String str) {
   DateTime converted = dateTime.toLocal();
 return converted;
 }
+
+String validateEmail(String value) {
+  Pattern pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  if (!regex.hasMatch(value))
+    return 'Enter Valid Email';
+  else
+    return null;
+}
+
+Widget infoBox(String txt ) {
+  return Padding(padding: new EdgeInsets.only(top: 5.0,  bottom: 5),
+    child: ListTile(
+      title: Transform.translate(
+        offset: Offset(-16, 0),
+        child:  Padding( padding: const EdgeInsets.all(8.0),
+            child: Text(translate(txt), textScaleFactor: 0.75),
+        ),
+      ),
+      tileColor: Colors.cyan.shade50,
+      leading: Column( children: [
+        Padding(padding: EdgeInsets.only(top:5),),
+        Icon(Icons.info, color: Colors.cyan.shade900 , ),
+        Padding(padding: EdgeInsets.only(top:10),)
+        ]
+    ),
+    ),);
+}
+
+Widget warningBox(String txt ) {
+  return Padding(padding: new EdgeInsets.only(top: 10.0,  bottom: 5),
+    child: ListTile(
+      title: Transform.translate(
+        offset: Offset(-16, 0),
+        child: Padding(padding: const EdgeInsets.all(8.0),
+        child:Text(translate(txt), textScaleFactor: 0.75),
+      ),),
+      tileColor: Colors.yellow.shade50,
+      leading: Column( children: [
+        Padding(padding: EdgeInsets.only(top:5),),
+        Icon(Icons.warning_amber_outlined, color: Colors.yellow.shade900 , ),
+        Padding(padding: EdgeInsets.only(top:10),)
+      ]
+      ),
+    ),);
+}
+
+
+InputDecoration getDecoration(String label) {
+  var borderRadius = 10.0;
+
+  if ( gblSettings.wantMaterialControls == true ) {
+    return InputDecoration(
+      fillColor: Colors.grey.shade100,
+      filled: true,
+      counter: Container(),
+      labelStyle: TextStyle(color: Colors.grey),
+      //    contentPadding:
+      //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+      labelText: translate(label),
+
+//        fillColor: Colors.white,
+    );
+
+  }
+
+  // old style
+  return InputDecoration(
+    counter: Spacer(),
+    contentPadding:
+    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+    labelText: translate(label),
+    fillColor: Colors.white,
+    border: new OutlineInputBorder(
+      borderRadius: new BorderRadius.circular(borderRadius),
+      borderSide: new BorderSide(),
+    ),
+  );
+}
+
+String cleanInt(String str) {
+  if( str.contains('.')){
+    str=str.split('.')[0];
+  }
+  return str;
+}

@@ -774,6 +774,30 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       .pAX
                       .where((pax) => pax.paxType == 'CH')
                       .length +
+              this
+                  .widget
+                  .pnr
+                  .pNR
+                  .names
+                  .pAX
+                  .where((pax) => pax.paxType == 'CD')
+                  .length +
+              this
+                  .widget
+                  .pnr
+                  .pNR
+                  .names
+                  .pAX
+                  .where((pax) => pax.paxType == 'SD')
+                  .length +
+              this
+                  .widget
+                  .pnr
+                  .pNR
+                  .names
+                  .pAX
+                  .where((pax) => pax.paxType == 'TD')
+                  .length +
                   this
                       .widget
                       .pnr

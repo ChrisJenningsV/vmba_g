@@ -262,7 +262,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             });
           });
         } else {
-          _error = 'Declined';
+          _error = translate('Declined');
           _dataLoaded();
           _showDialog();
         }
@@ -488,7 +488,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           }
           ticketBooking();
         } else {
-          _error = 'Declined';
+          _error = translate('Declined');
           _dataLoaded();
           _showDialog();
         }

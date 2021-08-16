@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/data/globals.dart';
 
 
 class TabPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class TabPageState extends State<TabPage>  with TickerProviderStateMixin {
 
 
   TabController _controller;
-  int _selectedIndex = 0;
+ // int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -66,23 +65,7 @@ class TabPageState extends State<TabPage>  with TickerProviderStateMixin {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                /*
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Icon(Icons.share),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Icon(Icons.favorite),
-                      ),
-                    ],
-                  ),
-                )
-
-                 */
-              ],
+               ],
             ),
           ),
           expandedHeight: 380.0,

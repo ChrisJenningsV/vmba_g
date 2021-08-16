@@ -98,6 +98,7 @@ void configFL() {
       youths: true,
       senior: true,
       student: true,
+      wantYouthDOB: false,
     ),
     wantUmnr: true,
     fqtvName:  "Air Club",
@@ -108,7 +109,6 @@ void configFL() {
     groupsBookingsEmail:  "",
     maxNumberOfPax:  9,
     hideFareRules:  true,
-    fqtvEnabled:  true,
     wantMyAccount: true,
   apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings

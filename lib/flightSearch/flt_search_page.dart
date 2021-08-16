@@ -81,7 +81,11 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> args = ModalRoute.of(context).settings.arguments;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+    if( args != null && args.contains('wantRedeemMiles' )) {
+      gblRedeemingAirmiles = true;
+    }
     return new Scaffold(
         appBar: 
          appBar(context, widget.ads == true ? 'ADS Flight Search': 'Flight Search'),

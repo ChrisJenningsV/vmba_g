@@ -155,7 +155,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
           child: new Container(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              new TrText("Children & Infants",
+              new TrText("Other Passengers", //"Children & Infants",
                   style: new TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15.0)),
               new GestureDetector(

@@ -752,7 +752,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 Container(
                                     width: 275,
                                     child: _currentBarcode == 1
-                                        ? Text(
+                                        ? TrText(
                                             'If alternate barcode will still not scan, we apologise for the inconvenience. Please present this boading pass to a member of the gate staff.',
                                             style: TextStyle(
                                               fontSize: 12.0,
