@@ -233,7 +233,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     return new Scaffold(
       key: _key,
       appBar: appBar(context, 'Passengers Details',
-          imageName:  gblSettings.wantCityImages ? 'paxDetails': null ),
+          imageName:  gblSettings.wantPageImages ? 'paxDetails': null ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
       body: new Form(

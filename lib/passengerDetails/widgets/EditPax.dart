@@ -52,7 +52,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   @override
   initState() {
     super.initState();
-    if( gblSettings.wantCityImages) {
+    if( gblSettings.wantPageImages) {
    //   _loadBgCityImage();
     }
 
@@ -87,7 +87,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
       appBar: appBar(context, 'Passenger Detail',
-        imageName: gblSettings.wantCityImages ? 'editPax' : null,
+        imageName: gblSettings.wantPageImages ? 'editPax' : null,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -95,13 +95,21 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
           )
         ],
       ),
-      extendBodyBehindAppBar: gblSettings.wantCityImages,
+      extendBodyBehindAppBar: gblSettings.wantPageImages,
       //endDrawer: DrawerMenu(),
       body: _body(),
     );
   }
+
+  String capitalize(String str) {
+    return "${str[0].toUpperCase()}${str.substring(1)}";
+  }
+
+
   Widget _body() {
 
+    var paxTypeName =  widget.passengerDetail.paxType.toString().replaceAll('PaxType.','');
+    paxTypeName = capitalize(paxTypeName);
 return SafeArea(
     child: Form(
         key: formKey,
@@ -116,7 +124,7 @@ return SafeArea(
     ListTile(
       tileColor: gblSystemColors.primaryHeaderColor ,
     leading: Icon(Icons.person, size: 50.0, color: gblSystemColors.headerTextColor   ,),
-    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber , style: TextStyle(color: gblSystemColors.headerTextColor),),
+    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + paxTypeName + ')'  , style: TextStyle(color: gblSystemColors.headerTextColor),),
 /*    subtitle: Text(
     'Secondary Text',
     style: TextStyle(color: Colors.black.withOpacity(0.6)),

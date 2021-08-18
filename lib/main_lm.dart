@@ -53,7 +53,7 @@ void configLM() {
     wantHomeFQTVButton: false,
     wantMaterialControls: true,
     wantNewEditPax: true,
-    wantBags: true,
+    wantBags: false,
     wantFindBookings: true,
     airlineName: "Logan Air",
   gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
@@ -101,20 +101,23 @@ void configLM() {
     apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
 
 //Staging setttings
-  testXmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+/*  testXmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
 
-/*
-    xmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',  // InHouse
-
  */
+
+
+    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',  // InHouse
+
+
   creditCardProvider: 'videcard',
   testCreditCardProvider: 'videcard',
 
   wantPayStack: false,
+  wantPageImages: true,
   wantLeftLogo: false,
   wantCurrencySymbols: true,
   wantMyAccount: true,

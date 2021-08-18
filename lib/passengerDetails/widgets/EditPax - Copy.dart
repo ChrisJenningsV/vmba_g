@@ -47,7 +47,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   @override
   initState() {
     super.initState();
-    if( gblSettings.wantCityImages) {
+    if( gblSettings.wantPageImages) {
    //   _loadBgCityImage();
     }
 
@@ -71,7 +71,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
       appBar: appBar(context, 'Edit Details',automaticallyImplyLeading: false,
-        backgroundColor: gblSettings.wantCityImages ? Colors.transparent : null ,
+        backgroundColor: gblSettings.wantPageImages ? Colors.transparent : null ,
       //  elevalion: gblSettings.wantCityImages ? 0.0 : null,
         actions: <Widget>[
           IconButton(
@@ -80,7 +80,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
           )
         ],
       ),
-      extendBodyBehindAppBar: gblSettings.wantCityImages,
+      extendBodyBehindAppBar: gblSettings.wantPageImages,
       //endDrawer: DrawerMenu(),
       body: _body(),
           /*

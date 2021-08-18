@@ -329,10 +329,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           total += double.tryParse(d.tax1 ?? 0.0);
           total += double.tryParse(d.tax2 ?? 0.0);
           total += double.tryParse(d.tax3 ?? 0.0);
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
-          //total += double.tryParse(d.disc ?? 0.0);
+          if( d.disc != null ) {
+            d.disc
+                .split(',')
+                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+            //total += double.tryParse(d.disc ?? 0.0);
+          }
         });
       }
     });
@@ -368,10 +370,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
-          //total += double.tryParse(d.disc ?? 0.0);
+          if( d.disc != null ) {
+            d.disc
+                .split(',')
+                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+            //total += double.tryParse(d.disc ?? 0.0);
+          }
         });
       }
     });
@@ -1073,7 +1077,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
-          imageName: gblSettings.wantCityImages ? 'paymentPage' : null,) ,
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -1104,7 +1108,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         child: new Scaffold(
             key: _key,
             appBar: appBar(context, 'Payment',
-            imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
+            imageName: gblSettings.wantPageImages ? 'paymentpage' : null,) ,
             endDrawer: DrawerMenu(),
             body: SafeArea(
               child: Column(
@@ -1168,8 +1172,24 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             textScaleFactor: 1.25)
       ])
       );
-
   */
+        // get fq for pax
+        var segCount = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS.length;
+
+        var holdBagWt = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdWt;
+        var holdBagPcs = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdPcs;
+        var handBagWt = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].handWt;
+        var holdBagWtRet = '';
+        var holdBagPcsRet = '';
+        var handBagWtRet = '';
+        if( segCount > 1) {
+          holdBagWtRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdWt;
+          holdBagPcsRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdPcs;
+          handBagWtRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].handWt;
+        }
+        if( holdBagWt.endsWith('K') ){
+          holdBagWt = holdBagWt.replaceAll('K', 'Kg');
+        }
         list.add( Card( child:
         Padding( padding: EdgeInsets.only(top: 10, left: 6, right: 6, bottom: 6),
             child: ExpansionTile(
@@ -1177,11 +1197,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   translate('allowance'),
                   textScaleFactor: 1),
               children: [
-                getBaggageRow(smallBag, '1','Hand Luggage', 'line 2'),
+                if( segCount > 1) getBaggageRow(null, null, null, null, null),
+
+                getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', 'line 2'),
+  //              Divider(),
+//                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
                 Divider(),
-                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
-                Divider(),
-                getBaggageRow(holdBag, '1','Checked Luggage', 'line 2')
+                getBaggageRow(holdBag, holdBagPcs, holdBagPcsRet,'Checked Luggage', holdBagWt )
               ],)
         )
         ));
@@ -1415,7 +1437,25 @@ List<Widget> getPayOptions(String amount, String cur) {
 
 
 
-  Row getBaggageRow(NetworkImage img, String count, String title, String line2) {
+  Row getBaggageRow(NetworkImage img, String count, String countRet, String title, String line2) {
+    if( img == null && count == null ) {
+      // heading row
+      return Row(
+          children: [
+            Container(width: 40,),
+            Container( width: 30,child: TrText('Out')),
+            Container( width: 30,child: TrText('Ret')),
+            Spacer(),
+            Padding(padding: EdgeInsets.only(left: 5))
+          ]);
+
+    }
+    if( count.endsWith('K')){
+      count =  count.replaceAll('K', 'Kg');
+    }
+    if( countRet.endsWith('K')){
+      countRet = countRet.replaceAll('K', 'Kg');
+    }
     return Row(
         children: [
       Container(
@@ -1427,6 +1467,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         width: 40,
       )),
       Container( width: 30,child: Text(count + ' ')),
+      Container( width: 30,child: Text(countRet + ' ')),
       Spacer(),
       Column( children: [ TrText(title),
           Text(line2, textScaleFactor: 0.75,),

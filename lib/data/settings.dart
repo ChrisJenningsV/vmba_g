@@ -77,7 +77,7 @@ class Settings {
   bool wantNewEditPax;
   bool wantMaterialControls;
   bool wantCitySwap;
-  bool wantCityImages;
+  bool wantPageImages;
   bool wantBags;
   bool wantCovidWarning;
   bool wantCountry;
@@ -168,7 +168,7 @@ bool bpShowFastTrack;
     this.wantNewEditPax = false,
     this.wantMaterialControls = false,
     this.wantCitySwap = false,
-    this.wantCityImages = false,
+    this.wantPageImages = false,
     this.wantBags = false,
     this.wantCovidWarning = false,
     this.wantCountry = false,
@@ -284,8 +284,8 @@ bool bpShowFastTrack;
     if(wantMaterialControls == null ){
       wantMaterialControls= false;
     }
-    if( wantCityImages == null ) {
-      wantCityImages = false;
+    if( wantPageImages == null ) {
+      wantPageImages = false;
     }
     if (passengerTypes.student == null  ){
       passengerTypes.student = false;

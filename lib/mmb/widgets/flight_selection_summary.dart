@@ -253,9 +253,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           total += double.tryParse(d.tax2 ?? 0.0);
           total += double.tryParse(d.tax3 ?? 0.0);
           //total += double.tryParse(d.disc ?? 0.0);
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+          if( d.disc != null ) {
+            d.disc
+                .split(',')
+                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+          }
         });
       }
     });
@@ -277,9 +279,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
           //total += double.tryParse(d.disc ?? 0.0);
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+          if( d.disc != null ) {
+            d.disc
+                .split(',')
+                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+          }
         });
       }
     });

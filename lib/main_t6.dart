@@ -80,7 +80,7 @@ void configT6() {
       wantNewEditPax: true,
       wantMaterialControls: true,
       wantCitySwap: true,
-      wantCityImages: true,
+      wantPageImages: true,
 
       passengerTypes: PassengerTypes(
       adults: true,

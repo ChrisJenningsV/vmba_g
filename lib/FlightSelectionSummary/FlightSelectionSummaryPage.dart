@@ -393,11 +393,16 @@ Row airMiles() {
           total += double.tryParse(d.tax1 ?? 0.0);
           total += double.tryParse(d.tax2 ?? 0.0);
           total += double.tryParse(d.tax3 ?? 0.0);
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
-          // total += double.tryParse(d.disc ?? 0.0);
+          if (d.disc != null ) {
+            if( d.disc != null ) {
+              d.disc
+                  .split(',')
+                  .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+              // total += double.tryParse(d.disc ?? 0.0);
+            }
+          }
         });
+
       }
     });
 
@@ -424,10 +429,12 @@ Row airMiles() {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          d.disc
-              .split(',')
-              .forEach((disc) => total += double.tryParse(disc ?? 0.0));
-          //total += double.tryParse(d.disc ?? 0.0);
+          if( d.disc != null ) {
+            d.disc
+                .split(',')
+                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+            //total += double.tryParse(d.disc ?? 0.0);
+          }
         });
       }
     });
@@ -638,8 +645,8 @@ Row airMiles() {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: appBar(context, 'Summary',
-        imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
-        extendBodyBehindAppBar: gblSettings.wantCityImages,
+        imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+        extendBodyBehindAppBar: gblSettings.wantPageImages,
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -658,8 +665,8 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
-          extendBodyBehindAppBar: gblSettings.wantCityImages,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+          extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -687,8 +694,8 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
-          extendBodyBehindAppBar: gblSettings.wantCityImages,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+          extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: Center(
             child: Column(
@@ -737,7 +744,7 @@ Row airMiles() {
       return new Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: new Container(

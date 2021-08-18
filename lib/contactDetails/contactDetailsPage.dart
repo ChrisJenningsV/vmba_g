@@ -75,7 +75,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
-          imageName: gblSettings.wantCityImages ? 'paymentPage' : null,) ,
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
 /*        appBar: new AppBar(
           brightness: gblSystemColors.statusBar,
           backgroundColor:
@@ -631,7 +631,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             } else if (pax.paxType == PaxType.senior) {
               sb.write('.CD');
             } else if (pax.paxType == PaxType.youth) {
-             sb.write('.TH17');
+             sb.write('.TH15');
             }
         }
       }

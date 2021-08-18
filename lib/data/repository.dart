@@ -355,7 +355,7 @@ class Repository {
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
                   case 'wantCityImages':
-                    gblSettings.wantCityImages = parseBool(item['value']);
+                    gblSettings.wantPageImages = parseBool(item['value']);
                     break;
                   case 'wantCitySwap':
                     gblSettings.wantCitySwap = parseBool(item['value']);

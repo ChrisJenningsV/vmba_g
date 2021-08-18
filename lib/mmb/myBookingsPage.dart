@@ -132,7 +132,7 @@ String _error = '';
       tabeViews.add(new Container(child: addBooking()));
 
       if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
-        tabs.add(TrText('Find All Bookings'));
+        tabs.add(TrText('Import Bookings'));
         tabeViews.add(new Container(child: findAllBookings()));
       }
 
@@ -329,6 +329,10 @@ String _error = '';
         fqtvPass = _passwordEditingController.text;
         gblFqtvBalance = resp.balance;
 
+        _loadingInProgress = true;
+        // now load transactions
+        _loadTransactions();
+        /*
         method = 'GetDetailsByUsername';
         msg = json.encode(
             ApiFqtvGetDetailsRequest(fqtvEmail, fqtvNo, fqtvPass).toJson());
@@ -359,6 +363,8 @@ String _error = '';
             print(e);
           }
         });
+        */
+
       }});
   }
 
@@ -629,7 +635,7 @@ String _error = '';
         // ),
         PopupMenuItem(
           child: TextButton.icon(
-            icon: Icon(Icons.delete_outline),
+            icon: Icon(Icons.delete_outline_rounded),
             label: TrText('Remove booking'),
             onPressed: () {
               Repository.get()
@@ -795,27 +801,42 @@ String _error = '';
     setState(() {
       _loadingInProgress = true;
     });
+    var index = 0;
+    var count = transactions.length;
+
     transactions.forEach((tran) {
       loadBooking(tran.pnr).then((pnrJson) {
-        Map pnrMap = json.decode(pnrJson);
-        print('Loaded PNR: ${tran.pnr}' );
-        var objPnr = new PnrModel.fromJson(pnrMap);
-        _rloc = tran.pnr;
+        index++;
+        pnrJson = pnrJson.replaceAll('\n', '').replaceAll('\r', '');
+        if( pnrJson.startsWith('{')) {
+          Map pnrMap = json.decode(pnrJson);
+          print('Loaded PNR: ${tran.pnr}');
+          var objPnr = new PnrModel.fromJson(pnrMap);
+          _rloc = tran.pnr;
 
-        // save
-        PnrDBCopy pnrDBCopy = new PnrDBCopy(
-            rloc: objPnr.pNR.rLOC,
-            data: pnrJson,
-            delete: 0,
-            nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
-        Repository.get().updatePnr(pnrDBCopy).then((w) {
-          fetchApisStatus(false);
-          //Navigator.of(context).pop();
-        });
+          // save
+          PnrDBCopy pnrDBCopy = new PnrDBCopy(
+              rloc: objPnr.pNR.rLOC,
+              data: pnrJson,
+              delete: 0,
+              nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+          Repository.get().updatePnr(pnrDBCopy).then((w) {
+            fetchApisStatus(false);
+
+            if (index >= count) {
+              setState(() {
+
+              });
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/MyBookingsPage', (Route<dynamic> route) => false);
+            }
+            //Navigator.of(context).pop();
+          });
+        } else {
+          logit('Error loading pnr: ' + pnrJson);
+        }
       });
     });
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        '/MyBookingsPage', (Route<dynamic> route) => false);
 
   }
 

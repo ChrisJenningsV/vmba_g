@@ -59,9 +59,9 @@ Widget appBar(BuildContext context, String title,
             backgroundColor: Colors.transparent,
 
             iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
+                color: Colors.white),
             title: getText(title),
-            actionsIconTheme: IconThemeData( color: Colors.black),
+            actionsIconTheme: IconThemeData( color: Colors.white),
             actions: actions,
           ));
 
