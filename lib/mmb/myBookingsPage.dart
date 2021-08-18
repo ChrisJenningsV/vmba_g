@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -32,14 +33,28 @@ String _error = '';
   TabController _controller;
   final formKey = GlobalKey<FormState>();
   String _rloc;
+  String fqtvEmail = '';
+  String fqtvNo = '';
+  String fqtvPass='';
   String _surname;
+  bool _isButtonDisabled ;
+  bool _isHidden;
+  TextEditingController _fqtvTextEditingController =   TextEditingController();
+  TextEditingController _passwordEditingController =   TextEditingController();
+  TextEditingController _emailEditingController =   TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
     _loadingInProgress = true;
+    _isButtonDisabled = false;
+    _isHidden = true;
+
     var tablen = 3;
+    if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
+      tablen +=1;
+    }
     _controller = TabController(length: tablen, vsync: this);
 
     getmyookings();
@@ -106,6 +121,21 @@ String _error = '';
         ),
       ));
     } else {
+      List <Widget> tabs = [];
+      List <Widget> tabeViews = [];
+      tabs.add(TrText('Active'));
+      tabs.add(TrText('Recent'));
+      tabs.add(TrText('Add Booking'));
+
+      tabeViews.add(new Container(child: myTrips(true)));
+      tabeViews.add(new Container(child: myTrips(false)));
+      tabeViews.add(new Container(child: addBooking()));
+
+      if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
+        tabs.add(TrText('Find All Bookings'));
+        tabeViews.add(new Container(child: findAllBookings()));
+      }
+
       return Scaffold(
           appBar: appBar(context, "My Bookings",
           bottom:  new PreferredSize(
@@ -116,11 +146,7 @@ String _error = '';
           indicatorColor: Colors.amberAccent,
           isScrollable: true,
           labelColor: Colors.black,
-          tabs: [
-              TrText('Active'),
-              TrText('Recent'),
-              TrText('Add'),
-          ],
+          tabs: tabs,
           controller: _controller),
           ),
           ),
@@ -128,15 +154,270 @@ String _error = '';
           endDrawer: DrawerMenu(),
           body: TabBarView(
               controller: _controller,
-              children: [
-                  new Container(child: myTrips(true)),
-                  new Container(child: myTrips(false)),
-                  new Container(child: addBooking())
-              ]
+              children: tabeViews,
       ),
 
     );
     }
+  }
+
+  Widget findAllBookings() {
+    return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        titlePadding: EdgeInsets.only(top: 0),
+        contentPadding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 0),
+        title: Column(children: [
+          ListTile(
+            leading: Icon(
+              Icons.person_pin,
+              color: Colors.blue,
+              size: 40,
+            ),
+            title: Text(
+                translate('${gblSettings.fqtvName} ') + translate('LOGIN')),
+          ),
+          Divider(
+            color: Colors.grey,
+            height: 4.0,
+          ),
+        ]),
+        content: Stack(
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TrText( ' Login to load all your future bookings '),
+                new TextFormField(
+                  decoration: getDecoration(
+                      '${gblSettings.fqtvName} ' + translate('number')),
+                  controller: _fqtvTextEditingController,
+                  keyboardType: TextInputType.phone,
+                  onSaved: (value) {
+                    if (value != null) {
+                      //.contactInfomation.phonenumber = value.trim()
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                new TextFormField(
+                  obscureText: _isHidden,
+                  obscuringCharacter: "*",
+                  controller: _passwordEditingController,
+                  decoration: getDecoration(translate('Password')),
+/*                  suffix: InkWell(
+                    onTap: _togglePasswordView,
+                    child: Icon( Icons.visibility),
+                  ),
+                ),*/
+                  keyboardType: TextInputType.visiblePassword,
+                  onSaved: (value) {
+                    if (value != null) {
+                      //.contactInfomation.phonenumber = value.trim()
+                    }
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.grey.shade100),
+                      child: TrText(
+                        "CANCEL",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onPressed: () {
+                        //Put your code here which you want to execute on Cancel button click.
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.blue),
+                      child: Row(children: <Widget>[
+                        (_isButtonDisabled)
+                            ? new Transform.scale(
+                                scale: 0.5,
+                                child: CircularProgressIndicator(),
+                              )
+                            : Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                        _isButtonDisabled
+                            ? new TrText("Logging in...",
+                                style: TextStyle(color: Colors.white))
+                            : TrText('CONTINUE',
+                                style: TextStyle(color: Colors.white))
+                      ]),
+                      onPressed: () {
+                        if (_isButtonDisabled == false) {
+                          if (_fqtvTextEditingController.text.isNotEmpty &&
+                              _passwordEditingController.text.isNotEmpty) {
+                            _isButtonDisabled = true;
+                            _loadingInProgress = true;
+                             _fqtvLogin();
+
+                            setState(() {});
+                          } else {
+                            _error = "Please complete both fields";
+                            _loadingInProgress = false;
+                            _isButtonDisabled = false;
+                            // _actionCompleted();
+                            showAlertDialog(context, 'Error', _error);
+                          }
+                        }
+                        //});
+
+                        //Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ));
+  }
+      //actions: <Widget>[)    ]
+
+
+  void _fqtvLogin() async {
+    if ( gblSession == null || gblSession.isTimedOut()) {
+      await login().then((result) {
+        gblSession =
+            Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
+        print('new session');
+      });
+    }
+    FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
+        _fqtvTextEditingController.text,
+        _passwordEditingController.text);
+    String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
+    String method = 'GetAirMilesBalance';
+
+    print(msg);
+    _sendVRSCommand(msg, method).then((result) {
+      if( result == null || result == ''){
+        _error = translate('Bad server response logging on');
+        _isButtonDisabled = false;
+        _loadingInProgress = false;
+        _actionCompleted();
+        showAlertDialog(context, 'Error', _error);
+        return;
+      }
+      Map map = json.decode(result);
+      ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(
+          map);
+      _loadingInProgress = false;
+      if (resp.statusCode != 'OK') {
+        _error = resp.message;
+        _isButtonDisabled = false;
+        _actionCompleted();
+        showAlertDialog(context, 'Error', _error);
+      } else {
+        _error ='';
+        //widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
+        fqtvNo = _fqtvTextEditingController.text;
+        gblFqtvNumber = fqtvNo;
+        fqtvEmail = _emailEditingController.text;
+        fqtvPass = _passwordEditingController.text;
+        gblFqtvBalance = resp.balance;
+
+        method = 'GetDetailsByUsername';
+        msg = json.encode(
+            ApiFqtvGetDetailsRequest(fqtvEmail, fqtvNo, fqtvPass).toJson());
+
+        _sendVRSCommand(msg, method).then((result) {
+          Map map = json.decode(result);
+
+          try {
+            ApiFqtvMemberDetailsResponse resp = new ApiFqtvMemberDetailsResponse
+                .fromJson(map);
+            if (resp.statusCode != 'OK') {
+              _error = resp.message;
+              _actionCompleted();
+              _isButtonDisabled = false;
+              showAlertDialog(context, 'Error', _error);
+            } else {
+              _loadingInProgress = true;
+              // now load transactions
+              _loadTransactions();
+
+              gblPassengerDetail.fqtv = fqtvNo;
+              gblPassengerDetail.fqtvPassword = fqtvPass;
+
+              setState(() {});
+            }
+          } catch(e) {
+            _loadingInProgress = false;
+            print(e);
+          }
+        });
+      }});
+  }
+
+  void _loadTransactions() async {
+    ApiFqtvPendingRequest fqtvMsg = ApiFqtvPendingRequest(
+        fqtvNo,
+        fqtvPass);
+    String msg = json.encode(fqtvMsg.toJson());
+    String method = 'GetPendingTransactions';
+
+    print(msg);
+    _sendVRSCommand(msg, method).then((result){
+      Map map = json.decode(result);
+      ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
+      if( resp.statusCode != 'OK') {
+        _error = resp.message;
+        _actionCompleted();
+        showAlertDialog(context, 'Error', _error);
+
+      } else {
+        var transactions = resp.transactions;
+        _loadingInProgress = true;
+        setState(() {
+        });
+        _bulkLoadPnrs(transactions);
+        //showAlertDialog(context, 'Information', 'Found ${transactions.length} PNRs');
+      }
+    });
+  }
+
+
+
+  Future _sendVRSCommand(msg, method) async {
+    final http.Response response = await http.post(
+        Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
+        headers: {'Content-Type': 'application/json',
+          'Videcom_ApiKey': gblSettings.apiKey
+        },
+        body: msg);
+
+    if (response.statusCode == 200) {
+      print('message send successfully: $msg' );
+      return response.body.trim();
+    } else {
+      print('failed: $msg');
+      _error = translate('message failed');
+      try{
+        print (response.body);
+        _error = response.body;
+      } catch(e){}
+
+      _actionCompleted();
+      showAlertDialog(context, 'Error' , _error);
+    }
+  }
+  void _actionCompleted() {
+    setState(() {
+//      _loadingInProgress = false;
+    });
   }
 
   Widget addBooking() {
@@ -161,14 +442,7 @@ String _error = '';
                 new TextFormField(
                   textCapitalization: TextCapitalization.characters,
                   //maxLength: 6,
-                  decoration: InputDecoration(
-                    labelText: translate("Enter your booking reference"),
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                  ),
+                  decoration: getDecoration(translate("Enter your booking reference")),
                   validator: (value) {
                     if (value.isEmpty) {
                       return translate('Please enter a booking reference');
@@ -184,14 +458,7 @@ String _error = '';
                 new Padding(padding: EdgeInsets.all(10)),
                 TextFormField(
                   textCapitalization: TextCapitalization.characters,
-                  decoration: new InputDecoration(
-                    labelText: translate("Enter your surname"),
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                  ),
+                  decoration: getDecoration(translate("Enter your surname")),
                   validator: (value) {
                     if (value.isEmpty) {
                       return translate('Please enter a surmane');
@@ -524,6 +791,80 @@ String _error = '';
     });
   }
 
+  void _bulkLoadPnrs(List<ApiFQTVMemberTransaction> transactions) async {
+    setState(() {
+      _loadingInProgress = true;
+    });
+    transactions.forEach((tran) {
+      loadBooking(tran.pnr).then((pnrJson) {
+        Map pnrMap = json.decode(pnrJson);
+        print('Loaded PNR: ${tran.pnr}' );
+        var objPnr = new PnrModel.fromJson(pnrMap);
+        _rloc = tran.pnr;
+
+        // save
+        PnrDBCopy pnrDBCopy = new PnrDBCopy(
+            rloc: objPnr.pNR.rLOC,
+            data: pnrJson,
+            delete: 0,
+            nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+        Repository.get().updatePnr(pnrDBCopy).then((w) {
+          fetchApisStatus(false);
+          //Navigator.of(context).pop();
+        });
+      });
+    });
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/MyBookingsPage', (Route<dynamic> route) => false);
+
+  }
+
+  Future<String> loadBooking(String rloc) async {
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x'"))
+        .catchError((resp) {});
+
+    if (response == null) {
+      //return new ParsedResponse(NO_INTERNET, []);
+    }
+
+    //If there was an error return an empty list
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      //return new ParsedResponse(response.statusCode, []);
+    }
+
+    String pnrJson;
+    //Map pnrMap;
+    // await for (String pnrRaw in resStream) {
+
+    if (response.body.contains('ERROR - RECORD NOT FOUND -')) {
+      _error = 'Please check your details';
+      //_pnrLoaded();
+      showAlertDialog(context, 'Alert', _error);
+
+    } else {
+      pnrJson = response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+
+      //pnrMap = json.decode(pnrJson);
+      // }
+
+      try {
+        //pnrMap = json.decode(pnrJson);
+        print('Loaded PNR');
+        //var objPnr = new PnrModel.fromJson(pnrMap);
+        return pnrJson;
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+
   Future<void> fetchBooking() async {
     //AATMRA
     //AATKK7
@@ -572,7 +913,7 @@ String _error = '';
               delete: 0,
               nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
           Repository.get().updatePnr(pnrDBCopy).then((w) {
-            fetchApisStatus();
+            fetchApisStatus(true);
             //Navigator.of(context).pop();
           });
 
@@ -594,9 +935,10 @@ String _error = '';
     }
   }
 
-  Future<void> fetchApisStatus() async {
+  Future<void> fetchApisStatus(bool redirect) async {
     //AATMRA
     //AATKK7
+
 
     http.Response response = await http
         .get(Uri.parse(
@@ -629,9 +971,12 @@ String _error = '';
           data: apisStatusJson,
           delete: 0);
       Repository.get().updatePnrApisStatus(databaseRecord).then(
-              (v) => //Navigator.of(context).pop()
+              (v) { //Navigator.of(context).pop()
+              if( redirect) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-              '/MyBookingsPage', (Route<dynamic> route) => false));
+              '/MyBookingsPage', (Route<dynamic> route) => false);
+                }
+              });
     } catch (e) {
       showAlertDialog(context, 'Alert', e);
       //_showDialog();

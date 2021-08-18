@@ -46,6 +46,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
 
+    // save some stuff
+    gblDestination = widget.newBooking.arrival;
+    gblOrigin = widget.newBooking.departure;
+
     /*
   for ( FQItin fqi in  this.pnrModel.pNR.fareQuote.fQItin) {
           miles =  miles + int.tryParse(fqi.miles) ?? 0;
@@ -634,7 +638,7 @@ Row airMiles() {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: appBar(context, 'Summary',
-        imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+        imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
         extendBodyBehindAppBar: gblSettings.wantCityImages,
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -654,7 +658,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: Center(
@@ -683,7 +687,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: Center(
@@ -733,7 +737,7 @@ Row airMiles() {
       return new Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
-            imageName: gblSettings.wantCityImages ? 'happystaff' : null,) ,
+            imageName: gblSettings.wantCityImages ? 'flightSummary' : null,) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           body: new Container(

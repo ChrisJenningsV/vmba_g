@@ -75,7 +75,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
-          imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
+          imageName: gblSettings.wantCityImages ? 'paymentPage' : null,) ,
 /*        appBar: new AppBar(
           brightness: gblSystemColors.statusBar,
           backgroundColor:
@@ -351,6 +351,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     //msg += 'fg^fs1^8M/20^e*r~x';
     msg += '8M/20^e*r~x';
 
+    logit('makeBooking: $msg');
+
     http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
@@ -543,9 +545,15 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   String buildAddContactsCmd() {
     StringBuffer sb = new StringBuffer();
+  if( gblSettings.wantNewEditPax ) {
+    sb.write('9M*${widget.newbooking.passengerDetails[0].phonenumber}^');
+    sb.write('9E*${widget.newbooking.passengerDetails[0].email}^');
 
+  } else {
     sb.write('9M*${widget.newbooking.contactInfomation.phonenumber}^');
     sb.write('9E*${widget.newbooking.contactInfomation.email}^');
+
+  }
 
     return sb.toString();
   }

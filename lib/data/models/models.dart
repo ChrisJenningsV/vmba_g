@@ -356,6 +356,23 @@ class ApiFqtvGetDetailsRequest {
 
 }
 
+class ApiFqtvPendingRequest {
+  String username;
+  String password;
+
+  ApiFqtvPendingRequest(  this.username, this.password);
+
+  Map toJson() {
+    Map map = new Map();
+    map['Username'] = username;
+    map['Password'] = password;
+    return map;
+  }
+
+}
+
+
+
 class FqTvCommand extends Session {
   FqtvMemberloginDetail cmd;
 

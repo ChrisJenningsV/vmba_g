@@ -18,6 +18,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/data/models/products.dart';
+import 'package:vmba/payment/productViews.dart';
 
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
@@ -59,7 +61,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   NetworkImage smallBag;
   NetworkImage cabinBag;
   NetworkImage holdBag;
-
+  List<Product> products = [] ;
+  ProductCard bagCard;
+  ProductCard tranCard;
 
   Session session ;
 
@@ -68,6 +72,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     super.initState();
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
+    products.add(new Product( productCode: 'BAG1', productName: 'hold baggage', productPrice: 126.0));
+    products.add(new Product( productCode: 'BAG2', productName: 'Sports Equipment', productPrice: 35.0));
+    products.add(new Product( productCode: 'TRAN', productName: 'Airport Transfer', productPrice: 25.0));
+
+    bagCard = new ProductCard(productType: 'BAG', products: products,);
+    tranCard = new ProductCard(productType: 'TRAN', products: products,);
 
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
@@ -89,9 +99,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     }
     stopwatch.start();
-    smallBag = _getBagImage('smallBag');
-    cabinBag = _getBagImage('cabinBag');
-    holdBag = _getBagImage('holdBag');
+    smallBag = getBagImage('smallBag');
+    cabinBag = getBagImage('cabinBag');
+    holdBag = getBagImage('holdBag');
   }
 
   @override
@@ -560,13 +570,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               children: <Widget>[
                 Text('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
                 Text(formatPrice(seat.cur ?? currencyCode, double.parse(seat.amt) ?? 0.0) ),
-/*
-                Text(NumberFormat.simpleCurrency(
-                        locale: gblSettings.locale,
-                        name: seat.cur ?? currencyCode)
-                    .format(double.parse(seat.amt) ?? 0.0))
-
- */
               ],
             ),
           );
@@ -1030,33 +1033,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return args;
   }
 
-  /*
-  sendEmailConfirmation() async {
-    try {
-      String msg = '*${pnrModel.pNR.rLOC}^EZRE';
-      http.Response response = await http
-          .get(Uri.parse(
-              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
-
-      if (response == null) {
-        //return new ParsedResponse(NO_INTERNET, []);
-      }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        //return new ParsedResponse(response.statusCode, []);
-      }
-      print(response.body
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', ''));
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-   */
 
   void _showDialog() {
     // flutter defined function
@@ -1092,11 +1068,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     if (_displayProcessingIndicator) {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
-          imageName: gblSettings.wantCityImages ? 'paymentpage' : null,) ,
+          imageName: gblSettings.wantCityImages ? 'paymentPage' : null,) ,
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -1180,7 +1157,63 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return col;
   }
 
-    Widget _getTotals() {
+  List<Widget> getBagOptions() {
+    List<Widget> list = [];
+
+    if ( widget.newBooking != null ) {
+      widget.newBooking.passengerDetails.forEach((pax) {
+        /*     list.add(Row(children: [
+        Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+            translate('allowance'),
+            textScaleFactor: 1.25)
+      ])
+      );
+
+  */
+        list.add( Card( child:
+        Padding( padding: EdgeInsets.only(top: 10, left: 6, right: 6, bottom: 6),
+            child: ExpansionTile(
+              title: Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+                  translate('allowance'),
+                  textScaleFactor: 1),
+              children: [
+                getBaggageRow(smallBag, '1','Hand Luggage', 'line 2'),
+                Divider(),
+                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
+                Divider(),
+                getBaggageRow(holdBag, '1','Checked Luggage', 'line 2')
+              ],)
+        )
+        ));
+      });
+
+      // add  bag products
+
+//      ProductCard bagCard = new ProductCard(productType: 'BAG', products: products,);
+      if( bagCard.hasContent() ) {
+        list.add(bagCard);
+      }
+//      ProductCard tranCard = new ProductCard(productType: 'TRAN', products: products,);
+      if( tranCard.hasContent() ) {
+        list.add(tranCard);
+      }
+
+    } else if ( widget.mmbBooking != null ) {
+      /*   widget.mmbBooking.passengers.forEach((pax) {
+        list.add(Row(children: [
+          Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+              translate('allowance'),
+              textScaleFactor: 1.25)
+        ])
+        );
+      });
+      */
+
+    }
+    return list;
+  }
+
+  Widget _getTotals() {
    String cur = this.pnrModel.pNR.basket.outstanding.cur;
     String amount =   this.pnrModel.pNR.basket.outstanding.amount;
    var dAmount =double.parse(amount);
@@ -1212,16 +1245,6 @@ List<Widget> getPayOptions(String amount, String cur) {
         title: Text(
           'Total ' +
               formatPrice(cur, double.parse(amount) ?? 0.0) ,
-
-          /*
-                        NumberFormat.simpleCurrency(
-                            locale: GobalSettings
-                                .shared.settings.locale,
-                            name: cur)
-                            .format((double.parse(amount) ??
-                            0.0)),
-
-                         */
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         children: [
@@ -1390,48 +1413,25 @@ List<Widget> getPayOptions(String amount, String cur) {
     return list;
 }
 
-List<Widget> getBagOptions() {
-    List<Widget> list = [];
 
-    if ( widget.newBooking != null ) {
-    widget.newBooking.passengerDetails.forEach((pax) {
-      list.add(Row(children: [
-        Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-            translate('allowance'),
-            textScaleFactor: 1.25)
-      ])
-      );
-      });
-    list.add(getBaggageRow(smallBag, '1','Hand Luggage'));
-    list.add(Divider());
-    list.add(getBaggageRow(cabinBag, '1','Cabin Luggage'));
-    list.add(Divider());
-    list.add(getBaggageRow(holdBag, '1','Checked Luggage'));
 
-    } else if ( widget.mmbBooking != null ) {
-   /*   widget.mmbBooking.passengers.forEach((pax) {
-        list.add(Row(children: [
-          Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-              translate('allowance'),
-              textScaleFactor: 1.25)
-        ])
-        );
-      });
-      */
-
-    }
-   return list;
-  }
-  Row getBaggageRow(NetworkImage img, String count, String title) {
-    return Row( children: [
+  Row getBaggageRow(NetworkImage img, String count, String title, String line2) {
+    return Row(
+        children: [
       Container(
-        width: 60,
+        width: 40,
       child: Image(
         image: img,
         fit: BoxFit.fill,
+        height: 40,
+        width: 40,
       )),
-      Text(count + ' '),
-      TrText(title),
+      Container( width: 30,child: Text(count + ' ')),
+      Spacer(),
+      Column( children: [ TrText(title),
+          Text(line2, textScaleFactor: 0.75,),
+        ] ),
+      Padding(padding: EdgeInsets.only(left: 5))
     ]);
 
   }
@@ -1545,14 +1545,11 @@ class TimerTextState extends State<TimerText> {
   }
   void callback(Timer timer) {
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
-      print('expired');
-      stopwatch.stop();
-      Navigator.popUntil(context, ModalRoute.withName('/HomePage'));
-      //(context) => HomePage();
-/*      Navigator.of(context).pushNamedAndRemoveUntil(
-          '/HomePage', (Route<dynamic> route) => false);
 
- */
+      print('expired 2');
+      timer.cancel();
+      Navigator.of(context).pop();
+      return;
     }
     if (stopwatch.isRunning) {
        //setState(() {});
@@ -1574,12 +1571,5 @@ class TimerTextState extends State<TimerText> {
 
     return new Text(formattedTime,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300));
-  }
-}
-NetworkImage _getBagImage(String name){
-  try {
-    return NetworkImage('${gblSettings.gblServerFiles}/bags/$name.png');
-  } catch(e) {
-    logit(e);
   }
 }

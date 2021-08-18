@@ -343,6 +343,9 @@ class Repository {
                   case 'pageImageMap':
                     gblSettings.pageImageMap = item['value'];
                     break;
+                  case 'productImageMap':
+                    gblSettings.productImageMap = item['value'];
+                    break;
 
 
                 /*

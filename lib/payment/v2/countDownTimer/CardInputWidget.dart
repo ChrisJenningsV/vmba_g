@@ -37,6 +37,7 @@ class _CardInputWidgetState extends State<CardInputWidget> {
   String aircode = '';
 @override
 void initState() {
+  super.initState();
   gblPayBtnDisabled = false;
 }
 

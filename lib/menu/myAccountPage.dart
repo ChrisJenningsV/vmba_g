@@ -40,7 +40,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
-
+  String oldADSNumber;
+  String oldADSpin;
 
 
 //  bool _loadingInProgress = false;
@@ -73,6 +74,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
         _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
         _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
+        oldADSNumber = widget.passengerDetail.adsNumber;
+        oldADSpin = widget.passengerDetail.adsPin;
 
         _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
         _disabilityTextEditingController.text = widget.passengerDetail.disabilityID;
@@ -641,9 +644,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if (validateAndSave()) {
       if (gblBuildFlavor == 'LM' &&
           widget.isLeadPassenger &&
+          _adsNumberTextEditingController.text.isNotEmpty &&
           _adsPinTextEditingController.text.isNotEmpty &&
-          _adsPinTextEditingController.text.isNotEmpty) {
-        adsValidate();
+           oldADSNumber != _adsNumberTextEditingController.text &&
+           oldADSpin != _adsPinTextEditingController.text) {
+
+          adsValidate();
       } else {
         try {
           List<UserProfileRecord> _userProfileRecordList = [];
@@ -709,6 +715,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
         print('Login success');
+
         List<UserProfileRecord> _userProfileRecordList = [];
         UserProfileRecord _profileRecord = new UserProfileRecord(
             name: 'PAX1',

@@ -1219,6 +1219,9 @@ class SegmentFS {
   String tax3;
   String miles;
   String disc;
+  String holdPcs;
+  String holdWt;
+  String handWt;
 
   SegmentFS(
       {this.segFSID,
@@ -1228,7 +1231,10 @@ class SegmentFS {
       this.tax2,
       this.tax3,
       this.miles,
-      this.disc});
+      this.disc,
+      this.handWt,
+      this.holdPcs,
+      this.holdWt});
 
   SegmentFS.fromJson(Map<String, dynamic> json) {
     segFSID = json['SegFSID'];
@@ -1238,7 +1244,10 @@ class SegmentFS {
     tax2 = json['Tax2'];
     tax3 = json['Tax3'];
     miles = json['miles'];
-    disc = json['disc'];
+    handWt = json['HandWt'];
+    holdPcs = json['HoldPcs'];
+    holdWt = json['HoldWt'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -1251,6 +1260,9 @@ class SegmentFS {
     data['Tax3'] = this.tax3;
     data['miles'] = this.miles;
     data['disc'] = this.disc;
+    data['HandWt'] = this.handWt;
+    data['HoldWt'] = this.holdWt;
+    data['HoldPcs'] = this.holdPcs;
     return data;
   }
 }

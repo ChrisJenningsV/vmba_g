@@ -66,6 +66,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               profile.value.toString().replaceAll(
                   "'", '"')); // .replaceAll(',}', '}')
           passengerDetailRecord = PassengerDetail.fromJson(map);
+          if(  passengerDetailRecord.fqtv != null &&  passengerDetailRecord.fqtv.isNotEmpty ) {
+            gblFqtvNumber = passengerDetailRecord.fqtv;
+          }
 
           if (gblPassengerDetail != null &&
               gblPassengerDetail.adsNumber != null &&
@@ -230,7 +233,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     return new Scaffold(
       key: _key,
       appBar: appBar(context, 'Passengers Details',
-          imageName:  gblSettings.wantCityImages ? 'happypax': null ),
+          imageName:  gblSettings.wantCityImages ? 'paxDetails': null ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
       body: new Form(
@@ -390,7 +393,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         ),
       ],
     );
-    print('end paxEntryHeader');
+    //print('end paxEntryHeader');
   }
 
   Widget renderFieldsV2(int paxNo, PaxType paxType) {
@@ -477,7 +480,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         ],
       );
     }
-    print('end renderFieldsV2');
+    //print('end renderFieldsV2');
   }
 
   void validateAndSubmit() async {

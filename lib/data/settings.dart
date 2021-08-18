@@ -64,6 +64,7 @@ class Settings {
   bool wantMyAccount = false;
   bool wantProfileList = false;
   bool wantFQTV = false;
+  bool wantFindBookings = false;
   bool wantFQTVNumber = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
@@ -99,6 +100,7 @@ class Settings {
   String customMenu2;
   String customMenu3;
   String pageImageMap;
+  String productImageMap;
 
  // String hostBaseUrl;
   String iOSAppId;
@@ -201,7 +203,8 @@ bool bpShowFastTrack;
     this.covidText,
     this.currencies,
     this.gblServerFiles,
-    this.pageImageMap,
+    this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
+    this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
 
     this.fqtvName,
     this.appFeedbackEmail,
@@ -214,6 +217,7 @@ bool bpShowFastTrack;
     this.bpShowLoungeAccess,
     this.wantMyAccount = false,
     this.wantFQTV = false,
+    this.wantFindBookings = false,
     this.wantFQTVNumber = false,
     this.searchDateOut,
     this.searchDateBack,

@@ -17,7 +17,7 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
       // return object of type Dialog
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
               contentPadding: EdgeInsets.only(top: 10.0),
               content: Container(
                 width: 300.0,
@@ -44,7 +44,7 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
                       height: 4.0,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: msg,
@@ -59,14 +59,14 @@ void showAlertDialog(BuildContext context, String title, String msg ) {
                         decoration: BoxDecoration(
                           color: myColor,
                           borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(32.0),
-                              bottomRight: Radius.circular(32.0)),
+                              bottomLeft: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0)),
                         ),
                         child: TextButton(
                           style: TextButton.styleFrom(
-                              backgroundColor: gblSystemColors.primaryButtonColor ,
+                              backgroundColor: Colors.blue,
                               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                              primary: gblSystemColors.primaryButtonTextColor),
+                              primary: Colors.white),
                           child: new TrText("Close"),
                           onPressed: () {
                             Navigator.of(context).pop();

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -20,7 +21,21 @@ Widget appBar(BuildContext context, String title,
   }
 
   if( imageName != null && imageName.isNotEmpty) {
-    backgroundImage = NetworkImage('${gblSettings.gblServerFiles}/cityImages/$imageName.png');
+    // map page name to image name
+    Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
+    String pageImage = pageMap[imageName.toUpperCase()];
+
+    switch (pageImage) {
+      case '[DEST]':
+        pageImage = gblDestination;
+        break;
+    }
+    if( pageImage == null) {
+      pageImage = 'blank';
+    }
+
+
+    backgroundImage = NetworkImage('${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
     if( backgroundImage != null ) {
       flexibleSpace = Image(
         image:

@@ -145,7 +145,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                               create: (context) => CountDownTimer(),
                               child: TimerWidget(timerExpired: () {
                                 timerExpired();
-                                print('expired');
+                                print('expired 1');
                               })),
                         ],
                       ),

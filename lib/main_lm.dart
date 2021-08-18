@@ -54,6 +54,7 @@ void configLM() {
     wantMaterialControls: true,
     wantNewEditPax: true,
     wantBags: true,
+    wantFindBookings: true,
     airlineName: "Logan Air",
   gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",

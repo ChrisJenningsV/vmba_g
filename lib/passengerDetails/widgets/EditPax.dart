@@ -87,7 +87,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
       appBar: appBar(context, 'Passenger Detail',
-        imageName: gblSettings.wantCityImages ? widget.destination : null,
+        imageName: gblSettings.wantCityImages ? 'editPax' : null,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -603,14 +603,6 @@ if ( widget.isLeadPassenger ) {
                            value: index++,
                          )
                       ).toList(),
-                      /*items: [1, 2, 3, 4, 5]
-                          .map((label) => DropdownMenuItem(
-                        child: Text(label.toString()),
-                        value: label,
-                      ))
-                          .toList(),
-
-                       */
 
                      // hint: Text('Country'),
                       onChanged: (value) {
@@ -627,6 +619,7 @@ if ( widget.isLeadPassenger ) {
           } else {
             return new CircularProgressIndicator();
           }
+          return null;
         });
   }
 

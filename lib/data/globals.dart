@@ -11,13 +11,16 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'T6';
+String gblBuildFlavor = 'LM';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
 String gblVersion = '';
 String gblAction='';
 String gblMobileFlags = '';
+String gblDestination;
+String gblOrigin;
+
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
 bool gblIsIos = false;

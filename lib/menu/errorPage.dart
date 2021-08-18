@@ -6,7 +6,7 @@ import 'package:vmba/components/trText.dart';
 class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<String> args = ModalRoute.of(context).settings.arguments;
+   // final List<String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
           brightness: gblSystemColors.statusBar,

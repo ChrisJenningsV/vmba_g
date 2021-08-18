@@ -53,6 +53,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   String fqtvNo = '';
   String fqtvPass='';
   bool _isButtonDisabled;
+  bool isPending = false;
   ApiFqtvMemberDetailsResponse memberDetails;
   List<ApiFQTVMemberTransaction> transactions;
 
@@ -62,6 +63,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   String _error;
   bool _isHidden = true;
   bool _loadingInProgress = false;
+  String title;
 
 
   @override
@@ -70,6 +72,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     _isButtonDisabled = false;
    // _loadingInProgress = true;
     _isHidden = true;
+    title = 'transactions';
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
     if( gblPassengerDetail != null &&
         gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
@@ -146,6 +149,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
 
       return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         titlePadding: EdgeInsets.only(top: 0),
         contentPadding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 0),
         title: Column(
@@ -445,6 +450,7 @@ if ( memberDetails != null ) {
 
     widgets.add(ElevatedButton(
       onPressed: () {
+        isPending = false;
         _showTransactions();
       },
       style: ElevatedButton.styleFrom(
@@ -457,7 +463,21 @@ if ( memberDetails != null ) {
             'Show Transactions',
             style: TextStyle(color: Colors.white),)
     ));
-
+    widgets.add(ElevatedButton(
+        onPressed: () {
+          isPending = true;
+          _showPendingTransactions();
+        },
+        style: ElevatedButton.styleFrom(
+            primary: gblSystemColors
+                .primaryButtonColor, //Colors.black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
+        child:
+        TrText(
+          'Show Pending Transactions',
+          style: TextStyle(color: Colors.white),)
+    ));
     widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: gblSystemColors
@@ -504,8 +524,10 @@ if ( memberDetails != null ) {
 Widget _getTrans() {
   List<Widget> tranWidgets = [];
 
+  tranWidgets.add( TrText(title));
+
   for(var tran in  transactions) {
-    if( tran.airMiles != '0' && tran.airMiles != '0.0') {
+    if(( tran.airMiles != '0' && tran.airMiles != '0.0' ) || isPending) {
 
       tranWidgets.add(Container(
         width: MediaQuery.of(context).size.width * 0.95 ,
@@ -785,13 +807,49 @@ Widget _getTrans() {
        _showDialog();
 
      } else {
+       title = 'Awarded Transactions';
        transactions = resp.transactions;
        setState(() {
        });
      }
    });
   }
- void _changePasswordDialog() {
+
+  void  _showPendingTransactions() async {
+
+    ApiFqtvPendingRequest fqtvMsg = ApiFqtvPendingRequest(
+        fqtvNo,
+        fqtvPass);
+    String msg = json.encode(fqtvMsg.toJson());
+    String method = 'GetPendingTransactions';
+
+    print(msg);
+    _sendVRSCommand(msg, method).then((result){
+      if( result == null ) {
+        _error = 'No transactions found';
+        _actionCompleted();
+        _showDialog();
+
+        return;
+      }
+      Map map = json.decode(result);
+      ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
+      if( resp.statusCode != 'OK') {
+        _error = resp.message;
+        _actionCompleted();
+        _showDialog();
+
+      } else {
+        title = 'Pending Transactions';
+        transactions = resp.transactions;
+        setState(() {
+        });
+      }
+    });
+  }
+
+
+  void _changePasswordDialog() {
    showDialog(
        context: context,
        builder: (BuildContext context) {
