@@ -51,8 +51,7 @@ class ChooseFlight extends StatelessWidget {
                                 .primaryButtonTextColor)),
                     icon: Icon(
                       Icons.check,
-                      color: gblSystemColors
-                          .primaryButtonTextColor,
+                      color: gblSystemColors.primaryButtonTextColor,
                     ),
                     backgroundColor: gblSystemColors
                         .primaryButtonColor, //new Color(0xFF000000),
@@ -69,30 +68,33 @@ class ChooseFlight extends StatelessWidget {
   }
 
   Widget classBands(context) {
+    List <Widget> list = [];
+
+    list.add(new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        TrText(
+          //this.classband.cbdisplayname.toUpperCase()
+            this.classband.cbdisplayname == 'Fly Flex Plus'
+                ? 'Fly Flex +'
+                : this.classband.cbdisplayname,
+            style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.w700))
+      ],
+    ),);
+    if( gblSettings.wantClassBandImages) {
+      list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband.cbdisplayname}.png')));
+    }
+
+    list.add( new Padding(padding: EdgeInsets.only(bottom: 15.0),    ));
+    list.add(classbandText());
+
     // Pass the text down to another widget
     return ListView(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 55),
-        children: [
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TrText(
-                  //this.classband.cbdisplayname.toUpperCase()
-                  this.classband.cbdisplayname == 'Fly Flex Plus'
-                      ? 'Fly Flex +'
-                      : this.classband.cbdisplayname,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700))
-            ],
-          ),
-          new Padding(
-            padding: EdgeInsets.only(bottom: 15.0),
-          ),
-          classbandText(),
-          // Padding()
-        ]);
+        children: list,);
     //  padding: EdgeInsets.all(10.0),
   }
 
@@ -169,7 +171,7 @@ class ChooseFlight extends StatelessWidget {
         return Icon(null);
         break;
       default:
-        return Icon(Icons.done);
+        return Icon(Icons.check_circle, color: Colors.green,);
         break;
     }
   }

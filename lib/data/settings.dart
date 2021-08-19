@@ -81,6 +81,7 @@ class Settings {
   bool wantBags;
   bool wantCovidWarning;
   bool wantCountry;
+  bool wantClassBandImages;
 
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -172,6 +173,7 @@ bool bpShowFastTrack;
     this.wantBags = false,
     this.wantCovidWarning = false,
     this.wantCountry = false,
+    this.wantClassBandImages = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

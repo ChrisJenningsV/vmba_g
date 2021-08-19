@@ -222,7 +222,7 @@ String _error = '';
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    ElevatedButton(
+                 /*   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           primary: Colors.grey.shade100),
                       child: TrText(
@@ -234,9 +234,9 @@ String _error = '';
                         Navigator.of(context).pop();
                       },
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
+
+                  */
+                    // SizedBox(                      width: 20,                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.blue),
                       child: Row(children: <Widget>[

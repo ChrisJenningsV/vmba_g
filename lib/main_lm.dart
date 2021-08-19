@@ -55,6 +55,8 @@ void configLM() {
     wantNewEditPax: true,
     wantBags: false,
     wantFindBookings: true,
+    wantClassBandImages: true,
+
     airlineName: "Logan Air",
   gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -85,6 +87,8 @@ void configLM() {
   child: true,
   infant: true,
   youths: true,
+      wantYouthDOB: true,
+
   ),
 
 //Production setttings
