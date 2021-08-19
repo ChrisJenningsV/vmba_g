@@ -546,13 +546,20 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   String buildAddContactsCmd() {
     StringBuffer sb = new StringBuffer();
   if( gblSettings.wantNewEditPax ) {
-    sb.write('9M*${widget.newbooking.passengerDetails[0].phonenumber}^');
-    sb.write('9E*${widget.newbooking.passengerDetails[0].email}^');
+    if( widget.newbooking.passengerDetails[0].phonenumber != null && widget.newbooking.passengerDetails[0].phonenumber.isNotEmpty) {
+      sb.write('9M*${widget.newbooking.passengerDetails[0].phonenumber}^');
+    }
+    if(widget.newbooking.passengerDetails[0].email!= null && widget.newbooking.passengerDetails[0].email.isNotEmpty ) {
+      sb.write('9E*${widget.newbooking.passengerDetails[0].email}^');
+    }
 
   } else {
-    sb.write('9M*${widget.newbooking.contactInfomation.phonenumber}^');
-    sb.write('9E*${widget.newbooking.contactInfomation.email}^');
-
+    if( widget.newbooking.contactInfomation.phonenumber != null && widget.newbooking.contactInfomation.phonenumber.isNotEmpty) {
+      sb.write('9M*${widget.newbooking.contactInfomation.phonenumber}^');
+    }
+    if(widget.newbooking.contactInfomation.email!= null && widget.newbooking.contactInfomation.email.isNotEmpty ) {
+      sb.write('9E*${widget.newbooking.contactInfomation.email}^');
+    }
   }
 
     return sb.toString();

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/helper.dart';
 
 Future<List<Routes>> fetchCitylistData(http.Client client) async {
   try {
@@ -139,18 +140,73 @@ class _DeparturesState extends State<Departures> {
   }
 
 
-class DepartureList extends StatelessWidget {
+class DepartureList extends StatefulWidget {
   // final List<Routes> routes;
+
+  DepartureList({ this.routes});
+
   final List<String> routes;
 
-  DepartureList({Key key, this.routes}) : super(key: key);
+  DepartureListState createState() =>
+      DepartureListState();
+
+}
+
+class DepartureListState extends State<DepartureList> {
+
+  TextEditingController _fqtvTextEditingController =   TextEditingController();
+//  DepartureList({Key key, this.routes}) : super(key: key);
+  List<String> routes;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    routes = widget.routes;
+  }
+
+  void filterCities(String filter){
+    routes = [];
+    widget.routes.forEach((route) {
+      String code = route.split('|')[0].toUpperCase();
+      String name = route.split('|')[1].toUpperCase();
+
+      if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
+        routes.add(route);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     if (gblVerbose) {print('build DepartureList len=${routes.length}');}
-    return new ListView.builder(
-        itemCount: routes == null ? 0 : routes.length,
-        itemBuilder: (BuildContext context, i) {
+    return
+      SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+        children: [
+          new TextFormField(
+            decoration: getDecoration(
+                'Start typing airport code or name',
+            prefixIcon: Icon(Icons.search)),
+            controller: _fqtvTextEditingController,
+            keyboardType: TextInputType.phone,
+            onChanged: (String value) {
+              filterCities(_fqtvTextEditingController.text);
+              setState(() {
+
+              });
+            },
+            onSaved: (value) {
+              if (value != null) {
+                //.contactInfomation.phonenumber = value.trim()
+              }
+            },
+          ),
+          new ListView.builder(
+            shrinkWrap: true,
+          itemCount: routes == null ? 0 : routes.length,
+          itemBuilder: (BuildContext context, i) {
           //return new ListTile(title: Text('${routes[i].org}'.split('|')[1],),
           return new ListTile(
               title: Text(
@@ -160,7 +216,9 @@ class DepartureList extends StatelessWidget {
                 //Navigator.pop(context, '${routes[i].org}');
                 Navigator.pop(context, '${routes[i]}');
               });
-        });
+        })],
+    )
+      );
   }
 }
 
@@ -203,17 +261,8 @@ class _ArrivalsState extends State<Arrivals> {
         }
       });
     }
-/*
-    if( _departCityData.length > 0) {
-      setState(() {
-      });
-    } else {
-      setState(() {
-      });
-    }
-
- */
   }
+
   @override
   Widget build(BuildContext context) {
     if (_departCityData == null || _departCityData.length == 0) {
@@ -228,16 +277,75 @@ class _ArrivalsState extends State<Arrivals> {
     }
   }
 }
-    class ArrivalList extends StatelessWidget {
-  final List<String> routes;
-  final String departureCityCode;
 
-  ArrivalList({Key key, this.routes, this.departureCityCode}) : super(key: key);
+
+ class ArrivalList extends StatefulWidget {
+   final List<String> routes;
+   final String departureCityCode;
+
+   ArrivalList({Key key, this.routes, this.departureCityCode})
+       : super(key: key);
+
+   ArrivalListState createState() =>
+       ArrivalListState();
+ }
+
+  class ArrivalListState extends State<ArrivalList> {
+
+  TextEditingController _fqtvTextEditingController =   TextEditingController();
+
+  //  DepartureList({Key key, this.routes}) : super(key: key);
+  List<String> routes;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    routes = widget.routes;
+  }
+
+  void filterCities(String filter){
+    routes = [];
+    widget.routes.forEach((route) {
+      String code = route.split('|')[0].toUpperCase();
+      String name = route.split('|')[1].toUpperCase();
+
+      if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
+        routes.add(route);
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     if (gblVerbose) {print('build ArrivalList len=${routes.length}');}
-    return new ListView.builder(
+    return
+      SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+            children: [
+        new TextFormField(
+        decoration: getDecoration(
+        'Start typing airport code or name',
+            prefixIcon: Icon(Icons.search)),
+        controller: _fqtvTextEditingController,
+        keyboardType: TextInputType.phone,
+        onChanged: (String value) {
+          filterCities(_fqtvTextEditingController.text);
+          setState(() {
+
+          });
+        },
+        onSaved: (value) {
+          if (value != null) {
+            //.contactInfomation.phonenumber = value.trim()
+          }
+        },
+      ),
+    new ListView.builder(
+    shrinkWrap: true,
         itemCount: routes == null ? 0 : routes.length,
         itemBuilder: (BuildContext context, i) {
           return new ListTile(
@@ -247,6 +355,8 @@ class _ArrivalsState extends State<Arrivals> {
               onTap: () {
                 Navigator.pop(context, '${routes[i]}');
               });
-        });
-  }
+        })
+    ]
+    )
+      );}
 }

@@ -1055,8 +1055,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               child: new Text("Close"),
               onPressed: () {
                 _error = '';
-
-                Navigator.of(context).pop();
+                if( gblSettings.wantNewEditPax ){
+                  // double pop
+                  var nav = Navigator.of(context);
+                  nav.pop();
+                  nav.pop();
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

@@ -354,6 +354,9 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
+                  case 'wantYouthDOB':
+                    gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);
+                    break;
                   case 'wantCityImages':
                     gblSettings.wantPageImages = parseBool(item['value']);
                     break;
@@ -461,6 +464,13 @@ class Repository {
                     /*
                     integers
                      */
+                  case 'youthMaxAge':
+                    gblSettings.passengerTypes.youthMaxAge = parseInt(item['value']);
+                    break;
+                  case 'youthMinAge':
+                    gblSettings.passengerTypes.youthMinAge = parseInt(item['value']);
+                    break;
+
                   case 'bookingLeadTime':
                     gblSettings.bookingLeadTime = parseInt(item['value']);
                     break;

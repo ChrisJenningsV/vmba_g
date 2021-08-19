@@ -460,14 +460,18 @@ Widget warningBox(String txt ) {
 }
 
 
-InputDecoration getDecoration(String label) {
+InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}) {
   var borderRadius = 10.0;
 
   if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(
       fillColor: Colors.grey.shade100,
       filled: true,
-      counter: Container(),
+      //counter: Container(),
+      counterText: '',
+      hintText: hintText,
+      prefixIcon: prefixIcon,
+
       labelStyle: TextStyle(color: Colors.grey),
       //    contentPadding:
       //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),

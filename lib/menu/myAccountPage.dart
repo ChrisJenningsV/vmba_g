@@ -268,7 +268,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             widget.passengerDetail.lastName = value;
           },
           validator: (value) =>
-              value.isEmpty ? 'Last name can\'t be empty' : null,
+              value.isEmpty ? translate('Last name cannot be empty') : null,
           onSaved: (value) {
             if (value != null) {
               widget.passengerDetail.lastName = value.trim();
@@ -291,6 +291,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
+            validator: (value) =>
+              value.isEmpty ? translate('Phone Number cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 //.contactInfomation.phonenumber = value.trim()
@@ -310,6 +312,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
           controller: _emailTextEditingController,
           decoration: _getDecoration('Email'),
           keyboardType: TextInputType.emailAddress,
+          validator: (value) => validateEmail(value.trim()),
+            //value.isEmpty ? translate('Email cannot be empty') : null,
+
           onSaved: (value) {
             if (value.isNotEmpty) {
               widget.passengerDetail.email = value.trim();
@@ -635,7 +640,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
+      return translate('Enter Valid Email');
     else
       return null;
   }
@@ -777,7 +782,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
       return InputDecoration(
         fillColor: Colors.grey.shade100,
         filled: true,
-        counter: Container(),
+        //counter: Container(),
+        counterText: '',
         labelStyle: TextStyle(color: Colors.grey),
         //    contentPadding:
         //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),

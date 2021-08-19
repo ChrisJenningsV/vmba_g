@@ -76,7 +76,7 @@ String _error = '';
             delete: item.delete);
         //if (_pnrs.nextFlightSinceEpoch != 0) {
         _error = _pnr.validate();
-        if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(1)) {
+        if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(0)) {
           thispnrs.add(_pnrs);
         } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {
           thisOldpnrs.add(_pnrs);
@@ -175,7 +175,7 @@ String _error = '';
               size: 40,
             ),
             title: Text(
-                translate('${gblSettings.fqtvName} ') + translate('LOGIN')),
+                translate('${gblSettings.fqtvName} ') + translate('CONNECT')),
           ),
           Divider(
             color: Colors.grey,
@@ -187,7 +187,7 @@ String _error = '';
             Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TrText( ' Login to load all your future bookings '),
+                TrText( ' Please provide your Login to load your future bookings '),
                 new TextFormField(
                   decoration: getDecoration(
                       '${gblSettings.fqtvName} ' + translate('number')),

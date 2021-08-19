@@ -393,7 +393,8 @@ void initState() {
                                //style: TextStyle(
                                     //    color: widget.textColor,
                                 //    ),
-                                decoration: InputDecoration(
+                                decoration: getDecoration('Card Number', prefixIcon: Icon(Icons.credit_card_sharp),hintText: 'xxxx xxxx xxxx xxxx'),
+                                /*InputDecoration(
                                   prefixIcon: Icon(Icons.credit_card_sharp),
                                   border: OutlineInputBorder(
                                     borderRadius:
@@ -404,6 +405,7 @@ void initState() {
                                   hintText: 'xxxx xxxx xxxx xxxx',
                                   fillColor: Colors.white,
                                 ),
+                                */
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 inputFormatters: [
@@ -452,13 +454,15 @@ void initState() {
                                 onSaved: (value) => expiryDate = value.trim(),
 
                                 controller: _expiryDateController,
-                                decoration: InputDecoration(
+                                decoration: getDecoration('Expiry Date', prefixIcon: Icon(Icons.date_range),hintText: 'MM/YY') ,
+                                /*InputDecoration(
                                     prefixIcon: Icon(Icons.date_range),
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(25.0)),
                                     labelText: translate('Expiry Date'),
                                     hintText: 'MM/YY'),
+                                */
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 inputFormatters: [
@@ -483,7 +487,8 @@ void initState() {
                                 },
                                 onSaved: (value) => cvvCode = value.trim(),
                                 controller: _cvvCodeController,
-                               decoration: InputDecoration(
+                               decoration: getDecoration('Security Code', prefixIcon: Icon(Icons.lock),hintText: 'XXXX'),
+                               /*InputDecoration(
                                   prefixIcon: Icon(Icons.lock),
                                   border: OutlineInputBorder(
                                       borderRadius:
@@ -491,6 +496,7 @@ void initState() {
                                   labelText: translate('Security Code'),
                                   hintText: 'XXXX',
                                 ),
+                                */
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.done,
                                 inputFormatters: [
@@ -511,7 +517,8 @@ void initState() {
                                     cardHolderName = value.trim(),
                                 controller: _cardHolderNameController,
                                 style: TextStyle(),
-                                decoration: InputDecoration(
+                                decoration: getDecoration( 'Card Holder'),
+                                /* InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(25.0),
@@ -519,6 +526,7 @@ void initState() {
                                   ),
                                   labelText: translate('Card Holder'),
                                 ),
+                                */
                                 //keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 inputFormatters: [
@@ -702,13 +710,7 @@ void initState() {
                               style: TextStyle(
                                   //    color: widget.textColor,
                                   ),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(25.0)),
-                                hintText: translate('Address line') + ' 1',
-                                labelText: translate('Address line') + ' 1',
-                              ),
+                              decoration: getDecoration( translate('Address line') + ' 1'),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
@@ -731,12 +733,7 @@ void initState() {
                               style: TextStyle(
                                   //  color: widget.textColor,
                                   ),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(25.0)),
-                                  hintText: translate('Town or City'),
-                                  labelText: translate('Town or City')),
+                              decoration: getDecoration(translate('Town or City')),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
@@ -759,17 +756,9 @@ void initState() {
                               style: TextStyle(
                                   //color: widget.textColor,
                                   ),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(25.0)),
-                                hintText: aircode == 'SI'
+                              decoration: getDecoration( aircode == 'SI'
                                     ? translate('Parish or County')
-                                    : translate('County or State'),
-                                labelText: aircode == 'SI'
-                                    ? translate('Parish / County')
-                                    : translate('County/State'),
-                              ),
+                                    : translate('County or State')),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
@@ -787,14 +776,7 @@ void initState() {
                               onSaved: (value) => postcode = value.trim(),
                               controller: _postcodeTextEditingController,
                               style: TextStyle(),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide: new BorderSide(),
-                                ),
-                                hintText: translate('Post code / Zip Code'),
-                                labelText: translate('Post code / Zip Code'),
-                              ),
+                              decoration: getDecoration(translate('Post code / Zip Code')),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
@@ -810,17 +792,7 @@ void initState() {
                               },
                               child: IgnorePointer(
                                 child: TextFormField(
-                                  decoration: new InputDecoration(
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 15.0),
-                                    labelText: translate('Country'),
-                                    fillColor: Colors.white,
-                                    border: new OutlineInputBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(25.0),
-                                      borderSide: new BorderSide(),
-                                    ),
-                                  ),
+                                  decoration: getDecoration(translate('Country')),
                                   controller: _countryTextEditingController,
                                   textInputAction: TextInputAction.done,
                                   validator: (value) => value.isEmpty

@@ -584,7 +584,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
         {
           _initialDateTime =
               DateTime.now().subtract(new Duration(days: (gblSettings.passengerTypes.youthMinAge * 365)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (gblSettings.passengerTypes.youthMaxAge * 365)));
+          _minimumDate = DateTime.now().subtract(new Duration(days: (gblSettings.passengerTypes.youthMaxAge * 365) + 355));
         }
         break;
 /*      case PaxType.student:
