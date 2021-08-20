@@ -109,40 +109,41 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-          iconTheme: IconThemeData(
-          color: gblSystemColors.headerTextColor),
-    title: new TrText('Contact Details',
-    style: TextStyle(
-    color: gblSystemColors
-        .headerTextColor)),
-    ),
-    endDrawer: DrawerMenu(),
-    body:  AlertDialog(
-          title: new TrText("Too Many UMNR Passengers on flight"),
-          content: TrText("Would you like to restart your booking?"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new TextButton(
-              child: new TrText("NO"),
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/HomePage', (Route<dynamic> route) => false);
-              },
-            ),
-            new TextButton(
-              child: new TrText("Restart booking"),
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/FlightSearchPage', (Route<dynamic> route) => false);
-
-              },
-            ),
-          ],
-        )
-    );
+            brightness: gblSystemColors.statusBar,
+            backgroundColor:
+            gblSystemColors.primaryHeaderColor,
+            iconTheme: IconThemeData(
+                color: gblSystemColors.headerTextColor),
+            title: new TrText('Contact Details',
+                style: TextStyle(
+                    color: gblSystemColors
+                        .headerTextColor)),
+          ),
+          endDrawer: DrawerMenu(),
+          body: AlertDialog(
+            title: new TrText("Too Many UMNR Passengers on flight"),
+            content: TrText("Would you like to restart your booking?"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new TextButton(
+                child: new TrText("NO"),
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/HomePage', (Route<dynamic> route) => false);
+                },
+              ),
+              new TextButton(
+                child: new TrText("Restart booking"),
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/FlightSearchPage', (Route<dynamic> route) => false);
+                },
+              ),
+            ],
+          )
+      );
+    } else if( gblSettings.wantNewEditPax ){
+      return new Container();
     } else {
       return new Scaffold(
           key: _key,
@@ -534,7 +535,14 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               onPressed: () {
                 _error = '';
 
-                Navigator.of(context).pop();
+                if( gblSettings.wantNewEditPax ){
+                // double pop
+                var nav = Navigator.of(context);
+                nav.pop();
+                nav.pop();
+              } else {
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

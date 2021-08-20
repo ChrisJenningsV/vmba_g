@@ -133,7 +133,8 @@ Card getProductCard(String title, List<Product> products ) {
                       .remove_circle_outline, // color: widget.systemColors.accentButtonColor,
                 ),
                 onPressed: () {
-                  products[index].count == 0 ? null : products[index].count++;
+                  delProduct(index);
+                  //products[index].count == 0 ? null : products[index].count++;
                 },
               ),
                 new Text(products[index].count.toString(),
@@ -154,6 +155,9 @@ Card getProductCard(String title, List<Product> products ) {
   }
 
   void delProduct(int index) {
+    if( widget.products[index].count == 0 ) {
+      return;
+    }
     setState(() {
       widget.products[index].count = widget.products[index].count - 1;
     });

@@ -14,11 +14,12 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger, this.destination})
+      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger, this.destination, this.newBooking})
       : super(key: key);
   final PassengerDetail passengerDetail;
   final bool isAdsBooking;
   final bool isLeadPassenger;
+  final NewBooking newBooking;
   final String destination;
 
   _EditPaxWidgetState createState() =>
@@ -471,7 +472,7 @@ if ( widget.isLeadPassenger ) {
      list.add(infoBox(
          'You may be entitled to a 20% Senior Citizen discount on the base fare of your PHILIPPINES flight/s'));
    }
-    logit('Country: ' + widget.passengerDetail.country);
+    //logit('Country: ' + widget.passengerDetail.country);
 
    if (gblSettings.aircode == 'T6' && widget.passengerDetail.country == 'Philippines') {
      list.add(infoBox(
@@ -839,6 +840,16 @@ if ( widget.isLeadPassenger ) {
     int _maximumYear;
     formSave();
 
+    // VRS uses todays date - not date of travel, code here to use date of travel if required
+    DateTime lastFltDate = DateTime.now();
+//    DateTime lastFltDate = widget.newBooking.departureDate;
+//    if( widget.newBooking.returnDate != null ){
+//      lastFltDate = widget.newBooking.returnDate;
+//    }
+
+//    logit('dep dt: ' + widget.newBooking.departureDate.toString());
+//    logit('ret dt: ' + widget.newBooking.returnDate.toString());
+
     switch (paxType) {
       case PaxType.infant:
         {
@@ -854,9 +865,12 @@ if ( widget.isLeadPassenger ) {
         break;
       case PaxType.youth:
         {
-          _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
+          _initialDateTime = DateTime( lastFltDate.year - gblSettings.passengerTypes.youthMinAge, lastFltDate.month, lastFltDate.day );
+          _minimumDate = DateTime( lastFltDate.year - gblSettings.passengerTypes.youthMaxAge, lastFltDate.month, lastFltDate.day );
+          logit('init $_initialDateTime' );
+          logit('min $_minimumDate' );
+          //_initialDateTime =DateTime.now().subtract(new Duration(days: (4015)));
+          //_minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
         }
         break;
 /*      case PaxType.student:
@@ -889,6 +903,8 @@ if ( widget.isLeadPassenger ) {
     _maximumDate = _initialDateTime;
     _minimumYear = _minimumDate.year;
     _maximumYear = _initialDateTime.year;
+
+    _updateDateOfBirth(_initialDateTime);
 
     final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
     bool isDark = brightnessValue == Brightness.dark;
@@ -925,7 +941,7 @@ if ( widget.isLeadPassenger ) {
                   initialDateTime: _initialDateTime,
                   onDateTimeChanged: (DateTime newValue) {
                     setState(() {
-                      print(newValue);
+                     // print(newValue);
                       dateTime = newValue;
                     });
                   },

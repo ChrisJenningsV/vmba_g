@@ -419,6 +419,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                       isAdsBooking: widget.newBooking.ads.isAdsBooking(),
                       isLeadPassenger: isLeadPassenger,
                       destination: widget.newBooking.arrival,
+                            newBooking: widget.newBooking,
                     ))).then((passengerDetails) {
                   updatePassengerDetails(passengerDetails, paxNo - 1);
                 });
@@ -457,7 +458,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                               isAdsBooking:
                               widget.newBooking.ads.isAdsBooking(),
                               isLeadPassenger: isLeadPassenger,
-                              destination: widget.newBooking.arrival)))
+                              destination: widget.newBooking.arrival,
+                            newBooking: widget.newBooking,)))
                       .then((passengerDetails) {
                     updatePassengerDetails(passengerDetails, paxNo - 1);
                   });

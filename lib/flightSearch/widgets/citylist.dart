@@ -190,7 +190,7 @@ class DepartureListState extends State<DepartureList> {
                 'Start typing airport code or name',
             prefixIcon: Icon(Icons.search)),
             controller: _fqtvTextEditingController,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.streetAddress,
             onChanged: (String value) {
               filterCities(_fqtvTextEditingController.text);
               setState(() {
@@ -331,7 +331,7 @@ class _ArrivalsState extends State<Arrivals> {
         'Start typing airport code or name',
             prefixIcon: Icon(Icons.search)),
         controller: _fqtvTextEditingController,
-        keyboardType: TextInputType.phone,
+        keyboardType: TextInputType.streetAddress,
         onChanged: (String value) {
           filterCities(_fqtvTextEditingController.text);
           setState(() {

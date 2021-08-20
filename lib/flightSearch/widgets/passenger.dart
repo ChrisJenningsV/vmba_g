@@ -238,8 +238,9 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
         widget.passengers.teachers);
   }
 
+
   void _removeAdult() {
-    if( (widget.passengers.adults == 1 || passengers.adults == 1) && gblSettings.wantUmnr == false) {
+    if(  passengers.adults == 1 && gblSettings.wantUmnr == false) {
       return;
     }
     if( passengers.adults == 0) {
@@ -388,8 +389,9 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                               icon: Icon(
                                 Icons.remove_circle_outline,
                               ),
-                              onPressed:
-                                   _removeAdult,
+                              onPressed: () {
+                                _removeAdult();
+                              },
                             ),
                             new Text(passengers.adults.toString()),
                             new IconButton(
