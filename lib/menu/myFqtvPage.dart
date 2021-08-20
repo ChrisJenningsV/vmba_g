@@ -505,6 +505,25 @@ if ( memberDetails != null ) {
       },
     ));
 
+    widgets.add(ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          primary: gblSystemColors
+              .primaryButtonColor, //Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0))),
+      child: TrText("Logout"),
+      onPressed: () {
+        gblFqtvNumber = "";
+        widget.passengerDetail.fqtv = '';
+        fqtvNo = '';
+        fqtvEmail = '';
+        fqtvPass = '';
+        gblFqtvBalance = 0;
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/HomePage', (Route<dynamic> route) => false);
+      },
+    ));
+
     if(_error != null && _error.isNotEmpty){
       widgets.add(Text(_error));
     }
