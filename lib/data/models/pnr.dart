@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/helper.dart';
 import 'models.dart';
 
 class PnrModel {
@@ -29,6 +30,7 @@ class PnrModel {
         if (_flight.hosted == '0' &&
             (_flight.status == 'PN' || _flight.status == 'HN')) {
           result = true;
+          logit('has pending interline');
           break loop;
         }
       }

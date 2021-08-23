@@ -9,6 +9,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
+TextEditingController _searchEditingController =   TextEditingController();
+
 Future<List<Routes>> fetchCitylistData(http.Client client) async {
   try {
     final response = await rootBundle.loadString('lib/assets/data/cities.json');
@@ -140,6 +142,10 @@ class _DeparturesState extends State<Departures> {
   }
 
 
+
+
+
+
 class DepartureList extends StatefulWidget {
   // final List<Routes> routes;
 
@@ -179,45 +185,40 @@ class DepartureListState extends State<DepartureList> {
 
   @override
   Widget build(BuildContext context) {
-    if (gblVerbose) {print('build DepartureList len=${routes.length}');}
+    print('build DepartureList len=${routes.length}');
+//    if( _searchEditingController.text.isNotEmpty) {
+      filterCities(_searchEditingController.text);
+  //  }
     return
+    /*
       SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics:AlwaysScrollableScrollPhysics(),
+        child: Container(
+          height: 1000,
         child: Column(
         children: [
-          new TextFormField(
-            decoration: getDecoration(
-                'Start typing airport code or name',
-            prefixIcon: Icon(Icons.search)),
-            controller: _fqtvTextEditingController,
-            keyboardType: TextInputType.streetAddress,
-            onChanged: (String value) {
-              filterCities(_fqtvTextEditingController.text);
-              setState(() {
-
-              });
-            },
-            onSaved: (value) {
-              if (value != null) {
-                //.contactInfomation.phonenumber = value.trim()
-              }
-            },
-          ),
+          */
           new ListView.builder(
+              //physics:AlwaysScrollableScrollPhysics(),
             shrinkWrap: true,
-          itemCount: routes == null ? 0 : routes.length,
+          itemCount: routes == null ? 0 : routes.length ,
           itemBuilder: (BuildContext context, i) {
-          //return new ListTile(title: Text('${routes[i].org}'.split('|')[1],),
-          return new ListTile(
-              title: Text(
-                '${routes[i]}'.split('|')[1],
-              ),
-              onTap: () {
-                //Navigator.pop(context, '${routes[i].org}');
-                Navigator.pop(context, '${routes[i]}');
-              });
-        })],
+            //return new ListTile(title: Text('${routes[i].org}'.split('|')[1],),
+            return new ListTile(
+              //dense: true,
+                title: Text(
+                  '${routes[i]}'.split('|')[1],
+                ),
+                onTap: () {
+                  //Navigator.pop(context, '${routes[i].org}');
+                  Navigator.pop(context, '${routes[i]}');
+                });
+          }
+/*        })],
     )
+        )
+
+ */
       );
   }
 }
@@ -320,43 +321,123 @@ class _ArrivalsState extends State<Arrivals> {
 
   @override
   Widget build(BuildContext context) {
-    if (gblVerbose) {print('build ArrivalList len=${routes.length}');}
-    return
-      SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-            children: [
-        new TextFormField(
-        decoration: getDecoration(
-        'Start typing airport code or name',
-            prefixIcon: Icon(Icons.search)),
-        controller: _fqtvTextEditingController,
-        keyboardType: TextInputType.streetAddress,
-        onChanged: (String value) {
-          filterCities(_fqtvTextEditingController.text);
-          setState(() {
+      print('build ArrivalList len=${routes.length}');
 
-          });
-        },
-        onSaved: (value) {
-          if (value != null) {
-            //.contactInfomation.phonenumber = value.trim()
+//      if( _searchEditingController.text.isNotEmpty) {
+        filterCities(_searchEditingController.text);
+  //    }
+
+    return
+      new ListView.builder(
+          shrinkWrap: true,
+          itemCount: routes == null ? 0 : routes.length ,
+          itemBuilder: (BuildContext context, i) {
+            return new ListTile(
+                title: Text(
+                  '${routes[i]}'.split('|')[1],
+                ),
+                onTap: () {
+                  Navigator.pop(context, '${routes[i]}');
+                });
           }
-        },
-      ),
-    new ListView.builder(
-    shrinkWrap: true,
-        itemCount: routes == null ? 0 : routes.length,
-        itemBuilder: (BuildContext context, i) {
-          return new ListTile(
-              title: Text(
-                '${routes[i]}'.split('|')[1],
-              ),
-              onTap: () {
-                Navigator.pop(context, '${routes[i]}');
+      );
+  }
+
+}
+
+class CitiesScreen extends StatefulWidget {
+  final String filterByCitiesCode;
+
+  CitiesScreen({Key key, this.filterByCitiesCode}) : super(key: key);
+
+  CitiesScreenState createState() => CitiesScreenState();
+}
+
+class CitiesScreenState  extends State<CitiesScreen> {
+
+  List<String> _cityData;
+  List<String> routes;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadData();
+    _searchEditingController.text = '';
+  }
+  Future _loadData() async {
+    //Repository.get().getAllDepartures().then((cityData) {
+    if (_cityData == null) {
+      _cityData = await Repository.get().getAllDepartures();
+    }
+
+    if (_cityData == null || _cityData.length == 0) {
+      // delay
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (_cityData == null || _cityData.length == 0) {
+          if (gblVerbose) print(
+              " This line is execute after 100 ms - no cities");
+          setState(() {});
+        } else {
+          if (gblVerbose) print(
+              " This line is execute after 100 ms - got cities");
+          setState(() {});
+        }
+      });
+    }
+    routes = _cityData;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+          brightness: gblSystemColors.statusBar,
+          backgroundColor: gblSystemColors.primaryHeaderColor,
+          iconTheme: IconThemeData(
+              color: gblSystemColors.headerTextColor),
+          title: TextFormField(
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              fillColor: Colors.white.withOpacity(0.5),
+              filled: true,
+              counterText: '',
+                prefixIcon: Icon(Icons.search),
+              labelStyle: TextStyle(color: Colors.white),
+              //    contentPadding:
+              //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+              labelText: translate('Start typing airport code or name'),
+            ),
+
+            controller: _searchEditingController,
+            keyboardType: TextInputType.streetAddress,
+            onChanged: (String value) {
+              //filterCities(_searchEditingController.text);
+              setState(() {
+
               });
-        })
-    ]
-    )
-      );}
+            },
+          ),
+
+      ),
+      body: new Container(
+          child: widget.filterByCitiesCode != null
+              ? Arrivals(departCityCode: widget.filterByCitiesCode,
+          )
+              : Departures()),
+    );
+  }
+/*
+  void filterCities(String filter){
+    routes = [];
+    _cityData.forEach((route) {
+      String code = route.split('|')[0].toUpperCase();
+      String name = route.split('|')[1].toUpperCase();
+
+      if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
+        routes.add(route);
+      }
+    });
+  }
+
+ */
 }

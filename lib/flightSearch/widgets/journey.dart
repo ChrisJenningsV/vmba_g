@@ -193,29 +193,3 @@ Future<String> loadAsset() async {
   return await rootBundle.loadString('lib/assets/data/testdata.json');
 }
 
-class CitiesScreen extends StatelessWidget {
-  final String filterByCitiesCode;
-
-  CitiesScreen({Key key, this.filterByCitiesCode}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        title: new TrText('Flight Search',
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),
-      body: new Container(
-          child: filterByCitiesCode != null
-              ? Arrivals(departCityCode: filterByCitiesCode,
-                )
-              : Departures()),
-    );
-  }
-}

@@ -199,7 +199,7 @@ class DrawerMenu extends StatelessWidget {
     if( gblSettings.customMenu1 != null && gblSettings.customMenu1.isNotEmpty) {
       try{
       var menuText = gblSettings.customMenu1.split(',')[0];
-      var pageText = gblSettings.customMenu1.split(',')[1];
+      var pageText = gblSettings.customMenu1.split(',')[1].trim();
       var url = gblSettings.customMenu1.split(',')[2];
       if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
         // SizedBox(height: 24,

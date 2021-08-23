@@ -304,7 +304,15 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   //createPnr() {}
 
   _gotoPreviousPage() {
-    Navigator.pop(context, _error);
+    if( gblSettings.wantNewEditPax ){
+      // double pop
+      var nav = Navigator.of(context);
+      nav.pop(_error);
+      nav.pop(_error);
+    } else {
+      Navigator.pop(context, _error);
+//      Navigator.of(context).pop();
+    }
   }
 
 
@@ -418,7 +426,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           // which makes it look like the flights are confirmed
 
           flightsConfirmed = false;
-          for (var i = 0; i < 4; i++) {
+          for (var i = 0; i < 10; i++) { // was 4
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
@@ -471,7 +479,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               }
               break;
             }
-            await new Future.delayed(const Duration(seconds: 2));
+            await new Future.delayed(const Duration(seconds: 4)); // was 2
             //sleep(const Duration(seconds: 2));
           }
         }
@@ -483,7 +491,10 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         setState(() {
           _displayProcessingIndicator = false;
         });
-        showSnackBar(translate('Unable to confirm partner airlines flights.'));
+        _error = translate('Unable to confirm partner airlines flights.');
+        //showSnackBar();
+        logit('Unable to confirm partner airlines flights.');
+        Navigator.pop(context, _error);
         return null;
       }
     } catch (e) {
