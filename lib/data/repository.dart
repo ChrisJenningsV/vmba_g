@@ -382,7 +382,7 @@ class Repository {
                   case 'wantMyAccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;
-                  case 'wantFQTV':
+                  case 'wantFQTV2':
                     gblSettings.wantFQTV = parseBool(item['value']);
                     break;
                   case 'wantEnglishTranslation':

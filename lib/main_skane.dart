@@ -79,6 +79,12 @@ void configAS() {
     currencies: 'se,SEK,no,NOK,dk,DKK,eu,EUR,gb,GBP',
     currency: 'SEK',
     wantCurrencyPicker: true,
+    wantNewEditPax: true,
+    wantBags: false,
+    wantFindBookings: true,
+    wantClassBandImages: true,
+    wantMaterialControls: true,
+    wantPageImages: true,
     want24HourClock: true,
 
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',

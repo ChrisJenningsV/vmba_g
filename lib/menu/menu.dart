@@ -221,7 +221,7 @@ class DrawerMenu extends StatelessWidget {
     if( gblSettings.customMenu2 != null && gblSettings.customMenu2.isNotEmpty) {
       try{
         var menuText = gblSettings.customMenu2.split(',')[0];
-        var pageText = gblSettings.customMenu2.split(',')[1];
+        var pageText = gblSettings.customMenu2.split(',')[1].trim();
         var url = gblSettings.customMenu2.split(',')[2];
         if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
           list.add(ListTile(

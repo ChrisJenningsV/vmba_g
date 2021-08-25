@@ -88,6 +88,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
       appBar: appBar(context, 'Passenger Detail',
+        newBooking: widget.newBooking,
         imageName: gblSettings.wantPageImages ? 'editPax' : null,
         actions: <Widget>[
           IconButton(
@@ -125,7 +126,7 @@ return SafeArea(
     ListTile(
       tileColor: gblSystemColors.primaryHeaderColor ,
     leading: Icon(Icons.person, size: 50.0, color: gblSystemColors.headerTextColor   ,),
-    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + paxTypeName + ')'  , style: TextStyle(color: gblSystemColors.headerTextColor),),
+    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + translate(paxTypeName) + ')'  , style: TextStyle(color: gblSystemColors.headerTextColor),),
 /*    subtitle: Text(
     'Secondary Text',
     style: TextStyle(color: Colors.black.withOpacity(0.6)),
@@ -236,7 +237,7 @@ return SafeArea(
             widget.passengerDetail.lastName = value;
           },
           validator: (value) =>
-          value.isEmpty ? 'Last name can\'t be empty' : null,
+          value.isEmpty ? translate('Last name cannot be empty') : null,
           onSaved: (value) {
             if (value != null) {
               widget.passengerDetail.lastName = value.trim();
@@ -265,7 +266,7 @@ return SafeArea(
             //initialValue: field.value,
             controller: _dateOfBirthTextEditingController,
             validator: (value) =>
-            value.isEmpty ? 'Date of Birth is required' : null,
+            value.isEmpty ? translate('Date of Birth is required') : null,
             onSaved: (value) {
               if (value != '') {
                 var date = value.split('-')[2] +

@@ -55,6 +55,13 @@ void configAG() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
+    wantNewEditPax: true,
+    wantBags: false,
+    wantFindBookings: true,
+    wantClassBandImages: true,
+    wantMaterialControls: true,
+    wantPageImages: true,
+
     currency: 'SEK',
     airlineName: "Air Gotland",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",

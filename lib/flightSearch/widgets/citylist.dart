@@ -7,7 +7,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/utilities/helper.dart';
 
 TextEditingController _searchEditingController =   TextEditingController();
 
@@ -160,7 +159,6 @@ class DepartureList extends StatefulWidget {
 
 class DepartureListState extends State<DepartureList> {
 
-  TextEditingController _fqtvTextEditingController =   TextEditingController();
 //  DepartureList({Key key, this.routes}) : super(key: key);
   List<String> routes;
 
@@ -389,6 +387,10 @@ class CitiesScreenState  extends State<CitiesScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    Color fillColor = Colors.white.withOpacity(0.5);
+    if( gblSystemColors.primaryHeaderColor == Colors.white ) {
+      fillColor = Colors.grey.withOpacity(0.5);
+    }
     return new Scaffold(
       appBar: new AppBar(
           brightness: gblSystemColors.statusBar,
@@ -396,13 +398,13 @@ class CitiesScreenState  extends State<CitiesScreen> {
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: TextFormField(
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: gblSystemColors.headerTextColor), //color: Colors.white),
             decoration: InputDecoration(
-              fillColor: Colors.white.withOpacity(0.5),
+              fillColor: fillColor,
               filled: true,
               counterText: '',
                 prefixIcon: Icon(Icons.search),
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: gblSystemColors.headerTextColor), // Colors.white),
               //    contentPadding:
               //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
               labelText: translate('Start typing airport code or name'),

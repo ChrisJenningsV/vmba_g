@@ -393,7 +393,7 @@ void initState() {
                                //style: TextStyle(
                                     //    color: widget.textColor,
                                 //    ),
-                                decoration: getDecoration('Card Number', prefixIcon: Icon(Icons.credit_card_sharp),hintText: 'xxxx xxxx xxxx xxxx'),
+                                decoration: getDecoration('Card number', prefixIcon: Icon(Icons.credit_card_sharp),hintText: 'xxxx xxxx xxxx xxxx'),
                                 /*InputDecoration(
                                   prefixIcon: Icon(Icons.credit_card_sharp),
                                   border: OutlineInputBorder(
@@ -771,7 +771,7 @@ void initState() {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
                               validator: (value) => value.isEmpty
-                                  ? 'Address field required'
+                                  ? translate('Address field required')
                                   : null,
                               onSaved: (value) => postcode = value.trim(),
                               controller: _postcodeTextEditingController,
@@ -796,7 +796,7 @@ void initState() {
                                   controller: _countryTextEditingController,
                                   textInputAction: TextInputAction.done,
                                   validator: (value) => value.isEmpty
-                                      ? 'Address field required'
+                                      ? translate('Address field required')
                                       : null,
                                   onSaved: (value) {
                                     if (value != null) {

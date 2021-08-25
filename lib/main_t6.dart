@@ -54,7 +54,6 @@ void configT6() {
     wantHomeFQTVButton: true,
     wantFQTV:  true,
     wantMyAccount: true,
-    wantBags: true,
 
     airlineName: "Air Swift",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -81,6 +80,9 @@ void configT6() {
       wantMaterialControls: true,
       wantCitySwap: true,
       wantPageImages: true,
+    wantBags: true,
+    wantFindBookings: true,
+    wantClassBandImages: true,
 
       passengerTypes: PassengerTypes(
       adults: true,

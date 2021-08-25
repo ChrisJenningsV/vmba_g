@@ -200,6 +200,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   }
 
   Future getFareQuote() async {
+    gblPayable = '';
+
     Repository.get().getFareQuote(buildCmd()).then((rs) {
       if (rs.isOk()) {
         pnrModel = rs.body;
@@ -474,20 +476,18 @@ Row airMiles() {
     if( double.parse(amount) <= 0 ) {
       amount = "0";
     }
+    String price = formatPrice(currencyCode,double.tryParse(amount) ?? 0.0);
+    if( gblPayable != price) {
+      gblPayable = price;
+      setState(() {
+
+      });
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Text(
-          formatPrice(currencyCode,double.tryParse(amount) ?? 0.0),
-/*
-          NumberFormat.simpleCurrency(
-                  locale: gblSettings.locale,
-                  name: currencyCode)
-              .format((double.tryParse(amount) ?? 0.0)),
-
- */
-
+        Text(price,
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
       ],
@@ -645,6 +645,7 @@ Row airMiles() {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: appBar(context, 'Summary',
+          newBooking: widget.newBooking,
         imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
         extendBodyBehindAppBar: gblSettings.wantPageImages,
         endDrawer: DrawerMenu(),
@@ -665,6 +666,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
@@ -694,6 +696,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
@@ -744,6 +747,7 @@ Row airMiles() {
       return new Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),

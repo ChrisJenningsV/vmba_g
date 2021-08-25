@@ -8,8 +8,9 @@ class TrText extends StatelessWidget {
   final String variety;
   final bool noTrans;
   final TextAlign textAlign;
+  final double textScaleFactor;
 
-  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign});
+  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign, this.textScaleFactor});
 
   build(BuildContext context) {
     var txt = labelText;
@@ -62,9 +63,9 @@ class TrText extends StatelessWidget {
           }
           break;
       }
-      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign);
+      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign, textScaleFactor: textScaleFactor);
     } else {
-      return Text( txt ,style: style, textAlign: textAlign);
+      return Text( txt ,style: style, textAlign: textAlign, textScaleFactor: textScaleFactor,);
     }
   }
 }

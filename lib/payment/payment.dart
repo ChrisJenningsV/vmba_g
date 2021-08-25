@@ -1090,7 +1090,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   controller:
                                       _addressLine1TextEditingController,
                                   validator: (value) => value.isEmpty
-                                      ? 'Address field required'
+                                      ? translate('Address field required')
                                       : null,
                                   onSaved: (value) => widget
                                       .newBooking
@@ -1125,7 +1125,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   controller: _townTextEditingController,
                                   keyboardType: TextInputType.text,
                                   validator: (value) => value.isEmpty
-                                      ? 'Address field required'
+                                      ? translate('Address field required')
                                       : null,
                                   onSaved: (value) => widget.newBooking
                                       .paymentDetails.town = value.trim(),
@@ -1162,7 +1162,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                   controller: _stateTextEditingController,
                                   keyboardType: TextInputType.text,
                                   validator: (value) => value.isEmpty
-                                      ? 'Address field required'
+                                      ? translate('Address field required')
                                       : null,
                                   onSaved: (value) => widget.newBooking
                                       .paymentDetails.state = value.trim(),
@@ -1220,7 +1220,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     ),
                                     controller: _countryTextEditingController,
                                     validator: (value) => value.isEmpty
-                                        ? 'Address field required'
+                                        ? translate('Address field required')
                                         : null,
                                     onSaved: (value) {
                                       if (value != null) {

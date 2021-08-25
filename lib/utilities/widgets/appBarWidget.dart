@@ -1,14 +1,117 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/models/models.dart';
+
+import '../helper.dart';
 
 //class CustomWidget {
 Widget appBar(BuildContext context, String title,
-    {Widget leading, bool automaticallyImplyLeading, List<Widget> actions, Color backgroundColor, String imageName,  double elevalion, NetworkImage backgroundImage,
+    {Widget leading, bool automaticallyImplyLeading, List<Widget> actions, Color backgroundColor,
+        NewBooking newBooking,
+        String imageName,  double elevalion, NetworkImage backgroundImage,
         Widget bottom, double toolbarHeight }) {
   if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
+  if( bottom != null ){
+    logit( 'bottom on page $title');
+  }
   bool wantOutline = false;
+  double height = 100;
+
+  if( gblSettings.wantTallPageImage && imageName != null && newBooking != null) {
+    Color txtCol = Colors.white;
+    Color backCol = Colors.grey.withOpacity(0.6);
+    TextStyle tStyle = TextStyle( color:  txtCol);
+    //TextStyle cityStyle = TextStyle( color:  txtCol);
+    var row1 = Row(children: [
+
+      FutureBuilder(
+        future: cityCodeToName(
+          newBooking.departure,
+        ),
+        initialData: newBooking.departure.toString(),
+        builder: (BuildContext context, AsyncSnapshot<String> text) {
+          return new Text(text.data,
+              style:  tStyle);
+        },
+      ),
+      //TrText(newBooking.departure, style: tStyle, textScaleFactor: 2) ,
+      RotatedBox(
+          quarterTurns: 1,
+          child: new Icon(
+            Icons.airplanemode_active,
+            size: 20,
+            color: txtCol,
+          )),
+      FutureBuilder(
+        future: cityCodeToName(
+          newBooking.arrival,
+        ),
+        initialData: newBooking.arrival.toString(),
+        builder: (BuildContext context, AsyncSnapshot<String> text) {
+          return new Text(
+            text.data,
+            style: tStyle,
+          );
+        },
+      ),
+      Spacer(),
+      Text( getIntlDate('EEE dd MMM', newBooking.departureDate), style: TextStyle(color: txtCol),)
+    ],);
+
+    List <Widget> list = [];
+
+    list.add(Text(newBooking.passengers.adults.toString() , style: tStyle));
+    list.add(Icon(Icons.person,color: txtCol, size: 15,));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+
+    if( newBooking.passengers.children > 0) {
+      list.add( Text(newBooking.passengers.children.toString(), style: tStyle));
+      list.add(Icon(Icons.child_care,color: txtCol, size: 15));
+      list.add(Padding(padding: EdgeInsets.only(left: 5),));
+    }
+
+    if( newBooking.passengers.infants > 0) {
+      list.add( Text(newBooking.passengers.infants.toString(), style: tStyle));
+      list.add(Icon(Icons.child_friendly,color: txtCol, size: 15));
+      list.add(Padding(padding: EdgeInsets.only(left: 5),));
+    }
+
+    if( newBooking.passengers.youths > 0) {
+      list.add( Text(newBooking.passengers.youths.toString(), style: tStyle));
+      //list.add( Text('Y'));
+      list.add(Icon(Icons.directions_run,color: txtCol, size: 15));
+      list.add(Padding(padding: EdgeInsets.only(left: 5),));
+    }
+
+    if( newBooking.passengers.students > 0) {
+      list.add( Text(newBooking.passengers.students.toString(), style: tStyle));
+      //list.add( Text('Y'));
+      list.add(Icon(Icons.school, color: txtCol, size: 15));
+      list.add(Padding(padding: EdgeInsets.only(left: 5),));
+    }
+
+    if( newBooking.passengers.seniors > 0) {
+      list.add( Text(newBooking.passengers.seniors.toString(), style: tStyle));
+      //list.add( Text('S'));
+      list.add(Icon(Icons.directions_walk,color: txtCol, size: 15));
+      list.add(Padding(padding: EdgeInsets.only(left: 5),));
+    }
+    list.add(Spacer());
+    list.add(Text( gblPayable, style: TextStyle(color: txtCol)));
+
+
+  var row2 = Row(children: list);
+
+    bottom = PreferredSize(
+        child: Container(
+          color: backCol,
+        child: Column( children: [row1, row2], ))
+        , preferredSize: Size.fromHeight(40.0),) ;
+    height = 140;
+  }
 
   Widget flexibleSpace ;
 
@@ -46,7 +149,7 @@ Widget appBar(BuildContext context, String title,
       //toolbarHeight = 100;
 
       return PreferredSize(
-          preferredSize: Size.fromHeight(100.0),
+          preferredSize: Size.fromHeight(height),
           child:  AppBar(
             leading: leading,
             bottom: bottom,

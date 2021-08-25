@@ -11,7 +11,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'AG';
+String gblBuildFlavor = 'FL';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
@@ -20,6 +20,7 @@ String gblAction='';
 String gblMobileFlags = '';
 String gblDestination;
 String gblOrigin;
+String gblPayable = '';
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;

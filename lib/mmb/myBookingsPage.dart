@@ -145,7 +145,7 @@ String _error = '';
 
           indicatorColor: Colors.amberAccent,
           isScrollable: true,
-          labelColor: Colors.black,
+          labelColor: gblSystemColors.headerTextColor,
           tabs: tabs,
           controller: _controller),
           ),
@@ -187,7 +187,7 @@ String _error = '';
             Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TrText( ' Please provide your Login to load your future bookings '),
+                TrText( 'Please provide your Login to load your future bookings'),
                 new TextFormField(
                   decoration: getDecoration(
                       '${gblSettings.fqtvName} ' + translate('number')),
@@ -943,9 +943,10 @@ String _error = '';
         } else {
           _pnrLoaded();
           //_showDialog();
+          _error = translate('name does not match booking');
           showAlertDialog(context, 'Alert', _error);
 
-          print('didn\'t matched rloc and name');
+          print('did not matched rloc and name');
         }
       } catch (e) {
 

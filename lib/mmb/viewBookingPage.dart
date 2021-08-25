@@ -861,6 +861,23 @@ class _CheckinBoardingPassesWidgetState
                 journeyNo + 1,
                 pnr.pNR.names) ||
             pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True')) {
+
+          // check if this is 'IN' and adults not checked in
+          if (pnr.pNR.names.pAX[paxNo].paxType == 'IN') {
+
+            var checkedInCount = 0;
+                pnr.pNR.tickets.tKT.forEach((t){
+                  if( int.parse(t.segNo) == (journeyNo + 1) && t.tKTID == 'ELFT') {
+                    checkedInCount++;
+                  }
+                });
+
+            if( checkedInCount == 0 ) {
+              // no one is checked in so infant cannot check in
+              return Container();
+            }
+
+          }
           //Checkin Button
           return new TextButton(
             onPressed: () {
@@ -1521,7 +1538,7 @@ class _CheckinBoardingPassesWidgetState
       child: Row(
         children: <Widget>[
           checkinOpen
-              ? Text(
+              ? TrText(
                   'Check-in',
                   style: TextStyle(
                       color: gblSystemColors

@@ -277,7 +277,7 @@ return SafeArea(
             widget.passengerDetail.lastName = value;
           },
           validator: (value) =>
-          value.isEmpty ? 'Last name can\'t be empty' : null,
+          value.isEmpty ? translate('Last name cannot be empty') : null,
           onSaved: (value) {
             if (value != null) {
               widget.passengerDetail.lastName = value.trim();
@@ -303,7 +303,7 @@ return SafeArea(
             //initialValue: field.value,
             controller: _dateOfBirthTextEditingController,
             validator: (value) =>
-            value.isEmpty ? 'Date of Birth is required' : null,
+            value.isEmpty ? translate('Date of Birth is required') : null,
             onSaved: (value) {
               if (value != '') {
                 var date = value.split('-')[2] +

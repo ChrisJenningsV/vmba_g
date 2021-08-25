@@ -145,7 +145,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         print(flt);
         msg += flt + '^';
       });
-      msg += addFg(widget.newBooking.currency, true);
+      msg += addFg(widget.mmbBooking.currency, true);
       msg += addFareStore(false);
       //msg += 'fg^fs1';
     }
@@ -1083,6 +1083,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
+          newBooking: widget.newBooking,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -1114,7 +1115,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         child: new Scaffold(
             key: _key,
             appBar: appBar(context, 'Payment',
-            imageName: gblSettings.wantPageImages ? 'paymentpage' : null,) ,
+              newBooking: widget.newBooking,
+              imageName: gblSettings.wantPageImages ? 'paymentpage' : null,) ,
             endDrawer: DrawerMenu(),
             body: SafeArea(
               child: Column(
@@ -1193,8 +1195,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           holdBagPcsRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdPcs;
           handBagWtRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].handWt;
         }
-        if( holdBagWt.endsWith('K') ){
+        if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
           holdBagWt = holdBagWt.replaceAll('K', 'Kg');
+        }
+        if( holdBagWt == null ){
+          holdBagWt = '0';
         }
         list.add( Card( child:
         Padding( padding: EdgeInsets.only(top: 10, left: 6, right: 6, bottom: 6),
@@ -1456,11 +1461,17 @@ List<Widget> getPayOptions(String amount, String cur) {
           ]);
 
     }
-    if( count.endsWith('K')){
+    if( count != null &&  count.endsWith('K')){
       count =  count.replaceAll('K', 'Kg');
     }
-    if( countRet.endsWith('K')){
+    if( count == null ) {
+      count = '0';
+    }
+    if( countRet != null &&  countRet.endsWith('K')){
       countRet = countRet.replaceAll('K', 'Kg');
+    }
+    if( countRet == null ) {
+      countRet = '0';
     }
     return Row(
         children: [

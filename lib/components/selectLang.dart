@@ -245,7 +245,7 @@ dialogContent(BuildContext context) {
               saveLang(gblLanguage);
               Navigator.of(context).pop();
               },
-            child: Text("Submit"
+            child: TrText("Submit"
               //fontWeight: FontWeight.bold,
               //fontSize: 16.0,
             ),
