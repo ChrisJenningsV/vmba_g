@@ -646,6 +646,7 @@ Row airMiles() {
       return Scaffold(
         appBar: appBar(context, 'Summary',
           newBooking: widget.newBooking,
+        curStep: 3,
         imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
         extendBodyBehindAppBar: gblSettings.wantPageImages,
         endDrawer: DrawerMenu(),
@@ -666,6 +667,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantPageImages,
@@ -696,6 +698,7 @@ Row airMiles() {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           extendBodyBehindAppBar: gblSettings.wantPageImages,
@@ -747,6 +750,7 @@ Row airMiles() {
       return new Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
+            curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,

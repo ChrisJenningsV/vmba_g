@@ -75,7 +75,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
+          curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
+
 /*        appBar: new AppBar(
           brightness: gblSystemColors.statusBar,
           backgroundColor:

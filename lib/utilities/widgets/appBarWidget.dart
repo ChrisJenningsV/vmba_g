@@ -4,21 +4,27 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
-
 import '../helper.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
+
+
 
 //class CustomWidget {
 Widget appBar(BuildContext context, String title,
     {Widget leading, bool automaticallyImplyLeading, List<Widget> actions, Color backgroundColor,
         NewBooking newBooking,
         String imageName,  double elevalion, NetworkImage backgroundImage,
-        Widget bottom, double toolbarHeight }) {
+        Widget bottom, double toolbarHeight,
+        int curStep}) {
   if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
   if( bottom != null ){
     logit( 'bottom on page $title');
   }
   bool wantOutline = false;
   double height = 100;
+  if( curStep == null ){
+    curStep = 1;
+  }
 
   if( gblSettings.wantTallPageImage && imageName != null && newBooking != null) {
     Color txtCol = Colors.white;
@@ -105,10 +111,14 @@ Widget appBar(BuildContext context, String title,
 
   var row2 = Row(children: list);
 
+
+Widget status = _getStatus(context, curStep);
+
+
     bottom = PreferredSize(
         child: Container(
           color: backCol,
-        child: Column( children: [row1, row2], ))
+        child: Column( children: [row1, row2, status], ))
         , preferredSize: Size.fromHeight(40.0),) ;
     height = 140;
   }
@@ -226,6 +236,9 @@ Widget appBar(BuildContext context, String title,
   }
 
 }
+
+
+
 Widget getText(String txt) {
 return Stack(
   children: <Widget>[
@@ -252,5 +265,114 @@ return Stack(
 );
 
 }
+
+Widget _getStatus(BuildContext context, int curStep ) {
+  List <String> _steps= ['Select', 'Flights', 'Summary', 'Pax', 'Pay'];
+  List <IconData> _icons = [Icons.input, Icons.airplanemode_active, Icons.sim_card_outlined, Icons.person_outline, Icons.credit_card];
+
+  return StepProgressIndicator(
+      totalSteps: 6,
+      currentStep: curStep,
+      size: 20,
+      selectedColor: gblSystemColors.primaryHeaderColor.withOpacity(0.3),
+      unselectedColor: Colors.grey.shade100.withOpacity(0.3),
+      customStep: (index, color, _) {
+        if (index <= curStep) {
+          Color clr = gblSystemColors.primaryHeaderColor.withOpacity(0.5);
+          if( index == curStep) {
+            clr = Colors.green; // gblSystemColors.primaryHeaderColor;
+          }
+          return Container(
+              color: clr,
+            child: Column( children: [
+            /*  Text(translate(_steps[index]), textScaleFactor: 0.7, style: TextStyle(color: Colors.white),),
+
+             */
+             Row( children: [
+            Text(translate(_steps[index]), textScaleFactor: 0.7, style: TextStyle(color: Colors.white),),
+/*               Icon(
+               _icons[index],
+              size: 15,
+              color: Colors.white,
+            ),
+            */
+               Spacer(),
+              Icon(
+              Icons.check,
+              size: 15,
+              color: Colors.white,
+                ),
+
+            ])
+
+          ]));
+        } else {
+          return Container(
+            color: color,
+            child: Icon(
+              Icons.remove,
+              size: 15,
+            ),
+          );
+        }
+      }
+   /*   {
+        if( index < curStep) {
+          return Container(
+              color: color,
+              child: Column(children: [
+                Text(index.toString()),
+                Icon(
+                  Icons.check,
+                  color: Colors.white,
+                )
+              ]
+              ));
+        }
+
+
+        if (index == 0 || index == 3 || index == 9) {
+          return Icon(
+            Icons.ac_unit,
+            color: color,
+          );
+        } else if (index == 1 || index == 6) {
+          return Icon(
+            Icons.sentiment_satisfied,
+            color: color,
+          );
+        } else {
+          return Icon(
+            Icons.trending_up,
+            color: color,
+          );
+        }
+
+    */
+      );
+
+}
+Widget _drawStep(int index, Color color, int curStep ) {
+  if( index <= curStep) {
+  return Container(
+    color: color,
+    child: Column( children: [
+      Text( index.toString()),
+      Icon(
+      Icons.check,
+      color: Colors.white,
+    )
+  ]
+  ));
+
+  } else {
+  return  Container(
+  color: color,
+  child: Icon(
+  Icons.remove,
+  ));
+}
+}
+
 
 //}

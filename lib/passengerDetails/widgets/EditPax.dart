@@ -89,6 +89,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
       new Scaffold(
       appBar: appBar(context, 'Passenger Detail',
         newBooking: widget.newBooking,
+        curStep: 4,
         imageName: gblSettings.wantPageImages ? 'editPax' : null,
         actions: <Widget>[
           IconButton(

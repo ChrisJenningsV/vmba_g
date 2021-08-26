@@ -60,6 +60,7 @@ dependencies:
   barcode_widget: ^2.0.1
   currency_picker: ^2.0.4
   country_icons: ^2.0.2
+  step_progress_indicator: ^1.0.1
 
 dev_dependencies:
   flutter_test:
