@@ -27,6 +27,7 @@ import 'main_z4.dart';
 import 'main_gotland.dart';
 import 'main_halland.dart';
 import 'main_skane.dart';
+import 'main_keylime.dart';
 import 'package:vmba/menu/errorPage.dart';
 
 void main() async {
@@ -72,6 +73,9 @@ void main() async {
         break;
       case 'SI':
         configSI();
+        break;
+      case 'KG':
+        configKG();
         break;
       default:
         gblAppTitle='Test Title';

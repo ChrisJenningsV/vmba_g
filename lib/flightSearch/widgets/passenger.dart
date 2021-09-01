@@ -240,7 +240,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
 
 
   void _removeAdult() {
-    if(  passengers.adults == 1 && gblSettings.wantUmnr == false) {
+    if(  passengers.adults == 1 && gblSettings.wantUmnr == false && passengers.seniors == 0 && passengers.youths == 0) {
       return;
     }
     if( passengers.adults == 0) {

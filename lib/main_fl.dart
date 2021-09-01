@@ -71,7 +71,7 @@ void configFL() {
     wantMaterialControls: true,
     wantPageImages: true,
     want24HourClock: true,
-    wantTallPageImage: true,
+    wantTallPageImage: false,
 
     currency: 'SEK',
     airlineName: "Air Leap",
@@ -97,6 +97,7 @@ void configFL() {
     wantEnglishTranslation: true,
     currencies: 'se,SEK,no,NOK,eu,EUR',
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
+    pageImageMap: '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "happypax"}',
     eVoucher:  true,
     passengerTypes:  PassengerTypes(
       adults: true,

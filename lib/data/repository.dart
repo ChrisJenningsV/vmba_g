@@ -519,7 +519,11 @@ class Repository {
             logit('login failed');
             print(response.body);
             gblErrorTitle = 'Login';
-            gblError = response.body;
+            if ( map != null ) {
+              gblError = map['errorMessage'] + ' :' + map['errorCode'];
+            } else {
+              gblError = response.body;
+            }
             gblNoNetwork = true;
           }
         } else {

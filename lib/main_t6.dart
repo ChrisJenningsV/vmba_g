@@ -39,8 +39,10 @@ void configT6() {
       primaryButtonTextColor: Colors.white,
       primaryHeaderColor: Colors.white,//Color.fromRGBO(12, 59, 111, 1),
       headerTextColor: Colors.black,
+      progressTextColor: Colors.grey,
       statusBar: Brightness.light);
 
+  _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
   gblAppTitle = 'airswift';
@@ -83,12 +85,15 @@ void configT6() {
     wantBags: true,
     wantFindBookings: true,
     wantClassBandImages: true,
+    wantCountry: true,
+    wantTallPageImage: true,
 
-      passengerTypes: PassengerTypes(
+
+    passengerTypes: PassengerTypes(
       adults: true,
       child: true,
       infant: true,
-      youths: true,
+      youths: false,
       senior:  true,
   ),
 

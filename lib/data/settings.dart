@@ -82,7 +82,9 @@ class Settings {
   bool wantCovidWarning;
   bool wantCountry;
   bool wantClassBandImages;
+  bool wantStatusLine;
   bool wantTallPageImage;
+  bool wantProgressBar;
 
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -176,6 +178,8 @@ bool bpShowFastTrack;
     this.wantCountry = false,
     this.wantClassBandImages = false,
     this.wantTallPageImage = false,
+    this.wantStatusLine = false,
+    this.wantProgressBar = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

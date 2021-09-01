@@ -99,6 +99,11 @@ android {
             resValue "string", "flavored_app_name", "Air Skane"
             applicationId "se.airskane.booking"
         }
+        Keylime {
+            dimension "version"
+            resValue "string", "flavored_app_name", "key Lime Air"
+            applicationId "com.keylime.booking"
+        }
 
     }
 

@@ -1084,6 +1084,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         key: _key,
         appBar: appBar(context, 'Payment',
           newBooking: widget.newBooking,
+          curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
         endDrawer: DrawerMenu(),
         body: new Center(
@@ -1116,6 +1117,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             key: _key,
             appBar: appBar(context, 'Payment',
               newBooking: widget.newBooking,
+              curStep: 5,
               imageName: gblSettings.wantPageImages ? 'paymentpage' : null,) ,
             endDrawer: DrawerMenu(),
             body: SafeArea(

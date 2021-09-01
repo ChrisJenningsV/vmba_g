@@ -17,6 +17,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 
 class CreditCardPage extends StatefulWidget {
@@ -78,17 +79,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if( gblError != null && gblError.isNotEmpty){
         return Scaffold(
           key: _key,
-          appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: new Text('Payment Selection',
-                style: TextStyle(
-                    color:
-                    gblSystemColors.headerTextColor)),
-          ),
+          appBar: appBar(context, 'Payment',
+            newBooking: widget.newBooking,
+            curStep: 5,
+            imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
           endDrawer: DrawerMenu(),
           body: new Center(
             child: Column(
@@ -112,16 +106,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
     return Scaffold(
       key: _key,
-      appBar: AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        title: new TrText('Payment',
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),
+      appBar: appBar(context, 'Payment',
+        newBooking: widget.newBooking,
+        curStep: 5,
+        imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
       endDrawer: DrawerMenu(),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[

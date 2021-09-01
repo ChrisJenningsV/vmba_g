@@ -21,12 +21,15 @@ Widget appBar(BuildContext context, String title,
     logit( 'bottom on page $title');
   }
   bool wantOutline = false;
-  double height = 100;
+  double height = 80;
+  if( gblSettings.wantTallPageImage ) {
+    height = 140;
+  }
   if( curStep == null ){
     curStep = 1;
   }
 
-  if( gblSettings.wantTallPageImage && imageName != null && newBooking != null) {
+  if( gblSettings.wantTallPageImage && gblSettings.wantStatusLine && imageName != null && newBooking != null) {
     Color txtCol = Colors.white;
     Color backCol = Colors.grey.withOpacity(0.6);
     TextStyle tStyle = TextStyle( color:  txtCol);
@@ -112,13 +115,20 @@ Widget appBar(BuildContext context, String title,
   var row2 = Row(children: list);
 
 
-Widget status = _getStatus(context, curStep);
+  List<Widget> widgets = [];
+    widgets.add(row1);
+    widgets.add(row2);
 
+
+    if( gblSettings.wantProgressBar) {
+      Widget status = _getStatus(context, curStep);
+      widgets.add(status);
+    }
 
     bottom = PreferredSize(
         child: Container(
           color: backCol,
-        child: Column( children: [row1, row2, status], ))
+        child: Column( children: widgets, ))
         , preferredSize: Size.fromHeight(40.0),) ;
     height = 140;
   }
@@ -267,91 +277,59 @@ return Stack(
 }
 
 Widget _getStatus(BuildContext context, int curStep ) {
-  List <String> _steps= ['Select', 'Flights', 'Summary', 'Pax', 'Pay'];
+  List <String> _steps= ['Search', 'Flights', 'Summary', 'Pax', 'Pay'];
   List <IconData> _icons = [Icons.input, Icons.airplanemode_active, Icons.sim_card_outlined, Icons.person_outline, Icons.credit_card];
+Color textClr = gblSystemColors.progressTextColor;
 
-  return StepProgressIndicator(
+  return Container(
+    color: gblSystemColors.progressBackColor,
+   child:   StepProgressIndicator(
       totalSteps: 6,
       currentStep: curStep,
-      size: 20,
+      size: 35,
       selectedColor: gblSystemColors.primaryHeaderColor.withOpacity(0.3),
       unselectedColor: Colors.grey.shade100.withOpacity(0.3),
       customStep: (index, color, _) {
         if (index <= curStep) {
-          Color clr = gblSystemColors.primaryHeaderColor.withOpacity(0.5);
           if( index == curStep) {
-            clr = Colors.green; // gblSystemColors.primaryHeaderColor;
+            return Container(
+                color: gblSystemColors.progressBackColor,
+                child: RotatedBox(
+                    quarterTurns: 1,
+                    child: new Icon(
+                      Icons.airplanemode_active,
+                      size: 30,
+                      color: gblSystemColors.progressTextColor,
+                    )));
           }
           return Container(
-              color: clr,
+              color: gblSystemColors.progressBackColor,
             child: Column( children: [
-            /*  Text(translate(_steps[index]), textScaleFactor: 0.7, style: TextStyle(color: Colors.white),),
-
-             */
-             Row( children: [
-            Text(translate(_steps[index]), textScaleFactor: 0.7, style: TextStyle(color: Colors.white),),
-/*               Icon(
-               _icons[index],
-              size: 15,
-              color: Colors.white,
-            ),
-            */
-               Spacer(),
-              Icon(
-              Icons.check,
-              size: 15,
-              color: Colors.white,
-                ),
-
-            ])
+            Text(translate(_steps[index]), textScaleFactor: 0.75, style: TextStyle(color: textClr),),
+              Padding(padding: EdgeInsets.only(top: 5),),
+              Container(height: 4,
+                color: gblSystemColors.progressTextColor,),
+              //Divider(color: Colors.grey, height: 4,),
+              Spacer(),
 
           ]));
         } else {
           return Container(
-            color: color,
+            color: gblSystemColors.progressBackColor,
             child: Icon(
-              Icons.remove,
+              Icons.cloud_outlined,
+              color: gblSystemColors.progressTextColor,
               size: 15,
             ),
           );
         }
       }
-   /*   {
-        if( index < curStep) {
-          return Container(
-              color: color,
-              child: Column(children: [
-                Text(index.toString()),
-                Icon(
-                  Icons.check,
-                  color: Colors.white,
-                )
-              ]
-              ));
-        }
 
-
-        if (index == 0 || index == 3 || index == 9) {
-          return Icon(
-            Icons.ac_unit,
-            color: color,
-          );
-        } else if (index == 1 || index == 6) {
-          return Icon(
-            Icons.sentiment_satisfied,
-            color: color,
-          );
-        } else {
-          return Icon(
-            Icons.trending_up,
-            color: color,
-          );
-        }
-
-    */
-      );
+  )    );
 
 }
+
+/*
 Widget _drawStep(int index, Color color, int curStep ) {
   if( index <= curStep) {
   return Container(
@@ -373,6 +351,21 @@ Widget _drawStep(int index, Color color, int curStep ) {
   ));
 }
 }
+*/
+/*
+class Underline extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p1 = Offset(0, 0);
+    final p2 = Offset(50, 0);
+    final paint = Paint()
+      ..color = Colors.grey
+      ..strokeWidth = 4;
+    canvas.drawLine(p1, p2, paint);  }
 
-
-//}
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
+  }
+}
+*/

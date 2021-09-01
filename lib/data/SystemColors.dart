@@ -13,6 +13,8 @@ class SystemColors {
    Color accentColor; // = Colors.white;
 
    Color primaryHeaderColor;
+   Color progressBackColor;
+  Color progressTextColor;
    Color headerTextColor;
 
   final Brightness statusBar;
@@ -37,6 +39,8 @@ class SystemColors {
     this.otherButtonTextColor,
     this.primaryButtonTextColor,
     this.textButtonTextColor,
+    this.progressBackColor,
+    this.progressTextColor,
     this.primaryHeaderColor,
     this.headerTextColor,
     this.statusBar,
@@ -68,5 +72,10 @@ class SystemColors {
     if(seatPlanColorUnavailable == null) seatPlanColorUnavailable =Colors.grey.shade300;
     if(seatPlanColorRestricted == null) seatPlanColorRestricted = Colors.green[200];
     if( otherButtonColor == null ) otherButtonColor = primaryButtonColor;
+
+    if(progressBackColor == null ) progressBackColor = primaryHeaderColor;
+    if(progressTextColor == null) progressTextColor = headerTextColor;
+
+
   }
 }
