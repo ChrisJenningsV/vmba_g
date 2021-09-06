@@ -278,7 +278,7 @@ return Stack(
 
 Widget _getStatus(BuildContext context, int curStep ) {
   List <String> _steps= ['Search', 'Flights', 'Summary', 'Pax', 'Pay'];
-  List <IconData> _icons = [Icons.input, Icons.airplanemode_active, Icons.sim_card_outlined, Icons.person_outline, Icons.credit_card];
+  //List <IconData> _icons = [Icons.input, Icons.airplanemode_active, Icons.sim_card_outlined, Icons.person_outline, Icons.credit_card];
 Color textClr = gblSystemColors.progressTextColor;
 
   return Container(

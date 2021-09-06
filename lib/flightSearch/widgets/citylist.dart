@@ -291,7 +291,7 @@ class _ArrivalsState extends State<Arrivals> {
 
   class ArrivalListState extends State<ArrivalList> {
 
-  TextEditingController _fqtvTextEditingController =   TextEditingController();
+ // TextEditingController _fqtvTextEditingController =   TextEditingController();
 
   //  DepartureList({Key key, this.routes}) : super(key: key);
   List<String> routes;

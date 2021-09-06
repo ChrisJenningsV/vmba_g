@@ -563,12 +563,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblTimerExpired = true;
           print('Payment success');
           // kill timer
- //         try {
- //         Provider.of<CountDownTimer>(context, listen: false)
-   //           .stop();
-     //     } catch(e) {
-       //     print(e.toString());
-         // }
+          //         try {
+          //         Provider.of<CountDownTimer>(context, listen: false)
+          //           .stop();
+          //     } catch(e) {
+          //     print(e.toString());
+          // }
 
           setState(() {
             //_displayProcessingText = 'Completing your booking...';
@@ -578,6 +578,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
             await pullTicketControl(pnrModel.pNR.tickets);
           }
           ticketBooking();
+        } else if (result.contains('VrsServerResponse')) {
+          _error = json.decode(result)['VrsServerResponse']['PaymentResult']['Description'];
+          gblTimerExpired = true;
+          _dataLoaded();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+
         } else if (result.contains('ERROR')) {
           gblTimerExpired = true;
           _error = result;
