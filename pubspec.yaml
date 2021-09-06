@@ -140,9 +140,6 @@ flutter:
     - lib/assets/keylimeair/images/appBar.png
     - lib/assets/keylimeair/images/logo.png
     - lib/assets/keylimeair/images/loader.png
-    - lib/assets/keylimeair/lang/en.json
-
-    #   - lib/assets/airleap/images/background.png
     - lib/assets/airleap/json/countries.json
     - lib/assets/airleap/images/appBarLeft.png
     - lib/assets/airleap/images/loader.png

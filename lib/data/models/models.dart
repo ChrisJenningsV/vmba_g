@@ -96,6 +96,7 @@ class PassengerDetail {
   String paxNumber;
   String title = '';
   String firstName = '';
+  String middleName = '';
   String lastName = '';
   PaxType paxType = PaxType.adult;
   DateTime dateOfBirth;
@@ -106,11 +107,15 @@ class PassengerDetail {
   String fqtv = '';
   String fqtvPassword = '';
   String country ='';
+  String gender ='';
   String seniorID = '';
   String disabilityID = '';
+  String redressNo = '';
+  String knowTravellerNo = '';
 
   PassengerDetail( {this.title,
     this.firstName,
+    this.middleName,
     this.lastName,
     this.paxType,
     this.dateOfBirth,
@@ -119,13 +124,18 @@ class PassengerDetail {
     this.adsNumber,
     this.adsPin,
     this.fqtv,
-    this.fqtvPassword,});
+    this.fqtvPassword,
+    this.gender,
+    this.redressNo,
+    this.knowTravellerNo,
+  });
 
   Map<String, dynamic> toJson() {
       final Map<String, dynamic> data = new Map<String, dynamic>();
 
       data['title'] = this.title;
       data['firstName'] = this.firstName;
+      data['middleName'] = this.middleName;
       data['lastName'] = this.lastName;
       switch (paxType) {
         case PaxType.infant:
@@ -173,13 +183,16 @@ class PassengerDetail {
       data['adsPin'] = this.adsPin;
       data['fqtv'] = this.fqtv;
       data['fqtvPassword'] = this.fqtvPassword;
+      data['redressNo'] = this.redressNo;
+      data['knowTravellerNo'] = this.knowTravellerNo;
 
-      return data;
+    return data;
     }
 
   PassengerDetail.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     firstName = json['firstName'];
+    middleName = json['middleName'];
     lastName = json['lastName'];
 
     switch (json['paxType']) {
@@ -224,6 +237,8 @@ class PassengerDetail {
     adsPin =  json['adsPin'];
     fqtv =  json['fqtv'];
     fqtvPassword = json['fqtvPassword'];
+    redressNo = json['redressNo'];
+    knowTravellerNo = json['knowTravellerNo'];
       }
   }
 

@@ -135,13 +135,7 @@ class ChooseFlight extends StatelessWidget {
                             padding: EdgeInsets.only(left: 15),
                           ),
                           new Flexible(
-                            child: TrText(item.text
-                                .replaceAll(
-                                    "&lt;img src=\"https://customertest.videcom.com/airswift/airswiftgraphics/citi-logo.jpg\" alt=\"citilogo\" height=\"18\" width=\"28\"&gt;",
-                                    "")
-                                .replaceAll(
-                                    "&lt;img src=\"https://booking.air-swift.com/airswiftgraphics/citi-logo.jpg\" alt=\"citilogo\" height=\"18\" width=\"28\"&gt;",
-                                    "")),
+                            child: TrText(cleanText(item.text)),
                           ),
                         ],
                       ),
@@ -154,6 +148,34 @@ class ChooseFlight extends StatelessWidget {
     } else {
       return Column();
     }
+  }
+
+  String cleanText(String txtIn) {
+    String str = txtIn.replaceAll(
+    "&lt;img src=\"https://customertest.videcom.com/airswift/airswiftgraphics/citi-logo.jpg\" alt=\"citilogo\" height=\"18\" width=\"28\"&gt;",
+    "")
+        .replaceAll(
+    "&lt;img src=\"https://booking.air-swift.com/airswiftgraphics/citi-logo.jpg\" alt=\"citilogo\" height=\"18\" width=\"28\"&gt;",
+    "");
+
+  // strip HTML
+    str = str.replaceAll('&lt;', '<');
+    str = str.replaceAll('&gt;', '>');
+    str = str.replaceAll('<b>', '');
+    str = str.replaceAll('<B>', '');
+    str = str.replaceAll('</b>', '');
+    str = str.replaceAll('</B>', '');
+    str = str.replaceAll('<ul>', '');
+    str = str.replaceAll('<UL>', '');
+    str = str.replaceAll('</ul>', '');
+    str = str.replaceAll('</UL>', '');
+    str = str.replaceAll('<li>', '');
+    str = str.replaceAll('<LI>', '');
+    str = str.replaceAll('</li>', ''); //'''\n');
+    str = str.replaceAll('</LI>', '');
+
+return str;
+
   }
 
   Icon iconWidget(String id) {

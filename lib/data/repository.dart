@@ -908,6 +908,7 @@ class Repository {
 
     //If there was an error return null
     if (response.statusCode < 200 || response.statusCode >= 300) {
+      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
       return new ParsedResponse(response.statusCode, null);
     }
     if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {

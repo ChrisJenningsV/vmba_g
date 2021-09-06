@@ -85,6 +85,10 @@ class Settings {
   bool wantStatusLine;
   bool wantTallPageImage;
   bool wantProgressBar;
+  bool wantGender;
+  bool wantMiddleName;
+  bool wantRedressNo;
+  bool wantKnownTravNo;
 
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -180,6 +184,11 @@ bool bpShowFastTrack;
     this.wantTallPageImage = false,
     this.wantStatusLine = false,
     this.wantProgressBar = false,
+    this.wantGender = false,
+    this.wantMiddleName = false,
+    this.wantRedressNo = false,
+    this.wantKnownTravNo = false,
+
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

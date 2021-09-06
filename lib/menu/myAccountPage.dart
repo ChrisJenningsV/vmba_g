@@ -27,6 +27,7 @@ class MyAccountPage extends StatefulWidget {
 class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _titleTextEditingController = TextEditingController();
   TextEditingController _firstNameTextEditingController = TextEditingController();
+  TextEditingController _middleNameTextEditingController = TextEditingController();
   TextEditingController _lastNameTextEditingController = TextEditingController();
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _phoneNumberTextEditingController = TextEditingController();
@@ -37,6 +38,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _fqtvPasswordEditingController = TextEditingController();
   TextEditingController _seniorIDTextEditingController = TextEditingController();
   TextEditingController _disabilityTextEditingController = TextEditingController();
+  TextEditingController _redressNoTextEditingController = TextEditingController();
+  TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
@@ -65,6 +68,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         }
         _titleTextEditingController.text = widget.passengerDetail.title;
         _firstNameTextEditingController.text = widget.passengerDetail.firstName;
+        _middleNameTextEditingController.text = widget.passengerDetail.middleName;
         _lastNameTextEditingController.text = widget.passengerDetail.lastName;
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
@@ -78,7 +82,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
         oldADSpin = widget.passengerDetail.adsPin;
 
         _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
-        _disabilityTextEditingController.text = widget.passengerDetail.disabilityID;
+        _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
+        _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
 
         if (widget.passengerDetail.paxType == null) {
           widget.passengerDetail.paxType = PaxType.adult;
@@ -102,6 +107,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _firstNameTextEditingController.text.isEmpty) {
       _firstNameTextEditingController.text = gblPassengerDetail.firstName;
     }
+    if (_middleNameTextEditingController.text == null ||
+        _middleNameTextEditingController.text.isEmpty) {
+      _middleNameTextEditingController.text = gblPassengerDetail.middleName;
+    }
+
     if (_lastNameTextEditingController.text == null ||
         _lastNameTextEditingController.text.isEmpty) {
       _lastNameTextEditingController.text = gblPassengerDetail.lastName;
@@ -132,6 +142,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if (_disabilityTextEditingController.text == null ||
         _disabilityTextEditingController.text.isEmpty) {
       _disabilityTextEditingController.text = gblPassengerDetail.disabilityID;
+    }
+
+    if (_redressNoTextEditingController.text == null ||
+        _redressNoTextEditingController.text.isEmpty) {
+      _redressNoTextEditingController.text = gblPassengerDetail.redressNo;
+    }
+    if (_knownTravellerNoTextEditingController.text == null ||
+        _knownTravellerNoTextEditingController.text.isEmpty) {
+      _knownTravellerNoTextEditingController.text = gblPassengerDetail.knowTravellerNo;
     }
 
 
@@ -210,7 +229,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             controller: _titleTextEditingController,
             // TextEditingController(text: widget.passengerDetail.title ),
             validator: (value) =>
-                value.isEmpty ? 'Title can\'t be empty' : null,
+                value.isEmpty ? translate('Title cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.title = value.trim();
@@ -240,7 +259,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
             ],
             validator: (value) =>
-                value.isEmpty ? 'First name can\'t be empty' : null,
+                value.isEmpty ? translate('First name cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.firstName = value.trim();
@@ -250,6 +269,37 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ),
     );
+
+    // middle name
+    widgets.add(
+      Padding(
+        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: TextFormField(
+            maxLength: 50,
+            decoration: _getDecoration('Middle name (or NONE)'),
+            controller: _middleNameTextEditingController,
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.middleName = value;
+            },
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.text,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+            ],
+            validator: (value) =>
+            value.isEmpty ? translate('Middle name cannot be empty') : null,
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.middleName = value.trim();
+              }
+            },
+          ),
+        ),
+      ),
+    );
+
 
     // last name
     widgets.add(Padding(
@@ -327,37 +377,28 @@ class _MyAccountPageState extends State<MyAccountPage> {
  //   return widgets;
 
     // DOB
-    widgets.add(Padding(
-      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-      child: (widget.passengerDetail.paxType != PaxType.adult &&
-              widget.passengerDetail.paxType != null)
-          ? InkWell(
-              onTap: () {
-                _showCalenderDialog(widget.passengerDetail.paxType);
-              },
-              child: IgnorePointer(
-                child: TextFormField(
-                  decoration: _getDecoration('date of Birth'),
-                  //initialValue: field.value,
-                  controller: _dateOfBirthTextEditingController, //
-/*                  onSaved: (value) {
-                    if (value != '') {
-                      var date = value.split('-')[2] +
-                          ' ' +
-                          value.split('-')[1] +
-                          ' ' +
-                          value.split('-')[0];
-                      DateFormat format = new DateFormat("yyyy MMM dd");
-                      widget.passengerDetail.dateOfBirth = format.parse(date);
-                    }
-                  },
-*/
-                  // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
-                ),
-              ),
-            )
-          : Padding(padding: const EdgeInsets.all(0.0)),
-    ));
+    if( widget.passengerDetail.paxType != PaxType.adult &&
+        widget.passengerDetail.paxType != null ) {
+      widgets.add(Padding(
+        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: (widget.passengerDetail.paxType != PaxType.adult &&
+            widget.passengerDetail.paxType != null)
+            ? InkWell(
+          onTap: () {
+            _showCalenderDialog(widget.passengerDetail.paxType);
+          },
+          child: IgnorePointer(
+            child: TextFormField(
+              decoration: _getDecoration('date of Birth'),
+              //initialValue: field.value,
+              controller: _dateOfBirthTextEditingController, //
+              // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
+            ),
+          ),
+        )
+            : Padding(padding: const EdgeInsets.all(0.0)),
+      ));
+    }
 
     // fqtv
     if (gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true) {
@@ -482,6 +523,48 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ));
     }
+    if (gblSettings.wantRedressNo) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: new TextFormField(
+            maxLength: 20,
+            controller: _redressNoTextEditingController,
+            decoration: _getDecoration('Redress No'),
+            keyboardType: TextInputType.streetAddress,
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.redressNo = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+    }
+
+    if (gblSettings.wantKnownTravNo) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: new TextFormField(
+            maxLength: 20,
+            controller: _knownTravellerNoTextEditingController,
+            decoration: _getDecoration('Known Traveller No'),
+            keyboardType: TextInputType.streetAddress,
+            onSaved: (value) {
+              if (value.isNotEmpty) {
+                widget.passengerDetail.knowTravellerNo = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+    }
+
+
+
     widgets.add(ElevatedButton(
       onPressed: () {
         validateAndSubmit();

@@ -31,7 +31,7 @@ void configKG() {
     primaryButtonColor: Color.fromRGBO(0X33, 0x77, 0x42,1),
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
-    accentButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
+    accentButtonColor: Color.fromRGBO(0XAD, 0xD1, 0x41, 1),
     accentColor: Colors.black,
     primaryHeaderColor: Color.fromRGBO(0X2A, 0x2A, 0x2A, 1),
 
@@ -62,13 +62,14 @@ void configKG() {
     wantClassBandImages: true,
     wantMaterialControls: true,
     wantPageImages: true,
+    wantTallPageImage: true,
 
-    currency: 'SEK',
-    airlineName: "Air Gotland",
-    xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
+    currency: 'USD',
+    airlineName: "Key Lime",
+    xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     xmlTokenPost:  "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode:  "KG",
-    brandID: "KG",
+    brandID: "",
     buttonStyle: 'RO2',
 
     termsAndConditionsUrl:  "https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
@@ -88,7 +89,7 @@ void configKG() {
     wantEnglishTranslation: false,
     want24HourClock: true,
     currencies: '',
-    gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
+    gblServerFiles: 'https://customertest.videcom.com/KeyLimeAir/AppFiles',
     passengerTypes:  PassengerTypes(
       adults: true,
       child: true,
@@ -110,6 +111,12 @@ void configKG() {
 //    maxNumberOfPax:  9,
     hideFareRules:  true,
     wantMyAccount: true,
+    wantGender: true,
+    wantMiddleName: true,
+    wantRedressNo: true,
+    wantKnownTravNo: true,
+
+
     apiKey: '75998e0697a04bc0bbb7dd9a38cf0745',
 //Staging setttings
     liveXmlUrl:      "https://booking.airgotland.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",

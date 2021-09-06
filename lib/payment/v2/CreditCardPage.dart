@@ -19,6 +19,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
+import 'package:vmba/components/showDialog.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({    Key key,
@@ -188,6 +189,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
+  /*
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -215,6 +217,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     );
   }
 
+   */
   Future<void> signin() async {
     await login().then((result) {
       session = Session(
@@ -328,7 +331,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         } else {
           _error = translate('Declined');
           _dataLoaded();
-          _showDialog();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
         }
       });
     } else {
@@ -548,8 +552,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
         return null;
       }
 
+      String result = '';
       try {
-        String result = response.body
+        result = response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
@@ -577,24 +582,36 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblTimerExpired = true;
           _error = result;
           _dataLoaded();
-          _showDialog();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+
         } else if (result.contains('Payment not')) {
           gblTimerExpired = true;
           _error = result;
           _dataLoaded();
-          _showDialog();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+
         } else {
           gblTimerExpired = true;
           print(result);
           _error = translate('Declined') + ': ' + result;
           _dataLoaded();
-          _showDialog();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+
         }
       } catch (e) {
         gblTimerExpired = true;
-        _error = response.body; // 'Please check your details';
+        if( result.isNotEmpty ){
+          _error = result;
+        } else {
+          _error = response.body; // 'Please check your details';
+        }
         _dataLoaded();
-        _showDialog();
+        //_showDialog();
+        showAlertDialog(context, 'Error', _error);
+
       }
     }
   }
@@ -727,6 +744,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     msg = '*$rLOC^';
     msg += getTicketingCmd();
 
+    logit('ticketBooking: $msg');
     response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
@@ -750,9 +768,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
       noInternetSnackBar(context);
       return null;
     }
-
+    String pnrJson = '';
     try {
-      String pnrJson = response.body
+       pnrJson = response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -779,9 +797,15 @@ class _CreditCardPageState extends State<CreditCardPage> {
       //sendEmailConfirmation();
 
     } catch (e) {
-      _error = response.body; // 'Please check your details';
+      if( pnrJson.isNotEmpty ) {
+        _error = pnrJson;
+      } else {
+        _error = response.body; // 'Please check your details';
+      }
+      logit(_error);
       _dataLoaded();
-      _showDialog();
+      //_showDialog();
+      showAlertDialog(context, 'Error', _error);
     }
   }
 

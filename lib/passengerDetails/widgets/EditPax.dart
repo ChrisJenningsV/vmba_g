@@ -37,6 +37,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _titleTextEditingController = TextEditingController();
 
   TextEditingController _firstNameTextEditingController =  TextEditingController();
+  TextEditingController _middleNameTextEditingController =  TextEditingController();
   TextEditingController _lastNameTextEditingController =  TextEditingController();
   TextEditingController _dateOfBirthTextEditingController =  TextEditingController();
   TextEditingController _adsNumberTextEditingController =  TextEditingController();
@@ -46,6 +47,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _phoneTextEditingController = TextEditingController();
   TextEditingController _disabilityIDTextEditingController = TextEditingController();
   TextEditingController _seniorIDTextEditingController = TextEditingController();
+  TextEditingController _redressNoTextEditingController = TextEditingController();
+  TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
   //Countrylist _countryList;
@@ -62,6 +65,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     }
     _titleTextEditingController.text = widget.passengerDetail.title;
     _firstNameTextEditingController.text = widget.passengerDetail.firstName;
+    _middleNameTextEditingController.text = widget.passengerDetail.middleName;
     _lastNameTextEditingController.text = widget.passengerDetail.lastName;
     _dateOfBirthTextEditingController.text =
     widget.passengerDetail.dateOfBirth != null
@@ -77,6 +81,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
     _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
     _disabilityIDTextEditingController.text = widget.passengerDetail.disabilityID;
+    _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
+    _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
 
 //    _countryList = getCountrylist() as Countrylist;
     gblRememberMe = false;
@@ -221,6 +227,38 @@ return SafeArea(
         ),
       ),
     ));
+
+    // middle name
+    if( gblSettings.wantMiddleName) {
+      list.add(Padding(
+        padding: _padding,
+        child: new Theme(
+          data: theme ,
+          child: TextFormField(
+            maxLength: 50,
+            decoration: getDecoration('Middle name (or NONE)'),
+            controller: _middleNameTextEditingController,
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.middleName = value;
+            },
+            textInputAction: TextInputAction.done,
+            // keyboardType: TextInputType.text,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+            ],
+            validator: (value) =>
+            value.isEmpty ? translate('Middle name cannot be empty - type NONE if none') : null,
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.middleName = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+
+    }
+
 
     // last name
     list.add(Padding(
@@ -385,59 +423,154 @@ return SafeArea(
       ));
     }
 
-if ( widget.isLeadPassenger ) {
-  // Phone
-  list.add(Padding(
-    padding: _padding,
-    child: new Theme(
-      data: theme,
-      child: TextFormField(
-        maxLength: 50,
-        decoration: getDecoration('Phone Number'),
-        controller: _phoneTextEditingController,
-        keyboardType: TextInputType.phone,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.phonenumber = value;
-        },
-        validator: (value) =>
-        value.isEmpty ?
-        translate('Phone number can\'t be empty')
-            : null,
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.phonenumber = value.trim();
-          }
-        },
-      ),
-    ),
-  ));
+    if(widget.isAdsBooking) {
+      list.add(Padding(
+        padding: _padding,
+        child: TextFormField(
+          maxLength: 20,
+          textCapitalization: TextCapitalization.characters,
+          decoration: getDecoration('ADS number'),
 
-// email
-  list.add(Padding(
-    padding: _padding,
-    child: new Theme(
-      data: theme,
-      child: TextFormField(
-        maxLength: 50,
-        decoration: getDecoration('Email'),
-        controller: _emailTextEditingController,
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) => validateEmail(value.trim()),
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.email = value;
-        },
-        onSaved: (value) {
-          if (value != null) {
-             widget.passengerDetail.email = value.trim();
-          }
-        },
-      ),
-    ),
-  ));
-}
+          keyboardType: TextInputType.text,
+          controller: _adsNumberTextEditingController,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
+          ],
+          onFieldSubmitted: (value) {
+            widget.passengerDetail.adsNumber = value;
+          },
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'An ADS number is required';
+            } else if (!value.toUpperCase().startsWith('ADS') ||
+                value.length != 16 ||
+                !isNumeric(value.substring(3))) {
+              return 'ADS not valid';
+            } else {
+              return null;
+            }
+          },
+          onSaved: (value) {
+            if (value != null) {
+              widget.passengerDetail.adsNumber = value.trim();
+            }
+          },
+        ),
+      ));
+    }
+
+
+    if( widget.isLeadPassenger) {
+// phone
+      list.add(Padding(
+        padding: _padding,
+        child: new Theme(
+          data: theme,
+          child: TextFormField(
+            maxLength: 50,
+            decoration: getDecoration('Phone Number'),
+            controller: _phoneTextEditingController,
+            keyboardType: TextInputType.number,
+            validator: (value) =>
+            value.isEmpty ? translate('Phone Number cannot be empty') : null,
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.phonenumber = value;
+            },
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.phonenumber = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+
+      // email
+      list.add(Padding(
+        padding: _padding,
+        child: new Theme(
+          data: theme,
+          child: TextFormField(
+            maxLength: 50,
+            decoration: getDecoration('Email'),
+            controller: _emailTextEditingController,
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) => validateEmail(value.trim()),
+            onFieldSubmitted: (value) {
+              widget.passengerDetail.email = value;
+            },
+            onSaved: (value) {
+              if (value != null) {
+                widget.passengerDetail.email = value.trim();
+              }
+            },
+          ),
+        ),
+      ));
+    }
+
+// Gender
+   if( gblSettings.wantGender) {
+     list.add(Padding(
+       padding: _padding,
+       child: new Theme(
+         data: theme,
+         child: genderPicker(_padding, theme),
+       ),
+     ));
+   }
+
+
+   // redress number
+   if ( gblSettings.wantRedressNo ) {
+     list.add(Padding(
+       padding: _padding,
+       child: new Theme(
+         data: theme,
+         child: TextFormField(
+           maxLength: 50,
+           decoration: getDecoration('Redress Number (if applicable)'),
+           controller: _redressNoTextEditingController,
+           keyboardType: TextInputType.streetAddress,
+           //inputFormatters: [          FilteringTextInputFormatter.digitsOnly,        ],
+           onFieldSubmitted: (value) {
+             widget.passengerDetail.redressNo = value;
+           },
+           onSaved: (value) {
+             if (value != null) {
+               widget.passengerDetail.redressNo = value.trim();
+             }
+           },
+         ),
+       ),
+     ));
+   }
+
+   // know traveller number
+   if ( gblSettings.wantKnownTravNo ) {
+     list.add(Padding(
+       padding: _padding,
+       child: new Theme(
+         data: theme,
+         child: TextFormField(
+           maxLength: 50,
+           decoration: getDecoration('Known Traveller Number (if applicable)'),
+           controller: _knownTravellerNoTextEditingController,
+           keyboardType: TextInputType.streetAddress,
+           //inputFormatters: [          FilteringTextInputFormatter.digitsOnly,        ],
+           onFieldSubmitted: (value) {
+             widget.passengerDetail.knowTravellerNo = value;
+           },
+           onSaved: (value) {
+             if (value != null) {
+               widget.passengerDetail.knowTravellerNo = value.trim();
+             }
+           },
+         ),
+       ),
+     ));
+   }
+
 
 // Country
    if( gblSettings.wantCountry) {
@@ -480,7 +613,7 @@ if ( widget.isLeadPassenger ) {
      list.add(infoBox(
          'Persons with Disability availing of the 20% discount are required to present a PWD ID issued by the National Council on Disability Affairs (NCDA) or local government unit upon check-in or boarding.' +
         'This discount applies to the base fare, and does not apply to add-ons such as baggage allowance or inflight meals.' ));
-// email
+// disability
      list.add(Padding(
        padding: _padding,
        child: new Theme(
@@ -578,6 +711,39 @@ if ( widget.isLeadPassenger ) {
 
   }
 
+Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
+  var curIndex ;
+  var index = 0;
+  List <String> genderList = ['Male', 'Female'];
+
+  return  Padding(
+      padding: padding,
+      child: new Theme(
+          data: theme,
+          child: DropdownButtonFormField<int>(
+            decoration: getDecoration('Gender'),
+            value: curIndex,
+            items: genderList.map((gender )
+            => DropdownMenuItem(
+              child: Row(children: <Widget>[
+                SizedBox(width: 10,),
+                new TrText(gender)]),
+              value: index++,
+            )
+            ).toList(),
+
+            // hint: Text('Country'),
+            onChanged: (value) {
+              setState(() {
+                logit('Value = ' + value.toString());
+                widget.passengerDetail.gender = genderList[ value];
+
+              });
+            },
+          ) )
+  );
+
+}
 
 
   Widget countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
