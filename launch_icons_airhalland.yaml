@@ -7,6 +7,7 @@ flutter_icons:
 # flutter pub run flutter_launcher_icons:main -f launch_icons_airhalland.yaml
 #
 # copy /y lib\assets\airhalland\images\bg.png lib\assets\images
+# cp  lib/assets/airhalland/images/bg.png lib/assets/images
 #
 
 
