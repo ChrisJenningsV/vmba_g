@@ -6,6 +6,7 @@ class PassengerTypes {
   bool senior;
   bool student;
 
+  bool wantAdultDOB;
   bool wantInfantDOB;
   bool wantChildDOB ;
   bool wantYouthDOB;
@@ -26,6 +27,7 @@ class PassengerTypes {
 //  bool umnr = false;
 
   PassengerTypes({this.adults=true, this.infant=false, this.youths=false, this.child=false, this.senior=false, this.student=false,
+    this.wantAdultDOB=false,
     this.wantInfantDOB=true,
     this.wantChildDOB=true,
     this.wantYouthDOB=false,

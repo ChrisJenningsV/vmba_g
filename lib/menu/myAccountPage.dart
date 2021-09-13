@@ -10,6 +10,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/helper.dart';
 //import 'package:vmba/utilities/helper.dart';
 
 class MyAccountPage extends StatefulWidget {
@@ -31,7 +32,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _lastNameTextEditingController = TextEditingController();
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _phoneNumberTextEditingController = TextEditingController();
-  TextEditingController _dateOfBirthTextEditingController = TextEditingController();
+//  TextEditingController _dateOfBirthTextEditingController = TextEditingController();
+  TextEditingController _dobController = TextEditingController();
   TextEditingController _adsNumberTextEditingController = TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
   TextEditingController _fqtvTextEditingController = TextEditingController();
@@ -40,6 +42,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _disabilityTextEditingController = TextEditingController();
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
+  int _curGenderIndex ;
+  List <String> genderList = ['Male', 'Female'];
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
@@ -54,6 +58,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
   initState() {
     super.initState();
     widget.passengerDetail = new PassengerDetail(email: '', phonenumber: '');
+    if (widget.passengerDetail.paxType == null) {
+      widget.passengerDetail.paxType = PaxType.adult;
+    }
 
     Repository.get().getNamedUserProfile('PAX1').then((profile) {
       if (profile != null) {
@@ -67,12 +74,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
           print(e);
         }
         _titleTextEditingController.text = widget.passengerDetail.title;
+        _titleTextEditingController.text = widget.passengerDetail.title;
         _firstNameTextEditingController.text = widget.passengerDetail.firstName;
         _middleNameTextEditingController.text = widget.passengerDetail.middleName;
         _lastNameTextEditingController.text = widget.passengerDetail.lastName;
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
-        _dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
+        //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
+        if( widget.passengerDetail.dateOfBirth != null ) {
+          _dobController.text = DateFormat('dd-MMM-yyyy')
+              .format( widget.passengerDetail.dateOfBirth);
+        }
         _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
         _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
 
@@ -85,9 +97,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
         _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
 
-        if (widget.passengerDetail.paxType == null) {
-          widget.passengerDetail.paxType = PaxType.adult;
+        if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
+          _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
+          logit('genderPicker index:${_curGenderIndex}');
+          setState(() {
+
+          });
         }
+
+      }
+      if (widget.passengerDetail.paxType == null) {
+        widget.passengerDetail.paxType = PaxType.adult;
       }
       _populateFromGlobalProfile();
     });
@@ -115,6 +135,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if (_lastNameTextEditingController.text == null ||
         _lastNameTextEditingController.text.isEmpty) {
       _lastNameTextEditingController.text = gblPassengerDetail.lastName;
+    }
+
+    if ((_dobController.text == null ||  _dobController.text.isEmpty) &&
+        gblPassengerDetail.dateOfBirth != null ) {
+      _dobController.text =DateFormat('dd-MMM-yyyy')
+          .format( gblPassengerDetail.dateOfBirth);
     }
 
     if (_phoneNumberTextEditingController.text == null ||
@@ -377,28 +403,49 @@ class _MyAccountPageState extends State<MyAccountPage> {
  //   return widgets;
 
     // DOB
-    if( widget.passengerDetail.paxType != PaxType.adult &&
+    if( (widget.passengerDetail.paxType == PaxType.adult && gblSettings.passengerTypes.wantAdultDOB ) ||
+      widget.passengerDetail.paxType != PaxType.adult &&
         widget.passengerDetail.paxType != null ) {
       widgets.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: (widget.passengerDetail.paxType != PaxType.adult &&
-            widget.passengerDetail.paxType != null)
-            ? InkWell(
+        child:  InkWell(
           onTap: () {
             _showCalenderDialog(widget.passengerDetail.paxType);
           },
           child: IgnorePointer(
             child: TextFormField(
-              decoration: _getDecoration('date of Birth'),
+              decoration: _getDecoration('Date of Birth'),
               //initialValue: field.value,
-              controller: _dateOfBirthTextEditingController, //
+              controller: _dobController, //
+              validator: (value) =>
+              value.isEmpty ? translate('Date of Birth is required') : null,
+              onSaved: (value) {
+                if (value != null && value.isNotEmpty) {
+
+                  DateFormat format = new DateFormat("dd-MMM-yyyy"); //""yyyy MMM dd");
+                  widget.passengerDetail.dateOfBirth = format.parse(value);
+                }
+              },
+
               // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
             ),
           ),
         )
-            : Padding(padding: const EdgeInsets.all(0.0)),
+            ,
       ));
     }
+
+    // gender
+    if( gblSettings.wantGender) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: _theme,
+          child: genderPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), _theme),
+        ),
+      ));
+    }
+
 
     // fqtv
     if (gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true) {
@@ -424,6 +471,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             )),
       ));
     }
+
     if (gblSettings.wantFQTV == true) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
@@ -523,6 +571,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ));
     }
+
     if (gblSettings.wantRedressNo) {
       widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
@@ -562,8 +611,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ));
     }
-
-
 
     widgets.add(ElevatedButton(
       onPressed: () {
@@ -605,6 +652,47 @@ class _MyAccountPageState extends State<MyAccountPage> {
       children: widgets,
     );
   }
+
+
+  Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
+    var index = 0;
+    logit('genderPicker :${widget.passengerDetail.gender}');
+/*    if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
+      _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender);
+      logit('genderPicker index:${_curGenderIndex}');
+    }
+*/
+    return  Padding(
+        padding: padding,
+        child: new Theme(
+            data: theme,
+            child: DropdownButtonFormField<int>(
+              decoration: getDecoration('Gender'),
+              value: _curGenderIndex,
+              items: genderList.map((gender )
+              => DropdownMenuItem(
+                child: Row(children: <Widget>[
+                  SizedBox(width: 10,),
+                  new TrText(gender)]),
+                value: index++,
+              )
+              ).toList(),
+              validator: (value) =>
+              (value == null ) ? translate('Gender is required') : null,
+
+              // hint: Text('Country'),
+              onChanged: (value) {
+                setState(() {
+                 // logit('Value = ' + value.toString());
+                  widget.passengerDetail.gender = genderList[ value];
+
+                });
+              },
+            ) )
+    );
+
+  }
+
 
   void _updateTitle(String value) {
     setState(() {
@@ -650,11 +738,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
       case PaxType.adult:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
+
         }
         break;
       default:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
+
         }
         break;
     }
@@ -712,7 +804,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void _updateDateOfBirth(DateTime dateOfBirth) {
     setState(() {
-      _dateOfBirthTextEditingController.text =
+      _dobController.text =
           DateFormat('dd-MMM-yyyy').format(dateOfBirth);
       FocusScope.of(context).requestFocus(new FocusNode());
     });

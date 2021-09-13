@@ -637,22 +637,34 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   String buildAddPaxCmd() {
     StringBuffer sb = new StringBuffer();
+    int paxNo = 1;
     widget.newbooking.passengerDetails.forEach((pax) {
       if (pax.lastName != '') {
-        sb.write('-${pax.lastName}/${pax.firstName}${pax.title}');
+        if( pax.middleName != null && pax.middleName.isNotEmpty && pax.middleName.toUpperCase() != 'NONE') {
+          sb.write('-${pax.lastName}/${pax.firstName}${pax.middleName}${pax.title}');
+        } else {
+          sb.write('-${pax.lastName}/${pax.firstName}${pax.title}');
+        }
         if (pax.dateOfBirth != null) {
+          bool addDOB = false;
           if (pax.paxType == PaxType.child) {
             sb.write('.CH');
+            addDOB = true;
           } else if (pax.paxType == PaxType.youth) {
             sb.write('.TH');
+            addDOB = true;
           } else if (pax.paxType == PaxType.senior) {
             sb.write('.CD');
+            addDOB = true;
           } else if (pax.paxType == PaxType.infant) {
             sb.write('.IN');
+            addDOB = true;
           }
-          String _dob =
-              DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
-          sb.write('($_dob)');
+          if( addDOB ) {
+            String _dob =
+            DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+            sb.write('($_dob)');
+          }
         } else {
            if (pax.paxType == PaxType.student) {
             sb.write('.SD');
@@ -662,6 +674,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
              sb.write('.TH15');
             }
         }
+
       }
       sb.write('^');
       if( gblSettings.aircode == 'T6') {
@@ -680,6 +693,23 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         }
 
       }
+
+      if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){
+        String _dob =
+        DateFormat('dMMMyyyy').format(pax.dateOfBirth).toString();
+        sb.write('3-${paxNo}FDOB ${_dob}^');
+
+      }
+      if( pax.gender != null && pax.gender.isNotEmpty ){
+        sb.write('3-${paxNo}FGNDR${pax.gender}^');
+      }
+      if( pax.redressNo != null && pax.redressNo.isNotEmpty ){
+        sb.write('4-${paxNo}FDOCO//R/${pax.redressNo}///USA^');
+      }
+      if( pax.knowTravellerNo != null && pax.knowTravellerNo.isNotEmpty ){
+        sb.write('4-${paxNo}FDOCO//K/${pax.knowTravellerNo}///USA^');
+      }
+      paxNo +=1 ;
     });
     return sb.toString();
   }

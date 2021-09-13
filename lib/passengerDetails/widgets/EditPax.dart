@@ -51,6 +51,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
 
   List<UserProfileRecord> userProfileRecordList;
+  int _curGenderIndex ;
+  List <String> genderList = ['Male', 'Female'];
   //Countrylist _countryList;
 
   @override
@@ -72,6 +74,11 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
         ? DateFormat('dd-MMM-yyyy')
         .format(widget.passengerDetail.dateOfBirth)
         : '';
+    if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
+      _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
+      logit('genderPicker index:${_curGenderIndex}');
+    }
+
     _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
 
     _phoneTextEditingController.text = widget.passengerDetail.phonenumber;
@@ -286,45 +293,69 @@ return SafeArea(
       ),
     ));
 
-    // DOB
-    list.add(Padding(
-      padding: _padding,
-      child: ( widget.passengerDetail.paxType != PaxType.adult &&
-          widget.passengerDetail.paxType != PaxType.senior &&
-          widget.passengerDetail.paxType != PaxType.student &&
-          !(widget.passengerDetail.paxType == PaxType.youth && gblSettings.passengerTypes.wantYouthDOB == false))
-          ? InkWell(
-        onTap: () {
-          gblNewDatepicker ?
-          _showHoloCalenderDialog(widget.passengerDetail.paxType) :
-          _showCalenderDialog(widget.passengerDetail.paxType);
-        },
-        child: IgnorePointer(
-          child: TextFormField(
-            decoration: getDecoration('Date of Birth'),
-            //initialValue: field.value,
-            controller: _dateOfBirthTextEditingController,
-            validator: (value) =>
-            value.isEmpty ? translate('Date of Birth is required') : null,
-            onSaved: (value) {
-              if (value != '') {
-                var date = value.split('-')[2] +
-                    ' ' +
-                    value.split('-')[1] +
-                    ' ' +
-                    value.split('-')[0];
-                DateFormat format = new DateFormat("yyyy MMM dd");
-                widget.passengerDetail.dateOfBirth = format.parse(date);
-              }
-            },
+    bool wantDOB = false;
+    logit('Pax type: ${widget.passengerDetail.paxType.toString()}');
+    switch (widget.passengerDetail.paxType) {
+      case PaxType.adult:
+        if( gblSettings.passengerTypes.wantAdultDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.senior:
+        if( gblSettings.passengerTypes.wantSeniorDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.student:
+        if( gblSettings.passengerTypes.wantStudentDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.youth:
+        if( gblSettings.passengerTypes.wantYouthDOB) {
+          wantDOB = true;
+        }
+        break;
 
-            // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
+      default:
+        wantDOB = true;
+        break;
+    }
+
+
+    // DOB
+    if( wantDOB) {
+      list.add(Padding(
+        padding: _padding,
+        child: InkWell(
+          onTap: () {
+            _showCalenderDialog(widget.passengerDetail.paxType);
+          },
+          child: IgnorePointer(
+            child: TextFormField(
+              decoration: getDecoration('Date of Birth'),
+              //initialValue: field.value,
+              controller: _dateOfBirthTextEditingController,
+              validator: (value) =>
+              value.isEmpty ? translate('Date of Birth is required') : null,
+              onSaved: (value) {
+                if (value != '') {
+                  var date = value.split('-')[2] +
+                      ' ' +
+                      value.split('-')[1] +
+                      ' ' +
+                      value.split('-')[0];
+                  DateFormat format = new DateFormat("yyyy MMM dd");
+                  widget.passengerDetail.dateOfBirth = format.parse(date);
+                }
+              },
+
+              // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
+            ),
           ),
         ),
-      )
-          : Padding(padding: const EdgeInsets.all(0.0)),
-    ));
-
+      ));
+    }
     if( widget.passengerDetail.paxType == PaxType.adult &&
         gblSettings.wantFQTV ) {
       list.add(Padding(
@@ -712,9 +743,7 @@ return SafeArea(
   }
 
 Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
-  var curIndex ;
   var index = 0;
-  List <String> genderList = ['Male', 'Female'];
 
   return  Padding(
       padding: padding,
@@ -722,7 +751,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
           data: theme,
           child: DropdownButtonFormField<int>(
             decoration: getDecoration('Gender'),
-            value: curIndex,
+            value: _curGenderIndex,
             items: genderList.map((gender )
             => DropdownMenuItem(
               child: Row(children: <Widget>[
@@ -731,6 +760,8 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
               value: index++,
             )
             ).toList(),
+            validator: (value) =>
+            (value == null ) ? translate('Gender is required') : null,
 
             // hint: Text('Country'),
             onChanged: (value) {
@@ -1060,11 +1091,13 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
       case PaxType.adult:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
         }
         break;
       default:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
         }
         break;
     }

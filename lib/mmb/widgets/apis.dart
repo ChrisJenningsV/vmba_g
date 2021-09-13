@@ -10,6 +10,8 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/components/showDialog.dart';
+
 
 class ApisWidget extends StatefulWidget {
   ApisWidget({Key key, this.apisCmd, this.rloc}) : super(key: key);
@@ -58,9 +60,14 @@ class _ApisWidgetState extends State<ApisWidget> {
         print(e.toString());
       }
       print('Loaded APIS fields');
-      apisForm = new ApisModel.fromJson(map);
+      try {
+        apisForm = new ApisModel.fromJson(map);
 
-      _dataLoaded();
+//        logit('loaded');
+        _dataLoaded();
+      } catch(e) {
+        logit(e.toString());
+      }
     } else {
       // If that response was not OK, throw an error.
       _dataLoaded();
@@ -95,6 +102,7 @@ class _ApisWidgetState extends State<ApisWidget> {
             Navigator.pop(context, apisPnrStatus);
           });
         } else {
+          showAlertDialog(context, 'Apis Error', result);
           _dataLoaded();
         }
       } catch (e) {
@@ -135,6 +143,7 @@ class _ApisWidgetState extends State<ApisWidget> {
         _submitApis();
       } catch (e) {
         print('Error: $e');
+        showAlertDialog(context, 'Alert', e.toString());
       }
     }
   }
@@ -174,10 +183,12 @@ class _ApisWidgetState extends State<ApisWidget> {
 
   Widget body() {
     if (_loadingInProgress) {
+      //logit('loading');
       return new Center(
         child: new CircularProgressIndicator(),
       );
     } else {
+      //logit('display');
       return Container(
         child: //Column(
             // children: <Widget>[
@@ -239,7 +250,7 @@ class _ApisWidgetState extends State<ApisWidget> {
                   //keyboardType: TextInputType.text,
                   validator: (value) =>
                       value.isEmpty && field.required == "True"
-                          ? '${field.displayname} can\'t be empty'
+                          ? '${field.displayname} cannot be empty'
                           : null,
                   onSaved: (value) {
                     if (value != null) {

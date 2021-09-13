@@ -1,5 +1,7 @@
 //import 'dart:convert';
 
+import 'package:vmba/utilities/helper.dart';
+
 class ApisModel {
   Apis apis;
 
@@ -161,18 +163,27 @@ class Fields {
   Fields({this.field});
 
   Fields.fromJson(Map<String, dynamic> json) {
+    try {
     if (json['field'] != null) {
       field = [];
       // new List<Field>();
       if (json['field'] is List) {
         json['field'].forEach((v) {
-          field.add(new Field.fromJson(v));
+
+          Field f = new Field.fromJson(v);
+//          logit('Adding field ${f.displayname}');
+          field.add(f);
+  //        logit('Added field ${f.displayname}');
         });
       } else {
         field.add(new Field.fromJson(json['field']));
         print('not a list');
       }
     }
+    } catch(e) {
+      logit(e.toString());
+    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -215,8 +226,7 @@ class Field {
     displayable = json['displayable'] != null ? json['displayable'] : null;
     editable = json['editable'] != null ? json['editable'] : null;
     value = json['value'] != null ? json['value'] : null;
-    choices =
-        json['choices'] != null ? new Choices.fromJson(json['choices']) : null;
+    choices = _getChoices(json['choices']);
   }
 
   Map<String, dynamic> toJson() {
@@ -236,18 +246,46 @@ class Field {
   }
 }
 
+Choices _getChoices(Map<String, dynamic> json  ) {
+  Choices choices;
+  if( json == null) return null;
+
+  choices = Choices.fromJson(json);
+
+  return choices;
+}
+
+
 class Choices {
   List<Choice> choice;
 
   Choices({this.choice});
 
   Choices.fromJson(Map<String, dynamic> json) {
-    if (json['choice'] != null) {
-      choice = [];
-      //new List<Choice>();
-      json['choice'].forEach((v) {
-        choice.add(new Choice.fromJson(v));
-      });
+
+    try {
+      if (json['choice'] != null) {
+        choice = [];
+        Type ty = json['choice'].runtimeType;
+        // check if single only one entry!
+        if (ty.toString() != 'List<dynamic>') {
+          try {
+            choice.add(new Choice.fromJson(json['choice']));
+          } catch (e) {
+            logit(e.toString());
+          }
+        } else {
+          json['choice'].forEach((v) {
+            try {
+              choice.add(new Choice.fromJson(v));
+            } catch (e) {
+              logit(e.toString());
+            }
+          });
+        }
+      }
+    } catch(e) {
+      logit(e.toString());
     }
   }
 
@@ -275,8 +313,12 @@ class Choice {
   Choice.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     description = json['description'];
-    docissuingcountry = json['docissuingcountry'];
-    passportexpiry = json['passportexpiry'];
+    if(  json['docissuingcountry'] != null ) {
+      docissuingcountry = json['docissuingcountry'];
+    }
+    if( json['passportexpiry'] != null ) {
+      passportexpiry = json['passportexpiry'];
+    }
   }
 
   Map<String, dynamic> toJson() {

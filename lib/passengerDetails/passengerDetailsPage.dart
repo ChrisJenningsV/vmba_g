@@ -52,7 +52,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     //.then((result) result == true ? loadProfileIntoPaxDetails: {});
 
     if(isUserProfileComplete()) {
-      loadProfileIntoPaxDetails();
+      if( loadProfileIntoPaxDetails()) {
+        showContinueButton();
+      }
     } else {
       Repository.get()
           .getNamedUserProfile('PAX1')
@@ -107,11 +109,18 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   showContinueButton() {
     int uncompletedItems;
     uncompletedItems = _passengerDetails
-        .where((pax) =>
-            pax.title == '' || pax.title == null ||
+        .where((pax) => !pax.isComplete()
+/*            pax.title == '' || pax.title == null ||
                 pax.firstName == '' || pax.firstName == null||
-                pax.lastName == '' || pax.lastName == null)
+                pax.lastName == '' || pax.lastName == null ||
+                (gblSettings.wantGender && (pax.gender == null || pax.gender.isEmpty )) ||
+                (gblSettings.wantMiddleName && (pax.middleName == null || pax.middleName.isEmpty ))
+*/
+    )
         .length;
+
+
+
     if (uncompletedItems == 0) {
       setState(() {
         allPaxDetailsCompleted = true;
@@ -139,8 +148,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               child: new TrText("YES"),
               onPressed: () {
                 preLoadDetails = true;
-                loadProfileIntoPaxDetails();
-                showContinueButton();
+                if( loadProfileIntoPaxDetails()) {
+                  showContinueButton();
+                }
                 Navigator.pop(context);
                 setState(() {
                 });
@@ -152,19 +162,30 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     );
   }
 
-  loadProfileIntoPaxDetails() {
+  bool loadProfileIntoPaxDetails() {
     int paxNo = 0;
+    bool gotAllDetails = true;
 //    setState(() {
       if (passengerDetailRecord.title != null && passengerDetailRecord.title.length > 0) {
         _passengerDetails[paxNo].title = passengerDetailRecord.title;
+      } else {
+        gotAllDetails = false;
       }
 
       if (passengerDetailRecord.firstName != null && passengerDetailRecord.firstName.length > 0) {
         _passengerDetails[paxNo].firstName = passengerDetailRecord.firstName;
+      } else {
+        gotAllDetails = false;
       }
 
-      if (passengerDetailRecord.lastName != null && passengerDetailRecord.lastName != 'null' && passengerDetailRecord.lastName.length > 0) {
+    if (passengerDetailRecord.middleName != null && passengerDetailRecord.middleName.length > 0) {
+      _passengerDetails[paxNo].middleName = passengerDetailRecord.middleName;
+    }
+
+    if (passengerDetailRecord.lastName != null && passengerDetailRecord.lastName != 'null' && passengerDetailRecord.lastName.length > 0) {
         _passengerDetails[paxNo].lastName = passengerDetailRecord.lastName;
+    } else {
+      gotAllDetails = false;
       }
 
       if (passengerDetailRecord.fqtv != null &&  passengerDetailRecord.fqtv != 'null' && passengerDetailRecord.fqtv.length > 0 ) {
@@ -184,9 +205,14 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       }
     if (passengerDetailRecord.email != null && passengerDetailRecord.email != 'null' && passengerDetailRecord.email.length > 0) {
       _passengerDetails[paxNo].email =passengerDetailRecord.email;
+    } else {
+      gotAllDetails = false;
     }
+
     if (passengerDetailRecord.phonenumber != null && passengerDetailRecord.phonenumber != 'null' && passengerDetailRecord.phonenumber.length > 0) {
       _passengerDetails[paxNo].phonenumber =passengerDetailRecord.phonenumber;
+    } else {
+      gotAllDetails = false;
     }
 
     if (passengerDetailRecord.disabilityID != null && passengerDetailRecord.disabilityID != 'null' && passengerDetailRecord.disabilityID.length > 0) {
@@ -199,10 +225,41 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       _passengerDetails[paxNo].country =passengerDetailRecord.country;
     }
 
+    if( gblSettings.wantApis ) {
+      if (passengerDetailRecord.redressNo != null &&
+          passengerDetailRecord.redressNo.length > 0) {
+        _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
+      } else {
+        gotAllDetails = false;
+      }
+
+      if (passengerDetailRecord.knowTravellerNo != null &&
+          passengerDetailRecord.knowTravellerNo.length > 0) {
+        _passengerDetails[paxNo].knowTravellerNo =
+            passengerDetailRecord.knowTravellerNo;
+      } else {
+        gotAllDetails = false;
+      }
+
+      if (passengerDetailRecord.gender != null &&
+          passengerDetailRecord.gender.length > 0) {
+        _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
+      } else {
+        gotAllDetails = false;
+      }
+
+      if (passengerDetailRecord.dateOfBirth != null) {
+        _passengerDetails[paxNo].dateOfBirth =
+            passengerDetailRecord.dateOfBirth;
+      } else {
+        gotAllDetails = false;
+      }
+    }
+
 
     preLoadDetails = true;
-    showContinueButton();
-
+    //showContinueButton();
+    return gotAllDetails;
 //    });
   }
 

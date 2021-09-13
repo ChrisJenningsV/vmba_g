@@ -606,11 +606,13 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
       case PaxType.adult:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
         }
         break;
       default:
         {
           _initialDateTime = DateTime.now();
+          _minimumDate = DateTime( 110, 0, 0 );
         }
         break;
     }

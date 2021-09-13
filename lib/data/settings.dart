@@ -59,6 +59,7 @@ class Settings {
   String aircode;
   String brandID;
   String airlineName;
+  bool wantApis;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
   bool wantMyAccount = false;
@@ -184,6 +185,7 @@ bool bpShowFastTrack;
     this.wantTallPageImage = false,
     this.wantStatusLine = false,
     this.wantProgressBar = false,
+    this.wantApis = false,
     this.wantGender = false,
     this.wantMiddleName = false,
     this.wantRedressNo = false,
@@ -316,7 +318,16 @@ bool bpShowFastTrack;
     if (passengerTypes.child  == null  ){
       passengerTypes.child = false;
     }
+    if( wantApis) {
+      passengerTypes.wantAdultDOB = true;
+      passengerTypes.wantYouthDOB = true;
+      passengerTypes.wantSeniorDOB = true;
+      passengerTypes.wantStudentDOB = true;
 
+      wantMiddleName = true;
+      wantGender = true;
+
+    }
 
   }
 

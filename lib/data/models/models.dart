@@ -1,5 +1,7 @@
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/settings.dart';
+import 'package:vmba/data/globals.dart';
+
 
 class Passengers {
   int adults; // = 1;
@@ -130,6 +132,33 @@ class PassengerDetail {
     this.knowTravellerNo,
   });
 
+  bool isComplete() {
+    if( title == '' || title == null ) {
+      return false;
+    }
+     if( firstName == '' || firstName == null ) {
+       return false;
+     }
+
+    if (gblSettings.wantMiddleName && (middleName == null || middleName.isEmpty )) {
+      return false;
+    }
+
+    if( lastName == '' || lastName == null ) {
+       return false;
+     }
+
+     if (gblSettings.wantGender && (gender == null || gender.isEmpty )) {
+       return false;
+     }
+
+
+
+    return true;
+
+  }
+
+
   Map<String, dynamic> toJson() {
       final Map<String, dynamic> data = new Map<String, dynamic>();
 
@@ -185,6 +214,8 @@ class PassengerDetail {
       data['fqtvPassword'] = this.fqtvPassword;
       data['redressNo'] = this.redressNo;
       data['knowTravellerNo'] = this.knowTravellerNo;
+      data['gender'] = this.gender;
+      data['dateOfBirth'] = this.dateOfBirth.toString();
 
     return data;
     }
@@ -239,6 +270,8 @@ class PassengerDetail {
     fqtvPassword = json['fqtvPassword'];
     redressNo = json['redressNo'];
     knowTravellerNo = json['knowTravellerNo'];
+    gender = json['gender'];
+    dateOfBirth = DateTime.parse(json['dateOfBirth']);
       }
   }
 

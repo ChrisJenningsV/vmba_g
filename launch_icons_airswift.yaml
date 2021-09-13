@@ -8,4 +8,4 @@ flutter_icons:
 #
 #
 # copy /y lib\assets\airswift\images\bg.png lib\assets\images
-#
+# cp  lib/assets/airswift/images/bg.png lib/assets/images

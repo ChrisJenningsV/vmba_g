@@ -8,4 +8,4 @@ flutter_icons:
 #
 #
 # copy /y lib\assets\ibom\images\bg.png lib\assets\images
-#
+# cp  lib/assets/ibom/images/bg.png lib/assets/images

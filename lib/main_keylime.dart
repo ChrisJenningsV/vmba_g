@@ -111,6 +111,7 @@ void configKG() {
 //    maxNumberOfPax:  9,
     hideFareRules:  true,
     wantMyAccount: true,
+    wantApis: true,
     wantGender: true,
     wantMiddleName: true,
     wantRedressNo: true,
