@@ -4,12 +4,14 @@ import 'package:vmba/utilities/helper.dart';
 import 'models.dart';
 
 class PnrModel {
+  bool success;
   PNR pNR;
 
-  PnrModel({this.pNR});
+  PnrModel({this.pNR, this.success});
 
   PnrModel.fromJson(Map<String, dynamic> json) {
     pNR = json['PNR'] != null ? new PNR.fromJson(json['PNR']) : null;
+    success = json['PNR'] != null ? true : false;
   }
 
   Map<String, dynamic> toJson() {

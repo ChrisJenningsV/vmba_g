@@ -52,7 +52,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
   List<UserProfileRecord> userProfileRecordList;
   int _curGenderIndex ;
-  List <String> genderList = ['Male', 'Female'];
+  List <String> genderList = ['Male', 'Female', 'Undisclosed'];
   //Countrylist _countryList;
 
   @override

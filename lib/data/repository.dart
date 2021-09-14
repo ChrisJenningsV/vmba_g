@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
+import 'package:vmba/data/xmlApi.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -757,7 +758,34 @@ class Repository {
     return database.getPnr(rloc);
   }
 
-  Future<PnrDBCopy> fetchPnr(String rloc) async {
+  Future<PnrDBCopy> fetchPnr2(String rloc) async {
+
+
+    sendXmlMsg( new XmlRequest(command: '*$rloc~x')).then((xmlResponse) {
+      if (xmlResponse.success) {
+        print('Fetch PNR OK');
+        PnrModel pnrModel = new PnrModel.fromJson(xmlResponse.map);
+
+        PnrDBCopy pnrDBCopy = new PnrDBCopy(
+            rloc: pnrModel.pNR.rLOC, //_rloc,
+            data: xmlResponse.data,
+            delete: 0,
+            success: true,
+            nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+        Repository.get().updatePnr(pnrDBCopy);
+
+        return pnrDBCopy;
+      } else {
+        PnrDBCopy pnrDBCopy = new PnrDBCopy( success: false);
+        print('Fetch PNR ERROR');
+        return pnrDBCopy;
+      }
+    });
+  }
+
+
+
+    Future<PnrDBCopy> fetchPnr(String rloc) async {
     http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x"))
@@ -786,6 +814,7 @@ class Repository {
     PnrDBCopy pnrDBCopy = new PnrDBCopy(
         rloc: pnrModel.pNR.rLOC, //_rloc,
         data: pnrJson,
+        success: true,
         delete: 0,
         nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
     Repository.get().updatePnr(pnrDBCopy);

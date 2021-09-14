@@ -116,6 +116,7 @@ class _CheckinBoardingPassesWidgetState
   PnrModel objPNR;
   ApisPnrStatusModel apisPnrStatus;
   bool _loadingInProgress;
+  String _error = '';
   String _displayProcessingText = '';
   //Journeys journeys = Journeys(List<Journey>());
   MmbBooking mmbBooking = MmbBooking();
@@ -249,7 +250,7 @@ class _CheckinBoardingPassesWidgetState
                     '/MyBookingsPage', (Route<dynamic> route) => false);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  primary: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               child: TrText(
@@ -271,30 +272,51 @@ class _CheckinBoardingPassesWidgetState
 
     PnrModel pnr;
     Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
-      Map<String, dynamic> map = jsonDecode(pnrDb.data);
-      pnr = new PnrModel.fromJson(map);
-      setState(() {
-        objPNR = pnr;
-      });
-    }).then((onValue) =>
+      if( pnrDb != null ) {
+        if( pnrDb.success) {
+          Map<String, dynamic> map = jsonDecode(pnrDb.data);
+          pnr = new PnrModel.fromJson(map);
+          setState(() {
+            objPNR = pnr;
+          });
+        } else {
 
+        }
+      } else {
+/*        setState(() {
+          _loadingInProgress = false;
+          _error = 'Booking not found';
+          objPNR = null;
+        });
+
+ */
+        return;
+
+      }
+    }).then((onValue) {
+      if (objPNR != null) {
         //GET APIS STATUS
         Repository.get()
             .getPnrApisStatus(widget.rloc)
             .then((record) {
-              Map<String, dynamic> map = jsonDecode(record.data);
-              ApisPnrStatusModel _apisPnrStatus =
-                  new ApisPnrStatusModel.fromJson(map);
-              setState(() {
-                apisPnrStatus = _apisPnrStatus;
-              });
-            })
+          Map<String, dynamic> map = jsonDecode(record.data);
+          ApisPnrStatusModel _apisPnrStatus =
+          new ApisPnrStatusModel.fromJson(map);
+          setState(() {
+            apisPnrStatus = _apisPnrStatus;
+          });
+        })
             .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
-            .then((onValue) => setState(() {
-                  objPNR = pnr;
-                  _loadingInProgress = false;
-                  _displayProcessingText = '';
-                })));
+            .then((onValue) =>
+            setState(() {
+              objPNR = pnr;
+              _loadingInProgress = false;
+              _displayProcessingText = '';
+            }));
+      }
+      }
+    );
+
   }
 
   void _actionCompleted() {

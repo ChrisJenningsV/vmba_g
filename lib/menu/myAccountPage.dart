@@ -43,7 +43,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
   int _curGenderIndex ;
-  List <String> genderList = ['Male', 'Female'];
+  List <String> genderList = ['Male', 'Female', 'Undisclosed'];
 
   List<UserProfileRecord> userProfileRecordList;
   final formKey = new GlobalKey<FormState>();

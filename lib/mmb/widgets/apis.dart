@@ -237,14 +237,8 @@ class _ApisWidgetState extends State<ApisWidget> {
               },
               child: IgnorePointer(
                 child: TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: field.displayname,
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                  ),
+                  decoration: getDecoration( field.displayname),
+                  //
                   //initialValue: field.value,
                   controller: _textEditingController,
                   //keyboardType: TextInputType.text,
@@ -271,14 +265,9 @@ class _ApisWidgetState extends State<ApisWidget> {
           var _textEditingController = new TextEditingController();
           _textEditingController.text = field.value;
           widgets.add(new TextFormField(
-            decoration: new InputDecoration(
-              labelText: field.displayname,
-              fillColor: Colors.white,
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: new BorderSide(),
-              ),
-            ),
+            decoration: getDecoration(field.displayname),
+
+
             //initialValue: _textEditingController.text,//field.value,
             keyboardType: TextInputType.text,
             controller: _textEditingController,

@@ -646,24 +646,33 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           sb.write('-${pax.lastName}/${pax.firstName}${pax.title}');
         }
         if (pax.dateOfBirth != null) {
-          bool addDOB = false;
+          // get age in years
+          Duration td = DateTime.now().difference(pax.dateOfBirth);
+          int ageYears = (td.inDays / 365).round();
+          int ageMonths = (td.inDays / 30).round();
+          if( ageMonths == 24) ageMonths = 23;
+
+          bool wantDOB = false;
           if (pax.paxType == PaxType.child) {
-            sb.write('.CH');
-            addDOB = true;
+            sb.write('.CH${ageYears.toStringAsFixed(2)}');
+            wantDOB = true;
           } else if (pax.paxType == PaxType.youth) {
-            sb.write('.TH');
-            addDOB = true;
+            sb.write('.TH${ageYears.toStringAsFixed(2)}');
+            wantDOB = true;
           } else if (pax.paxType == PaxType.senior) {
             sb.write('.CD');
-            addDOB = true;
-          } else if (pax.paxType == PaxType.infant) {
-            sb.write('.IN');
-            addDOB = true;
-          }
-          if( addDOB ) {
             String _dob =
             DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
             sb.write('($_dob)');
+            wantDOB = true;
+          } else if (pax.paxType == PaxType.infant) {
+            sb.write('.IN${ageMonths.toStringAsFixed(2)}');
+            wantDOB = true;
+          }
+            if( gblSettings.wantApis && wantDOB) {
+              String _dob =
+              DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+              sb.write('^3-${pax.paxNumber}FDOB $_dob');
           }
         } else {
            if (pax.paxType == PaxType.student) {
