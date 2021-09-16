@@ -116,7 +116,7 @@ class _CheckinBoardingPassesWidgetState
   PnrModel objPNR;
   ApisPnrStatusModel apisPnrStatus;
   bool _loadingInProgress;
-  String _error = '';
+//  String _error = '';
   String _displayProcessingText = '';
   //Journeys journeys = Journeys(List<Journey>());
   MmbBooking mmbBooking = MmbBooking();
@@ -802,6 +802,8 @@ class _CheckinBoardingPassesWidgetState
                     apisCmd:
                         'dsx/${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMMyy').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}/${pnr.pNR.itinerary.itin[journeyNo].depart}/${pnr.pNR.itinerary.itin[journeyNo].arrive}/${pnr.pNR.rLOC + (paxNo + 1).toString()}',
                     rloc: widget.rloc,
+                    paxIndex: paxNo,
+                    pnr: pnr.pNR,
                   ),
                 )).then((apisState) {
               _handleApisInfoChanged(apisState);

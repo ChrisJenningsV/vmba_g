@@ -776,11 +776,12 @@ class Repository {
 
         return pnrDBCopy;
       } else {
-        PnrDBCopy pnrDBCopy = new PnrDBCopy( success: false);
+        PnrDBCopy pnrDBCopy = new PnrDBCopy( rloc: rloc, success: false, delete: 0, data: '');
         print('Fetch PNR ERROR');
         return pnrDBCopy;
       }
     });
+    return null;
   }
 
 

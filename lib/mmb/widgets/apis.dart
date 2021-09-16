@@ -11,13 +11,16 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/data/models/pnr.dart';
 
 
 class ApisWidget extends StatefulWidget {
-  ApisWidget({Key key, this.apisCmd, this.rloc}) : super(key: key);
+  ApisWidget({Key key, this.apisCmd, this.rloc, this.paxIndex, this.pnr}) : super(key: key);
 
   final String apisCmd;
   final String rloc;
+  final int paxIndex;
+  final PNR pnr;
 
   _ApisWidgetState createState() => _ApisWidgetState();
 }
@@ -404,6 +407,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     DateTime _initialDateTime;
     int _minimumYear;
     int _maximumYear;
+    String paxType = widget.pnr.names.pAX[widget.paxIndex].paxType;
 
     DateTime dateNow =
         DateTime.parse(DateFormat('y-MM-dd 00:00:00').format(DateTime.now()));
@@ -428,6 +432,36 @@ class _ApisWidgetState extends State<ApisWidget> {
       _maximumDate = dateNow; //DateTime.now();
       _minimumYear = dateNow.year - 110; //DateTime.now().year - 110;
       _maximumYear = dateNow.year; //DateTime.now().year;
+
+      if( field.id == 'DateOfBirth'){
+        switch (paxType){
+          case 'CH':
+            _maximumDate = DateTime.now().subtract(Duration(days: 731));
+            _minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
+
+            // DOB already set, but before minimum - fiddle
+            if( _initialDateTime.isBefore(_minimumDate)) {
+              _minimumDate = _initialDateTime;
+            }
+
+            _maximumYear = _maximumDate.year;
+              _minimumYear = _minimumDate.year;
+
+              break;
+          case 'IN':
+            _maximumDate = DateTime.now();
+            _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2)));
+
+            if( _initialDateTime.isBefore(_minimumDate)) {
+              _minimumDate = _initialDateTime;
+            }
+
+            _maximumYear = _maximumDate.year;
+            _minimumYear = _minimumDate.year;
+            break;
+        }
+      }
+
     } else {
       _minimumDate = dateNow; //DateTime.now();
       _maximumDate = dateNow.add(new Duration(

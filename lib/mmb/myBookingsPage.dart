@@ -377,20 +377,28 @@ String _error = '';
 
     print(msg);
     _sendVRSCommand(msg, method).then((result){
-      Map map = json.decode(result);
-      ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
-      if( resp.statusCode != 'OK') {
-        _error = resp.message;
+      if( result == null || result == '') {
+        //_error = translate('Error searching for bookings');
+        _loadingInProgress = false;
+        _isButtonDisabled = false;
         _actionCompleted();
-        showAlertDialog(context, 'Error', _error);
-
+ //       showAlertDialog(context, 'Error', _error);
+        return;
       } else {
-        var transactions = resp.transactions;
-        _loadingInProgress = true;
-        setState(() {
-        });
-        _bulkLoadPnrs(transactions);
-        //showAlertDialog(context, 'Information', 'Found ${transactions.length} PNRs');
+        Map map = json.decode(result);
+        ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp
+            .fromJson(map);
+        if (resp.statusCode != 'OK') {
+          _error = resp.message;
+          _actionCompleted();
+          showAlertDialog(context, 'Error', _error);
+        } else {
+          var transactions = resp.transactions;
+          _loadingInProgress = true;
+          setState(() {});
+          _bulkLoadPnrs(transactions);
+          //showAlertDialog(context, 'Information', 'Found ${transactions.length} PNRs');
+        }
       }
     });
   }
@@ -409,11 +417,13 @@ String _error = '';
       print('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed: $msg');
-      _error = translate('message failed');
+      print('failed: $msg error: ${response.statusCode}');
+      _error = translate('message failed Error code ') + response.statusCode.toString();
       try{
-        print (response.body);
-        _error = response.body;
+        if( response.body != null && response.body.isNotEmpty) {
+          print(response.body);
+          _error = response.body;
+        }
       } catch(e){}
 
       _actionCompleted();
@@ -804,39 +814,47 @@ String _error = '';
     var index = 0;
     var count = transactions.length;
 
-    transactions.forEach((tran) {
-      loadBooking(tran.pnr).then((pnrJson) {
-        index++;
-        pnrJson = pnrJson.replaceAll('\n', '').replaceAll('\r', '');
-        if( pnrJson.startsWith('{')) {
-          Map pnrMap = json.decode(pnrJson);
-          print('Loaded PNR: ${tran.pnr}');
-          var objPnr = new PnrModel.fromJson(pnrMap);
-          _rloc = tran.pnr;
+    if( count > 0 ) {
+      transactions.forEach((tran) {
+        loadBooking(tran.pnr).then((pnrJson) {
+          index++;
+          pnrJson = pnrJson.replaceAll('\n', '').replaceAll('\r', '');
+          if (pnrJson.startsWith('{')) {
+            Map pnrMap = json.decode(pnrJson);
+            print('Loaded PNR: ${tran.pnr}');
+            var objPnr = new PnrModel.fromJson(pnrMap);
+            _rloc = tran.pnr;
 
-          // save
-          PnrDBCopy pnrDBCopy = new PnrDBCopy(
-              rloc: objPnr.pNR.rLOC,
-              data: pnrJson,
-              delete: 0,
-              nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
-          Repository.get().updatePnr(pnrDBCopy).then((w) {
-            fetchApisStatus(false);
+            // save
+            PnrDBCopy pnrDBCopy = new PnrDBCopy(
+                rloc: objPnr.pNR.rLOC,
+                data: pnrJson,
+                delete: 0,
+                nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+            Repository.get().updatePnr(pnrDBCopy).then((w) {
+              fetchApisStatus(false);
 
-            if (index >= count) {
-              setState(() {
+              if (index >= count) {
+                setState(() {
 
-              });
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/MyBookingsPage', (Route<dynamic> route) => false);
-            }
-            //Navigator.of(context).pop();
-          });
-        } else {
-          logit('Error loading pnr: ' + pnrJson);
-        }
+                });
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/MyBookingsPage', (Route<dynamic> route) => false);
+              }
+              //Navigator.of(context).pop();
+            });
+          } else {
+            logit('Error loading pnr: ' + pnrJson);
+          }
+        });
       });
-    });
+    } else {
+
+      showAlertDialog(context, 'Alert','No pending bookings');
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          '/MyBookingsPage', (Route<dynamic> route) => false);
+    }
 
   }
 

@@ -641,9 +641,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     widget.newbooking.passengerDetails.forEach((pax) {
       if (pax.lastName != '') {
         if( pax.middleName != null && pax.middleName.isNotEmpty && pax.middleName.toUpperCase() != 'NONE') {
-          sb.write('-${pax.lastName}/${pax.firstName}${pax.middleName}${pax.title}');
+          sb.write('-${pax.paxNumber}@${pax.lastName}/${pax.firstName}${pax.middleName}${pax.title}');
         } else {
-          sb.write('-${pax.lastName}/${pax.firstName}${pax.title}');
+          sb.write('-${pax.paxNumber}@${pax.lastName}/${pax.firstName}${pax.title}');
         }
         if (pax.dateOfBirth != null) {
           // get age in years
@@ -706,7 +706,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){
         String _dob =
         DateFormat('dMMMyyyy').format(pax.dateOfBirth).toString();
-        sb.write('3-${paxNo}FDOB ${_dob}^');
+        sb.write('3-${paxNo}FDOB $_dob^');
 
       }
       if( pax.gender != null && pax.gender.isNotEmpty ){

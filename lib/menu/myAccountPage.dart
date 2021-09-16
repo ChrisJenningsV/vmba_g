@@ -99,7 +99,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
         if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
           _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
-          logit('genderPicker index:${_curGenderIndex}');
+          logit('genderPicker index:$_curGenderIndex');
           setState(() {
 
           });
@@ -297,34 +297,36 @@ class _MyAccountPageState extends State<MyAccountPage> {
     );
 
     // middle name
-    widgets.add(
-      Padding(
-        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: new Theme(
-          data: _theme,
-          child: TextFormField(
-            maxLength: 50,
-            decoration: _getDecoration('Middle name (or NONE)'),
-            controller: _middleNameTextEditingController,
-            onFieldSubmitted: (value) {
-              widget.passengerDetail.middleName = value;
-            },
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.text,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-            ],
-            validator: (value) =>
-            value.isEmpty ? translate('Middle name cannot be empty') : null,
-            onSaved: (value) {
-              if (value != null) {
-                widget.passengerDetail.middleName = value.trim();
-              }
-            },
+    if( gblSettings.wantMiddleName ) {
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+          child: new Theme(
+            data: _theme,
+            child: TextFormField(
+              maxLength: 50,
+              decoration: _getDecoration('Middle name (or NONE)'),
+              controller: _middleNameTextEditingController,
+              onFieldSubmitted: (value) {
+                widget.passengerDetail.middleName = value;
+              },
+              textInputAction: TextInputAction.done,
+              keyboardType: TextInputType.text,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
+              ],
+              validator: (value) =>
+              value.isEmpty ? translate('Middle name cannot be empty') : null,
+              onSaved: (value) {
+                if (value != null) {
+                  widget.passengerDetail.middleName = value.trim();
+                }
+              },
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
 
 
     // last name
