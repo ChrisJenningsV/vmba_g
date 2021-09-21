@@ -18,7 +18,7 @@ Widget appBar(BuildContext context, String title,
         int curStep}) {
   if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
   if( bottom != null ){
-    logit( 'bottom on page $title');
+//    logit( 'bottom on page $title');
   }
   bool wantOutline = false;
   double height = 80;

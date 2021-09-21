@@ -853,24 +853,31 @@ class _CheckinBoardingPassesWidgetState
       DateTime checkinClosed;
       DateTime now;
 
-      checkinOpens = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate +
+      checkinOpens = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
-              pnr.pNR.itinerary.itin[journeyNo].depTime)
+              pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
           .subtract(new Duration(
               hours: cities
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
-      checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate +
+
+      logit('checkin opens:${checkinOpens.toString()}');
+      checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
-              pnr.pNR.itinerary.itin[journeyNo].depTime)
+              pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
           .subtract(new Duration(
               hours: cities
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinEnd));
 
-      now = new DateTime.now();
+      logit('checkin closed:${checkinClosed.toString()}');
+
+      now = new DateTime.now().toUtc();
+
+      logit('now:${now.toString()}');
+
       checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
           ? true
           : false;
@@ -1042,12 +1049,20 @@ class _CheckinBoardingPassesWidgetState
     city = await Repository.get().getCityByCode(itin.depart);
 
     if (city != null) {
-      checkinOpens = DateTime.parse(itin.depDate + ' ' + itin.depTime)
+/*      checkinOpens = DateTime.parse(itin.depDate + ' ' + itin.depTime)
           .subtract(new Duration(hours: city.webCheckinStart));
       checkinClosed = DateTime.parse(itin.depDate + ' ' + itin.depTime)
           .subtract(new Duration(hours: city.webCheckinEnd));
+
+ */
+      checkinOpens = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt )
+          .subtract(new Duration(hours: city.webCheckinStart));
+      checkinClosed = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt)
+          .subtract(new Duration(hours: city.webCheckinEnd));
+
       departureDateTime = DateTime.parse(itin.depDate + ' ' + itin.depTime);
-      now = new DateTime.now();
+      now = new DateTime.now().toUtc();
+
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
       } else if ( city.webCheckinEnabled == 0 ) {
