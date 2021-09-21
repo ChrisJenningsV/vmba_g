@@ -93,7 +93,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     setCurrencyCode();
     if( widget.isMmb ) {
       if (session == null || session.varsSessionId == "") {
-        signin().then((_) => makeMmbBooking());
+      //  signin().then((_) => makeMmbBooking());
       } else {
         //     makeMmbBooking();
       }
@@ -127,7 +127,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     });
   }
 
-  void makeMmbBooking() {
+  void makeMmbBooking() async {
     String msg = "";
     if (widget.isMmb) {
   //    msg = '*${widget.mmbBooking.rloc}^';
@@ -147,13 +147,65 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       });
       msg += addFg(widget.mmbBooking.currency, true);
       msg += addFareStore(false);
-      //msg += 'fg^fs1';
+     // msg += '^E*R~X';
     }
     if(msg.isNotEmpty) {
-    String vrsCommandList =
-        json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
+//    String vrsCommandList =
+//        json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
     print(msg);
-    sendVRSCommandList(vrsCommandList);
+//    sendVRSCommandList(vrsCommandList);
+
+      http.Response response = await http
+          .get(Uri.parse(
+          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+          .catchError((resp) {});
+
+      if (response == null) {
+        //return new ParsedResponse(NO_INTERNET, []);
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
+        return null;
+      }
+
+      //If there was an error return an empty list
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        setState(() {
+          _displayProcessingIndicator = false;
+        });
+        //showSnackBar(translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
+        return null;
+        // return new ParsedResponse(response.statusCode, []);
+      }
+      try {
+        bool flightsConfirmed = true;
+        if (response.body.contains('ERROR - ') ||
+            response.body.contains('ERROR:')) {
+          _error = response.body
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '')
+              .replaceAll('ERROR - ', '')
+              .trim(); // 'Please check your details';
+        } else {
+          String pnrJson = response.body
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '');
+
+          setState(() {
+            _displayProcessingIndicator = false;
+          });
+        }
+
+      } catch(e) {
+        logit(e.toString());
+      }
+
+
     }
 
     //sendVRSCommand(
@@ -1509,7 +1561,7 @@ List<Widget> getPayOptions(String amount, String cur) {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: pnrModel, session: session, isMmb: isMmb, mmbAction: widget.mmbAction,))),
+          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: pnrModel, session: session, isMmb: isMmb, mmbBooking: widget.mmbBooking, mmbAction: widget.mmbAction,))),
       child: Column(
         children: <Widget>[
           Row(

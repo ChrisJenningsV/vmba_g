@@ -714,8 +714,16 @@ class _CheckinBoardingPassesWidgetState
     return result;
   }
 
-  Widget buttonOption(
-      PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+  Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+
+    if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
+      // departed, no actions
+        return Container();
+    }
+
+
+
+
     if (pnr.pNR.itinerary.itin[journeyNo].airID !=
         gblSettings.aircode) {
       return Text(''
@@ -1089,7 +1097,7 @@ class _CheckinBoardingPassesWidgetState
 
       return result;
     }
-    if (!isFltPassedDate(pnr.pNR.itinerary.itin[journey], 24)) {
+    if (!isFltPassedDate(pnr.pNR.itinerary.itin[journey], 24 * 7)) { // was 24
       return Container(
         margin: EdgeInsets.only(bottom: 10.0),
         child: Container(

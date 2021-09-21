@@ -355,6 +355,11 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
+
+                  case 'InReview':
+                    gblInReview = parseBool(item['value']);
+                    break;
+
                   case 'wantYouthDOB':
                     gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);
                     break;

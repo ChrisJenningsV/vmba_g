@@ -265,13 +265,19 @@ class Choices {
 
     try {
       if (json['choice'] != null) {
+        String asStr = json.toString();
+        bool isArray = asStr.contains('choice: [');
+
         choice = [];
-        Type ty = json['choice'].runtimeType;
+    //    choice.add( new Choice(value: 't',description: 'first'  ));
+
+//        Type ty = json['choice'].runtimeType;
         // check if single only one entry!
-        if (ty.toString() != 'List<dynamic>') {
+        if ( isArray == false ) { //ty.toString() != 'List<dynamic>') {
           try {
             choice.add(new Choice.fromJson(json['choice']));
           } catch (e) {
+            choice.add( new Choice(value: 'e',description: 'e1:' + e.toString()  ));
             logit(e.toString());
           }
         } else {
@@ -279,6 +285,7 @@ class Choices {
             try {
               choice.add(new Choice.fromJson(v));
             } catch (e) {
+              choice.add( new Choice(value: 'e',description: 'e2:' + e.toString()  ));
               logit(e.toString());
             }
           });
@@ -286,7 +293,11 @@ class Choices {
       }
     } catch(e) {
       logit(e.toString());
+      choice.add( new Choice(value: 'e',description: 'e3:' + e.toString()  ));
+
     }
+  //  choice.add( new Choice(value: 'e',description: 'end'));
+
   }
 
   Map<String, dynamic> toJson() {

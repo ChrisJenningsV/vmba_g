@@ -281,9 +281,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (widget.isMmb) {
       session = widget.session;
     }
+    if( rLOC.isEmpty) {
+      if (widget.pnrModel != null) {
+        rLOC = widget.pnrModel.pNR.rLOC;
+      }
+    }
     if (session != null) {
+
+      msg = '*$rLOC^';
+      msg += getPaymentCmd(false);
+      logit(msg);
       _sendVRSCommand(json.encode(
-          RunVRSCommand(session, getPaymentCmd(false)).toJson()))
+          RunVRSCommand(session, msg).toJson()))
           .then((result) {
             print(result);
         if (result == 'Payment Complete') {
@@ -583,11 +592,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblTimerExpired = true;
           _dataLoaded();
           //_showDialog();
+          logit(_error);
           showAlertDialog(context, 'Error', _error);
 
         } else if (result.contains('ERROR')) {
           gblTimerExpired = true;
           _error = result;
+          logit(_error);
           _dataLoaded();
           //_showDialog();
           showAlertDialog(context, 'Error', _error);
@@ -596,6 +607,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblTimerExpired = true;
           _error = result;
           _dataLoaded();
+          logit(_error);
           //_showDialog();
           showAlertDialog(context, 'Error', _error);
 
@@ -615,6 +627,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         } else {
           _error = response.body; // 'Please check your details';
         }
+        logit(_error);
         _dataLoaded();
         //_showDialog();
         showAlertDialog(context, 'Error', _error);
@@ -647,8 +660,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           if( am <= 0 ) {
             return '';
           }
-        }
-      if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount != null) {
+        } else if(pnrModel != null && pnrModel.pNR.basket.outstanding.amount != null) {
         am = double.parse(pnrModel.pNR.basket.outstanding.amount);
         currency = pnrModel.pNR.basket.outstanding.cur;
         if( am <= 0 ) {

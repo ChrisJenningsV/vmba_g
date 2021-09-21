@@ -26,6 +26,7 @@ int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
 bool gblIsIos = false;
 bool gblIsLive = false;
+bool gblInReview = false;
 bool gblTimerExpired = false;
 bool gblPayBtnDisabled = false;
 bool gblRememberMe = false;
