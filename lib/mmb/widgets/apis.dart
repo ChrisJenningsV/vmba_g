@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/apis.dart';
 import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/repository.dart';
@@ -408,6 +409,14 @@ class _ApisWidgetState extends State<ApisWidget> {
     int _minimumYear;
     int _maximumYear;
     String paxType = widget.pnr.names.pAX[widget.paxIndex].paxType;
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    bool isDark = brightnessValue == Brightness.dark;
+    Color bgColour = Colors.white;
+    Color txtColor = Colors.black;
+    if (isDark) {
+      bgColour = Colors.black;
+      txtColor = Colors.white;
+    }
 
     DateTime dateNow =
         DateTime.parse(DateFormat('y-MM-dd 00:00:00').format(DateTime.now()));
@@ -477,7 +486,8 @@ class _ApisWidgetState extends State<ApisWidget> {
         // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.all(0),
-          title: new Text(field.displayname),
+          backgroundColor: bgColour,
+          title: new TrText(field.displayname, style: TextStyle(color: txtColor),),
           content: Container(
               width: double.maxFinite,
               height: MediaQuery.of(context).copyWith().size.height / 3,
@@ -490,6 +500,7 @@ class _ApisWidgetState extends State<ApisWidget> {
                   ),
                 ),
                 child: CupertinoDatePicker(
+                  backgroundColor: bgColour,
                   initialDateTime: _initialDateTime,
                   onDateTimeChanged: (DateTime newValue) {
                     setState(() {
@@ -507,7 +518,11 @@ class _ApisWidgetState extends State<ApisWidget> {
               )),
           actions: <Widget>[
             new TextButton(
-              child: new Text("OK"),
+              style: TextButton.styleFrom(
+                  backgroundColor:bgColour ,
+                  side: BorderSide(color:  txtColor, width: 1),
+                  primary:txtColor),
+              child: new TrText("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
                 _updateApisData(sectionname, field.displayname,

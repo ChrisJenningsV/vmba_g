@@ -823,7 +823,7 @@ class _CheckinBoardingPassesWidgetState
           child: Row(
             children: <Widget>[
               TrText(
-                'Add Passport',
+                'Additional Information',
                   style: TextStyle(
                       color:
                       gblSystemColors.textButtonTextColor)

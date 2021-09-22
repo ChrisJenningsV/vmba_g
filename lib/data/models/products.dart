@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 
 class Products {
@@ -31,4 +32,42 @@ bool isTransfer() {
   return false;
 }
 
+}
+
+class GetProductsMsg {
+  String BookingCityCurrencyCode;
+  String ProductCategoryID;
+  String ProductCategoryName;
+  String ProductType;
+  String Via1;
+  String CityCode;
+  String ArrivalCityCode;
+  bool IncludeHotels;
+  bool DisplayOnWebsiteOnly;
+
+  GetProductsMsg(
+      this.BookingCityCurrencyCode ,
+      {    this.ArrivalCityCode = '',
+    this.CityCode = '',
+    this.DisplayOnWebsiteOnly = true,
+    this.IncludeHotels = false,
+    this.ProductCategoryID = '',
+    this.ProductCategoryName = '',
+    this.ProductType = '',
+    this.Via1= '',
+  });
+
+  Map toJson() {
+    Map map = new Map();
+    map['BookingCityCurrencyCode'] = BookingCityCurrencyCode;
+    map['ArrivalCityCode'] = ArrivalCityCode;
+    map['CityCode'] = CityCode;
+    map['DisplayOnWebsiteOnly'] = DisplayOnWebsiteOnly;
+    map['IncludeHotels'] = IncludeHotels;
+    map['ProductCategoryID'] = ProductCategoryID;
+    map['ProductCategoryName'] = ProductCategoryName;
+    map['ProductType'] = ProductType;
+    map['Via1'] = Via1;
+    return map;
+  }
 }

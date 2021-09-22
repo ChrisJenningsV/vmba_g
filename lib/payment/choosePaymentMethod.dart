@@ -12,6 +12,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/providers/paystack.dart';
 import 'package:vmba/payment/v2/CreditCardPage.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/widgets/dataLoader.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -1460,14 +1461,18 @@ List<Widget> getPayOptions(String amount, String cur) {
     list.add(Divider());
 
     if( gblSettings.wantBags) {
-      list.add(ExpansionTile(
-        tilePadding: EdgeInsets.only(left: 0),
-        initiallyExpanded: false,
-        title: Text(
-          'Baggage options',
-        ),
-        children: getBagOptions(),));
-       list.add(Divider());
+      if( gblProductsState == LoadState.none) {
+        list.add(DataLoaderWidget(dataType: LoadDataType.products,));
+      } else {
+        list.add(ExpansionTile(
+          tilePadding: EdgeInsets.only(left: 0),
+          initiallyExpanded: false,
+          title: Text(
+            'Baggage options',
+          ),
+          children: getBagOptions(),));
+        list.add(Divider());
+      }
     }
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(

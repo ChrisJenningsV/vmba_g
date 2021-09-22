@@ -44,8 +44,15 @@ Map gblLangMap ;
 Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
-
 bool  gblWantLogin = true;
+
+enum LoadDataType {settings, routes, cities, products, language}
+enum LoadState { none, loading, loaded, loadFailed }
+LoadState gblSettingsState = LoadState.none;
+LoadState gblRoutesState = LoadState.none;
+LoadState gblCitiesState = LoadState.none;
+LoadState gblProductsState = LoadState.none;
+LoadState gblLanguageState = LoadState.none;
 
 TextStyle gblTitleStyle;
 List<String> gblTitles = <String>[

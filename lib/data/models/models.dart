@@ -108,14 +108,14 @@ class PassengerDetail {
   String adsPin = '';
   String fqtv = '';
   String fqtvPassword = '';
-  String country ='';
-  String gender ='';
+  String country = '';
+  String gender = '';
   String seniorID = '';
   String disabilityID = '';
   String redressNo = '';
   String knowTravellerNo = '';
 
-  PassengerDetail( {this.title,
+  PassengerDetail({this.title,
     this.firstName,
     this.middleName,
     this.lastName,
@@ -133,71 +133,70 @@ class PassengerDetail {
   });
 
   bool isComplete() {
-    if( title == '' || title == null ) {
+    if (title == '' || title == null) {
       return false;
     }
-     if( firstName == '' || firstName == null ) {
-       return false;
-     }
-
-    if (gblSettings.wantMiddleName && (middleName == null || middleName.isEmpty )) {
+    if (firstName == '' || firstName == null) {
       return false;
     }
 
-    if( lastName == '' || lastName == null ) {
-       return false;
-     }
+    if (gblSettings.wantMiddleName &&
+        (middleName == null || middleName.isEmpty)) {
+      return false;
+    }
 
-     if (gblSettings.wantGender && (gender == null || gender.isEmpty )) {
-       return false;
-     }
+    if (lastName == '' || lastName == null) {
+      return false;
+    }
 
+    if (gblSettings.wantGender && (gender == null || gender.isEmpty)) {
+      return false;
+    }
 
 
     return true;
-
   }
 
 
   Map<String, dynamic> toJson() {
-      final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-      data['title'] = this.title;
-      data['firstName'] = this.firstName;
-      data['middleName'] = this.middleName;
-      data['lastName'] = this.lastName;
-      switch (paxType) {
-        case PaxType.infant:
-          data['paxType'] = 'IN';
-          break;
-        case PaxType.child:
-          data['paxType'] = 'CH';
-          break;
-        case PaxType.youth:
-          data['paxType'] = 'TH';
-          break;
-        case PaxType.adult:
-          data['paxType'] = 'AD';
-          break;
-        case PaxType.seatedInfant:
-          data['paxType'] = 'IS';
-          break;
-        case PaxType.senior:
-          data['paxType'] = 'CD';
-          break;
-        case PaxType.smallChild:
-          data['paxType'] = 'CS';
-          break;
-        case PaxType.student:
-          data['paxType'] = 'SD';
-          break;
-        case PaxType.teacher:
-          data['paxType'] = 'TD';
-          break;
-        default:
-            data['paxType'] = 'AD';
-            break;
-      }
+    data['title'] = this.title;
+    data['firstName'] = this.firstName;
+    data['middleName'] = this.middleName;
+    data['lastName'] = this.lastName;
+    switch (paxType) {
+      case PaxType.infant:
+        data['paxType'] = 'IN';
+        break;
+      case PaxType.child:
+        data['paxType'] = 'CH';
+        break;
+      case PaxType.youth:
+        data['paxType'] = 'TH';
+        break;
+      case PaxType.adult:
+        data['paxType'] = 'AD';
+        break;
+      case PaxType.seatedInfant:
+        data['paxType'] = 'IS';
+        break;
+      case PaxType.senior:
+        data['paxType'] = 'CD';
+        break;
+      case PaxType.smallChild:
+        data['paxType'] = 'CS';
+        break;
+      case PaxType.student:
+        data['paxType'] = 'SD';
+        break;
+      case PaxType.teacher:
+        data['paxType'] = 'TD';
+        break;
+      default:
+        data['paxType'] = 'AD';
+        break;
+    }
 /*
       if( this.dateOfBirth == null ) {
         data['dateOfBirth'] = new DateTime.now() ;
@@ -206,19 +205,19 @@ class PassengerDetail {
       }
 
  */
-      data['phonenumber'] = this.phonenumber;
-      data['email'] = this.email;
-      data['adsNumber'] = this.adsNumber;
-      data['adsPin'] = this.adsPin;
-      data['fqtv'] = this.fqtv;
-      data['fqtvPassword'] = this.fqtvPassword;
-      data['redressNo'] = this.redressNo;
-      data['knowTravellerNo'] = this.knowTravellerNo;
-      data['gender'] = this.gender;
-      data['dateOfBirth'] = this.dateOfBirth.toString();
+    data['phonenumber'] = this.phonenumber;
+    data['email'] = this.email;
+    data['adsNumber'] = this.adsNumber;
+    data['adsPin'] = this.adsPin;
+    data['fqtv'] = this.fqtv;
+    data['fqtvPassword'] = this.fqtvPassword;
+    data['redressNo'] = this.redressNo;
+    data['knowTravellerNo'] = this.knowTravellerNo;
+    data['gender'] = this.gender;
+    data['dateOfBirth'] = this.dateOfBirth.toString();
 
     return data;
-    }
+  }
 
   PassengerDetail.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -231,22 +230,22 @@ class PassengerDetail {
         paxType = PaxType.infant;
         break;
       case 'IS':
-        paxType =PaxType.seatedInfant;
+        paxType = PaxType.seatedInfant;
         break;
       case 'CH':
-        paxType =PaxType.child;
+        paxType = PaxType.child;
         break;
       case 'CS':
-        paxType =PaxType.smallChild;
+        paxType = PaxType.smallChild;
         break;
       case 'CD':
-        paxType =PaxType.senior;
+        paxType = PaxType.senior;
         break;
       case 'TD':
-        paxType =PaxType.teacher;
+        paxType = PaxType.teacher;
         break;
       case 'SD':
-        paxType =PaxType.student;
+        paxType = PaxType.student;
         break;
 
       case 'TH':
@@ -262,18 +261,21 @@ class PassengerDetail {
 
     // dateOfBirth = json['dateOfBirth'];
 
-    phonenumber = (json['phonenumber'] == null) ?'' : json['phonenumber'];
-    email = (json['email'] == null ) ? '' : json['email'];
-    adsNumber =  (json['adsNumber'] == null) ? '' :json['adsNumber'];
-    adsPin =  json['adsPin'];
-    fqtv =  json['fqtv'];
+    phonenumber = (json['phonenumber'] == null) ? '' : json['phonenumber'];
+    email = (json['email'] == null) ? '' : json['email'];
+    adsNumber = (json['adsNumber'] == null) ? '' : json['adsNumber'];
+    adsPin = json['adsPin'];
+    fqtv = json['fqtv'];
     fqtvPassword = json['fqtvPassword'];
     redressNo = json['redressNo'];
     knowTravellerNo = json['knowTravellerNo'];
     gender = json['gender'];
-    dateOfBirth = DateTime.parse(json['dateOfBirth']);
-      }
+    if (json['dateOfBirth'] != null &&  json['dateOfBirth'] != 'null') {
+
+      dateOfBirth = DateTime.parse(json['dateOfBirth']);
+    }
   }
+}
 
 
 class PaymentDetails {

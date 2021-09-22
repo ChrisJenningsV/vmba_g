@@ -1,0 +1,222 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+//import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:vmba/data/globals.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:vmba/components/trText.dart';
+import '../helper.dart';
+import 'package:vmba/data/models/products.dart';
+import 'package:vmba/utilities/widgets/productsWidget.dart';
+
+
+class DataLoaderWidget extends StatefulWidget {
+
+  DataLoaderWidget(
+  { Key key, this.dataType }) : super( key: key);
+
+  final LoadDataType dataType;
+
+  DataLoaderWidgetState createState() =>
+      DataLoaderWidgetState();
+  }
+
+class DataLoaderWidgetState extends State<DataLoaderWidget> {
+  bool _displayProcessingIndicator;
+  bool _displayFinalError;
+  String _displayProcessingText;
+  String _dataName;
+  String _msg;
+  String _url;
+  String _error;
+
+  @override void initState() {
+    // TODO: implement initState
+    super.initState();
+    _displayProcessingIndicator = false;
+    _displayFinalError = false;
+    _displayProcessingText = '';
+    _initData();
+    _loadData();
+
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    if (_displayFinalError || (gblError != null && gblError.isNotEmpty)) {
+      return Scaffold(
+          body: Container(
+            color: Colors.white, constraints: BoxConstraints.expand(),
+            child: Center(
+              child:
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(gblErrorTitle),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TrText(_displayProcessingText + gblError,
+                        style: TextStyle(fontSize: 14.0)),
+                  ),
+                ],
+              ),
+            ),
+          ));
+    } else if (gblNoNetwork == true) {
+      noInternetSnackBar(context);
+    } else if (_displayProcessingIndicator) {
+      final snackBar = SnackBar(
+        content: Text(
+          _displayProcessingText, style: TextStyle(color: Colors.red),),
+        duration: const Duration(hours: 1),
+        action: SnackBarAction(
+          label: translate('OK'),
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            // Some code to undo the change.
+          },
+        ),
+      );
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      });
+      /*
+      return Scaffold(
+          body: Container(
+            color: Colors.white, constraints: BoxConstraints.expand(),
+            child: Center(
+              child:
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
+                  CircularProgressIndicator(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TrText(_displayProcessingText),
+                  ),
+                ],
+              ),
+            ),
+          ));
+
+       */
+      return TrText(_dataName);
+    } else {
+      switch(widget.dataType){
+        case LoadDataType.cities:
+          break;
+        case LoadDataType.products:
+          return ProductsWidget();
+          break;
+        case LoadDataType.routes:
+          break;
+        case LoadDataType.settings:
+          break;
+        case LoadDataType.language:
+          break;
+      }
+      return Container();
+    }
+  }
+
+
+  _loadData() async {
+    setLoadState(LoadState.loading);
+    _displayProcessingIndicator = true;
+    final http.Response response = await http.post(
+        Uri.parse(_url),
+        headers: {'Content-Type': 'application/json',
+          'Videcom_ApiKey': gblSettings.apiKey
+        },
+        body: _msg);
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      _displayProcessingIndicator = false;
+      print('message send successfully: $_msg' );
+      saveData(response.body.trim());
+      setLoadState(LoadState.loaded);
+      setState(() {
+
+      });
+      return response.body.trim();
+    } else {
+      _displayFinalError = true;
+      _error = _msg;
+      print('failed: $_msg');
+      try{
+        print (response.body);
+        setLoadState(LoadState.loadFailed);
+        setState(() {
+
+        });
+      } catch(e){}
+
+    }
+    }
+
+    void _initData() {
+
+      switch(widget.dataType){
+        case LoadDataType.cities:
+          _dataName = 'Cities';
+          break;
+        case LoadDataType.products:
+          _dataName = 'Products';
+          _url = '${gblSettings.apiUrl}/product/getproducts';
+          _msg = json.encode(GetProductsMsg(gblSettings.currency ).toJson());
+
+          break;
+        case LoadDataType.routes:
+          _dataName = 'Routes';
+          break;
+        case LoadDataType.settings:
+          _dataName = 'Settings';
+          break;
+        case LoadDataType.language:
+          _dataName = 'language';
+          break;
+      }
+      _displayProcessingText = '${translate('Loading')} $_dataName ...';
+    }
+
+    void setLoadState(var newState) {
+      switch(widget.dataType){
+        case LoadDataType.cities:
+          gblCitiesState = newState;
+          break;
+        case LoadDataType.products:
+          gblProductsState = newState;
+          break;
+        case LoadDataType.routes:
+          gblRoutesState = newState;
+          break;
+        case LoadDataType.settings:
+          gblSettings = newState;
+          break;
+        case LoadDataType.language:
+          gblLanguage = newState;
+          break;
+      }
+    }
+
+  void saveData(String data) {
+    switch(widget.dataType){
+      case LoadDataType.cities:
+        break;
+      case LoadDataType.products:
+        break;
+      case LoadDataType.routes:
+        break;
+      case LoadDataType.settings:
+        break;
+      case LoadDataType.language:
+        break;
+    }
+  }
+
+  }
