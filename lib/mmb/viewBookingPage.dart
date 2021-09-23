@@ -1060,8 +1060,10 @@ class _CheckinBoardingPassesWidgetState
       checkinClosed = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt)
           .subtract(new Duration(hours: city.webCheckinEnd));
 
-      departureDateTime = DateTime.parse(itin.depDate + ' ' + itin.depTime);
+      departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = new DateTime.now().toUtc();
+
+      logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
 
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');

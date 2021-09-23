@@ -65,7 +65,7 @@ void configFL() {
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
     wantNewEditPax: true,
-    wantBags: true,
+    wantBags: false,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantMaterialControls: true,

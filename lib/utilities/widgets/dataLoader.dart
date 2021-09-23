@@ -6,15 +6,19 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/models/models.dart';
+import 'package:vmba/data/models/pnr.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/utilities/widgets/productsWidget.dart';
 
 
 class DataLoaderWidget extends StatefulWidget {
+  NewBooking newBooking;
+  PnrModel pnrModel;
 
   DataLoaderWidget(
-  { Key key, this.dataType }) : super( key: key);
+  { Key key, this.dataType, this.newBooking, this.pnrModel  }) : super( key: key);
 
   final LoadDataType dataType;
 
@@ -46,27 +50,11 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (_displayFinalError || (gblError != null && gblError.isNotEmpty)) {
-      return Scaffold(
-          body: Container(
-            color: Colors.white, constraints: BoxConstraints.expand(),
-            child: Center(
-              child:
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(gblErrorTitle),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TrText(_displayProcessingText + gblError,
-                        style: TextStyle(fontSize: 14.0)),
-                  ),
-                ],
-              ),
-            ),
-          ));
+    if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
+      return TrText(_displayProcessingText + _error,style: TextStyle(fontSize: 14.0));
     } else if (gblNoNetwork == true) {
       noInternetSnackBar(context);
+      return Container();
     } else if (_displayProcessingIndicator) {
       final snackBar = SnackBar(
         content: Text(
@@ -110,7 +98,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.cities:
           break;
         case LoadDataType.products:
-          return ProductsWidget();
+          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel,);
           break;
         case LoadDataType.routes:
           break;
@@ -146,7 +134,18 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       return response.body.trim();
     } else {
       _displayFinalError = true;
-      _error = _msg;
+      _error = response.body;
+      if(response.body.startsWith('{')){
+        try {
+          Map m = jsonDecode(response.body);
+          if(m['errors'] != null ){
+            _error = m['errors'].values.toList()[0][0];
+          }
+        } catch(e) {
+          logit(e.toString());
+        }
+
+      }
       print('failed: $_msg');
       try{
         print (response.body);
@@ -168,7 +167,11 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.products:
           _dataName = 'Products';
           _url = '${gblSettings.apiUrl}/product/getproducts';
-          _msg = json.encode(GetProductsMsg(gblSettings.currency ).toJson());
+          String currency = gblSettings.currency;
+          if( currency == null || currency.isEmpty) {
+            currency = widget.pnrModel.pNR.basket.outstanding.cur;
+          }
+          _msg = json.encode(GetProductsMsg(currency ).toJson());
 
           break;
         case LoadDataType.routes:
@@ -209,6 +212,11 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.cities:
         break;
       case LoadDataType.products:
+        try {
+          gblProducts = ProductCategorys.fromJson(data);
+        } catch(e) {
+          logit(e.toString());
+        }
         break;
       case LoadDataType.routes:
         break;

@@ -3,6 +3,8 @@ import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
+import 'models/products.dart';
+
 // variable shared to whole app
 // initialized in main_XX.dart
 //
@@ -53,6 +55,9 @@ LoadState gblRoutesState = LoadState.none;
 LoadState gblCitiesState = LoadState.none;
 LoadState gblProductsState = LoadState.none;
 LoadState gblLanguageState = LoadState.none;
+
+ProductCategorys gblProducts ;
+
 
 TextStyle gblTitleStyle;
 List<String> gblTitles = <String>[

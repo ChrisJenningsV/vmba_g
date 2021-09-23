@@ -285,7 +285,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     //Show dialog
-    print('build');
+    //print('build');
 
     return new Scaffold(
       key: _key,
@@ -312,7 +312,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   List<Widget> renderPax(Passengers pax) {
     List<Widget> paxWidgets = [];
-    print('renderPax');
+    //print('renderPax');
     // List<Widget>();
     int i = 0;
 //    paxWidgets.add(Padding(padding: EdgeInsets.all(50),));
@@ -430,14 +430,14 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));
-    print('end renderPax');
+    //print('end renderPax');
     return paxWidgets;
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   Row paxEntryHeader(PaxType paxType, bool single) {
-    print('paxEntryHeader');
+    //print('paxEntryHeader');
     String _passenger = translate('Passengers');
     if (single) {
       _passenger = translate('Passenger');
@@ -456,7 +456,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   }
 
   Widget renderFieldsV2(int paxNo, PaxType paxType) {
-    print('renderFieldsV2');
+    //print('renderFieldsV2');
 
     bool isLeadPassenger = paxNo == 1 ? true : false;
     _passengerDetails[paxNo - 1].paxType = paxType;

@@ -19,8 +19,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
-import 'package:vmba/data/models/products.dart';
-import 'package:vmba/payment/productViews.dart';
 
 
 class ChoosePaymenMethodWidget extends StatefulWidget {
@@ -59,12 +57,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Passengers _passengers = new Passengers(1, 0, 0, 0,0, 0, 0);
   String nostop = '';
   bool isMmb = false;
-  NetworkImage smallBag;
-  NetworkImage cabinBag;
-  NetworkImage holdBag;
-  List<Product> products = [] ;
-  ProductCard bagCard;
-  ProductCard tranCard;
 
   Session session ;
 
@@ -73,12 +65,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     super.initState();
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
-    products.add(new Product( productCode: 'BAG1', productName: 'hold baggage', productPrice: 126.0));
-    products.add(new Product( productCode: 'BAG2', productName: 'Sports Equipment', productPrice: 35.0));
-    products.add(new Product( productCode: 'TRAN', productName: 'Airport Transfer', productPrice: 25.0));
-
-    bagCard = new ProductCard(productType: 'BAG', products: products,);
-    tranCard = new ProductCard(productType: 'TRAN', products: products,);
 
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
@@ -100,9 +86,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     }
     stopwatch.start();
-    smallBag = getBagImage('smallBag');
-    cabinBag = getBagImage('cabinBag');
-    holdBag = getBagImage('holdBag');
   }
 
   @override
@@ -182,7 +165,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         // return new ParsedResponse(response.statusCode, []);
       }
       try {
-        bool flightsConfirmed = true;
         if (response.body.contains('ERROR - ') ||
             response.body.contains('ERROR:')) {
           _error = response.body
@@ -1224,82 +1206,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return col;
   }
 
-  List<Widget> getBagOptions() {
-    List<Widget> list = [];
-
-    if ( widget.newBooking != null ) {
-      widget.newBooking.passengerDetails.forEach((pax) {
-        /*     list.add(Row(children: [
-        Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-            translate('allowance'),
-            textScaleFactor: 1.25)
-      ])
-      );
-  */
-        // get fq for pax
-        var segCount = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS.length;
-
-        var holdBagWt = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdWt;
-        var holdBagPcs = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdPcs;
-        var handBagWt = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].handWt;
-        //var holdBagWtRet = '';
-        var holdBagPcsRet = '';
-        var handBagWtRet = '';
-        if( segCount > 1) {
-          //holdBagWtRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdWt;
-          holdBagPcsRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdPcs;
-          handBagWtRet = this.pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].handWt;
-        }
-        if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
-          holdBagWt = holdBagWt.replaceAll('K', 'Kg');
-        }
-        if( holdBagWt == null ){
-          holdBagWt = '0';
-        }
-        list.add( Card( child:
-        Padding( padding: EdgeInsets.only(top: 10, left: 6, right: 6, bottom: 6),
-            child: ExpansionTile(
-              title: Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-                  translate('allowance'),
-                  textScaleFactor: 1),
-              children: [
-                if( segCount > 1) getBaggageRow(null, null, null, null, null),
-
-                getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', 'line 2'),
-  //              Divider(),
-//                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
-                Divider(),
-                getBaggageRow(holdBag, holdBagPcs, holdBagPcsRet,'Checked Luggage', holdBagWt )
-              ],)
-        )
-        ));
-      });
-
-      // add  bag products
-
-//      ProductCard bagCard = new ProductCard(productType: 'BAG', products: products,);
-      if( bagCard.hasContent() ) {
-        list.add(bagCard);
-      }
-//      ProductCard tranCard = new ProductCard(productType: 'TRAN', products: products,);
-      if( tranCard.hasContent() ) {
-        list.add(tranCard);
-      }
-
-    } else if ( widget.mmbBooking != null ) {
-      /*   widget.mmbBooking.passengers.forEach((pax) {
-        list.add(Row(children: [
-          Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-              translate('allowance'),
-              textScaleFactor: 1.25)
-        ])
-        );
-      });
-      */
-
-    }
-    return list;
-  }
 
   Widget _getTotals() {
    String cur = this.pnrModel.pNR.basket.outstanding.cur;
@@ -1461,9 +1367,9 @@ List<Widget> getPayOptions(String amount, String cur) {
     list.add(Divider());
 
     if( gblSettings.wantBags) {
-      if( gblProductsState == LoadState.none) {
-        list.add(DataLoaderWidget(dataType: LoadDataType.products,));
-      } else {
+      //if( gblProductsState == LoadState.none) {
+        list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking, pnrModel: widget.pnrModel,));
+      /*} else {
         list.add(ExpansionTile(
           tilePadding: EdgeInsets.only(left: 0),
           initiallyExpanded: false,
@@ -1473,6 +1379,8 @@ List<Widget> getPayOptions(String amount, String cur) {
           children: getBagOptions(),));
         list.add(Divider());
       }
+
+       */
     }
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(
@@ -1505,53 +1413,6 @@ List<Widget> getPayOptions(String amount, String cur) {
     return list;
 }
 
-
-
-  Row getBaggageRow(NetworkImage img, String count, String countRet, String title, String line2) {
-    if( img == null && count == null ) {
-      // heading row
-      return Row(
-          children: [
-            Container(width: 40,),
-            Container( width: 30,child: TrText('Out')),
-            Container( width: 30,child: TrText('Ret')),
-            Spacer(),
-            Padding(padding: EdgeInsets.only(left: 5))
-          ]);
-
-    }
-    if( count != null &&  count.endsWith('K')){
-      count =  count.replaceAll('K', 'Kg');
-    }
-    if( count == null ) {
-      count = '0';
-    }
-    if( countRet != null &&  countRet.endsWith('K')){
-      countRet = countRet.replaceAll('K', 'Kg');
-    }
-    if( countRet == null ) {
-      countRet = '0';
-    }
-    return Row(
-        children: [
-      Container(
-        width: 40,
-      child: Image(
-        image: img,
-        fit: BoxFit.fill,
-        height: 40,
-        width: 40,
-      )),
-      Container( width: 30,child: Text(count + ' ')),
-      Container( width: 30,child: Text(countRet + ' ')),
-      Spacer(),
-      Column( children: [ TrText(title),
-          Text(line2, textScaleFactor: 0.75,),
-        ] ),
-      Padding(padding: EdgeInsets.only(left: 5))
-    ]);
-
-  }
 
   Column renderPaymentButtons() {
     List<Widget> paymentButtons = [];
