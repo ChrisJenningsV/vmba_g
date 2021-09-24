@@ -1,19 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+//import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/models/cities.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom ;
+import 'package:html/parser.dart' as parser;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
 import 'package:vmba/components/trText.dart';
-
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
@@ -503,3 +505,36 @@ String cleanInt(String str) {
   return str;
 }
 
+void showHtml(BuildContext context, String title, String txt ) {
+  Widget wHtml = getDom(txt);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        actions: <Widget>[
+          new TextButton(
+            child: new TrText("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+        title: new TrText(title),
+        content: wHtml,
+
+      );
+    },
+  );
+}
+
+Widget getDom( String str){
+List<Widget> list = [];
+  dom.Document document = parser.parse(str);
+  document.body.nodes.forEach((el){
+    String s = el.text;
+    list.add(Text(s));
+    logit( s + ' ${el.nodes.length} nodes');
+  });
+
+  return Column( children: list);
+}

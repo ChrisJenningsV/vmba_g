@@ -119,7 +119,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
     // add  bag products
     if(gblProducts != null ) {
       gblProducts.productCategorys.forEach((pc) {
-        list.add(new ProductCard( productCategory: pc, ));
+        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel ));
       });
     }
 
@@ -197,9 +197,10 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
 
 class ProductCard extends StatefulWidget {
   final ProductCategory productCategory ;
+  final PnrModel pnrModel;
 
   // ProductCardState appState = new ProductCardState();
-  ProductCard({this.productCategory,});
+  ProductCard({this.productCategory, this.pnrModel});
   ProductCardState createState() => ProductCardState();
 
   /*
@@ -278,8 +279,21 @@ class ProductCardState extends State<ProductCard> {
         child: TrText(prod.productName)),);
 
     widgets.add(Spacer(),);
+    widgets.add(ElevatedButton(
+      onPressed: () {
+        showHtml(context, prod.productName, prod.productDescription);
+      },
+      style: ElevatedButton.styleFrom(
+        primary: gblSystemColors
+            .primaryButtonColor,
+        shape: CircleBorder(),),
+      child:
+      Icon(        Icons.info,        color: Colors.white,
+      ),
+    ));
 
-    if (prod.paxRelate == false && prod.segmentRelate == false) {
+
+        if (prod.paxRelate == false && prod.segmentRelate == false) {
       widgets.add(Align(alignment: Alignment.centerRight,
           child: Row(children: [new IconButton(
             icon: Icon(Icons.remove_circle_outline,),
@@ -304,7 +318,7 @@ class ProductCardState extends State<ProductCard> {
           Navigator.push(
               context,
               SlideTopRoute(
-                  page: ComplextProductWidget(
+                  page: ComplextProductWidget( product: prod, pnrModel: widget.pnrModel,
                   ))).then((passengerDetails) {
             //updatePassengerDetails(passengerDetails, paxNo - 1);
           });
@@ -312,21 +326,15 @@ class ProductCardState extends State<ProductCard> {
         style: ElevatedButton.styleFrom(
             primary: gblSystemColors
                 .primaryButtonColor,
-            shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(30.0))),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          //  mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+            shape: CircleBorder(),),
+        child:
             Icon(
               Icons.arrow_right,
               color: Colors.white,
 
             ),
-          ],
-        ),
-      ));
+      )
+      );
 
 
     }

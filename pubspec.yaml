@@ -61,6 +61,7 @@ dependencies:
   currency_picker: ^2.0.4
   country_icons: ^2.0.2
   step_progress_indicator: ^1.0.1
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:
