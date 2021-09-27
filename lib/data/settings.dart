@@ -80,6 +80,7 @@ class Settings {
   bool wantCitySwap;
   bool wantPageImages;
   bool wantBags;
+  bool wantDangerousGoods;
   bool wantCovidWarning;
   bool wantCountry;
   bool wantClassBandImages;
@@ -179,6 +180,7 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantBags = false,
+    this.wantDangerousGoods = false,
     this.wantCovidWarning = false,
     this.wantCountry = false,
     this.wantClassBandImages = false,

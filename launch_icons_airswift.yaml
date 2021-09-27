@@ -4,7 +4,7 @@ flutter_icons:
   ios: true
   image_path: "lib/assets/icon/AirSwift_1024x1024.png"
 
-# flutter pub run flutter_launcher_icons:main -f launch_icons_airswift.yaml
+# flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f launch_icons_airswift.yaml
 #
 #
 # copy /y lib\assets\airswift\images\bg.png lib\assets\images

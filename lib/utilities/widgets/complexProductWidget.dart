@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/data/globals.dart';
+//import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/payment/productViews.dart';

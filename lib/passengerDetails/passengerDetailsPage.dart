@@ -12,6 +12,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key, this.newBooking}) : super(key: key);
@@ -554,16 +555,25 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
       hasDataConnection().then((result) async {
         if (result == true) {
-            var _error = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ContactDetailsWidget(
-                          newbooking: widget.newBooking,
-                          preLoadDetails: preLoadDetails,
-                          passengerDetailRecord: passengerDetailRecord,
-                        )));
-            displayError(_error);
+            if( gblSettings.wantDangerousGoods == true ){
+              Navigator.push(
+                  context,
+                  SlideTopRoute(
+                      page: DangerousGoodsWidget( preLoadDetails: preLoadDetails, newBooking: widget.newBooking, passengerDetailRecord: passengerDetailRecord, ))).then((passengerDetails) {
+                //updatePassengerDetails(passengerDetails, paxNo - 1);
+              });
+            } else {
+              var _error = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ContactDetailsWidget(
+                            newbooking: widget.newBooking,
+                            preLoadDetails: preLoadDetails,
+                            passengerDetailRecord: passengerDetailRecord,
+                          )));
+              displayError(_error);
+            }
 
         } else {
           //showSnackBar('Please, check your internet connection');

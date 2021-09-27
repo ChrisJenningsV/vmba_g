@@ -5,6 +5,7 @@ import 'package:vmba/mmb/widgets/boardingPass.dart';
 import 'dart:math' as math;
 import 'package:vmba/mmb/widgets/datepicker.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
+import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'dart:convert';
@@ -920,7 +921,19 @@ class _CheckinBoardingPassesWidgetState
           //Checkin Button
           return new TextButton(
             onPressed: () {
-              _displayCheckingDialog(pnr, journeyNo, paxNo);
+              if( gblSettings.wantDangerousGoods == true ){
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: DangerousGoodsWidget( pnr: pnr, journeyNo: journeyNo, paxNo: paxNo, ))).then((continuePass) {
+                          if( continuePass) {
+                            _displayCheckingDialog(pnr, journeyNo, paxNo);
+
+                          }
+                });
+              } else {
+                _displayCheckingDialog(pnr, journeyNo, paxNo);
+              }
             },
             style: TextButton.styleFrom(
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
