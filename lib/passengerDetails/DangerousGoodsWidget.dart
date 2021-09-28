@@ -26,6 +26,7 @@ class DangerousGoodsWidget extends StatefulWidget {
 
 class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
   bool _buttonEnabled;
+  bool continuePass;
 
   @override void initState() {
     _buttonEnabled = false;
@@ -87,7 +88,8 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
                         )));
             //displayError(_error);
           } else {
-            Navigator.pop(context, true);
+            continuePass = true;
+            Navigator.pop(context, continuePass);
           }
         }
       },

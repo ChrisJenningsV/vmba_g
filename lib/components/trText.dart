@@ -27,7 +27,7 @@ class TrText extends StatelessWidget {
         }
 
 
-        var txt2 = gblLangMap[txt];
+        var txt2 = gblLangMap[labelText];
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {
           txt = testTxt + txt2;

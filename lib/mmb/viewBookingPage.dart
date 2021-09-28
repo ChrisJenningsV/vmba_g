@@ -926,7 +926,7 @@ class _CheckinBoardingPassesWidgetState
                     context,
                     SlideTopRoute(
                         page: DangerousGoodsWidget( pnr: pnr, journeyNo: journeyNo, paxNo: paxNo, ))).then((continuePass) {
-                          if( continuePass) {
+                          if( continuePass != null &&  continuePass) {
                             _displayCheckingDialog(pnr, journeyNo, paxNo);
 
                           }
@@ -1672,12 +1672,12 @@ class _CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              Text(
+              TrText(
                   'I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'),
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              Text(
+              TrText(
                   'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
             ],
           ),
@@ -1738,12 +1738,12 @@ class _CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              Text(
+              TrText(
                   'I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'),
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              Text(
+              TrText(
                   'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
             ],
           ),
