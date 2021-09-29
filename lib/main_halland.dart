@@ -88,6 +88,7 @@ void configAH() {
     wantCurrencyPicker: true,
     wantNewEditPax: true,
     wantBags: false,
+    wantDangerousGoods: true ,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantMaterialControls: true,

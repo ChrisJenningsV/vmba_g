@@ -86,6 +86,7 @@ void configAG() {
     gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
     wantEnglishTranslation: true,
     want24HourClock: true,
+    wantDangerousGoods: true ,
     currencies: 'se,SEK,no,NOK,eu,EUR',
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
     passengerTypes:  PassengerTypes(

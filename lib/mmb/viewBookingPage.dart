@@ -907,8 +907,11 @@ class _CheckinBoardingPassesWidgetState
 
             var checkedInCount = 0;
                 pnr.pNR.tickets.tKT.forEach((t){
-                  if( int.parse(t.segNo) == (journeyNo + 1) && t.tKTID == 'ELFT') {
-                    checkedInCount++;
+                  if( t.segNo != null && t.segNo.isNotEmpty) {
+                    if (int.parse(t.segNo) == (journeyNo + 1) &&
+                        t.tKTID == 'ELFT') {
+                      checkedInCount++;
+                    }
                   }
                 });
 

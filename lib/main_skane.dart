@@ -86,6 +86,7 @@ void configAS() {
     wantMaterialControls: true,
     wantPageImages: true,
     want24HourClock: true,
+    wantDangerousGoods: true ,
 
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles',
 

@@ -627,8 +627,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                   fontSize: 12.0, fontWeight: FontWeight.w200)),
                           new Text(
                               _boardingPass.fastTrack.toLowerCase() == 'true'
-                                  ? "YES"
-                                  : "NO",
+                                  ? translate("YES")
+                                  : translate("NO"),
                               style: new TextStyle(
                                   fontSize: 16.0, fontWeight: FontWeight.w700))
 //                      : Text('')
@@ -639,13 +639,13 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                 children: <Widget>[
                   //gbl_settings.bpShowLoungeAccess
                   //    ? [
-                          new Text("LOUNGE ACCESS",
+                          new TrText("LOUNGE ACCESS",
                               style: new TextStyle(
                                   fontSize: 12.0, fontWeight: FontWeight.w200)),
                           new Text(
                               _boardingPass.loungeAccess.toLowerCase() == 'true'
-                                  ? "YES"
-                                  : "NO",
+                                  ? translate("YES")
+                                  : translate("NO"),
                               style: new TextStyle(
                                   fontSize: 16.0, fontWeight: FontWeight.w700))
                     //    ]
