@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:international_phone_input/international_phone_input.dart';import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
 
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
@@ -503,6 +504,30 @@ return SafeArea(
     if( widget.isLeadPassenger) {
 // phone
     if( gblSettings.wantInternatDialCode) {
+
+      list.add(InternationalPhoneInput(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        popupTitle: translate('Select phone country'),
+        controller: _phoneTextEditingController,
+        //initialPhoneNumber: _phoneNumberTextEditingController.text,
+        decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
+        onSaved: (String newNumber) {
+          setState(() {
+            widget.passengerDetail.phonenumber = newNumber;
+          });
+        },
+        onPhoneNumberChange: (String number, String intNumber,
+            String isoCode) {
+          print(number);
+          setState(() {
+            //phoneNumber = number;
+            //phoneIsoCode = isoCode;
+          });
+        },
+        initialPhoneNumber: _phoneTextEditingController.text,
+      ));
+
+      /*
       list.add(InternationalPhoneInput(
         decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
         onPhoneNumberChange: (String number, String intNumber, String isoCode) {
@@ -518,40 +543,9 @@ return SafeArea(
         showCountryCodes: true,
         showCountryFlags: true,
       ));
-/*
-      PhoneNumber number = PhoneNumber(isoCode: gblSettings.defaultCountryCode, phoneNumber: widget.passengerDetail.phonenumber);
-
-
-      list.add(InternationalPhoneNumberInput(
-        onInputChanged: (PhoneNumber number) {
-          //print(number.phoneNumber);
-        },
-        onInputValidated: (bool value) {
-         // print(value);
-        },
-        selectorConfig: SelectorConfig(
-          selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-        ),
-        ignoreBlank: false,
-        autoValidateMode: AutovalidateMode.disabled,
-        selectorTextStyle: TextStyle(color: Colors.black),
-        initialValue: number,
-        spaceBetweenSelectorAndTextField: 5,
-        textFieldController: _phoneTextEditingController,
-        formatInput: false,
-        inputDecoration: getDecoration('Phone Number'),
-        keyboardType:
-        TextInputType.numberWithOptions(signed: true, decimal: true),
-        //inputBorder: OutlineInputBorder(),
-        onSaved: (PhoneNumber number) {
-          print('On Saved: $number');
-          if (number != null) {
-            widget.passengerDetail.phonenumber = number.toString().trim();
-          }
-        },
-      ));
 
        */
+
     } else {
       list.add(Padding(
         padding: _padding,

@@ -4,8 +4,6 @@ import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
-import 'package:vmba/data/models/products.dart';
-import 'package:vmba/payment/productViews.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 class DangerousGoodsWidget extends StatefulWidget {
