@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:international_phone_input/international_phone_input.dart';import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
@@ -49,6 +49,10 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
 
+  String phoneNumber;
+  String phoneIsoCode;
+
+
   List<UserProfileRecord> userProfileRecordList;
   int _curGenderIndex ;
   List <String> genderList = ['Male', 'Female', 'Undisclosed'];
@@ -82,6 +86,12 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
     _phoneTextEditingController.text = widget.passengerDetail.phonenumber;
     _emailTextEditingController.text = widget.passengerDetail.email;
+    phoneNumber = widget.passengerDetail.phonenumber;
+    if( phoneNumber == null || phoneNumber.isEmpty) {
+      phoneIsoCode = gblSettings.defaultCountryCode;
+    } else {
+
+    }
 
     _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
     _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
@@ -492,6 +502,57 @@ return SafeArea(
 
     if( widget.isLeadPassenger) {
 // phone
+    if( gblSettings.wantInternatDialCode) {
+      list.add(InternationalPhoneInput(
+        decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
+        onPhoneNumberChange: (String number, String intNumber, String isoCode) {
+          print(number);
+          setState(() {
+            phoneNumber = number;
+            phoneIsoCode = isoCode;
+          });
+        },
+        initialPhoneNumber: phoneNumber,
+        initialSelection: phoneIsoCode,
+        //enabledCountries: ['+233', '+1'],
+        showCountryCodes: true,
+        showCountryFlags: true,
+      ));
+/*
+      PhoneNumber number = PhoneNumber(isoCode: gblSettings.defaultCountryCode, phoneNumber: widget.passengerDetail.phonenumber);
+
+
+      list.add(InternationalPhoneNumberInput(
+        onInputChanged: (PhoneNumber number) {
+          //print(number.phoneNumber);
+        },
+        onInputValidated: (bool value) {
+         // print(value);
+        },
+        selectorConfig: SelectorConfig(
+          selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+        ),
+        ignoreBlank: false,
+        autoValidateMode: AutovalidateMode.disabled,
+        selectorTextStyle: TextStyle(color: Colors.black),
+        initialValue: number,
+        spaceBetweenSelectorAndTextField: 5,
+        textFieldController: _phoneTextEditingController,
+        formatInput: false,
+        inputDecoration: getDecoration('Phone Number'),
+        keyboardType:
+        TextInputType.numberWithOptions(signed: true, decimal: true),
+        //inputBorder: OutlineInputBorder(),
+        onSaved: (PhoneNumber number) {
+          print('On Saved: $number');
+          if (number != null) {
+            widget.passengerDetail.phonenumber = number.toString().trim();
+          }
+        },
+      ));
+
+       */
+    } else {
       list.add(Padding(
         padding: _padding,
         child: new Theme(
@@ -514,6 +575,7 @@ return SafeArea(
           ),
         ),
       ));
+    }
 
       // email
       list.add(Padding(
@@ -811,7 +873,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
                          )
                       ).toList(),
 
-                     // hint: Text('Country'),
+                     // DbCountryext('Country'),
                       onChanged: (value) {
                         setState(() {
                           logit('Value = ' + value.toString());
@@ -838,7 +900,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   }
 
 
-  Widget addCountry(Country country) {
+  Widget addCountry(DbCountry country) {
     Image img;
     String name = country.enShortName;
     if( name.length > 25) {

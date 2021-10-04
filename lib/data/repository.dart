@@ -359,6 +359,9 @@ class Repository {
                   case 'InReview':
                     gblInReview = parseBool(item['value']);
                     break;
+                  case 'wantDangerousGoods':
+                    gblSettings.wantDangerousGoods = parseBool(item['value']);
+                    break;
 
                   case 'wantYouthDOB':
                     gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);

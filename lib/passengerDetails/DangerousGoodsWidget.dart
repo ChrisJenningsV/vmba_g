@@ -41,7 +41,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
         'Dangerous Goods',
       ),
       //endDrawer: DrawerMenu(),
-      body: _body(),
+      body: SingleChildScrollView( child:_body()),
     );
   }
 
@@ -53,8 +53,8 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
   list.add( Image(
       image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/dangerousgoods.jpg'),
-      height: 500,
-      width: 250,
+      height: gblIsIos ? 350 : 500,
+      width: gblIsIos ? 220 : 250,
       fit: BoxFit.fill,
     ));
 

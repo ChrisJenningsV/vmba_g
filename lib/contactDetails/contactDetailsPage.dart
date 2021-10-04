@@ -78,21 +78,6 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
 
-/*        appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-          iconTheme: IconThemeData(
-              color: gblSystemColors.headerTextColor),
-
-          title: new TrText('Payment',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.headerTextColor)),
-        ),
-
- */
-
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(

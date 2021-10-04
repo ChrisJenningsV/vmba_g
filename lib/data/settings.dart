@@ -81,6 +81,7 @@ class Settings {
   bool wantPageImages;
   bool wantBags;
   bool wantDangerousGoods;
+  bool wantInternatDialCode;
   bool wantCovidWarning;
   bool wantCountry;
   bool wantClassBandImages;
@@ -92,6 +93,7 @@ class Settings {
   bool wantRedressNo;
   bool wantKnownTravNo;
 
+  String defaultCountryCode;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -181,6 +183,8 @@ bool bpShowFastTrack;
     this.wantPageImages = false,
     this.wantBags = false,
     this.wantDangerousGoods = false,
+    this.wantInternatDialCode = false,
+    this.defaultCountryCode,
     this.wantCovidWarning = false,
     this.wantCountry = false,
     this.wantClassBandImages = false,

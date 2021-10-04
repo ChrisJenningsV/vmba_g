@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/repository.dart';
+//import 'package:international_phone_input/international_phone_input.dart';import 'package:vmba/data/repository.dart';
+import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:vmba/data/globals.dart';
@@ -26,6 +28,7 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
+  bool _gotData;
   TextEditingController _titleTextEditingController = TextEditingController();
   TextEditingController _firstNameTextEditingController = TextEditingController();
   TextEditingController _middleNameTextEditingController = TextEditingController();
@@ -49,6 +52,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   final formKey = new GlobalKey<FormState>();
   String oldADSNumber;
   String oldADSpin;
+  //String phoneNumber;
+  //String phoneIsoCode;
 
 
 //  bool _loadingInProgress = false;
@@ -57,6 +62,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   @override
   initState() {
     super.initState();
+    _gotData = false;
     widget.passengerDetail = new PassengerDetail(email: '', phonenumber: '');
     if (widget.passengerDetail.paxType == null) {
       widget.passengerDetail.paxType = PaxType.adult;
@@ -80,6 +86,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _lastNameTextEditingController.text = widget.passengerDetail.lastName;
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
+
+/*        phoneNumber = widget.passengerDetail.phonenumber;
+        if( phoneNumber == null || phoneNumber.isEmpty) {
+          phoneIsoCode = gblSettings.defaultCountryCode;
+        } else {
+
+        }
+
+ */
+
         //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
         if( widget.passengerDetail.dateOfBirth != null ) {
           _dobController.text = DateFormat('dd-MMM-yyyy')
@@ -110,6 +126,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
         widget.passengerDetail.paxType = PaxType.adult;
       }
       _populateFromGlobalProfile();
+      setState(() {
+        _gotData = true;
+      });
     });
     // _displayProcessingIndicator = false;
   }
@@ -184,43 +203,74 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: gblSettings.wantLeftLogo
-            ? Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Image.asset(
-                    'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                    color: Color.fromRGBO(255, 255, 255, 0.1),
-                    colorBlendMode: BlendMode.modulate))
-            : Text(''),
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
-        title: TrText('My Account',
-            style: TextStyle(color: gblSystemColors.headerTextColor)),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () => Navigator.pop(context),
-          )
-        ],
-      ),
-      body: new Form(
-        key: formKey,
-        child: new SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Column(
-              children: _getWidgets(),
+    if( _gotData == false) {
+      return Scaffold(
+          appBar: AppBar(
+          leading: gblSettings.wantLeftLogo
+          ? Padding(
+          padding: EdgeInsets.only(left: 10.0),
+    child: Image.asset(
+    'lib/assets/$gblAppTitle/images/appBarLeft.png',
+    color: Color.fromRGBO(255, 255, 255, 0.1),
+    colorBlendMode: BlendMode.modulate))
+        : Text(''),
+    brightness: gblSystemColors.statusBar,
+    backgroundColor: gblSystemColors.primaryHeaderColor,
+    iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
+    title: TrText('My Account',
+    style: TextStyle(color: gblSystemColors.headerTextColor)),
+    automaticallyImplyLeading: false,),
+        body: new Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new TrText('Loading'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          leading: gblSettings.wantLeftLogo
+              ? Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Image.asset(
+                  'lib/assets/$gblAppTitle/images/appBarLeft.png',
+                  color: Color.fromRGBO(255, 255, 255, 0.1),
+                  colorBlendMode: BlendMode.modulate))
+              : Text(''),
+          brightness: gblSystemColors.statusBar,
+          backgroundColor: gblSystemColors.primaryHeaderColor,
+          iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
+          title: TrText('My Account',
+              style: TextStyle(color: gblSystemColors.headerTextColor)),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        ),
+        body: new Form(
+          key: formKey,
+          child: new SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Column(
+                children: _getWidgets(),
+              ),
             ),
           ),
         ),
-      ),
-    );
-    // });
+      );
+    }
   }
 
   List<Widget> _getWidgets() {
@@ -357,29 +407,55 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ));
 
     // phone
-    widgets.add(Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-      child: new Theme(
-          data: _theme,
-          child: new TextFormField(
-            maxLength: 30,
-            decoration: _getDecoration('Phone Number'),
-            controller: _phoneNumberTextEditingController,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            validator: (value) =>
-              value.isEmpty ? translate('Phone Number cannot be empty') : null,
-            onSaved: (value) {
-              if (value != null) {
-                //.contactInfomation.phonenumber = value.trim()
-                widget.passengerDetail.phonenumber = value.trim();
-              }
-            },
-          )),
-    ));
+    if( gblSettings.wantInternatDialCode) {
 
+
+        widgets.add(InternationalPhoneInput(
+          padding:const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+          popupTitle: translate('Select phone country'),
+          controller: _phoneNumberTextEditingController,
+          //initialPhoneNumber: _phoneNumberTextEditingController.text,
+          decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
+          onSaved: (String newNumber) {
+            setState(() {
+              _phoneNumberTextEditingController.text = newNumber;
+              widget.passengerDetail.phonenumber = newNumber;
+            });
+          },
+          onPhoneNumberChange: (String number, String intNumber,
+              String isoCode) {
+            print(number);
+            setState(() {
+              //phoneNumber = number;
+              //phoneIsoCode = isoCode;
+            });
+          },
+          initialPhoneNumber: _phoneNumberTextEditingController.text,
+        ));
+     } else {
+      widgets.add(Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+            data: _theme,
+            child: new TextFormField(
+              maxLength: 30,
+              decoration: _getDecoration('Phone Number'),
+              controller: _phoneNumberTextEditingController,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              validator: (value) =>
+              value.isEmpty ? translate('Phone Number cannot be empty') : null,
+              onSaved: (value) {
+                if (value != null) {
+                  //.contactInfomation.phonenumber = value.trim()
+                  widget.passengerDetail.phonenumber = value.trim();
+                }
+              },
+            )),
+      ));
+    }
     // email
     widgets.add(Padding(
       padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),

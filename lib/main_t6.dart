@@ -44,7 +44,7 @@ void configT6() {
 
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
-  gblTitleStyle =  new TextStyle( color: Colors.white) ;
+  gblTitleStyle =  new TextStyle( color: Colors.grey.shade400) ;
   gblAppTitle = 'airswift';
   gblBuildFlavor = 'T6';
 
@@ -87,7 +87,6 @@ void configT6() {
     wantClassBandImages: true,
     wantCountry: true,
     wantTallPageImage: true,
-
 
     passengerTypes: PassengerTypes(
       adults: true,

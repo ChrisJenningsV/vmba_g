@@ -180,7 +180,7 @@ Future<Countrylist> getCountrylist() async {
 }
 
 class Countrylist {
-  List<Country> countries;
+  List<DbCountry> countries;
 
   Countrylist({this.countries});
 
@@ -189,27 +189,27 @@ class Countrylist {
       countries = [];
       //new List<Country>();
       json['countries'].forEach((v) {
-        countries.add(new Country.fromJson(v));
+        countries.add(new DbCountry.fromJson(v));
       });
     }
   }
 }
 
-class Country {
+class DbCountry {
   String numCode;
   String alpha2code;
   String alpha3code;
   String enShortName;
   String nationality;
 
-  Country(
+  DbCountry(
       {this.numCode,
       this.alpha2code,
       this.alpha3code,
       this.enShortName,
       this.nationality});
 
-  Country.fromJson(Map<String, dynamic> json) {
+  DbCountry.fromJson(Map<String, dynamic> json) {
     numCode = json['num_code'];
     alpha2code = json['alpha_2_code'];
     alpha3code = json['alpha_3_code'];

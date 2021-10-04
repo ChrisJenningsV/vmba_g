@@ -108,8 +108,20 @@ void configSI() {
   groupsBookingsEmail:  "groups@blueislands.com",
   maxNumberOfPax:  8,
   hideFareRules:  true,
+    wantInternatDialCode: true,
+    wantFQTV:  true,
+    wantNewEditPax: true,
+    wantMaterialControls: true,
+    wantCitySwap: true,
+    wantPageImages: true,
+    gblServerFiles: 'https://customertest.videcom.com/blueislands/AppFiles',
+    pageImageMap: '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "happypax"}',
+    wantClassBandImages: true,
+    defaultCountryCode: 'GB',
 
-  liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+
+
+    liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   liveApisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
   liveCreditCardProvider: 'citypaydirect',
