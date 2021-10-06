@@ -36,6 +36,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
+    gblBookingState = BookingState.newBooking;
     _loadData();
   }
 

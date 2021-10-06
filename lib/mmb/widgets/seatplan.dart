@@ -193,10 +193,14 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   _bookSeats() async {
     StringBuffer cmd = new StringBuffer();
     cmd.write('*${widget.rloc}^');
-
+    gblBookingState = BookingState.bookSeat;
     if (!gblSettings.webCheckinNoSeatCharge) {
       paxlist.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
+          if(f.savedSeat != null && f.savedSeat != '') {
+            gblBookingState = BookingState.changeSeat;
+          }
+
           cmd.write(f.savedSeat == null || f.savedSeat == ''
               ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}^'
               : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}]^');
@@ -205,6 +209,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       paxlist.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
+          if(f.savedSeat != null && f.savedSeat != '') {
+            gblBookingState = BookingState.changeSeat;
+          }
+
           cmd.write(f.savedSeat == null || f.savedSeat == ''
               ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^'
               : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}][MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^');
@@ -225,8 +233,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
     String msg = json
         .encode(RunVRSCommandList(session, cmd.toString().split('^')).toJson());
-    print(msg);
+    logit(msg);
     _sendVRSCommandList(msg).then((result) {
+      logit(result);
       if (result == 'No Amount Outstanding') {
         msg = json.encode(RunVRSCommand(session, "E"));
         _sendVRSCommand(msg).then(

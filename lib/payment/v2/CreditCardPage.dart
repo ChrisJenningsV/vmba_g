@@ -287,8 +287,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
     }
     if (session != null) {
-
-      msg = '*$rLOC^';
+      if( gblBookingState != BookingState.changeSeat && gblBookingState != BookingState.bookSeat ) {
+        msg = '*$rLOC^';
+      }
       msg += getPaymentCmd(false);
       logit(msg);
       _sendVRSCommand(json.encode(

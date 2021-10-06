@@ -863,7 +863,7 @@ class _CheckinBoardingPassesWidgetState
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
 
-      logit('checkin opens:${checkinOpens.toString()}');
+    //  logit('checkin opens:${checkinOpens.toString()}');
       checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
               pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
@@ -873,7 +873,7 @@ class _CheckinBoardingPassesWidgetState
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinEnd));
 
-      logit('checkin closed:${checkinClosed.toString()}');
+     // logit('checkin closed:${checkinClosed.toString()}');
 
       now = new DateTime.now().toUtc();
 
@@ -1079,7 +1079,7 @@ class _CheckinBoardingPassesWidgetState
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = new DateTime.now().toUtc();
 
-      logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
+    //  logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
 
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');

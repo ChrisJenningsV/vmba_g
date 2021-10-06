@@ -178,7 +178,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
-
+          logit(pnrJson);
           setState(() {
             _displayProcessingIndicator = false;
           });
