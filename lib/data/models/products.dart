@@ -151,6 +151,7 @@ class Product {
   bool displayOnwebsite;
 
 int count;
+List<String> curProducts ;
 
   Product({this.productCode, this.productName, this.productPrice, this.count = 0,
       this.productType,
@@ -204,6 +205,51 @@ int count;
     return true;
   }
   return false;
+  }
+
+  String _getID(int paxNo, int segNo) {
+    return '$paxNo:$segNo';
+  }
+  void addProduct(int paxNo, int segNo) {
+    if( curProducts == null) curProducts = [];
+    String str = _getID(paxNo, segNo);
+    curProducts.add(str);
+
+  }
+  void removeProduct(int paxNo, int segNo) {
+    if( curProducts == null) curProducts = [];
+    String str = _getID(paxNo, segNo);
+
+    int index = 0 ;
+    bool found = false;
+    curProducts.forEach((element) {
+      if( found == false) {
+        if (element == str) {
+          found = true;
+        } else {
+          index += 1;
+        }
+      }
+      });
+    if(found ) {
+      curProducts.removeAt(index);
+    }
+
+  }
+
+  int getCount(int paxNo, int segNo){
+    if( curProducts == null){
+      curProducts = [];
+      return 0;
+    }
+    String str = _getID(paxNo, segNo);
+    int cnt = 0;
+    curProducts.forEach((element) {
+      if( element == str){
+        cnt +=1;
+      }
+    });
+    return cnt;
   }
 
   Product.fromJson(Map<String, dynamic> json) {

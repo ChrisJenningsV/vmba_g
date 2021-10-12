@@ -84,7 +84,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
                           preLoadDetails: widget.preLoadDetails,
                           passengerDetailRecord: widget.passengerDetailRecord,
                         )));
-            //displayError(_error);
+            print(_error);
           } else {
             continuePass = true;
             Navigator.pop(context, continuePass);

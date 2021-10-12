@@ -10,12 +10,12 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
-import 'package:vmba/utilities/widgets/productsWidget.dart';
+import 'package:vmba/Products/widgets/productsWidget.dart';
 
 
 class DataLoaderWidget extends StatefulWidget {
-  NewBooking newBooking;
-  PnrModel pnrModel;
+  final NewBooking newBooking;
+  final PnrModel pnrModel;
 
   DataLoaderWidget(
   { Key key, this.dataType, this.newBooking, this.pnrModel  }) : super( key: key);
@@ -165,7 +165,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _dataName = 'Cities';
           break;
         case LoadDataType.products:
-          _dataName = 'Products';
+          _dataName = 'Travel Extras';
           _url = '${gblSettings.apiUrl}/product/getproducts';
           String currency = gblSettings.currency;
           if( currency == null || currency.isEmpty) {

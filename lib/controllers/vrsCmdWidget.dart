@@ -12,7 +12,7 @@ import 'package:vmba/data/models/products.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
-import 'package:vmba/utilities/widgets/productsWidget.dart';
+//import 'package:vmba/Products/widgets/productsWidget.dart';
 
 
 class VrsCmdWidget extends StatefulWidget {
@@ -44,9 +44,9 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
   bool _displayFinalError;
   String _displayProcessingText;
   bool _wantOK;
-  String _dataName;
-  String _msg;
-  String _url;
+  //String _dataName;
+  //String _msg;
+  //String _url;
   String _error;
   Session session;
 
@@ -67,14 +67,14 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
   @override
   Widget build(BuildContext context) {
     String msg = '';
-    Duration duration;
+    //Duration duration;
 
     // TODO: implement build
     if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
       msg = _displayProcessingText + _error;
     } else if (gblNoNetwork == true) {
       msg = translate('No Internet Connection.');
-      duration =  const Duration(hours: 1);
+      //duration =  const Duration(hours: 1);
     } else if (_displayProcessingIndicator) {
       msg = _displayProcessingText ;
     } else {
@@ -264,7 +264,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
 
     switch(params.dataType){
       case VrsCmdType.bookSeats:
-        _dataName = 'Book Seats';
+        //_dataName = 'Book Seats';
         _displayProcessingText = 'Booking your seat selection...';
         _wantOK = false;
         _bookSeats(params);
@@ -272,7 +272,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
 
         break;
       case VrsCmdType.loadSeatplan:
-        _dataName = 'language';
+        //_dataName = 'language';
         break;
     }
     //_displayProcessingText = '${translate('Loading')} $_dataName ...';

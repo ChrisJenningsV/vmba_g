@@ -6,7 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
 
-import '../helper.dart';
+import '../../utilities/helper.dart';
 import 'complexProductWidget.dart';
 
 
@@ -279,18 +279,20 @@ class ProductCardState extends State<ProductCard> {
         child: TrText(prod.productName)),);
 
     widgets.add(Spacer(),);
-    widgets.add(ElevatedButton(
-      onPressed: () {
-        showHtml(context, prod.productName, prod.productDescription);
-      },
-      style: ElevatedButton.styleFrom(
-        primary: gblSystemColors
-            .primaryButtonColor,
-        shape: CircleBorder(),),
-      child:
-      Icon(        Icons.info,        color: Colors.white,
-      ),
-    ));
+    if( prod.productDescription != null && prod.productDescription.isNotEmpty ) {
+      widgets.add(ElevatedButton(
+        onPressed: () {
+          showHtml(context, prod.productName, prod.productDescription);
+        },
+        style: ElevatedButton.styleFrom(
+          primary: gblSystemColors
+              .primaryButtonColor,
+          shape: CircleBorder(),),
+        child:
+        Icon(Icons.info, color: Colors.white,
+        ),
+      ));
+    }
 
 
         if (prod.paxRelate == false && prod.segmentRelate == false) {

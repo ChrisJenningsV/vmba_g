@@ -16,6 +16,7 @@ import 'package:html/parser.dart' as parser;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/widgets/buttons.dart';
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
@@ -506,18 +507,19 @@ String cleanInt(String str) {
 }
 
 void showHtml(BuildContext context, String title, String txt ) {
-  Widget wHtml = getDom(txt);
+  Widget wHtml = Column( children: getDom(txt), mainAxisSize: MainAxisSize.min, );
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         actions: <Widget>[
-          new TextButton(
+          smallButton( text: 'OK', icon: Icons.check, onPressed: () {   Navigator.of(context).pop();}),
+          /*new TextButton(
             child: new TrText("OK"),
             onPressed: () {
               Navigator.of(context).pop();
             },
-          ),
+          ),*/
         ],
         title: new TrText(title),
         content: wHtml,
@@ -527,14 +529,18 @@ void showHtml(BuildContext context, String title, String txt ) {
   );
 }
 
-Widget getDom( String str){
+List<Widget> getDom( String str){
 List<Widget> list = [];
   dom.Document document = parser.parse(str);
   document.body.nodes.forEach((el){
     String s = el.text;
-    list.add(Text(s));
+    if( s != null && s.isNotEmpty) {
+      list.add(Flexible(
+          child: Text(s, overflow: TextOverflow.clip,)));
+    }
     logit( s + ' ${el.nodes.length} nodes');
   });
 
-  return Column( children: list);
+
+  return list;
 }

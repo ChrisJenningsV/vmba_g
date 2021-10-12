@@ -12,6 +12,7 @@ import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -832,6 +833,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  smallButton( text: 'PAY NOW', icon: Icons.check, onPressed: () { validateAndSubmit();}),
+                  /*
                   new FloatingActionButton.extended(
                       elevation: 0.0,
                       isExtended: true,
@@ -849,6 +852,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       onPressed: () {
                         validateAndSubmit();
                       }),
+
+                   */
                 ],
               )),
           appBar: new AppBar(

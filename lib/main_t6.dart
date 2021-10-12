@@ -82,7 +82,7 @@ void configT6() {
       wantMaterialControls: true,
       wantCitySwap: true,
       wantPageImages: true,
-    wantBags: false,
+    wantBags: true,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantCountry: true,

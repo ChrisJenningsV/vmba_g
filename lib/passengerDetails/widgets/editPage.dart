@@ -10,6 +10,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/utilities/widgets/buttons.dart';
 
 class EditDetailsWidget extends StatefulWidget {
   EditDetailsWidget(
@@ -119,7 +120,9 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
     paxWidgets.add(renderFields());
 
-    paxWidgets.add(ElevatedButton(
+    paxWidgets.add(saveButton( text: 'SAVE', onPressed: () {validateAndSubmit();}, icon: Icons.check ));
+    /*
+        ElevatedButton(
       onPressed: () {
         validateAndSubmit();
       },
@@ -143,7 +146,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
         ],
       ),
     ));
-
+*/
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));

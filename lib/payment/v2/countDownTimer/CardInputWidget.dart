@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/models.dart';
+import 'package:vmba/utilities/widgets/buttons.dart';
 import '../CreditCardHelper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -301,6 +302,10 @@ void initState() {
                     ],
                   ),
           ),
+          smallButton( text: street.isEmpty ? 'Add' : 'Edit',
+              icon: street.isEmpty ? Icons.add : Icons.edit,
+              onPressed: () {  _showAddressDialog().then((value) => setState(() {}));}),
+          /*
           IconButton(
             onPressed: () {
               _showAddressDialog().then((value) => setState(() {}));
@@ -308,6 +313,8 @@ void initState() {
             icon: street.isEmpty ? Icon(Icons.add) : Icon(Icons.edit),
             iconSize: 20,
           )
+
+           */
         ],
       ),
     ));

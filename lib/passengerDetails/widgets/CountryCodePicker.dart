@@ -5,15 +5,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:international_phone_input/src/phone_service.dart';
+//import 'package:international_phone_input/src/phone_service.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/passengerDetails/widgets/Country.dart';
 import 'package:vmba/utilities/helper.dart';
 
 class InternationalPhoneInput extends StatefulWidget {
-  final void Function(String phoneNumber, String internationalizedPhoneNumber,
-      String isoCode) onPhoneNumberChange;
+  final void Function(String phoneNumber, String internationalizedPhoneNumber,      String isoCode) onPhoneNumberChange;
   final String initialPhoneNumber;
   final String initialSelection;
   final String errorText;
@@ -50,12 +49,15 @@ class InternationalPhoneInput extends StatefulWidget {
         this.border, this.padding,
         this.popupTitle,
         this.controller,
+        this.codeController,
         this.onSaved,
       });
 
-  static Future<String> internationalizeNumber(String number, String iso) {
+/*  static Future<String> internationalizeNumber(String number, String iso) {
     return PhoneService.getNormalizedPhoneNumber(number, iso);
   }
+
+ */
 
   @override
   _InternationalPhoneInputState createState() =>
@@ -285,10 +287,10 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
 
 }
 class CodeDialog extends StatefulWidget {
-  String popupTitle;
+  final String popupTitle;
   String searchString;
   Country selectedItem;
-  List<Country> itemList ;
+  final List<Country> itemList ;
   final ValueChanged<Country> onChanged;
 
   CodeDialog({
@@ -296,6 +298,7 @@ class CodeDialog extends StatefulWidget {
     this.popupTitle,
     this.itemList,
     this.onChanged,
+    this.selectedItem,
   });
 
   @override

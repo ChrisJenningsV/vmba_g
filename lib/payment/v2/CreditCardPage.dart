@@ -349,6 +349,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (widget.isMmb) {
         msg = '*$rLOC';
         widget.mmbBooking.newFlights.forEach((flt) {
+          String org = flt.substring(15, 18);
+          String dest = flt.substring(19, 22);
+
+          widget.mmbBooking.journeys.journey.forEach((j) {
+              if( j.itin[0].depart == org){
+          //      msg += '^X${j.itin[0].line}';
+              }
+          });
           print(flt);
           msg += '^' + flt;
         });
