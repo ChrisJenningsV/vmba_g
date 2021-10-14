@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:vmba/data/models/models.dart';
 
+//ignore: must_be_immutable
 class TrTitleControl extends IgnorePointer {
   final PassengerDetail passengerDetail;
 

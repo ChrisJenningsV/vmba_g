@@ -11,6 +11,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/passengerDetails/widgets/Country.dart';
 import 'package:vmba/utilities/helper.dart';
 
+//ignore: must_be_immutable
 class InternationalPhoneInput extends StatefulWidget {
   final void Function(String phoneNumber, String internationalizedPhoneNumber,      String isoCode) onPhoneNumberChange;
   final String initialPhoneNumber;
@@ -286,6 +287,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
   }
 
 }
+//ignore: must_be_immutable
 class CodeDialog extends StatefulWidget {
   final String popupTitle;
   String searchString;

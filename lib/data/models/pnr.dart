@@ -394,6 +394,19 @@ class PNR {
         ? new Fqfields.fromJson(json['fqfields'])
         : null;
   }
+  int productCount(String productCode ){
+    if( mPS == null || mPS.mP == null ) {
+      return 0;
+    }
+    int cnt = 0;
+    mPS.mP.forEach((p) {
+      if(p.mPID == productCode) {
+        cnt+=1;
+      }
+    }
+    );
+    return cnt;
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -823,7 +836,7 @@ class MPS {
   MPS({this.mP});
 
   MPS.fromJson(Map<String, dynamic> json) {
-    if (json['AFX'] != null) {
+    if (json['MP'] != null) {
       mP = [];
       //List<MP>();
       if (json['MP'] is List) {

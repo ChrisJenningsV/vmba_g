@@ -8,14 +8,16 @@ import 'package:vmba/data/models/products.dart';
 
 import '../../utilities/helper.dart';
 import 'complexProductWidget.dart';
+import 'package:vmba/Products/controller/productCommands.dart';
 
-
+//ignore: must_be_immutable
 class ProductsWidget extends StatefulWidget {
   NewBooking newBooking;
   PnrModel pnrModel;
+  final Function(PnrModel pnrModel) onComplete;
 
   ProductsWidget(
-      { Key key, this.newBooking, this.pnrModel  }) : super( key: key);
+      { Key key, this.newBooking, this.pnrModel, this.onComplete  }) : super( key: key);
 
   //final LoadDataType dataType;
 
@@ -119,7 +121,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
     // add  bag products
     if(gblProducts != null ) {
       gblProducts.productCategorys.forEach((pc) {
-        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel ));
+        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, onComplete: widget.onComplete, ));
       });
     }
 
@@ -194,13 +196,15 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
 }
 
 
-
+//ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
   final ProductCategory productCategory ;
-  final PnrModel pnrModel;
+  PnrModel pnrModel;
+  void Function(PnrModel pnrModel) onComplete;
+
 
   // ProductCardState appState = new ProductCardState();
-  ProductCard({this.productCategory, this.pnrModel});
+  ProductCard({this.productCategory, this.pnrModel, this.onComplete});
   ProductCardState createState() => ProductCardState();
 
   /*
@@ -270,6 +274,13 @@ class ProductCardState extends State<ProductCard> {
   Row getProductRow(int index, Product prod) {
     List<Widget> widgets = [];
 
+    // check for this product in pnr
+    int noItems = widget.pnrModel.pNR.productCount(prod.productCode);
+
+    if( noItems > 0 ) {
+      widgets.add(Text(noItems.toString()));
+    }
+
     widgets.add(Image(image: getBagImage(prod.productCode),
       fit: BoxFit.fill,
       height: 40,
@@ -320,8 +331,17 @@ class ProductCardState extends State<ProductCard> {
           Navigator.push(
               context,
               SlideTopRoute(
-                  page: ComplextProductWidget( product: prod, pnrModel: widget.pnrModel,
-                  ))).then((passengerDetails) {
+                  page: ComplextProductWidget( product: prod, pnrModel: widget.pnrModel, onSaved: (product) {
+                    //saveProduct(product, widget.pnrModel.pNR.rLOC);
+                    },
+                  ))).then((pnrMod) {
+                    if( pnrMod != null ) {
+                      widget.pnrModel = pnrMod;
+                      setState(() {
+
+                      });
+                      widget.onComplete(pnrMod);
+                      }
             //updatePassengerDetails(passengerDetails, paxNo - 1);
           });
         },
@@ -349,7 +369,6 @@ class ProductCardState extends State<ProductCard> {
   bool hasContent() {
     return true;
   }
-
 
 
 }

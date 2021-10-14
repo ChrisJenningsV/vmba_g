@@ -13,6 +13,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
 
+//ignore: must_be_immutable
 class MyFqtvPage extends StatefulWidget {
   MyFqtvPage(
       {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})

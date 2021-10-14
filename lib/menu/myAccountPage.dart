@@ -13,6 +13,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
+//ignore: must_be_immutable
 class MyAccountPage extends StatefulWidget {
   MyAccountPage(
       {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})

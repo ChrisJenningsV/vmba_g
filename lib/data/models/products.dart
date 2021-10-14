@@ -214,6 +214,7 @@ List<String> curProducts ;
     if( curProducts == null) curProducts = [];
     String str = _getID(paxNo, segNo);
     curProducts.add(str);
+    count +=1;
 
   }
   void removeProduct(int paxNo, int segNo) {
@@ -226,6 +227,7 @@ List<String> curProducts ;
       if( found == false) {
         if (element == str) {
           found = true;
+          count -=1;
         } else {
           index += 1;
         }
@@ -250,6 +252,17 @@ List<String> curProducts ;
       }
     });
     return cnt;
+  }
+
+  double getPrice() {
+    double p = 0;
+    if( productPrice != null ){
+      p += productPrice;
+    }
+    if( taxAmount != null ){
+      p += taxAmount;
+    }
+    return p;
   }
 
   Product.fromJson(Map<String, dynamic> json) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/Products/controller/productCommands.dart';
 import 'package:vmba/components/trText.dart';
 //import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -11,8 +12,9 @@ import '../../utilities/widgets/appBarWidget.dart';
 class ComplextProductWidget extends StatefulWidget {
   final Product product;
   final PnrModel pnrModel;
+  final void Function(Product product) onSaved;
 
-  ComplextProductWidget({Key key, this.product, this.pnrModel})
+  ComplextProductWidget({Key key, this.product, this.pnrModel, this.onSaved})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -36,19 +38,35 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
 
   Widget _body() {
     List<Widget> list = [];
-
+    List<Widget> rowList = [];
     List<Widget> headList = [];
+    String units = '';
 
-    headList.add(new Row(
-        children: [
-    Image(image: getBagImage(widget.product.productCode),
+
+    if( widget.product.unitOfMeasure == null || widget.product.unitOfMeasure.isEmpty) {
+      units += translate(' Per Unit');
+    } else {
+      units = translate(' Per ') + widget.product.unitOfMeasure;
+    }
+
+
+    rowList.add(Image(image: getBagImage(widget.product.productCode),
       fit: BoxFit.fill,
       height: 40,
-      width: 40,),
-    Padding( padding: EdgeInsets.only(right: 15,)),
-
-    Text(formatPrice(widget.product.currencyCode, widget.product.productPrice)),
+      width: 40,));
+    rowList.add(Padding( padding: EdgeInsets.only(right: 15,)));
+    rowList.add(Column( children: [
+      Text(formatPrice(widget.product.currencyCode, widget.product.getPrice()) ),
+      Text(units)
     ]));
+    rowList.add(Spacer(),);
+    if( widget.product.count > 0 ){
+      rowList.add(Align(
+        alignment: Alignment.topRight,
+          child: Text(formatPrice(widget.product.currencyCode, widget.product.getPrice()* widget.product.count ), textScaleFactor: 1.5,)));
+    }
+
+    headList.add(new Row(    children: rowList,));
 
     // product details
     if( widget.product.productDescription != null && widget.product.productDescription.isNotEmpty ) {
@@ -65,6 +83,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
             child: Column(children: headList,) )
     ));
 
+    list.add(Divider());
 
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
     if (widget.product.segmentRelate) {
@@ -73,6 +92,11 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
           pnrModel: widget.pnrModel,
           product: widget.product,
           itin: itin,
+          stateChange: () {
+            setState(() {
+
+            });
+          },
         ));
       });
     } else {
@@ -110,6 +134,16 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     );
   }
   void validateAndSave() {
+     saveProduct(widget.product, widget.pnrModel.pNR.rLOC, onComplete: onComplete);
+  }
+
+  void onComplete(PnrModel pnrModel){
+    widget.onSaved(widget.product);
+    try {
+      Navigator.pop(context, pnrModel);
+    } catch (e) {
+      print('Error: $e');
+    }
 
   }
 }
@@ -120,8 +154,9 @@ class ProductFlightCard extends StatefulWidget {
   final Product product;
   final PnrModel pnrModel;
   final Itin itin;
+  final void Function() stateChange;
 
-  ProductFlightCard({Key key, this.product, this.pnrModel, this.itin})
+  ProductFlightCard({Key key, this.product, this.pnrModel, this.itin, this.stateChange})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -184,6 +219,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
           if( widget.product.getCount(paxNo, segNo) > 0) {
             setState(() {
               widget.product.removeProduct(paxNo, segNo);
+              widget.stateChange();
             });
           }},
           onAdd: (int paxNo, int segNo) {
@@ -191,6 +227,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
             if( widget.product.getCount(paxNo, segNo) < max) {
               setState(() {
                 widget.product.addProduct(paxNo, segNo);
+                widget.stateChange();
               });
             }},
         )
@@ -202,12 +239,14 @@ class ProductFlightCardState extends State<ProductFlightCard> {
         if( widget.product.getCount(paxNo, segNo) > 0) {
           setState(() {
             widget.product.removeProduct(paxNo, segNo);
+            widget.stateChange();
           });
         }},
         onAdd: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) < widget.product.maxQuantity) {
             setState(() {
               widget.product.addProduct(paxNo, segNo);
+              widget.stateChange();
             });
           }},
       )

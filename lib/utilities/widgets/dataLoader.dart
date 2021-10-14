@@ -16,9 +16,10 @@ import 'package:vmba/Products/widgets/productsWidget.dart';
 class DataLoaderWidget extends StatefulWidget {
   final NewBooking newBooking;
   final PnrModel pnrModel;
+  final Function(PnrModel pnrModel) onComplete;
 
   DataLoaderWidget(
-  { Key key, this.dataType, this.newBooking, this.pnrModel  }) : super( key: key);
+  { Key key, this.dataType, this.newBooking, this.pnrModel, this.onComplete  }) : super( key: key);
 
   final LoadDataType dataType;
 
@@ -98,7 +99,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.cities:
           break;
         case LoadDataType.products:
-          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel,);
+          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
           break;
         case LoadDataType.routes:
           break;

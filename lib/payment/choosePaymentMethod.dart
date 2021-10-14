@@ -20,7 +20,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
-
+//ignore: must_be_immutable
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
       {Key key,
@@ -33,7 +33,7 @@ class ChoosePaymenMethodWidget extends StatefulWidget {
       this.session})
       : super(key: key);
   final NewBooking newBooking;
-  final PnrModel pnrModel;
+  PnrModel pnrModel;
   final bool isMmb ;
   final String mmbCmd;
   final String mmbAction;
@@ -50,7 +50,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   String currencyCode;
   bool _displayProcessingIndicator;
   String _displayProcessingText;
-  PnrModel pnrModel;
+ // PnrModel pnrModel;
   Stopwatch stopwatch = new Stopwatch();
   int timeout = 15;
   String _error;
@@ -76,7 +76,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       _passengers = widget.pnrModel.pNR.names.getPassengerTypeCounts();
     }
 
-    pnrModel = widget.pnrModel;
+    //pnrModel = widget.pnrModel;
     setCurrencyCode();
     if( widget.isMmb ) {
       if (session == null || session.varsSessionId == "") {
@@ -197,7 +197,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Future setCurrencyCode() async {
     try {
-      currencyCode = this
+      currencyCode = widget
           .pnrModel
           .pNR
           .fareQuote
@@ -223,7 +223,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-            formatPrice(this.pnrModel.pNR.basket.outstanding.cur, double.parse(this.pnrModel.pNR.basket.outstanding.amount) ?? 0.0),
+            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, double.parse(widget.pnrModel.pNR.basket.outstanding.amount) ?? 0.0),
 /*
                 NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
@@ -251,8 +251,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     List <Row> rows = [];
 
-    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+    if (widget.pnrModel.pNR.fareQuote.fareTax != null) {
+      widget.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         if(  paxTax.separate == 'true'){
           if( desc1 == '' || desc1 == paxTax.desc) {
             desc1 = paxTax.desc;
@@ -326,7 +326,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Row netFareTotal() {
     double total = 0.0;
-    total = (double.tryParse(this
+    total = (double.tryParse(widget
             .pnrModel
             .pNR
             .fareQuote
@@ -337,8 +337,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         0.0);
     double tax = 0.0;
 
-    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+    if (widget.pnrModel.pNR.fareQuote.fareTax != null) {
+      widget.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         tax += (double.tryParse(paxTax.amnt) ?? 0.0);
       });
     }
@@ -357,7 +357,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Row grandTotal() {
     double total = 0.0;
 
-    this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
+    widget.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
           total += double.tryParse(d.fare ?? 0.0);
@@ -402,7 +402,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Row discountTotal() {
     double total = 0.0;
 
-    this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
+    widget.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
           if( d.disc != null ) {
@@ -440,16 +440,16 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Widget flightSegementSummary() {
     List<Widget> widgets = [];
     // new List<Widget>();
-    for (var i = 0; i <= pnrModel.pNR.itinerary.itin.length - 1; i++) {
+    for (var i = 0; i <= widget.pnrModel.pNR.itinerary.itin.length - 1; i++) {
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             FutureBuilder(
               future: cityCodeToName(
-                pnrModel.pNR.itinerary.itin[i].depart,
+                widget.pnrModel.pNR.itinerary.itin[i].depart,
               ),
-              initialData: pnrModel.pNR.itinerary.itin[i].depart.toString(),
+              initialData: widget.pnrModel.pNR.itinerary.itin[i].depart.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
                 return new Text(text.data,
                     style: TextStyle(fontWeight: FontWeight.w700));
@@ -461,9 +461,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             ),
             FutureBuilder(
               future: cityCodeToName(
-                pnrModel.pNR.itinerary.itin[i].arrive,
+                widget.pnrModel.pNR.itinerary.itin[i].arrive,
               ),
-              initialData: pnrModel.pNR.itinerary.itin[i].arrive.toString(),
+              initialData: widget.pnrModel.pNR.itinerary.itin[i].arrive.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
                 return new Text(
                   text.data,
@@ -480,7 +480,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           children: <Widget>[
             TrText('Flight No:'),
             Text(
-                '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}')
+                '${widget.pnrModel.pNR.itinerary.itin[i].airID}${widget.pnrModel.pNR.itinerary.itin[i].fltNo}')
           ],
         ),
       );
@@ -490,9 +490,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           children: <Widget>[
             TrText('Departure Time:'),
             Text(DateFormat('dd MMM kk:mm').format(DateTime.parse(
-                pnrModel.pNR.itinerary.itin[i].depDate +
+                widget.pnrModel.pNR.itinerary.itin[i].depDate +
                     ' ' +
-                    pnrModel.pNR.itinerary.itin[i].depTime)))
+                    widget.pnrModel.pNR.itinerary.itin[i].depTime)))
           ],
         ),
       );
@@ -501,18 +501,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TrText('Fare Type:'),
-            Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
+            Text(widget.pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
-                : pnrModel.pNR.itinerary.itin[i].classBandDisplayName)
+                : widget.pnrModel.pNR.itinerary.itin[i].classBandDisplayName)
           ],
         ),
       );
       double taxTotal = 0.0;
 
-      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-        this
-            .pnrModel
+      if (widget.pnrModel.pNR.fareQuote.fareTax != null) {
+        widget.pnrModel
             .pNR
             .fareQuote
             .fareTax[0]
@@ -544,8 +543,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       double sepTax1 = 0.0;
       String desc1 = '';
 
-      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-        this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+      if (widget.pnrModel.pNR.fareQuote.fareTax != null) {
+        widget.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
           if(  paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()){ //
             if( desc1 == '' || desc1 == paxTax.desc) {
               desc1 = paxTax.desc;
@@ -577,13 +576,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
 
       String cityPair =
-          '${pnrModel.pNR.itinerary.itin[i].depart}${pnrModel.pNR.itinerary.itin[i].arrive}';
-      if (pnrModel.pNR.aPFAX != null &&
-          pnrModel.pNR.aPFAX.aFX
+          '${widget.pnrModel.pNR.itinerary.itin[i].depart}${widget.pnrModel.pNR.itinerary.itin[i].arrive}';
+      if (widget.pnrModel.pNR.aPFAX != null &&
+          widget.pnrModel.pNR.aPFAX.aFX
                   .where((aFX) =>
                       aFX.aFXID == "SEAT" &&
                       aFX.text.split(' ')[1] ==
-                          pnrModel.pNR.itinerary.itin[i].cityPair.toString())
+                          widget.pnrModel.pNR.itinerary.itin[i].cityPair.toString())
                   .length >
               0) {
         widgets.add(
@@ -599,7 +598,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
         );
 
-        pnrModel.pNR.aPFAX.aFX
+        widget.pnrModel.pNR.aPFAX.aFX
             .where((aFX) =>
                 aFX.aFXID == "SEAT" && aFX.text.split(' ')[1] == cityPair)
             .forEach((seat) {
@@ -762,17 +761,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             .replaceAll('</string>', '');
         Map map = json.decode(pnrJson);
 
-        pnrModel = new PnrModel.fromJson(map);
-        print(pnrModel.pNR.rLOC);
-        if (pnrModel.hasNonHostedFlights() &&
-            pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-          int noFLts = pnrModel
+        widget.pnrModel = new PnrModel.fromJson(map);
+        print(widget.pnrModel.pNR.rLOC);
+        if (widget.pnrModel.hasNonHostedFlights() &&
+            widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+          int noFLts = widget.pnrModel
               .flightCount(); //if external flights aren't confirmed they get removed from the PNR
           // which makes it look like the flights are confirmed
 
           flightsConfirmed = false;
           for (var i = 0; i < 4; i++) {
-            msg = '*' + pnrModel.pNR.rLOC + '~x';
+            msg = '*' + widget.pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
                     "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
@@ -811,11 +810,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   .replaceAll('</string>', '');
               Map map = json.decode(pnrJson);
 
-              pnrModel = new PnrModel.fromJson(map);
+              widget.pnrModel = new PnrModel.fromJson(map);
             }
 
-            if (!pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-              if (noFLts == pnrModel.flightCount()) {
+            if (!widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+              if (noFLts == widget.pnrModel.flightCount()) {
                 flightsConfirmed = true;
               } else {
                 flightsConfirmed = false;
@@ -906,15 +905,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         _showDialog();
       } else {
         Map map = json.decode(result);
-        pnrModel = new PnrModel.fromJson(map);
+        widget.pnrModel = new PnrModel.fromJson(map);
 
         setState(() {
           _displayProcessingText = 'Completing your booking...';
           _displayProcessingIndicator = true;
         });
 
-        if (pnrModel.pNR.tickets != null) {
-          await pullTicketControl(pnrModel.pNR.tickets);
+        if (widget.pnrModel.pNR.tickets != null) {
+          await pullTicketControl(widget.pnrModel.pNR.tickets);
         }
         ticketBooking();
       }
@@ -964,13 +963,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Future<void> pullTicketControl(Tickets tickets) async {
     String msg = '';
-    for (var i = 0; i < pnrModel.pNR.tickets.tKT.length; i++) {
-      if (pnrModel.pNR.tickets.tKT[i].status == 'A') {
+    for (var i = 0; i < widget.pnrModel.pNR.tickets.tKT.length; i++) {
+      if (widget.pnrModel.pNR.tickets.tKT[i].status == 'A') {
         msg = '*${widget.mmbBooking.rloc}^';
         msg += '*t-' +
-            pnrModel.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
+            widget.pnrModel.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
             '/' +
-            pnrModel.pNR.tickets.tKT[i].coupon +
+            widget.pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
 //        http.Response reponse = await http
         await http.get(Uri.parse(
@@ -1038,7 +1037,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
       Repository.get().updatePnr(pnrDBCopy);
       Repository.get()
-          .fetchApisStatus(this.pnrModel.pNR.rLOC)
+          .fetchApisStatus(widget.pnrModel.pNR.rLOC)
           .then((_) => sendEmailConfirmation(pnrModel))
           .then((_) => getArgs())
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1058,8 +1057,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   getArgs() {
     List<String> args = [];
     // List<String>();
-    args.add(this.pnrModel.pNR.rLOC);
-    if (pnrModel.pNR.itinerary.itin
+    args.add(widget.pnrModel.pNR.rLOC);
+    if (widget.pnrModel.pNR.itinerary.itin
             .where((itin) =>
                 // itin.classBand.toLowerCase() != 'fly' &&
                 itin.openSeating != 'True')
@@ -1194,8 +1193,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
   Widget _getMiles() {
     Column col = new Column();
-    if( gblRedeemingAirmiles == true && this.pnrModel.pNR != null) {
-      var miles = this.pnrModel.pNR.basket.outstandingairmiles.airmiles;
+    if( gblRedeemingAirmiles == true && widget.pnrModel.pNR != null) {
+      var miles = widget.pnrModel.pNR.basket.outstandingairmiles.airmiles;
       return Padding(
           padding: const EdgeInsets.only(top: 8, left: 16.0),
           child: Row(
@@ -1208,8 +1207,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
 
   Widget _getTotals() {
-   String cur = this.pnrModel.pNR.basket.outstanding.cur;
-    String amount =   this.pnrModel.pNR.basket.outstanding.amount;
+   String cur = widget.pnrModel.pNR.basket.outstanding.cur;
+    String amount =   widget.pnrModel.pNR.basket.outstanding.amount;
    var dAmount =double.parse(amount);
    if( dAmount <= 0 ) {
      dAmount = 0.0;
@@ -1217,8 +1216,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
    }
     if( gblRedeemingAirmiles) {
       // get tax amount
-      cur = this.pnrModel.pNR.basket.outstandingairmiles.cur;
-      amount =   this.pnrModel.pNR.basket.outstandingairmiles.amount;
+      cur = widget.pnrModel.pNR.basket.outstandingairmiles.cur;
+      amount =   widget.pnrModel.pNR.basket.outstandingairmiles.amount;
     }
 
 
@@ -1368,7 +1367,15 @@ List<Widget> getPayOptions(String amount, String cur) {
 
     if( gblSettings.wantBags) {
       //if( gblProductsState == LoadState.none) {
-        list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking, pnrModel: widget.pnrModel,));
+        list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
+          pnrModel: widget.pnrModel,
+          onComplete: (PnrModel pnrModel) {
+            widget.pnrModel = pnrModel;
+            pnrModel = pnrModel;
+            setState(() {
+
+            });
+          },));
       /*} else {
         list.add(ExpansionTile(
           tilePadding: EdgeInsets.only(left: 0),
@@ -1427,7 +1434,7 @@ List<Widget> getPayOptions(String amount, String cur) {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: pnrModel, session: session, isMmb: isMmb, mmbBooking: widget.mmbBooking, mmbAction: widget.mmbAction,))),
+          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: widget.pnrModel, session: session, isMmb: isMmb, mmbBooking: widget.mmbBooking, mmbAction: widget.mmbAction,))),
       child: Column(
         children: <Widget>[
           Row(
@@ -1448,7 +1455,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         onPressed: () =>
-            Paystack(context, pnrModel, session).load(), //Navigator.push(
+            Paystack(context, widget.pnrModel, session).load(), //Navigator.push(
         //context, MaterialPageRoute(builder: (context) => Paystack())),
         child: Column(
           children: <Widget>[

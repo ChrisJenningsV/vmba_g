@@ -117,6 +117,7 @@ void configLM() {
 
   wantPayStack: false,
   wantPageImages: true,
+  wantClassBandImages: true,
   wantLeftLogo: false,
   wantCurrencySymbols: true,
   wantMyAccount: true,

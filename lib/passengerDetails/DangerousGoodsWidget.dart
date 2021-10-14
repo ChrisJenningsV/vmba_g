@@ -6,6 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+//ignore: must_be_immutable
 class DangerousGoodsWidget extends StatefulWidget {
   bool preLoadDetails = false;
   final PassengerDetail passengerDetailRecord;
