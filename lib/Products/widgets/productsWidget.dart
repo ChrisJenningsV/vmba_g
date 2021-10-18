@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'dart:convert';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
+import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../../utilities/helper.dart';
 import 'complexProductWidget.dart';
@@ -29,21 +31,16 @@ class ProductsWidgetState extends State<ProductsWidget> {
   NetworkImage smallBag;
   NetworkImage cabinBag;
   NetworkImage holdBag;
-//  ProductCard bagCard;
-//  ProductCard tranCard;
+  String errorMsg;
 
   @override
   void initState() {
     // TODO: implement initState
- //   gblProducts.add(new Product( productCode: 'BAG1', productName: 'hold baggage', productPrice: 126.0));
-  //  gblProducts.add(new Product( productCode: 'BAG2', productName: 'Sports Equipment', productPrice: 35.0));
-   /// gblProducts.add(new Product( productCode: 'TRAN', productName: 'Airport Transfer', productPrice: 25.0));
-
- //   bagCard = new ProductCard(productType: 'BAG', products: gblProducts,);
-//    tranCard = new ProductCard(productType: 'TRAN', products: gblProducts,);
     smallBag = getBagImage('smallBag');
     cabinBag = getBagImage('cabinBag');
     holdBag = getBagImage('holdBag');
+
+    errorMsg = '';
 
     super.initState();
 
@@ -63,6 +60,10 @@ class ProductsWidgetState extends State<ProductsWidget> {
 
     //Text('Procucts Widget', style: new TextStyle(fontSize: 26),);
 
+    if( errorMsg != null && errorMsg.isNotEmpty){
+
+        ScaffoldMessenger.of(context).showSnackBar(snackbar(errorMsg));
+    }
     return Column(children: list,);
   }
 
@@ -121,7 +122,12 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
     // add  bag products
     if(gblProducts != null ) {
       gblProducts.productCategorys.forEach((pc) {
-        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, onComplete: widget.onComplete, ));
+        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, onComplete: widget.onComplete,
+        onError: (msg)
+        {
+          errorMsg = msg;
+        }
+        ));
       });
     }
 
@@ -176,23 +182,6 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
 
 }
 
-/*
-  void delProduct(int index) {
-    if( gblProducts[index].count == 0 ) {
-      return;
-    }
-    setState(() {
-      gblProducts[index].count =gblProducts[index].count - 1;
-    });
-  }
-
-  void addProduct(int index) {
-    setState(() {
-      gblProducts[index].count = gblProducts[index].count + 1;
-    });
-  }
-
- */
 }
 
 
@@ -201,36 +190,12 @@ class ProductCard extends StatefulWidget {
   final ProductCategory productCategory ;
   PnrModel pnrModel;
   void Function(PnrModel pnrModel) onComplete;
+  void Function(String msg) onError;
 
 
   // ProductCardState appState = new ProductCardState();
-  ProductCard({this.productCategory, this.pnrModel, this.onComplete});
+  ProductCard({this.productCategory, this.pnrModel, this.onComplete, this.onError});
   ProductCardState createState() => ProductCardState();
-
-  /*
-  bool hasContent() {
-    bool found = false;
-
-    productCategory.products.forEach((prod) {
-      switch (productType) {
-        case 'BAG':
-          if( prod.isBag()){
-            found = true;
-            return true;
-          }
-          break;
-        case 'TRAN':
-          if( prod.isTransfer()){
-            found = true;
-            return true;
-          }
-          break;
-      }
-    });
-    return found;
-  }
-
-   */
 
 }
 
@@ -334,6 +299,9 @@ class ProductCardState extends State<ProductCard> {
                   page: ComplextProductWidget( product: prod, pnrModel: widget.pnrModel, onSaved: (product) {
                     //saveProduct(product, widget.pnrModel.pNR.rLOC);
                     },
+                    onError: (msg){
+                      widget.onError(msg);
+                    },
                   ))).then((pnrMod) {
                     if( pnrMod != null ) {
                       widget.pnrModel = pnrMod;
@@ -341,7 +309,11 @@ class ProductCardState extends State<ProductCard> {
 
                       });
                       widget.onComplete(pnrMod);
-                      }
+                      } else {
+                      setState(() {
+
+                      });
+                    }
             //updatePassengerDetails(passengerDetails, paxNo - 1);
           });
         },

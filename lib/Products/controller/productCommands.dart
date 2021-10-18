@@ -30,11 +30,15 @@ cancel msp
 
 
 
-Future saveProduct(Product product, String rloc, {void Function(PnrModel pntModel) onComplete} ) async {
+Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) onComplete, void Function(String msg) onError} ) async {
   String msg = '';
   String _error;
-  msg = '*$rloc^';
-  msg += buildSaveProductCmd(product);
+  msg = '*${pnr.rLOC}^';
+  String pCmd = buildSaveProductCmd(product, pnr);
+  if( pCmd.isEmpty){
+    onComplete( null);
+  }
+  msg += pCmd;
   msg += '^FSM^E*R~X';
 
   logit(msg);
@@ -51,6 +55,7 @@ Future saveProduct(Product product, String rloc, {void Function(PnrModel pntMode
     noInternetSnackBar(context);
 
  */
+    onError('Bad response from server');
     return null;
   }
 
@@ -63,6 +68,7 @@ Future saveProduct(Product product, String rloc, {void Function(PnrModel pntMode
     noInternetSnackBar(context);
 
      */
+    onError('No iternet, try again later');
     return null;
     // return new ParsedResponse(response.statusCode, []);
   }
@@ -77,16 +83,9 @@ Future saveProduct(Product product, String rloc, {void Function(PnrModel pntMode
           .replaceAll('ERROR - ', '')
           .trim(); // 'Please check your details';
 
-      if (response.body.contains('TOO MANY UMNR')) {
- /*       setState(() {
-          _displayProcessingIndicator = false;
-          _tooManyUmnr = true;
-        });
-  */
-        return null;
-      }
       //_dataLoaded();
       print('saveProduct $_error');
+      onError(_error);
       //_showDialog();
       //_gotoPreviousPage();
       return;
@@ -104,13 +103,49 @@ Future saveProduct(Product product, String rloc, {void Function(PnrModel pntMode
     logit(e);
   }
 }
-  String buildSaveProductCmd(Product product) {
+  String buildSaveProductCmd(Product product, PNR pnr) {
     String cmd = '';
+
+    // check booking for this product
+    if( pnr.mPS != null && pnr.mPS.mP != null ){
+      pnr.mPS.mP.forEach((element) {
+        if( element.mPID == product.productCode) {
+          // check if this still wanted
+          product.curProducts.forEach((p) {
+            int paxNo = int.parse(p.split(':')[0]);
+            int segNo = int.parse(p.split(':')[1]);
+
+            if (int.parse(element.pax) == paxNo && int.parse(element.seg) == segNo) {
+
+            } else {
+              // remove
+              if(cmd.isNotEmpty) cmd += '^';
+              cmd += '7X${element.line}';
+            }
+          });
+        }
+      });
+    }
+
 
     product.curProducts.forEach((element) {
       int paxNo = int.parse(element.split(':')[0]);
       int segNo = int.parse(element.split(':')[1]);
 
+      bool alreadyAdded = false;
+      if( pnr.mPS != null && pnr.mPS.mP != null ){
+        pnr.mPS.mP.forEach((p) {
+          if (p.mPID == product.productCode) {
+            // check if already in PNR
+            if (( int.parse(p.seg) == segNo ) && (int.parse(p.pax) == paxNo))
+              {
+                alreadyAdded = true;
+              }
+          }
+          } );
+      }
+
+      if( alreadyAdded == false) {
       if(cmd.isNotEmpty) cmd += '^';
 
       if (paxNo != 0) {
@@ -133,6 +168,7 @@ Future saveProduct(Product product, String rloc, {void Function(PnrModel pntMode
           // neither pax or seg related
           cmd += '7-1F${product.productCode}';
         }
+      }
       }
     });
     return cmd;

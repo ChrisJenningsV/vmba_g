@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/Products/controller/productCommands.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/components/trText.dart';
 //import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -13,8 +14,9 @@ class ComplextProductWidget extends StatefulWidget {
   final Product product;
   final PnrModel pnrModel;
   final void Function(Product product) onSaved;
+  final void Function(String msg) onError;
 
-  ComplextProductWidget({Key key, this.product, this.pnrModel, this.onSaved})
+  ComplextProductWidget({Key key, this.product, this.pnrModel, this.onSaved, this.onError})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -134,10 +136,16 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     );
   }
   void validateAndSave() {
-     saveProduct(widget.product, widget.pnrModel.pNR.rLOC, onComplete: onComplete);
+     saveProduct(widget.product, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
   }
 
-  void onComplete(PnrModel pnrModel){
+  void onError(String msg){
+    widget.onError(msg);
+    showAlertDialog(context, 'Error', msg);
+
+  }
+
+    void onComplete(PnrModel pnrModel){
     widget.onSaved(widget.product);
     try {
       Navigator.pop(context, pnrModel);
