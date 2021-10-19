@@ -87,7 +87,7 @@ void configAH() {
     currency: 'SEK',
     wantCurrencyPicker: true,
     wantNewEditPax: true,
-    wantBags: false,
+    wantProducts: false,
     wantDangerousGoods: true ,
     wantFindBookings: true,
     wantClassBandImages: true,

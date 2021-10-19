@@ -369,6 +369,9 @@ class Repository {
                   case 'wantCityImages':
                     gblSettings.wantPageImages = parseBool(item['value']);
                     break;
+                  case 'wantProducts':
+                    gblSettings.wantProducts = parseBool(item['value']);
+                    break;
                   case 'wantCitySwap':
                     gblSettings.wantCitySwap = parseBool(item['value']);
                     break;

@@ -57,7 +57,7 @@ void configKG() {
     wantHomeFQTVButton: false,
     wantCurrencyPicker: false,
     wantNewEditPax: true,
-    wantBags: false,
+    wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantMaterialControls: true,

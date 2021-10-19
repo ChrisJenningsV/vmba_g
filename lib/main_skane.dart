@@ -80,7 +80,7 @@ void configAS() {
     currency: 'SEK',
     wantCurrencyPicker: true,
     wantNewEditPax: true,
-    wantBags: false,
+    wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantMaterialControls: true,

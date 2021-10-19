@@ -79,7 +79,7 @@ class Settings {
   bool wantMaterialControls;
   bool wantCitySwap;
   bool wantPageImages;
-  bool wantBags;
+  bool wantProducts;
   bool wantDangerousGoods;
   bool wantInternatDialCode;
   bool wantCovidWarning;
@@ -181,7 +181,7 @@ bool bpShowFastTrack;
     this.wantMaterialControls = false,
     this.wantCitySwap = false,
     this.wantPageImages = false,
-    this.wantBags = false,
+    this.wantProducts = false,
     this.wantDangerousGoods = false,
     this.wantInternatDialCode = false,
     this.defaultCountryCode,

@@ -111,18 +111,26 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       pnr.mPS.mP.forEach((element) {
         if( element.mPID == product.productCode) {
           // check if this still wanted
-          product.curProducts.forEach((p) {
-            int paxNo = int.parse(p.split(':')[0]);
-            int segNo = int.parse(p.split(':')[1]);
+          if( product.curProducts == null || product.curProducts.length == 0 ){
+            // remove
+            if (cmd.isNotEmpty) cmd += '^';
+            cmd += '7X${element.line}';
 
-            if (int.parse(element.pax) == paxNo && int.parse(element.seg) == segNo) {
+          } else {
+            product.curProducts.forEach((p) {
+              int paxNo = int.parse(p.split(':')[0]);
+              int segNo = int.parse(p.split(':')[1]);
 
-            } else {
-              // remove
-              if(cmd.isNotEmpty) cmd += '^';
-              cmd += '7X${element.line}';
-            }
-          });
+              if (int.parse(element.pax) == paxNo &&
+                  int.parse(element.seg) == segNo) {
+
+              } else {
+                // remove
+                if (cmd.isNotEmpty) cmd += '^';
+                cmd += '7X${element.line}';
+              }
+            });
+          }
         }
       });
     }

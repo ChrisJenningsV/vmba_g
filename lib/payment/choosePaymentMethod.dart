@@ -437,6 +437,39 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
   }
 
+  Widget nonSegProductSummary() {
+    List<Widget> widgets = [];
+
+    if( gblSettings.wantProducts ) {
+      if( widget.pnrModel.pNR.mPS != null && widget.pnrModel.pNR.mPS.mP != null ){
+        widget.pnrModel.pNR.mPS.mP.forEach((element) {
+          // this seg ?
+          if( element.seg == null || element.seg == ''){
+            widgets.add(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    TrText(element.text),
+                    Text(formatPrice(element.mPSCur,double.parse(element.mPSAmt)))
+                  ],
+                ));
+
+          }
+        });
+      }
+    }
+    if( widgets.length > 0 ) {
+      widgets.add(Divider());
+    }
+
+
+    return Column(
+      children: widgets,
+    );
+
+  }
+
+
   Widget flightSegementSummary() {
     List<Widget> widgets = [];
     // new List<Widget>();
@@ -613,6 +646,25 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           );
         });
       }
+
+      if( gblSettings.wantProducts ) {
+        if( widget.pnrModel.pNR.mPS != null && widget.pnrModel.pNR.mPS.mP != null ){
+          widget.pnrModel.pNR.mPS.mP.forEach((element) {
+            // this seg ?
+            if( element.seg != null && element.seg.isNotEmpty &&  int.parse(element.seg) == (i+1)){
+              widgets.add(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      TrText(element.text),
+                      Text(formatPrice(element.mPSCur,double.parse(element.mPSAmt)))
+                    ],
+                  ));
+            }
+          });
+        }
+      }
+
 
       widgets.add(Divider());
     }
@@ -1293,6 +1345,7 @@ List<Widget> getPayOptions(String amount, String cur) {
           ),
           Divider(),
           flightSegementSummary(),
+          nonSegProductSummary(),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -1365,7 +1418,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
     list.add(Divider());
 
-    if( gblSettings.wantBags) {
+    if( gblSettings.wantProducts) {
       //if( gblProductsState == LoadState.none) {
         list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
           pnrModel: widget.pnrModel,

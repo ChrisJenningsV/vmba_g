@@ -56,7 +56,7 @@ void configAG() {
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
     wantNewEditPax: true,
-    wantBags: false,
+    wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantMaterialControls: true,

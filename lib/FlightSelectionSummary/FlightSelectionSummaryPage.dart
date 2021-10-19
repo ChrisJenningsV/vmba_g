@@ -620,13 +620,7 @@ Row airMiles() {
             children: <Widget>[
               Text(desc1),
               Text(formatPrice(currencyCode,sepTax1)),
-/*
-              Text(NumberFormat.simpleCurrency(
-                  locale: gblSettings.locale,
-                  name: currencyCode)
-                  .format(sepTax1)),
 
- */
             ],
           ),
         );
