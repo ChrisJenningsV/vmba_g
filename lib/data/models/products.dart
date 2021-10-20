@@ -147,7 +147,7 @@ class Product {
   String productImageLink;
   String applyToClasses;
   bool routeSpecificCombinable;
-  bool displayOrder;
+  int displayOrder;
   bool displayOnwebsite;
 
 int count;
@@ -302,15 +302,16 @@ List<String> curProducts ;
       taxAmountCalc = json['taxAmountCalc'];
       taxAmount = json['taxAmount'];
       // bools
-      commandLinePrice = json['commandLinePrice'];
-      requiresQuantity = json['requiresQuantity'];
-      paxRelate = json['paxRelate'];
-      segmentRelate = json['segmentRelate'];
-      restrictPurchaseToAllPaxOrNone = json['restrictPurchaseToAllPaxOrNone'];
-      autoSelect = json['autoSelect'];
-      routeSpecificCombinable = json['routeSpecificCombinable'];
+      commandLinePrice = parseBool(json['commandLinePrice']);
+      requiresQuantity = parseBool(json['requiresQuantity']);
+      paxRelate = parseBool(json['paxRelate']);
+      segmentRelate = parseBool(json['segmentRelate']);
+      restrictPurchaseToAllPaxOrNone = parseBool(json['restrictPurchaseToAllPaxOrNone']);
+      autoSelect = parseBool(json['autoSelect']);
+      routeSpecificCombinable = parseBool(json['routeSpecificCombinable']);
+      displayOnwebsite = parseBool(json['displayOnwebsite']);
+
       displayOrder = json['displayOrder'];
-      displayOnwebsite = json['displayOnwebsite'];
     } catch(e) {
       logit(e.toString());
     }

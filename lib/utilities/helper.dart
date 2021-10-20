@@ -544,3 +544,19 @@ List<Widget> list = [];
 
   return list;
 }
+bool parseBool( Object str ){
+  if( str == null ) {
+    return false;
+  }
+  if( str == '') {
+    return false;
+  }
+  if( str == '-1') {
+    return true;
+  }
+  if( str.runtimeType == String ) {
+    return ((str as String).toLowerCase() == 'true');
+  }
+  if( str == false) return false;
+  return true;
+}

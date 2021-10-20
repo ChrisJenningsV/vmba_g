@@ -172,7 +172,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           if( currency == null || currency.isEmpty) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
           }
-          _msg = json.encode(GetProductsMsg(currency ).toJson());
+          _msg = json.encode(GetProductsMsg(currency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
 
           break;
         case LoadDataType.routes:

@@ -87,16 +87,26 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
       var holdBagWt = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdWt;
       var holdBagPcs = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdPcs;
       var handBagWt = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].handWt;
+      if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
+        holdBagWt = holdBagWt.replaceAll('K', 'Kg');
+      }
+
+      if( holdBagPcs == null || holdBagPcs == '0') {
+        holdBagPcs = holdBagWt;
+        holdBagWt = '';
+      }
       //var holdBagWtRet = '';
       var holdBagPcsRet = '';
       var handBagWtRet = '';
+      var holdBagWtRet = '';
       if( segCount > 1) {
-        //holdBagWtRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdWt;
+        holdBagWtRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdWt;
         holdBagPcsRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdPcs;
         handBagWtRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].handWt;
-      }
-      if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
-        holdBagWt = holdBagWt.replaceAll('K', 'Kg');
+        if( holdBagPcsRet == null || holdBagPcsRet == '0') {
+          holdBagPcsRet = holdBagWtRet;
+          holdBagWtRet = '';
+        }
       }
       if( holdBagWt == null ){
         holdBagWt = '0';
@@ -110,7 +120,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
             children: [
               if( segCount > 1) getBaggageRow(null, null, null, null, null),
 
-              getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', 'line 2'),
+              getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', ''),
               //              Divider(),
 //                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
               Divider(),
@@ -142,8 +152,8 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
     return Row(
         children: [
           Container(width: 40,),
-          Container( width: 30,child: TrText('Out')),
-          Container( width: 30,child: TrText('Ret')),
+          Container( width: 40,child: TrText('Out')),
+          Container( width: 40,child: TrText('Ret')),
           Spacer(),
           Padding(padding: EdgeInsets.only(left: 5))
         ]);
@@ -171,8 +181,8 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
               height: 40,
               width: 40,
             )),
-        Container( width: 30,child: Text(count + ' ')),
-        Container( width: 30,child: Text(countRet + ' ')),
+        Container( width: 40,child: Text(count + ' ')),
+        Container( width: 40,child: Text(countRet + ' ')),
         Spacer(),
         Column( children: [ TrText(title),
           Text(line2, textScaleFactor: 0.75,),
