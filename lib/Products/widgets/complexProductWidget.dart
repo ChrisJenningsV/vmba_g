@@ -90,16 +90,20 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
     if (widget.product.segmentRelate) {
       widget.pnrModel.pNR.itinerary.itin.forEach((itin) {
-        list.add(ProductFlightCard(
-          pnrModel: widget.pnrModel,
-          product: widget.product,
-          itin: itin,
-          stateChange: () {
-            setState(() {
+        if( widget.product.applyToClasses == null ||
+            widget.product.applyToClasses.isEmpty ||
+            widget.product.applyToClasses.contains( itin.xclass)) {
+          list.add(ProductFlightCard(
+            pnrModel: widget.pnrModel,
+            product: widget.product,
+            itin: itin,
+            stateChange: () {
+              setState(() {
 
-            });
-          },
-        ));
+              });
+            },
+          ));
+        }
       });
     } else {
        // not seg related

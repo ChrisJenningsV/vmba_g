@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/components/showDialog.dart';
 import 'dart:convert';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
@@ -10,7 +9,6 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../../utilities/helper.dart';
 import 'complexProductWidget.dart';
-import 'package:vmba/Products/controller/productCommands.dart';
 
 //ignore: must_be_immutable
 class ProductsWidget extends StatefulWidget {
@@ -74,60 +72,59 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
 
   if ( newBooking != null ) {
     newBooking.passengerDetails.forEach((pax) {
-      /*     list.add(Row(children: [
-        Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-            translate('allowance'),
-            textScaleFactor: 1.25)
-      ])
-      );
-  */
-      // get fq for pax
-      var segCount = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS.length;
 
-      var holdBagWt = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdWt;
-      var holdBagPcs = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].holdPcs;
-      var handBagWt = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber)-1].segmentFS[0].handWt;
-      if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
-        holdBagWt = holdBagWt.replaceAll('K', 'Kg');
-      }
+      pnrModel.pNR.fareQuote.fareStore.forEach((element) {
+        if( (element.pax == pax.paxNumber ) && (element.fSID.contains('MPS') == false)) {
+          // get fq for pax
+          var segCount = element.segmentFS.length;
 
-      if( holdBagPcs == null || holdBagPcs == '0') {
-        holdBagPcs = holdBagWt;
-        holdBagWt = '';
-      }
-      //var holdBagWtRet = '';
-      var holdBagPcsRet = '';
-      var handBagWtRet = '';
-      var holdBagWtRet = '';
-      if( segCount > 1) {
-        holdBagWtRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdWt;
-        holdBagPcsRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].holdPcs;
-        handBagWtRet = pnrModel.pNR.fareQuote.fareStore[int.parse(pax.paxNumber) - 1].segmentFS[1].handWt;
-        if( holdBagPcsRet == null || holdBagPcsRet == '0') {
-          holdBagPcsRet = holdBagWtRet;
-          holdBagWtRet = '';
+          var holdBagWt = element.segmentFS[0].holdWt;
+          var holdBagPcs = element.segmentFS[0].holdPcs;
+          var handBagWt = element.segmentFS[0].handWt;
+          if( holdBagWt != null &&  holdBagWt.endsWith('K') ){
+            holdBagWt = holdBagWt.replaceAll('K', 'Kg');
+          }
+
+          if( holdBagPcs == null || holdBagPcs == '0') {
+            holdBagPcs = holdBagWt;
+            holdBagWt = '';
+          }
+          //var holdBagWtRet = '';
+          var holdBagPcsRet = '';
+          var handBagWtRet = '';
+          var holdBagWtRet = '';
+          if( segCount > 1) {
+            holdBagWtRet = element.segmentFS[1].holdWt;
+            holdBagPcsRet = element.segmentFS[1].holdPcs;
+            handBagWtRet = element.segmentFS[1].handWt;
+            if( holdBagPcsRet == null || holdBagPcsRet == '0') {
+              holdBagPcsRet = holdBagWtRet;
+              holdBagWtRet = '';
+            }
+          }
+          if( holdBagWt == null ){
+            holdBagWt = '0';
+          }
+          list.add( Card( child:
+          Padding( padding: EdgeInsets.only(top: 3, left: 6, right: 6, bottom: 2),
+              child: ExpansionTile(
+                title: Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
+                    translate('allowance'),
+                    textScaleFactor: 1),
+                children: [
+                  if( segCount > 1) getBaggageRow(null, null, null, null, null),
+
+                  getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', ''),
+                  //              Divider(),
+                  Divider(),
+                  getBaggageRow(holdBag, holdBagPcs, holdBagPcsRet,'Checked Luggage', holdBagWt )
+                ],)
+          )
+          ));
+
+
         }
-      }
-      if( holdBagWt == null ){
-        holdBagWt = '0';
-      }
-      list.add( Card( child:
-      Padding( padding: EdgeInsets.only(top: 3, left: 6, right: 6, bottom: 2),
-          child: ExpansionTile(
-            title: Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-                translate('allowance'),
-                textScaleFactor: 1),
-            children: [
-              if( segCount > 1) getBaggageRow(null, null, null, null, null),
-
-              getBaggageRow(smallBag, handBagWt, handBagWtRet, 'Hand Luggage', ''),
-              //              Divider(),
-//                getBaggageRow(cabinBag, '1','Cabin Luggage', 'line 2'),
-              Divider(),
-              getBaggageRow(holdBag, holdBagPcs, holdBagPcsRet,'Checked Luggage', holdBagWt )
-            ],)
-      )
-      ));
+      });
     });
     // add  bag products
     if(gblProducts != null ) {
@@ -224,7 +221,9 @@ class ProductCardState extends State<ProductCard> {
     int index = 0;
 
     widget.productCategory.products.forEach((prod) {
-      bags.add(getProductRow(index++,  prod));
+      if( isThisProductValid(prod)) {
+        bags.add(getProductRow(index++,  prod));
+      }
     });
 
     if (bags.length > 0) {
@@ -239,11 +238,22 @@ class ProductCardState extends State<ProductCard> {
                 children: bags,)
           )
       );
-
-
-
     }
     return Container();
+  }
+
+  bool isThisProductValid(Product p) {
+    bool isValid = false;
+    if( p.applyToClasses == null || p.applyToClasses.isEmpty) {
+      isValid = true;
+    } else {
+      widget.pnrModel.pNR.itinerary.itin.forEach((element) {
+        if (p.applyToClasses.contains(element.xclass)) {
+          isValid = true;
+        }
+      });
+    }
+    return isValid;
   }
 
   Row getProductRow(int index, Product prod) {
