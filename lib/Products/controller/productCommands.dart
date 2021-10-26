@@ -37,6 +37,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
   String pCmd = buildSaveProductCmd(product, pnr);
   if( pCmd.isEmpty){
     onComplete( null);
+    return;
   }
   msg += pCmd;
   msg += '^FSM^E*R~X';
@@ -162,7 +163,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
           // pax and seg related
           // eg   7-1=1Fxxxx         Passenger 1, flight 1.   (xxxx = unique product code)
           //      7-3=2Fxxxx         Passenger 3, flight 2
-          cmd += '7-${paxNo}=${segNo}F${product.productCode}';
+          cmd += '7-$paxNo=${segNo}F${product.productCode}';
         } else {
           // just pax related
           //  7-1Fxxxx              Passenger 1 – no segment relation

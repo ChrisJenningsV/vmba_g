@@ -196,14 +196,16 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     gblBookingState = BookingState.bookSeat;
     if (!gblSettings.webCheckinNoSeatCharge) {
       paxlist.forEach((f) {
-        if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
+        if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat) {
           if(f.savedSeat != null && f.savedSeat != '') {
             gblBookingState = BookingState.changeSeat;
           }
 
-          cmd.write(f.savedSeat == null || f.savedSeat == ''
-              ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}^'
-              : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}]^');
+            cmd.write(f.savedSeat == null || f.savedSeat == ''
+                ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}^'
+                : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f
+                .seat}[replace=${f.savedSeat}]^');
+          }
       });
       cmd.write('FSM^');
     } else {

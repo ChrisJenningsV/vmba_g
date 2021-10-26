@@ -35,7 +35,9 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
       paxlist.forEach((element) => element.selected = false);
       paxlist[_id - 1].selected = true;
     });
-    widget.onChanged(paxlist);
+    if( widget.onChanged != null ) {
+      widget.onChanged(paxlist);
+    }
   }
 
   @override
