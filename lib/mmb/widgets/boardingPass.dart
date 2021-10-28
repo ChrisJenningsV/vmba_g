@@ -15,6 +15,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -661,6 +662,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         CarouselSlider(
+                          options: CarouselOptions(
                           height: 0.25 * bodyHeight,
                           initialPage: 1,
                           enlargeCenterPage: false,
@@ -668,11 +670,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                           reverse: false,
                           enableInfiniteScroll: false,
                           scrollDirection: Axis.horizontal,
-                          onPageChanged: (index) {
+                          onPageChanged: (index, reason) {
                             setState(() {
                               _currentBarcode = index;
                             });
-                          },
+                          }),
                           items: <Widget>[
                             Container(
                               //width: MediaQuery.of(context).size.width,
@@ -807,7 +809,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 )
                               : Text('')
                         ],
-                      )
+                      ),
+                      DrawAddPassToWalletButton(_boardingPass),
                     ],
                   ),
                 ),
@@ -815,4 +818,73 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       ),
     );
   }
+
+  Widget DrawAddPassToWalletButton(BoardingPass pass) {
+    if (Platform.isAndroid) {
+      //No Android implementation currently - hence do not render iOS specific button
+      return SizedBox.shrink();
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(height: 20),
+        InkWell(
+          onTap: () {
+            _SavePassToAppleWallet(pass);
+          },
+          child: Image(
+            image: AssetImage('lib/assets/images/appleWallet.png'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _SavePassToAppleWallet(BoardingPass pass) async {
+    try {
+      //print("Fetching Boarding Pass for " + gblSettings.airlineName);
+      String departCityName = await cityCodeToName(pass.depart);
+      String arrivalCityName = await cityCodeToName(pass.arrive);
+
+      var qParams = new StringBuffer();
+      qParams.write('?LogoText=${gblSettings.airlineName}');
+      qParams.write('&Rloc=${pass.rloc}');
+      qParams.write('&Gate=${pass.gate}');
+      qParams.write('&BoardingTime=${pass.boarding}');
+      qParams.write('&FltNo=${pass.fltno}');
+      qParams.write('&DepDate=${pass.depdate}');
+      qParams.write('&Depart=${departCityName}');
+      qParams.write('&DepartCityCode=${pass.depart}');
+      qParams.write('&Arrive=${arrivalCityName}');
+      qParams.write('&ArriveCityCode=${pass.arrive}');
+      qParams.write('&PaxNo=${pass.paxno}');
+      qParams.write('&PaxName=${pass.paxname}');
+      qParams.write('&ClassBand=${pass.classBand}');
+      qParams.write('&Seat=${pass.seat}');
+      qParams.write('&FastTrack=${pass.fastTrack}');
+      qParams.write('&LoungeAccess=${pass.loungeAccess}');
+      qParams.write('&BarcodeData=${pass.barcodedata}');
+      qParams.write('&BarcodeType=QR');
+
+      //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
+      //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
+      String webApiUrl = gblSettings.apiUrl +
+          'PassGeneratorApple/createboardingpass'; //Live
+
+      String url = webApiUrl + qParams.toString();
+      url = Uri.encodeFull(url);
+      //print(url);
+
+      //Invoke web API call with query params appended to download an Apple Boarding Pass representation
+      //NOTE: Using url_launcher to get its webview element to run the iOS native Wallet App for the application/vnd.apple.pkpass mime type.
+      //      Also forcing the browser element utilised for this to Safari.
+      AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
+      passHandler.launchPass(url);
+    }
+    catch(e) {
+      print(e);
+    }
+  }
+
 }
