@@ -32,7 +32,7 @@ dependencies:
   http:
   intl:
   sqflite: 
-  flutter_date_pickers: <0.0.6
+#  flutter_date_pickers: <0.2.6
   webview_flutter:
   flutter_masked_text: ^0.8.0
 #  provider:
@@ -54,7 +54,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   credit_card: ^0.1.8
-  #core_card_io: ^0.0.2
   flutter_paystack: ^1.0.4+1
   flutter_holo_date_picker: ^0.3.4+1
   barcode_widget: ^2.0.1
@@ -63,7 +62,7 @@ dependencies:
   step_progress_indicator: ^1.0.1
   html: ^0.15.0
   international_phone_input: ^1.0.4
- # intl_phone_number_input: ^0.6.0
+  flutter_date_pickers: ^0.2.6
 
 dev_dependencies:
   flutter_test:

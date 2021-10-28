@@ -194,7 +194,7 @@ packages:
       name: flutter_date_pickers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4"
+    version: "0.2.6"
   flutter_holo_date_picker:
     dependency: "direct main"
     description:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
+//import 'package:flutter_date_pickers/flutter_date_pickers.dart' ;
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 
 class DayPickerPage extends StatefulWidget {
@@ -70,30 +70,64 @@ class _DayPickerPageState extends State<DayPickerPage> {
   Widget build(BuildContext context) {
    // Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(gblLanguage));
     // add selected colors to default settings
-    dp.DatePickerStyles styles = dp.DatePickerStyles(
+
+ /*   DatePickerStyles styles = DatePickerStyles(
         selectedDateStyle: Theme.of(context)
             .accentTextTheme
             .bodyText2
             .copyWith(color: selectedDateStyleColor),
         selectedSingleDateDecoration: BoxDecoration(
             color: selectedSingleDateDecorationColor, shape: BoxShape.circle));
-
+*/
+    /*
     return Flex(
       direction: MediaQuery.of(context).orientation == Orientation.portrait
           ? Axis.vertical
           : Axis.horizontal,
       children: <Widget>[
         Expanded(
-          child: dp.DayPicker(
-            selectedDate: _selectedDate,
-            onChanged: _onSelectedDateChanged,
+          child: CalendarDatePicker(
+            //selectedDate: _selectedDate,
+            initialDate: _selectedDate,
+            //onChanged: _onSelectedDateChanged,
+            onDateChanged: _onSelectedDateChanged,
             firstDate: _firstDate,
             lastDate: _lastDate,
-            datePickerStyles: styles,
+            //datePickerStyles: styles,
           ),
         ),
       ],
     );
+
+     */
+    double width = MediaQuery.of(context).size.width;
+    return
+         Container(
+          // margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 60),
+            width: width - 50,
+            height: 400,
+            /*
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.orangeAccent, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ]),
+
+             */
+            child: CalendarDatePicker(
+              initialDate: _selectedDate,
+              firstDate: _firstDate,
+              lastDate: _lastDate,
+              onDateChanged: _onSelectedDateChanged,
+            ));
+
   }
 
   void _onSelectedDateChanged(DateTime newDate) {
@@ -103,3 +137,4 @@ class _DayPickerPageState extends State<DayPickerPage> {
     });
   }
 }
+
