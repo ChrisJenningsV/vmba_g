@@ -880,7 +880,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       //NOTE: Using url_launcher to get its webview element to run the iOS native Wallet App for the application/vnd.apple.pkpass mime type.
       //      Also forcing the browser element utilised for this to Safari.
       AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
-      passHandler.launchPass(url);
+      passHandler.launchPass(url, gblSettings.apiKey);
     }
     catch(e) {
       print(e);
