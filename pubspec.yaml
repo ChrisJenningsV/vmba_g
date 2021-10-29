@@ -23,11 +23,16 @@ dependencies:
     sdk: flutter
 
   #package_info: #^0.4.0+5 
-  package_info: '>=0.4.3 <2.0.0' 
+#  package_info: '>=0.4.3 <2.0.0' 
+  package_info_plus: ^1.3.0
   open_appstore: ^1.0.2
+#   The following (store_redirect) could be considered an alternative to open_appstore
+#   which lacks Android V2 embedding support and may get deprecated
+#  store_redirect: ^2.0.0
   version: ^2.0.0
   path_provider: ^2.0.5
-  connectivity: ^0.4.3+4
+#  connectivity: ^0.4.3+4
+  connectivity_plus: ^2.0.2
   url_launcher: ^6.0.12
   http:
   intl:
@@ -41,8 +46,9 @@ dependencies:
     sdk: flutter
   provider: ^6.0.1
   shared_preferences: ^2.0.8
-  flutter_launcher_icons: ^0.8.0
-  html_unescape: ^1.0.2
+#  flutter_launcher_icons: ^0.8.0
+  flutter_launcher_icons: ^0.9.2
+#  html_unescape: ^1.0.2    NOT USED
 
   #barcode_generator: ^0.2.7
   # barcode_generator:
@@ -52,17 +58,22 @@ dependencies:
     
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  credit_card: ^0.1.8
+#  cupertino_icons: ^0.1.2    NOT USED
+#  credit_card: ^0.1.8
+  credit_card:
+     git:
+       url: https://github.com/mazarkv/credit-card.git
+
   flutter_paystack: ^1.0.4+1
   flutter_holo_date_picker: ^0.3.4+1
   barcode_widget: ^2.0.1
-  currency_picker: ^2.0.4
+#  currency_picker: ^2.0.4    NOT USED
   country_icons: ^2.0.2
   step_progress_indicator: ^1.0.1
   html: ^0.15.0
-  international_phone_input: ^1.0.4
+#  international_phone_input: ^1.0.4
   flutter_date_pickers: ^0.2.6
+  
 
 dev_dependencies:
   flutter_test:
