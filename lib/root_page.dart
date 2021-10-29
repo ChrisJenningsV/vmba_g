@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
+//import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:package_info/package_info.dart';
+//import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
 import 'package:vmba/utilities/helper.dart';
