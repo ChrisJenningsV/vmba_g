@@ -30,8 +30,8 @@ dependencies:
   #   which lacks Android V2 embedding support and may get deprecated
   version: ^2.0.0
   path_provider: ^2.0.5
-  connectivity: ^0.4.3+4
-#  connectivity_plus: ^2.0.2
+#  connectivity: ^0.4.3+4
+  connectivity_plus: ^2.0.2
   url_launcher: ^6.0.12
   http:
   intl:
