@@ -28,7 +28,7 @@ packages:
       name: auto_size_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0"
   barcode:
     dependency: transitive
     description:
@@ -203,7 +203,7 @@ packages:
       name: flutter_holo_date_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.4+1"
+    version: "1.0.1+2"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

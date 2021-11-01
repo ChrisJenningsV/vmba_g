@@ -65,7 +65,8 @@ dependencies:
        url: https://github.com/mazarkv/credit-card.git
 
   flutter_paystack: ^1.0.4+1
-  flutter_holo_date_picker: ^0.3.4+1
+  #flutter_holo_date_picker: ^0.3.4+1
+  flutter_holo_date_picker: ^1.0.1+2
   barcode_widget: ^2.0.1
 #  currency_picker: ^2.0.4    NOT USED
   country_icons: ^2.0.2
