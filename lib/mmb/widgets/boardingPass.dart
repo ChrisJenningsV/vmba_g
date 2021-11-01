@@ -869,8 +869,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
       //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
-      String webApiUrl = gblSettings.apiUrl +
-          'PassGeneratorApple/createboardingpass'; //Live
+      String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
 
       String url = webApiUrl + qParams.toString();
       url = Uri.encodeFull(url);
