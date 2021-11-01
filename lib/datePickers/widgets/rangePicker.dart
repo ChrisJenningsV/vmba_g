@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
@@ -48,9 +49,9 @@ class _RangePickerPageState extends State<RangePickerPage> {
     super.didChangeDependencies();
 
     // defaults for styles
-    selectedPeriodLastColor = Theme.of(context).accentColor;
+    selectedPeriodLastColor = gblSystemColors.accentColor; //  Theme.of(context).accentColor;
     selectedPeriodMiddleColor = Colors.black26; //Theme.of(context).accentColor;
-    selectedPeriodStartColor = Theme.of(context).accentColor;
+    selectedPeriodStartColor = gblSystemColors.accentColor; //  Theme.of(context).accentColor;
   }
 
   @override

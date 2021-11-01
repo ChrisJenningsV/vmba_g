@@ -62,7 +62,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   'lib/assets/$gblAppTitle/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate)) : Text(''),
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -94,7 +94,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   'lib/assets/$gblAppTitle/images/appBarLeft.png',
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate)) : Text(''),
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -183,23 +183,6 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                /*
-                TextButton(
-                  style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
-                  child: gblNewDatepicker ?  Text('Old Datepicker') : Text('New Datepicker') ,
-                  onPressed: () {
-                    gblNewDatepicker = !gblNewDatepicker;
-                    setState(() {
-
-                    });
-                  },
-                ),
-                const SizedBox(width: 8),
-
-                 */
-
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),

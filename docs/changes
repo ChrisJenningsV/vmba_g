@@ -1,0 +1,22 @@
+
+
+for adding notifications
+
+in android\app\build.gradle
+
+defaultConfig {
+    multiDexEnabled true
+    ...
+
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+    classpath 'com.android.tools.build:gradle:3.5.3'
+      // Add the google services classpath
+     classpath 'com.google.gms:google-services:4.3.2'
+    ...
+
+add
+apply plugin: 'com.google.gms.google-services'
+at the bottom
+
+add google-services.json to android/app directory

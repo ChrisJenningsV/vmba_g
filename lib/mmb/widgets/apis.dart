@@ -171,7 +171,7 @@ class _ApisWidgetState extends State<ApisWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        brightness: gblSystemColors.statusBar,
+        //brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

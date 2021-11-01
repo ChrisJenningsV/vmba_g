@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
 import 'package:vmba/menu/faqs_page.dart';
@@ -7,7 +8,7 @@ import 'package:vmba/menu/myAccountPage.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:package_info/package_info.dart';
+//import 'package:package_info/package_info.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';

@@ -178,7 +178,7 @@ Widget appBar(BuildContext context, String title,
             elevation: elevalion,
             automaticallyImplyLeading: automaticallyImplyLeading,
             centerTitle: gblCentreTitle,
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor: Colors.transparent,
 
             iconTheme: IconThemeData(
@@ -210,7 +210,7 @@ Widget appBar(BuildContext context, String title,
               'lib/assets/$gblAppTitle/images/appBarLeft.png',
               color: Color.fromRGBO(255, 255, 255, 0.1),
               colorBlendMode: BlendMode.modulate)) :Text(''),
-      brightness: gblSystemColors.statusBar,
+      //brightness: gblSystemColors.statusBar,
       backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
@@ -231,7 +231,7 @@ Widget appBar(BuildContext context, String title,
       elevation: elevalion,
       automaticallyImplyLeading: automaticallyImplyLeading,
       centerTitle: gblCentreTitle,
-      brightness: gblSystemColors.statusBar,
+      //brightness: gblSystemColors.statusBar,
       backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
 
       iconTheme: IconThemeData(

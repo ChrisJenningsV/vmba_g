@@ -52,7 +52,7 @@ class _ProcessCommandsWidgetState extends State<ProcessCommandsPage> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: new AppBar(
-          brightness:gblSystemColors.statusBar,
+          //brightness:gblSystemColors.statusBar,
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),

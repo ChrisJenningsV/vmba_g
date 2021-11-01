@@ -801,7 +801,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -857,7 +857,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 ],
               )),
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(

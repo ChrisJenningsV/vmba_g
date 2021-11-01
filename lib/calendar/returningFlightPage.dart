@@ -307,7 +307,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     //primarySwatch: gblSystemColors.primaryHeaderColor,//OK/Cancel button text color
 
                     primaryColor: gblSystemColors.primaryHeaderColor,//Head background
-                    accentColor: gblSystemColors.primaryHeaderColor, //selection color
+                    //accentColor: gblSystemColors.primaryHeaderColor, //selection color
                     colorScheme: ColorScheme.light(primary: gblSystemColors.primaryHeaderColor),
                   buttonTheme: ButtonThemeData(
                   textTheme: ButtonTextTheme.primary

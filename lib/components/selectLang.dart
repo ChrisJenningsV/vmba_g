@@ -207,7 +207,7 @@ dialogContent(BuildContext context) {
           top: Radius.circular(20),
         ),
       ),
-    brightness: gblSystemColors.statusBar,
+    //brightness: gblSystemColors.statusBar,
       backgroundColor: gblSystemColors.primaryHeaderColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),

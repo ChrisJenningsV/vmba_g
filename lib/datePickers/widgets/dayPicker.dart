@@ -24,8 +24,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
   DateTime _firstDate;
   DateTime _lastDate;
 
-  Color selectedDateStyleColor;
-  Color selectedSingleDateDecorationColor;
+//  Color selectedDateStyleColor;
+//  Color selectedSingleDateDecorationColor;
 
   @override
   void initState() {
@@ -62,8 +62,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
     super.didChangeDependencies();
 
     // defaults for styles
-    selectedDateStyleColor = Theme.of(context).accentTextTheme.bodyText2.color;
-    selectedSingleDateDecorationColor = Theme.of(context).accentColor;
+//    selectedDateStyleColor = Theme.of(context).accentTextTheme.bodyText2.color;
+//    selectedSingleDateDecorationColor = Theme.of(context).accentColor;
   }
 
   @override

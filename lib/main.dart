@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'dart:io';
@@ -15,6 +16,8 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
@@ -121,6 +124,10 @@ bool bFirstTime = true;
   void initState() {
     super.initState();
     _initLangs();
+
+    if( gblSettings.wantPushNoticications) {
+       initFirebase();
+    }
   }
 
   @override
@@ -184,15 +191,15 @@ bool bFirstTime = true;
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: gblSystemColors.primaryColor,
-        accentColor: gblSystemColors.accentColor, // if white - changes menu icon colour
-        colorScheme: ColorScheme.light(primary: Colors.black),
+        secondaryHeaderColor: gblSystemColors.accentColor,
+
+        colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
       darkTheme: ThemeData(
         //brightness: Brightness.dark,
         primaryColor: gblSystemColors.primaryColor,
-        accentColor: gblSystemColors.accentColor,// if white - changes menu icon colour
-        colorScheme: ColorScheme.light(primary: Colors.black),
+        colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
       ),
       home: new RootPage(),
       routes: <String, WidgetBuilder>{
@@ -271,4 +278,61 @@ class LocaleModel with ChangeNotifier {
     notifyListeners();
     initializeDateFormatting();
   }
+}
+Future<void> initFirebase() async {
+  await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      importance: Importance.high,
+    );
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+   FirebaseMessaging.instance.getToken().then((token){
+     print('token= ' + token);
+   });
+
+   /*
+  print('FlutterFire Messaging Example: Getting APNs token...');
+  String token = await FirebaseMessaging.instance.getAPNSToken();
+  print('FlutterFire Messaging Example: Got APNs token: $token');
+*/
+
+}
+/// Create a [AndroidNotificationChannel] for heads up notifications
+AndroidNotificationChannel channel;
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+
+/// To verify things are working, check out the native platform logs.
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+
+
 }

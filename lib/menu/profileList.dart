@@ -44,7 +44,7 @@ String _displayProcessingText = 'Loading...';
     if( _profileList != null ) {
     return Scaffold(
         appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -63,7 +63,7 @@ String _displayProcessingText = 'Loading...';
     } else {
       return Scaffold(
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(

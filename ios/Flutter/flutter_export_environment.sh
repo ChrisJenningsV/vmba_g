@@ -2,9 +2,9 @@
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\Users\chrisj.VIDECOM\Documents\Projects\flutter"
 export "FLUTTER_APPLICATION_PATH=C:\Users\chrisj.VIDECOM\Documents\Mobile Projects\Mobile App\vmba"
+export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
-export "SYMROOT=${SOURCE_ROOT}/../build\ios"
 export "FLUTTER_BUILD_NAME=2.0.8"
 export "FLUTTER_BUILD_NUMBER=168"
 export "DART_OBFUSCATION=false"

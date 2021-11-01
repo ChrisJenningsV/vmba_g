@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+//import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
@@ -282,8 +282,6 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             !(widget.passengerDetail.paxType == PaxType.youth && gblSettings.passengerTypes.wantYouthDOB == false))
             ? InkWell(
                 onTap: () {
-                  gblNewDatepicker ?
-                  _showHoloCalenderDialog(widget.passengerDetail.paxType) :
                   _showCalenderDialog(widget.passengerDetail.paxType);
                 },
                 child: IgnorePointer(
@@ -684,93 +682,6 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               },
             ),
           ],
-        );
-      },
-    );
-  }
-
-  _showHoloCalenderDialog(PaxType paxType) {
-    DateTime dateTime;
-    DateTime _maximumDate;
-    DateTime _minimumDate;
-    DateTime _initialDateTime;
-//    int _minimumYear;
-//    int _maximumYear;
-    formSave();
-
-    switch (paxType) {
-      case PaxType.infant:
-        {
-          _initialDateTime = DateTime.now();
-          _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2)));
-        }
-        break;
-      case PaxType.child:
-        {
-          _initialDateTime = DateTime.now().subtract(Duration(days: 731));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
-        }
-        break;
-      case PaxType.youth:
-        {
-          _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
-        }
-        break;
-      case PaxType.adult:
-        {
-          _initialDateTime = DateTime.now();
-        }
-        break;
-      default:
-        {
-          _initialDateTime = DateTime.now();
-        }
-        break;
-    }
-    _maximumDate = _initialDateTime;
-//    _minimumYear = _minimumDate.year;
-//    _maximumYear = _initialDateTime.year;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          title: new TrText('Date of Birth'),
-          content: SizedBox(
-            //padding: EdgeInsets.all(1),
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-
-                child: DatePickerWidget(
-                    looping: false, // default is not looping
-                    firstDate: _minimumDate, //DateTime.now(),
-                lastDate: _maximumDate, //DateTime(2002, 1, 1),
-                  initialDate: _initialDateTime, //DateTime.now(),// DateTime(1994),
-                    dateFormat: "dd-MMMM-yyyy",
-        //     locale: DatePicker.localeFromString('he'),
-                  onChange: (DateTime newDate, _) {
-                    dateTime = newDate;
-      //                _selectedDate = newDate;
-       //             print(_selectedDate);
-              },
-        pickerTheme: DateTimePickerTheme(
-        itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-        dividerColor: Colors.blue,
-        ),
-                ),
-          ),
-            actions: <Widget>[
-        new TextButton(
-        child: new Text("OK"),
-        onPressed: () {
-        Navigator.pop(context, dateTime);
-        _updateDateOfBirth(dateTime);
-        },
-        ),
-        ],
         );
       },
     );

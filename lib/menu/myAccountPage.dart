@@ -213,7 +213,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     color: Color.fromRGBO(255, 255, 255, 0.1),
     colorBlendMode: BlendMode.modulate))
         : Text(''),
-    brightness: gblSystemColors.statusBar,
+    //brightness: gblSystemColors.statusBar,
     backgroundColor: gblSystemColors.primaryHeaderColor,
     iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
     title: TrText('My Account',
@@ -243,7 +243,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate))
               : Text(''),
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
           title: TrText('My Account',

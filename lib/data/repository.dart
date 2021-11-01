@@ -409,6 +409,10 @@ class Repository {
                   case 'wantCurrencyPicker':
                     gblSettings.wantCurrencyPicker = parseBool(item['value']);
                     break;
+                  case 'wantPushNoticications':
+                    gblSettings.wantPushNoticications = parseBool(item['value']);
+                    break;
+
                   case 'eVoucher':
                     gblSettings.eVoucher =parseBool(item['value']);
                     break;

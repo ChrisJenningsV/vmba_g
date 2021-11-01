@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "287291202399",
+    "project_id": "vmba-notify",
+    "storage_bucket": "vmba-notify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287291202399:android:68160d6eecf62e626a74ea",
+        "android_client_info": {
+          "package_name": "com.airswift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqd3J-LZhHR3QAyc7Fbe7tlY5Nk53Ff-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287291202399:android:2fa6f8d50322f2346a74ea",
+        "android_client_info": {
+          "package_name": "uk.co.loganair.booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqd3J-LZhHR3QAyc7Fbe7tlY5Nk53Ff-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

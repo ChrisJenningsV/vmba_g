@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
+//import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
-import 'package:package_info/package_info.dart';
+//import 'package:package_info/package_info.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -54,6 +57,7 @@ class RootPageState extends State<RootPage> {
       }
     });
     //   loadData();
+    //initMessaging();
   }
 
   retryLoadData() {
@@ -297,6 +301,30 @@ class RootPageState extends State<RootPage> {
       return new HomePage();
     }
   }
+
+  /*
+  initMessaging() {
+    FirebaseMessaging.getInstance().getToken()
+        .addOnCompleteListener(new OnCompleteListener<String>() {
+    @Override
+    public void onComplete(@NonNull Task<String> task) {
+    if (!task.isSuccessful()) {
+    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+    return;
+    }
+
+    // Get new FCM registration token
+    String token = task.getResult();
+
+    // Log and toast
+    String msg = getString(R.string.msg_token_fmt, token);
+    Log.d(TAG, msg);
+    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+    });
+  }
+  */
+
 }
 
 class MyConnectivity {
@@ -337,4 +365,6 @@ class MyConnectivity {
   }
 
   void disposeStream() => controller.close();
+
+
 }

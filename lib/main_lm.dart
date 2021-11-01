@@ -52,11 +52,11 @@ void configLM() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
 
-    airlineName: "Logan Air",
+    airlineName: "Loganair",
   gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
-  aircode: 'AG',
+  aircode: 'LM',
   termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
    privacyPolicyUrl:  'https://loganair.co.uk/wp-content/uploads/2018/05/Privacy-policy-2205.pdf',
   prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
@@ -126,6 +126,7 @@ void configLM() {
   wantNewEditPax: true,
   wantMaterialControls: true,
   wantCitySwap: true,
+  wantPushNoticications: true,
 
     wantFQTVNumber: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',

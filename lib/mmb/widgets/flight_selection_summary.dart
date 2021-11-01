@@ -429,7 +429,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -457,7 +457,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
@@ -494,7 +494,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
@@ -540,7 +540,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(

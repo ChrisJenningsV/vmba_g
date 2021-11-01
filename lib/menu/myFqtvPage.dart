@@ -178,7 +178,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 'lib/assets/$gblAppTitle/images/appBarLeft.png',
                 color: Color.fromRGBO(255, 255, 255, 0.1),
                 colorBlendMode: BlendMode.modulate)) : Text(''),
-        brightness: gblSystemColors.statusBar,
+        //brightness: gblSystemColors.statusBar,
         backgroundColor:
         gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(

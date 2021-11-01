@@ -96,7 +96,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
@@ -135,7 +135,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(

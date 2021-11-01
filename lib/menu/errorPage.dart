@@ -9,7 +9,7 @@ class ErrorPage extends StatelessWidget {
    // final List<String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(

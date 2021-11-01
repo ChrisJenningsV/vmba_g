@@ -393,7 +393,7 @@ class CitiesScreenState  extends State<CitiesScreen> {
     }
     return new Scaffold(
       appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),

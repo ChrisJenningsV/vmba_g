@@ -92,6 +92,7 @@ class Settings {
   bool wantMiddleName;
   bool wantRedressNo;
   bool wantKnownTravNo;
+  bool wantPushNoticications;
 
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -196,7 +197,7 @@ bool bpShowFastTrack;
     this.wantMiddleName = false,
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
-
+    this.wantPushNoticications = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

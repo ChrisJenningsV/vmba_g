@@ -346,7 +346,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
-        brightness: gblSystemColors.statusBar,
+        //brightness: gblSystemColors.statusBar,
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

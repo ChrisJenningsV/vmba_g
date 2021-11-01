@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:package_info/package_info.dart';
+//import 'package:package_info/package_info.dart';
+import 'package:store_redirect/store_redirect.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:open_appstore/open_appstore.dart';
+//import 'package:open_appstore/open_appstore.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
@@ -165,9 +167,18 @@ class _HomeState extends State<HomePage> {
                         color: gblSystemColors.textButtonTextColor, width: 1),
                     primary: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
-                  OpenAppstore.launch(
+
+                  StoreRedirect.redirect(
                       androidAppId: gblSettings.androidAppId,
                       iOSAppId: gblSettings.iOSAppId);
+
+/*                  OpenAppstore.launch(
+                      androidAppId: gblSettings.androidAppId,
+                      iOSAppId: gblSettings.iOSAppId);
+
+
+ */
+
                 },
               ),
             ]);
@@ -297,7 +308,7 @@ class _HomeState extends State<HomePage> {
 
         appBar: new AppBar(
             centerTitle: gblCentreTitle,
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
             backgroundColor:gblSystemColors.primaryHeaderColor,
             title:_getLogo() ,

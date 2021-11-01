@@ -371,7 +371,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -398,7 +398,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -661,7 +661,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         CarouselSlider(
-                          height: 0.25 * bodyHeight,
+                          options: CarouselOptions(),
+                          /*height: 0.25 * bodyHeight,
                           initialPage: 1,
                           enlargeCenterPage: false,
                           autoPlay: false,
@@ -673,6 +674,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                               _currentBarcode = index;
                             });
                           },
+
+                           */
                           items: <Widget>[
                             Container(
                               //width: MediaQuery.of(context).size.width,

@@ -65,7 +65,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
       child: Scaffold(
           key: _key,
           appBar: AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(

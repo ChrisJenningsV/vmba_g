@@ -87,7 +87,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
     if (_displayProcessingIndicator) {
       return Scaffold(
           appBar: AppBar(
-            brightness: gblSystemColors.statusBar,
+            //brightness: gblSystemColors.statusBar,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
@@ -119,7 +119,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(

@@ -321,7 +321,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
