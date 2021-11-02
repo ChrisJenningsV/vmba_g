@@ -748,6 +748,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                     ),
                                   )
                                 ]),
+                            DrawAddPassToWalletButton(_boardingPass),
+                            const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -873,7 +875,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       String url = webApiUrl + qParams.toString();
       url = Uri.encodeFull(url);
-      //print(url);
+      //print('url=' + url);
+      //print('_currentBarcode=' + this._currentBarcode.toString());
 
       //Invoke web API call with query params appended to download an Apple Boarding Pass representation
       //NOTE: Using url_launcher to get its webview element to run the iOS native Wallet App for the application/vnd.apple.pkpass mime type.
