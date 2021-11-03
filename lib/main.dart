@@ -18,7 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:vmba/utilities/widgets/Messaging.dart';
 
+import 'Services/PushNotificationService.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -126,7 +129,7 @@ bool bFirstTime = true;
     _initLangs();
 
     if( gblSettings.wantPushNoticications) {
-       initFirebase();
+       initFirebase(context);
     }
   }
 
@@ -218,6 +221,7 @@ bool bFirstTime = true;
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),
+        '/message': (context) => MessageView(),
       },
        )
       ));
@@ -279,7 +283,7 @@ class LocaleModel with ChangeNotifier {
     initializeDateFormatting();
   }
 }
-Future<void> initFirebase() async {
+Future<void> initFirebase(BuildContext context) async {
   await Firebase.initializeApp();
 
   // Set the background messaging handler early on, as a named top-level function
@@ -311,8 +315,37 @@ Future<void> initFirebase() async {
     );
    FirebaseMessaging.instance.getToken().then((token){
      print('token= ' + token);
+     saveToken(token);
    });
 
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
+    RemoteNotification notification = message.notification;
+    AndroidNotification android = message.notification?.android;
+
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+            //  channel.description,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ));
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      Navigator.pushNamed(context, '/message',
+          arguments: MessageArguments(message, true));
+    });
+
+  });
    /*
   print('FlutterFire Messaging Example: Getting APNs token...');
   String token = await FirebaseMessaging.instance.getAPNSToken();
