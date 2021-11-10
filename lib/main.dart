@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:vmba/utilities/notification_service.dart';
 import 'package:vmba/utilities/widgets/Messaging.dart';
 
 import 'Services/PushNotificationService.dart';
@@ -184,6 +184,7 @@ bool bFirstTime = true;
       create: (_) => new LocaleModel(),
       child: Consumer<LocaleModel>(
           builder: (context, provider, child) => MaterialApp(
+            navigatorKey: NavigationService.navigatorKey,
       localizationsDelegates: localizationsDelegates,
       //locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
       locale: Provider.of<LocaleModel>(context).getLocale(),
@@ -267,7 +268,10 @@ bool bFirstTime = true;
   }
 
   }
-
+class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey =
+  GlobalKey<NavigatorState>();
+}
 class AddBookingPage {}
 
 class LocaleModel with ChangeNotifier {
@@ -285,6 +289,11 @@ class LocaleModel with ChangeNotifier {
 }
 Future<void> initFirebase(BuildContext context) async {
   await Firebase.initializeApp();
+  logit('InitFirebase');
+  NotificationService().init(context);
+
+
+  return;
 
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -322,8 +331,32 @@ Future<void> initFirebase(BuildContext context) async {
 
     RemoteNotification notification = message.notification;
     AndroidNotification android = message.notification?.android;
+    logit('Listener msg received');
 
     if (notification != null && android != null) {
+      /*
+      var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          importance: Importance.max,
+          priority: Priority.high);
+      var iOSPlatformChannelSpecifics =
+      new IOSNotificationDetails(sound: "slow_spring_board.aiff");
+
+
+      var platformChannelSpecifics = new NotificationDetails(android: androidPlatformChannelSpecifics,
+                iOS: iOSPlatformChannelSpecifics);
+       flutterLocalNotificationsPlugin.show(
+        0,
+        'New Post',
+        'How to Show Notification in Flutter',
+        platformChannelSpecifics,
+        payload: 'Default_Sound',
+      );
+
+       */
+
+
       flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
@@ -332,12 +365,15 @@ Future<void> initFirebase(BuildContext context) async {
             android: AndroidNotificationDetails(
               channel.id,
               channel.name,
-            //  channel.description,
-              // TODO add a proper drawable resource to android, for now using
-              //      one that already exists in example app.
-              icon: 'launch_background',
+              importance: Importance.max,
+              priority: Priority.high,
+             // styleInformation: BigTextStyleInformation(''),
+              //icon: 'app_icon',
             ),
-          ));
+          )
+      );
+
+
     }
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');

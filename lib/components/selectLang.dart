@@ -352,9 +352,11 @@ class _MyDialogContentState extends State<MyDialogContent> {
   @override
   void initState() {
     super.initState();
+
     if( gblSettings.gblLanguages == null || gblSettings.gblLanguages.isEmpty ) {
+      return;
       // test data
-      gblSettings.gblLanguages = 'en,English,fr,French';
+      //gblSettings.gblLanguages = 'en,English,fr,French';
     }
 
     List<String> langs = gblSettings.gblLanguages.split(',');

@@ -99,7 +99,7 @@ class DrawerMenu extends StatelessWidget {
           ));
         }
 
-        if(gblSettings.gblLanguages != null && gblNoNetwork == false ) {
+        if(gblSettings.gblLanguages != null && gblSettings.gblLanguages.isNotEmpty && gblNoNetwork == false ) {
           list.add(ListTile(
             dense: dense,
             title: _getMenuItem(Icons.flag, 'Language'),
