@@ -71,6 +71,7 @@ void configLM() {
   fqtvName: 'Clan',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',
+    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     searchDateOut: 1,

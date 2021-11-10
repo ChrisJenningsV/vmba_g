@@ -961,7 +961,9 @@ String _error = '';
         } else {
           _pnrLoaded();
           //_showDialog();
-          _error = translate('name does not match booking');
+          if( _error == '') {
+            _error = translate('name does not match booking');
+          }
           showAlertDialog(context, 'Alert', _error);
 
           print('did not matched rloc and name');
