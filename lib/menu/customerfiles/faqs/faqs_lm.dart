@@ -12,14 +12,14 @@ class Faqs extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         Text(
-            'If you’re booking with Loganair for the first time using the App, set up ‘My account’ with your details. You only need do this once; it will save your details for future flights making the booking process quick and easy.'),
+            'If you’re booking with Loganair for the first time using the App, set up ‘My account’ with your details. You only need do this once; it will save your details for future flights making the booking process quick and easy. Adding your Clan details here will ensure you do not have to enter your password every time.'),
         Padding(padding: EdgeInsets.all(8)),
         Text(
           'I can’t see a booking, how do I add it?',
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         Text(
-            'If your booking isn’t in the ‘My Bookings & Check-In’ screen, from the menu press the “add an existing booking” button. Simply enter your booking reference and surname, and it will be added to your booking list in flight date order.'),
+            'If your booking isn’t in the ‘My Bookings & Check-In’ screen, from the menu press the “add an existing booking” button. Simply enter your booking reference and surname, and it will be added to your booking list in flight date order. Alternatively you may import all bookings associated to your Clan account using the “Import Bookings” function under “My Bookings”'),
         Padding(padding: EdgeInsets.all(8)),
         Text(
           'How do I amend my booking?',
@@ -56,7 +56,7 @@ class Faqs extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         Text(
-            'No need. Your boarding pass can be retrieved via the app when you’re offline.'),
+            'Simply press the “Add to Apple Wallet” button found under the boarding pass. Note that any changes to seat or Gate will not be reflected on a boarding pass stored within the wallet. For the most up to date information, check the boarding pass within the Loganair app.'),
         Padding(padding: EdgeInsets.all(8)),
         Text(
           'What happens if my phone runs out of charge?',

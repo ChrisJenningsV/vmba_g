@@ -17,13 +17,21 @@ class ContactUs extends StatelessWidget {
             style: TextStyle(
               decoration: TextDecoration.underline,
             ))));
-    widgets.add(Text(' or email '));
+    widgets.add(Text(' or '));
     widgets.add(appLinkWidget(
+        'https://www.loganair.co.uk/travel-help/contact-the-help-centre/',
+        Text('online',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+            ))));
+ /*   widgets.add(appLinkWidget(
         'mailto:bookings@loganair.co.uk?subject=bookings',
         Text('bookings@loganair.co.uk',
             style: TextStyle(
               decoration: TextDecoration.underline,
             ))));
+
+  */
     widgets.add(Text('. '));
     widgets.add(Text('If calling from outside the UK, call '));
     widgets.add(appLinkWidget(
@@ -95,9 +103,9 @@ class ContactUs extends StatelessWidget {
             children: <Widget>[
               Text('Opening Hours'),
               Padding(padding: EdgeInsets.all(8)),
-              Text('Monday - Friday 07:00 - 19:00'),
-              Text('Saturday 08:00 - 16:00'),
-              Text('Sunday 10:00 - 18:00'),
+              Text('Monday - Friday 08:00 - 18:00'),
+              Text('Saturday 08:00 - 14:00'),
+              Text('Sunday 10:00 - 17:00'),
             ],
           ),
         ),

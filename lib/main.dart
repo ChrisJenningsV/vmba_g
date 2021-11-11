@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:vmba/utilities/notification_service.dart';
+//import 'package:vmba/utilities/notification_service.dart';
 import 'package:vmba/utilities/widgets/Messaging.dart';
 
 import 'Services/PushNotificationService.dart';
@@ -290,7 +290,7 @@ class LocaleModel with ChangeNotifier {
 Future<void> initFirebase(BuildContext context) async {
   await Firebase.initializeApp();
   logit('InitFirebase');
-  NotificationService().init(context);
+  //NotificationService().init(context);
 
 
   return;

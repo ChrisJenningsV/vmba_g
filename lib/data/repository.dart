@@ -409,6 +409,9 @@ class Repository {
                   case 'wantCurrencyPicker':
                     gblSettings.wantCurrencyPicker = parseBool(item['value']);
                     break;
+                  case 'wantClassBandImages':
+                    gblSettings.wantClassBandImages = parseBool(item['value']);
+                    break;
                   case 'wantPushNoticications':
                     gblSettings.wantPushNoticications = parseBool(item['value']);
                     break;
