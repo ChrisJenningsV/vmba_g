@@ -146,7 +146,7 @@ class PnrModel {
       return 'No Tickets';
     }
     if (!validateTickets(this.pNR)) {
-      return 'Please contact ${gblSettings.airlineName} to complete booking';
+      return 'Please contact ${gblSettings.airlineName} to complete booking: tickets not valid';
 
 //      return 'Tickets invalid';
     }
@@ -267,8 +267,13 @@ class PnrModel {
     if (basket.outstanding.amount == '0') {
       validatePayment = true;
     } else {
-      validatePayment = false;
-      print('validatePayment = false;');
+      if( int.parse(basket.outstanding.amount) <= 0 ){
+        print('validatePayment less than 0;');
+        validatePayment = true;
+      } else {
+        validatePayment = false;
+        print('validatePayment = false;');
+      }
     }
     return validatePayment;
   }

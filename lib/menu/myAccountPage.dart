@@ -300,7 +300,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         },
         child: IgnorePointer(
           child: TextFormField(
-            decoration: _getDecoration('title'),
+            decoration: _getDecoration('Title'),
             controller: _titleTextEditingController,
             // TextEditingController(text: widget.passengerDetail.title ),
             validator: (value) =>
