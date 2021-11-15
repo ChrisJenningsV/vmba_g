@@ -238,7 +238,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     logit(msg);
     _sendVRSCommandList(msg).then((result) {
       logit(result);
-      if (result == 'No Amount Outstanding') {
+      if (result == 'No Amount Outstanding' || result.contains('-')) { // zero or minus outstanding
         msg = json.encode(RunVRSCommand(session, "E"));
         _sendVRSCommand(msg).then(
             (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
