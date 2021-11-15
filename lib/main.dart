@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'dart:io';
@@ -16,12 +16,12 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:firebase_core/firebase_core.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:vmba/utilities/notification_service.dart';
-import 'package:vmba/utilities/widgets/Messaging.dart';
+//import 'package:vmba/utilities/widgets/Messaging.dart';
 
-import 'Services/PushNotificationService.dart';
+//import 'Services/PushNotificationService.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -128,9 +128,9 @@ bool bFirstTime = true;
     super.initState();
     _initLangs();
 
-    if( gblSettings.wantPushNoticications) {
+/*    if( gblSettings.wantPushNoticications) {
        initFirebase(context);
-    }
+    }*/
   }
 
   @override
@@ -222,7 +222,7 @@ bool bFirstTime = true;
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),
-        '/message': (context) => MessageView(),
+        //'/message': (context) => MessageView(),
       },
        )
       ));
@@ -287,121 +287,8 @@ class LocaleModel with ChangeNotifier {
     initializeDateFormatting();
   }
 }
-Future<void> initFirebase(BuildContext context) async {
-  await Firebase.initializeApp();
-  logit('InitFirebase');
-  //NotificationService().init(context);
 
 
-  return;
-
-  // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      importance: Importance.high,
-    );
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    /// Create an Android Notification Channel.
-    ///
-    /// We use this channel in the `AndroidManifest.xml` file to override the
-    /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-   FirebaseMessaging.instance.getToken().then((token){
-     print('token= ' + token);
-     saveToken(token);
-   });
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
-    RemoteNotification notification = message.notification;
-    AndroidNotification android = message.notification?.android;
-    logit('Listener msg received');
-
-    if (notification != null && android != null) {
-      /*
-      var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          importance: Importance.max,
-          priority: Priority.high);
-      var iOSPlatformChannelSpecifics =
-      new IOSNotificationDetails(sound: "slow_spring_board.aiff");
 
 
-      var platformChannelSpecifics = new NotificationDetails(android: androidPlatformChannelSpecifics,
-                iOS: iOSPlatformChannelSpecifics);
-       flutterLocalNotificationsPlugin.show(
-        0,
-        'New Post',
-        'How to Show Notification in Flutter',
-        platformChannelSpecifics,
-        payload: 'Default_Sound',
-      );
 
-       */
-
-
-      flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              importance: Importance.max,
-              priority: Priority.high,
-             // styleInformation: BigTextStyleInformation(''),
-              //icon: 'app_icon',
-            ),
-          )
-      );
-
-
-    }
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      Navigator.pushNamed(context, '/message',
-          arguments: MessageArguments(message, true));
-    });
-
-  });
-   /*
-  print('FlutterFire Messaging Example: Getting APNs token...');
-  String token = await FirebaseMessaging.instance.getAPNSToken();
-  print('FlutterFire Messaging Example: Got APNs token: $token');
-*/
-
-}
-/// Create a [AndroidNotificationChannel] for heads up notifications
-AndroidNotificationChannel channel;
-
-/// Initialize the [FlutterLocalNotificationsPlugin] package.
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-
-/// To verify things are working, check out the native platform logs.
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-
-
-}
