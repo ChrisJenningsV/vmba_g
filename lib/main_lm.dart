@@ -74,6 +74,7 @@ void configLM() {
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+  	bpShowAddPassToWalletButton: true,
     searchDateOut: 1,
     searchDateBack: 6,
 

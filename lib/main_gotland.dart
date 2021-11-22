@@ -133,6 +133,7 @@ void configAG() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+  	bpShowAddPassToWalletButton: false,
 //    searchDateOut: 1,
 //    searchDateBack: 6,
   );

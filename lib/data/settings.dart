@@ -162,7 +162,9 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
 
-bool bpShowFastTrack;
+  bool bpShowFastTrack;
+  bool bpShowAddPassToWalletButton;
+  
   Settings({
     this.xmlToken,
     this.xmlTokenPost,
@@ -241,6 +243,7 @@ bool bpShowFastTrack;
     //this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
+	this.bpShowAddPassToWalletButton,
     this.wantMyAccount = false,
     this.wantFQTV = false,
     this.wantFindBookings = false,

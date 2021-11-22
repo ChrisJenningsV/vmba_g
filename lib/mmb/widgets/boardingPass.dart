@@ -822,7 +822,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   Widget DrawAddPassToWalletButton(BoardingPass pass) {
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid  || gblSettings.bpShowAddPassToWalletButton == false) {
       //No Android implementation currently - hence do not render iOS specific button
       return SizedBox.shrink();
     }

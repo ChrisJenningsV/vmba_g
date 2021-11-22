@@ -417,16 +417,20 @@ class Repository {
                     break;
 
                   case 'eVoucher':
-                    gblSettings.eVoucher =parseBool(item['value']);
+                    gblSettings.eVoucher = parseBool(item['value']);
                     break;
                   case 'bpShowFastTrack':
-                    gblSettings.bpShowFastTrack =parseBool(item['value']);
+                    gblSettings.bpShowFastTrack = parseBool(item['value']);
                     break;
                   case 'bpShowLoungeAccess':
-                    gblSettings.bpShowLoungeAccess =parseBool(item['value']);
+                    gblSettings.bpShowLoungeAccess = parseBool(item['value']);
                     break;
+                  case 'bpShowAddPassToWalletButton':
+                    gblSettings.bpShowAddPassToWalletButton = parseBool(item['value']);
+                    break;	
+					
                   case 'HideFareRules':
-                    gblSettings.hideFareRules =parseBool(item['value']);
+                    gblSettings.hideFareRules = parseBool(item['value']);
                     break;
 
                   /* custom menu items

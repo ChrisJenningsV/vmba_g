@@ -52,7 +52,7 @@ void configFL() {
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
-
+  gblCentreTitle = true;
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
@@ -140,6 +140,7 @@ void configFL() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+	  bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
   );
