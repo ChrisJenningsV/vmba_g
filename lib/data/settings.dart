@@ -73,6 +73,7 @@ class Settings {
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
+  bool youthIsAdult = false;
   bool wantEnglishTranslation = false;
   bool want24HourClock;
   bool wantNewEditPax;
@@ -200,8 +201,8 @@ class Settings {
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
-
     this.wantEnglishTranslation = false,
+	  this.youthIsAdult = false,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,

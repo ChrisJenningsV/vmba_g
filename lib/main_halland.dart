@@ -69,7 +69,8 @@ void configAH() {
     aircode:  "FL",
     brandID: "AH",
     buttonStyle: 'RO2',
-
+  	youthIsAdult: true,
+	
     termsAndConditionsUrl:  "https://www.airhalland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airhalland.se/sv/om-air-halland/integritetspolicy?app_mode=1",
     faqUrl: "https://www.airhalland.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",

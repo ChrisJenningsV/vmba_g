@@ -73,7 +73,8 @@ void configFL() {
     wantPageImages: true,
     want24HourClock: true,
     wantTallPageImage: false,
-
+	  youthIsAdult: true,
+	
     currency: 'SEK',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",

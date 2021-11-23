@@ -61,7 +61,8 @@ void configAG() {
     wantClassBandImages: true,
     wantMaterialControls: true,
     wantPageImages: true,
-
+	  youthIsAdult: true,
+	
     currency: 'SEK',
     airlineName: "Air Gotland",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
