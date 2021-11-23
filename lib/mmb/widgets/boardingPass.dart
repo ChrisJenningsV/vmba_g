@@ -822,7 +822,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   Widget DrawAddPassToWalletButton(BoardingPass pass) {
-    if (Platform.isAndroid  || gblSettings.bpShowAddPassToWalletButton == false) {
+    if (Platform.isAndroid  || CanShowAddBoardingPassToWalletButton() == false) {
       //No Android implementation currently - hence do not render iOS specific button
       return SizedBox.shrink();
     }
@@ -841,6 +841,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         ),
       ],
     );
+  }
+
+  bool CanShowAddBoardingPassToWalletButton() {
+    return gblSettings.bpShowAddPassToWalletButton == true;
   }
 
   void _SavePassToAppleWallet(BoardingPass pass) async {
