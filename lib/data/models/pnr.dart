@@ -267,7 +267,7 @@ class PnrModel {
     if (basket.outstanding.amount == '0') {
       validatePayment = true;
     } else {
-      if( int.parse(basket.outstanding.amount) <= 0 ){
+      if( double.parse(basket.outstanding.amount) <= 0 ){
         print('validatePayment less than 0;');
         validatePayment = true;
       } else {
