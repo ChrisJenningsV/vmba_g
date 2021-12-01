@@ -635,24 +635,24 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 //                      : Text('')
                 ],
               ),
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  //gbl_settings.bpShowLoungeAccess
-                  //    ? [
-                          new TrText("LOUNGE ACCESS",
-                              style: new TextStyle(
-                                  fontSize: 12.0, fontWeight: FontWeight.w200)),
-                          new Text(
-                              _boardingPass.loungeAccess.toLowerCase() == 'true'
-                                  ? translate("YES")
-                                  : translate("NO"),
-                              style: new TextStyle(
-                                  fontSize: 16.0, fontWeight: FontWeight.w700))
-                    //    ]
-                    //  : Text(''),
-                ],
-              ),
+              // new Column(
+              //   crossAxisAlignment: CrossAxisAlignment.end,
+              //   children: <Widget>[
+              //     //gbl_settings.bpShowLoungeAccess
+              //     //    ? [
+              //             new TrText("LOUNGE ACCESS",
+              //                 style: new TextStyle(
+              //                     fontSize: 12.0, fontWeight: FontWeight.w200)),
+              //             new Text(
+              //                 _boardingPass.loungeAccess.toLowerCase() == 'true'
+              //                     ? translate("YES")
+              //                     : translate("NO"),
+              //                 style: new TextStyle(
+              //                     fontSize: 16.0, fontWeight: FontWeight.w700))
+              //       //    ]
+              //       //  : Text(''),
+              //   ],
+              // ),
             ],
           ),
           _barCodeScanError
@@ -822,7 +822,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   Widget DrawAddPassToWalletButton(BoardingPass pass) {
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid  || CanShowAddBoardingPassToWalletButton() == false) {
       //No Android implementation currently - hence do not render iOS specific button
       return SizedBox.shrink();
     }
@@ -841,6 +841,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         ),
       ],
     );
+  }
+
+  bool CanShowAddBoardingPassToWalletButton() {
+    return gblSettings.bpShowAddPassToWalletButton == true;
   }
 
   void _SavePassToAppleWallet(BoardingPass pass) async {

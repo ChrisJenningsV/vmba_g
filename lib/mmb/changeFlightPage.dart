@@ -45,6 +45,17 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
+
+    // check if we are redeeming airmiles
+    gblRedeemingAirmiles = false;
+    if( widget.pnr != null && widget.pnr.pNR != null && widget.pnr.pNR.payments != null && widget.pnr.pNR.payments.fOP != null) {
+      widget.pnr.pNR.payments.fOP.forEach((element) {
+        if (element.fOPID == 'ZZZ') {
+          gblRedeemingAirmiles = true;
+        };
+      });
+    }
+
     _loadData();
   }
 
@@ -113,6 +124,17 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         .write(',StartCity=${this.widget.pnr.pNR.itinerary.itin.first.depart}');
     if (_isReturn) {
       buffer.write(',SingleSeg=r');
+      if( widget.mmbBooking.journeyToChange > 1) {
+        // add outbound details
+        String outDate = DateFormat('dMMMyyyy').format(DateTime.parse(this.widget.mmbBooking.journeys.journey[0].itin.first.ddaygmt)).toString().toUpperCase();
+        String arrDate = DateFormat('dMMMyyyy').format(DateTime.parse(this.widget.mmbBooking.journeys.journey[0].itin.first.adaygmt)).toString().toUpperCase();
+        buffer.write(',RFAD=$arrDate,DEPART=$outDate');
+      } else {
+        // add return details
+        String retDate = DateFormat('dMMMyyyy').format(DateTime.parse(this.widget.mmbBooking.journeys.journey[1].itin.first.ddaygmt)).toString().toUpperCase();
+        buffer.write(',RFDD=$retDate,RETURN=$retDate');
+
+      }
     } else {
       buffer.write(',SingleSeg=s');
     }

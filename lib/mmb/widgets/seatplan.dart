@@ -238,15 +238,24 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     logit(msg);
     _sendVRSCommandList(msg).then((result) {
       logit(result);
-      if (result == 'No Amount Outstanding') {
-        msg = json.encode(RunVRSCommand(session, "E"));
-        _sendVRSCommand(msg).then(
-            (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                  Map map = json.decode(pnr.data);
-                  PnrModel pnrModel = new PnrModel.fromJson(map);
-                  Navigator.pop(context, pnrModel);
-                }));
-      } else if (result.toString().toLowerCase().startsWith('error')) {
+      if (result == 'No Amount Outstanding' ) { // zero outstanding
+          msg = json.encode(RunVRSCommand(session, "E"));
+          _sendVRSCommand(msg).then(
+                  (onValue) =>
+                  Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                    Map map = json.decode(pnr.data);
+                    PnrModel pnrModel = new PnrModel.fromJson(map);
+                    Navigator.pop(context, pnrModel);
+                  }));
+        } else if ( result.contains('-')) { // Minus outstanding
+          msg = json.encode(RunVRSCommand(session, "EMT*R"));
+          _sendVRSCommand(msg).then(
+                  (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                Map map = json.decode(pnr.data);
+                PnrModel pnrModel = new PnrModel.fromJson(map);
+                Navigator.pop(context, pnrModel);
+              }));
+        } else if (result.toString().toLowerCase().startsWith('error')) {
         print(result.toString());
 
         // _showError('Seating failed');

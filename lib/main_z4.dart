@@ -70,6 +70,7 @@ void configZ4() {
       groupsBookingsEmail: '',
       bpShowFastTrack: true,
       bpShowLoungeAccess: true,
+  	  bpShowAddPassToWalletButton: false,
 
 
       passengerTypes: PassengerTypes(

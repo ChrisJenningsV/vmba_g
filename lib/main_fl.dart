@@ -52,7 +52,7 @@ void configFL() {
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
-
+  gblCentreTitle = true;
 
   gblAppTitle = 'airleap';
   gblBuildFlavor = 'FL';
@@ -73,7 +73,8 @@ void configFL() {
     wantPageImages: true,
     want24HourClock: true,
     wantTallPageImage: false,
-
+	  youthIsAdult: true,
+	
     currency: 'SEK',
     airlineName: "Air Leap",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -140,6 +141,7 @@ void configFL() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+	  bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
   );

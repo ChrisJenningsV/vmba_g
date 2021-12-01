@@ -80,6 +80,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //&SingleSeg=s
     if (this.widget.newBooking.isReturn) {
       buffer.write(',SingleSeg=r');
+
+      // add return details
+      String retDate = DateFormat('dMMMyyyy').format(this.widget.newBooking.returnDate).toString().toUpperCase();
+      buffer.write(',RFDD=$retDate,RETURN=$retDate');
+
     } else {
       buffer.write(',SingleSeg=s');
     }

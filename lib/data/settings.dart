@@ -73,6 +73,7 @@ class Settings {
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
+  bool youthIsAdult = false;
   bool wantEnglishTranslation = false;
   bool want24HourClock;
   bool wantNewEditPax;
@@ -162,7 +163,9 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
 
-bool bpShowFastTrack;
+  bool bpShowFastTrack;
+  bool bpShowAddPassToWalletButton;
+  
   Settings({
     this.xmlToken,
     this.xmlTokenPost,
@@ -198,8 +201,8 @@ bool bpShowFastTrack;
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
-
     this.wantEnglishTranslation = false,
+	  this.youthIsAdult = false,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
@@ -241,6 +244,7 @@ bool bpShowFastTrack;
     //this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
+	this.bpShowAddPassToWalletButton,
     this.wantMyAccount = false,
     this.wantFQTV = false,
     this.wantFindBookings = false,

@@ -27,7 +27,7 @@
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
   },
   "testspecs": [
     {

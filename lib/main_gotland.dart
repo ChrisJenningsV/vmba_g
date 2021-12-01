@@ -61,7 +61,8 @@ void configAG() {
     wantClassBandImages: true,
     wantMaterialControls: true,
     wantPageImages: true,
-
+	  youthIsAdult: true,
+	
     currency: 'SEK',
     airlineName: "Air Gotland",
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -133,6 +134,7 @@ void configAG() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+  	bpShowAddPassToWalletButton: false,
 //    searchDateOut: 1,
 //    searchDateBack: 6,
   );

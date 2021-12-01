@@ -23,6 +23,7 @@ class FlightSearchPage extends StatefulWidget {
 class _FlightSearchPageState extends State<FlightSearchPage> {
   NewBooking booking;
   bool adsTermsAccepted;
+  bool firstBuild = true;
 
   @override
   initState() {
@@ -30,6 +31,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     booking = new NewBooking();
     booking.currency = gblSettings.currency;
     adsTermsAccepted = false;
+
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&
           gblPassengerDetail.adsPin != null && gblPassengerDetail.adsPin.isNotEmpty
@@ -83,19 +85,21 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   Widget build(BuildContext context) {
     final List<String> args = ModalRoute.of(context).settings.arguments;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-    if( args != null && args.contains('wantRedeemMiles' )) {
+
+    if( firstBuild == true &&  args != null && args.contains('wantRedeemMiles' )) {
       gblRedeemingAirmiles = true;
     }
+    firstBuild = false;
     return new Scaffold(
-        appBar: 
-         appBar(context, widget.ads == true ? 'ADS Flight Search': 'Flight Search'),
+        appBar:
+        appBar(context, widget.ads == true ? 'ADS Flight Search': 'Flight Search'),
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(
-                systemColors: gblSystemColors,
-                newBooking: booking,
-                onChanged: _reloadSearch,
-              )
+          systemColors: gblSystemColors,
+          newBooking: booking,
+          onChanged: _reloadSearch,
+        )
             : null,
         body: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
@@ -114,7 +118,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                 ),
               ),
               gblSettings.wantCurrencyPicker ?
-                  _currencyPicker() : Container(),
+              _currencyPicker() : Container(),
               JourneyWidget(
                 onChanged: _handleFlightselectedChanged,
               ),
@@ -147,12 +151,12 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
               gblSettings.eVoucher
                   ? EVoucherWidget(
-                      evoucherNo: booking.eVoucherCode,
-                      onChanged: _handleEVoucherChanged,
-                    )
+                evoucherNo: booking.eVoucherCode,
+                onChanged: _handleEVoucherChanged,
+              )
                   : Container(),
               (_canDoRedeem())
-                ? CheckboxListTile(
+                  ? CheckboxListTile(
                 title: TrText("Redeem ${gblSettings.fqtvName} points"),
                 value: gblRedeemingAirmiles,
                 onChanged: (newValue) {
@@ -184,30 +188,30 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
     return Row(
         children: <Widget>[
-    new TrText(
-    'Currency',
-        style: new TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15.0,
-        )),
-        SizedBox(width: 50,),
-        DropdownButton(
-      hint: TrText('Currency'), // Not necessary for Option 1
-      value: booking.currency,
-      onChanged: (newValue) {
-        setState(() {
-          booking.currency = newValue;
-        });
-      },
-      items: _currencies.map((currency) {
-        return DropdownMenuItem(
-          child: Row(children: <Widget>[
-            Image.asset('icons/flags/png/${countryCodes[currency]}.png', package: 'country_icons', width: 20,height: 20,),
-            SizedBox(width: 10,),
-             new Text(currency)]),
-          value: currency,
-        );
-      }).toList())]
+          new TrText(
+              'Currency',
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              )),
+          SizedBox(width: 50,),
+          DropdownButton(
+              hint: TrText('Currency'), // Not necessary for Option 1
+              value: booking.currency,
+              onChanged: (newValue) {
+                setState(() {
+                  booking.currency = newValue;
+                });
+              },
+              items: _currencies.map((currency) {
+                return DropdownMenuItem(
+                  child: Row(children: <Widget>[
+                    Image.asset('icons/flags/png/${countryCodes[currency]}.png', package: 'country_icons', width: 20,height: 20,),
+                    SizedBox(width: 10,),
+                    new Text(currency)]),
+                  value: currency,
+                );
+              }).toList())]
     );
   }
 
@@ -240,40 +244,40 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
       new Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         new Expanded(
             child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            new Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  new TrText("Adults (16+)",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.0)),
-                ],
-              ),
-            ),
-            new Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TrText("Other Passengers", // """Children & Infants",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.0)),
-                  TrText("Select",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w200,
-                          fontSize: 17.0,
-                          color: Colors.grey)),
-                ],
-              ),
-            )
-          ],
-        )),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                new Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      new TrText("Adults (16+)",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15.0)),
+                    ],
+                  ),
+                ),
+                new Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TrText("Other Passengers", // """Children & Infants",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15.0)),
+                      TrText("Select",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.w200,
+                              fontSize: 17.0,
+                              color: Colors.grey)),
+                    ],
+                  ),
+                )
+              ],
+            )),
       ]),
       new Container(
           child: new Divider(
-        height: 0.0,
-      )),
+            height: 0.0,
+          )),
     ];
   }
 }

@@ -60,6 +60,7 @@ void configAS() {
     aircode:  "FL",
     brandID: "AS",
     buttonStyle: 'RO2',
+  	youthIsAdult: true,
 
     termsAndConditionsUrl:  "https://www.airhalland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
     privacyPolicyUrl:  "https://www.airskane.se/mmx/sv/om-air-skane/integritetspolicy?app_mode=1",
@@ -134,6 +135,7 @@ void configAS() {
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
+  	bpShowAddPassToWalletButton: false,
 //    searchDateOut: 1,
 //    searchDateBack: 6,
   );

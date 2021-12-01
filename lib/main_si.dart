@@ -141,6 +141,7 @@ void configSI() {
   wantPayStack: false,
   bpShowFastTrack: false,
   bpShowLoungeAccess: false,
+  bpShowAddPassToWalletButton: false,	
   wantMyAccount: true,
     searchDateOut: 1,
     searchDateBack: 6,

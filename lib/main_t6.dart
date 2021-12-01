@@ -77,6 +77,7 @@ void configT6() {
       groupsBookingsEmail: 'groups@airswift.com',
       bpShowFastTrack: true,
       bpShowLoungeAccess: true,
+  	  bpShowAddPassToWalletButton: false,
       buttonStyle: 'RO2',
       wantNewEditPax: true,
       wantMaterialControls: true,
