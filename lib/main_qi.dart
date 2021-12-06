@@ -76,7 +76,7 @@ void configQI() {
     backgroundImageUrl: "",
  //   hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
     iOSAppId: '1457545908',
-    androidAppId: 'se.ibomair.reservations',
+    androidAppId: 'com.ibomair',
 
     eVoucher: false,
     passengerTypes: PassengerTypes(
