@@ -648,7 +648,11 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     if( gblRedeemingAirmiles && gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
       buffer.write('MF-$gblFqtvNumber^');
     }
-    buffer.write('MK($gblSettings.creditCardProvider)');
+    String prov = gblSettings.creditCardProvider;
+    if(prov.contains('|')) {
+      prov = gblSettings.creditCardProvider.split('|')[0];
+    }
+    buffer.write('MK($prov)');
 
     //creditCardProviderStaging
     //buffer.write('MK(${gbl_settings.creditCardProvider})');
