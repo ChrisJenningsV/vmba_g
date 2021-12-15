@@ -60,6 +60,7 @@ class Settings {
   String brandID;
   String airlineName;
   bool wantApis;
+  bool displayErrorPnr;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
   bool wantMyAccount = false;
@@ -94,6 +95,8 @@ class Settings {
   bool wantRedressNo;
   bool wantKnownTravNo;
   bool wantPushNoticications;
+  bool wantRefund;
+  bool bpShowAddPassToWalletButton;
 
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -102,6 +105,9 @@ class Settings {
   String specialAssistanceUrl;
   String faqUrl;
   String contactUsUrl;
+  String payStartUrl;
+  String paySuccessUrl;
+  String payFailUrl;
   String stopUrl;
   String locale = 'en-EN';
   int bookingLeadTime = 60;
@@ -126,6 +132,7 @@ class Settings {
   String optUpdateMsg;
 
   String xmlUrl;
+  String payUrl;
   String apisUrl;
   String apiUrl;
   String apiKey;
@@ -137,11 +144,13 @@ class Settings {
   String covidText;
 
 
+  String testPayUrl;
   String testXmlUrl;
   String testApisUrl;
   String testApiUrl;
   String testCreditCardProvider;
 
+  String livePayUrl;
   String liveXmlUrl;
   String liveApisUrl;
   String liveApiUrl;
@@ -163,9 +172,7 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
 
-  bool bpShowFastTrack;
-  bool bpShowAddPassToWalletButton;
-  
+bool bpShowFastTrack;
   Settings({
     this.xmlToken,
     this.xmlTokenPost,
@@ -173,6 +180,7 @@ class Settings {
     this.brandID,
     this.airlineName,
     this.creditCardProvider,
+    this.displayErrorPnr = false,
     this.wantPayStack = false,
     this.wantLeftLogo = false,
     this.wantCurrencySymbols,
@@ -201,13 +209,18 @@ class Settings {
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
+    this.wantRefund = false,
+    this.youthIsAdult = false,
+
     this.wantEnglishTranslation = false,
-	  this.youthIsAdult = false,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
     this.faqUrl,
     this.contactUsUrl,
+    this.payStartUrl,
+    this.paySuccessUrl = 'paySuccess.aspx',
+    this.payFailUrl = 'payFail.aspx',
     this.specialAssistanceUrl,
     this.locale,
     this.bookingLeadTime,
@@ -221,6 +234,7 @@ class Settings {
     this.androidAppId,
     this.latestBuildiOS,
     this.latestBuildAndroid,
+    this.payUrl,
     this.xmlUrl,
     this.apisUrl,
     this.apiUrl,
@@ -244,7 +258,6 @@ class Settings {
     //this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
-	this.bpShowAddPassToWalletButton,
     this.wantMyAccount = false,
     this.wantFQTV = false,
     this.wantFindBookings = false,
@@ -254,17 +267,20 @@ class Settings {
     this.reqUpdateMsg,
     this.optUpdateMsg,
 
+    this.testPayUrl,
     this.testXmlUrl,
     this.testApisUrl,
     this.testApiUrl,
     this.testCreditCardProvider,
 
+    this.livePayUrl,
     this.liveXmlUrl,
     this.liveApisUrl,
     this.liveApiUrl,
     this.liveCreditCardProvider,
     this.fQTVpointsName,
     this.buttonStyle,
+    this.bpShowAddPassToWalletButton,
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {
