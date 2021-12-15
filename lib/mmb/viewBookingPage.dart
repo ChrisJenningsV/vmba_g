@@ -130,6 +130,7 @@ class _CheckinBoardingPassesWidgetState
   @override
   void initState() {
     super.initState();
+    gblError = '';
     _loadingInProgress = true;
     _displayProcessingText = '';
     initValues();
@@ -338,6 +339,10 @@ class _CheckinBoardingPassesWidgetState
     for (var i = 0; i <= pnr.pNR.itinerary.itin.length - 1; i++) {
       list.add(getFlightViewWidgets(pnr, i));
     }
+    if( gblError != null && gblError.isNotEmpty) {
+      list.add(Text(gblError));
+    }
+
     return list;
   }
 
