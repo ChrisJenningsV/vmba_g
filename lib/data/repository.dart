@@ -366,7 +366,10 @@ class Repository {
                   case 'wantYouthDOB':
                     gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);
                     break;
-                  case 'wantCityImages':
+                  case 'wantCityImages': // for back compatibility
+                    gblSettings.wantPageImages = parseBool(item['value']);
+                    break;
+                  case 'wantPageImages': // was wantCityImages
                     gblSettings.wantPageImages = parseBool(item['value']);
                     break;
                   case 'wantProducts':

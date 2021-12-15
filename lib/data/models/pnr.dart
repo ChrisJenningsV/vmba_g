@@ -143,7 +143,12 @@ class PnrModel {
     }
 
     if (!hasTickets(this.pNR.tickets)) {
-      return 'No Tickets';
+      if( gblSettings.displayErrorPnr) {
+        gblError += '   No Tickets';
+        return '';
+      } else {
+        return 'No Tickets';
+      }
     }
     if (!validateTickets(this.pNR)) {
       return 'Please contact ${gblSettings.airlineName} to complete booking: tickets not valid';
@@ -271,7 +276,13 @@ class PnrModel {
         print('validatePayment less than 0;');
         validatePayment = true;
       } else {
-        validatePayment = false;
+        if( gblSettings.displayErrorPnr) {
+          validatePayment = true;
+          gblError = 'Payment incomplete, ${basket.outstanding.amount} outstanding';
+
+        } else {
+          validatePayment = false;
+        }
         print('validatePayment = false;');
       }
     }

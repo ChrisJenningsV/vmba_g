@@ -1,11 +1,7 @@
 import 'dart:io';
 import 'dart:async';
-import 'dart:developer' as developer;
-import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/utilities/helper.dart';
 
 
