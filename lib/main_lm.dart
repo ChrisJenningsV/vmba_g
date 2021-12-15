@@ -45,6 +45,7 @@ void configLM() {
 
   gblAppTitle = 'loganair';
   gblBuildFlavor = 'LM';
+  gblCurrentRloc = 'ZZZDJB';
 
   gblSettings = Settings (
 //    latestBuildiOS: '1.0.5',
@@ -60,6 +61,9 @@ void configLM() {
   termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
    privacyPolicyUrl:  'https://loganair.co.uk/wp-content/uploads/2018/05/Privacy-policy-2205.pdf',
   prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
+  //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
+  payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+
   locale: 'en-EN',
   bookingLeadTime: 60,
   webCheckinNoSeatCharge: false,
@@ -72,9 +76,9 @@ void configLM() {
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
+    wantClassBandImages: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
-  	bpShowAddPassToWalletButton: true,
     searchDateOut: 1,
     searchDateBack: 6,
 
@@ -99,27 +103,30 @@ void configLM() {
   eVoucher: true,
     xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
+    apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 //Staging setttings
-/*  testXmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  testApisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',  // InHouse
+/*  testXmlUrl:      "https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  testApisUrl:      'https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  testApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',  // InHouse
 
  */
 
 
+    testPayUrl:      "http://localhost:51088/WebServices/PaymentWS.asmx/",
+    //testPayUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/PaymentWS.asmx/",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',  // InHouse
+    testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
+   // testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
-  creditCardProvider: 'videcard',
-  testCreditCardProvider: 'videcard',
+  creditCardProvider: '3DS_videcard',
+  testCreditCardProvider: 'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
+  displayErrorPnr: true,    // just for test, to display pnr problems
   wantPayStack: false,
   wantPageImages: true,
-  wantClassBandImages: true,
   wantLeftLogo: false,
   wantCurrencySymbols: true,
   wantMyAccount: true,
@@ -129,8 +136,9 @@ void configLM() {
   wantMaterialControls: true,
   wantCitySwap: true,
   wantPushNoticications: true,
+  wantRefund: true,
 
-    wantFQTVNumber: true,
+  wantFQTVNumber: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',
   maxNumberOfPax: 8,
   hideFareRules: false,
