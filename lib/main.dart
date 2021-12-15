@@ -16,12 +16,10 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:vmba/utilities/notification_service.dart';
 //import 'package:vmba/utilities/notification_service.dart';
-//import 'package:vmba/utilities/widgets/Messaging.dart';
 
-//import 'Services/PushNotificationService.dart';
+import 'Services/LoggingService.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_fl.dart';
@@ -29,7 +27,6 @@ import 'main_lm.dart';
 import 'main_qi.dart';
 import 'main_si.dart';
 import 'main_t6.dart';
-import 'main_z4.dart';
 import 'main_gotland.dart';
 import 'main_halland.dart';
 import 'main_skane.dart';
@@ -64,11 +61,8 @@ void main() async {
       case 'T6':
         configT6();
         break;
-      case 'Z4':
-        configZ4();
-        break;
 
-        case 'LM':
+     case 'LM':
         configLM();
       break;
       case 'FL':
@@ -128,9 +122,9 @@ bool bFirstTime = true;
     super.initState();
     _initLangs();
 
-/*    if( gblSettings.wantPushNoticications) {
+    if( gblSettings.wantPushNoticications) {
        initFirebase(context);
-    }*/
+    }
   }
 
   @override
@@ -138,11 +132,13 @@ bool bFirstTime = true;
    // Locale myLocale = Localizations.localeOf(context);
     bFirstTime = false;
     if(gblIsLive == true) {
+      gblSettings.payUrl = gblSettings.livePayUrl;
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
       gblSettings.apiUrl = gblSettings.liveApiUrl;
       gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
     } else {
+      gblSettings.payUrl = gblSettings.testPayUrl;
       gblSettings.xmlUrl = gblSettings.testXmlUrl;
       gblSettings.apisUrl = gblSettings.testApisUrl;
       gblSettings.apiUrl = gblSettings.testApiUrl;
@@ -222,7 +218,6 @@ bool bFirstTime = true;
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),
-        //'/message': (context) => MessageView(),
       },
        )
       ));
@@ -281,14 +276,17 @@ class LocaleModel with ChangeNotifier {
     return locale;
   }
   void changelocale(Locale l) {
-    //locale = l;
-    //Locale locale = Locale(gblLanguage);
     notifyListeners();
     initializeDateFormatting();
   }
 }
+Future<void> initFirebase(BuildContext context) async {
 
-
-
+  if( gblIsLive == false ) {
+    serverLog('Starting app $gblAppTitle');
+  }
+  logit('InitFirebase');
+  NotificationService().init(context);
+}
 
 
