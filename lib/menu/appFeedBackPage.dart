@@ -197,7 +197,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
                       primary: gblSystemColors.textButtonTextColor),
-                  child: TrText('Reset Language'),
+                  child: TrText('Reset cache'),
                   onPressed: () {
                     _resetLangs();
                     deleteLang();
@@ -232,6 +232,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     var prefs = await SharedPreferences.getInstance();
     // reset
     prefs.setString('language_code', '');
+    prefs.setString('cache_time', '');
     setState(() {
     });
   }

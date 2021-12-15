@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:vmba/components/showDialog.dart';
 import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/payment/providers/paystack.dart';
 import 'package:vmba/payment/v2/CreditCardPage.dart';
+import 'package:vmba/payment/webPaymentPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/dataLoader.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
@@ -1171,7 +1172,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         appBar: appBar(context, 'Payment',
           newBooking: widget.newBooking,
           curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -1185,6 +1186,41 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             ],
           ),
         ),
+      );
+    } else if (gblPaymentMsg != null ) {
+      return new Scaffold(
+          key: _key,
+          appBar: new AppBar(
+            //brightness: gblSystemColors.statusBar,
+            backgroundColor:
+            gblSystemColors.primaryHeaderColor,
+            iconTheme: IconThemeData(
+                color: gblSystemColors.headerTextColor),
+            title: new TrText('Contact Details',
+                style: TextStyle(
+                    color: gblSystemColors
+                        .headerTextColor)),
+          ),
+          endDrawer: DrawerMenu(),
+          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete),
+/*
+          AlertDialog(
+            title: new TrText("Payment Error"),
+            content: TrText(gblPaymentMsg),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new TextButton(
+                child: new TrText("OK"),
+                onPressed: () {
+                  setState(() {
+                    gblPaymentMsg = null;
+                  });
+
+                },
+              ),
+            ],
+          )
+*/
       );
     } else {
       return WillPopScope(
@@ -1243,6 +1279,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       );
     }
   }
+
+  void onComplete(){
+    gblPaymentMsg = null;
+  }
+
   Widget _getMiles() {
     Column col = new Column();
     if( gblRedeemingAirmiles == true && widget.pnrModel.pNR != null) {
@@ -1476,66 +1517,62 @@ List<Widget> getPayOptions(String amount, String cur) {
 
   Column renderPaymentButtons() {
     List<Widget> paymentButtons = [];
+    List<String> providers = gblSettings.creditCardProvider.split(',');
+    //String provider = gblSettings.creditCardProvider;
     // List<Widget>();
 
     paymentButtons.add(Padding(
       padding: EdgeInsets.only(top: 8.0),
     ));
+
+providers.forEach((provider) {
+  List<String> details = provider.split('|');
+  String providerName = details[0];
+  String btnText = '';
+  if(details.length > 1) {
+    btnText = details[1];
+  }
+
     paymentButtons.add(ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0))),
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreditCardPage(pnrModel: widget.pnrModel, session: session, isMmb: isMmb, mmbBooking: widget.mmbBooking, mmbAction: widget.mmbAction,))),
+      onPressed: () {
+        if( providerName.startsWith('3DS_')) {
+          gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+          gblPaymentMsg = null;
+          Navigator.push(
+              context, SlideTopRoute(page: WebPayPage( providerName, newBooking: widget.newBooking, pnrModel: widget.pnrModel,isMmb: widget.isMmb, )));
+
+        } else {
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) =>
+            CreditCardPage(pnrModel: widget.pnrModel,
+              session: session,
+              isMmb: isMmb,
+              mmbBooking: widget.mmbBooking,
+              mmbAction: widget.mmbAction,)));
+        }
+      },
       child: Column(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _getPayButton()
+            children: _getPayButton(btnText)
           ),
         ],
       ),
     ));
+});
 
-    if( gblSettings.wantPayStack == true) {
-      paymentButtons.add(Padding(
-        padding: EdgeInsets.only(top: 8.0),
-      ));
-      paymentButtons.add(ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0))),
-        onPressed: () =>
-            Paystack(context, widget.pnrModel, session).load(), //Navigator.push(
-        //context, MaterialPageRoute(builder: (context) => Paystack())),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TrText(
-                  'AGREE AND PAY',
-                  style: new TextStyle(color: Colors.black),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(4),
-                ),
-                Image.asset(
-                  'lib/assets/images/payment/paystack.png',
-                  height: 20,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ));
-    }
     return Column(children: paymentButtons);
   }
-  List<Widget> _getPayButton() {
+  List<Widget> _getPayButton(String text) {
     List<Widget> list = [];
+    if( text.isEmpty) {
+      text = 'AGREE AND PAY';
+    }
 
     if( widget.pnrModel.pNR.basket.outstanding
         .amount ==
@@ -1545,7 +1582,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
 
     } else {
-      list.add(TrText( 'AGREE AND PAY',
+      list.add(TrText( text,
       style: new TextStyle(color: Colors.black),
       ));
     list.add(Image.asset(
