@@ -84,7 +84,7 @@ void configKG() {
 //    backgroundImageUrl:  "",
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
-    androidAppId:   'com.keylimeair.booking', //  'se.airleap.booking',
+    androidAppId:   'com.keylime.booking', //  'se.airleap.booking',
     gblLanguages: '',
     wantEnglishTranslation: false,
     want24HourClock: true,

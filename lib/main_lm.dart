@@ -67,7 +67,7 @@ void configLM() {
   autoSeatOption: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
-  androidAppId: 'uk.co.loganair.reservations',
+  androidAppId: 'uk.co.loganair.booking',
   fqtvName: 'Clan',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',

@@ -76,7 +76,7 @@ void configQI() {
     backgroundImageUrl: "",
  //   hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
     iOSAppId: '1457545908',
-    androidAppId: 'se.ibomair.reservations',
+    androidAppId: 'com.ibomair',
 
     eVoucher: false,
     passengerTypes: PassengerTypes(
@@ -96,7 +96,7 @@ void configQI() {
     liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
     liveCreditCardProvider: 'worldpaydirect',
 
-    apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
+    apiKey: 'a4768447e0ae4e4688b6783377bed3b6',
 //Staging setttings
     testXmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

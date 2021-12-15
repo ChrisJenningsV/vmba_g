@@ -8,6 +8,10 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 
 
 # build android app bundle
-flutter build appbundle
+#flutter build appbundle
+# Modify the flavor parameter as required (set to airleap in this example)
+flutter build appbundle -t lib/main.dart --flavor airleap
+
+
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
