@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 
-Widget smallButton({String text, IconData icon, void Function() onPressed }) {
+Widget smallButton({String text, IconData icon, void Function() onPressed, Color backClr, String id }) {
+  Color back = gblSystemColors.primaryButtonColor;
+  if( backClr != null ) back = backClr;
   return new FloatingActionButton.extended(
       elevation: 0.0,
+      heroTag: id,
       isExtended: true,
       label: Text(
         text,
@@ -16,8 +19,7 @@ Widget smallButton({String text, IconData icon, void Function() onPressed }) {
       icon: Icon(icon,
           color: gblSystemColors
               .primaryButtonTextColor),
-      backgroundColor:
-      gblSystemColors.primaryButtonColor,
+      backgroundColor: back,
       onPressed: () {
         onPressed();
       });

@@ -115,7 +115,7 @@ void configT6() {
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
   testCreditCardProvider: 'videcard|MX payment,3DS_Paynamics|Paynamics payment',
-    payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+    //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
 
   wantPayStack: false,

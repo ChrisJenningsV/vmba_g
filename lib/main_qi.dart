@@ -96,11 +96,13 @@ void configQI() {
     liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
     liveCreditCardProvider: 'worldpaydirect',
 
-    apiKey: 'a4768447e0ae4e4688b6783377bed3b6',
+    apiKey: "2edd1519899a4e7fbf9a307a0db4c17a" ,//'a4768447e0ae4e4688b6783377bed3b6',
 //Staging setttings
     testXmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
+//    testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
+    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+
     testCreditCardProvider: 'videcard',
 
     xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -108,6 +110,9 @@ void configQI() {
     apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
     creditCardProvider: 'videcard',
 
+    wantNewPayment: true,
+    wantNewEditPax: true,
+    wantMaterialControls: true,
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,

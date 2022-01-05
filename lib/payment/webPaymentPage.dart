@@ -19,7 +19,7 @@ class WebPayPage extends StatefulWidget {
   PnrModel pnrModel;
   final bool isMmb ;
 
-  String  url = gblSettings.payStartUrl;
+  String  url = gblSettings.payPage;
   String provider;
   //final title;
   bool canNotClose;
@@ -168,12 +168,16 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
     String _getPayUrl(){
     String provider = widget.provider.replaceFirst('3DS_', '');
-
-
-
     String action = 'NEWBOOKING';
+    String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action';
 
-    return '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action';
+    if( gblPayFormVals != null) {
+      gblPayFormVals.forEach((key, value) {
+          url += '&$key=$value';
+      });
+    }
+
+    return url;
   }
 
   Future<void> _successfulPayment() async {
