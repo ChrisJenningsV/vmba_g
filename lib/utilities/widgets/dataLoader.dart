@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
+import 'package:vmba/data/models/providers.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
@@ -72,27 +73,6 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
-      /*
-      return Scaffold(
-          body: Container(
-            color: Colors.white, constraints: BoxConstraints.expand(),
-            child: Center(
-              child:
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  //Image.asset('lib/assets/$gblAppTitle/images/loader.png'),
-                  CircularProgressIndicator(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TrText(_displayProcessingText),
-                  ),
-                ],
-              ),
-            ),
-          ));
-
-       */
       return TrText(_dataName);
     } else {
       switch(widget.dataType){
@@ -100,6 +80,10 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           break;
         case LoadDataType.products:
           return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
+          break;
+        case LoadDataType.providers:
+          //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
+          widget.onComplete(widget.pnrModel);
           break;
         case LoadDataType.routes:
           break;
@@ -175,6 +159,16 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _msg = json.encode(GetProductsMsg(currency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
 
           break;
+        case LoadDataType.providers:
+          _dataName = 'Providers';
+          _url = '${gblSettings.apiUrl}/provider/getpaymentproviderlist';
+          String currency = gblSettings.currency;
+          if( currency == null || currency.isEmpty) {
+            currency = widget.pnrModel.pNR.basket.outstanding.cur;
+          }
+          _msg = json.encode(GetProvidersMsg("BSIA9992AW/EB", currency).toJson());  // , arrivalCityCode: gblDestination
+
+          break;
         case LoadDataType.routes:
           _dataName = 'Routes';
           break;
@@ -196,6 +190,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.products:
           gblProductsState = newState;
           break;
+        case LoadDataType.providers:
+          gblProductsState = newState;
+          break;
         case LoadDataType.routes:
           gblRoutesState = newState;
           break;
@@ -215,6 +212,14 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.products:
         try {
           gblProducts = ProductCategorys.fromJson(data);
+        } catch(e) {
+          logit(e.toString());
+        }
+        break;
+      case LoadDataType.providers:
+        try {
+          gblProviders = Providers.fromJson(data);
+          logit('loaded providers');
         } catch(e) {
           logit(e.toString());
         }

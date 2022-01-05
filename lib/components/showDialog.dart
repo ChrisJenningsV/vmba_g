@@ -76,8 +76,6 @@ Future<bool> confirmDialog(BuildContext context, String title, String msg ) asyn
 
 void showAlertDialog(BuildContext context, String title, String msg, {void Function() onComplete  }) {
   // flutter defined function
-  Color myColor = Color(0xffc0c0c0);
-
   showDialog(
     context: context,
     builder: (BuildContext context) {

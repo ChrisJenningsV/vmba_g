@@ -165,7 +165,7 @@ class Repository {
     var prefs = await SharedPreferences.getInstance();
     logit('initCities');
     var cacheTime = prefs.getString('cache_time');
-    if( cacheTime!= null && cacheTime.isNotEmpty){
+    if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
 
       if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {
@@ -297,7 +297,8 @@ class Repository {
             // cj work in progress
             if (settingsJson != null) {
               for (var item in settingsJson) {
-                switch (item['parameter']) {
+                String param =item['parameter'];
+                switch (param.trim()) {
                   case 'creditCardProvider':
                     gblSettings.creditCardProvider = item['value'];
                     break;
@@ -377,6 +378,12 @@ class Repository {
                     break;
                   case 'wantCitySwap':
                     gblSettings.wantCitySwap = parseBool(item['value']);
+                    break;
+                  case 'wantNewPayment':
+                    gblSettings.wantNewPayment =  parseBool(item['value']);
+                    break;
+                  case 'wantRefund':
+                    gblSettings.wantRefund  = parseBool(item['value']);
                     break;
                   case 'wantMaterialControls':
                     gblSettings.wantMaterialControls = parseBool(item['value']);
@@ -599,7 +606,7 @@ class Repository {
   Future<ParsedResponse<List<City>>> getCities() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
-    logit('get cities');
+    logit('get cities ${gblSettings.apiUrl}/cities/GetCityList');
     http.Response response = await http
         .get(
             //"${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmacitylist")
@@ -1036,7 +1043,7 @@ class Repository {
     var prefs = await SharedPreferences.getInstance();
     logit('initRoutes');
     var cacheTime = prefs.getString('route_cache_time');
-    if( cacheTime!= null && cacheTime.isNotEmpty){
+    if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
 
       if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {

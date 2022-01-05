@@ -96,6 +96,7 @@ class Settings {
   bool wantKnownTravNo;
   bool wantPushNoticications;
   bool wantRefund;
+  bool wantNewPayment;
   bool bpShowAddPassToWalletButton;
 
   String defaultCountryCode;
@@ -105,7 +106,7 @@ class Settings {
   String specialAssistanceUrl;
   String faqUrl;
   String contactUsUrl;
-  String payStartUrl;
+  //String payStartUrl;
   String paySuccessUrl;
   String payFailUrl;
   String stopUrl;
@@ -133,6 +134,7 @@ class Settings {
 
   String xmlUrl;
   String payUrl;
+  String payPage;
   String apisUrl;
   String apiUrl;
   String apiKey;
@@ -145,12 +147,14 @@ class Settings {
 
 
   String testPayUrl;
+  String testPayPage;
   String testXmlUrl;
   String testApisUrl;
   String testApiUrl;
   String testCreditCardProvider;
 
   String livePayUrl;
+  String livePayPage;
   String liveXmlUrl;
   String liveApisUrl;
   String liveApiUrl;
@@ -210,6 +214,7 @@ bool bpShowFastTrack;
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
     this.wantRefund = false,
+    this.wantNewPayment = false,
     this.youthIsAdult = false,
 
     this.wantEnglishTranslation = false,
@@ -218,7 +223,7 @@ bool bpShowFastTrack;
     this.privacyPolicyUrl,
     this.faqUrl,
     this.contactUsUrl,
-    this.payStartUrl,
+    //this.payStartUrl,
     this.paySuccessUrl = 'paySuccess.aspx',
     this.payFailUrl = 'payFail.aspx',
     this.specialAssistanceUrl,
@@ -235,6 +240,7 @@ bool bpShowFastTrack;
     this.latestBuildiOS,
     this.latestBuildAndroid,
     this.payUrl,
+    this.payPage,
     this.xmlUrl,
     this.apisUrl,
     this.apiUrl,
@@ -268,12 +274,14 @@ bool bpShowFastTrack;
     this.optUpdateMsg,
 
     this.testPayUrl,
+    this.testPayPage,
     this.testXmlUrl,
     this.testApisUrl,
     this.testApiUrl,
     this.testCreditCardProvider,
 
     this.livePayUrl,
+    this.livePayPage,
     this.liveXmlUrl,
     this.liveApisUrl,
     this.liveApiUrl,

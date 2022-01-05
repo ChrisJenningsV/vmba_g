@@ -21,6 +21,8 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import 'ProviderFieldsPage.dart';
+
 //ignore: must_be_immutable
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -1507,71 +1509,183 @@ List<Widget> getPayOptions(String amount, String cur) {
         ),
       ));
     } else {
-        list.add(  renderPaymentButtons());
+        if( gblSettings.wantNewPayment) {
+          list.add(  renderNewPaymentButtons());
+        } else {
+          list.add(  renderPaymentButtons());
+        }
     }
 
 
     return list;
 }
 
-
-  Column renderPaymentButtons() {
+  Widget renderNewPaymentButtons() {
     List<Widget> paymentButtons = [];
-    List<String> providers = gblSettings.creditCardProvider.split(',');
-    //String provider = gblSettings.creditCardProvider;
-    // List<Widget>();
+    if( gblProviders != null ) {
+      paymentButtons.add(Padding(
+        padding: EdgeInsets.only(top: 8.0),
+      ));
 
-    paymentButtons.add(Padding(
-      padding: EdgeInsets.only(top: 8.0),
-    ));
+      gblProviders.providers.forEach((provider) {
+        bool bShow = false;
 
-providers.forEach((provider) {
-  List<String> details = provider.split('|');
-  String providerName = details[0];
-  String btnText = '';
-  if(details.length > 1) {
-    btnText = details[1];
-  }
-
-    paymentButtons.add(ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0))),
-      onPressed: () {
-        if( providerName.startsWith('3DS_')) {
-          gblCurrentRloc = widget.pnrModel.pNR.rLOC;
-          gblPaymentMsg = null;
-          Navigator.push(
-              context, SlideTopRoute(page: WebPayPage( providerName, newBooking: widget.newBooking, pnrModel: widget.pnrModel,isMmb: widget.isMmb, )));
-
-        } else {
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) =>
-            CreditCardPage(pnrModel: widget.pnrModel,
-              session: session,
-              isMmb: isMmb,
-              mmbBooking: widget.mmbBooking,
-              mmbAction: widget.mmbAction,)));
+        switch (provider.paymentType) {
+          case 'ExternalPayment':
+            bShow = true;
+            break;
         }
-      },
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _getPayButton(btnText)
-          ),
-        ],
-      ),
-    ));
-});
 
+        if( bShow){
+        String btnText = '';
+        btnText = provider.paymentSchemeDisplayName;
+        paymentButtons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0))),
+          onPressed: () {
+            if (provider.paymentType == 'ExternalPayment') {
+              gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+              gblPaymentMsg = null;
+              if( provider.fields == null || provider.fields.paymentFields == null || provider.fields.paymentFields.length == 0 ) {
+                Navigator.push(
+                    context, SlideTopRoute(page: WebPayPage(
+                  provider.paymentSchemeName, newBooking: widget.newBooking,
+                  pnrModel: widget.pnrModel,
+                  isMmb: widget.isMmb,)));
+              } else {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) =>
+                    ProviderFieldsPage(pnrModel: widget.pnrModel,
+                      provider: provider,
+                      isMmb: isMmb,
+                      mmbBooking: widget.mmbBooking,
+                      mmbAction: widget.mmbAction,)));
+              }
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) =>
+                  CreditCardPage(pnrModel: widget.pnrModel,
+                    session: session,
+                    isMmb: isMmb,
+                    mmbBooking: widget.mmbBooking,
+                    mmbAction: widget.mmbAction,)));
+            }
+          },
+          child: Column(
+            children: <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _getPayButton(btnText)
+              ),
+            ],
+          ),
+        ));
+      }
+      });
+
+
+      return Column(children: paymentButtons);
+    } else {
+      return DataLoaderWidget(dataType: LoadDataType.providers,
+        newBooking: widget.newBooking,
+        pnrModel: widget.pnrModel,
+        onComplete: (PnrModel pnrModel) {
+          logit('Load Providers onComplete');
+          widget.pnrModel = pnrModel;
+          pnrModel = pnrModel;
+          //setState(() {            });
+          startTimer();
+        },);
+    }
     return Column(children: paymentButtons);
   }
+
+
+  Widget renderPaymentButtons() {
+    List<Widget> paymentButtons = [];
+
+    if( gblSettings.wantNewPayment) {
+
+    } else {
+      List<String> providers = gblSettings.creditCardProvider.split(',');
+      //String provider = gblSettings.creditCardProvider;
+      // List<Widget>();
+
+      paymentButtons.add(Padding(
+        padding: EdgeInsets.only(top: 8.0),
+      ));
+
+      providers.forEach((provider) {
+        List<String> details = provider.split('|');
+        String providerName = details[0];
+        String btnText = '';
+        if (details.length > 1) {
+          btnText = details[1];
+        }
+
+        paymentButtons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0))),
+          onPressed: () {
+            if (providerName.startsWith('3DS_')) {
+              gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+              gblPaymentMsg = null;
+              Navigator.push(
+                  context, SlideTopRoute(page: WebPayPage(
+                providerName, newBooking: widget.newBooking,
+                pnrModel: widget.pnrModel,
+                isMmb: widget.isMmb,)));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) =>
+                  CreditCardPage(pnrModel: widget.pnrModel,
+                    session: session,
+                    isMmb: isMmb,
+                    mmbBooking: widget.mmbBooking,
+                    mmbAction: widget.mmbAction,)));
+            }
+          },
+          child: Column(
+            children: <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _getPayButton(btnText)
+              ),
+            ],
+          ),
+        ));
+      });
+
+      return Column(children: paymentButtons);
+    }
+  }
+
+  Timer _timer;
+ // int _start = 10;
+
+  void startTimer() {
+    const oneSec = const Duration(milliseconds: 100);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+          setState(() {
+            timer.cancel();
+          });
+        });
+  }
+
+
   List<Widget> _getPayButton(String text) {
     List<Widget> list = [];
-    if( text.isEmpty) {
+    if(text == null  ) {
       text = 'AGREE AND PAY';
+    }
+    if(text.isEmpty) {
+    text = 'AGREE AND PAY';
     }
 
     if( widget.pnrModel.pNR.basket.outstanding
