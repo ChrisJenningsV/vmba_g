@@ -13,5 +13,6 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 flutter build appbundle -t lib/main.dart --flavor airleap
 flutter build appbundle -t lib/main.dart --flavor loganair
 flutter build appbundle -t lib/main.dart --flavor ibomair
+flutter build appbundle -t lib/main.dart --flavor airswift
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
