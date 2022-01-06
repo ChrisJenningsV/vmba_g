@@ -11,7 +11,7 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 #flutter build appbundle
 # Modify the flavor parameter as required (set to airleap in this example)
 flutter build appbundle -t lib/main.dart --flavor airleap
-
+flutter build appbundle -t lib/main.dart --flavor loganair
 
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar

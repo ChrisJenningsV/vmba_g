@@ -39,11 +39,32 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
 
   num _stackToView = 1;
+  Timer _timer;
 
   @override void initState() {
+    _timer = Timer(Duration(minutes : gblSettings.payTimeout), () {
+      _timer.cancel();
+      _timer = null;
+      gblPaymentMsg = 'Payment Timeout';
+      //Navigator.pop(context, 'fail');
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: false,),
+      ),
+    );
+    });
     super.initState();
     //_controller.data.clearCache();
     //validateBooking();
+  }
+  @override
+  void dispose() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+    super.dispose();
   }
 
   void _handleLoad() {

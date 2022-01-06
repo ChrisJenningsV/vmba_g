@@ -73,7 +73,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
-      return TrText(_dataName);
+      return Text(translate('Loading') + ' ' + translate(_dataName));
     } else {
       switch(widget.dataType){
         case LoadDataType.cities:

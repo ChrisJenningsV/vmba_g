@@ -175,6 +175,7 @@ class Settings {
   bool bpShowLoungeAccess;
   int searchDateOut;
   int searchDateBack;
+  int payTimeout;
 
 bool bpShowFastTrack;
   Settings({
@@ -272,6 +273,7 @@ bool bpShowFastTrack;
     this.searchDateBack,
     this.reqUpdateMsg,
     this.optUpdateMsg,
+    this.payTimeout = 1,
 
     this.testPayUrl,
     this.testPayPage,
