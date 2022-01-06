@@ -129,18 +129,30 @@ class SeatsFlt {
 }
 
 class CabinCount {
-  Cabin cabin;
+  List<Cabin> cabins = [];
 
-  CabinCount({this.cabin});
+  CabinCount({this.cabins});
 
   CabinCount.fromJson(Map<String, dynamic> json) {
-    cabin = json['Cabin'] != null ? new Cabin.fromJson(json['Cabin']) : null;
+    print('${json['Cabin'].runtimeType}');
+
+    if( json['Cabin'].runtimeType.toString() == '_InternalLinkedHashMap<String, dynamic>') {
+      if( json['Cabin'] != null ) {
+        cabins.add(new Cabin.fromJson(json['Cabin']));
+      }
+      } else {
+      json['Cabin'].forEach((element){
+        cabins.add(new Cabin.fromJson(element));
+      });
+
+    }
+  //  cabins.add(value) = json['Cabin'] != null ? new Cabin.fromJson(json['Cabin']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cabin != null) {
-      data['Cabin'] = this.cabin.toJson();
+    if (this.cabins != null) {
+      //data['Cabin'] = this.cabins.toJson();
     }
     return data;
   }

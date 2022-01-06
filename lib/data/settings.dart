@@ -63,7 +63,7 @@ class Settings {
   bool displayErrorPnr;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
-  bool wantMyAccount = false;
+  bool wantMyAccount ;
   bool wantProfileList = false;
   bool wantFQTV = false;
   bool wantFindBookings = false;
@@ -265,7 +265,7 @@ bool bpShowFastTrack;
     //this.fqtvEnabled,
     this.bpShowFastTrack,
     this.bpShowLoungeAccess,
-    this.wantMyAccount = false,
+    this.wantMyAccount = true,
     this.wantFQTV = false,
     this.wantFindBookings = false,
     this.wantFQTVNumber = false,

@@ -58,6 +58,7 @@ void configQI() {
     latestBuildiOS: '105',
     latestBuildAndroid: '15',
     wantRememberMe: false,
+    wantMyAccount: true,
     wantHomeFQTVButton: true,
     airlineName: "IBOM Air",
     xmlToken: "token=jgxD8XX48HgiBqGbkqmR2qmq6WzfWaQCi59Aa3s1StA%3D",
