@@ -113,10 +113,10 @@ void configLM() {
  */
 
 //    payStartUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
-//    payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
-    // testPayUrl:      "http://localhost:51088/WebServices/PaymentWS.asmx/",
+//     testPayUrl:      "http://localhost:51088/WebServices/PaymentWS.asmx/",
     testPayUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/PaymentWS.asmx/",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

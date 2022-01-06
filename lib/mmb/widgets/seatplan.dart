@@ -236,6 +236,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     String msg = json
         .encode(RunVRSCommandList(session, cmd.toString().split('^')).toJson());
     logit(msg);
+
     _sendVRSCommandList(msg).then((result) {
       logit(result);
       if (result == 'No Amount Outstanding' ) { // zero outstanding
@@ -262,7 +263,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         _dataLoadedFailed(result);
         //  showSnackBar(result);
       } else {
-        msg = json.encode(RunVRSCommand(session, "*R~x"));
+        if( gblSettings.wantNewPayment) {
+          msg = json.encode(RunVRSCommand(session, "E*R~x"));
+        } else {
+          msg = json.encode(RunVRSCommand(session, "*R~x"));
+        }
         _sendVRSCommand(msg).then((pnrJson) {
           Map map = json.decode(pnrJson);
 
