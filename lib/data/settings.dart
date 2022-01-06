@@ -273,7 +273,7 @@ bool bpShowFastTrack;
     this.searchDateBack,
     this.reqUpdateMsg,
     this.optUpdateMsg,
-    this.payTimeout = 1,
+    this.payTimeout = 10,
 
     this.testPayUrl,
     this.testPayPage,

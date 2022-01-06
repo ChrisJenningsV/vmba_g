@@ -91,23 +91,25 @@ void configQI() {
     groupsBookingsEmail: "",
     maxNumberOfPax: 8,
     hideFareRules: true,
-    liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    liveApisUrl:       'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
+    liveXmlUrl:      "https://booking.ibom.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveApisUrl:       'https://booking.ibom.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl: 'https://booking.ibom.com/ANCwebApi/api/',
+    livePayPage:      'https://booking.ibom.com/VARS/Public/MobilePaymentStart.aspx',
     liveCreditCardProvider: 'worldpaydirect',
 
     apiKey: "2edd1519899a4e7fbf9a307a0db4c17a" ,//'a4768447e0ae4e4688b6783377bed3b6',
 //Staging setttings
+    testPayPage: 'https://customertest.videcom.com/ibomair/VARS/Public/MobilePaymentStart.aspx',
     testXmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//    testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
-    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+    testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',
+//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
     testCreditCardProvider: 'videcard',
 
     xmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApi/api/',
+    apiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',
     creditCardProvider: 'videcard',
 
     wantNewPayment: true,
