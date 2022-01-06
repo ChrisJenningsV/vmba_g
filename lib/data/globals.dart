@@ -14,7 +14,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'QI'
+String gblBuildFlavor = 'T6'
     '';
 String gblError = '';
 String gblErrorTitle = '';
