@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/payment/v2/ProviderFields.dart';
 import 'package:vmba/payment/webPaymentPage.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -47,6 +53,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
   String _displayProcessingText;
   bool _displayProcessingIndicator;
   String nostop = '';
+  String _error = '';
 
   //bool _displayProcessingIndicator;
   // String _displayProcessingText;
@@ -241,7 +248,9 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
         children: [
         smallButton( backClr: Colors.grey.shade500, id: 'backBtn', text: translate('Back'), icon: Icons.arrow_back, onPressed: ()
         { Navigator.pop(context);}),
-        smallButton( text: translate('PAY NOW'), id: 'payBtn', icon: Icons.check, onPressed: () { validateAndSubmit();}),
+        smallButton( text: translate('PAY NOW'), id: 'payBtn', icon: Icons.check, onPressed: () {
+          validateAndSubmit();
+        }),
     ]));
     return list;
 
@@ -260,7 +269,10 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     if (validate()) {
       hasDataConnection().then((result) async {
         if (result == true) {
-          //makePayment();
+          if(widget.mmbAction == 'CHANGEFLT') {
+            changeFlt(widget.pnrModel, widget.mmbBooking, context);
+          }
+
           Navigator.push(
               context, SlideTopRoute(page: WebPayPage(
             widget.provider.paymentSchemeName, newBooking: widget.newBooking,
@@ -276,6 +288,8 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       });
     }
   }
+
+
 
 }
 

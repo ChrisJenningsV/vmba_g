@@ -19,14 +19,14 @@ class VInputField extends StatefulWidget {
 
 class VInputFieldState extends State<VInputField> {
 
-  TextEditingController _TextEditingController;
+  TextEditingController _textEditingController;
 
 
   @override
   void initState() {
     super.initState();
 
-    _TextEditingController = new TextEditingController();
+    _textEditingController = new TextEditingController();
   }
 
   @override
@@ -54,7 +54,7 @@ class VInputFieldState extends State<VInputField> {
           maxLength: widget.fieldParams.maxLength,
           decoration:getDecoration(widget.fieldParams.label),
 
-          controller: _TextEditingController,
+          controller: _textEditingController,
           onFieldSubmitted: (value) {
             //widget.passengerDetail.firstName = value;
             if( gblPayFormVals == null ) {

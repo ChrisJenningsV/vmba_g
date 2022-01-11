@@ -65,6 +65,7 @@ void configFL() {
     wantHomeFQTVButton: false,
     wantCurrencyPicker: true,
     wantNewEditPax: true,
+    wantNewPayment: true,
     wantProducts: false,
     wantDangerousGoods: true ,
     wantFindBookings: true,
@@ -125,6 +126,7 @@ void configFL() {
     liveXmlUrl:      "https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     liveApisUrl:       'https://booking.airleap.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.airleap.se/VARS/webApiV2/api/',
+    livePayPage: 'https://booking.airleap.se/VARS/Public/MobilePaymentStart.aspx',
     liveCreditCardProvider: 'worldpaydirect',
 
     xmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -135,6 +137,9 @@ void configFL() {
     testXmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
+    //testPayPage: 'https://customertest.videcom.com/airleap/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+
     testCreditCardProvider: 'videcard',
 
     wantPayStack: false,

@@ -372,11 +372,11 @@ class CitiesScreenState  extends State<CitiesScreen> {
     if (_cityData == null || _cityData.length == 0) {
       // delay
       for( var i  = 0; i< 10 ; i++ ) {
-        Future.delayed(Duration(milliseconds: 100), () {
+        Future.delayed(Duration(milliseconds: 200), () {
           if (_cityData == null || _cityData.length == 0) {
             if (gblVerbose) print(
                 " This line is execute after 100 ms - no cities");
-            setState(() {});
+            //setState(() {});
           } else {
             i = 10;
             if (gblVerbose) print(

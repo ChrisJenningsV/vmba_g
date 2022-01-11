@@ -10,6 +10,7 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
+import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/payment/v2/CreditCardPage.dart';
 import 'package:vmba/payment/webPaymentPage.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -1544,11 +1545,15 @@ List<Widget> getPayOptions(String amount, String cur) {
               primary: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
-          onPressed: () {
+          onPressed: () async {
             if (provider.paymentType == 'ExternalPayment') {
               gblCurrentRloc = widget.pnrModel.pNR.rLOC;
               gblPaymentMsg = null;
               if( provider.fields == null || provider.fields.paymentFields == null || provider.fields.paymentFields.length == 0 ) {
+                if(  widget.mmbAction == 'CHANGEFLT') {
+                  await changeFlt(widget.pnrModel, widget.mmbBooking, context);
+                }
+
                 Navigator.push(
                     context, SlideTopRoute(page: WebPayPage(
                   provider.paymentSchemeName, newBooking: widget.newBooking,
@@ -1606,9 +1611,6 @@ List<Widget> getPayOptions(String amount, String cur) {
   Widget renderPaymentButtons() {
     List<Widget> paymentButtons = [];
 
-    if( gblSettings.wantNewPayment) {
-
-    } else {
       List<String> providers = gblSettings.creditCardProvider.split(',');
       //String provider = gblSettings.creditCardProvider;
       // List<Widget>();
@@ -1661,7 +1663,6 @@ List<Widget> getPayOptions(String amount, String cur) {
       });
 
       return Column(children: paymentButtons);
-    }
   }
 
   Timer _timer;

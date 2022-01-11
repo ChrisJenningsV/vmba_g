@@ -7,5 +7,5 @@ flutter_icons:
 # flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_ibom.yaml
 #
 #
-# copy /y lib\assets\ibom\images\bg.png lib\assets\images
-# cp  lib/assets/ibom/images/bg.png lib/assets/images
+# copy /y lib\assets\ibomair\images\bg.png lib\assets\images
+# cp  lib/assets/ibomair/images/bg.png lib/assets/images

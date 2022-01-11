@@ -587,7 +587,7 @@ Widget _getTrans() {
             // third row
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            Text(GetAirMilesDisplayValue(tran.airMiles),style: TextStyle(color: Colors.white, ) ,
+            Text(getAirMilesDisplayValue(tran.airMiles),style: TextStyle(color: Colors.white, ) ,
     ),
 
             Text(tran.pnr + '      ',style: TextStyle(color: Colors.black,  ),  ),
@@ -604,7 +604,7 @@ Widget _getTrans() {
       return new Column(children: tranWidgets.toList());
 }
 
-  String GetAirMilesDisplayValue(String airMiles){
+  String getAirMilesDisplayValue(String airMiles){
     if(airMiles == '0.0' ) {
       return "";
     }

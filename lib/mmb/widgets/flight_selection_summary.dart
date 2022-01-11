@@ -7,6 +7,7 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
+import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -678,8 +679,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   onPressed: () {
-                    hasDataConnection().then((result) {
+                    hasDataConnection().then((result) async {
                       if (result == true) {
+/*
+                        if( gblSettings.wantNewPayment) {
+                          await saveChanges(context);
+                        }
+*/
                         Navigator.push(
                             context,
                             MaterialPageRoute(

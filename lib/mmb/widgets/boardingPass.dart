@@ -372,7 +372,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     if (_loadingInProgress) {
       return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -399,7 +399,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          brightness: gblSystemColors.statusBar,
+          //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -748,7 +748,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                     ),
                                   )
                                 ]),
-                            DrawAddPassToWalletButton(_boardingPass),
+                            drawAddPassToWalletButton(_boardingPass),
                             const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -812,7 +812,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                               : Text('')
                         ],
                       ),
-                      DrawAddPassToWalletButton(_boardingPass),
+                      drawAddPassToWalletButton(_boardingPass),
                     ],
                   ),
                 ),
@@ -821,8 +821,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     );
   }
 
-  Widget DrawAddPassToWalletButton(BoardingPass pass) {
-    if (Platform.isAndroid  || CanShowAddBoardingPassToWalletButton() == false) {
+  Widget drawAddPassToWalletButton(BoardingPass pass) {
+    if (Platform.isAndroid  || canShowAddBoardingPassToWalletButton() == false) {
       //No Android implementation currently - hence do not render iOS specific button
       return SizedBox.shrink();
     }
@@ -833,7 +833,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         const SizedBox(height: 20),
         InkWell(
           onTap: () {
-            _SavePassToAppleWallet(pass);
+            _savePassToAppleWallet(pass);
           },
           child: Image(
             image: AssetImage('lib/assets/images/appleWallet.png'),
@@ -843,11 +843,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     );
   }
 
-  bool CanShowAddBoardingPassToWalletButton() {
+  bool canShowAddBoardingPassToWalletButton() {
     return gblSettings.bpShowAddPassToWalletButton == true;
   }
 
-  void _SavePassToAppleWallet(BoardingPass pass) async {
+  void _savePassToAppleWallet(BoardingPass pass) async {
     try {
       //print("Fetching Boarding Pass for " + gblSettings.airlineName);
       String departCityName = await cityCodeToName(pass.depart);
@@ -860,9 +860,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       qParams.write('&BoardingTime=${pass.boarding}');
       qParams.write('&FltNo=${pass.fltno}');
       qParams.write('&DepDate=${pass.depdate}');
-      qParams.write('&Depart=${departCityName}');
+      qParams.write('&Depart=$departCityName');
       qParams.write('&DepartCityCode=${pass.depart}');
-      qParams.write('&Arrive=${arrivalCityName}');
+      qParams.write('&Arrive=$arrivalCityName');
       qParams.write('&ArriveCityCode=${pass.arrive}');
       qParams.write('&PaxNo=${pass.paxno}');
       qParams.write('&PaxName=${pass.paxname}');
