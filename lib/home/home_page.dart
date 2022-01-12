@@ -33,6 +33,7 @@ class _HomeState extends State<HomePage> {
   bool _displayProcessingIndicator;
   Image alternativeBackgroundImage;
   bool gotBG = false;
+  String buildNo = '';
 
   @override
   void initState() {
@@ -42,6 +43,13 @@ class _HomeState extends State<HomePage> {
       //initLang(gblLanguage);
       initLangCached(gblLanguage);
     }
+    if( gblIsLive == false) {
+      PackageInfo.fromPlatform()
+          .then((PackageInfo packageInfo) =>
+          buildNo = '${packageInfo.buildNumber}'
+          );
+    }
+
     _displayProcessingIndicator = true;
     waitAndThenHideProcessingIndicator();
   }
@@ -326,7 +334,7 @@ class _HomeState extends State<HomePage> {
 Widget _getLogo(){
   String txt = '';
   if( gblIsLive == false ) {
-    txt = 'Test';
+    txt = 'Test build $buildNo';
   }
 
  /* return Row(
@@ -361,7 +369,8 @@ Widget _getLogo(){
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
   }
   if( gblIsLive == false) {
-    list.add(Text(txt, style: gblTitleStyle));
+    TextStyle st = new TextStyle( color: gblTitleStyle.color  );
+    list.add(Text(txt, style: st, textScaleFactor: 0.75,));
   }
   return new Row( children: list   );
 }

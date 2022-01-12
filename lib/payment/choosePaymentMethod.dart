@@ -72,6 +72,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
+    gblPaymentMsg = null;
+    gblPayBtnDisabled = false;
+    gblPaySuccess = false;
     if (widget.isMmb != null) {
       isMmb = widget.isMmb;
     }
@@ -1266,6 +1269,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                                   ),
                                   TimerText(
                                     stopwatch: stopwatch,
+                                    onComplete:() {
+                                      setState(() {
+
+                                      });
+                                    }
+                                    ,
                                   )
                                 ],
                               ),
@@ -1546,36 +1555,47 @@ List<Widget> getPayOptions(String amount, String cur) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
-            if (provider.paymentType == 'ExternalPayment') {
-              gblCurrentRloc = widget.pnrModel.pNR.rLOC;
-              gblPaymentMsg = null;
-              if( provider.fields == null || provider.fields.paymentFields == null || provider.fields.paymentFields.length == 0 ) {
-                if(  widget.mmbAction == 'CHANGEFLT') {
-                  await changeFlt(widget.pnrModel, widget.mmbBooking, context);
-                }
+            if ( gblPayBtnDisabled == false ) {
+              logit('pay pressed');
+              gblPayBtnDisabled = true;
+              setState(() {
 
-                Navigator.push(
-                    context, SlideTopRoute(page: WebPayPage(
-                  provider.paymentSchemeName, newBooking: widget.newBooking,
-                  pnrModel: widget.pnrModel,
-                  isMmb: widget.isMmb,)));
+              });
+
+              if (provider.paymentType == 'ExternalPayment') {
+                gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+                gblPaymentMsg = null;
+                if (provider.fields == null ||
+                    provider.fields.paymentFields == null ||
+                    provider.fields.paymentFields.length == 0) {
+                  if (widget.mmbAction == 'CHANGEFLT') {
+                    await changeFlt(
+                        widget.pnrModel, widget.mmbBooking, context);
+                  }
+
+                  Navigator.push(
+                      context, SlideTopRoute(page: WebPayPage(
+                    provider.paymentSchemeName, newBooking: widget.newBooking,
+                    pnrModel: widget.pnrModel,
+                    isMmb: widget.isMmb,)));
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) =>
+                      ProviderFieldsPage(pnrModel: widget.pnrModel,
+                        provider: provider,
+                        isMmb: isMmb,
+                        mmbBooking: widget.mmbBooking,
+                        mmbAction: widget.mmbAction,)));
+                }
               } else {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
-                    ProviderFieldsPage(pnrModel: widget.pnrModel,
-                      provider: provider,
+                    CreditCardPage(pnrModel: widget.pnrModel,
+                      session: session,
                       isMmb: isMmb,
                       mmbBooking: widget.mmbBooking,
                       mmbAction: widget.mmbAction,)));
               }
-            } else {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) =>
-                  CreditCardPage(pnrModel: widget.pnrModel,
-                    session: session,
-                    isMmb: isMmb,
-                    mmbBooking: widget.mmbBooking,
-                    mmbAction: widget.mmbAction,)));
             }
           },
           child: Column(
@@ -1604,7 +1624,6 @@ List<Widget> getPayOptions(String amount, String cur) {
           startTimer();
         },);
     }
-    return Column(children: paymentButtons);
   }
 
 
@@ -1697,6 +1716,13 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
 
     } else {
+      if(gblPayBtnDisabled ) {
+        text = "Completing Payment...";
+       list.add( new Transform.scale(
+          scale: 0.5,
+          child: CircularProgressIndicator(),
+        ));
+      }
       list.add(TrText( text,
       style: new TextStyle(color: Colors.black),
       ));
@@ -1719,8 +1745,9 @@ List<Widget> getPayOptions(String amount, String cur) {
 
 
 class TimerText extends StatefulWidget {
-  TimerText({this.stopwatch});
+  TimerText({this.stopwatch, this.onComplete });
   final Stopwatch stopwatch;
+  void Function() onComplete;
   final double timerStart = 600000;
 
   TimerTextState createState() => new TimerTextState(stopwatch: stopwatch);
@@ -1729,16 +1756,19 @@ class TimerText extends StatefulWidget {
 class TimerTextState extends State<TimerText> {
   Timer timer;
   final Stopwatch stopwatch;
+  void Function() onComplete;
 
-  TimerTextState({this.stopwatch}) {
+  TimerTextState({this.stopwatch, this.onComplete}) {
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
-
+      gblPayBtnDisabled = false;
+      gblPaymentMsg = 'Payment Timeout';
       print('expired 2');
       timer.cancel();
       Navigator.of(context).pop();
+      onComplete();
       return;
     }
     if (stopwatch.isRunning) {

@@ -14,7 +14,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'QI'
+String gblBuildFlavor = 'T6'
     '';
 String gblError = '';
 String gblErrorTitle = '';
@@ -33,6 +33,7 @@ int gblFqtvBalance = 0;
 bool gblUseCache = true;
 bool gblIsIos = false;
 bool gblIsLive = false;
+bool gblPaySuccess = false;
 bool gblInReview = false;
 bool gblTimerExpired = false;
 bool gblPayBtnDisabled = false;
