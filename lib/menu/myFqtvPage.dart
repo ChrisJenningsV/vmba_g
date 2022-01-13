@@ -684,6 +684,7 @@ Widget _getTrans() {
         _error = resp.message;
         _actionCompleted();
         gblPassengerDetail.fqtvPassword = _newPasswordEditingController.text;
+        fqtvPass = _newPasswordEditingController.text;
         // save new password in profile
         Repository.get().getNamedUserProfile('PAX1').then((profile) {
           if (profile != null) {
