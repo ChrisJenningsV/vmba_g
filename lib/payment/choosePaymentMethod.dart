@@ -1476,6 +1476,8 @@ List<Widget> getPayOptions(String amount, String cur) {
         list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
           pnrModel: widget.pnrModel,
           onComplete: (PnrModel pnrModel) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            logit('On Complete products');
             widget.pnrModel = pnrModel;
             pnrModel = pnrModel;
             setState(() {
@@ -1617,6 +1619,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         newBooking: widget.newBooking,
         pnrModel: widget.pnrModel,
         onComplete: (PnrModel pnrModel) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           logit('Load Providers onComplete');
           widget.pnrModel = pnrModel;
           pnrModel = pnrModel;

@@ -83,7 +83,7 @@ void configT6() {
       wantMaterialControls: true,
       wantCitySwap: true,
       wantPageImages: true,
-    wantProducts: false,
+    wantProducts: true,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantCountry: true,

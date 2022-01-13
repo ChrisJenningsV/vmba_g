@@ -51,7 +51,8 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    logit('dataLoader build (${widget.dataType.toString()}) ');
+
     if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
       return TrText(_displayProcessingText + _error,style: TextStyle(fontSize: 14.0));
     } else if (gblNoNetwork == true) {
@@ -71,7 +72,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         ),
       );
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
       return Text(translate('Loading') + ' ' + translate(_dataName));
     } else {
@@ -106,7 +107,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           'Videcom_ApiKey': gblSettings.apiKey
         },
         body: _msg);
-
+    logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       _displayProcessingIndicator = false;
