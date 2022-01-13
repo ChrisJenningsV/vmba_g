@@ -216,6 +216,9 @@ class Repository {
     //get values from webservice
   // cj - test returning live vals
     await getSettingsFromApi();
+    if(gblNoNetwork == true){
+      await getSettingsFromApi();
+    }
     //Save GobalSetting to DB
     //await database.saveAllSettings(gbl_settings);
     return true;
@@ -576,7 +579,7 @@ class Repository {
       gblErrorTitle = 'Login-';
       gblError = e.toString();
       gblNoNetwork = true;
-      rethrow;
+      //rethrow;
     }
   }
 
