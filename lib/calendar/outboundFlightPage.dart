@@ -48,7 +48,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     });
   }
 
-  String getAvCommand() {
+  String getAvCommand(bool bRaw) {
     var buffer = new StringBuffer();
     //String _salesCity = 'ABZ';
     //String _equalsSafeString = '%3D';
@@ -62,7 +62,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     buffer.write(this.widget.newBooking.departure);
     buffer.write(this.widget.newBooking.arrival);
     // [
-    buffer.write('%5B');
+    if( bRaw ) {
+      buffer.write('[');
+    } else {
+      buffer.write('%5B');
+    }
     //SalesCity=ABZ
     buffer.write('SalesCity=${this.widget.newBooking.departure}');
     //&Vars=True
@@ -122,6 +126,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
     String msg =buffer.toString();
     logit('getAvCommand: ' + msg);
+    if( bRaw) {
+      return msg;
+    }
     return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')
@@ -132,7 +139,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvCommand()).then((rs) {
+    Repository.get().getAv(getAvCommand(false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();
@@ -701,7 +708,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
     if (item[0].fltav.pri.length > 3) {
       return Wrap(
-          spacing: 8.0, // gap between adjacent chips
+          spacing: 8.0, //gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: new List.generate(
               item[0].fltav.pri.length,

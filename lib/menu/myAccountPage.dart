@@ -944,7 +944,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
 //ZADSVERIFY/ADS4000000153501/7978
 
-    http.Response response = await http
+  /*  http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
         .catchError((resp) {
@@ -958,11 +958,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
-    }
+    }*/
 
+    String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
-      adsJson = response.body
+      adsJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');

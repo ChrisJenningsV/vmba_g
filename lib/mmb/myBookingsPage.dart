@@ -867,7 +867,8 @@ String _error = '';
   }
 
   Future<String> loadBooking(String rloc) async {
-    http.Response response = await http
+
+   /* http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x'"))
         .catchError((resp) {});
@@ -879,19 +880,19 @@ String _error = '';
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
-    }
-
+    }*/
+    String data = await runVrsCommand('*$rloc~x');
     String pnrJson;
     //Map pnrMap;
     // await for (String pnrRaw in resStream) {
 
-    if (response.body.contains('ERROR - RECORD NOT FOUND -')) {
+    if (data.contains('ERROR - RECORD NOT FOUND -')) {
       _error = 'Please check your details';
       //_pnrLoaded();
       showAlertDialog(context, 'Alert', _error);
 
     } else {
-      pnrJson = response.body
+      pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -916,7 +917,7 @@ String _error = '';
     //AATMRA
     //AATKK7
 
-    http.Response response = await http
+  /*  http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$_rloc~x'"))
         .catchError((resp) {});
@@ -928,20 +929,22 @@ String _error = '';
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
-    }
+    }*/
+
+    String data = await runVrsCommand('*$_rloc~x');
 
     String pnrJson;
     Map pnrMap;
     // await for (String pnrRaw in resStream) {
 
-    if (response.body.contains('ERROR - RECORD NOT FOUND -')) {
+    if (data.contains('ERROR - RECORD NOT FOUND -')) {
       _error = 'Please check your details';
       _pnrLoaded();
       //_showDialog();
       showAlertDialog(context, 'Alert', _error);
 
     } else {
-      pnrJson = response.body
+      pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -989,6 +992,7 @@ String _error = '';
     //AATMRA
     //AATKK7
 
+/*
 
     http.Response response = await http
         .get(Uri.parse(
@@ -1003,11 +1007,12 @@ String _error = '';
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
     }
-
+*/
+    String data = await runVrsCommand('DSP/$_rloc');
     String apisStatusJson;
     //Map map;
     // await for (String pnrRaw in resStream) {
-    apisStatusJson = response.body
+    apisStatusJson = data
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '')

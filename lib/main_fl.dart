@@ -134,11 +134,15 @@ void configFL() {
     apiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     creditCardProvider: 'videcard',
 
-    testXmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+
+      testPayPage: 'https://customertest.videcom.com/airleap/VARS/Public/MobilePaymentStart.aspx',
+
+    testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/airleap/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     //testPayPage: 'https://customertest.videcom.com/airleap/VARS/Public/MobilePaymentStart.aspx',
-    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+   // testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
     testCreditCardProvider: 'videcard',
 

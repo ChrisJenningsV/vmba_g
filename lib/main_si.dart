@@ -113,10 +113,10 @@ void configSI() {
     wantNewEditPax: true,
     wantMaterialControls: true,
     wantCitySwap: true,
-    wantPageImages: true,
+    wantPageImages: false,
     gblServerFiles: 'https://customertest.videcom.com/blueislands/AppFiles',
     pageImageMap: '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "happypax"}',
-    wantClassBandImages: true,
+    wantClassBandImages: false,
     defaultCountryCode: 'GB',
 
 

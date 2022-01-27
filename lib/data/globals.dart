@@ -14,7 +14,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'T6'
+String gblBuildFlavor = 'LM'
     '';
 String gblError = '';
 String gblErrorTitle = '';
@@ -52,12 +52,14 @@ Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
+bool  gblUseWebApiforVrs = true;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
 enum VrsCmdType {bookSeats, loadSeatplan}
 enum LoadState { none, loading, loaded, loadFailed }
 enum VrsCmdState { none, loading, loaded, loadFailed }
 enum BookingState { none, newBooking, changeSeat, bookSeat }
+enum PaymentState { none, start, needCheck, success, declined }
 
 LoadState gblSettingsState = LoadState.none;
 LoadState gblRoutesState = LoadState.none;
@@ -66,6 +68,7 @@ LoadState gblProductsState = LoadState.none;
 LoadState gblProvidersState = LoadState.none;
 LoadState gblLanguageState = LoadState.none;
 BookingState gblBookingState = BookingState.none;
+PaymentState gblPaymentState = PaymentState.none;
 
 VrsCmdState gblLoadSeatState = VrsCmdState.none;
 VrsCmdState gblBookSeatState = VrsCmdState.none;

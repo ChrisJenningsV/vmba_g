@@ -195,7 +195,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd += addFareStore(true);
     cmd += '*r~x';
 //    cmd += 'fg^fs1^*r~x';
-    logit('buildCmd: ' + cmd);
+    logit('getFareQuote: ' + cmd);
     return cmd;
   }
 

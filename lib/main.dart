@@ -132,14 +132,14 @@ bool bFirstTime = true;
    // Locale myLocale = Localizations.localeOf(context);
     bFirstTime = false;
     if(gblIsLive == true) {
-      gblSettings.payUrl = gblSettings.livePayUrl;
+      //gblSettings.payUrl = gblSettings.livePayUrl;
       gblSettings.payPage = gblSettings.livePayPage;
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
       gblSettings.apiUrl = gblSettings.liveApiUrl;
       gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
     } else {
-      gblSettings.payUrl = gblSettings.testPayUrl;
+     // gblSettings.payUrl = gblSettings.testPayUrl;
       gblSettings.payPage = gblSettings.testPayPage;
       gblSettings.xmlUrl = gblSettings.testXmlUrl;
       gblSettings.apisUrl = gblSettings.testApisUrl;
@@ -211,7 +211,7 @@ bool bFirstTime = true;
               ads: false,
             ),
         '/MyBookingsPage': (BuildContext context) => new MyBookingsPage(),
-        '/AddBookingPage': (BuildContext context) => new AddBooking(),
+        '/AddBookingPage': (BuildContext context) => new  MyBookingsPage(), //AddBooking(),
         '/AdsFlightSearchPage': (BuildContext context) => new FlightSearchPage(
                        ads: true,
                      ),

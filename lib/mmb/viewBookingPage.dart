@@ -6,6 +6,7 @@ import 'dart:math' as math;
 import 'package:vmba/mmb/widgets/datepicker.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
 import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
+import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'dart:convert';
@@ -233,6 +234,14 @@ class _CheckinBoardingPassesWidgetState
               padding: const EdgeInsets.all(8.0),
               child: TrText(
                 'Sorry your booking can\'t be loaded',
+                style: TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.rloc,
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
@@ -926,6 +935,58 @@ class _CheckinBoardingPassesWidgetState
             }
 
           }
+
+          // any outstanding amount ??
+          var amount = pnr.pNR.basket.outstanding.amount;
+          if( amount == null || amount.isEmpty ) {
+            amount = '0';
+          }
+          if( int.parse(amount) > 0 ) {
+            return new TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChoosePaymenMethodWidget(
+                          mmbBooking: mmbBooking,
+                          pnrModel: pnr,
+                          isMmb: true,
+                          mmbAction: 'PAYOUTSTANDING',
+                          mmbCmd: '',
+                        )));
+              },
+              style: TextButton.styleFrom(
+                  side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                  primary: gblSystemColors.textButtonTextColor),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    translate('Pay') + ' ' + formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(amount)) + ' ' + translate('Outstanding'),
+                    style: TextStyle(
+                        color: gblSystemColors
+                            .textButtonTextColor),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5.0),
+                  ),
+                  Icon(
+                    //Icons.airline_seat_recline_normal,
+                    Icons.done,
+                    size: 20.0,
+                    color:
+                    gblSystemColors.textButtonTextColor,
+                  ),
+                  Text(
+                    '',
+                    style: TextStyle(
+                        color: gblSystemColors
+                            .textButtonTextColor),
+                  )
+                ],
+              ),
+            );
+          }
+
           //Checkin Button
           return new TextButton(
             onPressed: () {
