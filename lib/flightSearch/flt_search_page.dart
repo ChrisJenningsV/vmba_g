@@ -31,6 +31,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     booking = new NewBooking();
     booking.currency = gblSettings.currency;
     adsTermsAccepted = false;
+    gblCurrentRloc = null;
 
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&

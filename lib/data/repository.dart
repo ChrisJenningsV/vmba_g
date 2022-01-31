@@ -397,6 +397,9 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
+                  case 'disableBookings':
+                    gblSettings.disableBookings = parseBool(item['value']);
+                    break;
 
                   case 'InReview':
                     gblInReview = parseBool(item['value']);
@@ -1332,7 +1335,13 @@ class FareRule {
 Future<String> runVrsCommand(String cmd) async {
   if( gblUseWebApiforVrs) {
 
-    String msg =  json.encode(VrsApiRequest(gblSession, cmd, gblSettings.xmlToken.replaceFirst('token=', ''), vrsGuid: gblSettings.vrsGuid)); // '{VrsApiRequest: ' + + '}' ;
+    String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+        gblSettings.xmlToken.replaceFirst('token=', ''),
+        vrsGuid: gblSettings.vrsGuid,
+        notifyToken: gblNotifyToken,
+        rloc: gblCurrentRloc,
+        phoneId: gblDeviceId
+     )); // '{VrsApiRequest: ' + + '}' ;
 
     http.Response response = await http
         .get(Uri.parse(
@@ -1363,7 +1372,11 @@ Future<String> runVrsCommand(String cmd) async {
       //return new ParsedResponse(noFlights, null);
     }
     if (response.body.contains('ERROR')) {
-      throw response.body;
+      Map map = jsonDecode(response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''));
+      throw map["errorMsg"];
       //return new ParsedResponse(0, null, error: response.body);
     }
 

@@ -9,12 +9,15 @@ class VrsApiRequest extends Session {
   String appFile;
   String token;
   String vrsGuid;
+  String phoneId;
+  String notifyToken;
+  String rloc;
 
   VrsApiRequest(
       Session session,
       this.cmd,
       this.token,
-  {this.brandId, this.appFile, this.vrsGuid}
+  {this.brandId, this.appFile, this.vrsGuid, this.phoneId, this.rloc, this.notifyToken}
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
   Map toJson() {
@@ -27,6 +30,9 @@ class VrsApiRequest extends Session {
     map['Token'] = token;
     map['appFile'] = appFile;
     map['vrsGuid'] = vrsGuid;
+    map['notifyToken'] = notifyToken;
+    map['phoneId'] = phoneId;
+    map['rloc'] = rloc;
     return map;
   }
 }

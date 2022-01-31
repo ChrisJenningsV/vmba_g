@@ -231,6 +231,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   Future completeBooking() async {
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
+    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
     _sendVRSCommand(json.encode(
         RunVRSCommand(session, msg).toJson()))
@@ -274,6 +275,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Future makePayment() async {
     String msg = '';
     http.Response response;
+    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     setState(() {
       //_displayProcessingText = 'Processing your payment...';
       //_displayProcessingIndicator = true;

@@ -98,6 +98,7 @@ class Settings {
   bool wantRefund;
   bool wantNewPayment;
   bool bpShowAddPassToWalletButton;
+  bool disableBookings;
 
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -218,6 +219,7 @@ bool bpShowFastTrack;
     this.wantRefund = false,
     this.wantNewPayment = false,
     this.youthIsAdult = false,
+    this.disableBookings = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

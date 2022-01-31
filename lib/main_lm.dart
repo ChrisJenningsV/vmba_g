@@ -45,7 +45,7 @@ void configLM() {
 
   gblAppTitle = 'loganair';
   gblBuildFlavor = 'LM';
-  gblCurrentRloc = 'ZZZDJB';
+  gblCurrentRloc = '';
 
   gblSettings = Settings (
 //    latestBuildiOS: '1.0.5',
@@ -112,12 +112,12 @@ void configLM() {
 
  */
 
-//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
-   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+//   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
-//    testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
- ////   testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+ //// old one   testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
@@ -141,6 +141,7 @@ void configLM() {
   wantRefund: true,
   wantNewPayment: true,
   wantCountry: false,
+//  disableBookings: true,
 
   wantFQTVNumber: true,
   apiKey: '93a9626c78514c2baab494f4f6e0c197',

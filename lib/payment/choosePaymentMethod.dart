@@ -913,10 +913,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         return null;
       }
     } catch (e) {
-      _error = data
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', ''); // 'Please
+      _error = e.toString();
            _dataLoaded();
       _showDialog();
       return null;
@@ -967,6 +964,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     String msg = '*${widget.mmbBooking.rloc}^';
     msg += nostop;
     msg += 'EZV*[E][ZWEB]^EZT*R~x';
+    gblCurrentRloc = widget.mmbBooking.rloc;
 
   /*  response = await http
         .get(Uri.parse(

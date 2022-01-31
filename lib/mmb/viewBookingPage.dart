@@ -282,6 +282,7 @@ class _CheckinBoardingPassesWidgetState
     });
 
     PnrModel pnr;
+    gblCurrentRloc = widget.rloc;
     Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
       if( pnrDb != null ) {
         if( pnrDb.success) {

@@ -416,7 +416,7 @@ Widget _getLogo(){
   List <Widget> _getButtons(BuildContext context, var buttonShape, var buttonHeight) {
     List <Widget> list = [];
 
-    if (gblNoNetwork == false) {
+    if (gblNoNetwork == false && gblSettings.disableBookings == false) {
       list.add(Row(
         children: <Widget>[
           Expanded(
@@ -462,7 +462,7 @@ Widget _getLogo(){
       ));
     };
 
-    if( gblBuildFlavor == 'LM' ) {
+    if( gblBuildFlavor == 'LM' && gblNoNetwork == false && gblSettings.disableBookings == false ) {
       list.add(Row(
         children: <Widget>[
           Expanded(

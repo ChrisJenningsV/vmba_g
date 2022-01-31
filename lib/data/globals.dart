@@ -27,6 +27,8 @@ String gblOrigin;
 String gblPayable = '';
 String gblCurrentRloc;
 String gblPaymentMsg;
+String gblNotifyToken;
+String gblDeviceId;
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
