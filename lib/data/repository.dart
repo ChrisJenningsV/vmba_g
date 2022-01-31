@@ -18,14 +18,17 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/vrsRequest.dart';
+
 //import 'package:flutter/services.dart' show rootBundle;
 
 /// A class similar to http.Response but instead of a String describing the body
 /// it already contains the parsed Dart-Object
 class ParsedResponse<T> {
-  ParsedResponse(this.statusCode, this.body);
+  ParsedResponse(this.statusCode, this.body, {this.error});
   final int statusCode;
   final T body;
+  final String error;
 
   bool isOk() {
     return statusCode >= 200 && statusCode < 300;
@@ -36,6 +39,9 @@ class ParsedResponse<T> {
     }
     if (statusCode == noFlights) {
       return "No flights for these cities and dates";
+    }
+    if( error != null && error.isNotEmpty){
+      return error;
     }
     return "Unknown error";
   }
@@ -60,6 +66,7 @@ class Repository {
   Future init() async {
     return await database.init();
   }
+/*
 
   Future<ParsedResponse<List<City>>> initSettings() async {
     http.Response response = await http
@@ -92,6 +99,7 @@ class Repository {
     return new ParsedResponse(
         response.statusCode, []..addAll(networkCities.values));
   }
+*/
 
     initFqtv() async {
     if( gblSettings.wantFQTV == false ){
@@ -244,8 +252,10 @@ class Repository {
 */
   Future getSettingsFromApi() async {
     var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
-    Map<String, String>       headers = {'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey};
+    Map<String, String>       headers = {
+        'Content-Type': 'application/json',
+        'Videcom_ApiKey': gblSettings.apiKey,
+        'VARS_SessionId': 'TestTest'};
 
 
     if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty) {
@@ -267,15 +277,36 @@ class Repository {
 
     try {
       logit('getSettingsFromApi - login');
+      http.Response response ;
 
-      final http.Response response = await http.post(
-          Uri.parse(gblSettings.apiUrl + "/login"),
-          headers: headers,
-          //       headers: {'Content-Type': 'application/json'},
-          body: JsonEncoder().convert(body));
+      if( gblUseWebApiforVrs) {
+        if( gblSession == null ) gblSession = new Session('0', '', '0');
+        String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json', vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
 
+
+        response = await http.get(
+            Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
+             );
+
+      } else {
+        response = await http.post(
+            Uri.parse(gblSettings.apiUrl + "/login"),
+            headers: headers,
+            body: JsonEncoder().convert(body));
+      }
       if (response.statusCode == 200) {
-        Map map = json.decode(response.body);
+        String data = response.body;
+        if( gblUseWebApiforVrs) {
+            data = data
+                .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                .replaceAll('<string xmlns="http://videcom.com/">', '')
+                .replaceAll('</string>', '');
+
+//            VrsApiResponse rs = VrsApiResponse.fromJson(map);
+  //          data = rs.data;
+        }
+
+        Map map = json.decode(data);
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
@@ -283,7 +314,14 @@ class Repository {
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
             gblLangFileModTime = langFileModifyString;
           }
-          gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+
+          if( gblUseWebApiforVrs) {
+            gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+            logit('Server IP ${map['serverIP']}');
+          } else {
+            gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+          }
+          //
 
           List <dynamic> settingsJson;
           if (settingsString != null && settingsString.isNotEmpty) {
@@ -359,6 +397,9 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
+                  case 'disableBookings':
+                    gblSettings.disableBookings = parseBool(item['value']);
+                    break;
 
                   case 'InReview':
                     gblInReview = parseBool(item['value']);
@@ -488,6 +529,12 @@ class Repository {
                   case 'stopUrl':
                     gblSettings.stopUrl = item['value'];
                     break;
+                  case 'stopTitle':
+                    gblSettings.stopTitle =item['value'];
+                    break;
+                  case 'action':
+                    gblAction = item['value'];
+                    break;
                 /*
                   EMAILS
                    */
@@ -572,6 +619,8 @@ class Repository {
         }
       } else {
         logit('login - status=${response.statusCode}');
+        gblErrorTitle = 'Login-';
+        gblError = response.statusCode.toString();
       }
     } catch (e) {
       logit('login - catch error');
@@ -703,7 +752,7 @@ class Repository {
 
   Future<BoardingPass> getVRSMobileBP(String cmd) async {
     //await database.updateBoardingPass(boardingPass);
-    http.Response response = await http
+   /* http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
         .catchError((resp) {});
@@ -720,6 +769,13 @@ class Repository {
     String pnrJson;
 
     pnrJson = response.body
+        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+        .replaceAll('<string xmlns="http://videcom.com/">', '')
+        .replaceAll('</string>', '');*/
+
+    String data = await runVrsCommand(cmd);
+    String pnrJson;
+    pnrJson = data
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '');
@@ -822,7 +878,9 @@ class Repository {
 
 
     Future<PnrDBCopy> fetchPnr(String rloc) async {
-    http.Response response = await http
+
+
+ /*   http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x"))
         .catchError((resp) {});
@@ -842,7 +900,14 @@ class Repository {
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '');
+*/
+      String data = await runVrsCommand('*$rloc~x');
+      String pnrJson;
 
+      pnrJson = data
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
     Map map = json.decode(pnrJson);
     print('Fetch PNR');
     PnrModel pnrModel = new PnrModel.fromJson(map);
@@ -875,6 +940,8 @@ class Repository {
   }
 
   Future<DatabaseRecord> fetchApisStatus(String rloc) async {
+
+ /*
     http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=DSP/$rloc'"))
@@ -887,11 +954,12 @@ class Repository {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       // return new ParsedResponse(response.statusCode, []);
-    }
+    }*/
 
+    String data = await runVrsCommand('DSP/$rloc');
     String apisStatusJson;
 
-    apisStatusJson = response.body
+    apisStatusJson = data
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '')
@@ -961,63 +1029,129 @@ class Repository {
     return new ParsedResponse(response.statusCode, null);
   }
 
-  Future<ParsedResponse<AvailabilityModel>> getAv(String avCmd) async {
-    AvailabilityModel objAv = AvailabilityModel();
-    http.Response response = await http
+  /*Future<http.Response> runVrsCommand(String cmd) async {
+    if( useWebApiforVrs) {
+      String msg = json.encode(RunVRSCommand(gblSession, cmd));
+
+      final http.Response response = await http.post(
+          Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
+          headers: {'Content-Type': 'application/json',
+            'Videcom_ApiKey': gblSettings.apiKey
+          },
+          body: msg);
+      return response;
+    } else {
+      http.Response response = await http
         .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$avCmd"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
         .catchError((resp) {});
-    if (response == null) {
-      return new ParsedResponse(noInterent, null);
+    return response;
     }
 
-    //If there was an error return null
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-      return new ParsedResponse(response.statusCode, null);
-    }
-    if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
-      return new ParsedResponse(noFlights, null);
-    }
-    if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-      Map map = jsonDecode(response.body
+
+  }*/
+
+
+  Future<ParsedResponse<AvailabilityModel>> getAv(String avCmd) async {
+    AvailabilityModel objAv = AvailabilityModel();
+    if(gblUseWebApiforVrs) {
+      String data = await runVrsCommand(avCmd);
+      Map map    = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
 
       objAv = new AvailabilityModel.fromJson(map);
+      return new ParsedResponse(200, objAv);
+    } else {
+      String msg = json.encode(RunVRSCommand(gblSession, avCmd));
+
+      final http.Response response = await http.post(
+          Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
+          headers: {'Content-Type': 'application/json',
+            'Videcom_ApiKey': gblSettings.apiKey
+          },
+          body: msg);
+
+/*
+    http.Response response = await http
+        .get(Uri.parse(
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$avCmd"))
+        .catchError((resp) {});
+*/
+      if (response == null) {
+        return new ParsedResponse(noInterent, null);
+      }
+
+      //If there was an error return null
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        logit('Availability error: ' + response.statusCode.toString() + ' ' +
+            response.reasonPhrase);
+        return new ParsedResponse(response.statusCode, null);
+      }
+      if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
+        return new ParsedResponse(noFlights, null);
+      }
+      if (response.body.contains('ERROR')) {
+        return new ParsedResponse(0, null, error: response.body);
+      }
+      if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
+        Map map    = jsonDecode(response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', ''));
+
+        objAv = new AvailabilityModel.fromJson(map);
+      }
+      return new ParsedResponse(response.statusCode, objAv);
     }
-    return new ParsedResponse(response.statusCode, objAv);
   }
 
   Future<ParsedResponse<PnrModel>> getFareQuote(String cmd) async {
     PnrModel pnrModel = PnrModel();
-    http.Response response = await http
+    if( gblUseWebApiforVrs) {
+      String data = await runVrsCommand(cmd);
+      if (!data.contains('<string xmlns="http://videcom.com/" />')) {
+        Map map = jsonDecode(data
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', ''));
+
+        pnrModel = new PnrModel.fromJson(map);
+      }
+      return new ParsedResponse(200, pnrModel);
+    } else {
+        http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
         .catchError((resp) {});
-    if (response == null) {
-      return new ParsedResponse(noInterent, null);
-    }
+      if (response == null) {
+        return new ParsedResponse(noInterent, null);
+      }
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      return new ParsedResponse(response.statusCode, null);
-    }
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return new ParsedResponse(response.statusCode, null);
+      }
 
-    if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-      Map map = jsonDecode(response.body
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', ''));
+      if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
+        Map map = jsonDecode(response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', ''));
 
-      pnrModel = new PnrModel.fromJson(map);
+        pnrModel = new PnrModel.fromJson(map);
+      }
+      return new ParsedResponse(response.statusCode, pnrModel);
     }
-    return new ParsedResponse(response.statusCode, pnrModel);
   }
 
   Future<ParsedResponse<Seatplan>> getSeatPlan(String seatPlanCmd) async {
     Seatplan seatplan = Seatplan();
-    http.Response response = await http
+
+    try {
+
+    String data = await runVrsCommand(seatPlanCmd);
+ /*   http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$seatPlanCmd"))
         .catchError((resp) {});
@@ -1029,15 +1163,27 @@ class Repository {
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return new ParsedResponse(response.statusCode, null);
     }
-    if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
+   if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
       Map map = jsonDecode(response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
 
       seatplan = new Seatplan.fromJson(map);
+    }    */
+    if (!data.contains('<string xmlns="http://videcom.com/" />')) {
+      Map map = jsonDecode(data
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''));
+
+      seatplan = new Seatplan.fromJson(map);
     }
-    return new ParsedResponse(response.statusCode, seatplan);
+    return new ParsedResponse(200, seatplan);
+    } catch (e) {
+      return new ParsedResponse(0, seatplan, error: e.toString());
+    }
+
   }
 
   Future<ParsedResponse<RoutesModel>> initRoutes() async {
@@ -1185,4 +1331,75 @@ class FareRule {
     data['FareRule'] = this.rule;
     return data;
   }
+}
+Future<String> runVrsCommand(String cmd) async {
+  if( gblUseWebApiforVrs) {
+
+    String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+        gblSettings.xmlToken.replaceFirst('token=', ''),
+        vrsGuid: gblSettings.vrsGuid,
+        notifyToken: gblNotifyToken,
+        rloc: gblCurrentRloc,
+        phoneId: gblDeviceId
+     )); // '{VrsApiRequest: ' + + '}' ;
+
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
+        .catchError((resp) {
+/*
+      var error = '';
+*/
+    });
+
+    if (response == null) {
+      throw 'No Internet';
+      //return new ParsedResponse(noInterent, null);
+    }
+
+    //If there was an error return null
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
+      throw 'Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+      //return new ParsedResponse(response.statusCode, null);
+    }
+
+
+
+
+    if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
+      throw 'no flights';
+      //return new ParsedResponse(noFlights, null);
+    }
+    if (response.body.contains('ERROR')) {
+      Map map = jsonDecode(response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''));
+      throw map["errorMsg"];
+      //return new ParsedResponse(0, null, error: response.body);
+    }
+
+    String jsn = response.body;
+    Map map = jsonDecode(response.body
+        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+        .replaceAll('<string xmlns="http://videcom.com/">', '')
+        .replaceAll('</string>', ''));
+
+    VrsApiResponse rs = VrsApiResponse.fromJson(map);
+    gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+    logit('Server IP ${map['serverIP']}');
+    if( rs.data == null ) {
+      throw 'no data returned';
+    }
+    return rs.data;
+  } else {
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
+        .catchError((resp) {});
+    return response.body;
+  }
+
+
 }

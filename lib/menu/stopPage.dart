@@ -8,7 +8,7 @@ class StopPageWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     if (gblSettings.stopUrl != null && gblSettings.stopUrl.isNotEmpty) {
       return Row(children: <Widget>[ Expanded(child: WebViewWidget(
-          title: 'App Suspended',
+          title: (gblSettings.stopTitle != null) ? gblSettings.stopTitle :'App Suspended',
           canNotClose: 'true',
           url: gblSettings.stopUrl))
       ]);

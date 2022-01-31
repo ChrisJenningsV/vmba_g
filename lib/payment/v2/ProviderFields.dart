@@ -106,6 +106,7 @@ class VInputFieldState extends State<VInputField> {
                 });
               }
               return Padding(
+
                   padding: padding,
                   child: new Theme(
                       data: theme,
@@ -114,6 +115,7 @@ class VInputFieldState extends State<VInputField> {
                         value: curIndex,
                         items: countrylist.countries.map((country )
                         => DropdownMenuItem(
+
                           child: addCountry(country), //ext(trimCountry(country.enShortName)),
                           value: index++,
                         )
@@ -143,11 +145,13 @@ class VInputFieldState extends State<VInputField> {
         });
   }
 
-  Widget addCountry(DbCountry country) {
+ /* Widget addCountry(DbCountry country) {
     Image img;
     String name = country.enShortName;
+    String name2 = '';
     if( name.length > 25) {
-      name = name.substring(0,24);
+      name2 = name.substring(30);
+      name = name.substring(0,30);
     }
     //return Text(name);
 
@@ -160,22 +164,42 @@ class VInputFieldState extends State<VInputField> {
     } catch(e) {
       logit(e);
     }
-    if (img == null ) {
+    List<Widget> list = [];
+    if (img != null ) {
+      list.add(img);
+    }
+    list.add(SizedBox(width: 10,));
+    if( name2 != '') {
+      list.add(Column(
+        children: [
+          new Text(name),
+          new Text(name2)
+        ],
+      ));
+    } else {
+      list.add(new Text(name));
+    }
+
+ *//*   if (img == null ) {
       return Row(children: <Widget>[
         SizedBox(width: 10,),
-        new Text(name)]);
+        Expanded( child: new Text(name))
+      ],
+      mainAxisAlignment: MainAxisAlignment.start,);
     } else {
       return Row(children: <Widget>[
         img,
         SizedBox(width: 10,),
-        new Text(name)]);
+        Expanded( child: new Text(name))
+      ],
+        mainAxisAlignment: MainAxisAlignment.start,
+      );*//*
 
-    }
-
+      return Row(children: list);
+      }
+*/
   }
 
-
-}
 
 enum FieldType { text, country, checkbox}
 

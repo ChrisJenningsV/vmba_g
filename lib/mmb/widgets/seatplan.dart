@@ -6,7 +6,6 @@ import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:vmba/mmb/widgets/seatPlanPassengers.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
@@ -115,8 +114,18 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   //   }
   // }
 
-  Future _sendVRSCommand(msg) async {
-    final http.Response response = await http.post(
+  Future _sendVRSCommand(String msg) async {
+    try {
+      if(msg.startsWith('{' )){
+        Map map = json.decode(msg);
+        msg = map['Commands'];
+      }
+      String data = await runVrsCommand(msg);
+      return data;
+    } catch(e){
+      return 'error ${e.toString()}';
+    }
+ /*   final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
         headers: {'Content-Type': 'application/json',
           'Videcom_ApiKey': gblSettings.apiKey
@@ -128,11 +137,23 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       return response.body.trim();
     } else {
       print('failed: $msg');
-    }
+    }*/
   }
 
   Future _sendVRSCommandList(msg) async {
-    final http.Response response = await http.post(
+    try {
+      if(msg.startsWith('{' )){
+        Map map = json.decode(msg);
+        msg = map['Commands'];
+      }
+
+      String data = await runVrsCommand(msg);
+      return data;
+    } catch(e){
+      return 'error ${e.toString()}';
+    }
+/*
+       final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
         headers: {'Content-Type': 'application/json',
           'Videcom_ApiKey': gblSettings.apiKey
@@ -145,6 +166,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       print('failed: $msg');
     }
+*/
   }
 
   Future _loadData(String seatPlanCmd) async {
@@ -233,8 +255,14 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       session = gblSession;
     }
-    String msg = json
-        .encode(RunVRSCommandList(session, cmd.toString().split('^')).toJson());
+    String msg;
+    if (gblUseWebApiforVrs) {
+      msg = cmd.toString();
+    } else {
+      msg = json
+          .encode(
+          RunVRSCommandList(session, cmd.toString().split('^')).toJson());
+    }
     logit(msg);
 
     _sendVRSCommandList(msg).then((result) {

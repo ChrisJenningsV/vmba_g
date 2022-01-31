@@ -98,6 +98,7 @@ class Settings {
   bool wantRefund;
   bool wantNewPayment;
   bool bpShowAddPassToWalletButton;
+  bool disableBookings;
 
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -110,6 +111,7 @@ class Settings {
   String paySuccessUrl;
   String payFailUrl;
   String stopUrl;
+  String stopTitle;
   String locale = 'en-EN';
   int bookingLeadTime = 60;
   bool webCheckinNoSeatCharge;
@@ -133,7 +135,7 @@ class Settings {
   String optUpdateMsg;
 
   String xmlUrl;
-  String payUrl;
+  //String payUrl;
   String payPage;
   String apisUrl;
   String apiUrl;
@@ -146,14 +148,14 @@ class Settings {
   String covidText;
 
 
-  String testPayUrl;
+  //String testPayUrl;
   String testPayPage;
   String testXmlUrl;
   String testApisUrl;
   String testApiUrl;
   String testCreditCardProvider;
 
-  String livePayUrl;
+  //String livePayUrl;
   String livePayPage;
   String liveXmlUrl;
   String liveApisUrl;
@@ -217,6 +219,7 @@ bool bpShowFastTrack;
     this.wantRefund = false,
     this.wantNewPayment = false,
     this.youthIsAdult = false,
+    this.disableBookings = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
@@ -240,7 +243,7 @@ bool bpShowFastTrack;
     this.androidAppId,
     this.latestBuildiOS,
     this.latestBuildAndroid,
-    this.payUrl,
+    //this.payUrl,
     this.payPage,
     this.xmlUrl,
     this.apisUrl,
@@ -275,14 +278,14 @@ bool bpShowFastTrack;
     this.optUpdateMsg,
     this.payTimeout = 10,
 
-    this.testPayUrl,
+    //this.testPayUrl,
     this.testPayPage,
     this.testXmlUrl,
     this.testApisUrl,
     this.testApiUrl,
     this.testCreditCardProvider,
 
-    this.livePayUrl,
+    //this.livePayUrl,
     this.livePayPage,
     this.liveXmlUrl,
     this.liveApisUrl,

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
@@ -41,12 +40,14 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
   num _stackToView = 1;
   Timer _timer;
+  bool _endDetected;
 
   @override void initState() {
     _timer = Timer(Duration(minutes : gblSettings.payTimeout), () {
       logit('Payment timed out');
       _timer.cancel();
       _timer = null;
+      _endDetected = false;
       gblPayBtnDisabled = false;
       gblPaymentMsg = 'Payment Timeout';
       //Navigator.pop(context, 'fail');
@@ -78,49 +79,28 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+        child:Scaffold(
       appBar: appBar(context,  'Payment Page', automaticallyImplyLeading: false,
           actions:<Widget> [ new IconButton(
       icon:  new Icon(Icons.close),
       onPressed: () async {
         if( gblPaySuccess == true ) {
+          gblPaymentState = PaymentState.success;
           print('payment success page close');
-          _successfulPayment();
+        //  _successfulPayment();
+          _gotoSuccessPage(widget.pnrModel);
           return NavigationDecision.prevent;
         } else {
           gblPayBtnDisabled = false;
+          gblPaymentState = PaymentState.needCheck;
           Navigator.pop(context);
         }
       },
     )]),
 
 
-/*
-      AppBar(
-        backgroundColor:
-        gblSystemColors.primaryHeaderColor,
-        title: TrText('Payment Page'),
-        automaticallyImplyLeading: false,
-
-        actions: (widget.canNotClose != null) ? <Widget>[Text(' ')] :  <Widget>[
-          IconButton(icon: Icon(Icons.close
-          ),
-            onPressed: () {
-              if( gblPaySuccess == true ) {
-                print('payment success page close');
-                _successfulPayment();
-                return NavigationDecision.prevent;
-              } else {
-                gblPayBtnDisabled = false;
-                Navigator.pop(context);
-              }
-            },
-          )
-        ],
-      ),
-*/
-      // We're using a Builder here so we have a context that is below the Scaffold
-      // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
         return IndexedStack(
           index: _stackToView,
@@ -140,6 +120,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
                   // FAILED
                   print('payment failed $request}');
                   gblPayBtnDisabled = false;
+                  gblPaymentState = PaymentState.declined;
                   if( request.url.contains('?')) {
                     String err = request.url.split('?')[1];
                     err = err.split('=')[1];
@@ -147,6 +128,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
                   } else {
                     gblPaymentMsg = 'Payment Declined';
                   }
+                  _endDetected = true;
                   //Navigator.pop(context, 'fail');
                   Navigator.pushReplacement(
                     context,
@@ -164,7 +146,9 @@ class _WebViewWidgetState extends State<WebPayPage> {
                 if (request.url.contains(gblSettings.paySuccessUrl)) {
                   // SUCCESS
                   print('payment success $request}');
-                  _successfulPayment();
+                  gblPaymentState = PaymentState.success;
+                  //_successfulPayment();
+                  _gotoSuccessPage(widget.pnrModel);
                   return NavigationDecision.prevent;
                 }
                 if (request.url.startsWith('https://www.youtube.com/')) {
@@ -201,9 +185,34 @@ class _WebViewWidgetState extends State<WebPayPage> {
         );
       }),
       //  floatingActionButton: favoriteButton(),
-    );
+    ));
   }
 
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new TrText('Are you sure?'),
+        content: new TrText('Do you want abandon your booking '),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+    gblPayBtnDisabled = false;
+    Navigator.of(context).pop(false);
+    } ,
+            child: new TrText('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              },
+            child: new TrText('Yes'),
+          ),
+        ],
+      ),
+    )) ?? false;
+  }
 /*
 
   Future<void> validateBooking() async {
@@ -232,6 +241,10 @@ class _WebViewWidgetState extends State<WebPayPage> {
     String provider = widget.provider.replaceFirst('3DS_', '');
     String action = 'NEWBOOKING';
     String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action';
+    if(gblSession != null) {
+      url += '&VARSSessionID=${gblSession.varsSessionId}';
+      logit('Session = ${gblSession.varsSessionId}');
+    }
 
     if( gblPayFormVals != null) {
       gblPayFormVals.forEach((key, value) {
@@ -245,9 +258,11 @@ class _WebViewWidgetState extends State<WebPayPage> {
   Future<void> _successfulPayment() async {
     logit('Load booking  $gblCurrentRloc');
 
-    http.Response response = await http
+
+    String data = await runVrsCommand('*$gblCurrentRloc~x');
+  /*  http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$gblCurrentRloc~x'"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$gblCurrentRloc~x"))
         .catchError((resp) {});
 
     if (response == null) {
@@ -261,11 +276,11 @@ class _WebViewWidgetState extends State<WebPayPage> {
       // error
       logit('Load booking network error ${response.statusCode}');
       return ;
-    }
+    }*/
 
     try {
       // Server Exception ?
-      String pnrJson = response.body
+      String pnrJson = data //response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -309,5 +324,22 @@ getArgs(PNR pNR) {
   }
   return args;
 }
+
+  _gotoSuccessPage(PnrModel pnrModel)
+  {
+    logit('go to success $_endDetected');
+
+    if(_endDetected != true) {
+      _endDetected = true;
+
+      _successfulPayment();
+/*
+      List<String> args =  getArgs(pnrModel.pNR);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+            '/CompletedPage', (Route<dynamic> route) => false,
+            arguments: args);
+*/
+    }
+  }
 }
 

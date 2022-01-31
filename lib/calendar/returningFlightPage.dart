@@ -48,7 +48,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         DateFormat('y-MM-dd').format(widget.newBooking.returnDate));
   }
 
-  String getAvReturnCommand() {
+  String getAvReturnCommand(bool bRaw) {
     var buffer = new StringBuffer();
     buffer.write('A');
     buffer
@@ -104,7 +104,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(this.widget.newBooking.departureDate)}]');
 
-
+    if(bRaw) {
+      return buffer.toString();
+    }
     return buffer
         .toString()
         .replaceAll('=', '%3D')
@@ -116,7 +118,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvReturnCommand()).then((rs) {
+    Repository.get().getAv(getAvReturnCommand(false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();

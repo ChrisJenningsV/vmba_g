@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
+import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
 
@@ -43,41 +44,29 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
   msg += '^FSM^E*R~X';
 
   logit(msg);
-  http.Response response = await http
+  String data = await runVrsCommand(msg);
+/*  http.Response response = await http
       .get(Uri.parse(
       "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
       .catchError((resp) {});
 
   if (response == null) {
-/*    setState(() {
-      _displayProcessingIndicator = false;
-    });
-    //showSnackBar(translate('Please, check your internet connection'));
-    noInternetSnackBar(context);
 
- */
     onError('Bad response from server');
     return null;
   }
 
   //If there was an error return an empty list
   if (response.statusCode < 200 || response.statusCode >= 300) {
-    /*
-    setState(() {
-      _displayProcessingIndicator = false;
-    });
-    noInternetSnackBar(context);
 
-     */
     onError('No iternet, try again later');
     return null;
-    // return new ParsedResponse(response.statusCode, []);
-  }
+  }*/
   try {
   //  bool flightsConfirmed = true;
-    if (response.body.contains('ERROR - ') ||
-        response.body.contains('ERROR:')) {
-      _error = response.body
+    if (data.contains('ERROR - ') ||
+        data.contains('ERROR:')) {
+      _error = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '')
@@ -91,7 +80,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       //_gotoPreviousPage();
       return;
     } else {
-      String pnrJson = response.body
+      String pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');

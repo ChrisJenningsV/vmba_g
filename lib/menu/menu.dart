@@ -50,7 +50,7 @@ class DrawerMenu extends StatelessWidget {
         },
       ));
 
-    if( gblNoNetwork == false ) {
+    if( gblNoNetwork == false && gblSettings.disableBookings == false ) {
       list.add(ListTile(
         dense: dense,
         title: _getMenuItem(Icons.flight_takeoff, 'Book a flight'),
@@ -64,7 +64,7 @@ class DrawerMenu extends StatelessWidget {
       ));
     }
 
-      if(  gblBuildFlavor == 'LM' ) {
+      if(  gblBuildFlavor == 'LM' && gblNoNetwork == false && gblSettings.disableBookings == false ) {
         list.add(ListTile(
           dense: dense,
           // contentPadding: EdgeInsets.zero,

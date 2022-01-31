@@ -89,7 +89,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     });
   }
 
-  String getAvCommand() {
+  String getAvCommand(bool bRaw) {
     //Intl.defaultLocale = 'en';
     var buffer = new StringBuffer();
     buffer.write('A');
@@ -111,7 +111,11 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         .itin
         .last
         .arrive);
-    buffer.write('%5B');
+    if(bRaw) {
+      buffer.write('[');
+    } else {
+      buffer.write('%5B');
+    }
     buffer.write(
         'SalesCity=${this.widget.pnr.pNR.itinerary.itin[widget.mmbBooking.journeyToChange - 1].depart}');
     buffer.write(',Vars=True');
@@ -182,6 +186,9 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
 
+    if( bRaw) {
+      return buffer.toString();
+    }
 
     //Intl.defaultLocale = gblLanguage;
     return buffer
@@ -195,7 +202,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvCommand()).then((rs) {
+    Repository.get().getAv(getAvCommand(false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -421,16 +422,16 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
   */
 
-    http.Response response = await http
+   /* http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
         .catchError((resp) {
       print(resp);
-    });
-
-    if (response.statusCode == 200) {
+    });*/
+    String data = await runVrsCommand(msg);
+    if (data == 200) {
       try {
-        String str = response.body
+        String str = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');

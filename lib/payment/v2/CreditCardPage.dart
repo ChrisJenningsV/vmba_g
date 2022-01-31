@@ -231,6 +231,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   Future completeBooking() async {
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
+    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
     _sendVRSCommand(json.encode(
         RunVRSCommand(session, msg).toJson()))
@@ -274,6 +275,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Future makePayment() async {
     String msg = '';
     http.Response response;
+    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     setState(() {
       //_displayProcessingText = 'Processing your payment...';
       //_displayProcessingIndicator = true;
@@ -375,7 +377,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       //msg += '~x';
       print(msg);
-      response = await http
+/*      response = await http
           .get(Uri.parse(
           "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
@@ -395,14 +397,15 @@ class _CreditCardPageState extends State<CreditCardPage> {
         //showSnackBar(translate('Please, check your internet connection'));
         noInternetSnackBar(context);
         return null;
-      }
+      }*/
+      String data = await runVrsCommand(msg);
 
       bool flightsConfirmed = true;
-      String _response = response.body
+      String _response = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
-      if (response.body.contains('ERROR - ') ||
+      if (data.contains('ERROR - ') ||
           !_response.trim().startsWith('{')) {
         _error = _response.replaceAll('ERROR - ', '').trim();
         _dataLoaded();
@@ -421,7 +424,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           flightsConfirmed = false;
           for (var i = 0; i < 10; i++) {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
-            response = await http
+            /*response = await http
                 .get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
@@ -439,11 +442,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
               setState(() {
                 //_displayProcessingIndicator = false;
               });
+
               //showSnackBar(translate('Please, check your internet connection'));
               noInternetSnackBar(context);
               return null;
-            }
-            if (response.body.contains('ERROR - ')) {
+            } */
+          String data = await runVrsCommand(msg);
+            if (data.contains('ERROR - ')) {
               _error = response.body
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -453,7 +458,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               _dataLoaded();
               return null;
             } else {
-              String pnrJson = response.body
+              String pnrJson = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
@@ -485,10 +490,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
           print('x' + flt.split('NN1')[0].substring(2));
           msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
         });
-        response = await http
+        /*response = await http
             .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-            .catchError((resp) {});
+            .catchError((resp) {});*/
+        String data = await runVrsCommand(msg);
         return null;
       }
 
@@ -546,7 +552,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       } catch(e) {
         print(e);
       }
-      response = await http
+     /* response = await http
           .get(Uri.parse(
           "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
@@ -568,11 +574,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
         //showSnackBar(translate('Please, check your internet connection'));
         noInternetSnackBar(context);
         return null;
-      }
+      }*/
+      data = await runVrsCommand(msg);
 
       String result = '';
       try {
-        result = response.body
+        result = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
@@ -758,11 +765,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
             '/' +
             pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
-//        http.Response reponse = await http
+/*
         await http.get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-            .catchError((resp) {});
+            .catchError((resp) {});*/
       }
+
+        String data = await runVrsCommand(msg);
     }
   }
 
@@ -773,7 +782,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     msg += getTicketingCmd();
 
     logit('ticketBooking: $msg');
-    response = await http
+    /*response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
@@ -795,10 +804,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
       //showSnackBar(translate('Please, check your internet connection'));
       noInternetSnackBar(context);
       return null;
-    }
+    }*/
+    String data = await runVrsCommand(msg);
     String pnrJson = '';
     try {
-       pnrJson = response.body
+      pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -817,15 +827,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .fetchApisStatus(this.pnrModel.pNR.rLOC)
           .then((_) => sendEmailConfirmation(pnrModel))
           .then((_) => getArgs(this.pnrModel.pNR))
-          .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
-          '/CompletedPage', (Route<dynamic> route) => false,
-          arguments: args
-        //[pnrModel.pNR.rLOC, result.toString()]
-      ));
+          .then((args) =>
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/CompletedPage', (Route<dynamic> route) => false,
+              arguments: args
+            //[pnrModel.pNR.rLOC, result.toString()]
+          ));
       //sendEmailConfirmation();
 
     } catch (e) {
-      if( pnrJson.isNotEmpty ) {
+      if (pnrJson.isNotEmpty) {
         _error = pnrJson;
       } else {
         _error = response.body; // 'Please check your details';

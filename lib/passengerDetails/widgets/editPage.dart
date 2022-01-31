@@ -9,6 +9,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 //import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
@@ -488,7 +489,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
 //ZADSVERIFY/ADS4000000153501/7978
 
-    http.Response response = await http
+    /*http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
         .catchError((resp) {});
@@ -501,10 +502,11 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
     }
-
+*/
+    String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
-      adsJson = response.body
+      adsJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');

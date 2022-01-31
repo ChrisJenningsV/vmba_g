@@ -34,7 +34,7 @@ Future<Session> login() async {
         Uri.parse(gblSettings.apiUrl + "/login"),
         headers: {
           'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
+          'Videcom_ApiKey': gblSettings.apiKey,
         },
         body: JsonEncoder().convert(body));
 
@@ -561,3 +561,69 @@ bool parseBool( Object str ){
   if( str == false) return false;
   return true;
 }
+Widget addCountry(DbCountry country) {
+  Image img;
+  String name = country.enShortName;
+  String name2 = '';
+  if( name.length > 30) {
+    // split on a space'
+    //name2 = name.substring(30);
+    //name = name.substring(0,30);
+    int  middle = 30; // (name.length / 2).round();
+    int before = name.lastIndexOf(' ', middle);
+    int after = name.indexOf(' ', middle + 1);
+
+    if (before == -1 || (after != -1 && middle - before >= after - middle)) {
+      middle = after;
+    } else {
+      middle = before;
+    }
+
+    name2 = name.substring(middle + 1);
+    name = name.substring(0, middle);
+  }
+  //return Text(name);
+
+  try {
+    img = Image.asset(
+      'icons/flags/png/${country.alpha2code.toLowerCase()}.png',
+      package: 'country_icons',
+      width: 20,
+      height: 20,);
+  } catch(e) {
+    logit(e);
+  }
+  List<Widget> list = [];
+  if (img != null ) {
+    list.add(img);
+  }
+  list.add(SizedBox(width: 10,));
+  if( name2 != '') {
+    list.add(Column(
+      children: [
+        new Text(name),
+        new Text(name2)
+      ],
+    ));
+  } else {
+    list.add(new Text(name));
+  }
+
+  /*   if (img == null ) {
+      return Row(children: <Widget>[
+        SizedBox(width: 10,),
+        Expanded( child: new Text(name))
+      ],
+      mainAxisAlignment: MainAxisAlignment.start,);
+    } else {
+      return Row(children: <Widget>[
+        img,
+        SizedBox(width: 10,),
+        Expanded( child: new Text(name))
+      ],
+        mainAxisAlignment: MainAxisAlignment.start,
+      );*/
+
+  return Row(children: list);
+}
+

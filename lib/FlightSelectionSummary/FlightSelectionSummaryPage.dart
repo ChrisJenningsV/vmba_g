@@ -62,6 +62,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildAddPaxCmd() {
     StringBuffer sb = new StringBuffer();
 
+    if( gblUseWebApiforVrs) {
+     sb.write('I^');
+    }
+
     for (var adults = 1;
         adults < widget.newBooking.passengers.adults + 1;
         adults++) {
@@ -195,7 +199,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd += addFareStore(true);
     cmd += '*r~x';
 //    cmd += 'fg^fs1^*r~x';
-    logit('buildCmd: ' + cmd);
+    logit('getFareQuote: ' + cmd);
     return cmd;
   }
 
@@ -229,8 +233,9 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         });
       }
     }).catchError((resp) {
+      logit(resp);
       if (resp is FormatException) {
-        String _error;
+        //String _error;
         FormatException ex = resp;
         print(ex.source.toString().trim());
         _error = ex.source.toString().trim();
@@ -256,6 +261,12 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         //   _loadingInProgress = false;
         //   _eVoucherNotValid = true;
         // });
+      }
+      else {
+        _error = resp;
+        _loadingInProgress = false;
+        _hasError = true;
+        setState(() {});
       }
     });
   }

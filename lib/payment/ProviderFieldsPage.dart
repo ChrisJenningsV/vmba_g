@@ -154,7 +154,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     List <Widget> list = [];
 
     widget.provider.fields.paymentFields.forEach((element) {
-      logit('Add field ${element.paymentFieldName}');
+   //   logit('Add field ${element.paymentFieldName}');
       FieldParams params = FieldParams();
       params.label = element.defaultLabel;
       params.maxLength = element.maxLen;
@@ -300,11 +300,13 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
             await changeFlt(widget.pnrModel, widget.mmbBooking, context);
           }
 
-          Navigator.push(
+          await Navigator.push(
               context, SlideTopRoute(page: WebPayPage(
             widget.provider.paymentSchemeName, newBooking: widget.newBooking,
             pnrModel: widget.pnrModel,
             isMmb: widget.isMmb,)));
+          setState(() { });
+
         } else {
           setState(() {
             _displayProcessingIndicator = false;
@@ -312,6 +314,12 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           //showSnackBar(translate('Please, check your internet connection'));
           noInternetSnackBar(context);
         }
+      });
+    } else {
+      gblPayBtnDisabled = false;
+      _displayProcessingIndicator = false;
+      setState(() {
+
       });
     }
   }

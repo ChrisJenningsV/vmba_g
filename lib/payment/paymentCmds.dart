@@ -9,6 +9,7 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
+import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
 
@@ -31,39 +32,37 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   cmd += addFg(mmbBooking.currency, true);
   cmd += addFareStore(true);
 
-  cmd += 'E*r~x';
-  http.Response response;
+  if( gblUseWebApiforVrs) {
+    cmd += '*r~x';
+  } else {
+    cmd += 'E*r~x';
+  }
+  String data = await runVrsCommand(cmd);
+
+ /* http.Response response;
   response = await http
       .get(Uri.parse(
       "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd'"))
-      .catchError((resp) {});
+      .catchError((resp) {});*/
 
-  if (response == null) {
-/*
-    setState(() {
-      //_displayProcessingIndicator = false;
-    });
-*/
-    noInternetSnackBar(context);
-    return null;
-  }
 
-  if (response.statusCode < 200 || response.statusCode >= 300) {
-/*
-    setState(() {
-      //_displayProcessingIndicator = false;
-    });
-*/
+ /* if (response.statusCode < 200 || response.statusCode >= 300) {
     noInternetSnackBar(context);
+    if (response == null) {
+      noInternetSnackBar(context);
+      return null;
+    }
     return null;
-  }
+  }*/
 }
 
 
 Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context) async {
   String msg = '';
   String _error = '';
+/*
   String nostop = '';
+*/
   http.Response response;
 /*
   setState(() {
@@ -226,7 +225,9 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       msg +=
       'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
       if (f.nostop == 'X') {
+/*
         nostop += ".${f.line}X^";
+*/
       }
     }
 

@@ -6,6 +6,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'dart:ui';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/repository.dart';
 
 class Constants{
   Constants._();
@@ -160,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future _checkAdsLogin() async {
-    http.Response response = await http
+ /*   http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings
             .xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController
@@ -176,10 +177,12 @@ class _LoginPageState extends State<LoginPage> {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
-    }
+    }*/
+    String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController
+        .text}/${_adsPinTextEditingController.text}');
     String adsJson;
     try {
-      adsJson = response.body
+      adsJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');

@@ -36,12 +36,14 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
   String _msg;
   String _url;
   String _error;
+  bool _fullLogging;
 
   @override void initState() {
     // TODO: implement initState
     super.initState();
     _displayProcessingIndicator = false;
     _displayFinalError = false;
+    _fullLogging = false;
     _displayProcessingText = '';
     _initData();
     _loadData();
@@ -51,7 +53,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    logit('dataLoader build (${widget.dataType.toString()}) ');
+    if(_fullLogging) logit('dataLoader build (${widget.dataType.toString()}) ');
 
     if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
       return TrText(_displayProcessingText + _error,style: TextStyle(fontSize: 14.0));
@@ -107,7 +109,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           'Videcom_ApiKey': gblSettings.apiKey
         },
         body: _msg);
-    logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
+    if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       _displayProcessingIndicator = false;
@@ -220,7 +222,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.providers:
         try {
           gblProviders = Providers.fromJson(data);
-          logit('loaded providers');
+          if(_fullLogging) logit('loaded providers');
         } catch(e) {
           logit(e.toString());
         }

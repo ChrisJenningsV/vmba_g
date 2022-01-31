@@ -72,9 +72,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
-    gblPaymentMsg = null;
+    //gblPaymentMsg = null;
     gblPayBtnDisabled = false;
     gblPaySuccess = false;
+    gblPaymentState = PaymentState.start;
     if (widget.isMmb != null) {
       isMmb = widget.isMmb;
     }
@@ -118,89 +119,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     });
   }
 
-  void makeMmbBooking() async {
-    String msg = "";
-    if (widget.isMmb) {
-  //    msg = '*${widget.mmbBooking.rloc}^';
-      msg = '*${widget.mmbBooking.rloc}^';
-      widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
-          .itin.reversed
-          .forEach((f) {
-        msg += 'X${f.line}^';
-        if (f.nostop == 'X') {
-          nostop += ".${f.line}X^";
-        }
-      });
-
-      widget.mmbBooking.newFlights.forEach((flt) {
-        print(flt);
-        msg += flt + '^';
-      });
-      msg += addFg(widget.mmbBooking.currency, true);
-      msg += addFareStore(false);
-     // msg += '^E*R~X';
-    }
-    if(msg.isNotEmpty) {
-//    String vrsCommandList =
-//        json.encode(RunVRSCommandList(session, msg.split('^')).toJson());
-    print(msg);
-//    sendVRSCommandList(vrsCommandList);
-
-      http.Response response = await http
-          .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-          .catchError((resp) {});
-
-      if (response == null) {
-        //return new ParsedResponse(NO_INTERNET, []);
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-        // return new ParsedResponse(response.statusCode, []);
-      }
-      try {
-        if (response.body.contains('ERROR - ') ||
-            response.body.contains('ERROR:')) {
-          _error = response.body
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '')
-              .replaceAll('ERROR - ', '')
-              .trim(); // 'Please check your details';
-        } else {
-          String pnrJson = response.body
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '');
-          logit(pnrJson);
-          setState(() {
-            _displayProcessingIndicator = false;
-          });
-        }
-
-      } catch(e) {
-        logit(e.toString());
-      }
-
-
-    }
-
-    //sendVRSCommand(
-    //  json.encode(JsonEncoder().convert(new RunVRSCommand(session, msg))));
-  }
 
   Future setCurrencyCode() async {
     try {
@@ -730,6 +648,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     //New code
     String msg = '';
+    String data;
     if( this.isMmb) {
       msg = '*${widget.mmbBooking.rloc}';
       widget.mmbBooking.newFlights.forEach((flt) {
@@ -740,12 +659,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
     msg += 'e*r~x';
 
-//End of new code
 
-    //String msg = buildCmd();
-    //msg += '*r~x';
-
-    http.Response response = await http
+  /*  http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
@@ -767,22 +682,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       //showSnackBar(translate('Please, check your internet connection'));
       noInternetSnackBar(context);
       return null;
-    }
+    }*/
 
     try {
-      // String result = response.body
-      //     .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-      //     .replaceAll('<string xmlns="http://videcom.com/">', '')
-      //     .replaceAll('</string>', '');
-
-      // if (result.trim().startsWith('OK Locator')) {
-
-      //has hosted flights?
-      //print('New segments booked');
+      data = await runVrsCommand(msg);
 
       bool flightsConfirmed = true;
-      if (response.body.contains('ERROR - ')) {
-        _error = response.body
+      if (data.contains('ERROR - ')) {
+        _error = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '')
@@ -798,8 +705,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         _dataLoaded();
         _showDialog();
         return null;
-      } else if (response.body.contains('ERROR:')) {
-        _error = response.body
+      } else if (data.contains('ERROR:')) {
+        _error = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '')
@@ -814,7 +721,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         _showDialog();
         return null;
       } else {
-        String pnrJson = response.body
+        String pnrJson = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
@@ -831,7 +738,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           flightsConfirmed = false;
           for (var i = 0; i < 4; i++) {
             msg = '*' + widget.pnrModel.pNR.rLOC + '~x';
-            response = await http
+            String data = await runVrsCommand(msg);
+ /*           response = await http
                 .get(Uri.parse(
                     "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
                 .catchError((resp) {});
@@ -853,8 +761,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               noInternetSnackBar(context);
               return null;
             }
-            if (response.body.contains('ERROR - ')) {
-              _error = response.body
+*/            if (data.contains('ERROR - ')) {
+              _error = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
@@ -863,7 +771,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               _dataLoaded();
               return null;
             } else {
-              String pnrJson = response.body
+              String pnrJson = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
@@ -896,11 +804,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           print('x' + flt.split('NN1')[0].substring(2));
           msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
         });
+        await runVrsCommand(msg);
+/*
         response = await http
             .get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});
-//[0]:"0SI2051Q28Sep20ABZBRSNN1/15001605(CAB=Y)[CB=Blue Flex]"
+*/
 
         return null;
       }
@@ -930,7 +840,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         msg += 'e*r~x';
         //msg += 'fg^fs1^e*r~x';
       }
-      response = await http
+      data = await runVrsCommand(msg);
+ /*     response = await http
           .get(Uri.parse(
               "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
           .catchError((resp) {});
@@ -952,8 +863,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         //showSnackBar(translate('Please, check your internet connection'));
         noInternetSnackBar(context);
         return null;
-      }
-      String result = response.body
+      }*/
+      String result = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -993,7 +904,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         //   _showDialog();
         // }
       } catch (e) {
-        _error = response.body
+        _error =data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', ''); // 'Please check your details';
@@ -1002,10 +913,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         return null;
       }
     } catch (e) {
-      _error = response.body
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', ''); // 'Please
+      _error = e.toString();
            _dataLoaded();
       _showDialog();
       return null;
@@ -1030,10 +938,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             '/' +
             widget.pnrModel.pNR.tickets.tKT[i].coupon +
             '=o';
-//        http.Response reponse = await http
+/*
         await http.get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
+*/
+        String data = await runVrsCommand(msg);
       }
     }
 
@@ -1054,8 +964,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     String msg = '*${widget.mmbBooking.rloc}^';
     msg += nostop;
     msg += 'EZV*[E][ZWEB]^EZT*R~x';
+    gblCurrentRloc = widget.mmbBooking.rloc;
 
-    response = await http
+  /*  response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
@@ -1077,10 +988,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       //showSnackBar(translate('Please, check your internet connection'));
       noInternetSnackBar(context);
       return null;
-    }
+    }*/
 
     try {
-      String pnrJson = response.body
+      String data = await runVrsCommand(msg);
+      String pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
@@ -1172,6 +1084,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   @override
   Widget build(BuildContext context) {
 
+    if( gblPaymentState == PaymentState.needCheck){
+
+    }
+
     if (_displayProcessingIndicator) {
       return Scaffold(
         key: _key,
@@ -1202,7 +1118,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
-            title: new TrText('Contact Details',
+            title: new TrText('Payment',
                 style: TextStyle(
                     color: gblSystemColors
                         .headerTextColor)),
@@ -1546,6 +1462,9 @@ List<Widget> getPayOptions(String amount, String cur) {
           case 'ExternalPayment':
             bShow = true;
             break;
+          case 'CreditCard':
+            bShow = true;
+            break;
         }
 
         if( bShow){
@@ -1575,11 +1494,12 @@ List<Widget> getPayOptions(String amount, String cur) {
                         widget.pnrModel, widget.mmbBooking, context);
                   }
 
-                  Navigator.push(
+                  await Navigator.push(
                       context, SlideTopRoute(page: WebPayPage(
                     provider.paymentSchemeName, newBooking: widget.newBooking,
                     pnrModel: widget.pnrModel,
                     isMmb: widget.isMmb,)));
+                  setState(() { });
                 } else {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) =>
