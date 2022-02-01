@@ -1,4 +1,3 @@
-import 'package:http/http.dart' as http;
 
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';

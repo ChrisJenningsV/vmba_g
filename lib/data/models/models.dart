@@ -114,6 +114,7 @@ class PassengerDetail {
   String disabilityID = '';
   String redressNo = '';
   String knowTravellerNo = '';
+  bool wantNotifications;
 
   PassengerDetail({this.title,
     this.firstName,
@@ -130,6 +131,7 @@ class PassengerDetail {
     this.gender,
     this.redressNo,
     this.knowTravellerNo,
+    this.wantNotifications,
   });
 
   bool isComplete() {
@@ -165,6 +167,7 @@ class PassengerDetail {
     data['firstName'] = this.firstName;
     data['middleName'] = this.middleName;
     data['lastName'] = this.lastName;
+    data['wantNotifications'] = this.wantNotifications;
     switch (paxType) {
       case PaxType.infant:
         data['paxType'] = 'IN';
@@ -224,6 +227,10 @@ class PassengerDetail {
     firstName = json['firstName'];
     middleName = json['middleName'];
     lastName = json['lastName'];
+    wantNotifications = json['wantNotifications'];
+    if( wantNotifications == null ) {
+      wantNotifications = false;
+    }
 
     switch (json['paxType']) {
       case 'IN':

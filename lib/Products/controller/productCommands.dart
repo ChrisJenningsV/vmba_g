@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/data/repository.dart';

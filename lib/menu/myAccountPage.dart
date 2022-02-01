@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:vmba/Services/PushNotificationService.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:vmba/data/globals.dart';
 
@@ -51,6 +51,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   final formKey = new GlobalKey<FormState>();
   String oldADSNumber;
   String oldADSpin;
+  bool oldNotify;
   //String phoneNumber;
   //String phoneIsoCode;
 
@@ -85,15 +86,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _lastNameTextEditingController.text = widget.passengerDetail.lastName;
         _emailTextEditingController.text = widget.passengerDetail.email;
         _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
-
-/*        phoneNumber = widget.passengerDetail.phonenumber;
-        if( phoneNumber == null || phoneNumber.isEmpty) {
-          phoneIsoCode = gblSettings.defaultCountryCode;
-        } else {
-
-        }
-
- */
+        oldNotify =  widget.passengerDetail.wantNotifications;
 
         //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
         if( widget.passengerDetail.dateOfBirth != null ) {
@@ -523,6 +516,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
       ));
     }
 
+    // notifications
+    if( gblSettings.wantNotificationEdit) {
+      widgets.add( CheckboxListTile(
+          title: TrText("I want promotional messages"),
+          value:  widget.passengerDetail.wantNotifications,
+          onChanged: (newValue) {
+            setState(() {
+              widget.passengerDetail.wantNotifications = newValue;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+      ));//  <-- leading Checkbox
+    }
 
     // fqtv
     if (gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true) {
@@ -920,6 +926,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
           Repository.get().updateUserProfile(_userProfileRecordList);
           Navigator.pop(context, widget.passengerDetail);
           gblPassengerDetail = widget.passengerDetail;
+          if( gblSettings.wantPushNoticications && oldNotify != widget.passengerDetail.wantNotifications) {
+            if( widget.passengerDetail.wantNotifications) {
+              subscribeForNotifications();
+            } else {
+              unsubscribeForNotifications();
+            }
+          }
         } catch (e) {
           print('Error: $e');
         }
@@ -1058,18 +1071,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
         )
     );
     // old style
-/*    return InputDecoration(
-      counter: Spacer(),
-      contentPadding:
-      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-      labelText: translate(label),
-      fillColor: Colors.white,
-      border: new OutlineInputBorder(
-        borderRadius: new BorderRadius.circular(borderRadius),
-        borderSide: new BorderSide(),
-      ),
-    );
 
- */
   }
 }

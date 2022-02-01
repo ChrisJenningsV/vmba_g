@@ -95,6 +95,7 @@ class Settings {
   bool wantRedressNo;
   bool wantKnownTravNo;
   bool wantPushNoticications;
+  bool wantNotificationEdit;
   bool wantRefund;
   bool wantNewPayment;
   bool bpShowAddPassToWalletButton;
@@ -216,6 +217,7 @@ bool bpShowFastTrack;
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
+    this.wantNotificationEdit = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
     this.youthIsAdult = false,
