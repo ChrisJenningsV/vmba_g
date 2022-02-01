@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -429,7 +428,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       print(resp);
     });*/
     String data = await runVrsCommand(msg);
-    if (data == 200) {
+    if (data != null) {
       try {
         String str = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')

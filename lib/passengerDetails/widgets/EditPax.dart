@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';

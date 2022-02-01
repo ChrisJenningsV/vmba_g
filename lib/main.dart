@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
-import 'package:vmba/mmb/addBookingPage.dart';
 import 'package:vmba/mmb/myBookingsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
@@ -17,7 +16,6 @@ import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/notification_service.dart';
-//import 'package:vmba/utilities/notification_service.dart';
 
 import 'Services/LoggingService.dart';
 import 'data/globals.dart';

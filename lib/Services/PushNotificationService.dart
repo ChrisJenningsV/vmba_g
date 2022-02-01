@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
 
@@ -25,5 +26,14 @@ Future<void> saveToken(String token) async {
   logit('device id = $deviceId tok = $token');
   gblNotifyToken = token;
   gblDeviceId = deviceId;
+}
+
+Future<void> subscribeForNotifications() async {
+  await runFunctionCommand('SubscribeForNotifications','');
+}
+
+Future<void> unsubscribeForNotifications() async {
+  await runFunctionCommand('UnsubscribeForNotifications','');
+
 }
 

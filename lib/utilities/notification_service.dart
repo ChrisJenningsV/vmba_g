@@ -104,11 +104,12 @@ class NotificationService {
         RemoteNotification notification = message.notification;
         AndroidNotification android = message.notification?.android;
         logit('Listener msg received');
+        Map data = message.data;
 
         if (notification != null && android != null) {
 
         showNotification( NavigationService.navigatorKey.currentContext, notification.title,
-        notification.body);
+        notification.body, message.data);
 
           flutterLocalNotificationsPlugin.show(
               notification.hashCode,
@@ -129,7 +130,7 @@ class NotificationService {
         FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
           print('A new onMessageOpenedApp event was published!');
           showNotification( NavigationService.navigatorKey.currentContext, notification.title,
-              notification.body);
+              notification.body, message.data);
  /*         Navigator.pushNamed(context, '/message',
               arguments: MessageArguments(message, true));*/
         });
