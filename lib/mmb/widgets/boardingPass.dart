@@ -875,7 +875,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       var qParams = new StringBuffer();
       qParams.write('?AirCode=${gblSettings.aircode}');
-      qParams.write('?LogoText=${gblSettings.airlineName}');
+      qParams.write('&LogoText=${gblSettings.airlineName}');
       qParams.write('&Rloc=${pass.rloc}');
       qParams.write('&Gate=${pass.gate}');
       qParams.write('&BoardingTime=${pass.boarding}');
@@ -922,7 +922,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       var qParams = new StringBuffer();
       qParams.write('?AirCode=${gblSettings.aircode}');
-      qParams.write('?LogoText=${gblSettings.airlineName}');
+      qParams.write('&LogoText=${gblSettings.airlineName}');
       qParams.write('&Rloc=${pass.rloc}');
       qParams.write('&Gate=${pass.gate}');
       qParams.write('&BoardingTime=${pass.boarding}');
