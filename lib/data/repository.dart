@@ -469,7 +469,9 @@ class Repository {
                   case 'wantPushNoticications':
                     gblSettings.wantPushNoticications = parseBool(item['value']);
                     break;
-
+                  case 'wantNotificationEdit':
+                    gblSettings.wantNotificationEdit = parseBool(item['value']);
+                    break;
                   case 'eVoucher':
                     gblSettings.eVoucher = parseBool(item['value']);
                     break;
@@ -1332,6 +1334,68 @@ class FareRule {
     return data;
   }
 }
+
+
+
+Future<String> runFunctionCommand(String function,String cmd) async {
+    String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+        gblSettings.xmlToken.replaceFirst('token=', ''),
+        vrsGuid: gblSettings.vrsGuid,
+        notifyToken: gblNotifyToken,
+        rloc: gblCurrentRloc,
+        phoneId: gblDeviceId
+    )); // '{VrsApiRequest: ' + + '}' ;
+
+    http.Response response = await http
+        .get(Uri.parse(
+        "${gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', function)}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
+        .catchError((resp) {
+          logit(resp);
+    });
+    if (response == null) {
+      throw 'No Internet';
+      //return new ParsedResponse(noInterent, null);
+    }
+
+    //If there was an error return null
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
+      throw 'Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+      //return new ParsedResponse(response.statusCode, null);
+    }
+
+
+
+
+    if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
+      throw 'no flights';
+      //return new ParsedResponse(noFlights, null);
+    }
+    if (response.body.contains('ERROR')) {
+      Map map = jsonDecode(response.body
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', ''));
+      throw map["errorMsg"];
+      //return new ParsedResponse(0, null, error: response.body);
+    }
+
+    String jsn = response.body;
+    Map map = jsonDecode(response.body
+        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+        .replaceAll('<string xmlns="http://videcom.com/">', '')
+        .replaceAll('</string>', ''));
+
+    VrsApiResponse rs = VrsApiResponse.fromJson(map);
+    gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+    logit('Server IP ${map['serverIP']}');
+    if( rs.data == null ) {
+      throw 'no data returned';
+    }
+    return rs.data;
+}
+
+
 Future<String> runVrsCommand(String cmd) async {
   if( gblUseWebApiforVrs) {
 

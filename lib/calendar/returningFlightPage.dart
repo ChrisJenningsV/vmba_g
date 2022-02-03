@@ -118,7 +118,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvReturnCommand(false)).then((rs) {
+    Repository.get().getAv(getAvReturnCommand(gblUseWebApiforVrs == false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();
