@@ -54,7 +54,7 @@ Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
-bool  gblUseWebApiforVrs = true;
+bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
 enum VrsCmdType {bookSeats, loadSeatplan}
