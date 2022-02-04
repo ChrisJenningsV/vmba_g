@@ -271,15 +271,16 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       }
       passengerDetailRecord = gblPassengerDetail;
     }
-    if( (passengerDetailRecord.firstName.length == 0) ||
+    if(passengerDetailRecord.firstName != null && (passengerDetailRecord.firstName.length == 0) ||
         (passengerDetailRecord.firstName == '')) {
       return false;
     }
 
-    if ((passengerDetailRecord.lastName.length == 0) ||
+    if (passengerDetailRecord.lastName != null && (passengerDetailRecord.lastName.length == 0) ||
         (passengerDetailRecord.lastName  == '')) {
       return false;
     }
+
     return true;
   }
 
