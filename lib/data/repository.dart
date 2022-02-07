@@ -1359,17 +1359,15 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
     //If there was an error return null
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-      throw 'Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+      logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
+      throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
       //return new ParsedResponse(response.statusCode, null);
     }
 
-
-
-
     if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
-      throw 'no flights';
-      //return new ParsedResponse(noFlights, null);
+      String er = response.body.replaceAll('<string xmlns="http://videcom.com/">' , '');
+      throw er;
+
     }
     if (response.body.contains('ERROR')) {
       Map map = jsonDecode(response.body
@@ -1423,16 +1421,15 @@ Future<String> runVrsCommand(String cmd) async {
 
     //If there was an error return null
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      logit('Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-      throw 'Availability error: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+      logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
+      throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
       //return new ParsedResponse(response.statusCode, null);
     }
 
 
-
-
     if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
-      throw 'no flights';
+      String er = response.body.replaceAll('<string xmlns="http://videcom.com/">' , '');
+      throw er;
       //return new ParsedResponse(noFlights, null);
     }
     if (response.body.contains('ERROR')) {
@@ -1440,8 +1437,13 @@ Future<String> runVrsCommand(String cmd) async {
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
-      throw map["errorMsg"];
-      //return new ParsedResponse(0, null, error: response.body);
+      if( map["errorMsg"] != null ) {
+        throw map["errorMsg"];
+      }
+      if( map["data"] != null ) {
+        throw map["data"];
+      }
+      throw "Error returned from server";
     }
 
     String jsn = response.body;

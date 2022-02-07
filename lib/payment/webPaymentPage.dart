@@ -298,6 +298,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           .fetchApisStatus(pnrModel.pNR.rLOC)
           .then((n) => getArgs(pnrModel.pNR))
           .then((arg) {
+            logit('go to completed page');
         Navigator.of(context).pushNamedAndRemoveUntil(
             '/CompletedPage', (Route<dynamic> route) => false,
             arguments: arg);
