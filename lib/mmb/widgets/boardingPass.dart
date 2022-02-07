@@ -947,19 +947,20 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       String url = webApiUrl + qParams.toString();
       url = Uri.encodeFull(url);
-      //print('url=' + url);
 
       //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
 
       if (response.statusCode == 200) {
         try {
           String skinnyPassJwtUrl = response.body;
-
-          //NOTE: Using url_launcher to get its webview element to load the JWT url which should invoke a Save to Wallet on an Android device.
-          AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
-          passHandler.launchPass(skinnyPassJwtUrl, gblSettings.apiKey);
-        } catch (e) {
+          if (!skinnyPassJwtUrl.isEmpty) {
+            //NOTE: Using url_launcher to get its webview element to load the JWT url which should invoke a Save to Wallet on an Android device.
+            AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
+            passHandler.launchPass(skinnyPassJwtUrl, gblSettings.apiKey);
+          }
+        }
+        catch (e) {
           print(e.toString());
         }
       }
@@ -968,6 +969,4 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       print(e);
     }
   }
-
-
 }
