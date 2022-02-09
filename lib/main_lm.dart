@@ -119,7 +119,8 @@ void configLM() {
 //    testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
 //    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-
+ //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+    testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local

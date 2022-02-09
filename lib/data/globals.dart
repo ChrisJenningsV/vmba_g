@@ -60,7 +60,7 @@ enum LoadDataType {settings, routes, cities, products, language, providers}
 enum VrsCmdType {bookSeats, loadSeatplan}
 enum LoadState { none, loading, loaded, loadFailed }
 enum VrsCmdState { none, loading, loaded, loadFailed }
-enum BookingState { none, newBooking, changeSeat, bookSeat }
+enum BookingState { none, newBooking, changeSeat, bookSeat, changeFlt }
 enum PaymentState { none, start, needCheck, success, declined }
 
 LoadState gblSettingsState = LoadState.none;

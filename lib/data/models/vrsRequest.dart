@@ -1,6 +1,8 @@
 
 
 
+import 'package:vmba/data/models/pax.dart';
+
 import 'models.dart';
 
 class VrsApiRequest extends Session {
@@ -12,12 +14,19 @@ class VrsApiRequest extends Session {
   String phoneId;
   String notifyToken;
   String rloc;
+  String data;
 
   VrsApiRequest(
       Session session,
       this.cmd,
       this.token,
-  {this.brandId, this.appFile, this.vrsGuid, this.phoneId, this.rloc, this.notifyToken}
+  {this.brandId,
+    this.appFile,
+    this.vrsGuid,
+    this.phoneId,
+    this.rloc,
+    this.data,
+    this.notifyToken}
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
   Map toJson() {
@@ -33,6 +42,7 @@ class VrsApiRequest extends Session {
     map['notifyToken'] = notifyToken;
     map['phoneId'] = phoneId;
     map['rloc'] = rloc;
+    map['data'] = data;
     return map;
   }
 }
@@ -56,5 +66,41 @@ class VrsApiResponse  {
     vrsServerNo = json['vrsServerNo'];
     isSuccessful = json['isSuccessful'];
     serverIP = json['serverIP'];
+  }
+}
+
+class SeatRequest{
+  bool webCheckinNoSeatCharge;
+  String rloc;
+  int journeyNo;
+  List<Pax> paxlist;
+
+  SeatRequest({this.webCheckinNoSeatCharge, this.paxlist, this.rloc, this.journeyNo});
+
+Map  toJson() {
+    Map map = new Map();
+    map['webCheckinNoSeatCharge'] = webCheckinNoSeatCharge;
+    map['rloc'] = rloc;
+    map['journeyNo'] = journeyNo;
+
+    if (this.paxlist != null) {
+      map['paxlist'] = this.paxlist.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+class SeatReply {
+  String reply;
+  String seats;
+  String outstandingAmount;
+
+  SeatReply(this.reply, this.seats, this.outstandingAmount);
+
+
+  SeatReply.fromJson(Map<String, dynamic> json) {
+    reply = json['reply'];
+    seats = json["seats"];
+    outstandingAmount = json["outstandingAmount"];
   }
 }

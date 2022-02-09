@@ -45,6 +45,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
+    gblBookingState = BookingState.changeFlt;
 
     // check if we are redeeming airmiles
     gblRedeemingAirmiles = false;
@@ -844,12 +845,12 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     NewBooking newFlight = NewBooking();
     newFlight.outboundflight = [];
     // List<String>();
-    if (flt != null) {
-      print(flt);
+    if(flt != null) {
+      //print(flt);
       if (flt != null && flt.length > 0) {
         newFlight.outboundflight = flt;
         widget.mmbBooking.newFlights = flt;
-        print('Capture choice');
+        //print('Capture choice');
       }
 
       hasDataConnection().then((result) {

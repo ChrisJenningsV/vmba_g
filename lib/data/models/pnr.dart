@@ -171,8 +171,8 @@ class PnrModel {
                 tkt.status == 'F' ||
                 tkt.status == 'A') &&
             tkt.firstname == pax.firstName &&
-            tkt.surname == pax.surname &&
-            tkt.tktFor != 'MPD');
+            tkt.surname == pax.surname
+                &&            tkt.tktFor != 'MPD'); // chargable seats get MPD !!!
 
         List<TKT> tickets = [];
         //new List<TKT>();
@@ -188,8 +188,8 @@ class PnrModel {
                               .format(DateTime.parse(
                                   flt.depDate + ' ' + flt.depTime))
                               .toUpperCase() &&
-                      t.tktFltNo == (flt.airID + flt.fltNo) &&
-                      t.tktBClass == flt.xclass,
+                      t.tktFltNo == (flt.airID + flt.fltNo)
+                         &&                      t.tktBClass == flt.xclass,
                   orElse: () => null);
               if (otkt != null) {
                 tickets.add(otkt);
