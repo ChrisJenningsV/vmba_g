@@ -508,7 +508,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});*/
-        String data = await runVrsCommand(msg);
+        await runVrsCommand(msg);
         return null;
       }
 
@@ -768,7 +768,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .catchError((resp) {});*/
       }
 
-        String data = await runVrsCommand(msg);
+         await runVrsCommand(msg);
     }
   }
 

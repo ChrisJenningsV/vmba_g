@@ -1378,7 +1378,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
     //return new ParsedResponse(0, null, error: response.body);
   }
 
-  String jsn = response.body;
+  //String jsn = response.body;
   Map map = jsonDecode(response.body
       .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
       .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -1441,7 +1441,7 @@ Future<String> callSmartApi(String action, String data) async {
       //return new ParsedResponse(0, null, error: response.body);
     }
 
-    String jsn = response.body;
+    //String jsn = response.body;
 
     VrsApiResponse rs = VrsApiResponse.fromJson(map);
    // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
@@ -1505,7 +1505,7 @@ Future<String> runVrsCommand(String cmd) async {
       throw "Error returned from server";
     }
 
-    String jsn = response.body;
+    //String jsn = response.body;
     Map map = jsonDecode(response.body
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')

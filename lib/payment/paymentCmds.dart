@@ -37,7 +37,7 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   } else {
     cmd += 'E*r~x';
   }
-  String data = await runVrsCommand(cmd);
+  await runVrsCommand(cmd);
 
  /* http.Response response;
   response = await http

@@ -9,7 +9,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 
 
 void showNotification(BuildContext context, String title,  String msg, Map data) {
-  String time = DateFormat('kk:mm').format(DateTime.now());
+  //String time = DateFormat('kk:mm').format(DateTime.now());
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -98,8 +98,8 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
   List<Widget> list = [];
   List<Widget> list2 = [];
 
-  String action = '';
-  String rloc = '';
+  //String action = '';
+  //String rloc = '';
   if( data != null ){
     data['action'];
     data['rloc'];

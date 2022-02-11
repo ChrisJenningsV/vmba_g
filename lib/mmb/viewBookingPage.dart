@@ -440,11 +440,16 @@ class _CheckinBoardingPassesWidgetState
     }
 
     for (var i = 0; i <= pnr.pNR.names.pAX.length - 1; i++) {
-      AFX seatAfx = pnr.pNR.aPFAX.aFX
-          .firstWhere((f) => f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo && f.seg == (journey +1).toString() , orElse: () => null);
       String seatNo = '';
-      if( seatAfx != null){
-        seatNo = seatAfx.seat;
+      if( pnr.pNR.aPFAX != null && pnr.pNR.aPFAX.aFX != null) {
+        AFX seatAfx = pnr.pNR.aPFAX.aFX
+            .firstWhere((f) =>
+        f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
+            f.seg == (journey + 1).toString(), orElse: () => null);
+
+        if (seatAfx != null) {
+          seatNo = seatAfx.seat;
+        }
       }
 
 

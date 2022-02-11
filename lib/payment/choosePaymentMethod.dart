@@ -943,7 +943,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});
 */
-        String data = await runVrsCommand(msg);
+        await runVrsCommand(msg);
       }
     }
 
