@@ -140,6 +140,7 @@ class Settings {
   String payPage;
   String apisUrl;
   String apiUrl;
+  String smartApiUrl;
   String apiKey;
   String creditCardProvider;
   String currency;
@@ -154,6 +155,7 @@ class Settings {
   String testXmlUrl;
   String testApisUrl;
   String testApiUrl;
+  String testSmartApiUrl;
   String testCreditCardProvider;
 
   //String livePayUrl;
@@ -161,6 +163,7 @@ class Settings {
   String liveXmlUrl;
   String liveApisUrl;
   String liveApiUrl;
+  String liveSmartApiUrl;
   String liveCreditCardProvider;
 
   bool eVoucher;
@@ -251,6 +254,7 @@ bool bpShowFastTrack;
     this.apisUrl,
     this.apiUrl,
     this.apiKey,
+    this.smartApiUrl,
     this.eVoucher,
     this.passengerTypes,
     this.currency,
@@ -285,6 +289,7 @@ bool bpShowFastTrack;
     this.testXmlUrl,
     this.testApisUrl,
     this.testApiUrl,
+    this.testSmartApiUrl,
     this.testCreditCardProvider,
 
     //this.livePayUrl,
@@ -292,6 +297,7 @@ bool bpShowFastTrack;
     this.liveXmlUrl,
     this.liveApisUrl,
     this.liveApiUrl,
+    this.liveSmartApiUrl,
     this.liveCreditCardProvider,
     this.fQTVpointsName,
     this.buttonStyle,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/seatplan.dart';
+import 'package:vmba/data/models/vrsRequest.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'dart:async';
@@ -84,7 +86,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     setState(() {
       _loadingInProgress = false;
     });
-    showSnackBar(errorMsg);
+    showAlertDialog(context, 'Error booking seats', errorMsg);
+    //showSnackBar(errorMsg);
   }
 
   showSnackBar(String message) {
@@ -204,13 +207,82 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   }
 
   void _handleBookSeats(List<Pax> paxValue) {
-    _bookSeats();
+   // _bookSeats();
+    smartBookSeats();
     setState(() {
       paxlist = paxValue;
       _loadingInProgress = true;
       _displayProcessingText = 'Booking your seat selection...';
     });
   }
+
+  smartBookSeats() async {
+    SeatRequest seat = new SeatRequest();
+    seat.paxlist = paxlist;
+    seat.rloc = widget.rloc;
+    seat.journeyNo = int.parse(widget.journeyNo);
+    seat.webCheckinNoSeatCharge = gblSettings.webCheckinNoSeatCharge;
+
+    String data =  json.encode(seat);
+
+    try{
+      String reply = await callSmartApi('BOOKSEAT', data);
+      Map map = json.decode(reply);
+      SeatReply seatRs = new SeatReply.fromJson(map);
+      int outstanding = int.parse(seatRs.outstandingAmount);
+
+      if (outstanding == 0 ) { // zero outstanding
+        String msg = json.encode(RunVRSCommand(session, "E"));
+        _sendVRSCommand(msg).then(
+                (onValue) =>
+                Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                  Map map = json.decode(pnr.data);
+                  PnrModel pnrModel = new PnrModel.fromJson(map);
+                  showSnackBar(translate("Seat(s) allocated"));
+                  Navigator.pop(context, pnrModel);
+                }));
+      } else if ( outstanding < 0) { // Minus outstanding
+        String msg = json.encode(RunVRSCommand(session, "EMT*R"));
+        _sendVRSCommand(msg).then(
+                (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
+              Map map = json.decode(pnr.data);
+              PnrModel pnrModel = new PnrModel.fromJson(map);
+              showSnackBar(translate("Seat(s) allocated"));
+              Navigator.pop(context, pnrModel);
+            }));
+      } else {
+        String msg;
+        if( gblSettings.wantNewPayment) {
+          msg = json.encode(RunVRSCommand(session, "E*R~x"));
+        } else {
+          msg = json.encode(RunVRSCommand(session, "*${widget.rloc}~x"));
+        }
+        _sendVRSCommand(msg).then((pnrJson) {
+          pnrJson = pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '');
+
+          Map map = json.decode(pnrJson);
+
+          PnrModel pnrModel = new PnrModel.fromJson(map);
+          _navigate(context, pnrModel, session);
+          //  Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => ChoosePaymenMethodWidget(
+          //             pnrModel: pnrModel, isMmb: true, session: session)));
+          _resetloadingProgress();
+        });
+      }
+
+    } catch(e) {
+      print(e.toString());
+      _dataLoadedFailed(e);
+    }
+
+  }
+
+
 
   _bookSeats() async {
     StringBuffer cmd = new StringBuffer();

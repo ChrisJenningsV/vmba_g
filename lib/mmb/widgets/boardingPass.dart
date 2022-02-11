@@ -16,6 +16,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
+import 'package:http/http.dart' as http;
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -822,25 +823,44 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   Widget drawAddPassToWalletButton(BoardingPass pass) {
-    if (Platform.isAndroid  || canShowAddBoardingPassToWalletButton() == false) {
-      //No Android implementation currently - hence do not render iOS specific button
+    if (canShowAddBoardingPassToWalletButton() == false) {
+      //Do not render save pass to wallet button
       return SizedBox.shrink();
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 20),
-        InkWell(
-          onTap: () {
-            _savePassToAppleWallet(pass);
-          },
-          child: Image(
-            image: AssetImage('lib/assets/images/appleWallet.png'),
+    if (Platform.isAndroid) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 20),
+          InkWell(
+            onTap: () {
+              _savePassToGoogleWallet(pass);
+            },
+            child: Image(
+              image: AssetImage('lib/assets/images/googleWallet.png'),
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
+    else {
+      //iOS or Apple
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 20),
+          InkWell(
+            onTap: () {
+              _savePassToAppleWallet(pass);
+            },
+            child: Image(
+              image: AssetImage('lib/assets/images/appleWallet.png'),
+            ),
+          ),
+        ],
+      );
+    }
   }
 
   bool canShowAddBoardingPassToWalletButton() {
@@ -854,7 +874,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       String arrivalCityName = await cityCodeToName(pass.arrive);
 
       var qParams = new StringBuffer();
-      qParams.write('?LogoText=${gblSettings.airlineName}');
+      qParams.write('?AirCode=${gblSettings.aircode}');
+      qParams.write('&LogoText=${gblSettings.airlineName}');
       qParams.write('&Rloc=${pass.rloc}');
       qParams.write('&Gate=${pass.gate}');
       qParams.write('&BoardingTime=${pass.boarding}');
@@ -893,4 +914,59 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     }
   }
 
+  void _savePassToGoogleWallet(BoardingPass pass) async {
+    try {
+      //print("Fetching Boarding Pass for " + gblSettings.airlineName);
+      String departCityName = await cityCodeToName(pass.depart);
+      String arrivalCityName = await cityCodeToName(pass.arrive);
+
+      var qParams = new StringBuffer();
+      qParams.write('?AirCode=${gblSettings.aircode}');
+      qParams.write('&LogoText=${gblSettings.airlineName}');
+      qParams.write('&Rloc=${pass.rloc}');
+      qParams.write('&Gate=${pass.gate}');
+      qParams.write('&BoardingTime=${pass.boarding}');
+      qParams.write('&FltNo=${pass.fltno}');
+      qParams.write('&DepDate=${pass.depdate}');
+      qParams.write('&Depart=$departCityName');
+      qParams.write('&DepartCityCode=${pass.depart}');
+      qParams.write('&Arrive=$arrivalCityName');
+      qParams.write('&ArriveCityCode=${pass.arrive}');
+      qParams.write('&PaxNo=${pass.paxno}');
+      qParams.write('&PaxName=${pass.paxname}');
+      qParams.write('&ClassBand=${pass.classBand}');
+      qParams.write('&Seat=${pass.seat}');
+      qParams.write('&FastTrack=${pass.fastTrack}');
+      qParams.write('&LoungeAccess=${pass.loungeAccess}');
+      qParams.write('&BarcodeData=${pass.barcodedata}');
+      qParams.write('&BarcodeType=QR');
+
+      //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
+      //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
+      String webApiUrl = gblSettings.apiUrl + 'PassGeneratorGoogle/createboardingpass'; //Live
+
+      String url = webApiUrl + qParams.toString();
+      url = Uri.encodeFull(url);
+
+      //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
+      final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
+
+      if (response.statusCode == 200) {
+        try {
+          String skinnyPassJwtUrl = response.body;
+          if (!skinnyPassJwtUrl.isEmpty) {
+            //NOTE: Using url_launcher to get its webview element to load the JWT url which should invoke a Save to Wallet on an Android device.
+            AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
+            passHandler.launchPass(skinnyPassJwtUrl, gblSettings.apiKey);
+          }
+        }
+        catch (e) {
+          print(e.toString());
+        }
+      }
+    }
+    catch(e) {
+      print(e);
+    }
+  }
 }

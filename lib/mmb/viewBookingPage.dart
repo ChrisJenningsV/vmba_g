@@ -440,6 +440,14 @@ class _CheckinBoardingPassesWidgetState
     }
 
     for (var i = 0; i <= pnr.pNR.names.pAX.length - 1; i++) {
+      AFX seatAfx = pnr.pNR.aPFAX.aFX
+          .firstWhere((f) => f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo && f.seg == (journey +1).toString() , orElse: () => null);
+      String seatNo = '';
+      if( seatAfx != null){
+        seatNo = seatAfx.seat;
+      }
+
+
       list.add(
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -453,6 +461,7 @@ class _CheckinBoardingPassesWidgetState
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w400)),
             ),
+            (seatNo!= '' )? Text(seatNo + '  ') : Container(),
             new Row(children: [
               buttonOption(pnr, i, journey, paxlist),
             ]),
@@ -492,8 +501,8 @@ class _CheckinBoardingPassesWidgetState
           ' ' +
           mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
 
-      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) &&
-          pnr.pNR.itinerary.itin[journey].status != 'QQ') {
+      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
+        //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
         list.add(Row(
           children: <Widget>[
@@ -892,7 +901,7 @@ class _CheckinBoardingPassesWidgetState
 
       now = new DateTime.now().toUtc();
 
-      logit('now:${now.toString()}');
+     // logit('now:${now.toString()}');
 
       checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
           ? true

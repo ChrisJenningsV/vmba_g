@@ -75,9 +75,9 @@ String _error = '';
             nextFlightSinceEpoch: _pnr.getnextFlightEpoch(),
             delete: item.delete);
         //if (_pnrs.nextFlightSinceEpoch != 0) {
-        logit('Loading ${_pnr.pNR.rLOC}');
+//        logit('Loading ${_pnr.pNR.rLOC}');
         _error = _pnr.validate();
-        logit('Loading ${_pnr.pNR.rLOC}  $_error');
+        //logit('Loading ${_pnr.pNR.rLOC}  $_error');
         if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(0)) {
           thispnrs.add(_pnrs);
         } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {

@@ -283,12 +283,15 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (widget.isMmb) {
       session = widget.session;
     }
+    if(gblBookingState != BookingState.changeFlt && gblSession != null && ( session == null || session.varsSessionId == null || session.varsSessionId.isEmpty)) {
+      session = gblSession;
+    }
     if( rLOC.isEmpty) {
       if (widget.pnrModel != null) {
         rLOC = widget.pnrModel.pNR.rLOC;
       }
     }
-    if (session != null) {
+    if (session != null ) {
       if( gblBookingState != BookingState.changeSeat && gblBookingState != BookingState.bookSeat ) {
         msg = '*$rLOC^';
       }
@@ -311,13 +314,17 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
           //  EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~xMMGBP25^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x
           // _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
-          var cmd = "EMT*R~x";
+          //var cmd = "EMT*R~x";
+          var cmd = "EZT*R~x";
           if( widget.mmbAction == 'CHANGEFLT') {
             // get tickets
             cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R~x"; // server exception
             //cmd = "EZV*[E][ZWEB]^E*R~x"; // good, no tickets
             //cmd = "EZV*[E][ZWEB]^EZT*R~x"; // good
             //cmd = "EZV*[E][ZWEB]^EZT^EMT*R~x"; //
+          }
+          if( widget.mmbAction == 'SEAT') {
+            cmd = "EMT*R^E*R~x";
           }
           _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
               .then((onValue) {

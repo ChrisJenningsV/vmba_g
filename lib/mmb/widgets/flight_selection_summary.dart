@@ -103,17 +103,18 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
       cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
-    // cmd += removeVoucher();
+/*
+    widget.mmbBooking.newFlights.forEach((flt) {
+      print(flt.substring(0, 21) + 'NN' + flt.substring(23));
+      cmd += flt.substring(0, 21) + 'NN' + flt.substring(23) + '^';
+    });
+*/
 
     cmd += addFg(widget.mmbBooking.currency, true);
     cmd += addFareStore(true);
 
     cmd += '*r~x';
-    //cmd += 'fg^fs1^*r~x';
-    //cmd += 'fg/LHR^fs1^*r~x';
-
-    //cmd += '*r~x';
-    //Intl.defaultLocale = gblLanguage;
+//    cmd += 'E*r~x';
     return cmd;
   }
 

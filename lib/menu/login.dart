@@ -6,6 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'dart:ui';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/utilities/helper.dart';
 
 class Constants{
   Constants._();
@@ -26,6 +27,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String title = 'Login';
   String _error;
+  bool _btnDisabled;
   String descriptions = 'descriptions';
   TextEditingController _adsNumberTextEditingController = TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
@@ -33,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
+    _btnDisabled = false;
   }
 
   @override
@@ -151,36 +154,39 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(20.0)),
             primary: Colors.black),
         onPressed: () {
-          _checkAdsLogin();
+          if( _btnDisabled == false ) {
+            _btnDisabled = true;
+            setState(() {
+
+            });
+            logit('logit clicked');
+            _checkAdsLogin();
+          }
         },
-        child: Text(
-          'LOGIN',
-          style: new TextStyle(color: Colors.white),
-        ));
+        child: _getBtnText()
+        );
+  }
+  Widget _getBtnText() {
+    List <Widget> list = [];
+
+    if(_btnDisabled){
+      list.add(new Transform.scale(
+        scale: 0.5,
+        child: CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(Colors.white)),
+      ));
+    }
+    list.add(Text(
+      'LOGIN',
+      style: new TextStyle(color: Colors.white),));
+    return Row( mainAxisAlignment: MainAxisAlignment.center, children: list,);
   }
 
   Future _checkAdsLogin() async {
- /*   http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings
-            .xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController
-            .text}/${_adsPinTextEditingController.text}'"))
-        .catchError((resp) {
-      print(resp);
-    });
 
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }*/
+    try {
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController
         .text}/${_adsPinTextEditingController.text}');
     String adsJson;
-    try {
       adsJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -191,6 +197,7 @@ class _LoginPageState extends State<LoginPage> {
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
         print('Login success');
+        _btnDisabled = false;
         Navigator.of(context).pushNamedAndRemoveUntil(
             '/AdsFlightSearchPage', (Route<dynamic> route) => false);
 
@@ -200,11 +207,19 @@ class _LoginPageState extends State<LoginPage> {
         gblPassengerDetail.adsNumber = _adsNumberTextEditingController.text;
         gblPassengerDetail.adsPin = _adsPinTextEditingController.text;
       } else {
+        _btnDisabled = false;
+        setState(() {
+
+        });
         _error = 'Ads login failed - check details and try again';
         _showDialog();
       }
     } catch (e) {
-      _error = adsJson;
+      _btnDisabled = false;
+      setState(() {
+
+      });
+      _error = e.toString();
       _showDialog();
       print(e);
     }

@@ -247,11 +247,13 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
       gblSettings.apiUrl = gblSettings.liveApiUrl;
+      gblSettings.smartApiUrl = gblSettings.liveSmartApiUrl;
       gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
     } else {
       gblSettings.xmlUrl = gblSettings.testXmlUrl;
       gblSettings.apisUrl = gblSettings.testApisUrl;
       gblSettings.apiUrl = gblSettings.testApiUrl;
+      gblSettings.smartApiUrl = gblSettings.testSmartApiUrl;
       gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
     }
 
