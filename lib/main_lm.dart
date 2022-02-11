@@ -141,7 +141,7 @@ void configLM() {
   wantMaterialControls: true,
   wantCitySwap: true,
   wantPushNoticications: false,
-  wantNotificationEdit: true,
+  wantNotificationEdit: false,
   wantRefund: true,
   wantNewPayment: false,
   wantCountry: false,
