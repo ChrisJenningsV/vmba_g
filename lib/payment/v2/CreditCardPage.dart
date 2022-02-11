@@ -274,6 +274,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   Future makePayment() async {
     String msg = '';
+    bool oldCancelled = false;
     http.Response response;
     gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     setState(() {
@@ -358,6 +359,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (widget.isMmb) {
         msg = '*$rLOC';
         widget.mmbBooking.newFlights.forEach((flt) {
+          // remove old flight
+          //XLM0032Q15FebABZKOI
+          Itin j = widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange-1].itin.last;
+          DateTime fltDate = DateTime.parse(j.ddaygmt);
+          msg += '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(fltDate)}${j.depart}${j.arrive}';
+          oldCancelled = true;
           String org = flt.substring(15, 18);
           //String dest = flt.substring(19, 22);
 
@@ -501,49 +508,32 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
             .catchError((resp) {});*/
-        String data = await runVrsCommand(msg);
+        await runVrsCommand(msg);
         return null;
       }
 
       msg = '*$rLOC^';
       //update to use full cancel segment command
-      if (widget.isMmb) {
+      if (widget.isMmb ) {
         //msg += '^';
-
-        for (var i = 0;
-        i <
-            widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
-        i++) {
-          Itin f = widget.mmbBooking.journeys
-              .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
-          String _depDate =
-          DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
-          msg +=
-          'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
-          if (f.nostop == 'X') {
-            nostop += ".${f.line}X^";
+        if(!oldCancelled) {
+          for (var i = 0;
+          i <
+              widget.mmbBooking.journeys
+                  .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
+          i++) {
+            Itin f = widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            String _depDate =
+            DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
+            msg +=
+            'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
+            if (f.nostop == 'X') {
+              nostop += ".${f.line}X^";
+            }
           }
         }
 
-        // widget.mmbBooking.journeys
-        //     .journey[widget.mmbBooking.journeyToChange - 1].itin.reversed
-        //     .forEach((f) {
-        //   //msg += 'X${f.line}^';
-
-        //   String _depDate =
-        //       DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
-        //   msg +=
-        //       'X${f.airID}${f.fltNo}${f.cabin}$_depDate${f.depDate}${f.arrive}^';
-        //   if (f.nostop == 'X') {
-        //     nostop += ".${f.line}X^";
-        //   }
-        // });
-
-        // widget.mmbBooking.newFlights.forEach((flt) {
-        //   print(flt);
-        //   msg += flt + '^';
-        // });
         msg += addFg(widget.mmbBooking.currency, true);
         msg += addFareStore(true);
 
@@ -778,7 +768,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .catchError((resp) {});*/
       }
 
-        String data = await runVrsCommand(msg);
+         await runVrsCommand(msg);
     }
   }
 
