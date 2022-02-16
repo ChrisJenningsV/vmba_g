@@ -311,12 +311,15 @@ class _CheckinBoardingPassesWidgetState
         Repository.get()
             .getPnrApisStatus(widget.rloc)
             .then((record) {
-          Map<String, dynamic> map = jsonDecode(record.data);
-          ApisPnrStatusModel _apisPnrStatus =
-          new ApisPnrStatusModel.fromJson(map);
-          setState(() {
-            apisPnrStatus = _apisPnrStatus;
-          });
+              if( record.data != null && record.data.isNotEmpty) {
+                Map<String, dynamic> map = jsonDecode(record.data);
+                ApisPnrStatusModel _apisPnrStatus =
+                new ApisPnrStatusModel.fromJson(map);
+                apisPnrStatus = _apisPnrStatus;
+
+              }
+                setState(() {
+                });
         })
             .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
             .then((onValue) =>
@@ -509,18 +512,22 @@ class _CheckinBoardingPassesWidgetState
       if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
+        if( gblSettings.displayErrorPnr && int.parse(objPNR.pNR.basket.outstanding.amount) > 0 ) {
+          list.add(Row(
+              children: <Widget>[
+                Expanded( child: payOutstandingButton(pnr, objPNR.pNR.basket.outstanding.amount))
+                ]));
+
+
+//          'Payment incomplete, ${basket.outstanding.amount} outstanding';
+          list.add(Divider());
+        }
         list.add(Row(
           children: <Widget>[
             _changeFlightButton(pnr , journeyToChange),
           ],
         ));
-/*        list.add(Row(
-          children: <Widget>[
-            _refreshButton(pnr),
-          ],
-        ));
 
- */
       }
     }
 
@@ -957,6 +964,8 @@ class _CheckinBoardingPassesWidgetState
             amount = '0';
           }
           if( int.parse(amount) > 0 ) {
+            return payOutstandingButton(pnr, amount);
+/*
             return new TextButton(
               onPressed: () {
                 Navigator.push(
@@ -1000,6 +1009,7 @@ class _CheckinBoardingPassesWidgetState
                 ],
               ),
             );
+*/
           }
 
           //Checkin Button
@@ -1135,6 +1145,55 @@ class _CheckinBoardingPassesWidgetState
             : [new Text('')]);
   }
 
+  Widget payOutstandingButton(PnrModel pnr, String amount) {
+    return new TextButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ChoosePaymenMethodWidget(
+                      mmbBooking: mmbBooking,
+                      pnrModel: pnr,
+                      isMmb: true,
+                      mmbAction: 'PAYOUTSTANDING',
+                      mmbCmd: '',
+                    )));
+      },
+      style: TextButton.styleFrom(
+          side: BorderSide(
+              color: gblSystemColors.textButtonTextColor, width: 1),
+          primary: gblSystemColors.textButtonTextColor),
+      child: Row(
+        children: <Widget>[
+          Text(
+            translate('Pay') + ' ' + formatPrice(
+                pnr.pNR.basket.outstanding.cur, double.parse(amount)) + ' ' +
+                translate('Outstanding'),
+            style: TextStyle(
+                color: gblSystemColors
+                    .textButtonTextColor),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 5.0),
+          ),
+          Icon(
+            //Icons.airline_seat_recline_normal,
+            Icons.done,
+            size: 20.0,
+            color:
+            gblSystemColors.textButtonTextColor,
+          ),
+          Text(
+            '',
+            style: TextStyle(
+                color: gblSystemColors
+                    .textButtonTextColor),
+          )
+        ],
+      ),
+    );
+  }
   Future<String> checkinStatus(Itin itin) async {
     String response = '';
     DateTime checkinOpens;

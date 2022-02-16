@@ -302,7 +302,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           RunVRSCommand(session, msg).toJson()))
           .then((result) {
             print(result);
-        if (result == 'Payment Complete') {
+        if (result == 'Payment Complete' || result == 'Payment not accepted, no more to pay for this passenger') {
           gblTimerExpired = true;
 /*          if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
@@ -326,9 +326,29 @@ class _CreditCardPageState extends State<CreditCardPage> {
           }
           if( widget.mmbAction == 'SEAT') {
             cmd = "EMT*R^E*R~x";
-          }
-          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
+          } else if(widget.mmbAction == 'PAYOUTSTANDING'){
+            cmd = "EMT*R~x";
+              }
+           _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
               .then((onValue) {
+                if(onValue.toString().contains('error')){
+                  _error = onValue;
+                  _dataLoaded();
+                  //_showDialog();
+                  showAlertDialog(context, 'Error', _error);
+                 return;
+                }
+                if( onValue.toString().contains('Exception:')) {
+                  _error = onValue.toString().split('Exception:')[1];
+                  if(_error.contains(' at '))
+                    {
+                      _error = onValue.toString().split(' at ')[0];
+                    }
+                  _dataLoaded();
+                  //_showDialog();
+                  showAlertDialog(context, 'Error', _error);
+                  return;
+                }
                 // Server Exception ?
             Map map = json.decode(onValue);
             PnrModel pnrModel = new PnrModel.fromJson(map);

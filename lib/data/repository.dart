@@ -37,6 +37,9 @@ class ParsedResponse<T> {
     if (statusCode == noInterent) {
       return 'Please check your internet connection';
     }
+    if (statusCode == notSinedIn) {
+      return 'Not sined in';
+    }
     if (statusCode == noFlights) {
       return "No flights for these cities and dates";
     }
@@ -49,6 +52,7 @@ class ParsedResponse<T> {
 
 final int noInterent = 404;
 final int noFlights = 405;
+final int notSinedIn = 406;
 
 class Repository {
   static final Repository _repo = new Repository._internal();
@@ -1091,6 +1095,12 @@ class Repository {
             response.reasonPhrase);
         return new ParsedResponse(response.statusCode, null);
       }
+
+      if (response.body.contains('NotSinedInException')) {
+        return new ParsedResponse(notSinedIn, null);
+      }
+
+
       if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
         return new ParsedResponse(noFlights, null);
       }

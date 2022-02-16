@@ -692,10 +692,10 @@ String _error = '';
 
       return result;
     }
-
+    int noFlts = pnr.pNR.itinerary.itin.length;
     pnr.pNR.itinerary.itin.forEach((f) {
       flt.add(f);
-      if (f.nostop != 'X') {
+     if (f.nostop != 'X' || (f.nostop == 'X' && noFlts == 1)) {
         journeys.add(flt);
         flt = [];
         // List<Itin>();
