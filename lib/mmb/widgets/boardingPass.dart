@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'dart:async';
 import 'dart:io';
@@ -17,6 +18,8 @@ import 'package:vmba/components/trText.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:simpleprogressdialog/simpleprogressdialog.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -835,7 +838,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           const SizedBox(height: 20),
           InkWell(
             onTap: () {
-              _savePassToGoogleWallet(pass);
+              _savePassToWallet(pass);
             },
             child: Image(
               image: AssetImage('lib/assets/images/googleWallet.png'),
@@ -852,7 +855,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           const SizedBox(height: 20),
           InkWell(
             onTap: () {
-              _savePassToAppleWallet(pass);
+              _savePassToWallet(pass);
             },
             child: Image(
               image: AssetImage('lib/assets/images/appleWallet.png'),
@@ -867,106 +870,79 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return gblSettings.bpShowAddPassToWalletButton == true;
   }
 
-  void _savePassToAppleWallet(BoardingPass pass) async {
+  void _savePassToWallet(BoardingPass pass) async {
+    //NOTE: Loading the JWT url which should invoke a Save to Wallet on an Android device.
+    //      On an iOS device the native Wallet App for the application/vnd.apple.pkpass mime type will load.
+    String url = "";
+    ProgressDialog progressDialog = ProgressDialog(context: context, barrierDismissible: true);
+    progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
     try {
-      //print("Fetching Boarding Pass for " + gblSettings.airlineName);
-      String departCityName = await cityCodeToName(pass.depart);
-      String arrivalCityName = await cityCodeToName(pass.arrive);
-
-      var qParams = new StringBuffer();
-      qParams.write('?AirCode=${gblSettings.aircode}');
-      qParams.write('&LogoText=${gblSettings.airlineName}');
-      qParams.write('&Rloc=${pass.rloc}');
-      qParams.write('&Gate=${pass.gate}');
-      qParams.write('&BoardingTime=${pass.boarding}');
-      qParams.write('&FltNo=${pass.fltno}');
-      qParams.write('&DepDate=${pass.depdate}');
-      qParams.write('&Depart=$departCityName');
-      qParams.write('&DepartCityCode=${pass.depart}');
-      qParams.write('&Arrive=$arrivalCityName');
-      qParams.write('&ArriveCityCode=${pass.arrive}');
-      qParams.write('&PaxNo=${pass.paxno}');
-      qParams.write('&PaxName=${pass.paxname}');
-      qParams.write('&ClassBand=${pass.classBand}');
-      qParams.write('&Seat=${pass.seat}');
-      qParams.write('&FastTrack=${pass.fastTrack}');
-      qParams.write('&LoungeAccess=${pass.loungeAccess}');
-      qParams.write('&BarcodeData=${pass.barcodedata}');
-      qParams.write('&BarcodeType=QR');
-
-      //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
-      //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
-      String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
-
-      String url = webApiUrl + qParams.toString();
-      url = Uri.encodeFull(url);
-      //print('url=' + url);
-      //print('_currentBarcode=' + this._currentBarcode.toString());
-
-      //Invoke web API call with query params appended to download an Apple Boarding Pass representation
-      //NOTE: Using url_launcher to get its webview element to run the iOS native Wallet App for the application/vnd.apple.pkpass mime type.
-      //      Also forcing the browser element utilised for this to Safari.
-      AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
-      passHandler.launchPass(url, gblSettings.apiKey);
-    }
-    catch(e) {
-      print(e);
-    }
-  }
-
-  void _savePassToGoogleWallet(BoardingPass pass) async {
-    try {
-      //print("Fetching Boarding Pass for " + gblSettings.airlineName);
-      String departCityName = await cityCodeToName(pass.depart);
-      String arrivalCityName = await cityCodeToName(pass.arrive);
-
-      var qParams = new StringBuffer();
-      qParams.write('?AirCode=${gblSettings.aircode}');
-      qParams.write('&LogoText=${gblSettings.airlineName}');
-      qParams.write('&Rloc=${pass.rloc}');
-      qParams.write('&Gate=${pass.gate}');
-      qParams.write('&BoardingTime=${pass.boarding}');
-      qParams.write('&FltNo=${pass.fltno}');
-      qParams.write('&DepDate=${pass.depdate}');
-      qParams.write('&Depart=$departCityName');
-      qParams.write('&DepartCityCode=${pass.depart}');
-      qParams.write('&Arrive=$arrivalCityName');
-      qParams.write('&ArriveCityCode=${pass.arrive}');
-      qParams.write('&PaxNo=${pass.paxno}');
-      qParams.write('&PaxName=${pass.paxname}');
-      qParams.write('&ClassBand=${pass.classBand}');
-      qParams.write('&Seat=${pass.seat}');
-      qParams.write('&FastTrack=${pass.fastTrack}');
-      qParams.write('&LoungeAccess=${pass.loungeAccess}');
-      qParams.write('&BarcodeData=${pass.barcodedata}');
-      qParams.write('&BarcodeType=QR');
-
-      //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
-      //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
-      String webApiUrl = gblSettings.apiUrl + 'PassGeneratorGoogle/createboardingpass'; //Live
-
-      String url = webApiUrl + qParams.toString();
-      url = Uri.encodeFull(url);
-
-      //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
-      final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
-
-      if (response.statusCode == 200) {
-        try {
-          String skinnyPassJwtUrl = response.body;
-          if (!skinnyPassJwtUrl.isEmpty) {
-            //NOTE: Using url_launcher to get its webview element to load the JWT url which should invoke a Save to Wallet on an Android device.
-            AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
-            passHandler.launchPass(skinnyPassJwtUrl, gblSettings.apiKey);
-          }
-        }
-        catch (e) {
-          print(e.toString());
-        }
+      String queryStringParams = await GetQueryStringParameters(pass) as String;
+      if (Platform.isAndroid) {
+        url = await GetUrlForGooglePass(queryStringParams) as String;
+      }
+      else {
+        url = await GetUrlForApplePass(queryStringParams) as String;
+      }
+      if (!url?.isEmpty ?? true) {
+        AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
+        passHandler.launchPass(url, gblSettings.apiKey);
       }
     }
     catch(e) {
       print(e);
     }
+    progressDialog.dismiss();
+  }
+
+  Future<String> GetUrlForApplePass(String queryStringParams) async {
+    //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
+    //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
+    String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
+    String url = webApiUrl + queryStringParams;
+    url = Uri.encodeFull(url);
+    return url;
+  }
+
+  Future<String> GetUrlForGooglePass(String queryStringParams) async {
+    String skinnyPassJwtUrl = "";
+    //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
+    //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
+    String webApiUrl = gblSettings.apiUrl + 'PassGeneratorGoogle/createboardingpass'; //Live
+    String url = webApiUrl + queryStringParams;
+    url = Uri.encodeFull(url);
+
+    //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
+    final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
+    if (response.statusCode == 200) {
+      skinnyPassJwtUrl = response.body;
+    }
+    return skinnyPassJwtUrl;
+  }
+
+  Future<String> GetQueryStringParameters(BoardingPass pass) async {
+    String departCityName = await cityCodeToName(pass.depart);
+    String arrivalCityName = await cityCodeToName(pass.arrive);
+    var qParams = new StringBuffer();
+    qParams.write('?AirCode=${gblSettings.aircode}');
+    qParams.write('&LogoText=${gblSettings.airlineName}');
+    qParams.write('&Rloc=${pass.rloc}');
+    qParams.write('&Gate=${pass.gate}');
+    qParams.write('&BoardingTime=${pass.boarding}');
+    qParams.write('&FltNo=${pass.fltno}');
+    qParams.write('&DepDate=${pass.depdate}');
+    qParams.write('&Depart=$departCityName');
+    qParams.write('&DepartCityCode=${pass.depart}');
+    qParams.write('&Arrive=$arrivalCityName');
+    qParams.write('&ArriveCityCode=${pass.arrive}');
+    qParams.write('&PaxNo=${pass.paxno}');
+    qParams.write('&PaxName=${pass.paxname}');
+    qParams.write('&ClassBand=${pass.classBand}');
+    qParams.write('&Seat=${pass.seat}');
+    qParams.write('&FastTrack=${pass.fastTrack}');
+    qParams.write('&LoungeAccess=${pass.loungeAccess}');
+    qParams.write('&BarcodeData=${pass.barcodedata}');
+    qParams.write('&BarcodeType=QR');
+    return qParams.toString();
   }
 }
