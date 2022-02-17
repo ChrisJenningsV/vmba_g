@@ -1136,7 +1136,10 @@ class Repository {
         http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
-        .catchError((resp) {});
+        .catchError((resp) {
+
+          return new ParsedResponse(0, null, error: resp);
+        });
       if (response == null) {
         return new ParsedResponse(noInterent, null);
       }
@@ -1144,11 +1147,18 @@ class Repository {
       if (response.statusCode < 200 || response.statusCode >= 300) {
         return new ParsedResponse(response.statusCode, null);
       }
+      if( response.body.contains('ERROR' )){
+        String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')
+          .replaceAll('<string xmlns=\"http://videcom.com/\">', '')
+            .replaceAll('</string>', '');
+        return new ParsedResponse(0, null, error: er);
+      }
 
       if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
         Map map = jsonDecode(response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('\r\n', '')
             .replaceAll('</string>', ''));
 
         pnrModel = new PnrModel.fromJson(map);
