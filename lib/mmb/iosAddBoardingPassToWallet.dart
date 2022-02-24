@@ -22,8 +22,7 @@ class AppleBoardingPassHandler {
       await launch(
         url,
         forceSafariVC: true,
-        forceWebView: false,
-        headers: <String, String>{'Videcom_ApiKey': apiKey},
+        forceWebView: false
       );
     } else {
       throw 'Could not launch $url';
