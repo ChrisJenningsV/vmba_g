@@ -899,7 +899,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
     String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
-    String url = webApiUrl + queryStringParams;
+    String url = webApiUrl + queryStringParams + '&dummyKey=ab5d1591-6c39-4de6-b776-084f8a09a6bf';
     url = Uri.encodeFull(url);
     return url;
   }
@@ -909,7 +909,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
     String webApiUrl = gblSettings.apiUrl + 'PassGeneratorGoogle/createboardingpass'; //Live
-    String url = webApiUrl + queryStringParams;
+    String url = webApiUrl + queryStringParams + '&dummyKey=ab5d1591-6c39-4de6-b776-084f8a09a6bf';
     url = Uri.encodeFull(url);
 
     //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
