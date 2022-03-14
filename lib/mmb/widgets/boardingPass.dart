@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
+import 'package:simpleprogressdialog/builders/cupertino_dialog_builder.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'dart:async';
 import 'dart:io';
@@ -875,13 +876,15 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //      On an iOS device the native Wallet App for the application/vnd.apple.pkpass mime type will load.
     String url = "";
     ProgressDialog progressDialog = ProgressDialog(context: context, barrierDismissible: true);
-    progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
     try {
-      String queryStringParams = await GetQueryStringParameters(pass) as String;
       if (Platform.isAndroid) {
+        progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
+        String queryStringParams = await GetQueryStringParameters(pass) as String;
         url = await GetUrlForGooglePass(queryStringParams) as String;
       }
       else {
+        progressDialog.showCupertino(message:"Fetching pass..", layout: CupertinoProgressDialogLayout.columnWithCircularActivityIndicator);
+        String queryStringParams = await GetQueryStringParameters(pass) as String;
         url = await GetUrlForApplePass(queryStringParams) as String;
       }
       if (!url?.isEmpty ?? true) {
