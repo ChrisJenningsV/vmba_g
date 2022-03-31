@@ -33,6 +33,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String currencyCode;
   bool _noInternet;
   bool _eVoucherNotValid;
+  String _userErrorMessage;
   bool _hasError;
 
   @override
@@ -41,6 +42,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _loadingInProgress = true;
     _noInternet = false;
     _eVoucherNotValid = false;
+    _userErrorMessage = "";
     _hasError = false;
     getFareQuote();
   }
@@ -110,12 +112,56 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     });
 */
 
+    //Check if we have an interconnected flight and add marker if we do
+    int flightLineNumber = GetConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
+    if (flightLineNumber >= 0){
+      print("Journey has a connecting flight on itin(${flightLineNumber})");
+      cmd += '*r^.${flightLineNumber}x^';
+    }
+
     cmd += addFg(widget.mmbBooking.currency, true);
     cmd += addFareStore(true);
 
     cmd += '*r~x';
 //    cmd += 'E*r~x';
+    print("flight selection cmd=${cmd}");
     return cmd;
+  }
+
+  String displayUserErrorMessage(String responseError) {
+    String msg = '${responseError.replaceAll('\r\nERROR: ', '')}';
+    msg = '${responseError.replaceAll('\r\nERROR - ', '')}';
+    if (responseError.contains('ERROR: E-VOUCHER ')) {
+      msg = 'Your Promo code will no longer be valid for this booking. To make changes please contact customer services';
+    }
+    else if (responseError.contains('ERROR: CLASS BANDS ')) {
+      msg = '${capitaliseFirstChar(msg)}. Please select an alternative class band';
+    }
+    else if (responseError.contains('ERROR: CANNOT FARE QUOTE ITINERARY ')) {
+      msg = '${capitaliseFirstChar(msg)}.';
+    }
+    else if (responseError.contains('Server transaction timed out')){
+      msg = 'The server is not currently responding. Please try again later';
+    }
+    else {
+      //msg = 'We are unable to proceed with this request. To make changes please contact customer services';
+      msg = '${capitaliseFirstChar(msg)}.';
+    }
+    return msg;
+  }
+
+  String capitaliseFirstChar(String data) {
+    return "${data[0].toUpperCase()}${data.substring(1).toLowerCase()}";
+  }
+
+  int GetConnectingFlightLineIdentifier(Journey journey) {
+    int connectedLine = -1;
+    journey.itin.forEach((itn) {
+      if (itn.nostop == "X") {
+        connectedLine = int.parse(itn.line);
+      }
+    });
+    return connectedLine;
   }
 
   // String removeVoucher() {
@@ -136,7 +182,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         setState(() {
           //_eVoucherNotValid = false;
           _loadingInProgress = false;
-          _noInternet = true;
+          _userErrorMessage = displayUserErrorMessage(rs.error);
+          if (_userErrorMessage.isEmpty){
+            _noInternet = true;
+          }
+          else {
+            _hasError = true;
+          }
         });
       }
     }).catchError((resp) {
@@ -146,18 +198,12 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         FormatException ex = resp;
         print(ex.source.toString().trim());
         _error = ex.source.toString().trim();
-        if (_error.contains('ERROR: E-VOUCHER ')) {
-          setState(() {
-            _loadingInProgress = false;
-            _eVoucherNotValid = true;
-          });
-        } else {
-          setState(() {
-            _loadingInProgress = false;
-            _eVoucherNotValid = false;
-            _hasError = true;
-          });
-        }
+
+        _userErrorMessage = displayUserErrorMessage(_error);
+        setState(() {
+          _loadingInProgress = false;
+          _hasError = true;
+        });
       }
     });
   }
@@ -491,7 +537,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               ],
             ),
           ));
-    } else if (_eVoucherNotValid || _hasError) {
+    } else if (_hasError) {
       return Scaffold(
           key: _key,
           appBar: new AppBar(
@@ -512,9 +558,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _eVoucherNotValid
-                      ? TrText(
-                          'Your Promo code will no longer be valid for this booking. To make changes please contact customer services',
+                  child: _hasError
+                      ? TrText(_userErrorMessage,
                           textAlign: TextAlign.center,
                         )
                       : TrText(

@@ -210,9 +210,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       if (rs.isOk()) {
         pnrModel = rs.body;
         setCurrencyCode();
-        if ( gblRedeemingAirmiles == true ) {
+        if (gblRedeemingAirmiles == true) {
           miles =
-              int.tryParse(this.pnrModel.pNR.basket.outstandingairmiles.airmiles) ??
+              int.tryParse(
+                  this.pnrModel.pNR.basket.outstandingairmiles.airmiles) ??
                   0;
           if (gblFqtvBalance < miles) {
             setState(() {
@@ -221,11 +222,19 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               _tooManyUmnr = false;
               _hasError = true;
               _error =
-              'You do not have enough ${gblSettings.fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings.fQTVpointsName} required = $miles';
+              'You do not have enough ${gblSettings
+                  .fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings
+                  .fQTVpointsName} required = $miles';
             });
           }
         }
         _dataLoaded();
+      } else if (rs.statusCode == 0) {
+        _error = rs.error;
+        _hasError = true;
+        setState(() {
+          _loadingInProgress = false;
+        });
       } else {
         setState(() {
           _loadingInProgress = false;
