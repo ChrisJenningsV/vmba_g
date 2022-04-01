@@ -286,13 +286,16 @@ class Repository {
       if( gblUseWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json', vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
-
+        print('msg = ${msg}');
 
         response = await http.get(
             Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
              );
 
       } else {
+        print('login_uri = ${gblSettings.apiUrl + "/login"}');
+        print('login_headers = ${headers}');
+        print('login_body = ${JsonEncoder().convert(body)}');
         response = await http.post(
             Uri.parse(gblSettings.apiUrl + "/login"),
             headers: headers,
