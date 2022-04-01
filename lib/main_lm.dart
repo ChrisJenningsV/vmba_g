@@ -98,13 +98,14 @@ void configLM() {
   liveApisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
   livePayPage:      'https://booking.loganair.co.uk/VARS/Public/MobilePaymentStart.aspx',
+  liveSmartApiUrl:  "https://booking.loganair.co.uk/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
   liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,
-    xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
+  xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 //Staging setttings
 /*  testXmlUrl:      "https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
