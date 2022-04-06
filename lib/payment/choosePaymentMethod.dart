@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
 import 'dart:convert';
@@ -1124,7 +1123,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
-          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete),
+          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
 /*
           AlertDialog(
             title: new TrText("Payment Error"),
@@ -1209,7 +1208,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(){
-    gblPaymentMsg = null;
+    Navigator.of(context).pop();
+    //gblPaymentMsg = null;
   }
 
   Widget _getMiles() {

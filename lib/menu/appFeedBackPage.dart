@@ -232,7 +232,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     var prefs = await SharedPreferences.getInstance();
     // reset
     prefs.setString('language_code', '');
-    prefs.setString('cache_time', '');
+    prefs.setString('cache_time2', '');
     setState(() {
     });
   }
@@ -435,7 +435,12 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         String str = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('\r\n', '')
             .replaceAll('</string>', '');
+        if( !str.startsWith('{')) {
+          gblError = 'not found or bad password';
+          return gblError;
+        }
         Map map = json.decode(str);
         //String settingsString = map["zua"];
         Map settingsMap = map["zua"]; // List <dynamic> settingsJson

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';

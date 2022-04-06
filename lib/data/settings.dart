@@ -98,6 +98,7 @@ class Settings {
   bool wantNotificationEdit;
   bool wantRefund;
   bool wantNewPayment;
+  bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
 
@@ -125,6 +126,7 @@ class Settings {
   String customMenu3;
   String pageImageMap;
   String productImageMap;
+  String skyFlyToken;
 
  // String hostBaseUrl;
   String iOSAppId;
@@ -223,6 +225,7 @@ bool bpShowFastTrack;
     this.wantNotificationEdit = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
+    this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
 
@@ -264,6 +267,7 @@ bool bpShowFastTrack;
     this.gblServerFiles,
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
+    this.skyFlyToken,
 
     this.fqtvName,
     this.appFeedbackEmail,

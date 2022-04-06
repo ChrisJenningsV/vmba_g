@@ -16,6 +16,8 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/repository.dart';
 
+import '../Helpers/networkHelper.dart';
+
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
       {Key key, this.passengers, this.newbooking, this.preLoadDetails, this.passengerDetailRecord})
@@ -307,7 +309,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   Future makeBooking() async {
     String msg = '';
     // if using VRS sessions/AAA clear out temp booking
-    if(gblUseWebApiforVrs ) msg = 'I^';
+    if(gblSettings.useWebApiforVrs ) msg = 'I^';
 
     msg += buildAddPaxCmd();
     msg += buildAddContactsCmd();
@@ -353,7 +355,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     logit('makeBooking: $msg');
 
-    if( gblUseWebApiforVrs) {
+    if( gblSettings.useWebApiforVrs) {
 
       String data = await runVrsCommand(msg).catchError((e) {
         noInternetSnackBar(context);
@@ -403,7 +405,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           msg = '*' + pnrModel.pNR.rLOC + '~x';
           http.Response response = await http
               .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+              headers: getXmlHeaders())
               .catchError((resp) {});
           if (response == null) {
           setState(() {
@@ -485,7 +488,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     } else {
         http.Response response = await http
         .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+            headers: getXmlHeaders())
         .catchError((resp) {});
 
       if (response == null) {
@@ -552,7 +556,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               msg = '*' + pnrModel.pNR.rLOC + '~x';
               response = await http
                   .get(Uri.parse(
-                  "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+                  "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+                  headers: getXmlHeaders())
                   .catchError((resp) {});
               if (response == null) {
                 setState(() {

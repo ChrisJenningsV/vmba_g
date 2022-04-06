@@ -5,6 +5,7 @@ import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/xmlApi.dart';
+import '../Helpers/networkHelper.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -70,40 +71,7 @@ class Repository {
   Future init() async {
     return await database.init();
   }
-/*
 
-  Future<ParsedResponse<List<City>>> initSettings() async {
-    http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ssrpmasettings"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      return new ParsedResponse(noInterent, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      return new ParsedResponse(response.statusCode, []);
-    }
-
-    List<dynamic> list = jsonDecode(response.body
-        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-        .replaceAll('<string xmlns="http://videcom.com/">', '')
-        .replaceAll('</string>', ''))['xml']['rs:data']['z:row'];
-
-    Map<String, City> networkCities = {};
-
-    for (dynamic jsonCity in list) {
-      City city = parseNetworkCity(jsonCity);
-      networkCities[city.code] = city;
-    }
-    // await database.updateCities([]..addAll(networkCities.values));
-
-    return new ParsedResponse(
-        response.statusCode, []..addAll(networkCities.values));
-  }
-*/
 
     initFqtv() async {
     if( gblSettings.wantFQTV == false ){
@@ -154,9 +122,7 @@ class Repository {
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: msg);
 
     if (response.statusCode == 200) {
@@ -176,7 +142,7 @@ class Repository {
   Future<ParsedResponse<List<City>>> initCities() async {
     var prefs = await SharedPreferences.getInstance();
     logit('initCities');
-    var cacheTime = prefs.getString('cache_time');
+    var cacheTime = prefs.getString('cache_time2');
     if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
 
@@ -215,7 +181,7 @@ class Repository {
     Cities networkCities = Cities.fromJson(map);
 
     // cache age
-    prefs.setString('cache_time', DateTime.now().toString());
+    prefs.setString('cache_time2', DateTime.now().toString());
     await database.updateCities(networkCities);
     logit('cache cities');
 
@@ -259,6 +225,7 @@ class Repository {
     Map<String, String>       headers = {
         'Content-Type': 'application/json',
         'Videcom_ApiKey': gblSettings.apiKey,
+        '__SkyFkyTok': gblSettings.skyFlyToken,
         'VARS_SessionId': 'TestTest'};
 
 
@@ -283,13 +250,14 @@ class Repository {
       logit('getSettingsFromApi - login');
       http.Response response ;
 
-      if( gblUseWebApiforVrs) {
+      if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json', vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
 
 
         response = await http.get(
             Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
+                headers: getXmlHeaders(),
              );
 
       } else {
@@ -300,7 +268,7 @@ class Repository {
       }
       if (response.statusCode == 200) {
         String data = response.body;
-        if( gblUseWebApiforVrs) {
+        if( gblSettings.useWebApiforVrs) {
             data = data
                 .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                 .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -314,12 +282,14 @@ class Repository {
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
+          gblSettings.skyFlyToken = map["skyFlyToken"];
+
           // get language file last modified
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
             gblLangFileModTime = langFileModifyString;
           }
 
-          if( gblUseWebApiforVrs) {
+          if( gblSettings.useWebApiforVrs) {
             gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
             logit('Server IP ${map['serverIP']}');
           } else {
@@ -670,10 +640,7 @@ class Repository {
             //"${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmacitylist")
             Uri.parse(
                 '${gblSettings.apiUrl}/cities/GetCityList'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },)
+      headers: getApiHeaders(),)
         .catchError((resp) {});
 
     if (response == null) {
@@ -1012,10 +979,7 @@ class Repository {
         .post(
             Uri.parse(
                 '${gblSettings.apiUrl}/fare/GetFareRules'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Videcom_ApiKey': gblSettings.apiKey
-            },
+            headers: getApiHeaders(),
             body: JsonEncoder().convert(body))
         .catchError((resp) {});
 
@@ -1035,32 +999,10 @@ class Repository {
     return new ParsedResponse(response.statusCode, null);
   }
 
-  /*Future<http.Response> runVrsCommand(String cmd) async {
-    if( useWebApiforVrs) {
-      String msg = json.encode(RunVRSCommand(gblSession, cmd));
-
-      final http.Response response = await http.post(
-          Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-          headers: {'Content-Type': 'application/json',
-            'Videcom_ApiKey': gblSettings.apiKey
-          },
-          body: msg);
-      return response;
-    } else {
-      http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
-        .catchError((resp) {});
-    return response;
-    }
-
-
-  }*/
-
 
   Future<ParsedResponse<AvailabilityModel>> getAv(String avCmd) async {
     AvailabilityModel objAv = AvailabilityModel();
-    if(gblUseWebApiforVrs) {
+    if(gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(avCmd);
       Map map    = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1074,9 +1016,7 @@ class Repository {
 
       final http.Response response = await http.post(
           Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-          headers: {'Content-Type': 'application/json',
-            'Videcom_ApiKey': gblSettings.apiKey
-          },
+          headers: getApiHeaders(),
           body: msg);
 
 /*
@@ -1121,7 +1061,7 @@ class Repository {
 
   Future<ParsedResponse<PnrModel>> getFareQuote(String cmd) async {
     PnrModel pnrModel = PnrModel();
-    if( gblUseWebApiforVrs) {
+    if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
         Map map = jsonDecode(data
@@ -1135,7 +1075,8 @@ class Repository {
     } else {
         http.Response response = await http
         .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
+            headers: getXmlHeaders())
         .catchError((resp) {
 
           return new ParsedResponse(0, null, error: resp);
@@ -1213,7 +1154,7 @@ class Repository {
     //If no internet is available for example response is
     var prefs = await SharedPreferences.getInstance();
     logit('initRoutes');
-    var cacheTime = prefs.getString('route_cache_time');
+    var cacheTime = prefs.getString('route_cache_time2');
     if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
 
@@ -1226,10 +1167,7 @@ class Repository {
     final http.Response response = await http.get(
         Uri.parse(
             '${gblSettings.apiUrl}/cities/Getroutelist'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        }).catchError((resp) {});
+        headers: getApiHeaders()).catchError((resp) {});
 
     if (response == null) {
       return new ParsedResponse(noInterent, null);
@@ -1240,7 +1178,7 @@ class Repository {
       return new ParsedResponse(response.statusCode, null);
     }
     Map map = jsonDecode('{ \"Routes\":' + response.body + '}');
-    prefs.setString('route_cache_time', DateTime.now().toString());
+    prefs.setString('route_cache_time2', DateTime.now().toString());
 
     RoutesModel networkRoutes = RoutesModel.fromJson(map);
     await database.updateRoutes('{ \"Routes\":' + response.body + '}');
@@ -1368,7 +1306,8 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
   http.Response response = await http
       .get(Uri.parse(
-      "${gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', function)}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
+      "${gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', function)}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+      headers: getXmlHeaders())
       .catchError((resp) {
     logit(resp);
   });
@@ -1474,7 +1413,7 @@ Future<String> callSmartApi(String action, String data) async {
 
 
 Future<String> runVrsCommand(String cmd) async {
-  if( gblUseWebApiforVrs) {
+  if( gblSettings.useWebApiforVrs) {
 
     String msg =  json.encode(VrsApiRequest(gblSession, cmd,
         gblSettings.xmlToken.replaceFirst('token=', ''),
@@ -1486,7 +1425,8 @@ Future<String> runVrsCommand(String cmd) async {
 
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
+        "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+          headers: getXmlHeaders())
         .catchError((resp) {
 /*
       var error = '';
@@ -1541,10 +1481,15 @@ Future<String> runVrsCommand(String cmd) async {
   } else {
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
+        headers: getXmlHeaders())
         .catchError((resp) {
 
     });
+    if( response == null )
+      {
+        throw 'no data returned';
+      }
     return response.body;
   }
 

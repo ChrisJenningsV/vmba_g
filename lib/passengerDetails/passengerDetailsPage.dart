@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/models/models.dart';
@@ -406,6 +405,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     if (allPaxDetailsCompleted) {
       paxWidgets.add(ElevatedButton(
         onPressed: () {
+          gblPaymentMsg=null;
           validateAndSubmit();
         },
         style: ElevatedButton.styleFrom(

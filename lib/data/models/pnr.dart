@@ -299,6 +299,8 @@ class PNR {
   String sfpddob;
   String sfpdgndr;
   String showFares;
+  String needFG;
+  String needFSM;
   bool editFlights;
   String editProducts;
   Names names;
@@ -334,6 +336,8 @@ class PNR {
       this.sfpddob,
       this.sfpdgndr,
       this.showFares,
+      this.needFG,
+      this.needFSM,
       this.editFlights,
       this.editProducts,
       this.names,
@@ -364,6 +368,8 @@ class PNR {
     sfpddob = json['sfpddob'];
     sfpdgndr = json['sfpdgndr'];
     showFares = json['showFares'];
+    needFG = json['NeedFG'];
+    needFSM = json['NeedFSM'];
     editFlights = json['editFlights'].toString().toLowerCase() == 'true';
     editProducts = json['editProducts'];
     names = json['Names'] != null ? new Names.fromJson(json['Names']) : null;
@@ -434,6 +440,8 @@ class PNR {
     data['sfpddob'] = this.sfpddob;
     data['sfpdgndr'] = this.sfpdgndr;
     data['showFares'] = this.showFares;
+    data['NeedFG'] = this.needFG;
+    data['NeedFSM'] = this.needFSM;
     data['editFlights'] = this.editFlights.toString();
     data['editProducts'] = this.editProducts;
     if (this.names != null) {

@@ -128,19 +128,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } catch(e){
       return 'error ${e.toString()}';
     }
- /*   final http.Response response = await http.post(
-        Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
-        body: msg);
 
-    if (response.statusCode == 200) {
-      print('message send successfully: $msg' );
-      return response.body.trim();
-    } else {
-      print('failed: $msg');
-    }*/
   }
 
   Future _sendVRSCommandList(msg) async {
@@ -155,21 +143,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } catch(e){
       return 'error ${e.toString()}';
     }
-/*
-       final http.Response response = await http.post(
-        Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
-        body: msg);
 
-    if (response.statusCode == 200) {
-      print('message send successfully: $msg');
-      return response.body.trim();
-    } else {
-      print('failed: $msg');
-    }
-*/
   }
 
   Future _loadData(String seatPlanCmd) async {
@@ -328,7 +302,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       session = gblSession;
     }
     String msg;
-    if (gblUseWebApiforVrs) {
+    if (gblSettings.useWebApiforVrs) {
       msg = cmd.toString();
     } else {
       msg = json

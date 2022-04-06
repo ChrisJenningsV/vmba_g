@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,6 +10,8 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
+
+import '../Helpers/networkHelper.dart';
 
 //ignore: must_be_immutable
 class MyFqtvPage extends StatefulWidget {
@@ -797,9 +797,7 @@ Widget _getTrans() {
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: msg);
 
     if (response.statusCode == 200) {

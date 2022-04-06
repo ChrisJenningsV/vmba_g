@@ -25,6 +25,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 
+import '../Helpers/networkHelper.dart';
+
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
 class PnrChangeNotifier with ChangeNotifier {
@@ -653,7 +655,7 @@ class _CheckinBoardingPassesWidgetState
         '&Command=' +
         cmd;
     print(msg);
-    final response = await http.get(Uri.parse(msg));
+    final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     //Map map;
     if (response.statusCode == 200) {
       try {
@@ -707,7 +709,8 @@ class _CheckinBoardingPassesWidgetState
     //       'Can\'t check in all passengers as APIS information not complete');
     // }
 
-    if (apisPnrStatus.apisRequired(currentJourneyNo) &&
+    if (apisPnrStatus != null &&
+      apisPnrStatus.apisRequired(currentJourneyNo) &&
         !apisPnrStatus.apisInfoEnteredAll(currentJourneyNo)) {
       widget.showSnackBar(
           'Can\'t check in all passengers as APIS information not complete');
@@ -1942,7 +1945,7 @@ class _CheckinBoardingPassesWidgetState
         cmd;
     print(msg);
     //final response = await
-    http.get(Uri.parse(msg)).then((response) {
+    http.get(Uri.parse(msg),headers: getXmlHeaders()).then((response) {
       //Map map;
       if (response.statusCode == 200) {
         try {

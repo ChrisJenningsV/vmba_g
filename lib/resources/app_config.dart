@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 

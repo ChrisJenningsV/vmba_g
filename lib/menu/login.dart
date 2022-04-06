@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
-import 'dart:ui';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';

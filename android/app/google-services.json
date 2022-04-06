@@ -118,6 +118,43 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:287291202399:android:6a45b02f2585cc816a74ea",
+        "android_client_info": {
+          "package_name": "com.buraq.booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqd3J-LZhHR3QAyc7Fbe7tlY5Nk53Ff-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "287291202399-qvumeinntkltr39gl6nlcitctmni2c39.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uk.co.loganair.booking",
+                "app_store_id": "1457545908"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:287291202399:android:914974225ef1b0996a74ea",
         "android_client_info": {
           "package_name": "com.ibomair"

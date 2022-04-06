@@ -62,7 +62,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildAddPaxCmd() {
     StringBuffer sb = new StringBuffer();
 
-    if( gblUseWebApiforVrs) {
+    if( gblSettings.useWebApiforVrs) {
      sb.write('I^');
     }
 
