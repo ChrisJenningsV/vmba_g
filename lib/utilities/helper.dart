@@ -99,6 +99,19 @@ Future<String> _loadCountrylistAsset() async {
   }
 }
 
+Future<String> mobileBarcodeTypeForCity(String code) async {
+  City city;
+  city = await Repository.get().getCityByCode(code);
+
+  if (city != null) {
+    if (city.mobileBarcodeType != null && city.mobileBarcodeType != 'null' &&
+        city.mobileBarcodeType.isNotEmpty) {
+      return city.mobileBarcodeType;
+    }
+  }
+  return 'AZTEC';
+}
+
 Future<String> cityCodeToName(String code) async {
   City city;
   city = await Repository.get().getCityByCode(code);
