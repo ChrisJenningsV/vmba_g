@@ -9,13 +9,14 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
+String gblBuildFlavor = 'UZ';
+bool gblIsLive = true;
+
 String gblAppTitle ;
 String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'UZ'
-    '';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
@@ -34,7 +35,6 @@ int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
 bool gblUseCache = false;
 bool gblIsIos = false;
-bool gblIsLive = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;
 bool gblTimerExpired = false;
