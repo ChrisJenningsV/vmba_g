@@ -15,6 +15,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
 
+import '../Helpers/networkHelper.dart';
+
 
 class MyBookingsPage extends StatefulWidget {
   MyBookingsPage({Key key}) : super(key: key);
@@ -416,9 +418,7 @@ String _error = '';
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: msg);
 
     if (response.statusCode == 200) {

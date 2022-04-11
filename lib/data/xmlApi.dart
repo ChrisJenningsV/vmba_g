@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../Helpers/networkHelper.dart';
+
 
 
 
@@ -16,7 +18,8 @@ Future<XmlResponse> sendXmlMsg(XmlRequest xmlRequest) async {
   try {
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=${xmlRequest.command}"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=${xmlRequest.command}"),
+        headers: getXmlHeaders())
         .catchError((resp) {});
 
     if (response == null) {

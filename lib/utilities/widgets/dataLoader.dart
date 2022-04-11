@@ -4,11 +4,11 @@ import 'package:flutter/scheduler.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/providers.dart';
+import '../../Helpers/networkHelper.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
@@ -105,9 +105,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     _displayProcessingIndicator = true;
     final http.Response response = await http.post(
         Uri.parse(_url),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: _msg);
     if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
     if (response.statusCode == 200) {

@@ -14,6 +14,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/pnr.dart';
 
+import '../../Helpers/networkHelper.dart';
+
 
 class ApisWidget extends StatefulWidget {
   ApisWidget({Key key, this.apisCmd, this.rloc, this.paxIndex, this.pnr}) : super(key: key);
@@ -51,7 +53,7 @@ class _ApisWidgetState extends State<ApisWidget> {
         cmd;
 
     print(msg);
-    final response = await http.get(Uri.parse(msg));
+    final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     Map map;
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON

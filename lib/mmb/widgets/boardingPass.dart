@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
@@ -21,6 +19,8 @@ import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:simpleprogressdialog/simpleprogressdialog.dart';
+
+import '../../Helpers/networkHelper.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -916,7 +916,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     url = Uri.encodeFull(url);
 
     //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
-    final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
+    final response = await http.get(Uri.parse(url), headers: getApiHeaders());
     if (response.statusCode == 200) {
       skinnyPassJwtUrl = response.body;
     }

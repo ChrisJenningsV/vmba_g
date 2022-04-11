@@ -14,7 +14,7 @@ String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'LM'
+String gblBuildFlavor = 'UZ'
     '';
 String gblError = '';
 String gblErrorTitle = '';
@@ -32,7 +32,7 @@ String gblDeviceId;
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = true;
+bool gblUseCache = false;
 bool gblIsIos = false;
 bool gblIsLive = false;
 bool gblPaySuccess = false;
@@ -54,7 +54,7 @@ Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
-bool  gblUseWebApiforVrs = false;
+//bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
 enum VrsCmdType {bookSeats, loadSeatplan}
