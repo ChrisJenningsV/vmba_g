@@ -26,7 +26,7 @@ class AppDatabase {
   final String tableNameAppData = "AppData";
   final String tableNameVRSBoardingPasses = "VRSBoardingPasses";
 
-  static final _databaseVersion = 5;
+  static final _databaseVersion = 6;
 
   Database db;
 
@@ -134,6 +134,10 @@ class AppDatabase {
           if (oldVersion < 5) {
             await db.execute(
                 'ALTER TABLE $tableNameCities ADD ${City.dbShortName} TEXT');
+          }
+          if (oldVersion < 6) {
+            await db.execute(
+                'ALTER TABLE $tableNameCities ADD ${City.dbMobileBarcodeType} TEXT');
           }
         });
     didInit = true;
