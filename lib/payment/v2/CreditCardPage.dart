@@ -367,6 +367,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
             Repository.get()
                 .updatePnr(pnrDBCopy)
+                .then((_) => sendEmailConfirmation(pnrModel))
                 .then((n) => getArgs(pnrModel.pNR))
                 .then((arg) {
               Navigator.of(context).pushNamedAndRemoveUntil(
