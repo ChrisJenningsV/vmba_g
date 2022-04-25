@@ -1958,10 +1958,28 @@ class _CheckinBoardingPassesWidgetState
   }
 
   _sendAutoseatCommand(String cmd) async {
-    String msg = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        '&Command=' +
-        cmd;
+    String msg = '';
+    if( gblSettings.useWebApiforVrs) {
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+      msg = json.encode(
+          VrsApiRequest(
+              gblSession, cmd,
+              gblSettings.xmlToken.replaceFirst('token=', ''),
+              vrsGuid: gblSettings.vrsGuid,
+              notifyToken: gblNotifyToken,
+              rloc: gblCurrentRloc,
+              phoneId: gblDeviceId
+          )
+      );
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+    }
+    else {
+      msg = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          '&Command=' +
+          cmd;
+    }
+
     print('_sendAutoseatCommand::${msg}');
     //final response = await
     http.get(Uri.parse(msg),headers: getXmlHeaders()).then((response) {
