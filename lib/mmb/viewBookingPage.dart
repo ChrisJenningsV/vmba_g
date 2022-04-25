@@ -24,6 +24,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/networkHelper.dart';
 
@@ -650,11 +651,29 @@ class _CheckinBoardingPassesWidgetState
   }
 
   Future _sendVrsCheckinCommand(String cmd) async {
-    String msg = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        '&Command=' +
-        cmd;
-    print(msg);
+    String msg = '';
+    if( gblSettings.useWebApiforVrs) {
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+       msg = json.encode(
+              VrsApiRequest(
+                gblSession, cmd,
+                gblSettings.xmlToken.replaceFirst('token=', ''),
+                vrsGuid: gblSettings.vrsGuid,
+                notifyToken: gblNotifyToken,
+                rloc: gblCurrentRloc,
+                phoneId: gblDeviceId
+              )
+          );
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+    }
+    else {
+       msg = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          '&Command=' + cmd;
+    }
+
+    print("_sendVrsCheckinCommand::${msg}");
+
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     //Map map;
     if (response.statusCode == 200) {
