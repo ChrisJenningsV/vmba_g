@@ -893,7 +893,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
             child: Container(
               child: Text(''),
               //width: 10.0,
-              width: cellSize,
+              width: 18,
             ),
           ));
         } else if ((seat.sRLOC != null && seat.sRLOC != rloc) ||
