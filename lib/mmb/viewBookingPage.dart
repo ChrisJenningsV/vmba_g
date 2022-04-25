@@ -1943,7 +1943,7 @@ class _CheckinBoardingPassesWidgetState
         gblSettings.xmlToken +
         '&Command=' +
         cmd;
-    print(msg);
+    print('_sendAutoseatCommand::${msg}');
     //final response = await
     http.get(Uri.parse(msg),headers: getXmlHeaders()).then((response) {
       //Map map;
@@ -1954,6 +1954,9 @@ class _CheckinBoardingPassesWidgetState
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
+
+          print('_sendAutoseatCommand_vrsResponse::${vrsResponse}');
+
           if (!vrsResponse.contains('ERROR')) {
             Repository.get().fetchPnr(widget.rloc).then((v) {
               _autoSeatCompleted(v);
@@ -2044,9 +2047,8 @@ class _CheckinBoardingPassesWidgetState
     paxList.forEach((p) => cmd.write('${p.paxNo},'));
 
     //print(cmd.toString());
-    print(cmd.toString().substring(0, cmd.toString().length - 1));
-    _sendAutoseatCommand(
-        cmd.toString().substring(0, cmd.toString().length - 1));
+    print('_autoseat vrsCmd = ${cmd.toString().substring(0, cmd.toString().length - 1)}');
+    _sendAutoseatCommand(cmd.toString().substring(0, cmd.toString().length - 1));
     //  .then((v) {
     //   if (v) {
     //   _displayCheckingAllDialog(pnr, journey);

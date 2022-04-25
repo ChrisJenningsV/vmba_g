@@ -1368,6 +1368,8 @@ Future<String> callSmartApi(String action, String data) async {
         phoneId: gblDeviceId
     )); // '{VrsApiRequest: ' + + '}' ;
 
+    print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg');
+
     http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
@@ -1386,15 +1388,20 @@ Future<String> callSmartApi(String action, String data) async {
       //return new ParsedResponse(response.statusCode, null);
     }
 
+    print('callSmartApi_response::${response.body}');
+
     if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
       String er = response.body.replaceAll('<string xmlns="http://videcom.com/">' , '');
       throw er;
 
     }
-    Map map = jsonDecode(response.body
+
+    String responseData = response.body
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
-        .replaceAll('</string>', ''));
+        .replaceAll('</string>', '');
+
+    Map map = jsonDecode(responseData);
 
    // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
     if (response.body.contains('ERROR')) {
