@@ -155,6 +155,12 @@ flutter:
     - lib/assets/airleap/json/countries.json
     - lib/assets/airleap/images/appBarLeft.png
     - lib/assets/airleap/images/loader.png
+    - lib/assets/buraq/images/appBar.png
+    - lib/assets/buraq/images/appBarLeft.png
+    - lib/assets/buraq/images/logo.png
+    - lib/assets/buraq/images/loader.png
+    - lib/assets/buraq/json/countries.json
+
     - lib/assets/lang/en.json
     - lib/assets/lang/fr.json
 
