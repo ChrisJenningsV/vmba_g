@@ -548,7 +548,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text('Alloacted Seats',
+                Text('Allocated Seats',
                     style: TextStyle(fontWeight: FontWeight.w700))
               ],
             ),
