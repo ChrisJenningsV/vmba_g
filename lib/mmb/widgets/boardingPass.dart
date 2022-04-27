@@ -789,7 +789,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                           )
                         ]),
                   )
-                : Expanded(
+                : Container(
                     child: Column(
                       children: <Widget>[
                         Center(
