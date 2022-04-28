@@ -1349,42 +1349,48 @@ List<Widget> getPayOptions(String amount, String cur) {
           )
         ],
       ));
+    if( gblSettings.termsAndConditionsUrl != null &&  gblSettings.termsAndConditionsUrl.isNotEmpty  ) {
       list.add(Divider());
-    list.add(Row(
+      list.add(Row(
         mainAxisAlignment:
         MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TrText('Terms & Conditions'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () => Navigator.push(
-                context,
-                SlideTopRoute(
-                    page: WebViewWidget(
-                        title: 'Terms & Conditions',
-                        url: gblSettings
-                            .termsAndConditionsUrl))),
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: WebViewWidget(
+                            title: 'Terms & Conditions',
+                            url: gblSettings
+                                .termsAndConditionsUrl))),
           )
         ],
       ));
-    list.add(Divider());
-    list.add(Row(
+    }
+    if( gblSettings.privacyPolicyUrl != null && gblSettings.privacyPolicyUrl.isNotEmpty ) {
+      list.add(Divider());
+      list.add(Row(
         mainAxisAlignment:
         MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TrText('Privacy Policy'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () => Navigator.push(
-                context,
-                SlideTopRoute(
-                    page: WebViewWidget(
-                        title: translate('Privacy Policy'),
-                        url: gblSettings
-                            .privacyPolicyUrl))),
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: WebViewWidget(
+                            title: translate('Privacy Policy'),
+                            url: gblSettings
+                                .privacyPolicyUrl))),
           )
         ],
       ));
+    }
     list.add(Divider());
 
     if( gblSettings.wantProducts) {
