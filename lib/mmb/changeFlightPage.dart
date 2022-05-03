@@ -203,7 +203,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvCommand(gblUseWebApiforVrs == false)).then((rs) {
+    Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();

@@ -43,23 +43,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
 
   logit(msg);
   String data = await runVrsCommand(msg);
-/*  http.Response response = await http
-      .get(Uri.parse(
-      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-      .catchError((resp) {});
 
-  if (response == null) {
-
-    onError('Bad response from server');
-    return null;
-  }
-
-  //If there was an error return an empty list
-  if (response.statusCode < 200 || response.statusCode >= 300) {
-
-    onError('No iternet, try again later');
-    return null;
-  }*/
   try {
   //  bool flightsConfirmed = true;
     if (data.contains('ERROR - ') ||

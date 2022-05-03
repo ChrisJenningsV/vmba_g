@@ -14,5 +14,6 @@ flutter build appbundle -t lib/main.dart --flavor airleap
 flutter build appbundle -t lib/main.dart --flavor loganair
 flutter build appbundle -t lib/main.dart --flavor ibomair
 flutter build appbundle -t lib/main.dart --flavor airswift
+flutter build appbundle -t lib/main.dart --flavor buraq
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar

@@ -120,10 +120,11 @@ void configSI() {
     defaultCountryCode: 'GB',
 
 
-
-    liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   liveApisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
+  livePayPage:      'https://booking.blueislands.com/VARS/Public/MobilePaymentStart.aspx',
+  liveSmartApiUrl:  "https://booking.blueislands.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   liveCreditCardProvider: 'citypaydirect',
 
   apiKey: '4d332cf7134f4a43958d954278474b41', // '2edd1519899a4e7fbf9a307a0db4c17a',

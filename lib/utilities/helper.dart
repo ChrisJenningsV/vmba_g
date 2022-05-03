@@ -19,6 +19,8 @@ import 'package:vmba/calendar/widgets/langConstants.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
+import '../Helpers/networkHelper.dart';
+
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
 // }
@@ -32,10 +34,7 @@ Future<Session> login() async {
   try {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/login"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey,
-        },
+        headers: getApiHeaders(),
         body: JsonEncoder().convert(body));
 
     if (response.statusCode == 200) {
@@ -60,10 +59,7 @@ Future<Session> login() async {
 Future sendVRSCommand(msg) async {
   final http.Response response = await http.post(
       Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-      headers: {
-        'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },
+      headers: getApiHeaders(),
       body: msg);
 
   if (response.statusCode == 200) {
@@ -77,9 +73,7 @@ Future sendVRSCommand(msg) async {
 Future sendVRSCommandList(msg) async {
   final http.Response response = await http.post(
       Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
-      headers: {'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },
+      headers: getApiHeaders(),
       body: msg);
 
   if (response.statusCode == 200) {
@@ -103,6 +97,19 @@ Future<String> _loadCountrylistAsset() async {
     default:
       return await rootBundle.loadString('lib/assets/$gblAppTitle/json/countries.json');
   }
+}
+
+Future<String> mobileBarcodeTypeForCity(String code) async {
+  City city;
+  city = await Repository.get().getCityByCode(code);
+
+  if (city != null) {
+    if (city.mobileBarcodeType != null && city.mobileBarcodeType != 'null' &&
+        city.mobileBarcodeType.isNotEmpty) {
+      return city.mobileBarcodeType;
+    }
+  }
+  return 'AZTEC';
 }
 
 Future<String> cityCodeToName(String code) async {

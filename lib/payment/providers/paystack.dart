@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +9,8 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/payment.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/globals.dart';
+
+import '../../Helpers/networkHelper.dart';
 
 // To get started quickly, change this to your heroku deployment of
 // https://github.com/PaystackHQ/sample-charge-card-backend
@@ -78,10 +79,7 @@ class Paystack {
         //'http://192.168.0.79:53792/api/Payment/InitPayment',
         Uri.parse(
             gblSettings.apiUrl + "/Payment/InitPayment"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {
       print('message send successfully: $msg');
@@ -99,10 +97,7 @@ class Paystack {
         //'http://192.168.0.79:53792/api/Payment/GetPaymentStatus',
         Uri.parse(
             gblSettings.apiUrl + "/Payment/GetPaymentStatus"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: JsonEncoder().convert(msg));
     if (response.statusCode == 200) {
       print('message send successfully: $msg');

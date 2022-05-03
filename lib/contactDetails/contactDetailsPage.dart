@@ -16,6 +16,8 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/repository.dart';
 
+import '../Helpers/networkHelper.dart';
+
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
       {Key key, this.passengers, this.newbooking, this.preLoadDetails, this.passengerDetailRecord})
@@ -307,7 +309,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   Future makeBooking() async {
     String msg = '';
     // if using VRS sessions/AAA clear out temp booking
-    if(gblUseWebApiforVrs ) msg = 'I^';
+
+    print('gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
+    if(gblSettings.useWebApiforVrs ) msg = 'I^';
 
     msg += buildAddPaxCmd();
     msg += buildAddContactsCmd();
@@ -353,16 +357,16 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     logit('makeBooking: $msg');
 
-    if( gblUseWebApiforVrs) {
-
+    if( gblSettings.useWebApiforVrs) {
+      print('Calling VRS with Cmd = ${msg}');
       String data = await runVrsCommand(msg).catchError((e) {
         noInternetSnackBar(context);
         return null;
       });
-          try {
-          bool flightsConfirmed = true;
-          if (data.contains('ERROR - ') ||
-          data.contains('ERROR:')) {
+
+      try {
+        bool flightsConfirmed = true;
+        if (data.contains('ERROR - ') || data.contains('ERROR:')) {
           _error = data
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -371,155 +375,6 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               .trim(); // 'Please check your details';
 
           if (data.contains('TOO MANY UMNR')) {
-          setState(() {
-          _displayProcessingIndicator = false;
-          _tooManyUmnr = true;
-          });
-          return null;
-          }
-          _dataLoaded();
-          print('makeBooking $_error');
-          //_showDialog();
-          _gotoPreviousPage();
-          return;
-          } else {
-          String pnrJson =data
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '');
-          Map map = json.decode(pnrJson);
-
-          pnrModel = new PnrModel.fromJson(map);
-          print(pnrModel.pNR.rLOC);
-          //bool flightsConfirmed = true;
-          if (pnrModel.hasNonHostedFlights() &&
-          pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-          int noFLts = pnrModel
-              .flightCount(); //if external flights aren't confirmed they get removed from the PNR
-          // which makes it look like the flights are confirmed
-
-          flightsConfirmed = false;
-          for (var i = 0; i < 10; i++) { // was 4
-          msg = '*' + pnrModel.pNR.rLOC + '~x';
-          http.Response response = await http
-              .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-              .catchError((resp) {});
-          if (response == null) {
-          setState(() {
-          _displayProcessingIndicator = false;
-          });
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
-          return null;
-          }
-
-          //If there was an error return an empty list
-          if (response.statusCode < 200 || response.statusCode >= 300) {
-          setState(() {
-          _displayProcessingIndicator = false;
-          });
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
-          return null;
-          } else if (response.body.contains('ERROR - ') ||
-          response.body.contains('ERROR:')) {
-          _error = response.body
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '')
-              .replaceAll('ERROR - ', '')
-              .trim(); // 'Please check your details';
-          _dataLoaded();
-          //_showDialog();
-          _gotoPreviousPage();
-          return;
-          } else {
-          String pnrJson = response.body
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '');
-          Map map = json.decode(pnrJson);
-
-          pnrModel = new PnrModel.fromJson(map);
-          }
-
-          if (!pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-          if (noFLts == pnrModel.flightCount()) {
-          flightsConfirmed = true;
-          } else {
-          flightsConfirmed = false;
-          }
-          break;
-          }
-          await new Future.delayed(const Duration(seconds: 4)); // was 2
-          //sleep(const Duration(seconds: 2));
-          }
-          }
-          }
-          if (flightsConfirmed) {
-          _dataLoaded();
-          gotoChoosePaymentPage();
-          } else {
-          setState(() {
-          _displayProcessingIndicator = false;
-          });
-          _error = translate('Unable to confirm partner airlines flights.');
-          //showSnackBar();
-          logit('Unable to confirm partner airlines flights.');
-          Navigator.pop(context, _error);
-          return null;
-          }
-          } catch (e) {
-        _error = data
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '');
-        print(_error);
-        _dataLoaded();
-        _showDialog();
-      }
-
-
-
-    } else {
-        http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-        .catchError((resp) {});
-
-      if (response == null) {
-        //return new ParsedResponse(NO_INTERNET, []);
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-        // return new ParsedResponse(response.statusCode, []);
-      }
-      try {
-        bool flightsConfirmed = true;
-        if (response.body.contains('ERROR - ') ||
-            response.body.contains('ERROR:')) {
-          _error = response.body
-              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '')
-              .replaceAll('ERROR - ', '')
-              .trim(); // 'Please check your details';
-
-          if (response.body.contains('TOO MANY UMNR')) {
             setState(() {
               _displayProcessingIndicator = false;
               _tooManyUmnr = true;
@@ -532,7 +387,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           _gotoPreviousPage();
           return;
         } else {
-          String pnrJson = response.body
+          String pnrJson =data
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
@@ -541,19 +396,17 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           pnrModel = new PnrModel.fromJson(map);
           print(pnrModel.pNR.rLOC);
           //bool flightsConfirmed = true;
-          if (pnrModel.hasNonHostedFlights() &&
-              pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-            int noFLts = pnrModel
-                .flightCount(); //if external flights aren't confirmed they get removed from the PNR
-            // which makes it look like the flights are confirmed
+          if (pnrModel.hasNonHostedFlights() && pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+            //if external flights aren't confirmed they get removed from the PNR which makes it look like the flights are confirmed
+            int noFLts = pnrModel.flightCount();
 
             flightsConfirmed = false;
             for (var i = 0; i < 10; i++) { // was 4
               msg = '*' + pnrModel.pNR.rLOC + '~x';
-              response = await http
-                  .get(Uri.parse(
-                  "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-                  .catchError((resp) {});
+              http.Response response = await http.get(Uri.parse(
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+              headers: getXmlHeaders())
+              .catchError((resp) {});
               if (response == null) {
                 setState(() {
                   _displayProcessingIndicator = false;
@@ -571,23 +424,22 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                 //showSnackBar(translate('Please, check your internet connection'));
                 noInternetSnackBar(context);
                 return null;
-              } else if (response.body.contains('ERROR - ') ||
-                  response.body.contains('ERROR:')) {
+              } else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
                 _error = response.body
-                    .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-                    .replaceAll('<string xmlns="http://videcom.com/">', '')
-                    .replaceAll('</string>', '')
-                    .replaceAll('ERROR - ', '')
-                    .trim(); // 'Please check your details';
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '')
+                  .replaceAll('ERROR - ', '')
+                  .trim(); // 'Please check your details';
                 _dataLoaded();
                 //_showDialog();
                 _gotoPreviousPage();
                 return;
               } else {
                 String pnrJson = response.body
-                    .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-                    .replaceAll('<string xmlns="http://videcom.com/">', '')
-                    .replaceAll('</string>', '');
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '');
                 Map map = json.decode(pnrJson);
 
                 pnrModel = new PnrModel.fromJson(map);
@@ -606,6 +458,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             }
           }
         }
+
         if (flightsConfirmed) {
           _dataLoaded();
           gotoChoosePaymentPage();
@@ -620,14 +473,163 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           return null;
         }
       } catch (e) {
-        _error = response.body
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '');
+        _error = data
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
         print(_error);
         _dataLoaded();
         _showDialog();
       }
+
+    } else {
+        print("Calling ${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg");
+
+        http.Response response = await http.get(Uri.parse(
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+            headers: getXmlHeaders())
+        .catchError((resp) {});
+
+        if (response == null) {
+          //return new ParsedResponse(NO_INTERNET, []);
+          setState(() {
+            _displayProcessingIndicator = false;
+          });
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
+          return null;
+        }
+
+        //If there was an error return an empty list
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          setState(() {
+            _displayProcessingIndicator = false;
+          });
+          //showSnackBar(translate('Please, check your internet connection'));
+          noInternetSnackBar(context);
+          return null;
+          // return new ParsedResponse(response.statusCode, []);
+        }
+
+        try {
+          bool flightsConfirmed = true;
+          if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
+            _error = response.body
+                .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                .replaceAll('<string xmlns="http://videcom.com/">', '')
+                .replaceAll('</string>', '')
+                .replaceAll('ERROR - ', '')
+                .trim(); // 'Please check your details';
+
+            if (response.body.contains('TOO MANY UMNR')) {
+              setState(() {
+                _displayProcessingIndicator = false;
+                _tooManyUmnr = true;
+              });
+              return null;
+            }
+            _dataLoaded();
+            print('makeBooking $_error');
+            //_showDialog();
+            _gotoPreviousPage();
+            return;
+          } else {
+            String pnrJson = response.body
+                .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                .replaceAll('<string xmlns="http://videcom.com/">', '')
+                .replaceAll('</string>', '');
+            Map map = json.decode(pnrJson);
+
+            pnrModel = new PnrModel.fromJson(map);
+            print(pnrModel.pNR.rLOC);
+            //bool flightsConfirmed = true;
+            if (pnrModel.hasNonHostedFlights() && pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+              //if external flights aren't confirmed they get removed from the PNR which makes it look like the flights are confirmed
+              int noFLts = pnrModel.flightCount();
+
+              flightsConfirmed = false;
+              for (var i = 0; i < 10; i++) { // was 4
+                msg = '*' + pnrModel.pNR.rLOC + '~x';
+                response = await http
+                    .get(Uri.parse(
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+                    headers: getXmlHeaders())
+                    .catchError((resp) {});
+                if (response == null) {
+                  setState(() {
+                    _displayProcessingIndicator = false;
+                  });
+                  //showSnackBar(translate('Please, check your internet connection'));
+                  noInternetSnackBar(context);
+                  return null;
+                }
+
+                //If there was an error return an empty list
+                if (response.statusCode < 200 || response.statusCode >= 300) {
+                  setState(() {
+                    _displayProcessingIndicator = false;
+                  });
+                  //showSnackBar(translate('Please, check your internet connection'));
+                  noInternetSnackBar(context);
+                  return null;
+                } else if (response.body.contains('ERROR - ') ||
+                    response.body.contains('ERROR:')) {
+                  _error = response.body
+                      .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                      .replaceAll('<string xmlns="http://videcom.com/">', '')
+                      .replaceAll('</string>', '')
+                      .replaceAll('ERROR - ', '')
+                      .trim(); // 'Please check your details';
+                  _dataLoaded();
+                  //_showDialog();
+                  _gotoPreviousPage();
+                  return;
+                } else {
+                  String pnrJson = response.body
+                      .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                      .replaceAll('<string xmlns="http://videcom.com/">', '')
+                      .replaceAll('</string>', '');
+                  Map map = json.decode(pnrJson);
+
+                  pnrModel = new PnrModel.fromJson(map);
+                }
+
+                if (!pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+                  if (noFLts == pnrModel.flightCount()) {
+                    flightsConfirmed = true;
+                  } else {
+                    flightsConfirmed = false;
+                  }
+                  break;
+                }
+                await new Future.delayed(const Duration(seconds: 4)); // was 2
+                //sleep(const Duration(seconds: 2));
+              }
+            }
+          }
+
+          if (flightsConfirmed) {
+            _dataLoaded();
+            gotoChoosePaymentPage();
+          } else {
+            setState(() {
+              _displayProcessingIndicator = false;
+            });
+            _error = translate('Unable to confirm partner airlines flights.');
+            //showSnackBar();
+            logit('Unable to confirm partner airlines flights.');
+            Navigator.pop(context, _error);
+            return null;
+          }
+        } catch (e) {
+          _error = response.body
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '');
+          print(_error);
+          _dataLoaded();
+          _showDialog();
+        }
     }
   }
 

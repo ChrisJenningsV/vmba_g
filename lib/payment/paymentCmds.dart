@@ -12,6 +12,8 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../Helpers/networkHelper.dart';
+
 
 
 Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context) async {
@@ -32,7 +34,7 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   cmd += addFg(mmbBooking.currency, true);
   cmd += addFareStore(true);
 
-  if( gblUseWebApiforVrs) {
+  if( gblSettings.useWebApiforVrs) {
     cmd += '*r~x';
   } else {
     cmd += 'E*r~x';
@@ -88,7 +90,8 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
   print(msg);
   response = await http
       .get(Uri.parse(
-      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+      headers: getXmlHeaders())
       .catchError((resp) {});
 
   if (response == null) {
@@ -137,7 +140,8 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
         msg = '*' + pnrModel.pNR.rLOC + '~x';
         response = await http
             .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+            headers: getXmlHeaders())
             .catchError((resp) {});
         if (response == null) {
 /*          setState(() {
@@ -203,7 +207,8 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
     });
     response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+        headers: getXmlHeaders())
         .catchError((resp) {});
     return null;
   }
@@ -246,7 +251,8 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
   }
   response = await http
       .get(Uri.parse(
-      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+      headers: getXmlHeaders())
       .catchError((resp) {});
 
   if (response == null) {
@@ -350,7 +356,8 @@ void saveChanges(BuildContext context)  async{
   print(msg);
   response = await http
       .get(Uri.parse(
-      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+      headers: getXmlHeaders())
       .catchError((resp) {});
 
   if (response == null) {

@@ -24,6 +24,9 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/data/models/vrsRequest.dart';
+
+import '../Helpers/networkHelper.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -648,12 +651,30 @@ class _CheckinBoardingPassesWidgetState
   }
 
   Future _sendVrsCheckinCommand(String cmd) async {
-    String msg = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        '&Command=' +
-        cmd;
-    print(msg);
-    final response = await http.get(Uri.parse(msg));
+    String msg = '';
+    if( gblSettings.useWebApiforVrs) {
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+       msg = json.encode(
+              VrsApiRequest(
+                gblSession, cmd,
+                gblSettings.xmlToken.replaceFirst('token=', ''),
+                vrsGuid: gblSettings.vrsGuid,
+                notifyToken: gblNotifyToken,
+                rloc: gblCurrentRloc,
+                phoneId: gblDeviceId
+              )
+          );
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+    }
+    else {
+       msg = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          '&Command=' + cmd;
+    }
+
+    print("_sendVrsCheckinCommand::${msg}");
+
+    final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     //Map map;
     if (response.statusCode == 200) {
       try {
@@ -707,7 +728,8 @@ class _CheckinBoardingPassesWidgetState
     //       'Can\'t check in all passengers as APIS information not complete');
     // }
 
-    if (apisPnrStatus.apisRequired(currentJourneyNo) &&
+    if (apisPnrStatus != null &&
+      apisPnrStatus.apisRequired(currentJourneyNo) &&
         !apisPnrStatus.apisInfoEnteredAll(currentJourneyNo)) {
       widget.showSnackBar(
           'Can\'t check in all passengers as APIS information not complete');
@@ -1936,13 +1958,31 @@ class _CheckinBoardingPassesWidgetState
   }
 
   _sendAutoseatCommand(String cmd) async {
-    String msg = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        '&Command=' +
-        cmd;
-    print(msg);
+    String msg = '';
+    if( gblSettings.useWebApiforVrs) {
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+      msg = json.encode(
+          VrsApiRequest(
+              gblSession, cmd,
+              gblSettings.xmlToken.replaceFirst('token=', ''),
+              vrsGuid: gblSettings.vrsGuid,
+              notifyToken: gblNotifyToken,
+              rloc: gblCurrentRloc,
+              phoneId: gblDeviceId
+          )
+      );
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+    }
+    else {
+      msg = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          '&Command=' +
+          cmd;
+    }
+
+    print('_sendAutoseatCommand::${msg}');
     //final response = await
-    http.get(Uri.parse(msg)).then((response) {
+    http.get(Uri.parse(msg),headers: getXmlHeaders()).then((response) {
       //Map map;
       if (response.statusCode == 200) {
         try {
@@ -1951,6 +1991,9 @@ class _CheckinBoardingPassesWidgetState
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
+
+          print('_sendAutoseatCommand_vrsResponse::${vrsResponse}');
+
           if (!vrsResponse.contains('ERROR')) {
             Repository.get().fetchPnr(widget.rloc).then((v) {
               _autoSeatCompleted(v);
@@ -2041,9 +2084,8 @@ class _CheckinBoardingPassesWidgetState
     paxList.forEach((p) => cmd.write('${p.paxNo},'));
 
     //print(cmd.toString());
-    print(cmd.toString().substring(0, cmd.toString().length - 1));
-    _sendAutoseatCommand(
-        cmd.toString().substring(0, cmd.toString().length - 1));
+    print('_autoseat vrsCmd = ${cmd.toString().substring(0, cmd.toString().length - 1)}');
+    _sendAutoseatCommand(cmd.toString().substring(0, cmd.toString().length - 1));
     //  .then((v) {
     //   if (v) {
     //   _displayCheckingAllDialog(pnr, journey);
