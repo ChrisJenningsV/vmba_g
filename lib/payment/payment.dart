@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -14,6 +13,7 @@ import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
+import '../Helpers/networkHelper.dart';
 import '../data/repository.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:vmba/data/globals.dart';
@@ -220,9 +220,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   Future _sendVRSCommand(msg) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: msg);
 
     if (response.statusCode == 200) {
@@ -283,7 +281,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       print(msg);
       response = await http
           .get(Uri.parse(
-              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+          headers: getXmlHeaders())
           .catchError((resp) {});
       if (response == null) {
         setState(() {
@@ -329,7 +328,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
             response = await http
                 .get(Uri.parse(
-                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+                headers: getXmlHeaders())
                 .catchError((resp) {});
             if (response == null) {
               setState(() {
@@ -393,7 +393,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         });
         response = await http
             .get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
+            headers: getXmlHeaders())
             .catchError((resp) {});
         return null;
       }
@@ -450,7 +451,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
       response = await http
           .get(Uri.parse(
-              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+          headers: getXmlHeaders())
           .catchError((resp) {});
 
       if (response == null) {
@@ -523,7 +525,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             '=o';
 //        http.Response reponse = await http
         await http.get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+            headers: getXmlHeaders())
             .catchError((resp) {});
       }
     }
@@ -537,7 +540,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
     response = await http
         .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"),
+        headers: getXmlHeaders())
         .catchError((resp) {});
 
     if (response == null) {

@@ -9,13 +9,14 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
+String gblBuildFlavor = 'UZ';
+bool gblIsLive = true;
+
 String gblAppTitle ;
 String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
-String gblBuildFlavor = 'LM'
-    '';
 String gblError = '';
 String gblErrorTitle = '';
 String gblSine = '';
@@ -32,9 +33,8 @@ String gblDeviceId;
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = true;
+bool gblUseCache = false;
 bool gblIsIos = false;
-bool gblIsLive = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;
 bool gblTimerExpired = false;
@@ -54,7 +54,7 @@ Settings gblSettings;
 bool gblNoNetwork;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
-bool  gblUseWebApiforVrs = false;
+//bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
 enum VrsCmdType {bookSeats, loadSeatplan}

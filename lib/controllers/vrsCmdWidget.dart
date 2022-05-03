@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -12,6 +11,8 @@ import 'package:vmba/data/models/products.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
 import 'package:vmba/utilities/helper.dart';
+
+import '../Helpers/networkHelper.dart';
 //import 'package:vmba/Products/widgets/productsWidget.dart';
 
 
@@ -212,54 +213,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
     });
   }
 
-/*
-  _loadData() async {
-    setLoadState(LoadState.loading);
-    _displayProcessingIndicator = true;
-    final http.Response response = await http.post(
-        Uri.parse(_url),
-        headers: {'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
-        body: _msg);
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      _displayProcessingIndicator = false;
-      print('message send successfully: $_msg' );
-      saveData(response.body.trim());
-      setLoadState(LoadState.loaded);
-      setState(() {
-
-      });
-      return response.body.trim();
-    } else {
-      _displayFinalError = true;
-      _error = response.body;
-      if(response.body.startsWith('{')){
-        try {
-          Map m = jsonDecode(response.body);
-          if(m['errors'] != null ){
-            _error = m['errors'].values.toList()[0][0];
-          }
-        } catch(e) {
-          logit(e.toString());
-        }
-
-      }
-      print('failed: $_msg');
-      try{
-        print (response.body);
-        setLoadState(LoadState.loadFailed);
-        setState(() {
-
-        });
-      } catch(e){}
-
-    }
-  }
-
- */
   void _initData(VrsCmdParams params) {
 
     switch(params.dataType){
@@ -307,9 +261,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
 Future _sendVRSCommand(msg) async {
   final http.Response response = await http.post(
       Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-      headers: {'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },
+      headers: getApiHeaders(),
       body: msg);
 
   if (response.statusCode == 200) {
@@ -324,9 +276,7 @@ Future _sendVRSCommand(msg) async {
 Future _sendVRSCommandList(msg) async {
   final http.Response response = await http.post(
       Uri.parse(gblSettings.apiUrl + "/RunVRSCommandList"),
-      headers: {'Content-Type': 'application/json',
-        'Videcom_ApiKey': gblSettings.apiKey
-      },
+      headers: getApiHeaders(),
       body: msg);
 
   if (response.statusCode == 200) {

@@ -26,7 +26,7 @@ class AppDatabase {
   final String tableNameAppData = "AppData";
   final String tableNameVRSBoardingPasses = "VRSBoardingPasses";
 
-  static final _databaseVersion = 5;
+  static final _databaseVersion = 6;
 
   Database db;
 
@@ -62,6 +62,7 @@ class AppDatabase {
               "${City.dbCode} TEXT PRIMARY KEY,"
               "${City.dbName} TEXT,"
               "${City.dbShortName} TEXT,"
+              "${City.dbMobileBarcodeType} TEXT,"
               "${City.dbWebCheckinEnabled} INTEGER,"
               "${City.dbWebCheckinStart} INTEGER,"
               "${City.dbWebCheckinEnd} INTEGER"
@@ -134,6 +135,10 @@ class AppDatabase {
             await db.execute(
                 'ALTER TABLE $tableNameCities ADD ${City.dbShortName} TEXT');
           }
+          if (oldVersion < 6) {
+            await db.execute(
+                'ALTER TABLE $tableNameCities ADD ${City.dbMobileBarcodeType} TEXT');
+          }
         });
     didInit = true;
   }
@@ -186,10 +191,10 @@ class AppDatabase {
   Future updateCity(City city) async {
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameCities(${City.dbCode}, ${City.dbName},${City
-        .dbShortName}, ${City.dbWebCheckinEnabled}, ${City
+        '$tableNameCities(${City.dbCode}, ${City.dbName},${City.dbShortName}, '
+        '${City.dbMobileBarcodeType}, ${City.dbWebCheckinEnabled}, ${City
         .dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
-        ' VALUES("${city.code}", "${city.name}", "${city.shortName}", "${city
+        ' VALUES("${city.code}", "${city.name}", "${city.shortName}", "${city.mobileBarcodeType}", "${city
         .webCheckinEnabled}", "${city.webCheckinStart}", "${city
         .webCheckinEnd}")');
   }
@@ -201,14 +206,14 @@ class AppDatabase {
     cities.cities
       ..forEach((c) =>
       values +=
-      "('${c.code}', '${c.name}', '${c.shortName}', ${c.webCheckinEnabled}, ${c
+      "('${c.code}', '${c.name}', '${c.shortName}', '${c.mobileBarcodeType}', ${c.webCheckinEnabled}, ${c
           .webCheckinStart}, ${c.webCheckinEnd}),");
     //  '("${c.code}", "${c.name}", "${c.webCheckinEnabled}", "${c.webCheckinStart}", "${c.webCheckinEnd}"),');
     values = values.substring(0, values.length - 1);
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
         '$tableNameCities(${City.dbCode}, ${City.dbName}, ${City
-        .dbShortName}, ${City.dbWebCheckinEnabled}, ${City
+        .dbShortName}, ${City.dbMobileBarcodeType}, ${City.dbWebCheckinEnabled}, ${City
         .dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
         ' VALUES $values');
   }
@@ -238,6 +243,7 @@ class AppDatabase {
           code: code,
           name: '',
           shortName: '',
+          mobileBarcodeType: '',
           webCheckinEnabled: 0,
           webCheckinStart: 96,
           webCheckinEnd: 1);

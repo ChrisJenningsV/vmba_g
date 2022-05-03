@@ -139,14 +139,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvCommand(gblUseWebApiforVrs == false)).then((rs) async {
+    Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();
         _dataLoaded();
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});
-        Repository.get().getAv(getAvCommand(gblUseWebApiforVrs == false)).then((rs) {
+        Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
           objAv = rs.body;
           removeDepartedFlights();
           _dataLoaded();

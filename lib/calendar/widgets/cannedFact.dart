@@ -9,7 +9,7 @@ class CannedFactWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (flt.first.fltdet.canfac.fac != '') {
+    if (flt.first.fltdet.canfac != null && flt.first.fltdet.canfac.fac != '') {
       return Column(
         children: <Widget>[
           Row(

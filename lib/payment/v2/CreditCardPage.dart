@@ -21,6 +21,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/components/showDialog.dart';
 
+import '../../Helpers/networkHelper.dart';
+
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({
     Key key,
@@ -187,10 +189,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Videcom_ApiKey': gblSettings.apiKey
-        },
+        headers: getApiHeaders(),
         body: msg);
 
     if (response.statusCode == 200) {
@@ -368,6 +367,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
             Repository.get()
                 .updatePnr(pnrDBCopy)
+                .then((_) => sendEmailConfirmation(pnrModel))
                 .then((n) => getArgs(pnrModel.pNR))
                 .then((arg) {
               Navigator.of(context).pushNamedAndRemoveUntil(

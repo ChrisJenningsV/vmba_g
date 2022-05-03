@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
 import 'dart:convert';
@@ -549,7 +548,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text('Alloacted Seats',
+                Text('Allocated Seats',
                     style: TextStyle(fontWeight: FontWeight.w700))
               ],
             ),
@@ -1124,7 +1123,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
-          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete),
+          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
 /*
           AlertDialog(
             title: new TrText("Payment Error"),
@@ -1209,7 +1208,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(){
-    gblPaymentMsg = null;
+    Navigator.of(context).pop();
+    //gblPaymentMsg = null;
   }
 
   Widget _getMiles() {
@@ -1349,42 +1349,48 @@ List<Widget> getPayOptions(String amount, String cur) {
           )
         ],
       ));
+    if( gblSettings.termsAndConditionsUrl != null &&  gblSettings.termsAndConditionsUrl.isNotEmpty  ) {
       list.add(Divider());
-    list.add(Row(
+      list.add(Row(
         mainAxisAlignment:
         MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TrText('Terms & Conditions'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () => Navigator.push(
-                context,
-                SlideTopRoute(
-                    page: WebViewWidget(
-                        title: 'Terms & Conditions',
-                        url: gblSettings
-                            .termsAndConditionsUrl))),
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: WebViewWidget(
+                            title: 'Terms & Conditions',
+                            url: gblSettings
+                                .termsAndConditionsUrl))),
           )
         ],
       ));
-    list.add(Divider());
-    list.add(Row(
+    }
+    if( gblSettings.privacyPolicyUrl != null && gblSettings.privacyPolicyUrl.isNotEmpty ) {
+      list.add(Divider());
+      list.add(Row(
         mainAxisAlignment:
         MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TrText('Privacy Policy'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () => Navigator.push(
-                context,
-                SlideTopRoute(
-                    page: WebViewWidget(
-                        title: translate('Privacy Policy'),
-                        url: gblSettings
-                            .privacyPolicyUrl))),
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    SlideTopRoute(
+                        page: WebViewWidget(
+                            title: translate('Privacy Policy'),
+                            url: gblSettings
+                                .privacyPolicyUrl))),
           )
         ],
       ));
+    }
     list.add(Divider());
 
     if( gblSettings.wantProducts) {

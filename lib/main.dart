@@ -1,5 +1,4 @@
 //import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ import 'package:vmba/utilities/notification_service.dart';
 import 'Services/LoggingService.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
+import 'main_buraq.dart';
 import 'main_fl.dart';
 import 'main_lm.dart';
 import 'main_qi.dart';
@@ -75,6 +75,9 @@ void main() async {
       case 'KG':
         configKG();
         break;
+      case 'UZ':
+        configUZ();
+        break;
       default:
         gblAppTitle='Test Title';
         gblSystemColors = new SystemColors(primaryButtonColor: Colors.red,
@@ -85,19 +88,6 @@ void main() async {
     }
   }
 
-/*  if(gblIsLive == true) {
-    gblSettings.xmlUrl = gblSettings.live_xmlUrl;
-    gblSettings.apisUrl = gblSettings.live_apisUrl;
-    gblSettings.apiUrl = gblSettings.live_apiUrl;
-    gblSettings.creditCardProvider  = gblSettings.live_creditCardProvider;
-  } else {
-    gblSettings.xmlUrl = gblSettings.test_xmlUrl;
-    gblSettings.apisUrl = gblSettings.test_apisUrl;
-    gblSettings.apiUrl = gblSettings.test_apiUrl;
-    gblSettings.creditCardProvider  = gblSettings.test_creditCardProvider;
-  }
-
- */
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

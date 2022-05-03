@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
@@ -21,6 +19,8 @@ import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:simpleprogressdialog/simpleprogressdialog.dart';
+
+import '../../Helpers/networkHelper.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -116,6 +116,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             fastTrack: tkt.fastTrack == null ? '-' : tkt.fastTrack))
         .then((completed) => _boardingPassLoaded());
     dcsStatus();
+    setBarcodeToDisplayAsDefault();
+
     // final df = new DateFormat('ddMMMyyyy');
 
     // String cmd = "BPP" +
@@ -269,6 +271,17 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       _boardingPass.boarding = boardingTime != null ? boardingTime : 60;
       Repository.get().updateBoardingPass(_boardingPass);
     });
+  }
+
+  Future<void> setBarcodeToDisplayAsDefault() async {
+    String departCity = widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart;
+    String barcodeType = await mobileBarcodeTypeForCity(departCity);
+    if (barcodeType == 'PDF_417'){
+      setState(() {
+        //Switch to displaying the PDF_417 barcode
+        _barCodeScanError = true;
+      });
+    }
   }
 
   String getBarCodeData() {
@@ -426,402 +439,404 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10), //EdgeInsets.all(20.0),
       color: const Color(0xFFFFFFFF),
-      child: Column(
-        //children: <Widget>[
-        //  Column(
-        children: <Widget>[
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
-                          gblSettings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
-                          style: new TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.w700)),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 10.0),
-                            child: Column(
+      child: SingleChildScrollView(
+        child: Column(
+          //children: <Widget>[
+          //  Column(
+          children: <Widget>[
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                            gblSettings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
+                            style: new TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.w700)),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  TrText("FLIGHT", //snapshot.data['passengers'][i],
+                                      style: new TextStyle(
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w200)),
+                                  Text(_boardingPass.fltno,
+                                      style: new TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w700))
+                                ],
+                              ),
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                TrText("FLIGHT", //snapshot.data['passengers'][i],
+                                TrText("DATE", //snapshot.data['passengers'][i],
                                     style: new TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w200)),
-                                Text(_boardingPass.fltno,
+                                Text(
+                                    DateFormat('dd MMM')
+                                        .format(_boardingPass.depdate)
+                                        .toString(),
+                                    //"18 Feb", //snapshot.data['passengers'][i],
                                     style: new TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w700))
                               ],
-                            ),
+                            )
+                          ]),
+                    ],
+                  ),
+                ]),
+            Divider(),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(_boardingPass.depart,
+                    style: new TextStyle(
+                        fontSize: 32.0, fontWeight: FontWeight.w700)),
+                new RotatedBox(
+                    quarterTurns: 1,
+                    child: new Icon(
+                      Icons.airplanemode_active,
+                      size: 32.0,
+                    )),
+                new Text(_boardingPass.arrive,
+                    style: new TextStyle(
+                        fontSize: 32.0, fontWeight: FontWeight.w700))
+              ],
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FutureBuilder(
+                  future: cityCodeToName(
+                    _boardingPass.depart,
+                  ),
+                  initialData: _boardingPass.depart,
+                  builder: (BuildContext context, AsyncSnapshot<String> text) {
+                    return new Text(text.data,
+                        style: new TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w300));
+                  },
+                ),
+                FutureBuilder(
+                  future: cityCodeToName(
+                    _boardingPass.arrive,
+                  ),
+                  initialData: _boardingPass.arrive,
+                  builder: (BuildContext context, AsyncSnapshot<String> text) {
+                    return new Text(text.data,
+                        style: new TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w300));
+                  },
+                ),
+              ],
+            ),
+            Divider(),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new TrText("PASSENGER",
+                    style: new TextStyle(
+                        fontSize: 12.0, fontWeight: FontWeight.w200)),
+                new TrText('CLASS',
+                    style: new TextStyle(
+                        fontSize: 12.0, fontWeight: FontWeight.w200))
+              ],
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: new Text(_boardingPass.paxname,
+                      style: new TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.w700)),
+                ),
+                new Text(
+                    _boardingPass.classBand.toUpperCase() == 'BLUE FLEX'
+                        ? 'BLUE PLUS'
+                        : _boardingPass.classBand.toUpperCase(),
+                    style: new TextStyle(
+                        fontSize: 16.0, fontWeight: FontWeight.w700))
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new TrText('SEAT',
+                        style: new TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                    new Text(_boardingPass.seat,
+                        style: new TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w700))
+                  ],
+                ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new TrText("GATE ",
+                        style: new TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                    new Text(_boardingPass.gate,
+                        style: new TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
+                        style: new TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                    new Text(
+                        DateFormat('HH:mm')
+                            .format(_boardingPass.depdate.subtract(
+                                new Duration(minutes: _boardingPass.boarding)))
+                            .toString(),
+                        style: new TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    new TrText("DEPARTS", //snapshot.data['passengers'][i],
+                        style: new TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                    new Text(
+                        DateFormat('HH:mm')
+                            .format(_boardingPass.depdate)
+                            .toString(),
+                        style: new TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 gbl_settings.bpShowFastTrack                    ? ... : Text('')
+                  children: <Widget>[ new TrText('FAST TRACK',
+                                style: new TextStyle(
+                                    fontSize: 12.0, fontWeight: FontWeight.w200)),
+                            new Text(
+                                _boardingPass.fastTrack.toLowerCase() == 'true'
+                                    ? translate("YES")
+                                    : translate("NO"),
+                                style: new TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700))
+//                      : Text('')
+                  ],
+                ),
+                // new Column(
+                //   crossAxisAlignment: CrossAxisAlignment.end,
+                //   children: <Widget>[
+                //     //gbl_settings.bpShowLoungeAccess
+                //     //    ? [
+                //             new TrText("LOUNGE ACCESS",
+                //                 style: new TextStyle(
+                //                     fontSize: 12.0, fontWeight: FontWeight.w200)),
+                //             new Text(
+                //                 _boardingPass.loungeAccess.toLowerCase() == 'true'
+                //                     ? translate("YES")
+                //                     : translate("NO"),
+                //                 style: new TextStyle(
+                //                     fontSize: 16.0, fontWeight: FontWeight.w700))
+                //       //    ]
+                //       //  : Text(''),
+                //   ],
+                // ),
+              ],
+            ),
+            _barCodeScanError
+                ? Container(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CarouselSlider(
+                            options: CarouselOptions(
+                            height: 0.25 * bodyHeight,
+                            initialPage: 1,
+                            enlargeCenterPage: true,
+                            autoPlay: false,
+                            reverse: false,
+                            enableInfiniteScroll: false,
+                            scrollDirection: Axis.horizontal,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentBarcode = index;
+                              });
+                            }),
+                            items: <Widget>[
+                              Container(
+                                //width: MediaQuery.of(context).size.width,
+                                child: RepaintBoundary(
+                                  key: globalKey,
+                                  child: QrImage(
+                                    data: _boardingPass.barcodedata,
+                                    size: 0.25 * bodyHeight,
+                                    version: 5,
+                                    // onError: (ex) {
+                                    //   print("[QR] ERROR - $ex");
+                                    //   setState(() {
+                                    //     _inputErrorText =
+                                    //         "Error! Maybe your input value is too long?";
+                                    //   });
+                                    // },
+                                  ),
+                                ),
+                              ),
+                              /* old 2d barcode */
+                               Container(
+                                 child: Center(
+                                   child:
+                                   BarcodeWidget(
+                                     barcode: Barcode.pdf417(), // Barcode type and settings
+                                     data: _boardingPass.barcodedata, // Content
+                                     width: _currentBarcode == 1 ? 300 : 1,
+                                     height: 0.15 * bodyHeight,
+                                   ),
+/*                                 BarcodeGenerator(
+                                     witdth: _currentBarcode == 1 ? 300 : 1,
+                                     height: 0.15 * bodyHeight,
+                                     //backgroundColor: Colors.red,
+                                     fromString: _boardingPass.barcodedata,
+                                     codeType: BarCodeType.kBarcodeFormatPDF417,
+                                   ),
+
+ */
+                                 ),
+                               ),
+                              /* end 2d barcode */
+                            ],
                           ),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              TrText("DATE", //snapshot.data['passengers'][i],
-                                  style: new TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w200)),
-                              Text(
-                                  DateFormat('dd MMM')
-                                      .format(_boardingPass.depdate)
-                                      .toString(),
-                                  //"18 Feb", //snapshot.data['passengers'][i],
-                                  style: new TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w700))
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 10.0,
+                                      height: 10.0,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 2.0),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _currentBarcode == 0
+                                            ? Colors.black
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 10.0,
+                                      height: 10.0,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 2.0),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _currentBarcode == 1
+                                            ? Colors.black
+                                            : Colors.grey,
+                                      ),
+                                    )
+                                  ]),
+                              drawAddPassToWalletButton(_boardingPass),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                      width: 275,
+                                      child: _currentBarcode == 1
+                                          ? TrText(
+                                              'If alternate barcode will still not scan, we apologise for the inconvenience. Please present this boading pass to a member of the gate staff.',
+                                              style: TextStyle(
+                                                fontSize: 12.0,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : null)
+                                ],
+                              ),
                             ],
                           )
                         ]),
-                  ],
-                ),
-              ]),
-          Divider(),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Text(_boardingPass.depart,
-                  style: new TextStyle(
-                      fontSize: 32.0, fontWeight: FontWeight.w700)),
-              new RotatedBox(
-                  quarterTurns: 1,
-                  child: new Icon(
-                    Icons.airplanemode_active,
-                    size: 32.0,
-                  )),
-              new Text(_boardingPass.arrive,
-                  style: new TextStyle(
-                      fontSize: 32.0, fontWeight: FontWeight.w700))
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              FutureBuilder(
-                future: cityCodeToName(
-                  _boardingPass.depart,
-                ),
-                initialData: _boardingPass.depart,
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(text.data,
-                      style: new TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w300));
-                },
-              ),
-              FutureBuilder(
-                future: cityCodeToName(
-                  _boardingPass.arrive,
-                ),
-                initialData: _boardingPass.arrive,
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(text.data,
-                      style: new TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w300));
-                },
-              ),
-            ],
-          ),
-          Divider(),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new TrText("PASSENGER",
-                  style: new TextStyle(
-                      fontSize: 12.0, fontWeight: FontWeight.w200)),
-              new TrText('CLASS',
-                  style: new TextStyle(
-                      fontSize: 12.0, fontWeight: FontWeight.w200))
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: new Text(_boardingPass.paxname,
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w700)),
-              ),
-              new Text(
-                  _boardingPass.classBand.toUpperCase() == 'BLUE FLEX'
-                      ? 'BLUE PLUS'
-                      : _boardingPass.classBand.toUpperCase(),
-                  style: new TextStyle(
-                      fontSize: 16.0, fontWeight: FontWeight.w700))
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new TrText('SEAT',
-                      style: new TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.w200)),
-                  new Text(_boardingPass.seat,
-                      style: new TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w700))
-                ],
-              ),
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new TrText("GATE ",
-                      style: new TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.w200)),
-                  new Text(_boardingPass.gate,
-                      style: new TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w700)),
-                ],
-              ),
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
-                      style: new TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.w200)),
-                  new Text(
-                      DateFormat('HH:mm')
-                          .format(_boardingPass.depdate.subtract(
-                              new Duration(minutes: _boardingPass.boarding)))
-                          .toString(),
-                      style: new TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w700)),
-                ],
-              ),
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  new TrText("DEPARTS", //snapshot.data['passengers'][i],
-                      style: new TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.w200)),
-                  new Text(
-                      DateFormat('HH:mm')
-                          .format(_boardingPass.depdate)
-                          .toString(),
-                      style: new TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w700)),
-                ],
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //                 gbl_settings.bpShowFastTrack                    ? ... : Text('')
-                children: <Widget>[ new TrText('FAST TRACK',
-                              style: new TextStyle(
-                                  fontSize: 12.0, fontWeight: FontWeight.w200)),
-                          new Text(
-                              _boardingPass.fastTrack.toLowerCase() == 'true'
-                                  ? translate("YES")
-                                  : translate("NO"),
-                              style: new TextStyle(
-                                  fontSize: 16.0, fontWeight: FontWeight.w700))
-//                      : Text('')
-                ],
-              ),
-              // new Column(
-              //   crossAxisAlignment: CrossAxisAlignment.end,
-              //   children: <Widget>[
-              //     //gbl_settings.bpShowLoungeAccess
-              //     //    ? [
-              //             new TrText("LOUNGE ACCESS",
-              //                 style: new TextStyle(
-              //                     fontSize: 12.0, fontWeight: FontWeight.w200)),
-              //             new Text(
-              //                 _boardingPass.loungeAccess.toLowerCase() == 'true'
-              //                     ? translate("YES")
-              //                     : translate("NO"),
-              //                 style: new TextStyle(
-              //                     fontSize: 16.0, fontWeight: FontWeight.w700))
-              //       //    ]
-              //       //  : Text(''),
-              //   ],
-              // ),
-            ],
-          ),
-          _barCodeScanError
-              ? Container(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  )
+                : Container(
+                    child: Column(
                       children: <Widget>[
-                        CarouselSlider(
-                          options: CarouselOptions(
-                          height: 0.25 * bodyHeight,
-                          initialPage: 1,
-                          enlargeCenterPage: false,
-                          autoPlay: false,
-                          reverse: false,
-                          enableInfiniteScroll: false,
-                          scrollDirection: Axis.horizontal,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentBarcode = index;
-                            });
-                          }),
-                          items: <Widget>[
-                            Container(
-                              //width: MediaQuery.of(context).size.width,
-                              child: RepaintBoundary(
-                                key: globalKey,
-                                child: QrImage(
-                                  data: _boardingPass.barcodedata,
-                                  size: 0.25 * bodyHeight,
-                                  version: 5,
-                                  // onError: (ex) {
-                                  //   print("[QR] ERROR - $ex");
-                                  //   setState(() {
-                                  //     _inputErrorText =
-                                  //         "Error! Maybe your input value is too long?";
-                                  //   });
-                                  // },
-                                ),
-                              ),
+                        Center(
+                          child: RepaintBoundary(
+                            key: globalKey,
+                            child: QrImage(
+                              data: _boardingPass.barcodedata,
+                              size: 0.25 * bodyHeight,
+                              version: 5,
+                              // onError: (ex) {
+                              //   print("[QR] ERROR - $ex");
+                              //   setState(() {
+                              //     _inputErrorText =
+                              //         "Error! Maybe your input value is too long?";
+                              //   });
+                              // },
                             ),
-                            /* old 2d barcode */
-                             Container(
-                               child: Center(
-                                 child:
-                                 BarcodeWidget(
-                                   barcode: Barcode.pdf417(), // Barcode type and settings
-                                   data: _boardingPass.barcodedata, // Content
-                                   width: _currentBarcode == 1 ? 300 : 1,
-                                   height: 0.15 * bodyHeight,
-                                 ),
-/*                                 BarcodeGenerator(
-                                   witdth: _currentBarcode == 1 ? 300 : 1,
-                                   height: 0.15 * bodyHeight,
-                                   //backgroundColor: Colors.red,
-                                   fromString: _boardingPass.barcodedata,
-                                   codeType: BarCodeType.kBarcodeFormatPDF417,
-                                 ),
-
- */
-                               ),
-                             ),
-                            /* end 2d barcode */
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentBarcode == 0
-                                          ? Colors.black
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentBarcode == 1
-                                          ? Colors.black
-                                          : Colors.grey,
-                                    ),
-                                  )
-                                ]),
-                            drawAddPassToWalletButton(_boardingPass),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                    width: 275,
-                                    child: _currentBarcode == 1
-                                        ? TrText(
-                                            'If alternate barcode will still not scan, we apologise for the inconvenience. Please present this boading pass to a member of the gate staff.',
-                                            style: TextStyle(
-                                              fontSize: 12.0,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : null)
-                              ],
-                            ),
-                          ],
-                        )
-                      ]),
-                )
-              : Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Center(
-                        child: RepaintBoundary(
-                          key: globalKey,
-                          child: QrImage(
-                            data: _boardingPass.barcodedata,
-                            size: 0.25 * bodyHeight,
-                            version: 5,
-                            // onError: (ex) {
-                            //   print("[QR] ERROR - $ex");
-                            //   setState(() {
-                            //     _inputErrorText =
-                            //         "Error! Maybe your input value is too long?";
-                            //   });
-                            // },
                           ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          (gblSettings.want2Dbarcode ) // gblSettings.aircode == 'LM'
-                              ? TextButton(
-                                  child: TrText(
-                                    "This barcode did not scan",
-                                    style: TextStyle(
-                                      color: gblSystemColors.textButtonTextColor,
-                                      fontSize: 12.0,
-                                      decoration: TextDecoration.underline,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            (gblSettings.want2Dbarcode ) // gblSettings.aircode == 'LM'
+                                ? TextButton(
+                                    child: TrText(
+                                      "This barcode did not scan",
+                                      style: TextStyle(
+                                        color: gblSystemColors.textButtonTextColor,
+                                        fontSize: 12.0,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _barCodeScanError = true;
-                                    });
-                                  },
-                                )
-                              : Text('')
-                        ],
-                      ),
-                      drawAddPassToWalletButton(_boardingPass),
-                    ],
+                                    onPressed: () {
+                                      setState(() {
+                                        _barCodeScanError = true;
+                                      });
+                                    },
+                                  )
+                                : Text('')
+                          ],
+                        ),
+                        drawAddPassToWalletButton(_boardingPass),
+                      ],
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -916,7 +931,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     url = Uri.encodeFull(url);
 
     //Invoke web API call with query params appended to create a JWT Google Boarding Pass representation
-    final response = await http.get(Uri.parse(url), headers: <String, String>{'Videcom_ApiKey': gblSettings.apiKey });
+    final response = await http.get(Uri.parse(url), headers: getApiHeaders());
     if (response.statusCode == 200) {
       skinnyPassJwtUrl = response.body;
     }

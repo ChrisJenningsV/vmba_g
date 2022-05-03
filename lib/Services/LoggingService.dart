@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../Helpers/networkHelper.dart';
+
 
 
 Future <bool> serverLog(String msg) async {
@@ -15,10 +17,7 @@ Future <bool> serverLog(String msg) async {
     //"${gbl_settings.xmlUrl}${gbl_settings.xmlToken}&command=ssrpmacitylist")
     Uri.parse(
         '${gblSettings.apiUrl}/logging/LogMsg'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Videcom_ApiKey': gblSettings.apiKey
-    },
+    headers: getApiHeaders(),
       body: JsonEncoder().convert(msg)
     ).catchError((resp) {});
 

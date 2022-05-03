@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
@@ -95,6 +94,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
         } else {
           gblPayBtnDisabled = false;
           gblPaymentState = PaymentState.needCheck;
+          String reply = await callSmartApi('CANCELPAYMENT', "");
           Navigator.pop(context);
         }
       },

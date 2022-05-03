@@ -35,8 +35,9 @@ class City {
   static final dbWebCheckinEnabled = "webCheckinEnabled";
   static final dbWebCheckinStart = "webCheckinStart";
   static final dbWebCheckinEnd = "webCheckinEnd";
+  static final dbMobileBarcodeType = "mobileBarcodeType";
 
-  String code, name,shortName;
+  String code, name, shortName, mobileBarcodeType;
   int webCheckinEnabled, webCheckinStart, webCheckinEnd;
 
   City({
@@ -46,6 +47,7 @@ class City {
     @required this.webCheckinEnabled,
     @required this.webCheckinStart,
     @required this.webCheckinEnd,
+    @required this.mobileBarcodeType,
   });
 
   City.fromMap(Map<String, dynamic> map)
@@ -56,6 +58,7 @@ class City {
           webCheckinEnabled: map[dbWebCheckinEnabled],
           webCheckinStart: map[dbWebCheckinStart],
           webCheckinEnd: map[dbWebCheckinEnd],
+          mobileBarcodeType: map[dbMobileBarcodeType],
         );
 
   // Currently not used
@@ -67,6 +70,7 @@ class City {
       dbWebCheckinEnabled: webCheckinEnabled,
       dbWebCheckinStart: webCheckinStart,
       dbWebCheckinEnd: webCheckinEnd,
+      dbMobileBarcodeType: mobileBarcodeType,
     };
   }
 
@@ -77,6 +81,7 @@ class City {
     webCheckinEnabled = (json['webCheckinEnabled'] == true || json['webCheckinEnabled'] == 'true')  ? 1 : 0;
     webCheckinStart = json['webCheckinStart'];
     webCheckinEnd = json['webCheckinEnd'];
+    mobileBarcodeType = json['mobileBarcodeType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +92,7 @@ class City {
     data['webCheckinEnabled'] = this.webCheckinEnabled == 1 ? 'true' : 'false';
     data['webCheckinStart'] = this.webCheckinStart;
     data['webCheckinEnd'] = this.webCheckinEnd;
+    data['mobileBarcodeType'] = this.mobileBarcodeType;
     return data;
   }
 }
