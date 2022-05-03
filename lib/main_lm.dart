@@ -82,7 +82,7 @@ void configLM() {
     searchDateOut: 1,
     searchDateBack: 6,
 
-
+    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
   adults: true,
   child: true,
@@ -140,7 +140,7 @@ void configLM() {
   wantNewEditPax: true,
   wantMaterialControls: true,
   wantCitySwap: true,
-  wantPushNoticications: false,
+  wantPushNoticications: true,
   wantNotificationEdit: false,
   wantRefund: true,
   wantNewPayment: false,
