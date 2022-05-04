@@ -59,6 +59,7 @@ void configUZ() {
   termsAndConditionsUrl: ' https://buraq.aero/terms-and-conditions/',
    privacyPolicyUrl:  'https://buraq.aero/privacy-policy/',
   prohibitedItemsNoticeUrl:  'https://buraq.aero/prohibited-items/',
+
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
   locale: 'en-EN',
