@@ -275,7 +275,7 @@ class LocaleModel with ChangeNotifier {
 Future<void> initFirebase(BuildContext context) async {
 
   if( gblIsLive == false ) {
-    serverLog('Starting app $gblAppTitle');
+    //serverLog('Starting app $gblAppTitle');
   }
   logit('InitFirebase');
   NotificationService().init(context);
