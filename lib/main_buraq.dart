@@ -56,11 +56,10 @@ void configUZ() {
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'UZ',
-  termsAndConditionsUrl: '',
-   privacyPolicyUrl:  '',
-  prohibitedItemsNoticeUrl:  '',
-    faqUrl: "",
-    contactUsUrl: "",
+  termsAndConditionsUrl: ' https://buraq.aero/terms-and-conditions/',
+   privacyPolicyUrl:  'https://buraq.aero/privacy-policy/',
+  prohibitedItemsNoticeUrl:  'https://buraq.aero/prohibited-items/',
+
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
   locale: 'en-EN',
@@ -113,14 +112,25 @@ void configUZ() {
  */
 
  //   testPayPage: 'http://10.0.2.2:53851/MobilePaymentStart.aspx',
-   testPayPage: 'https://customertest.videcom.com/buraq/VARS/Public/MobilePaymentStart.aspx',
+ //   testPayPage: 'https://vars-public-cp2.conveyor.cloud/MobilePaymentStart.aspx',
+    testPayPage: 'https://customertest.videcom.com/buraq/VARS/Public/MobilePaymentStart.aspx',
+
 
  //   testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
+ //   testXmlUrl:      "https://vars-public-cp2.conveyor.cloud/WebServices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/buraq/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+
+
+
  //   testXmlUrl:      "http://10.0.2.2:51090/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "https://customertest.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+
   //  testSmartApiUrl:      "http://10.0.2.2:53851/webservices/VrsApi.asmx/MobileSmartApi",
+  //  testSmartApiUrl:      "https://vars-public-cp2.conveyor.cloud/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/buraq/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+
+
+
     testApisUrl:      'https://customertest.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/buraq/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
