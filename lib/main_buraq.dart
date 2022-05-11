@@ -56,9 +56,10 @@ void configUZ() {
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'UZ',
-  termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
-   privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
-  prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
+  termsAndConditionsUrl: ' https://buraq.aero/terms-and-conditions/',
+   privacyPolicyUrl:  'https://buraq.aero/privacy-policy/',
+  prohibitedItemsNoticeUrl:  'https://buraq.aero/prohibited-items/',
+
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
   locale: 'en-EN',
