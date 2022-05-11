@@ -1,0 +1,19 @@
+
+
+
+
+
+
+I solved the issue. If you are using swift in your AppDelegate.swift, make sure you've added the following in that order:
+
+import Firebase
+
+FirebaseApp.configure() //add this before the code below
+GeneratedPluginRegistrant.register(with: self)
+If you're using flutter with objective-c, add the following to your appdelgate.m file:-
+
+
+maybe need ?
+in notification service
+
+registerDeviceForRemoteMessages

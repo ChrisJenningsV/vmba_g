@@ -1091,7 +1091,7 @@ class Repository {
       if (response.statusCode < 200 || response.statusCode >= 300) {
         return new ParsedResponse(response.statusCode, null);
       }
-      if( response.body.contains('ERROR' )){
+      if( response.body.toUpperCase().contains('ERROR' )){
         String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')
           .replaceAll('<string xmlns=\"http://videcom.com/\">', '')
             .replaceAll('</string>', '');
@@ -1491,7 +1491,7 @@ Future<String> runVrsCommand(String cmd) async {
   } else {
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
+        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc"),
         headers: getXmlHeaders())
         .catchError((resp) {
 
