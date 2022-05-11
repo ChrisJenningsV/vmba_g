@@ -97,12 +97,7 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
   List<Widget> list = [];
   List<Widget> list2 = [];
 
-  //String action = '';
-  //String rloc = '';
-  if( data != null ){
-    data['action'];
-    data['rloc'];
-  }
+
 
   list2.add(_getTitle(context, title,  msg, data));
   list2.add(SizedBox(height: 5.0,));
@@ -148,8 +143,11 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
 
     }
     // button(s)
-    if( data['action'] != null && data['rloc'] != null && data['action'].toString().isNotEmpty && data['rloc'].toString().isNotEmpty) {
-      if( data['action'] == 'scheduleChange'){
+    if( data['actions'] != null && data['rloc'] != null && data['actions'].toString().isNotEmpty &&
+        data['rloc'].toString().isNotEmpty) {
+      String actions = data['actions'];
+
+      if( actions.contains('scheduleChange') ){
         list2.add(SizedBox(height: 5.0,));
         list2.add(smallButton( text: translate('Show Booking'), icon: Icons.check,
             onPressed: () {
