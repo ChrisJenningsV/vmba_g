@@ -125,7 +125,8 @@ void configSI() {
   liveApiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
   livePayPage:      'https://booking.blueislands.com/VARS/Public/MobilePaymentStart.aspx',
   liveSmartApiUrl:  "https://booking.blueislands.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-  liveCreditCardProvider: 'citypaydirect',
+    //liveSmartApiUrl:  "https://booking.blueislands.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    liveCreditCardProvider: 'citypaydirect',
 
   apiKey: '4d332cf7134f4a43958d954278474b41', // '2edd1519899a4e7fbf9a307a0db4c17a',
 //Staging setttings
@@ -135,6 +136,7 @@ void configSI() {
   creditCardProvider: 'videcard', // citypaydirect
 
   testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
   testCreditCardProvider: 'videcard', // citypaydirect

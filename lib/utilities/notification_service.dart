@@ -91,6 +91,8 @@ class NotificationService {
         badge: true,
         sound: true,
       );
+      //await firebase.messaging().registerDeviceForRemoteMessages()
+
       FirebaseMessaging.instance.getToken().then((token){
         print('token= ' + token);
         if( gblIsLive == false ) {

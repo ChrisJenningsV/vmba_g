@@ -108,6 +108,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
             WebView(
               initialUrl: _getPayUrl(),
               javascriptMode: JavascriptMode.unrestricted,
+
               onWebViewCreated: (WebViewController webViewController) {
                 _controller.complete(webViewController);
               },

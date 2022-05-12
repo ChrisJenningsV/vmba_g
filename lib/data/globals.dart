@@ -10,7 +10,7 @@ import 'models/providers.dart';
 // initialized in main_XX.dart
 //
 String gblBuildFlavor = 'UZ';
-bool gblIsLive = true;
+bool gblIsLive = false;
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
