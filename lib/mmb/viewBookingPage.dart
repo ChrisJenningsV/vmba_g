@@ -147,6 +147,13 @@ class _CheckinBoardingPassesWidgetState
     Repository.get()
         .getPnr(widget.rloc)
         .then((pnrDb) {
+          if(pnrDb.data.isEmpty) {
+            // load from server
+            _refreshBooking();
+            //loadJourneys(objPNR);
+            return;
+          }
+
           Map<String, dynamic> map = jsonDecode(pnrDb.data);
           // PnrModel
           pnr = new PnrModel.fromJson(map);
@@ -293,6 +300,7 @@ class _CheckinBoardingPassesWidgetState
           pnr = new PnrModel.fromJson(map);
           setState(() {
             objPNR = pnr;
+            loadJourneys(objPNR);
           });
         } else {
 
