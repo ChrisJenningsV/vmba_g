@@ -683,6 +683,7 @@ class Repository {
       code: jsonCity["code"],
       name: jsonCity["name"],
       shortName: jsonCity["shortName"],
+      mobileBarcodeType: jsonCity["mobileBarcodeType"],
       webCheckinEnabled: jsonCity["webCheckinEnabled"] == "True" ? 1 : 0,
       webCheckinStart: int.parse(jsonCity["webCheckinStart"]),
       webCheckinEnd: int.parse(jsonCity["webCheckinEnd"]),
