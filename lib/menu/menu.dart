@@ -85,6 +85,21 @@ class DrawerMenu extends StatelessWidget {
                 '/MyBookingsPage', (Route<dynamic> route) => false);
           },
         ));
+
+      if( gblSettings.wantPushNoticications){
+        //Divider(),
+        list.add(ListTile(
+          dense: dense,
+          title: _getMenuItem(Icons.push_pin_outlined, 'Notifications'),
+          onTap: () {
+            // Update the state of the app
+            // ...
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/MyNotificationsPage', (Route<dynamic> route) => false);
+          },
+        ));
+      }
+
         if( gblNoNetwork == false ) {
           list.add(ListTile(
             dense: dense,

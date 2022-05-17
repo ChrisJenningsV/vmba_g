@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,8 +26,9 @@ class AppDatabase {
   final String tableNameSettings = "Settings";
   final String tableNameAppData = "AppData";
   final String tableNameVRSBoardingPasses = "VRSBoardingPasses";
+  final String tableNameNotifications = "Notifications";
 
-  static final _databaseVersion = 6;
+  static final _databaseVersion = 7;
 
   Database db;
 
@@ -138,6 +140,12 @@ class AppDatabase {
           if (oldVersion < 6) {
             await db.execute(
                 'ALTER TABLE $tableNameCities ADD ${City.dbMobileBarcodeType} TEXT');
+          }
+          if (oldVersion < 7) {
+            await db.execute("CREATE TABLE IF NOT EXISTS $tableNameNotifications ("
+                "${KeyPair.dbName} TEXT,"
+                "${KeyPair.dbValue} TEXT"
+                ");");
           }
         });
     didInit = true;
@@ -781,6 +789,55 @@ class AppDatabase {
     var db = await _getDb();
     await db.rawDelete('DELETE FROM $tableNameSettings;');
   }
+
+
+  Future<List<RemoteMessage>> getAllNotifications() async {
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameNotifications');
+    if (result.length == 0) return [];
+    List<RemoteMessage> notes = []; // new List<City>();
+    for (Map<String, dynamic> map in result) {
+      try {
+        String sMsg = map['value'];
+        sMsg = sMsg.replaceAll('|', '"');
+
+        Map<String, dynamic> jsonMap = json.decode(sMsg);
+
+        Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
+        RemoteNotification not = RemoteNotification( body: notMap['body'],
+              title: notMap['title']);
+        RemoteMessage msg = RemoteMessage(notification: not,
+            category: jsonMap['category'],
+            sentTime: DateTime.parse(jsonMap['sentTime']));
+
+        notes.add(msg);
+      } catch(e) {
+        String m = e.toString();
+      }
+    }
+    return notes;
+  }
+
+  Future deleteNotifications() async {
+    var db = await _getDb();
+    await db.rawDelete('DELETE FROM $tableNameNotifications;');
+  }
+
+  Future deleteNotification(String sTime) async {
+    var db = await _getDb();
+    await db.rawDelete('DELETE FROM $tableNameNotifications WHERE ${KeyPair.dbName}="$sTime";');
+  }
+
+  Future updateNotification(String msg, String sTime) async {
+    String values = '';
+
+
+    var db = await _getDb();
+    await db.rawInsert('INSERT OR REPLACE INTO '
+        '$tableNameNotifications(${KeyPair.dbName}, ${KeyPair.dbValue})'
+        ' VALUES ( "$sTime", "$msg")');
+  }
+
 
   // Future<String> getSetting(String key) async {
   //   var db = await _getDb();

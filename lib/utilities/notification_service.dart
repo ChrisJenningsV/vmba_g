@@ -9,6 +9,7 @@ import 'package:vmba/components/showNotification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../data/repository.dart';
 import '../main.dart';
 import 'helper.dart';
 
@@ -109,6 +110,7 @@ class NotificationService {
         Map data = message.data;
 
         if (notification != null && android != null) {
+          Repository.get().updateNotification(message);
 
         showNotification( NavigationService.navigatorKey.currentContext, notification.title,
         notification.body, message.data);
