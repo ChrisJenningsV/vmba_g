@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '../utilities/helper.dart';
 
 
 
@@ -94,6 +99,9 @@ Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
 
 
 List<Widget> _getBody(BuildContext context, String title,  String msg, Map data) {
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   List<Widget> list = [];
   List<Widget> list2 = [];
 
@@ -108,13 +116,32 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
   Text(title, style: TextStyle(fontWeight: FontWeight.bold),)
   ]));
 */
-  list2.add(Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(msg)
-      ]));
+  // web view
+  if( data['format'] != null && data['format'] == 'HTML') {
+    list2.add(
+        Container(
+            height: 300,
+            width: 400,
+            child: WebView(
+              initialUrl: Uri.dataFromString(
+                  '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' + data['html'] + '</body></html>',
+                  mimeType: 'text/html').toString(),
+/*    javascriptMode: JavascriptMode.unrestricted,
+*/
 
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+
+            )));
+  } else {
+    list2.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(msg)
+        ]));
+  }
   // buttons?
   if(data != null ){
     if( data['image'] != null && data['image'].toString().isNotEmpty) {
