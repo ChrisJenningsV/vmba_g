@@ -711,23 +711,29 @@ class Repository {
     return database.getAllNotifications();
   }
 
-  Future updateNotification(RemoteMessage msg) async {
+  Future updateNotification(RemoteMessage msg, bool background) async {
     try{
 
       final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
-      notifyMap['body'] = msg.notification.body;
-      notifyMap['title'] = msg.notification.title;
-      String sNot = jsonEncode(notifyMap);
+      final Map<String, dynamic> msgMap = new Map<String, dynamic>();
+
+      if( msg.notification != null ) {
+        notifyMap['body'] = msg.notification.body;
+        notifyMap['title'] = msg.notification.title;
+        String sNot = jsonEncode(notifyMap);
+        msgMap['notification'] = sNot;
+      }
 
       final Map<String, dynamic> dataMap = new Map<String, dynamic>();
-      dataMap['body'] = msg.notification.body;
-      dataMap['title'] = msg.notification.title;
+      dataMap['rloc'] = msg.data['rloc'];
+      dataMap['format'] = msg.data['format'];
+      dataMap['html'] = msg.data['html'];
+
       String sData = jsonEncode(dataMap);
 
-      final Map<String, dynamic> msgMap = new Map<String, dynamic>();
       msgMap['category'] = msg.category;
+      msgMap['background'] = background.toString();
       msgMap['sentTime'] = msg.sentTime.toString();
-      msgMap['notification'] = sNot;
       msgMap['data'] = sData;
 
       String sMsg = jsonEncode(msgMap);

@@ -802,10 +802,12 @@ class AppDatabase {
         sMsg = sMsg.replaceAll('|', '"');
 
         Map<String, dynamic> jsonMap = json.decode(sMsg);
-
-        Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
-        RemoteNotification not = RemoteNotification( body: notMap['body'],
+        RemoteNotification not;
+        if( jsonMap['notification'] != null ) {
+          Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
+           not = RemoteNotification(body: notMap['body'],
               title: notMap['title']);
+        }
         RemoteMessage msg = RemoteMessage(notification: not,
             category: jsonMap['category'],
             sentTime: DateTime.parse(jsonMap['sentTime']));

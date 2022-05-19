@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
@@ -8,11 +9,10 @@ import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../utilities/helper.dart';
 
 
 
-void showNotification(BuildContext context, String title,  String msg, Map data) {
+void showNotification(BuildContext context, RemoteNotification notification, Map data) {
   //String time = DateFormat('kk:mm').format(DateTime.now());
   showDialog(
     barrierDismissible: false,
@@ -33,7 +33,7 @@ void showNotification(BuildContext context, String title,  String msg, Map data)
               child:
                   Column(
                 mainAxisSize: MainAxisSize.min,
-                children: _getBody(context, title,  msg, data)
+                children: _getBody(context, notification, data)
 
                 ,
               ),
@@ -60,7 +60,8 @@ void showNotification(BuildContext context, String title,  String msg, Map data)
 }
 
 
-Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
+Widget _getTitle(BuildContext context, RemoteNotification notification, Map data) {
+
   String time = DateFormat('kk:mm').format(DateTime.now());
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,7 +83,7 @@ Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
 /*      ),*/
       SizedBox(width: 5),
   Expanded(
-  child:      Text(title),
+  child: Text(data['title']),     //Text(notification.title),
   ),
       Text(time),
       new IconButton(
@@ -98,7 +99,7 @@ Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
 }
 
 
-List<Widget> _getBody(BuildContext context, String title,  String msg, Map data) {
+List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map data) {
   final Completer<WebViewController> _controller =
   Completer<WebViewController>();
 
@@ -106,8 +107,9 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
   List<Widget> list2 = [];
 
 
-
-  list2.add(_getTitle(context, title,  msg, data));
+ // if (notification != null ) {
+    list2.add(_getTitle(context, notification, data));
+//  }
   list2.add(SizedBox(height: 5.0,));
   /* list2.add(Row(
   mainAxisAlignment: MainAxisAlignment.start,
@@ -135,12 +137,14 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
 
             )));
   } else {
-    list2.add(Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(msg)
-        ]));
+    if( notification != null ) {
+      list2.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(notification.body)
+          ]));
+    }
   }
   // buttons?
   if(data != null ){

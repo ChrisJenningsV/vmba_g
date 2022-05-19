@@ -112,6 +112,12 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
 
   Widget _buildListItem(BuildContext context, RemoteMessage msg) {
 
+    String title = '';
+    String body = '';
+    if (msg != null && msg.notification != null ) {
+      title = msg.notification.title;
+      body = msg.notification.body;
+    }
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
@@ -123,7 +129,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' ${msg.notification.title}', //document['rloc'],
+              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' ${title}', //document['rloc'],
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               GestureDetector(
@@ -134,7 +140,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
             ],
           ),
           new Divider(),
-          Text(msg.notification.body),
+          Text(body),
         ]),
         onPressed: () {
           Navigator.push(
