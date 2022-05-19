@@ -9,8 +9,10 @@ import 'package:vmba/components/showNotification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../data/repository.dart';
 import '../main.dart';
 import 'helper.dart';
+
 
 class NotificationService {
   static final NotificationService _notificationService =
@@ -73,7 +75,7 @@ class NotificationService {
 
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
       channel = const AndroidNotificationChannel(
-        'high_importance_channel', // id
+        'com.domain.appname.urgent',//'high_importance_channel', // id
         'High Importance Notifications', // title
         importance: Importance.high,
       );
@@ -108,12 +110,12 @@ class NotificationService {
         logit('Listener msg received');
         Map data = message.data;
 
-        if (notification != null && android != null) {
+       // if (android != null) { // notification != null &&
+          Repository.get().updateNotification(message, false);
 
-        showNotification( NavigationService.navigatorKey.currentContext, notification.title,
-        notification.body, message.data);
+        showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
 
-          flutterLocalNotificationsPlugin.show(
+     /*     flutterLocalNotificationsPlugin.show(
               notification.hashCode,
               notification.title,
               notification.body,
@@ -127,21 +129,30 @@ class NotificationService {
                   //icon: 'app_icon',
                 ),
               )
-          );
-        }
+          );*/
+    //    }
         FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
           print('A new onMessageOpenedApp event was published!');
-          showNotification( NavigationService.navigatorKey.currentContext, notification.title,
-              notification.body, message.data);
+          showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
  /*         Navigator.pushNamed(context, '/message',
               arguments: MessageArguments(message, true));*/
         });
 
       });
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+/*
+      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) {
+        print('Background message received');
+        Repository.get().updateNotification(message);
+
+      });
+*/
+
+      /*FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('A new onMessageOpenedApp event was published!');
 
       });
+*/
 
 
     } catch(e) {
@@ -149,6 +160,7 @@ class NotificationService {
       showError(e.toString());
     }
   }
+
 
 void onClickNotification(String s) {
     print('onClickNotification');
@@ -183,6 +195,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   //await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
+  Repository.get().updateNotification(message, true);
 
 
 }

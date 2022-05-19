@@ -9,7 +9,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'UZ';
+String gblBuildFlavor = 'LM';
 bool gblIsLive = false;
 
 String gblAppTitle ;

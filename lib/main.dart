@@ -9,6 +9,7 @@ import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
 import 'package:vmba/mmb/myBookingsPage.dart';
+import 'package:vmba/mmb/myNotificationsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
@@ -202,6 +203,7 @@ bool bFirstTime = true;
             ),
         '/MyBookingsPage': (BuildContext context) => new MyBookingsPage(),
         '/AddBookingPage': (BuildContext context) => new  MyBookingsPage(), //AddBooking(),
+        '/MyNotificationsPage': (BuildContext context) => new MyNotificationsPage(),
         '/AdsFlightSearchPage': (BuildContext context) => new FlightSearchPage(
                        ads: true,
                      ),

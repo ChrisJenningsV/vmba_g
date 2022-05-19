@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => new _HomeState();
 }
 
-class _HomeState extends State<HomePage> {
+class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
   AssetImage appBarImage;
   Image appBarImageLeft;
   AssetImage mainBackGroundImage;
@@ -34,6 +34,25 @@ class _HomeState extends State<HomePage> {
   Image alternativeBackgroundImage;
   bool gotBG = false;
   String buildNo = '';
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        print("app in resumed");
+        break;
+      case AppLifecycleState.inactive:
+        print("app in inactive");
+        break;
+      case AppLifecycleState.paused:
+        print("app in paused");
+        break;
+      case AppLifecycleState.detached:
+        print("app in detached");
+        break;
+    }
+  }
 
   @override
   void initState() {
@@ -51,7 +70,13 @@ class _HomeState extends State<HomePage> {
     }
 
     _displayProcessingIndicator = true;
+    WidgetsBinding.instance?.addObserver(this);
     waitAndThenHideProcessingIndicator();
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 
   waitAndThenHideProcessingIndicator() {

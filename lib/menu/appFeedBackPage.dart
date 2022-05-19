@@ -205,6 +205,19 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
                 ),
 
+                const SizedBox(width: 8),
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Delete Notifications'),
+                  onPressed: () {
+
+                    Repository.get().deleteNotifications();
+                  },
+
+                ),
+
 
                 const SizedBox(width: 8),
                 TextButton(

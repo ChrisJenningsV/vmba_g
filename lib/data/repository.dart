@@ -1,6 +1,7 @@
 import 'dart:async' show Future;
 import 'dart:convert';
 import 'dart:developer';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
@@ -705,6 +706,50 @@ class Repository {
   Future<List<City>> getAllCities() {
     return database.getAllCities();
   }
+
+  Future<List<RemoteMessage>> getAllNotifications() {
+    return database.getAllNotifications();
+  }
+
+  Future updateNotification(RemoteMessage msg, bool background) async {
+    try{
+
+      final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
+      final Map<String, dynamic> msgMap = new Map<String, dynamic>();
+
+      if( msg.notification != null ) {
+        notifyMap['body'] = msg.notification.body;
+        notifyMap['title'] = msg.notification.title;
+        String sNot = jsonEncode(notifyMap);
+        msgMap['notification'] = sNot;
+      }
+
+      final Map<String, dynamic> dataMap = new Map<String, dynamic>();
+      dataMap['rloc'] = msg.data['rloc'];
+      dataMap['format'] = msg.data['format'];
+      dataMap['html'] = msg.data['html'];
+
+      String sData = jsonEncode(dataMap);
+
+      msgMap['category'] = msg.category;
+      msgMap['background'] = background.toString();
+      msgMap['sentTime'] = msg.sentTime.toString();
+      msgMap['data'] = sData;
+
+      String sMsg = jsonEncode(msgMap);
+    await database.updateNotification(sMsg.replaceAll('"', '|'), msg.sentTime.toString());
+    } catch(e) {
+      String m = e.toString();
+    }
+  }
+
+  Future deleteNotifications() {
+    return database.deleteNotifications();
+  }
+  Future deleteNotification(String sTime) {
+    return database.deleteNotification(sTime);
+  }
+
 
   Future<City> getCityByCode(String code) {
     return database.getCityByCode(code);

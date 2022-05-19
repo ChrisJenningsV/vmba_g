@@ -1,13 +1,18 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 
 
-void showNotification(BuildContext context, String title,  String msg, Map data) {
+
+void showNotification(BuildContext context, RemoteNotification notification, Map data) {
   //String time = DateFormat('kk:mm').format(DateTime.now());
   showDialog(
     barrierDismissible: false,
@@ -28,7 +33,7 @@ void showNotification(BuildContext context, String title,  String msg, Map data)
               child:
                   Column(
                 mainAxisSize: MainAxisSize.min,
-                children: _getBody(context, title,  msg, data)
+                children: _getBody(context, notification, data)
 
                 ,
               ),
@@ -55,7 +60,8 @@ void showNotification(BuildContext context, String title,  String msg, Map data)
 }
 
 
-Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
+Widget _getTitle(BuildContext context, RemoteNotification notification, Map data) {
+
   String time = DateFormat('kk:mm').format(DateTime.now());
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,7 +83,7 @@ Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
 /*      ),*/
       SizedBox(width: 5),
   Expanded(
-  child:      Text(title),
+  child: Text(data['title']),     //Text(notification.title),
   ),
       Text(time),
       new IconButton(
@@ -93,13 +99,17 @@ Widget _getTitle(BuildContext context, String title,  String msg, Map data) {
 }
 
 
-List<Widget> _getBody(BuildContext context, String title,  String msg, Map data) {
+List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map data) {
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   List<Widget> list = [];
   List<Widget> list2 = [];
 
 
-
-  list2.add(_getTitle(context, title,  msg, data));
+ // if (notification != null ) {
+    list2.add(_getTitle(context, notification, data));
+//  }
   list2.add(SizedBox(height: 5.0,));
   /* list2.add(Row(
   mainAxisAlignment: MainAxisAlignment.start,
@@ -108,13 +118,34 @@ List<Widget> _getBody(BuildContext context, String title,  String msg, Map data)
   Text(title, style: TextStyle(fontWeight: FontWeight.bold),)
   ]));
 */
-  list2.add(Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(msg)
-      ]));
+  // web view
+  if( data['format'] != null && data['format'] == 'HTML') {
+    list2.add(
+        Container(
+            height: 300,
+            width: 400,
+            child: WebView(
+              initialUrl: Uri.dataFromString(
+                  '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' + data['html'] + '</body></html>',
+                  mimeType: 'text/html').toString(),
+/*    javascriptMode: JavascriptMode.unrestricted,
+*/
 
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+
+            )));
+  } else {
+    if( notification != null ) {
+      list2.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(notification.body)
+          ]));
+    }
+  }
   // buttons?
   if(data != null ){
     if( data['image'] != null && data['image'].toString().isNotEmpty) {
