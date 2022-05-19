@@ -92,10 +92,10 @@ void configUZ() {
 
 //Production setttings
 
-  liveXmlUrl:      "https://customer3.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  liveApisUrl:      'https://customer3.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  liveApiUrl:      'https://customer3.videcom.com/buraq/VARS/webApiv2/api/',
-  livePayPage:      'https://customer3.videcom.com/buraq/VARS/Public/MobilePaymentStart.aspx',
+  liveXmlUrl:      "https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveApisUrl:      'https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl:      'https://booking.buraq.aero/VARS/webApiv2/api/',
+  livePayPage:      'https://booking.buraq.aero/VARS/Public/MobilePaymentStart.aspx',
 
   liveCreditCardProvider: 'worldpaydirect',
 
@@ -112,11 +112,13 @@ void configUZ() {
  */
 
  //   testPayPage: 'http://10.0.2.2:53851/MobilePaymentStart.aspx',
+ //   testPayPage: 'http://10.0.2.2/MobilePaymentStart.aspx',
  //   testPayPage: 'https://vars-public-cp2.conveyor.cloud/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/buraq/VARS/Public/MobilePaymentStart.aspx',
 
 
- //   testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
+//   testXmlUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "http://10.0.2.2/webservices/VrsApi.asmx/PostVRSCommand?",
  //   testXmlUrl:      "https://vars-public-cp2.conveyor.cloud/WebServices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/buraq/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
@@ -125,8 +127,9 @@ void configUZ() {
  //   testXmlUrl:      "http://10.0.2.2:51090/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "https://customertest.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
 
-  //  testSmartApiUrl:      "http://10.0.2.2:53851/webservices/VrsApi.asmx/MobileSmartApi",
-  //  testSmartApiUrl:      "https://vars-public-cp2.conveyor.cloud/webservices/VrsApi.asmx/MobileSmartApi",
+//  testSmartApiUrl:      "http://10.0.2.2:53851/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:      "http://10.0.2.2/webservices/VrsApi.asmx/MobileSmartApi",
+ //  testSmartApiUrl:      "https://vars-public-cp2.conveyor.cloud/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/buraq/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
 
