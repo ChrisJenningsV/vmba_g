@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,9 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../menu/contact_us_page.dart';
+import '../utilities/helper.dart';
 
 
 
@@ -105,38 +109,40 @@ List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map
 
   List<Widget> list = [];
   List<Widget> list2 = [];
+  List<Widget> list3 = [];
 
 
  // if (notification != null ) {
     list2.add(_getTitle(context, notification, data));
 //  }
   list2.add(SizedBox(height: 5.0,));
-  /* list2.add(Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  mainAxisSize: MainAxisSize.max,
-  children: [
-  Text(title, style: TextStyle(fontWeight: FontWeight.bold),)
-  ]));
-*/
+
   // web view
+  String body = "";
   if( data['format'] != null && data['format'] == 'HTML') {
+    body = data['html'];
+  } else {
+    body = notification.body;
+  }
+    double h = 200;
+    if(data['height'] != null && data['height'] != '') {
+      h = double.parse(data['height']);
+    }
     list2.add(
         Container(
-            height: 300,
+            height: h,
             width: 400,
             child: WebView(
               initialUrl: Uri.dataFromString(
-                  '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' + data['html'] + '</body></html>',
+                  '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' + body + '</body></html>',
                   mimeType: 'text/html').toString(),
-/*    javascriptMode: JavascriptMode.unrestricted,
-*/
 
               onWebViewCreated: (WebViewController webViewController) {
                 _controller.complete(webViewController);
               },
 
             )));
-  } else {
+ /* } else {
     if( notification != null ) {
       list2.add(Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -145,16 +151,11 @@ List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map
             Text(notification.body)
           ]));
     }
-  }
+  }*/
   // buttons?
   if(data != null ){
     if( data['image'] != null && data['image'].toString().isNotEmpty) {
- /*     list2.add( Row(
-          mainAxisAlignment: MainAxisAlignment.center
-          ,children: [
-        Image(image: NetworkImage(
-            '${gblSettings.gblServerFiles}/pageImages/${data['image']}'))
-      ]));*/
+
       list2.add(SizedBox(height: 5.0,));
       list2.add(
           Image.network('${gblSettings.gblServerFiles}/pageImages/${data['image']}',
@@ -173,8 +174,47 @@ List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map
       ));*/
 
     }
+
+    if( data['buttons'] != null ){
+      list2.add(SizedBox(height: 5.0,));
+
+      List map = json.decode(data['buttons']);
+
+        map.forEach((v){
+            String c = v['caption'];
+            String a = v['action'];
+            String d = v['data'];
+            String d2 = v['data2'];
+
+            list3.add(smallButton( text: translate(c), //icon: Icons.check,
+                onPressed: () {
+                String xx = a + c + d;
+
+                switch (a.toUpperCase()){
+                  case 'URL':
+                    Navigator.push(context, SlideTopRoute(page: CustomPageWeb(d2, d)));
+                    break;
+                  case 'APP':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewBookingPage(
+                            rloc: d2,
+                          )),
+                    );
+                  break;
+                }
+
+
+                }),);
+
+        } );
+        list2.add(Row( children: list3,));
+
+    }
+
     // button(s)
-    if( data['actions'] != null && data['rloc'] != null && data['actions'].toString().isNotEmpty &&
+ /*   if( data['actions'] != null && data['rloc'] != null && data['actions'].toString().isNotEmpty &&
         data['rloc'].toString().isNotEmpty) {
       String actions = data['actions'];
 
@@ -192,7 +232,7 @@ List<Widget> _getBody(BuildContext context, RemoteNotification notification, Map
         }),);
       }
 
-    }
+    }*/
   }
 
   list.add(Padding(

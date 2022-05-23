@@ -111,9 +111,11 @@ bool bFirstTime = true;
     super.initState();
     _initLangs();
 
+/*
     if( gblSettings.wantPushNoticications) {
        initFirebase(context);
     }
+*/
   }
 
   @override
@@ -274,6 +276,7 @@ class LocaleModel with ChangeNotifier {
     initializeDateFormatting();
   }
 }
+/*
 Future<void> initFirebase(BuildContext context) async {
 
   if( gblIsLive == false ) {
@@ -282,5 +285,6 @@ Future<void> initFirebase(BuildContext context) async {
   logit('InitFirebase');
   NotificationService().init(context);
 }
+*/
 
 

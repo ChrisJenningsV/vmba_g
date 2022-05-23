@@ -52,6 +52,7 @@ Session gblSession;
 Map gblLangMap ;
 Settings gblSettings;
 bool gblNoNetwork;
+bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
 //bool  gblUseWebApiforVrs = false;
