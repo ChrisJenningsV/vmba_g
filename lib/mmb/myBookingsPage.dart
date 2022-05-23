@@ -930,7 +930,7 @@ String _error = '';
     if (response.statusCode < 200 || response.statusCode >= 300) {
       //return new ParsedResponse(response.statusCode, []);
     }*/
-
+    gblCurrentRloc = _rloc;
     String data = await runVrsCommand('*$_rloc~x');
 
     String pnrJson;

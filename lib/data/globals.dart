@@ -9,8 +9,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'UZ';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
@@ -52,6 +52,7 @@ Session gblSession;
 Map gblLangMap ;
 Settings gblSettings;
 bool gblNoNetwork;
+bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
 //bool  gblUseWebApiforVrs = false;

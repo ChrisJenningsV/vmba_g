@@ -12,6 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/menu/updatePage.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/notification_service.dart';
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -296,9 +297,24 @@ class RootPageState extends State<RootPage> {
           break;
       }
       _connectivity.disposeStream();
+
+      // now do firebase
+      if( gblSettings.wantPushNoticications && !gblPushInitialized) {
+        gblPushInitialized = true;
+        initFirebase(context);
+      }
+
       return new HomePage();
     }
   }
+}
+Future<void> initFirebase(BuildContext context) async {
+
+  if( gblIsLive == false ) {
+    //serverLog('Starting app $gblAppTitle');
+  }
+  logit('InitFirebase');
+  NotificationService().init(context);
 }
 
 class MyConnectivity {

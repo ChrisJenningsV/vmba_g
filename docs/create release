@@ -17,3 +17,8 @@ flutter build appbundle -t lib/main.dart --flavor airswift
 flutter build appbundle -t lib/main.dart --flavor buraq
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
+
+# to put on phone
+flutter clean
+flutter build apk -t lib/main.dart --split-per-abi --flavor loganair --build-name 2.0.16 --build-number 203
+flutter install -d SM A125F

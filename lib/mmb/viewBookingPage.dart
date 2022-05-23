@@ -147,6 +147,13 @@ class _CheckinBoardingPassesWidgetState
     Repository.get()
         .getPnr(widget.rloc)
         .then((pnrDb) {
+          if(pnrDb.data.isEmpty) {
+            // load from server
+            _refreshBooking();
+            //loadJourneys(objPNR);
+            return;
+          }
+
           Map<String, dynamic> map = jsonDecode(pnrDb.data);
           // PnrModel
           pnr = new PnrModel.fromJson(map);
@@ -293,6 +300,7 @@ class _CheckinBoardingPassesWidgetState
           pnr = new PnrModel.fromJson(map);
           setState(() {
             objPNR = pnr;
+            loadJourneys(objPNR);
           });
         } else {
 
@@ -672,7 +680,7 @@ class _CheckinBoardingPassesWidgetState
           '&Command=' + cmd;
     }
 
-    print("_sendVrsCheckinCommand::${msg}");
+    print("_sendVrsCheckinCommand::$msg");
 
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     //Map map;
@@ -1980,7 +1988,7 @@ class _CheckinBoardingPassesWidgetState
           cmd;
     }
 
-    print('_sendAutoseatCommand::${msg}');
+    print('_sendAutoseatCommand::$msg');
     //final response = await
     http.get(Uri.parse(msg),headers: getXmlHeaders()).then((response) {
       //Map map;
@@ -1992,7 +2000,7 @@ class _CheckinBoardingPassesWidgetState
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
 
-          print('_sendAutoseatCommand_vrsResponse::${vrsResponse}');
+          print('_sendAutoseatCommand_vrsResponse::$vrsResponse');
 
           if (!vrsResponse.contains('ERROR')) {
             Repository.get().fetchPnr(widget.rloc).then((v) {

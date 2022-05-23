@@ -9,6 +9,7 @@ import 'package:vmba/completed/ProcessCommandsPage.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
 import 'package:vmba/mmb/myBookingsPage.dart';
+import 'package:vmba/mmb/myNotificationsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
@@ -110,9 +111,11 @@ bool bFirstTime = true;
     super.initState();
     _initLangs();
 
+/*
     if( gblSettings.wantPushNoticications) {
        initFirebase(context);
     }
+*/
   }
 
   @override
@@ -202,6 +205,7 @@ bool bFirstTime = true;
             ),
         '/MyBookingsPage': (BuildContext context) => new MyBookingsPage(),
         '/AddBookingPage': (BuildContext context) => new  MyBookingsPage(), //AddBooking(),
+        '/MyNotificationsPage': (BuildContext context) => new MyNotificationsPage(),
         '/AdsFlightSearchPage': (BuildContext context) => new FlightSearchPage(
                        ads: true,
                      ),
@@ -272,13 +276,15 @@ class LocaleModel with ChangeNotifier {
     initializeDateFormatting();
   }
 }
+/*
 Future<void> initFirebase(BuildContext context) async {
 
   if( gblIsLive == false ) {
-    serverLog('Starting app $gblAppTitle');
+    //serverLog('Starting app $gblAppTitle');
   }
   logit('InitFirebase');
   NotificationService().init(context);
 }
+*/
 
 
