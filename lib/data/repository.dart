@@ -1535,9 +1535,15 @@ Future<String> runVrsCommand(String cmd) async {
     }
     return rs.data;
   } else {
-    http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc"),
+    String url = "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd";
+    if( gblSettings.wantPushNoticications) {
+      url += "&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc";
+    }
+
+
+      http.Response response = await http
+        .get(Uri.parse(url
+        ),
         headers: getXmlHeaders())
         .catchError((resp) {
 
