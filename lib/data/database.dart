@@ -14,6 +14,8 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
 
+import 'models/notifyMsgs.dart';
+
 class AppDatabase {
   static final AppDatabase _appDatabase = new AppDatabase._internal();
 
@@ -112,6 +114,10 @@ class AppDatabase {
               "${KeyPair.dbName} TEXT,"
               "${KeyPair.dbValue} TEXT"
               ");");
+          await db.execute("CREATE TABLE IF NOT EXISTS $tableNameNotifications ("
+              "${KeyPair.dbName} TEXT,"
+              "${KeyPair.dbValue} TEXT"
+              ");");
         }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
           if (oldVersion < 2) {
             await db.execute("CREATE TABLE IF NOT EXISTS $tableNameRoutes ("
@@ -141,11 +147,14 @@ class AppDatabase {
             await db.execute(
                 'ALTER TABLE $tableNameCities ADD ${City.dbMobileBarcodeType} TEXT');
           }
-          if (oldVersion < 7) {
+          //if (oldVersion < 7)
+          try {
             await db.execute("CREATE TABLE IF NOT EXISTS $tableNameNotifications ("
                 "${KeyPair.dbName} TEXT,"
                 "${KeyPair.dbValue} TEXT"
                 ");");
+          } catch (e) {
+            print(e.toString());
           }
         });
     didInit = true;
@@ -791,25 +800,26 @@ class AppDatabase {
   }
 
 
-  Future<List<RemoteMessage>> getAllNotifications() async {
+  Future<List<NotificationMessage>> getAllNotifications() async {
     var db = await _getDb();
     var result = await db.rawQuery('SELECT * FROM $tableNameNotifications');
     if (result.length == 0) return [];
-    List<RemoteMessage> notes = []; // new List<City>();
+    List<NotificationMessage> notes = []; // new List<City>();
     for (Map<String, dynamic> map in result) {
       try {
         String sMsg = map['value'];
         sMsg = sMsg.replaceAll('|', '"');
 
         Map<String, dynamic> jsonMap = json.decode(sMsg);
-        RemoteNotification not;
+        Notification not;
         if( jsonMap['notification'] != null ) {
           Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
-           not = RemoteNotification(body: notMap['body'],
+           not = Notification(body: notMap['body'],
               title: notMap['title']);
         }
-        RemoteMessage msg = RemoteMessage(notification: not,
+        NotificationMessage msg = NotificationMessage(notification: not,
             category: jsonMap['category'],
+            background: jsonMap['background'],
             sentTime: DateTime.parse(jsonMap['sentTime']));
 
         notes.add(msg);

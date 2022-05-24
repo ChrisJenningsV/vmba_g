@@ -10,6 +10,9 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../components/showNotification.dart';
+import '../data/models/notifyMsgs.dart';
+
 
 class MyNotificationsPage extends StatefulWidget {
   MyNotificationsPage({Key key}) : super(key: key);
@@ -26,7 +29,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
-  List<RemoteMessage> msgs;
+  List<NotificationMessage> msgs;
 
 
   @override
@@ -110,10 +113,14 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
     return listViewOfNote;
   }
 
-  Widget _buildListItem(BuildContext context, RemoteMessage msg) {
+  Widget _buildListItem(BuildContext context, NotificationMessage msg) {
 
     String title = '';
     String body = '';
+    Color clr = Colors.black38;
+    if(msg.background == 'true'){
+      clr = Colors.blue;
+    }
     if (msg != null && msg.notification != null ) {
       title = msg.notification.title;
       body = msg.notification.body;
@@ -130,7 +137,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' ${title}', //document['rloc'],
-                  style: new TextStyle(
+                  style: new TextStyle(color: clr,
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               GestureDetector(
                 child: Icon(Icons.more_vert),
@@ -143,13 +150,20 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
           Text(body),
         ]),
         onPressed: () {
-          Navigator.push(
+          Map m = Map();
+          m['title'] = msg.data['title'];
+          m['html'] = msg.data['html'];
+          m['format'] = msg.data['format'];
+
+          RemoteNotification n = RemoteNotification(title: msg.notification.title, body: msg.notification.body);
+          showNotification( context, n, m);
+          /*Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ViewBookingPage(
                   rloc: msg.sentTime.toString(),
                 )),
-          );
+          );*/
         },
       ),
       decoration: BoxDecoration(

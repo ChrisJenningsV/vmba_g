@@ -110,8 +110,11 @@ class NotificationService {
         logit('Listener msg received');
         Map data = message.data;
 
-       // if (android != null) { // notification != null &&
-          Repository.get().updateNotification(message, false);
+       try {
+         Repository.get().updateNotification(message, false);
+       } catch(e) {
+
+       }
 
         showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
 
@@ -140,20 +143,6 @@ class NotificationService {
 
       });
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-/*
-      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) {
-        print('Background message received');
-        Repository.get().updateNotification(message);
-
-      });
-*/
-
-      /*FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        print('A new onMessageOpenedApp event was published!');
-
-      });
-*/
-
 
     } catch(e) {
       logit(e.toString());
@@ -195,7 +184,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   //await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
-  Repository.get().updateNotification(message, true);
+  try {
+    Repository.get().updateNotification(message, true);
+  } catch(e) {
+
+  }
 
 
 }

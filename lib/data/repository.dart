@@ -20,6 +20,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/notifyMsgs.dart';
 import 'models/vrsRequest.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
@@ -707,7 +708,7 @@ class Repository {
     return database.getAllCities();
   }
 
-  Future<List<RemoteMessage>> getAllNotifications() {
+  Future<List<NotificationMessage>> getAllNotifications() {
     return database.getAllNotifications();
   }
 
