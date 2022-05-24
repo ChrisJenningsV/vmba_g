@@ -714,7 +714,7 @@ class Repository {
 
   Future updateNotification(RemoteMessage msg, bool background) async {
     try{
-
+      print('saving push msg');
       final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
       final Map<String, dynamic> msgMap = new Map<String, dynamic>();
 
@@ -734,13 +734,18 @@ class Repository {
 
       msgMap['category'] = msg.category;
       msgMap['background'] = background.toString();
-      msgMap['sentTime'] = msg.sentTime.toString();
+      if( msg.sentTime.toString() != 'null') {
+        msgMap['sentTime'] = msg.sentTime.toString();
+      } else {
+        msgMap['sentTime'] = DateTime.now().toString();
+      }
       msgMap['data'] = sData;
 
       String sMsg = jsonEncode(msgMap);
     await database.updateNotification(sMsg.replaceAll('"', '|'), msg.sentTime.toString());
     } catch(e) {
       String m = e.toString();
+      print(m);
     }
   }
 
