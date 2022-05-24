@@ -94,8 +94,10 @@ class NotificationService {
         sound: true,
       );
       //await firebase.messaging().registerDeviceForRemoteMessages()
+      FirebaseMessaging.instance.requestPermission();
 
       FirebaseMessaging.instance.getToken().then((token){
+
         print('token= ' + token);
         if( gblIsLive == false ) {
           serverLog('Firebase token=$token');

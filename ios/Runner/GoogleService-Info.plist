@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>287291202399-vutiefjjrc6mpjlr9h7n32vuued3ljm1.apps.googleusercontent.com</string>
+	<string>287291202399-qvumeinntkltr39gl6nlcitctmni2c39.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.287291202399-vutiefjjrc6mpjlr9h7n32vuued3ljm1</string>
+	<string>com.googleusercontent.apps.287291202399-qvumeinntkltr39gl6nlcitctmni2c39</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDUnWKj7hVYEZ4Yp0gSmjHzAL5uFx9NwJE</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.blueislands.reservations</string>
+	<string>uk.co.loganair.booking</string>
 	<key>PROJECT_ID</key>
 	<string>vmba-notify</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:287291202399:ios:38bafcf4203501e56a74ea</string>
+	<string>1:287291202399:ios:be7abf4aee0e8c3a6a74ea</string>
 </dict>
 </plist>
