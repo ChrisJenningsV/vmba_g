@@ -742,7 +742,7 @@ class Repository {
       msgMap['data'] = sData;
 
       String sMsg = jsonEncode(msgMap);
-    await database.updateNotification(sMsg.replaceAll('"', '|'), msg.sentTime.toString());
+    await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime']);
     } catch(e) {
       String m = e.toString();
       print(m);
