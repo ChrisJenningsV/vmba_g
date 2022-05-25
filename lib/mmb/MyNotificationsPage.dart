@@ -150,10 +150,13 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
           Text(body),
         ]),
         onPressed: () {
-          Map m = Map();
+          print('Click on notification');
+          Map m = msg.data;
+/*
           m['title'] = msg.data['title'];
           m['html'] = msg.data['html'];
           m['format'] = msg.data['format'];
+*/
 
           RemoteNotification n = RemoteNotification(title: msg.notification.title, body: msg.notification.body);
           showNotification( context, n, m);

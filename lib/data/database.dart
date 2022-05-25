@@ -817,9 +817,14 @@ class AppDatabase {
            not = Notification(body: notMap['body'],
               title: notMap['title']);
         }
+        Map<String, dynamic> dataMap;
+        if( jsonMap['data'] != null ) {
+           dataMap= json.decode(jsonMap['data']);
+        }
         NotificationMessage msg = NotificationMessage(notification: not,
             category: jsonMap['category'],
             background: jsonMap['background'],
+            data: dataMap,
             sentTime: DateTime.parse(jsonMap['sentTime']));
 
         notes.add(msg);

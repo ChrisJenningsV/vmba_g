@@ -725,10 +725,8 @@ class Repository {
         msgMap['notification'] = sNot;
       }
 
-      final Map<String, dynamic> dataMap = new Map<String, dynamic>();
-      dataMap['rloc'] = msg.data['rloc'];
-      dataMap['format'] = msg.data['format'];
-      dataMap['html'] = msg.data['html'];
+      final Map<String, dynamic> dataMap = msg.data; // = new Map<String, dynamic>();
+
 
       String sData = jsonEncode(dataMap);
 
