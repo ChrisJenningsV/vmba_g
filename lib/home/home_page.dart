@@ -37,7 +37,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+/*  void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
         print("app in resumed");
@@ -52,7 +52,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
         print("app in detached");
         break;
     }
-  }
+  }*/
 
   @override
   void initState() {

@@ -15,6 +15,7 @@ import 'helper.dart';
 
 
 class NotificationService {
+
   static final NotificationService _notificationService =
   NotificationService._internal();
 
@@ -136,13 +137,14 @@ class NotificationService {
               )
           );*/
     //    }
-        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-          print('A new onMessageOpenedApp event was published!');
-          showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
- /*         Navigator.pushNamed(context, '/message',
-              arguments: MessageArguments(message, true));*/
-        });
 
+
+      });
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        print('A new onMessageOpenedApp event was published!');
+        showNotification( NavigationService.navigatorKey.currentContext, message.notification, message.data);
+        /*         Navigator.pushNamed(context, '/message',
+              arguments: MessageArguments(message, true));*/
       });
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
