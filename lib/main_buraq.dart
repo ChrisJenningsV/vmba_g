@@ -135,8 +135,8 @@ void configUZ() {
 
 
     testApisUrl:      'https://customertest.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl:      'https://customertest.videcom.com/buraq/VARS/webApiv2/api/',
-//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+//    testApiUrl:      'https://customertest.videcom.com/buraq/VARS/webApiv2/api/',
+    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
   creditCardProvider: '3DS_videcard',

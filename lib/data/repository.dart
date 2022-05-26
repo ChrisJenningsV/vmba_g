@@ -599,7 +599,7 @@ class Repository {
 
         }
       } else {
-        logit('login - status=${response.statusCode}');
+        logit('login - status=${response.statusCode}'+ response.body );
         gblErrorTitle = 'Login-';
         gblError = response.statusCode.toString();
       }

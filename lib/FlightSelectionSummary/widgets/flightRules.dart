@@ -4,6 +4,8 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../utilities/widgets/bullet_widget.dart';
+
 class FlightRulesWidget extends StatefulWidget {
   final List<FQItin> fQItin;
   final List<Itin> itin;
@@ -69,9 +71,14 @@ class _FlightRulesState extends State<FlightRulesWidget> {
                   new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
         ),
       );
+
+/*
       segment.forEach((rule) {
         rulesWidget.add(Text(rule));
       });
+*/
+      rulesWidget.add(BulletList(segment));
+
     });
     return SingleChildScrollView(
       padding: EdgeInsets.all(8.0),

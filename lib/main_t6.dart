@@ -88,6 +88,8 @@ void configT6() {
     wantClassBandImages: true,
     wantCountry: true,
     wantTallPageImage: true,
+    useWebApiforVrs: true,
+
 
     passengerTypes: PassengerTypes(
       adults: true,
@@ -98,9 +100,11 @@ void configT6() {
   ),
 
 //Production setttings
-  liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  liveApisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  liveApiUrl: 'https://booking.loganair.co.uk/ANCwebApi/api/',
+  liveXmlUrl:      "https://booking.airswift.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveApisUrl:      'https://booking.airswift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl: 'https://booking.airswift.com/webApiv2/api/',
+    livePayPage: 'https://booking.airswift.com/VARS/Public/MobilePaymentStart.aspx',
+    liveSmartApiUrl:  "https://booking.airswift.co.uk/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,
@@ -112,9 +116,12 @@ void configT6() {
   creditCardProvider: 'videcard',
 
     testPayPage: 'https://customertest.videcom.com/airswift/VARS/Public/MobilePaymentStart.aspx',
-  testXmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+ // testXmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/airswift/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "http://10.0.2.2:61667/webservices/VrsApi.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
+ testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   testCreditCardProvider: 'videcard|MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 

@@ -123,6 +123,9 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
     }
     if (msg != null && msg.notification != null ) {
       title = msg.notification.title;
+      if( msg.data != null ){
+        title = msg.data['rloc'] + ' ' + title;
+      }
       body = msg.notification.body;
     }
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
@@ -152,11 +155,6 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
         onPressed: () {
           print('Click on notification');
           Map m = msg.data;
-/*
-          m['title'] = msg.data['title'];
-          m['html'] = msg.data['html'];
-          m['format'] = msg.data['format'];
-*/
 
           RemoteNotification n = RemoteNotification(title: msg.notification.title, body: msg.notification.body);
           showNotification( context, n, m);
