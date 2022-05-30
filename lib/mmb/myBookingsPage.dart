@@ -629,28 +629,19 @@ String _error = '';
           _tapPosition & Size(40, 40), // smaller rect, the touch area
           Offset.zero & overlay.size),
       items: [
-        // PopupMenuItem(
-        //   child: FlatButton.icon(
-        //     icon: Icon(Icons.date_range), //`Icon` to display
-        //     label: Text('Add to Calender'), //`Text` to display
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //       //Code to execute when Floating Action Button is clicked
-        //       //...
-        //     },
-        //   ),
-        // ),
-        // PopupMenuItem(
-        //   child: FlatButton.icon(
-        //     icon: Icon(Icons.share), //`Icon` to display
-        //     label: Text('Share booking details'), //`Text` to display
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //       //Code to execute when Floating Action Button is clicked
-        //       //...
-        //     },
-        //   ),
-        // ),
+         PopupMenuItem(
+           child: TextButton.icon(
+             icon: Icon(Icons.refresh),
+             label: TrText('Reload booking'),
+             onPressed: () {
+                gblCurrentRloc = rloc;
+                _refreshBooking(rloc)
+                   .then((onValue) => Navigator.of(context).pop())
+                   .then((onValue) => getmyookings());
+             },
+           ),
+         ),
+
         PopupMenuItem(
           child: TextButton.icon(
             icon: Icon(Icons.delete_outline_rounded),
@@ -666,6 +657,11 @@ String _error = '';
       ],
       elevation: 8.0,
     );
+  }
+
+  Future<void> _refreshBooking(String rloc) async {
+    Repository.get().fetchApisStatus(rloc);
+    Repository.get().fetchPnr(rloc);
   }
 
   Widget fltLines(PnrModel pnr) {

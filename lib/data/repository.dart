@@ -1540,7 +1540,7 @@ Future<String> runVrsCommand(String cmd) async {
     return rs.data;
   } else {
     String url = "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd";
-    if( gblSettings.wantPushNoticications) {
+    if( gblSettings.wantPushNoticications && gblCurrentRloc != null ) {
       url += "&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc";
     }
 
