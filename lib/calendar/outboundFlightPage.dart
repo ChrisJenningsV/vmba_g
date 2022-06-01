@@ -86,7 +86,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       buffer.write(',SingleSeg=r');
 
       // add return details
-      String retDate = DateFormat('dMMMyyyy').format(this.widget.newBooking.returnDate).toString().toUpperCase();
+      String retDate = DateFormat('ddMMMyyyy').format(this.widget.newBooking.returnDate).toString().toUpperCase();
       buffer.write(',RFDD=$retDate,RETURN=$retDate');
 
     } else {
