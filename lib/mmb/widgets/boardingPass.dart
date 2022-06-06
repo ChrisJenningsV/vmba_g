@@ -964,3 +964,6 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return qParams.toString();
   }
 }
+void reloadBoardingPass(String rloc) {
+  print('relaod boarding pass');
+}

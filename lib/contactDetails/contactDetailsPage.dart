@@ -358,7 +358,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     logit('makeBooking: $msg');
 
     if( gblSettings.useWebApiforVrs) {
-      print('Calling VRS with Cmd = ${msg}');
+      print('Calling VRS with Cmd = $msg');
       String data = await runVrsCommand(msg).catchError((e) {
         noInternetSnackBar(context);
         return null;

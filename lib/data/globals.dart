@@ -3,6 +3,7 @@ import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
+import 'models/notifyMsgs.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
 
@@ -78,6 +79,7 @@ VrsCmdState gblBookSeatState = VrsCmdState.none;
 
 ProductCategorys gblProducts ;
 Providers gblProviders;
+List<NotificationMessage> gblNotifications;
 
 
 TextStyle gblTitleStyle;

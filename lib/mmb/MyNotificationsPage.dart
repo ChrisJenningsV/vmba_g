@@ -11,6 +11,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../components/showNotification.dart';
+import '../data/globals.dart';
 import '../data/models/notifyMsgs.dart';
 
 
@@ -21,7 +22,7 @@ class MyNotificationsPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _MyNotificationsPageState();
 }
 
-class _MyNotificationsPageState extends State<MyNotificationsPage> {
+class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerProviderStateMixin  {
   // new List<PnrDBCopy>();
   bool _loadingInProgress;
   Offset _tapPosition;
@@ -29,30 +30,40 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
-  List<NotificationMessage> msgs;
+ // List<NotificationMessage> msgs;
+  TabController _controller;
 
+  var tablen = 3;
 
   @override
   void initState() {
     super.initState();
     _loadingInProgress = true;
-
-
+    _controller = TabController(length: tablen, vsync: this);
+    gblNotifications = null;  // incase none found
     Repository.get().getAllNotifications().then((m) {
-      msgs = m;
+      gblNotifications = m;
+      print('Got ${gblNotifications.length} notifications');
       _loadingInProgress = false;
       setState(() {
 
       });
+    }).catchError((onError){
+      print(onError.toString());
     });
-
-
-
   }
 
 
   @override
   Widget build(BuildContext context) {
+    final List<String> args = ModalRoute.of(context).settings.arguments;
+    print('args = $args');
+    if( args != null && args.toString().contains('new') ){
+      _controller.index = 1;
+    }
+    if( args != null && args.toString().contains('promo') ){
+      _controller.index = 2;
+    }
 
     if (_loadingInProgress) {
       return Scaffold(
@@ -70,33 +81,55 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
           ));
     } else {
       String title = "My Notifications";
-      if( msgs != null ) {
-        title += ' ${msgs.length} found';
+      List <Widget> tabs = [];
+      List <Widget> tabeViews = [];
+      tabs.add(TrText('All'));
+      tabs.add(TrText('Un read'));
+      tabs.add(TrText('Promotional'));
+
+      tabeViews.add(new Container(child: myNotifies('all')));
+      tabeViews.add(new Container(child: myNotifies('new')));
+      tabeViews.add(new Container(child: myNotifies('promo')));
+
+      if (gblNotifications != null) {
+        title += ' ${gblNotifications.length} found';
       }
       return Scaffold(
         appBar: appBar(context, title,
+          bottom: new PreferredSize(
+            preferredSize: new Size.fromHeight(30.0),
+            child: new Container(
+              height: 30.0, child: TabBar(
 
-        ),// translated in appBar
+                indicatorColor: Colors.amberAccent,
+                isScrollable: true,
+                labelColor: gblSystemColors.headerTextColor,
+                tabs: tabs,
+                controller: _controller),
+            ),
+          ),
+        ), // translated in appBar
         endDrawer: DrawerMenu(),
-        body: myNotifies(true)
+        body: TabBarView(
+          controller: _controller,
+          children: tabeViews,
+        ),
+
       );
     }
   }
 
 
-  Widget myNotifies(bool showActive) {
+  Widget myNotifies(String  show) {
 
-    if( msgs != null && msgs.length > 0 )
+    if( gblNotifications != null && gblNotifications.length > 0 )
       {
-  /*      return Center(
-          child: TrText('${msgs.length} Notifications found',
-            style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
-*/
+
       } else {
       Center noFutureBookingsFound = Center(
           child: TrText('No Notifications found',
               style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
-      if (showActive == false) {
+      if (show == 'new') {
         noFutureBookingsFound = Center(
             child: TrText('No Notifications found',
                 style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
@@ -104,11 +137,30 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
       return  noFutureBookingsFound;
     }
 
+    List<NotificationMessage> listMsgs;
 
+    if (show == 'promo') {
+      listMsgs = [];
+      gblNotifications.forEach((element) {
+        if(element.data['actions'] != null &&  element.data['actions'] == 'promo'){
+          listMsgs.add(element);
+        }
+      });
+
+    } else if (show == 'new') {
+      listMsgs = [];
+      gblNotifications.forEach((element) {
+        if(element.background == 'true' && !element.data['actions'].toString().contains('promo')){
+          listMsgs.add(element);
+        }
+      });
+    } else {
+      listMsgs = gblNotifications;
+    }
     ListView listViewOfNote = ListView.builder(
-        itemCount: msgs.length,
+        itemCount: listMsgs.length,
         itemBuilder: (BuildContext context, index) =>
-            _buildListItem(context, msgs[index]));
+            _buildListItem(context, listMsgs[index]));
 
     return listViewOfNote;
   }
@@ -118,7 +170,11 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
     String title = '';
     String body = '';
     Color clr = Colors.black38;
-    if(msg.background == 'true'){
+    Color bkClr = Colors.white;
+
+    if( msg.data['actions'] != null && msg.data['actions'].toString().contains('promo')) {
+      bkClr = gblSystemColors.promoBackColor;
+    } else  if(msg.background == 'true'){
       clr = Colors.blue;
     }
     if (msg != null && msg.notification != null ) {
@@ -131,6 +187,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
+
       child: TextButton(
         style: TextButton.styleFrom(
             padding:
@@ -155,6 +212,27 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
         onPressed: () {
           print('Click on notification');
           Map m = msg.data;
+          if( msg.background == 'true'){
+            // mark as no longer no read
+            Repository.get().updateNotification(convertMsg(msg), false, true).then((value) {
+              Repository.get().getAllNotifications().then((m) {
+                gblNotifications = m;
+                _loadingInProgress = false;
+                setState(() {
+                });
+              });
+            });
+
+            // update glbs too
+     /*       gblNotifications.forEach((element) {
+              if(element.sentTime == msg.sentTime){
+                element.background = 'false';
+              }
+            });*/
+            setState(() {
+
+            });
+          }
 
           RemoteNotification n = RemoteNotification(title: msg.notification.title, body: msg.notification.body);
           showNotification( context, n, m);
@@ -168,7 +246,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
         },
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: bkClr,
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: const Color(0x90000000),
@@ -205,7 +283,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
                   .then((onValue) => Navigator.of(context).pop())
                   .then((onValue) {
                 Repository.get().getAllNotifications().then((m) {
-                  msgs = m;
+                  gblNotifications = m;
                   _loadingInProgress = false;
                   setState(() {
 

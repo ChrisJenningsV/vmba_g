@@ -14,6 +14,8 @@ import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
+import '../components/bottomNav.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -37,22 +39,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
 
   @override
-/*  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        print("app in resumed");
-        break;
-      case AppLifecycleState.inactive:
-        print("app in inactive");
-        break;
-      case AppLifecycleState.paused:
-        print("app in paused");
-        break;
-      case AppLifecycleState.detached:
-        print("app in detached");
-        break;
-    }
-  }*/
+
 
   @override
   void initState() {
@@ -352,6 +339,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
         body: Stack(
           children: _getBackImage(buttonShape, buttonHeight),
         ),
+        bottomNavigationBar: getBottomNav(context),
         endDrawer: new DrawerMenu(),
       );
     }

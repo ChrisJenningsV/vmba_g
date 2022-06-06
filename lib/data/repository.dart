@@ -255,7 +255,7 @@ class Repository {
       if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json', vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
-        print('msg = ${msg}');
+        print('msg = $msg');
 
         response = await http.get(
             Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
@@ -264,7 +264,7 @@ class Repository {
 
       } else {
         print('login_uri = ${gblSettings.apiUrl + "/login"}');
-        print('login_headers = ${headers}');
+        print('login_headers = $headers');
         print('login_body = ${JsonEncoder().convert(body)}');
         response = await http.post(
             Uri.parse(gblSettings.apiUrl + "/login"),
@@ -712,7 +712,7 @@ class Repository {
     return database.getAllNotifications();
   }
 
-  Future updateNotification(RemoteMessage msg, bool background) async {
+  Future updateNotification(RemoteMessage msg, bool background, bool replace) async {
     try{
       print('saving push msg');
       final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
@@ -740,7 +740,7 @@ class Repository {
       msgMap['data'] = sData;
 
       String sMsg = jsonEncode(msgMap);
-    await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime']);
+    await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime'], replace);
     } catch(e) {
       String m = e.toString();
       print(m);
@@ -1558,6 +1558,24 @@ Future<String> runVrsCommand(String cmd) async {
       }
     return response.body;
   }
+ }
 
+RemoteMessage convertMsg(NotificationMessage msg)
+{
+    try {
+      RemoteNotification rNote = new RemoteNotification(
+        title:  msg.notification.title,
+        body: msg.notification.body,
+      ) ;
+      RemoteMessage rMsg = new RemoteMessage( notification: rNote,
+          data: msg.data,
+          sentTime: msg.sentTime,
+          category: msg.category
+      );
+      return rMsg;
 
+      } catch(e) {
+          print(e.toString());
+    }
+    return null;
 }

@@ -24,7 +24,7 @@ class NotificationMessage {
 
   final Notification notification;
   final String category;
-  final String background;
+  String background;
   final DateTime sentTime;
   final Map data;
 

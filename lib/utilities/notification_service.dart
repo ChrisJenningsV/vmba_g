@@ -28,6 +28,10 @@ class NotificationService {
   Future<void> init(BuildContext context) async {
     try {
      // showError('test');
+      // load saved messages
+      Repository.get().getAllNotifications().then((m) {
+        gblNotifications = m;
+      });
 
       if( gblIsIos) {
       if (Firebase.apps.length <= 0) {
@@ -114,7 +118,11 @@ class NotificationService {
         Map data = message.data;
 
        try {
-         Repository.get().updateNotification(message, false);
+         Repository.get().updateNotification(message, false, false).then((value) {
+           Repository.get().getAllNotifications().then((m) {
+             gblNotifications = m;
+           });
+         });
        } catch(e) {
 
        }
@@ -142,6 +150,7 @@ class NotificationService {
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('A new onMessageOpenedApp event was published!');
+
         showNotification( NavigationService.navigatorKey.currentContext, message.notification, message.data);
         /*         Navigator.pushNamed(context, '/message',
               arguments: MessageArguments(message, true));*/
@@ -189,7 +198,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
   try {
-    Repository.get().updateNotification(message, true);
+    Repository.get().updateNotification(message, true, false).then((value) {
+      Repository.get().getAllNotifications().then((m) {
+        gblNotifications = m;
+      });
+    });
+
   } catch(e) {
 
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -800,7 +799,7 @@ class AppDatabase {
   }
 
 
-  Future<List<NotificationMessage>> getAllNotifications() async {
+   Future<List<NotificationMessage>> getAllNotifications() async {
     var db = await _getDb();
     var result = await db.rawQuery('SELECT * FROM $tableNameNotifications');
     if (result.length == 0) return [];
@@ -829,7 +828,7 @@ class AppDatabase {
 
         notes.add(msg);
       } catch(e) {
-        String m = e.toString();
+        print(e.toString());
       }
     }
     return notes;
@@ -845,15 +844,25 @@ class AppDatabase {
     await db.rawDelete('DELETE FROM $tableNameNotifications WHERE ${KeyPair.dbName}="$sTime";');
   }
 
-  Future updateNotification(String msg, String sTime) async {
-    String values = '';
+  Future updateNotification(String msg, String sTime, bool replace) async {
 
+    try {
+      var db = await _getDb();
 
-    var db = await _getDb();
-    await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameNotifications(${KeyPair.dbName}, ${KeyPair.dbValue})'
-        ' VALUES ( "$sTime", "$msg")');
+      if (replace) {
+        await db.rawInsert('UPDATE '
+            '$tableNameNotifications SET  ${KeyPair.dbValue}="$msg"'
+            ' WHERE ${KeyPair.dbName}="$sTime"');
+      } else {
+        await db.rawInsert('INSERT OR REPLACE INTO '
+            '$tableNameNotifications(${KeyPair.dbName}, ${KeyPair.dbValue})'
+            ' VALUES ( "$sTime", "$msg")');
+      }
+    } catch (e) {
+        print(e.toString());
+    }
   }
+
 
 
   // Future<String> getSetting(String key) async {
