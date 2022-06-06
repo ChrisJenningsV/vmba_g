@@ -830,7 +830,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
       if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){
         String _dob =
-        DateFormat('dMMMyyyy').format(pax.dateOfBirth).toString();
+        DateFormat('ddMMMyyyy').format(pax.dateOfBirth).toString();
         sb.write('3-${paxNo}FDOB $_dob^');
 
       }

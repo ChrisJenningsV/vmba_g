@@ -74,8 +74,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
     buffer.write(',SingleSeg=r');
     // add outbound details
-    String outDate = DateFormat('dMMMyyyy').format(this.widget.newBooking.departureDate).toString().toUpperCase();
-    String arrDate = DateFormat('dMMMyyyy').format(DateTime.parse(widget.outboundFlight.time.adaylcl)).toString().toUpperCase();
+    String outDate = DateFormat('ddMMMyyyy').format(this.widget.newBooking.departureDate).toString().toUpperCase();
+    String arrDate = DateFormat('ddMMMyyyy').format(DateTime.parse(widget.outboundFlight.time.adaylcl)).toString().toUpperCase();
     buffer.write(',RFAD=$arrDate,DEPART=$outDate');
     //}
     buffer.write(',FGNoAv=True');
