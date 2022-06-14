@@ -1354,6 +1354,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
       vrsGuid: gblSettings.vrsGuid,
       notifyToken: gblNotifyToken,
       rloc: gblCurrentRloc,
+      language: gblLanguage,
       phoneId: gblDeviceId
   )); // '{VrsApiRequest: ' + + '}' ;
 
@@ -1415,6 +1416,7 @@ Future<String> callSmartApi(String action, String data) async {
         data: data,
         notifyToken: gblNotifyToken,
         rloc: gblCurrentRloc,
+        language: gblLanguage,
         phoneId: gblDeviceId
     )); // '{VrsApiRequest: ' + + '}' ;
 

@@ -45,6 +45,7 @@ class VrsApiRequest extends Session {
     map['phoneId'] = phoneId;
     map['rloc'] = rloc;
     map['data'] = data;
+    map['language'] = language;
     return map;
   }
 }
