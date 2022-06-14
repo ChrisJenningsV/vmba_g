@@ -15,6 +15,7 @@ class VrsApiRequest extends Session {
   String notifyToken;
   String rloc;
   String data;
+  String language;
 
   VrsApiRequest(
       Session session,
@@ -26,7 +27,8 @@ class VrsApiRequest extends Session {
     this.phoneId,
     this.rloc,
     this.data,
-    this.notifyToken}
+    this.notifyToken,
+    this.language}
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
   Map toJson() {

@@ -1480,6 +1480,7 @@ Future<String> runVrsCommand(String cmd) async {
         vrsGuid: gblSettings.vrsGuid,
         notifyToken: gblNotifyToken,
         rloc: gblCurrentRloc,
+        language: gblLanguage,
         phoneId: gblDeviceId
      )); // '{VrsApiRequest: ' + + '}' ;
 
@@ -1542,6 +1543,9 @@ Future<String> runVrsCommand(String cmd) async {
     String url = "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd";
     if( gblSettings.wantPushNoticications && gblCurrentRloc != null ) {
       url += "&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc";
+      if( gblLanguage != null && gblLanguage.isNotEmpty) {
+        url += "&language=$gblLanguage";
+      }
     }
 
 

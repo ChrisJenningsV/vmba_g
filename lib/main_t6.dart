@@ -127,7 +127,10 @@ void configT6() {
 
     wantNewPayment: true,
   wantPayStack: false,
-  wantLeftLogo: false,
+    wantPushNoticications: true,
+    wantNotificationEdit: false,
+
+    wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',
   maxNumberOfPax: 8,
   hideFareRules: false,
