@@ -1197,6 +1197,7 @@ class Repository {
     }
     return new ParsedResponse(200, seatplan);
     } catch (e) {
+      gblError = e.toString();
       return new ParsedResponse(0, seatplan, error: e.toString());
     }
 
@@ -1475,6 +1476,7 @@ Future<String> callSmartApi(String action, String data) async {
 
 
 Future<String> runVrsCommand(String cmd) async {
+  gblError ='';
   if( gblSettings.useWebApiforVrs) {
 
     String msg =  json.encode(VrsApiRequest(gblSession, cmd,

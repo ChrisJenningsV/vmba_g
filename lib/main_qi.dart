@@ -96,6 +96,7 @@ void configQI() {
     liveApisUrl:       'https://booking.ibom.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.ibom.com/ANCwebApi/api/',
     livePayPage:      'https://booking.ibom.com/VARS/Public/MobilePaymentStart.aspx',
+    liveSmartApiUrl:  "https://booking.ibom.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     liveCreditCardProvider: 'worldpaydirect',
 
     apiKey: "2edd1519899a4e7fbf9a307a0db4c17a" ,//'a4768447e0ae4e4688b6783377bed3b6',
@@ -103,6 +104,7 @@ void configQI() {
     testPayPage: 'https://customertest.videcom.com/ibomair/VARS/Public/MobilePaymentStart.aspx',
     testXmlUrl: "https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testApisUrl: 'https://customertest.videcom.com/ibomair/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testSmartApiUrl:  "https://customertest.videcom.com/ibomair/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApiUrl: 'https://customertest.videcom.com/ibomair/VARS/webApiV2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
@@ -116,6 +118,8 @@ void configQI() {
     wantNewPayment: true,
     wantNewEditPax: true,
     wantMaterialControls: true,
+    wantPushNoticications: true,
+    wantNotificationEdit: false,
     wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,

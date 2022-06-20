@@ -142,7 +142,10 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
         widget.codeController.text = preSelectedItem.dialCode ;
         // strip off code
         //phoneTextController.text = widget.initialPhoneNumber.substring(preSelectedItem.dialCode.length);
-        widget.controller.text = widget.initialPhoneNumber.substring(preSelectedItem.dialCode.length);
+        if( widget.initialPhoneNumber.length >= preSelectedItem.dialCode.length) {
+          widget.controller.text = widget.initialPhoneNumber.substring(
+              preSelectedItem.dialCode.length);
+        }
       }
 
       setState(() {
@@ -360,11 +363,8 @@ class CodeDialogState extends State<CodeDialog> {
         widgets.add(ListTile(
             title: Row(
                 children: [
-                  Image.asset(
-                    country.flagUri,
-                    width: 32.0,
-                    package: 'international_phone_input',
-                  ),
+                  //Image.asset(country.flagUri,width: 32.0,package: 'international_phone_input',),
+                  Image.asset('icons/flags/png/${country.code.toLowerCase()}.png', package: 'country_icons', width: 32,height: 32,),
                   Padding(padding: EdgeInsets.only(left: 5.0,),),
                   Flexible(
                     child:

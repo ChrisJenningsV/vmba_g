@@ -18,10 +18,10 @@ import 'package:vmba/components/trText.dart';
 
 enum SeatType { regular, emergency }
 
-const double cellSize = 28.0;
-const double cellFontSize = 13.0;
-const double cellPadding = 5.0;
-const double aisleCellSize = 20.0;
+double cellSize = 36.0; //28.0;
+double cellFontSize = 13.0;
+double cellPadding = 5.0;
+double aisleCellSize = 20.0;
 
 class SeatPlanWidget extends StatefulWidget {
   SeatPlanWidget(
@@ -467,13 +467,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         ),
       );
     } else if (_noInternet) {
+      String msg = 'Please check your internet connection';
+          if( gblError != null && gblError != '' ){
+            msg = gblError ;
+          }
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Please check your internet connection'),
+              child: Text(msg),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -524,33 +528,19 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         children: <Widget>[
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
-            height: showkey ? 70.0 : 0,
+            height: showkey ? 75.0 : 0,
             padding:
                 EdgeInsets.only(top: 10.0, left: 3.0, right: 3.0, bottom: 10.0),
             child: SingleChildScrollView(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  // selected
                   Column(
                     children: <Widget>[
-                      Container(
-                        width: cellSize,
-                        height: cellSize,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: gblSystemColors.seatPlanColorSelected,
-                          borderRadius:
-                              new BorderRadius.all(new Radius.circular(5.0)),
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.grey.shade600,
-                              offset: new Offset(1.0, 1.0),
-                            )
-                          ],
-                        ),
-                      ),
+                      getSeat(null, gblSystemColors.seatPlanColorSelected),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 6.0),
                         child: Text("Selected",
                             style: TextStyle(
                               fontSize: cellFontSize,
@@ -558,19 +548,12 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       )
                     ],
                   ),
+                  // end selected
                   Column(
                     children: <Widget>[
-                      Container(
-                        width: cellSize,
-                        height: cellSize,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: gblSystemColors.seatPlanColorAvailable,
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(5.0))),
-                      ),
+                      getSeat(null, gblSystemColors.seatPlanColorAvailable),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 6.0),
                         child: Text("Available",
                             style: TextStyle(
                               fontSize: cellFontSize,
@@ -580,17 +563,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   ),
                   Column(
                     children: <Widget>[
-                      Container(
-                        width: cellSize,
-                        height: cellSize,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: gblSystemColors.seatPlanColorEmergency,
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(5.0))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                    getSeat(null,gblSystemColors.seatPlanColorEmergency),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
                         child: Text("Emergency",
                             style: TextStyle(
                               fontSize: cellFontSize,
@@ -600,17 +575,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   ),
                   Column(
                     children: <Widget>[
-                      Container(
-                        width: cellSize,
-                        height: cellSize,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: gblSystemColors.seatPlanColorRestricted,
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(5.0))),
-                      ),
+                      getSeat(null,gblSystemColors.seatPlanColorRestricted),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 6.0),
                         child: Text("Restricted",
                             style: TextStyle(
                               fontSize: cellFontSize,
@@ -636,7 +603,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         )),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 6.0),
                         child: Text("Unavailable",
                             style: TextStyle(
                               fontSize: cellFontSize,
@@ -831,6 +798,12 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     String currencyCode;
     String previousSeatPrice;
     bool selectableSeat = true;
+
+    // get max no cols
+    int maxCol = 0;
+
+
+
     for (var indexRow = 1; indexRow <= rows; indexRow++) {
       seats = this
           .widget
@@ -841,6 +814,20 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           .toList();
 
       seats.sort((a, b) => a.sRow.compareTo(b.sCol));
+
+      seats.forEach((element) {
+        if(element.sCol != null && element.sCol > maxCol ){
+          maxCol = element.sCol;
+        }
+      });
+      // check for large plane
+      if( maxCol > 8){
+        cellSize = 30;
+        cellPadding = 1;
+        aisleCellSize = 14;
+        cellFontSize = 11;
+        print('use small seat size');
+      }
       row = [];
       // new List<Widget>();
       for (var indexColumn = columns.first;
@@ -857,7 +844,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
           row.add(Padding(
-            padding: const EdgeInsets.all(cellPadding),
+            padding: EdgeInsets.all(cellPadding),
             child: Container(
               child: Text(''),
               width: cellSize,
@@ -889,11 +876,12 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
             seat.sCellDescription == 'Wing End' ||
             seat.sCellDescription == 'DoorDown') {
           row.add(Padding(
-            padding: const EdgeInsets.all(cellPadding),
+            padding: EdgeInsets.all(cellPadding),
             child: Container(
               child: Text(''),
               //width: 10.0,
-              width: 18,
+             // width: 18,
+               width: cellSize,
             ),
           ));
         } else if ((seat.sRLOC != null && seat.sRLOC != rloc) ||
@@ -907,7 +895,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                   height: cellSize,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: gblSystemColors.seatPlanColorRestricted,
+                      color: gblSystemColors.seatPlanColorUnavailable, // gblSystemColors.seatPlanColorRestricted,
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(5.0))),
                   child: Center(
@@ -941,20 +929,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           row.add(Padding(
               padding: EdgeInsets.all(cellPadding),
               child: GestureDetector(
-                child: Container(
-                  width: cellSize,
-                  height: cellSize,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: color,
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(5.0))),
-                  child: Center(
-                      child: Text(seat.sCode != null ? seat.sCode : '',
-                          style: TextStyle(
-                            fontSize: cellFontSize,
-                          ))),
-                ),
+                child: getSeat(seat,color),
                 onTap: () =>
                     selectableSeat && !selectedSeats.contains(seat.sCode)
                         ? seat.sCellDescription == 'EmergencySeat'
@@ -1009,4 +984,70 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     ));
     return obj;
   }
+}
+Widget getSeat(Seat seat, Color color) {
+  return Column(
+  children: [
+    Row(children: [
+      Align( alignment: FractionalOffset.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.only(top: cellSize / 4),
+          child: Container(
+        width: (1 * cellSize)/10,
+        height:  cellSize / 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: color,
+          border: Border.all(width: 1, color: Colors.black)      ,
+          borderRadius:
+          new BorderRadius.only( topLeft: Radius.circular(5.0)              ),
+        ),
+     ))),
+
+       Container(
+    width: (4 * cellSize) / 5,
+    height: (3 * cellSize) / 4,
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      color: color,
+                      borderRadius:
+                          new BorderRadius.only(topLeft:  new Radius.circular(5.0), topRight:  new Radius.circular(5.0))
+    ),
+    child: Center(
+        child: Text((seat != null && seat.sCode != null) ? seat.sCode : '',
+            style: TextStyle(
+              fontSize: cellFontSize,
+            ))),
+  ),
+
+      Align( alignment: FractionalOffset.bottomCenter,
+          child: Padding(
+              padding: EdgeInsets.only(top: cellSize / 4),
+              child: Container(
+                width: (1 * cellSize)/10,
+                height:  cellSize / 2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: color,
+                  border: Border.all(width: 1, color: Colors.black)      ,
+                  borderRadius:
+                  new BorderRadius.only( topRight: Radius.circular(5.0)              ),
+                ),
+              ))),
+
+    ]),
+  Container(
+  width: cellSize,
+  height:  cellSize / 4,
+  decoration: BoxDecoration(
+  shape: BoxShape.rectangle,
+  color: color,
+     border: Border.all(width: 1, color: Colors.black)      ,
+          borderRadius:
+              new BorderRadius.only( bottomLeft: Radius.circular(5.0),
+              bottomRight: Radius.circular(5.0)),
+      ),
+    ),
+
+  ]);
 }

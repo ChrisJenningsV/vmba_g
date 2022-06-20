@@ -9,7 +9,9 @@ import '../data/globals.dart';
 
 Widget getBottomNav(BuildContext context ) {
   int _selectedIndex = 0;
-
+    if( gblNotifications == null ){
+      return null;
+    }
 
     int newNotifications = 0;
     int promos = 0;

@@ -69,7 +69,7 @@ Widget _getTitle(
             // Navigator.of(context).pop();
           },
           child: Image.asset(
-            "lib/assets/images/app.png",
+            "lib/assets/$gblAppTitle/images/app.png",
             width: 20,
             height: 20,
           )),
