@@ -220,6 +220,9 @@ class ProductCardState extends State<ProductCard> {
     List<Widget> bags = [];
     int index = 0;
 
+    widget.pnrModel.pNR.dumpProducts('build');
+
+
     widget.productCategory.products.forEach((prod) {
       if( isThisProductValid(prod)) {
         bags.add(getProductRow(index++,  prod));

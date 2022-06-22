@@ -1695,13 +1695,19 @@ class TimerTextState extends State<TimerText> {
       gblPayBtnDisabled = false;
       gblPaymentMsg = 'Payment Timeout';
       print('expired 2');
-      timer.cancel();
-      Navigator.of(context).pop();
-      onComplete();
+      if( timer != null ) {
+        timer.cancel();
+      }
+      //Navigator.of(context).pop();
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
+      if( onComplete != null ) {
+        onComplete();
+      }
       return;
     }
     if (stopwatch.isRunning) {
-       //setState(() {});
+       setState(() {});
     }
   }
 

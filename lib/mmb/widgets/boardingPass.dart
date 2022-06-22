@@ -894,7 +894,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     try {
       if (Platform.isAndroid) {
         progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
-        String queryStringParams = await GetQueryStringParameters(pass) as String;
+        String queryStringParams = await GetQueryStringParameters(pass) ;
         url = await GetUrlForGooglePass(queryStringParams) as String;
       }
       else {

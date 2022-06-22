@@ -62,13 +62,17 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       //_gotoPreviousPage();
       return;
     } else {
+
       String pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
+
+      print(pnrJson);
       Map map = json.decode(pnrJson);
 
       PnrModel  pnrModel = new PnrModel.fromJson(map);
+      pnrModel.pNR.dumpProducts('after *r');
       onComplete( pnrModel);
     }
   } catch(e) {
@@ -80,7 +84,11 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
 
     // check booking for this product
     if( pnr.mPS != null && pnr.mPS.mP != null ){
-      pnr.mPS.mP.forEach((element) {
+      //pnr.mPS.mP.forEach((element) {
+      // loop in reverse order, so multi deletes work
+      for( int i=pnr.mPS.mP.length-1; i >= 0 ; i--) {
+        print('i=$i');
+         MP element = pnr.mPS.mP[i];
         if( element.mPID == product.productCode) {
           // check if this still wanted
           if( product.curProducts == null || product.curProducts.length == 0 ){
@@ -104,7 +112,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
             });
           }
         }
-      });
+      }
     }
 
 

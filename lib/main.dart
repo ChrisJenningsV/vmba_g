@@ -15,9 +15,7 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
-import 'package:vmba/utilities/notification_service.dart';
 
-import 'Services/LoggingService.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_buraq.dart';

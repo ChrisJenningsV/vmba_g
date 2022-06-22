@@ -69,6 +69,7 @@ dependencies:
   firebase_core: ^1.12.0
  # firebase_analytics: ^8.3.4
   simpleprogressdialog: ^1.0.8
+  flutter_html: ^3.0.0-alpha.5
 
 dev_dependencies:
   flutter_test:

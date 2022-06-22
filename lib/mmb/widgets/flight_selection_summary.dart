@@ -32,7 +32,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   bool _loadingInProgress;
   String currencyCode;
   bool _noInternet;
-  bool _eVoucherNotValid;
   String _userErrorMessage;
   bool _hasError;
 
@@ -41,7 +40,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     super.initState();
     _loadingInProgress = true;
     _noInternet = false;
-    _eVoucherNotValid = false;
+    //_eVoucherNotValid = false;
     _userErrorMessage = "";
     _hasError = false;
     getFareQuote();
@@ -115,7 +114,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     //Check if we have an interconnected flight and add marker if we do
     int flightLineNumber = GetConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
     if (flightLineNumber >= 0){
-      print("Journey has a connecting flight on itin(${flightLineNumber})");
+      print("Journey has a connecting flight on itin($flightLineNumber)");
       cmd += '*r^.${flightLineNumber}x^';
     }
 
@@ -124,7 +123,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     cmd += '*r~x';
 //    cmd += 'E*r~x';
-    print("flight selection cmd=${cmd}");
+    print("flight selection cmd=$cmd");
     return cmd;
   }
 

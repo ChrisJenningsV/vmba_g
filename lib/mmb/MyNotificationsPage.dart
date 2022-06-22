@@ -1,10 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/data/models/pnrs.dart';
-import 'package:vmba/mmb/viewBookingPage.dart';
-import 'package:vmba/data/models/pnr.dart';
-import 'dart:convert';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
@@ -196,7 +192,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' ${title}', //document['rloc'],
+              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' $title', //document['rloc'],
                   style: new TextStyle(color: clr,
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               GestureDetector(

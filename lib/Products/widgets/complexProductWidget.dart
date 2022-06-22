@@ -1,8 +1,8 @@
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/Products/controller/productCommands.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/components/trText.dart';
-//import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/productViews.dart';
@@ -75,7 +75,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       headList.add(new Row(
         children: [
           // get text (strip and HTML)
-          Expanded( child: Column( children:  getDom(widget.product.productDescription), mainAxisSize: MainAxisSize.min, ))
+          Expanded( child:  getHtmlDoc(widget.product.productDescription))
         ],
       ));
     }
@@ -135,9 +135,9 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     )
     );
 
-    return  Column(
+    return SingleChildScrollView( child:  Column(
         children: list,
-    );
+    ));
   }
   void validateAndSave() {
      saveProduct(widget.product, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
@@ -181,23 +181,23 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   Widget build(BuildContext context) {
     return Card(
         child: Padding(
-            padding: EdgeInsets.only(top: 5, left: 6, right: 6, bottom: 3),
+            padding: EdgeInsets.only(top: 5, left: 1, right: 1, bottom: 3),
             child: ExpansionTile(
               initiallyExpanded: true,
               title: Row(children: [
-                new RotatedBox(
+                /*new RotatedBox(
                     quarterTurns: 1,
                     child: new Icon(
                       Icons.airplanemode_active,
                       size: 20.0,
                     )),
-                Padding(padding: EdgeInsets.only(left: 4),),
+                Padding(padding: EdgeInsets.only(left: 4),),*/
                 FutureBuilder(
                   future: cityCodeToName(widget.itin.depart),
                   initialData: widget.itin.depart.toString(),
                   builder:
                       (BuildContext context, AsyncSnapshot<String> text) {
-                    return new Text(text.data, textScaleFactor: 1.25);
+                    return new Text(text.data);
                   },
                 ),
                 new Icon(
@@ -209,7 +209,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
                   initialData: widget.itin.arrive.toString(),
                   builder:
                       (BuildContext context, AsyncSnapshot<String> text) {
-                    return new Text(text.data, textScaleFactor: 1.25);
+                    return new Text(text.data);
                   },
                 ),
               ]),
@@ -344,3 +344,11 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
     return Row(children: widgets);
   }
 
+Widget getHtmlDoc( String htmlData) {
+  //dom.Document document = htmlparser.parse(htmlData);
+  /// sanitize or query document here
+  Widget html = Html(
+    data: htmlData,
+  );
+  return html;
+}

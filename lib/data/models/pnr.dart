@@ -416,6 +416,19 @@ class PNR {
         ? new Fqfields.fromJson(json['fqfields'])
         : null;
   }
+
+  void dumpProducts(String from ) {
+    print('Products dump: ${from}');
+    if( mPS == null || mPS.mP == null ) {
+      print('None');
+      return ;
+    }
+    mPS.mP.forEach((p) {
+      print('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');
+    }
+    );
+  }
+
   int productCount(String productCode ){
     if( mPS == null || mPS.mP == null ) {
       return 0;
