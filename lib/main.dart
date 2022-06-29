@@ -19,6 +19,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_buraq.dart';
+import 'main_fastjet.dart';
 import 'main_fl.dart';
 import 'main_lm.dart';
 import 'main_qi.dart';
@@ -62,6 +63,9 @@ void main() async {
      case 'LM':
         configLM();
       break;
+      case 'FN':
+        configFN();
+        break;
       case 'FL':
         configFL();
         break;

@@ -62,7 +62,11 @@ android {
             resValue "string", "flavored_app_name", "Loganair"
             applicationId "uk.co.loganair.booking"
         }
-
+        FastJet {
+            dimension "version"
+            resValue "string", "flavored_app_name", "FastJet"
+            applicationId "com.fastjet.reservations"
+        }
         BlueIslands {
             dimension "version"
             resValue "string", "flavored_app_name", "Blue Islands"

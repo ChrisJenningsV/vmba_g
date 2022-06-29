@@ -254,7 +254,8 @@ class Repository {
 
       if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
-        String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json', vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
+        String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
+            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
 
         response = await http.get(
@@ -583,7 +584,7 @@ class Repository {
             logit('login failed');
             print(response.body);
             gblErrorTitle = 'Login';
-            if ( map != null ) {
+            if ( map != null && map['errorMessage'] != null && map['errorCode'] != null) {
               gblError = map['errorMessage'] + ' :' + map['errorCode'];
             } else {
               gblError = response.body;
@@ -607,6 +608,7 @@ class Repository {
       logit('login - catch error');
       print(e);
       gblErrorTitle = 'Login-';
+
       gblError = e.toString();
       gblNoNetwork = true;
       //rethrow;

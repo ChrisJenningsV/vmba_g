@@ -23,6 +23,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import 'ProviderFieldsPage.dart';
 
+bool _cancelTimer = false;
+
 //ignore: must_be_immutable
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -66,6 +68,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   @override
   initState() {
     super.initState();
+    logit('CPM initState');
+
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
 
@@ -1059,6 +1063,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               child: new Text("Close"),
               onPressed: () {
                 _error = '';
+                logit('Close dialog');
                 if( gblSettings.wantNewEditPax ){
                   // double pop
                   var nav = Navigator.of(context);
@@ -1088,6 +1093,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
 
     if (_displayProcessingIndicator) {
+      logit('CPM Build processing');
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
@@ -1109,6 +1115,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         ),
       );
     } else if (gblPaymentMsg != null ) {
+      logit('CPM Build error');
+
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
@@ -1123,29 +1131,69 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
-          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
-/*
-          AlertDialog(
-            title: new TrText("Payment Error"),
-            content: TrText(gblPaymentMsg),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new TextButton(
-                child: new TrText("OK"),
-                onPressed: () {
-                  setState(() {
-                    gblPaymentMsg = null;
-                  });
+          backgroundColor: Colors.grey.shade500,
+          body: Center( child: Container(
 
-                },
+            //alignment: Alignment.topCenter,
+
+            margin: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
+              decoration: BoxDecoration(    border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(3.0))
               ),
-            ],
-          )
-*/
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
+             children: [ Column(
+               // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                 children: [
+                   Text('Payment Error', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                   Padding(padding:  EdgeInsets.only(top: 10.0),),
+                   Text( gblPaymentMsg),
+                   Padding(padding:  EdgeInsets.only(top: 20.0),),
+                   ElevatedButton(
+                     onPressed: () {
+                       gblPaymentMsg = null;
+                       setState(() {
+
+                       });
+                     },
+                     style: ElevatedButton.styleFrom(
+                         primary: gblSystemColors
+                             .primaryButtonColor,
+                         shape: RoundedRectangleBorder(
+                             borderRadius:
+                             BorderRadius.circular(30.0))),
+                     child: Row(
+                       mainAxisSize: MainAxisSize.min,
+                       children: <Widget>[
+                         Icon(
+                           Icons.check,
+                           color: Colors.white,
+                         ),
+                         TrText(
+                           'OK',
+                           style: TextStyle(color: Colors.white),
+                         ),
+                       ],
+                     ),
+                   ),
+        ]),])
+
+          ))
+        //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
       );
     } else {
+      logit('CPM Build normal');
+
       return WillPopScope(
         onWillPop: () {
+          logit('CPM Will Pop');
+
           if( gblSettings.wantNewEditPax ){
             // double pop
             var nav = Navigator.of(context);
@@ -1208,8 +1256,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(){
-    Navigator.of(context).pop();
-    //gblPaymentMsg = null;
+    gblPaymentMsg = null;
+//    Navigator.of(context).pop();
+    setState(() {
+    });
   }
 
   Widget _getMiles() {
@@ -1252,7 +1302,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 List<Widget> getPayOptions(String amount, String cur) {
     List<Widget> list = [];
-
+    logit('get pay opts');
 
      list.add( ExpansionTile(
         initiallyExpanded: false,
@@ -1443,6 +1493,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         ),
       ));
     } else {
+        logit('render pay buttons');
         if( gblSettings.wantNewPayment) {
           list.add(  renderNewPaymentButtons());
         } else {
@@ -1499,7 +1550,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                     await changeFlt(
                         widget.pnrModel, widget.mmbBooking, context);
                   }
-
+                  _cancelTimer = true;
                   await Navigator.push(
                       context, SlideTopRoute(page: WebPayPage(
                     provider.paymentSchemeName, newBooking: widget.newBooking,
@@ -1618,6 +1669,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
   void startTimer() {
     const oneSec = const Duration(milliseconds: 100);
+    _cancelTimer = false;
     _timer = new Timer.periodic(
       oneSec,
           (Timer timer) {
@@ -1691,6 +1743,10 @@ class TimerTextState extends State<TimerText> {
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
+    if(_cancelTimer) {
+      timer.cancel();
+      return;
+    }
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
       gblPayBtnDisabled = false;
       gblPaymentMsg = 'Payment Timeout';

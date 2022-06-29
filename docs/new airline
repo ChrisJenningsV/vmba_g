@@ -4,8 +4,21 @@ add flavor to android/app/build.gradle
 add images to pubspec.yaml
 create launch_icons_<airline>.yaml
 
+add Videcom_ApiKeyV2 to config table
+add vrs_mob_password and vrs_mob_user settings to config table
+add googleNotifyKey to config table
+
 add config
 lib/assets/<airline>/json/countries.json
 
 add images
 lib/assets/<airline>/images/appBar.png
+
+update web.config, in <webservices> section
+
+ <webServices>
+      <protocols>
+        <add name="HttpGet" />
+        <add name="HttpPost" />
+      </protocols>
+    </webServices>

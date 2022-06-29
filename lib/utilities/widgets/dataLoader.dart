@@ -43,7 +43,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     super.initState();
     _displayProcessingIndicator = false;
     _displayFinalError = false;
-    _fullLogging = false;
+    _fullLogging = true;
     _displayProcessingText = '';
     _initData();
     _loadData();
@@ -220,7 +220,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.providers:
         try {
           gblProviders = Providers.fromJson(data);
-          if(_fullLogging) logit('loaded providers');
+          if(_fullLogging) logit('loaded providers ' + data );
         } catch(e) {
           logit(e.toString());
         }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../utilities/helper.dart';
+
 
 
 void showError(String msg) {
@@ -85,6 +87,8 @@ void showAlertDialog(BuildContext context, String title, String msg, {void Funct
 }
 
 AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function() onComplete}) {
+  logit('getAlertDialog');
+
   return AlertDialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -159,8 +163,9 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
 onPressed: () {
 if( onComplete != null ) {
 onComplete();
+} else {
+  Navigator.of(context).pop();
 }
-Navigator.of(context).pop();
 },
 
 child: TrText
