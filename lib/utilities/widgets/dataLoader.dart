@@ -132,7 +132,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         }
 
       }
-      print('failed: $_msg');
+      print('failed to get providers: ${response.body}');
       try{
         print (response.body);
         setLoadState(LoadState.loadFailed);

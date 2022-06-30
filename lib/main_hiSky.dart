@@ -52,10 +52,11 @@ void configH4() {
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
+    gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
 
     airlineName: "hiSky",
     gblServerFiles: 'https://booking.hisky.md/hisky/AppFiles/',
-    testServerFiles: 'https://customertest.videcom.com/hisky/AppFiles/',
+    testServerFiles: 'https://customertest.videcom.com/hisky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'FN',

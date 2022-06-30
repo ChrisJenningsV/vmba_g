@@ -418,7 +418,7 @@ class PNR {
   }
 
   void dumpProducts(String from ) {
-    print('Products dump: ${from}');
+    print('Products dump: $from');
     if( mPS == null || mPS.mP == null ) {
       print('None');
       return ;

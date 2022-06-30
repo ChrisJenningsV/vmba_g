@@ -93,7 +93,7 @@ void configUZ() {
 
 //Production setttings
 
-  liveXmlUrl:      "https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveXmlUrl:      "https://booking.buraq.aero/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.buraq.aero/VARS/webApiv2/api/',
   livePayPage:      'https://booking.buraq.aero/VARS/Public/MobilePaymentStart.aspx',

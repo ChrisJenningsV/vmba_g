@@ -310,8 +310,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .then((result) {
         print(result);
         if (result == 'Payment Complete' ||
-            result ==
-                'Payment not accepted, no more to pay for this passenger') {
+            result.contains('Receipt e-mailed to:') ||
+            result == 'Payment not accepted, no more to pay for this passenger') {
           gblTimerExpired = true;
 /*          if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
