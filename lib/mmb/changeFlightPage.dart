@@ -399,7 +399,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             CircularProgressIndicator(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Searching for Flights'),
+              child: TrText('Searching for Flights'),
             )
           ],
         ),
@@ -411,7 +411,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Please check your internet connection'),
+              child: TrText('Please check your internet connection'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -513,7 +513,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
               )
               .toList());
     } else {
-      return new Text('No Calender results');
+      return new TrText('No Calender results');
     }
   }
 
@@ -645,7 +645,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                                     },
                                                   ),
                                                 ],
-                                                title: new Text('Connections'),
+                                                title: new TrText('Connections'),
                                                 content: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
@@ -720,7 +720,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                           ],
                                         ),
                                       )
-                                    : Text('Direct Flight'),
+                                    : TrText('Direct Flight'),
                               ],
                             )
                           ],

@@ -54,7 +54,8 @@ void configFN() {
     wantHomeFQTVButton: false,
 
     airlineName: "FastJet",
-    gblServerFiles: 'https://customertest.videcom.com/FastJet/AppFiles/',
+    gblServerFiles: 'https://customer3.videcom.com/FastJet/AppFiles/',
+    testServerFiles: 'https://customertest.videcom.com/FastJet/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'FN',

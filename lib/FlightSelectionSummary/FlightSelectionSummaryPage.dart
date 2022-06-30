@@ -162,13 +162,21 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd = buildAddPaxCmd();
     cmd += buildADSCmd();
     widget.newBooking.outboundflight.forEach((flt) {
-      print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
-      cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
+      int index = flt.indexOf('/');
+      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      print(bkFlt);
+      cmd += bkFlt + '^';
+      //print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
+      //cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
 
     widget.newBooking.returningflight.forEach((flt) {
-      print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
-      cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
+      int index = flt.indexOf('/');
+      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      print(bkFlt);
+      cmd += bkFlt + '^';
+   //   print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
+   //   cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
 
     //Add connecting indicators for outbound and return flights
@@ -692,7 +700,7 @@ Row airMiles() {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Please check your internet connection'),
+                  child: TrText('Please check your internet connection'),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -820,7 +828,7 @@ Row airMiles() {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('No of children: '),
+                          TrText('No of children: '),
                           Text(
                               widget.newBooking.passengers.children.toString()),
                         ],
@@ -878,7 +886,7 @@ Row airMiles() {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Fare Rules'),
+                          TrText('Fare Rules'),
                           IconButton(
                             icon: Icon(Icons.keyboard_arrow_down),
                             onPressed: () => Navigator.push(

@@ -177,7 +177,7 @@ class _ApisWidgetState extends State<ApisWidget> {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: new Text('Additional Information',
+        title: new TrText('Additional Information',
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),

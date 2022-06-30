@@ -489,7 +489,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Tax:'),
+            TrText('Tax:'),
             Text(formatPrice(currencyCode, taxTotal) ),
 /*
             Text(NumberFormat.simpleCurrency(
@@ -552,7 +552,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text('Allocated Seats',
+                TrText('Allocated Seats',
                     style: TextStyle(fontWeight: FontWeight.w700))
               ],
             ),
@@ -567,7 +567,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
+                TrText('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
                 Text(formatPrice(seat.cur ?? currencyCode, double.parse(seat.amt) ?? 0.0) ),
               ],
             ),
@@ -1151,7 +1151,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                  children: [
-                   Text('Payment Error', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                   TrText('Payment Error', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
                    Padding(padding:  EdgeInsets.only(top: 10.0),),
                    Text( gblPaymentMsg),
                    Padding(padding:  EdgeInsets.only(top: 20.0),),

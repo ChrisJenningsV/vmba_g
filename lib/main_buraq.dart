@@ -52,11 +52,12 @@ void configUZ() {
     wantHomeFQTVButton: false,
 
     airlineName: "Buraq",
-  gblServerFiles: 'https://customertest.videcom.com/buraq/AppFiles/',
+  gblServerFiles: 'https://booking.buraq.aero/AppFiles/',
+  testServerFiles: 'https://customertest.videcom.com/buraq/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'UZ',
-  termsAndConditionsUrl: ' https://buraq.aero/terms-and-conditions/',
+  termsAndConditionsUrl: 'https://buraq.aero/terms-and-conditions/',
    privacyPolicyUrl:  'https://buraq.aero/privacy-policy/',
   prohibitedItemsNoticeUrl:  'https://buraq.aero/prohibited-items/',
 
@@ -96,6 +97,7 @@ void configUZ() {
   liveApisUrl:      'https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.buraq.aero/VARS/webApiv2/api/',
   livePayPage:      'https://booking.buraq.aero/VARS/Public/MobilePaymentStart.aspx',
+  liveSmartApiUrl:      "https://customertest.videcom.com/buraq/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
   liveCreditCardProvider: 'worldpaydirect',
 

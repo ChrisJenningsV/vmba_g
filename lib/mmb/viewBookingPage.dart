@@ -2130,7 +2130,7 @@ class _CheckinBoardingPassesWidgetState
       // borderSide: BorderSide(
       //     color: AppConfig.of(context).systemColors.primaryButtonColor))
       //     ,
-      child: Text('Allocate seats randomly',
+      child: TrText('Allocate seats randomly',
           textAlign: TextAlign.center,
           style: new TextStyle(
               color: gblSystemColors.primaryButtonColor)),
@@ -2159,7 +2159,7 @@ class _CheckinBoardingPassesWidgetState
     );
 
     AlertDialog alert = AlertDialog(
-        title: Text('Seating Preference'),
+        title: TrText('Seating Preference'),
         content: Text(text),
         actions: <Widget>[
           autoseatingButton,

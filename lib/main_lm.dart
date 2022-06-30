@@ -54,7 +54,8 @@ void configLM() {
     wantHomeFQTVButton: false,
 
     airlineName: "Loganair",
-  gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
+  gblServerFiles: 'https://booking.loganair.co.uk/AppFiles/',
+  testServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',

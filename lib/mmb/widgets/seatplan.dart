@@ -416,7 +416,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new Text('Choose a seat',
+          title: new TrText('Choose a seat',
               style: TextStyle(
                   color:
                   gblSystemColors.headerTextColor)),
@@ -706,7 +706,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         !paxTypesNotAllowed.contains(selectPax.paxType);
 
     Widget cancelButton = TextButton(
-      child: Text('Cancel'),
+      child: TrText('Cancel'),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -728,7 +728,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text('Emergency seating'),
+      title: TrText('Emergency seating'),
       content: Text(isAllowEmergencySeating
           ? acceptTermsText
           : notAllowEmergencySeatingText),

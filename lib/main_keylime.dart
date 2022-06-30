@@ -89,7 +89,8 @@ void configKG() {
     wantEnglishTranslation: false,
     want24HourClock: true,
     currencies: '',
-    gblServerFiles: 'https://customertest.videcom.com/KeyLimeAir/AppFiles',
+    gblServerFiles: 'https://booking.denverairconnection.com/AppFiles',
+    testServerFiles: 'https://customertest.videcom.com/KeyLimeAir/AppFiles',
     passengerTypes:  PassengerTypes(
       adults: true,
       child: true,

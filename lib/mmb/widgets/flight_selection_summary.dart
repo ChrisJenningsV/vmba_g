@@ -101,8 +101,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         .forEach((f) => cmd += 'X${f.line}^');
 
     widget.mmbBooking.newFlights.forEach((flt) {
-      print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
-      cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
+      int index = flt.indexOf('/');
+      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      print(bkFlt);
+      cmd += bkFlt + '^';
+
+//      print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
+  //    cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
 /*
     widget.mmbBooking.newFlights.forEach((flt) {

@@ -7,6 +7,7 @@ create launch_icons_<airline>.yaml
 add Videcom_ApiKeyV2 to config table
 add vrs_mob_password and vrs_mob_user settings to config table
 add googleNotifyKey to config table
+add AgentUid table entry for 9992AW/EB
 
 add config
 lib/assets/<airline>/json/countries.json
@@ -14,7 +15,7 @@ lib/assets/<airline>/json/countries.json
 add images
 lib/assets/<airline>/images/appBar.png
 
-update web.config, in <webservices> section
+update web.config, in <system.web>
 
  <webServices>
       <protocols>

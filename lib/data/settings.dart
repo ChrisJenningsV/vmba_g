@@ -149,6 +149,7 @@ class Settings {
   String gblLanguages ;
   String currencies;
   String gblServerFiles;
+  String testServerFiles;
   String covidText;
 
 
@@ -265,6 +266,7 @@ bool bpShowFastTrack;
     this.covidText,
     this.currencies,
     this.gblServerFiles,
+    this.testServerFiles,
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
     this.skyFlyToken,

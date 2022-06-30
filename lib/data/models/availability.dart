@@ -135,7 +135,16 @@ class Cbnotvalidwith {
   Cbnotvalidwith({this.cbname});
 
   Cbnotvalidwith.fromJson(Map<String, dynamic> json) {
-    cbname = json['cbname'];
+    cbname = '';
+    if (json['cbname'] is List){
+      json['cbname'].forEach((v) {
+        //   cbtext.add(new Cbtext.fromJson(v));
+        cbname += v + ',';
+      });
+    } else {
+      cbname = json['cbname'];
+    }
+    //cbname = json['cbname'];
   }
 
   Map<String, dynamic> toJson() {

@@ -533,7 +533,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                     },
                                                   ),
                                                 ],
-                                                title: new Text('Connections'),
+                                                title: new TrText('Connections'),
                                                 content: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,

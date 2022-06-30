@@ -18,9 +18,11 @@ import 'package:vmba/utilities/helper.dart';
 
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
+import 'main_aurigny.dart';
 import 'main_buraq.dart';
 import 'main_fastjet.dart';
 import 'main_fl.dart';
+import 'main_hiSky.dart';
 import 'main_lm.dart';
 import 'main_qi.dart';
 import 'main_si.dart';
@@ -65,6 +67,12 @@ void main() async {
       break;
       case 'FN':
         configFN();
+        break;
+      case 'H4':
+        configH4();
+        break;
+      case 'GR':
+        configGR();
         break;
       case 'FL':
         configFL();
@@ -140,6 +148,9 @@ bool bFirstTime = true;
       gblSettings.apiUrl = gblSettings.testApiUrl;
       gblSettings.smartApiUrl = gblSettings.testSmartApiUrl;
       gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
+      if( gblSettings.testServerFiles != null && gblSettings.testServerFiles.isNotEmpty){
+        gblSettings.gblServerFiles = gblSettings.testServerFiles;
+      }
     }
     // check for invalid settings
     if(gblSettings.fQTVpointsName== null || gblSettings.fQTVpointsName.isEmpty){

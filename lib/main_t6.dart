@@ -60,7 +60,10 @@ void configT6() {
     airlineName: "Air Swift",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
-      aircode: 'T6',
+    gblServerFiles: 'https://booking.air-swift.com/AppFiles',
+    testServerFiles: 'https://customertest.videcom.com/airswift/vars/AppFiles',
+
+    aircode: 'T6',
       termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
       privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
      // prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',

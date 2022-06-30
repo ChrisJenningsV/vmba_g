@@ -67,6 +67,16 @@ android {
             resValue "string", "flavored_app_name", "FastJet"
             applicationId "com.fastjet.reservations"
         }
+        hiSky {
+            dimension "version"
+            resValue "string", "flavored_app_name", "hiSky"
+            applicationId "aero.hisky.reservations"
+        }
+        Aurigny {
+            dimension "version"
+            resValue "string", "flavored_app_name", "Aurigny"
+            applicationId "com.aurigny.reservations"
+        }
         BlueIslands {
             dimension "version"
             resValue "string", "flavored_app_name", "Blue Islands"

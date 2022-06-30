@@ -10,7 +10,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN';
+String gblBuildFlavor = 'UZ';
 bool gblIsLive = false;
 
 String gblAppTitle ;
@@ -34,7 +34,7 @@ String gblDeviceId;
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = true;
+bool gblUseCache = false;
 bool gblIsIos = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;
