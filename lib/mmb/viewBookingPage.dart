@@ -669,7 +669,8 @@ class _CheckinBoardingPassesWidgetState
                 vrsGuid: gblSettings.vrsGuid,
                 notifyToken: gblNotifyToken,
                 rloc: gblCurrentRloc,
-                phoneId: gblDeviceId
+                phoneId: gblDeviceId,
+                language: gblLanguage
               )
           );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
@@ -1976,7 +1977,8 @@ class _CheckinBoardingPassesWidgetState
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
               rloc: gblCurrentRloc,
-              phoneId: gblDeviceId
+              phoneId: gblDeviceId,
+              language: gblLanguage
           )
       );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";

@@ -79,7 +79,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         } catch (e) {
           print(e);
         }
-        _titleTextEditingController.text = widget.passengerDetail.title;
+        _titleTextEditingController.text = translate(widget.passengerDetail.title);
         _titleTextEditingController.text = widget.passengerDetail.title;
         _firstNameTextEditingController.text = widget.passengerDetail.firstName;
         _middleNameTextEditingController.text = widget.passengerDetail.middleName;
@@ -272,6 +272,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       primaryColorDark: Colors.blue,
     );
 
+    logit('title a = ${widget.passengerDetail.title}');
     // title
     widgets.add(Padding(
       padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
@@ -300,7 +301,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 value.isEmpty ? translate('Title cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.passengerDetail.title = value.trim();
+               // widget.passengerDetail.title = value.trim();
+              //  _titleTextEditingController.text =translate(widget.passengerDetail.title);
               }
             },
           ),
@@ -779,7 +781,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void _updateTitle(String value) {
     setState(() {
-      _titleTextEditingController.text = value;
+      widget.passengerDetail.title = value;
+      _titleTextEditingController.text = translate(value);
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }

@@ -26,7 +26,7 @@ void configH4() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
     accentButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.black,
@@ -52,14 +52,14 @@ void configH4() {
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
-    gblLanguages: 'sv,Swedish,no,Norwegian,en,English',
+    gblLanguages: 'ro,Romanian,en,English',
 
     airlineName: "hiSky",
     gblServerFiles: 'https://booking.hisky.md/hisky/AppFiles/',
     testServerFiles: 'https://customertest.videcom.com/hisky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
-    aircode: 'FN',
+    aircode: 'H4',
     termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
     privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
     prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
@@ -84,6 +84,7 @@ void configH4() {
     bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
+    wantApis: true,
 
     adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(

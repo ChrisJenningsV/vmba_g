@@ -302,7 +302,7 @@ void initState() {
                     ],
                   ),
           ),
-          smallButton( text: street.isEmpty ? 'Add' : 'Edit',
+          smallButton( text: street.isEmpty ? translate('Add') : translate('Edit'),
               icon: street.isEmpty ? Icons.add : Icons.edit,
               onPressed: () {  _showAddressDialog().then((value) => setState(() {}));}),
           /*

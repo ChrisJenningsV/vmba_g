@@ -12,6 +12,8 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
+import '../../utilities/helper.dart';
+
 class EditDetailsWidget extends StatefulWidget {
   EditDetailsWidget(
       {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})
@@ -158,6 +160,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   Widget renderFields() {
     List <Widget> list = [];
     //return Column(children: <Widget>[
+    logit('title p = ${widget.passengerDetail.title}');
+
       list.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
         child: InkWell(
@@ -193,7 +197,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                   value.isEmpty ? translate('Title cannot be empty') : null,
               onSaved: (value) {
                 if (value != null) {
-                  widget.passengerDetail.title = value.trim();
+                  //widget.passengerDetail.title = value.trim();
                 }
               },
             ),
@@ -466,6 +470,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     gblTitles.forEach((title) => widgets.add(ListTile(
         title: TrText(title),
         onTap: () {
+          logit('on tap $title');
           Navigator.pop(context, title);
           _updateTitle(title);
         })));
@@ -476,6 +481,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
   void _updateTitle(String value) {
     setState(() {
+      widget.passengerDetail.title = value;
       _titleTextEditingController.text = value;
       FocusScope.of(context).requestFocus(new FocusNode());
     });

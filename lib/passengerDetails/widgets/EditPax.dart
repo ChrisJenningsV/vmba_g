@@ -69,7 +69,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     if( widget.passengerDetail.country == null ) {
       widget.passengerDetail.country = '';
     }
-    _titleTextEditingController.text = widget.passengerDetail.title;
+    String ttl =  translate(widget.passengerDetail.title);
+    _titleTextEditingController.text = ttl;
     _firstNameTextEditingController.text = widget.passengerDetail.firstName;
     _middleNameTextEditingController.text = widget.passengerDetail.middleName;
     _lastNameTextEditingController.text = widget.passengerDetail.lastName;
@@ -183,6 +184,7 @@ return SafeArea(
     EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 2, 0, 2);
 
     //return Column(children: <Widget>[
+    logit('title = ${widget.passengerDetail.title}');
     list.add(Padding(
       padding: _padding,
       child: InkWell(
@@ -204,12 +206,15 @@ return SafeArea(
         child: IgnorePointer(
           child: TextFormField(
             decoration: getDecoration('Title'),
+           // initialValue: translate(widget.passengerDetail.title),
+
             controller: _titleTextEditingController,
             validator: (value) =>
             value.isEmpty ? translate('Title cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.passengerDetail.title = value.trim();
+                //widget.passengerDetail.title = value.trim();
+                //_titleTextEditingController.text =translate(widget.passengerDetail.title);
               }
             },
           ),
@@ -894,98 +899,6 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   }
 
 
- /* Widget addCountry(DbCountry country) {
-    Image img;
-    String name = country.enShortName;
-    if( name.length > 25) {
-      name = name.substring(0,24);
-    }
-   //return Text(name);
-
-    try {
-      img = Image.asset(
-        'icons/flags/png/${country.alpha2code.toLowerCase()}.png',
-        package: 'country_icons',
-        width: 20,
-        height: 20,);
-    } catch(e) {
-      logit(e);
-    }
-    if (img == null ) {
-      return Row(children: <Widget>[
-          SizedBox(width: 10,),
-          new Text(name)]);
-    } else {
-    return Row(children: <Widget>[
-        img,
-        SizedBox(width: 10,),
-        new Text(name)]);
-
-    }
-
-  }
-*/
-
-
-  /*
-  Widget _countryPicker2() {
-    List<String> _countries = []; //['SEK', 'NOK', 'DKK', 'EUR', 'GBP'];
-    Map<String, String> countryCodes = {}; // {'S
-   // widget.passengerDetail.country = 'United Kingdon';
-
-    var countries = 'gb,United Kingdon,ph,Philippines,au,Austraila';
-    var curArray = countries.split(','); // EK': 'se', 'NOK': 'no', 'DKK': 'dk', 'EUR': 'eu', 'GBP': 'gb'};
-
-
-    var count = _countryList.countries.length;
-    count = curArray.length ;
-
-
-    for( var i = 0 ; i < count; i+=2) {
-//      var selected = false;
-      _countries.add(curArray[i+1]);
-      countryCodes[curArray[i+1]] = curArray[i];
-//      if (langs[i] == gblLanguage) {
-//        selected = true;
-//      }
-    }
-    logit('coutries: ' + _countries.toString());
-    logit('country = ' + widget.passengerDetail.country);
-    if( widget.passengerDetail.country == null || widget.passengerDetail.country == '') {
-      widget.passengerDetail.country = _countries[0];
-    }
-
-    return Row(
-        children: <Widget>[
-          new TrText(
-              'Nationality',
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0,
-              )),
-          SizedBox(width: 50,),
-          DropdownButton(
-              hint: TrText('Country'), // Not necessary for Option 1
-              value: widget.passengerDetail.country,
-              onChanged: (newValue) {
-                setState(() {
-                  widget.passengerDetail.country = newValue;
-                });
-              },
-              items: _countries.map((country) {
-                return DropdownMenuItem(
-                  child: Row(children: <Widget>[
-                    Image.asset('icons/flags/png/${countryCodes[country]}.png', package: 'country_icons', width: 20,height: 20,),
-                    SizedBox(width: 10,),
-                    new Text(country)]),
-                  value: country,
-                );
-              }).toList())]
-    );
-  }
-     */
-
-
   ListView optionListView() {
     List<Widget> widgets = [];
     //new List<Widget>();
@@ -1002,7 +915,8 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 
   void _updateTitle(String value) {
     setState(() {
-      _titleTextEditingController.text = value;
+      widget.passengerDetail.title = value;
+      _titleTextEditingController.text = translate(value);
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }

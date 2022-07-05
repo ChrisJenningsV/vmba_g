@@ -5,7 +5,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/widgets/editPage.dart';
-import 'package:vmba/passengerDetails/widgets/editPax.dart';
+import 'package:vmba/passengerDetails/widgets/EditPax.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -226,11 +226,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     }
 
     if( gblSettings.wantApis ) {
-      if (passengerDetailRecord.redressNo != null &&
-          passengerDetailRecord.redressNo.length > 0) {
-        _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
-      } else {
-        gotAllDetails = false;
+      if( gblSettings.wantRedressNo) {
+        if (passengerDetailRecord.redressNo != null &&
+            passengerDetailRecord.redressNo.length > 0) {
+          _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
+        } else {
+          gotAllDetails = false;
+        }
       }
 
       if (passengerDetailRecord.knowTravellerNo != null &&
@@ -238,21 +240,25 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         _passengerDetails[paxNo].knowTravellerNo =
             passengerDetailRecord.knowTravellerNo;
       } else {
-        gotAllDetails = false;
+        //gotAllDetails = false;
       }
 
-      if (passengerDetailRecord.gender != null &&
-          passengerDetailRecord.gender.length > 0) {
-        _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
-      } else {
-        gotAllDetails = false;
+      if (gblSettings.wantGender) {
+        if (passengerDetailRecord.gender != null &&
+            passengerDetailRecord.gender.length > 0) {
+          _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
+        } else {
+          gotAllDetails = false;
+        }
       }
 
-      if (passengerDetailRecord.dateOfBirth != null) {
-        _passengerDetails[paxNo].dateOfBirth =
-            passengerDetailRecord.dateOfBirth;
-      } else {
-        gotAllDetails = false;
+      if( gblSettings.passengerTypes.wantAdultDOB) {
+        if (passengerDetailRecord.dateOfBirth != null) {
+          _passengerDetails[paxNo].dateOfBirth =
+              passengerDetailRecord.dateOfBirth;
+        } else {
+          gotAllDetails = false;
+        }
       }
     }
 

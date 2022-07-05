@@ -26,7 +26,7 @@ void configLM() {
   SystemColors _systemColors = SystemColors(
       primaryButtonColor: Colors.black,
       accentButtonColor: Colors.black,
-      accentColor: Colors.black,
+      accentColor: Colors.black, // used for calendar selection ends
       primaryColor: Colors.red,
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
