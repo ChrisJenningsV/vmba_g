@@ -50,7 +50,7 @@ void configSI() {
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
     accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
 
     primaryColor: Colors.white,// colour for datepicker header - also it changes menu icon color !!
@@ -101,6 +101,7 @@ void configSI() {
       child: true,
       infant: true,
       youths: true,
+      wantYouthDOB: true,
   ),
   fqtvName:  "",
   appFeedbackEmail:  "webmaster@blueislands.com",

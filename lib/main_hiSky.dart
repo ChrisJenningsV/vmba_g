@@ -53,6 +53,9 @@ void configH4() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
+    currencies: 'ro,RON,eu,EUR,gb,GBP',
+    currency: 'RON',
+    wantCurrencyPicker: true,
 
     airlineName: "hiSky",
     gblServerFiles: 'https://booking.hisky.md/hisky/AppFiles/',
@@ -84,7 +87,7 @@ void configH4() {
     bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
-    wantApis: true,
+    wantApis: false,
 
     adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
