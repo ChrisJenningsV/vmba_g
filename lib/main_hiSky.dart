@@ -53,9 +53,10 @@ void configH4() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
-    currencies: 'ro,RON,eu,EUR,gb,GBP',
+    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
     currency: 'RON',
     wantCurrencyPicker: true,
+    wantPassengerPassport: true,
 
     airlineName: "hiSky",
     gblServerFiles: 'https://booking.hisky.md/hisky/AppFiles/',
@@ -148,6 +149,7 @@ void configH4() {
     wantRefund: true,
     wantNewPayment: true,
     wantCountry: false,
+    useSmartPay: false,
 
     wantFQTVNumber: true,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',

@@ -59,17 +59,20 @@ String _error = '';
     }
     _controller = TabController(length: tablen, vsync: this);
 
-    getmyookings();
+    getmybookings();
     Repository.get().getAllCities().then((cities) {});
   }
 
-  void getmyookings() {
+  void getmybookings() {
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
       List<PnrDBCopy> thisOldpnrs = [];
       // new List<PnrDBCopy>();
+      logit('get my bookings');
       for (var item in pnrsDBCopy) {
-        Map<String, dynamic> map = jsonDecode(item.data);
+        String pnrJson = item.data ; //.replaceAll('"APPVERSION": 1.0.0.98,','"');
+
+        Map<String, dynamic> map = jsonDecode(pnrJson);
         PnrModel _pnr = new PnrModel.fromJson(map);
         PnrDBCopy _pnrs = new PnrDBCopy(
             rloc: item.rloc,
@@ -560,7 +563,9 @@ String _error = '';
     //   }
     // }
 
-    Map<String, dynamic> map = jsonDecode(document.data);
+    String pnrJson =document.data;
+    //pnrJson = pnrJson.replaceAll('"APPVERSION": 1.0.0.98,','"');
+    Map<String, dynamic> map = jsonDecode(pnrJson);
     PnrModel pnr = new PnrModel.fromJson(map);
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
     return Container(
@@ -576,6 +581,7 @@ String _error = '';
               new Text(document.rloc, //document['rloc'],
                   style: new TextStyle(
                       fontSize: 20.0, fontWeight: FontWeight.w700)),
+              TrText((pnr.pNR.appVersion  == null ) ?'Needs Reload' : ' ', style: TextStyle(color: Colors.red),),
               GestureDetector(
                 child: Icon(Icons.more_vert),
                 onTapDown: _storePosition,
@@ -587,13 +593,16 @@ String _error = '';
           fltLines(pnr),
         ]),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ViewBookingPage(
-                      rloc: document.rloc,
-                    )),
-          );
+          if(pnr.pNR.appVersion  != null ) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ViewBookingPage(
+                        rloc: document.rloc,
+                      )),
+            );
+          }
         },
       ),
       decoration: BoxDecoration(
@@ -635,9 +644,11 @@ String _error = '';
              label: TrText('Reload booking'),
              onPressed: () {
                 gblCurrentRloc = rloc;
-                _refreshBooking(rloc)
+                _refreshBooking(rloc);
+/*
                    .then((onValue) => Navigator.of(context).pop())
-                   .then((onValue) => getmyookings());
+                   .then((onValue) => getmybookings());
+*/
              },
            ),
          ),
@@ -650,7 +661,7 @@ String _error = '';
               Repository.get()
                   .deletePnr(rloc)
                   .then((onValue) => Navigator.of(context).pop())
-                  .then((onValue) => getmyookings());
+                  .then((onValue) => getmybookings());
             },
           ),
         ),
@@ -660,9 +671,15 @@ String _error = '';
   }
 
   Future<void> _refreshBooking(String rloc) async {
-    Repository.get().fetchApisStatus(rloc);
-    Repository.get().fetchPnr(rloc);
-  }
+    await Repository.get().fetchApisStatus(rloc);
+    await Repository.get().fetchPnr(rloc);
+    Navigator.of(context).pop();
+    Future.delayed(const Duration(milliseconds: 500), ()
+    {
+      getmybookings();
+    });
+
+    }
 
   Widget fltLines(PnrModel pnr) {
     List<Widget> fltWidgets = [];

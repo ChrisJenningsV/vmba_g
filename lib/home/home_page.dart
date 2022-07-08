@@ -15,6 +15,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
 import '../components/bottomNav.dart';
+import '../data/repository.dart';
 
 
 
@@ -36,6 +37,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Image alternativeBackgroundImage;
   bool gotBG = false;
   String buildNo = '';
+  String updateMsg = '';
 
 
   @override
@@ -55,11 +57,27 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
           buildNo = '${packageInfo.buildNumber}'
           );
     }
+    String oldVers;
+    getSetting('lastAppVersion3').then((value) {
+      if(value == null || value == '' ){
+        // if null, old format saved bookings
+        updateMsg = 'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
+      }
+      String latestVersion = Platform.isIOS
+          ? gblSettings.latestBuildiOS
+          : gblSettings.latestBuildAndroid;
+      if( value != latestVersion){
+        saveSetting('lastAppVersion3', latestVersion);
+      }
+    });
+
 
     _displayProcessingIndicator = true;
     WidgetsBinding.instance?.addObserver(this);
     waitAndThenHideProcessingIndicator();
   }
+
+
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
@@ -256,26 +274,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
     // var appLanguage = new AppLanguage();
     //   appLanguage.changeLanguage('fr');
 
-/*    switch (gblSettings.aircode.toUpperCase()) {
-      case 'SI':
-        buttonShape = RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(60.0),
-                topRight: Radius.circular(60.0)));
-        break;
-      case 'T6':
-        buttonShape = RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(60.0),
-                bottomLeft: Radius.circular(60.0),
-                topLeft: Radius.circular(60.0),
-                topRight: Radius.circular(60.0)));
-        break;
-      default:
-        buttonShape = null;
-    }
 
- */
     buttonHeight = 60;
     switch (gblSettings.buttonStyle.toUpperCase()){
       case 'OFFSET':
@@ -319,6 +318,82 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
               ],
             ),
           ));
+    } else if (updateMsg != '') {
+
+      return new Scaffold(
+          appBar:  new AppBar(
+            centerTitle: gblCentreTitle,
+            //brightness: gblSystemColors.statusBar,
+            //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
+            backgroundColor:gblSystemColors.primaryHeaderColor,
+            title:_getLogo() ,
+            iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
+
+            //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
+          ),
+          endDrawer: DrawerMenu(),
+          backgroundColor: Colors.grey.shade500,
+          body: Center( child: Container(
+
+            //alignment: Alignment.topCenter,
+
+              margin: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
+              decoration: BoxDecoration(    border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(3.0))
+              ),
+              child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                  children: [ Column(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TrText('Update Message', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                        Padding(padding:  EdgeInsets.only(top: 10.0),),
+                        SizedBox(
+                          width: 250,
+                            child:Text( updateMsg),
+
+                        ),
+                        Padding(padding:  EdgeInsets.only(top: 20.0),),
+                        ElevatedButton(
+                          onPressed: () {
+                            updateMsg = '';
+                            setState(() {
+
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: gblSystemColors
+                                  .primaryButtonColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(30.0))),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                              TrText(
+                                'OK',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),])
+
+          ))
+        //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
+      );
+
+
     } else {
       //print(mainBackGroundImage);
       //var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?

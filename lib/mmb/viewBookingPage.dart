@@ -921,6 +921,7 @@ class _CheckinBoardingPassesWidgetState
       DateTime checkinClosed;
       DateTime now;
 
+/*
       checkinOpens = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
               pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
@@ -929,26 +930,34 @@ class _CheckinBoardingPassesWidgetState
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
-
-    //  logit('checkin opens:${checkinOpens.toString()}');
-      checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
+*/
+      if( pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeStartGMT == null || pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeEndGMT == null ){
+        checkinOpen = false;
+      } else {
+        checkinOpens = DateTime.parse(
+            pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeStartGMT);
+       // logit('checkin opens:${checkinOpens.toString()}');
+        /*    checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
               pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
           .subtract(new Duration(
               hours: cities
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
-                  .webCheckinEnd));
+                  .webCheckinEnd));*/
 
-     // logit('checkin closed:${checkinClosed.toString()}');
+        checkinClosed = DateTime.parse(
+            pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeEndGMT);
+       // logit('checkin closed:${checkinClosed.toString()}');
 
-      now = new DateTime.now().toUtc();
+        now = new DateTime.now().toUtc();
 
-     // logit('now:${now.toString()}');
+        // logit('now:${now.toString()}');
 
-      checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
-          ? true
-          : false;
+        checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
+            ? true
+            : false;
+      }
     }
 
     if (!isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], -1) &&

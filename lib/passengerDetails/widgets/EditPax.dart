@@ -133,6 +133,19 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   }
 
 
+  /*
+
+  passport info styles
+  1
+"Passport number", "Country of issue"
+  2
+"Passport number", "Country of issue", "Expiry date"
+  3
+ "Passport number", "Country of issue", "Expiry date", "Nationality"
+
+   */
+
+
   Widget _body() {
 
     var paxTypeName =  widget.passengerDetail.paxType.toString().replaceAll('PaxType.','');

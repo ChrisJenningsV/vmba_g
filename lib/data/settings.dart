@@ -71,6 +71,7 @@ class Settings {
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantCurrencyPicker = false;
+  bool wantPassengerPassport = false;
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
@@ -101,6 +102,7 @@ class Settings {
   bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
+  bool useSmartPay;
 
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -175,6 +177,7 @@ class Settings {
   String fqtvName="";
   String appFeedbackEmail="";
   String buttonStyle;
+  String upgradeMessage;
 
   String prohibitedItemsNoticeUrl="";
   String groupsBookingsEmail ="";
@@ -185,6 +188,7 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
   int payTimeout;
+  int passportLayoutStyle;
 
 bool bpShowFastTrack;
   Settings({
@@ -199,6 +203,7 @@ bool bpShowFastTrack;
     this.wantLeftLogo = false,
     this.wantCurrencySymbols,
     this.wantCurrencyPicker = false,
+    this.wantPassengerPassport = false,
     this.wantRememberMe = false ,
     this.wantHomeFQTVButton = false,
     this.wantUmnr = false,
@@ -229,6 +234,7 @@ bool bpShowFastTrack;
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
+    this.useSmartPay = false,
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
@@ -307,7 +313,9 @@ bool bpShowFastTrack;
     this.liveCreditCardProvider,
     this.fQTVpointsName,
     this.buttonStyle,
+    this.upgradeMessage,
     this.bpShowAddPassToWalletButton,
+    this.passportLayoutStyle = 1,
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {

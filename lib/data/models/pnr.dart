@@ -291,6 +291,7 @@ class PnrModel {
 }
 
 class PNR {
+  String appVersion;
   String rLOC;
   String aDS;
   String pNRLocked;
@@ -328,7 +329,9 @@ class PNR {
   Fqfields fqfields;
 
   PNR(
-      {this.rLOC,
+      {
+      this.appVersion,
+      this.rLOC,
       this.aDS,
       this.pNRLocked,
       this.pNRLockedReason,
@@ -360,6 +363,7 @@ class PNR {
       this.fqfields});
 
   PNR.fromJson(Map<String, dynamic> json) {
+    appVersion = json['APPVERSION'];
     rLOC = json['RLOC'];
     aDS = json['ADS'];
     pNRLocked = json['PNRLocked'];
@@ -445,6 +449,7 @@ class PNR {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['APPVERSION'] = this.appVersion;
     data['RLOC'] = this.rLOC;
     data['ADS'] = this.aDS;
     data['PNRLocked'] = this.pNRLocked;
@@ -663,6 +668,9 @@ class Itin {
   String selectSeat;
   String mMBSelectSeat;
   String openSeating;
+  String MMBCheckinAllowed;
+  String OnlineCheckinTimeStartGMT;
+  String OnlineCheckinTimeEndGMT;
 
   Itin.getJounrey(
       // this.
@@ -704,7 +712,10 @@ class Itin {
       this.oAWebsite,
       this.selectSeat,
       this.mMBSelectSeat,
-      this.openSeating});
+      this.openSeating,
+      this.MMBCheckinAllowed,
+      this.OnlineCheckinTimeEndGMT,
+      this.OnlineCheckinTimeStartGMT});
 
   Itin.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -743,6 +754,9 @@ class Itin {
     selectSeat = json['SelectSeat'];
     mMBSelectSeat = json['MMBSelectSeat'];
     openSeating = json['OpenSeating'];
+    MMBCheckinAllowed = json['MMBCheckinAllowed'];
+    OnlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
+    OnlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
   }
 
   Object get cityPair => this.depart + this.arrive;
@@ -785,6 +799,10 @@ class Itin {
     data['SelectSeat'] = this.selectSeat;
     data['MMBSelectSeat'] = this.mMBSelectSeat;
     data['OpenSeating'] = this.openSeating;
+    data['MMBCheckinAllowed'] = MMBCheckinAllowed;
+    data['OnlineCheckinTimeEndGMT'] = OnlineCheckinTimeEndGMT ;
+    data['OnlineCheckinTimeStartGMT'] = OnlineCheckinTimeStartGMT;
+
     return data;
   }
 

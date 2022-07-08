@@ -1,6 +1,9 @@
+//import 'dart:async';
+import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
 import 'dart:developer';
+//import 'dart:html';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
@@ -443,6 +446,10 @@ class Repository {
                   case 'wantCurrencyPicker':
                     gblSettings.wantCurrencyPicker = parseBool(item['value']);
                     break;
+                  case 'wantPassengerPassport':
+                    gblSettings.wantPassengerPassport = parseBool(item['value']);
+                    break;
+
                   case 'wantClassBandImages':
                     gblSettings.wantClassBandImages = parseBool(item['value']);
                     break;
@@ -870,7 +877,19 @@ class Repository {
   }
 
   Future updatePnr(PnrDBCopy pnrDBCopy) async {
+    logit('update pnr');
+
+    // set app version saved with
+    String latestVersion = Platform.isIOS
+        ? gblSettings.latestBuildiOS
+        : gblSettings.latestBuildAndroid;
+
+    if( pnrDBCopy.data.contains('APPVERSION') == false) {
+      pnrDBCopy.data = pnrDBCopy.data.replaceAll(
+          '{"RLOC":', '{"APPVERSION": "$latestVersion", "RLOC":');
+    }
     await database.updatePnr(pnrDBCopy);
+    logit('e update pnr');
   }
 
   Future<PnrDBCopy> getPnr(String rloc) {
@@ -931,6 +950,7 @@ class Repository {
 */
       String data = await runVrsCommand('*$rloc~x');
       String pnrJson;
+      //logit('RX: $data');
 
       pnrJson = data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -940,13 +960,29 @@ class Repository {
     print('Fetch PNR');
     PnrModel pnrModel = new PnrModel.fromJson(map);
 
-    PnrDBCopy pnrDBCopy = new PnrDBCopy(
+/*      // set app version saved with
+      String latestVersion = Platform.isIOS
+          ? gblSettings.latestBuildiOS
+          : gblSettings.latestBuildAndroid;*/
+
+     // pnrJson = pnrJson.replaceAll('"APPVERSION": 1.0.0.98,','');
+/*
+      if( pnrJson.contains('APPVERSION') == false){
+        pnrJson = pnrJson.replaceAll('{"RLOC":', '{"APPVERSION": "$latestVersion", "RLOC":');
+      }
+*/
+      // {"RLOC":
+
+      PnrDBCopy pnrDBCopy = new PnrDBCopy(
         rloc: pnrModel.pNR.rLOC, //_rloc,
         data: pnrJson,
         success: true,
         delete: 0,
         nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
-    Repository.get().updatePnr(pnrDBCopy);
+
+
+
+      Repository.get().updatePnr(pnrDBCopy);
 
     return pnrDBCopy;
   }
@@ -1588,4 +1624,23 @@ RemoteMessage convertMsg(NotificationMessage msg)
           print(e.toString());
     }
     return null;
+}
+void saveSetting(String key, String value) async {
+  try {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  } catch(e){
+    print('save error: key $key $e');
+  }
+}
+Future<String> getSetting(String key ) async {
+  try {
+    var prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(key) == null) {
+      return '';
+    }
+    return prefs.getString(key);
+  } catch(e){
+    print('getSetting $key error: $e');
+  }
 }

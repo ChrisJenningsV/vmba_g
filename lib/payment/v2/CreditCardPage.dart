@@ -594,29 +594,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
       } catch (e) {
         print(e);
       }
-      /* response = await http
-          .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
 
-      if (response == null) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
+      if( gblSettings.useSmartPay){
+
       }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }*/
       data = await runVrsCommand(msg);
 
       String result = '';
