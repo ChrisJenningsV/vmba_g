@@ -185,10 +185,21 @@ class Repository {
     Map map = jsonDecode('{ \"Cities\":' + response.body + '}');
     Cities networkCities = Cities.fromJson(map);
 
+    networkCities.cities.forEach((c) {
+      if( c.code == '####') {
+        apiBuldVersion = int.parse(c.shortName) ;
+        //networkCities.cities.remove(c);
+      }
+    });
     // cache age
     prefs.setString('cache_time2', DateTime.now().toString());
     await database.updateCities(networkCities);
     logit('cache cities');
+
+    if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
+    throw('WebApi needs upgrade');
+    }
+
 
     return new ParsedResponse(response.statusCode, networkCities.cities);
   }
@@ -291,6 +302,7 @@ class Repository {
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
+          String xmlVersion = map["version"];
           gblSettings.skyFlyToken = map["skyFlyToken"];
 
           // get language file last modified
@@ -586,8 +598,16 @@ class Repository {
             } else if ( mainMatchVersioAction.isNotEmpty){
               gblAction =mainMatchVersioAction;
             }
-          }
-          else {
+            if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || int.parse(xmlVersion) < requiredXmlVersion  )) {
+              if( gblSettings.useWebApiforVrs) {
+                gblError = 'WebService needs update';
+              } else {
+                gblError = 'WebApi needs update';
+              }
+              print(gblError);
+              throw(gblError);
+            }
+          } else {
             logit('login failed');
             print(response.body);
             gblErrorTitle = 'Login';
@@ -675,14 +695,22 @@ class Repository {
 
     for (dynamic jsonCity in list) {
       City city = parseNetworkCity(jsonCity);
-      networkCities[city.code] = city;
+      if( city.code == "####") {
+        apiBuldVersion = int.parse(city.code);
+      } else {
+        networkCities[city.code] = city;
+      }
     }
 
     //Adds information (if available) from database
     List<City> databaseCities =
         await database.getCities([]..addAll(networkCities.keys));
     for (City city in databaseCities) {
-      networkCities[city.code] = city;
+      if( city.code == "####") {
+        apiBuldVersion = int.parse(city.code);
+      } else {
+        networkCities[city.code] = city;
+      }
     }
 
     return new ParsedResponse(
@@ -1128,6 +1156,7 @@ class Repository {
       }
 
       if (response.body.contains('NotSinedInException')) {
+        logit('GetAV: Not sined in ');
         return new ParsedResponse(notSinedIn, null);
       }
 
@@ -1154,6 +1183,7 @@ class Repository {
     PnrModel pnrModel = PnrModel();
     if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
+      logit('getfareQuote: ' + data);
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
         Map map = jsonDecode(data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1169,17 +1199,24 @@ class Repository {
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
             headers: getXmlHeaders())
         .catchError((resp) {
+          logit('getfareQuote: ' + resp);
 
           return new ParsedResponse(0, null, error: resp);
         });
       if (response == null) {
+        logit('getfareQuote: null' );
+
         return new ParsedResponse(noInterent, null);
       }
 
       if (response.statusCode < 200 || response.statusCode >= 300) {
+        logit('getfareQuote: error' + response.statusCode.toString());
+
         return new ParsedResponse(response.statusCode, null);
       }
-      if( response.body.toUpperCase().contains('ERROR' )){
+        logit('getfareQuote: ' + response.body);
+
+        if( response.body.toUpperCase().contains('ERROR' )){
         String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')
           .replaceAll('<string xmlns=\"http://videcom.com/\">', '')
             .replaceAll('</string>', '');

@@ -98,7 +98,9 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd = '*${widget.mmbBooking.rloc}^';
     widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
         .itin.reversed
-        .forEach((f) => cmd += 'X${f.line}^');
+        .forEach((f) {
+             cmd += 'X${f.line}^';
+    });
 
     widget.mmbBooking.newFlights.forEach((flt) {
       int index = flt.indexOf('/');
@@ -116,8 +118,24 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     });
 */
 
+
+
     //Check if we have an interconnected flight and add marker if we do
-    int flightLineNumber = GetConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
+    int flightLineNumber=-1;
+    if(  gblBookingState == BookingState.changeFlt ) {
+      if( widget.mmbBooking.newFlights.length > 1) {
+        if (widget.mmbBooking.journeyToChange == 1) {
+          // make first line connection
+          flightLineNumber =1;
+        } else {
+          // count lines and add 1
+          flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+        }
+        //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+      }
+    } else {
+      flightLineNumber = GetConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
+    }
     if (flightLineNumber >= 0){
       print("Journey has a connecting flight on itin($flightLineNumber)");
       cmd += '*r^.${flightLineNumber}x^';
@@ -157,6 +175,17 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String capitaliseFirstChar(String data) {
     return "${data[0].toUpperCase()}${data.substring(1).toLowerCase()}";
   }
+  int GetConnectingFlightLine(List<String> newFlights) {
+    int connectedLine = -1;
+    if( newFlights.length > 1) return 0;
+
+/*
+    newFlights.forEach((flt) {
+    });
+*/
+    return connectedLine;
+  }
+
 
   int GetConnectingFlightLineIdentifier(Journey journey) {
     int connectedLine = -1;
@@ -178,6 +207,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
   Future getFareQuote() async {
     Repository.get().getFareQuote(buildCmd()).then((rs) {
+
       if (rs.isOk()) {
         pnrModel = rs.body;
         setCurrencyCode();

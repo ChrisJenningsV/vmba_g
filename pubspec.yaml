@@ -127,6 +127,7 @@ flutter:
     - lib/assets/fastjet/images/bg.png
     - lib/assets/fastjet/images/appBar.png
     - lib/assets/fastjet/images/logo.png
+    - lib/assets/fastjet/images/appBarLeft.png
     - lib/assets/fastjet/json/countries.json
     - lib/assets/hisky/images/loader.png
     - lib/assets/hisky/images/app.png

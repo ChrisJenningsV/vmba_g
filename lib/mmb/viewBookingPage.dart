@@ -92,6 +92,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
   }
 
   Future<void> _refreshBooking() async {
+    logit('_refreshBooking');
     Repository.get().fetchApisStatus(widget.rloc);
     Repository.get().fetchPnr(widget.rloc);
   }
@@ -931,11 +932,11 @@ class _CheckinBoardingPassesWidgetState
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
 */
-      if( pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeStartGMT == null || pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeEndGMT == null ){
+      if( pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null || pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ){
         checkinOpen = false;
       } else {
         checkinOpens = DateTime.parse(
-            pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeStartGMT);
+            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT);
        // logit('checkin opens:${checkinOpens.toString()}');
         /*    checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
@@ -947,7 +948,7 @@ class _CheckinBoardingPassesWidgetState
                   .webCheckinEnd));*/
 
         checkinClosed = DateTime.parse(
-            pnr.pNR.itinerary.itin[journeyNo].OnlineCheckinTimeEndGMT);
+            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT);
        // logit('checkin closed:${checkinClosed.toString()}');
 
         now = new DateTime.now().toUtc();
@@ -985,6 +986,7 @@ class _CheckinBoardingPassesWidgetState
                 pnr.pNR.tickets.tKT.forEach((t){
                   if( t.segNo != null && t.segNo.isNotEmpty) {
                     if (int.parse(t.segNo) == (journeyNo + 1) &&
+                        pnr.pNR.names.pAX[int.parse(t.pax) - 1].paxType == 'AD' &&
                         t.tKTID == 'ELFT') {
                       checkedInCount++;
                     }
@@ -1005,51 +1007,7 @@ class _CheckinBoardingPassesWidgetState
           }
           if( int.parse(amount) > 0 ) {
             return payOutstandingButton(pnr, amount);
-/*
-            return new TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChoosePaymenMethodWidget(
-                          mmbBooking: mmbBooking,
-                          pnrModel: pnr,
-                          isMmb: true,
-                          mmbAction: 'PAYOUTSTANDING',
-                          mmbCmd: '',
-                        )));
-              },
-              style: TextButton.styleFrom(
-                  side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                  primary: gblSystemColors.textButtonTextColor),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    translate('Pay') + ' ' + formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(amount)) + ' ' + translate('Outstanding'),
-                    style: TextStyle(
-                        color: gblSystemColors
-                            .textButtonTextColor),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                  ),
-                  Icon(
-                    //Icons.airline_seat_recline_normal,
-                    Icons.done,
-                    size: 20.0,
-                    color:
-                    gblSystemColors.textButtonTextColor,
-                  ),
-                  Text(
-                    '',
-                    style: TextStyle(
-                        color: gblSystemColors
-                            .textButtonTextColor),
-                  )
-                ],
-              ),
-            );
-*/
+
           }
 
           //Checkin Button

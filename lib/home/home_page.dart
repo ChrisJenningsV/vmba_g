@@ -58,17 +58,20 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
           );
     }
     String oldVers;
-    getSetting('lastAppVersion3').then((value) {
+    getSetting('savedVersion').then((value) {
       if(value == null || value == '' ){
         // if null, old format saved bookings
         updateMsg = 'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
       }
-      String latestVersion = Platform.isIOS
-          ? gblSettings.latestBuildiOS
-          : gblSettings.latestBuildAndroid;
-      if( value != latestVersion){
-        saveSetting('lastAppVersion3', latestVersion);
-      }
+      PackageInfo.fromPlatform()
+          .then((PackageInfo packageInfo) =>
+      packageInfo.version + '.' + packageInfo.buildNumber)
+          .then((String version) {
+            if( value != version) {
+              saveSetting('savedVersion', version);
+            }
+        });
+
     });
 
 

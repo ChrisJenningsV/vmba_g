@@ -156,7 +156,7 @@ class RootPageState extends State<RootPage> {
                   Text(gblErrorTitle ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TrText(_displayProcessingText + gblError,
+                    child: TrText(gblError,
                         style: TextStyle(fontSize: 14.0)),
                   ),
                 ],

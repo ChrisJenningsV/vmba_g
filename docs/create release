@@ -7,6 +7,9 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 #  android\app\build.gradle
 
 
+# set gblDoVersionCheck true
+# set gblUseCache true
+
 # build android app bundle
 #flutter build appbundle
 # Modify the flavor parameter as required (set to airleap in this example)

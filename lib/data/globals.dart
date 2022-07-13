@@ -12,6 +12,10 @@ import 'models/providers.dart';
 //
 String gblBuildFlavor = 'SI';
 bool gblIsLive = false;
+int requiredXmlVersion = 100;
+int requiredApiVersion = 100;
+int apiBuldVersion;
+bool gblDoVersionCheck = true;
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
@@ -23,7 +27,7 @@ String gblErrorTitle = '';
 String gblSine = '';
 String gblVersion = '';
 String gblAction='';
-String gblMobileFlags = '';
+//String gblMobileFlags = '';
 String gblDestination;
 String gblOrigin;
 String gblPayable = '';
@@ -34,7 +38,7 @@ String gblDeviceId;
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = false;
+bool gblUseCache = true;
 bool gblIsIos = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;

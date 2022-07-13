@@ -668,9 +668,9 @@ class Itin {
   String selectSeat;
   String mMBSelectSeat;
   String openSeating;
-  String MMBCheckinAllowed;
-  String OnlineCheckinTimeStartGMT;
-  String OnlineCheckinTimeEndGMT;
+  String mMBCheckinAllowed;
+  String onlineCheckinTimeStartGMT;
+  String onlineCheckinTimeEndGMT;
 
   Itin.getJounrey(
       // this.
@@ -713,9 +713,9 @@ class Itin {
       this.selectSeat,
       this.mMBSelectSeat,
       this.openSeating,
-      this.MMBCheckinAllowed,
-      this.OnlineCheckinTimeEndGMT,
-      this.OnlineCheckinTimeStartGMT});
+      this.mMBCheckinAllowed,
+      this.onlineCheckinTimeEndGMT,
+      this.onlineCheckinTimeStartGMT});
 
   Itin.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -754,9 +754,9 @@ class Itin {
     selectSeat = json['SelectSeat'];
     mMBSelectSeat = json['MMBSelectSeat'];
     openSeating = json['OpenSeating'];
-    MMBCheckinAllowed = json['MMBCheckinAllowed'];
-    OnlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
-    OnlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
+    mMBCheckinAllowed = json['MMBCheckinAllowed'];
+    onlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
+    onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
   }
 
   Object get cityPair => this.depart + this.arrive;
@@ -799,9 +799,9 @@ class Itin {
     data['SelectSeat'] = this.selectSeat;
     data['MMBSelectSeat'] = this.mMBSelectSeat;
     data['OpenSeating'] = this.openSeating;
-    data['MMBCheckinAllowed'] = MMBCheckinAllowed;
-    data['OnlineCheckinTimeEndGMT'] = OnlineCheckinTimeEndGMT ;
-    data['OnlineCheckinTimeStartGMT'] = OnlineCheckinTimeStartGMT;
+    data['MMBCheckinAllowed'] = mMBCheckinAllowed;
+    data['OnlineCheckinTimeEndGMT'] = onlineCheckinTimeEndGMT ;
+    data['OnlineCheckinTimeStartGMT'] = onlineCheckinTimeStartGMT;
 
     return data;
   }

@@ -480,7 +480,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
 
         gblSine = sine;
-        gblMobileFlags = sineMap['mobileflags'];
+        //gblMobileFlags = sineMap['mobileflags'];
         gblSecurityLevel = int.parse(sineMap['securitylevel'].toString());
         if( gblVerbose == true ) {print('successful login'); }
         return 'OK';

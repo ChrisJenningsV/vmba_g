@@ -175,3 +175,59 @@ child: TrText
 
 
 }
+
+Widget buildMessage(String title, String body, {void Function() onComplete  }) {
+  return Center( child: Container(
+
+    //alignment: Alignment.topCenter,
+
+      margin: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
+      decoration: BoxDecoration(    border: Border.all(color: Colors.black),
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+              Radius.circular(3.0))
+      ),
+      child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+
+          children: [ Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TrText(title, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                Padding(padding:  EdgeInsets.only(top: 10.0),),
+                Text( body),
+                Padding(padding:  EdgeInsets.only(top: 20.0),),
+                ElevatedButton(
+                  onPressed: () {
+                    if( onComplete != null ) {
+                      onComplete();
+
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: gblSystemColors
+                          .primaryButtonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30.0))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
+                      TrText(
+                        'OK',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),])
+
+  ));
+}

@@ -93,6 +93,7 @@ String _error = '';
           } else if ( _pnr.hasFutureFlightsMinusDayOffset(7)) {
             thisOldpnrs.add(_pnrs);
           }
+
         } else {
           // remove old booking
           try {
@@ -671,12 +672,20 @@ String _error = '';
   }
 
   Future<void> _refreshBooking(String rloc) async {
+    logit('_refreshBooking');
+    Navigator.of(context).pop();
+    setState(() {
+      _loadingInProgress = true;
+
+    });
     await Repository.get().fetchApisStatus(rloc);
     await Repository.get().fetchPnr(rloc);
-    Navigator.of(context).pop();
     Future.delayed(const Duration(milliseconds: 500), ()
     {
       getmybookings();
+      setState(() {
+        _loadingInProgress = false;
+      });
     });
 
     }

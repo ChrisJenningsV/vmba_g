@@ -15,6 +15,8 @@ import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/pnr.dart';
 
 import '../../Helpers/networkHelper.dart';
+import '../../data/models/models.dart';
+import '../../data/models/vrsRequest.dart';
 
 
 class ApisWidget extends StatefulWidget {
@@ -32,6 +34,7 @@ class _ApisWidgetState extends State<ApisWidget> {
   final formKey = new GlobalKey<FormState>();
   bool _loadingInProgress;
   ApisModel apisForm;
+  String _error ='';
 
   @override
   void initState() {
@@ -47,11 +50,28 @@ class _ApisWidgetState extends State<ApisWidget> {
   }
 
   Future _loadData(String cmd) async {
-    String msg = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        '&Command=' +
-        cmd;
-
+    String msg = '';
+    _error = '';
+    if( gblSettings.useWebApiforVrs) {
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+      msg = json.encode(
+          VrsApiRequest(
+              gblSession, cmd,
+              gblSettings.xmlToken.replaceFirst('token=', ''),
+              vrsGuid: gblSettings.vrsGuid,
+              notifyToken: gblNotifyToken,
+              rloc: gblCurrentRloc,
+              phoneId: gblDeviceId,
+              language: gblLanguage
+          )
+      );
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+    } else {
+      msg = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          '&Command=' +
+          cmd;
+    }
     print(msg);
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     Map map;
@@ -65,14 +85,27 @@ class _ApisWidgetState extends State<ApisWidget> {
       } catch (e) {
         print(e.toString());
       }
-      print('Loaded APIS fields');
-      try {
-        apisForm = new ApisModel.fromJson(map);
 
-//        logit('loaded');
+      print('Loaded APIS fields');
+      if(gblSettings.useWebApiforVrs ) {
+        VrsApiResponse rs = VrsApiResponse.fromJson(map);
+        if( rs.errorMsg != null && rs.errorMsg.isNotEmpty) {
+          _error = rs.errorMsg;
+        } else if (rs.data.startsWith('ERROR')) {
+          _error = rs.data;
+        } else {
+          map = json.decode(rs.data);
+          apisForm = new ApisModel.fromJson(map);
+        }
         _dataLoaded();
-      } catch(e) {
-        logit(e.toString());
+      } else {
+        try {
+          apisForm = new ApisModel.fromJson(map);
+//        logit('loaded');
+          _dataLoaded();
+        } catch (e) {
+          logit(e.toString());
+        }
       }
     } else {
       // If that response was not OK, throw an error.
@@ -193,6 +226,9 @@ class _ApisWidgetState extends State<ApisWidget> {
       return new Center(
         child: new CircularProgressIndicator(),
       );
+    } else if (_error.isNotEmpty) {
+      return buildMessage('APIS Error', _error, onComplete: () {Navigator.of(context).pop();});
+
     } else {
       //logit('display');
       return Container(
@@ -311,6 +347,13 @@ class _ApisWidgetState extends State<ApisWidget> {
   }
 
   ListView renderApis() {
+    if( apisForm == null || apisForm.apis == null ) {
+      logit('no apis data');
+      return ListView(
+        padding: EdgeInsets.all(10),
+        children: [Text('No apis data')],
+      );
+    }
     List<Widget> expandionTiles = [];
     // List<Widget>();
     expandionTiles.add(
@@ -592,4 +635,37 @@ class _ApisWidgetState extends State<ApisWidget> {
         })));
     return widgets;
   }
+}
+
+void _showErrorDialog(BuildContext context, String error ) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        title: new Text("Error"),
+        content:
+             new Text(error),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new TextButton(
+            child: new Text("Close"),
+            onPressed: () {
+              //_error = '';
+              logit('Close dialog');
+              if( gblSettings.wantNewEditPax ){
+                // double pop
+                var nav = Navigator.of(context);
+                nav.pop();
+                nav.pop();
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

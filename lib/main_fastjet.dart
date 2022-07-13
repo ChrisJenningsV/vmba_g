@@ -24,7 +24,7 @@ void main() {
 }
 void configFN() {
   SystemColors _systemColors = SystemColors(
-    primaryButtonColor: Colors.black,
+    primaryButtonColor: Color.fromRGBO(0XFF, 0xC8, 0x32, 1),
     accentButtonColor: Colors.black,
     accentColor: Colors.black,
     primaryColor: Colors.yellow,
@@ -76,8 +76,8 @@ void configFN() {
     fqtvName: 'Club',
     appFeedbackEmail: 'appfeedback@fastjet.com',
     groupsBookingsEmail: 'groups@fastjet.com',
-    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
-    wantClassBandImages: true,
+    //pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
+    wantClassBandImages: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     bpShowAddPassToWalletButton: false,
@@ -89,8 +89,8 @@ void configFN() {
       adults: true,
       child: true,
       infant: true,
-      youths: true,
-      wantYouthDOB: true,
+      youths: false,
+      wantYouthDOB: false,
 
     ),
 
@@ -119,11 +119,9 @@ void configFN() {
 //    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
 
-//    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-///////    testXmlUrl:      "https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+//       testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
@@ -135,8 +133,8 @@ void configFN() {
 
     displayErrorPnr: true,    // just for test, to display pnr problems
     wantPayStack: false,
-    wantPageImages: true,
-    wantLeftLogo: false,
+    wantPageImages: false,
+    wantLeftLogo: true,
     wantCurrencySymbols: true,
     wantMyAccount: true,
     wantFQTV: true,

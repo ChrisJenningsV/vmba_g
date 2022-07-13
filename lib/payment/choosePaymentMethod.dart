@@ -615,8 +615,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //final _snackbar = snackbar(message);
     //_key.currentState.showSnackBar(_snackbar);
   }
+/*
 
-  String buildCmd() {
+  Future<String> buildCmd() async {
     //Cancel journey
     //String nostop = '';
     String cmd = '';
@@ -642,6 +643,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //cmd += 'fg^fs1^e';
     return cmd;
   }
+*/
 
   Future completeBookingNothingtoPay() async {
     setState(() {
@@ -1132,7 +1134,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body: Center( child: Container(
+          body: buildMessage('Payment Error', gblPaymentMsg, onComplete: () {
+            gblPaymentMsg = null;
+              setState(() {          } ); }),
+/*
+          Center( child: Container(
 
             //alignment: Alignment.topCenter,
 
@@ -1185,6 +1191,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         ]),])
 
           ))
+*/
         //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
       );
     } else {

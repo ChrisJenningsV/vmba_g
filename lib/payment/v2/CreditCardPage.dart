@@ -197,35 +197,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  /*
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Error"),
-          content: _error != null && _error != ''
-              ? new Text(_error)
-              : new Text("Please try again"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new TextButton(
-              child: new Text("Close"),
-              onPressed: () {
-                _error = '';
 
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-   */
   Future<void> signin() async {
     await login().then((result) {
       session = Session(
@@ -385,33 +357,67 @@ class _CreditCardPageState extends State<CreditCardPage> {
     } else {
       if (widget.isMmb) {
         msg = '*$rLOC';
+        bool deleteDone = false;
         int i = widget.mmbBooking.newFlights.length - 1;
         widget.mmbBooking.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
+
+          if( deleteDone == false ) {
+            widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+                j) {
+              DateTime fltDate = DateTime.parse(j.ddaygmt);
+              msg +=
+              '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(
+                  fltDate)}${j.depart}${j.arrive}';
+            });
+            deleteDone = true;
+          }
+/*
           Itin j = widget.mmbBooking.journeys
               .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
           i--;
           DateTime fltDate = DateTime.parse(j.ddaygmt);
           msg +=
               '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(fltDate)}${j.depart}${j.arrive}';
+*/
+
+
+
           oldCancelled = true;
           String org = flt.substring(15, 18);
           //String dest = flt.substring(19, 22);
 
-          widget.mmbBooking.journeys.journey.forEach((j) {
+         /* widget.mmbBooking.journeys.journey.forEach((j) {
             if (j.itin[0].depart == org) {
               //      msg += '^X${j.itin[0].line}';
             }
-          });
+          });*/
           print(flt);
           msg += '^' + flt;
         });
 
-        int flightLineNumber = GetConnectingFlightLineIdentifier(widget
-            .mmbBooking
-            .journeys
-            .journey[widget.mmbBooking.journeyToChange - 1]);
+        int flightLineNumber=-1;
+        if(  gblBookingState == BookingState.changeFlt ) {
+          /*int connectedLine = -1;
+          if( widget.mmbBooking.newFlights.length > 1) flightLineNumber= 0;*/
+          if( widget.mmbBooking.newFlights.length > 1) {
+            if (widget.mmbBooking.journeyToChange == 1) {
+              // make first line connection
+              flightLineNumber =1;
+            } else {
+              // count lines and add 1
+              flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+            }
+            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+          }
+
+        } else {
+            flightLineNumber = GetConnectingFlightLineIdentifier(
+              widget.mmbBooking.journeys.journey[widget.mmbBooking
+                  .journeyToChange - 1]);
+        }
         if (flightLineNumber >= 0) {
           print("Journey has a connecting flight.");
           msg += '^*r^.${flightLineNumber}x';
@@ -432,27 +438,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       //msg += '~x';
       print(msg);
-/*      response = await http
-          .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
-      if (response == null) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }
 
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }*/
       String data = await runVrsCommand(msg);
 
       bool flightsConfirmed = true;
@@ -463,7 +449,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (data.contains('ERROR - ') || !_response.trim().startsWith('{')) {
         _error = _response.replaceAll('ERROR - ', '').trim();
         _dataLoaded();
-        showSnackBar(_error);
+        showAlertDialog(context, 'Error', _error);
+        //showSnackBar(_error);
         return null;
       } else {
         Map map = json.decode(_response);
@@ -478,29 +465,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           flightsConfirmed = false;
           for (var i = 0; i < 10; i++) {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
-            /*response = await http
-                .get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-                .catchError((resp) {});
-            if (response == null) {
-              setState(() {
-                //_displayProcessingIndicator = false;
-              });
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            }
 
-            //If there was an error return an empty list
-            if (response.statusCode < 200 || response.statusCode >= 300) {
-              setState(() {
-                //_displayProcessingIndicator = false;
-              });
-
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            } */
             String data = await runVrsCommand(msg);
             if (data.contains('ERROR - ')) {
               _error = response.body
@@ -813,29 +778,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     msg += getTicketingCmd();
 
     logit('ticketBooking: $msg');
-    /*response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-        .catchError((resp) {});
 
-    if (response == null) {
-      setState(() {
-        //_displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      setState(() {
-        //_displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }*/
     String data = await runVrsCommand(msg);
     String pnrJson = '';
     try {
