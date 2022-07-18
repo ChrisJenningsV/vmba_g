@@ -51,6 +51,7 @@ void configFN() {
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: false,
 
     airlineName: "FastJet",
@@ -119,8 +120,8 @@ void configFN() {
 //    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
 
-//    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 //       testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

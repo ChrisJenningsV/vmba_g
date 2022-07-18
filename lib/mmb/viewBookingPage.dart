@@ -93,6 +93,11 @@ class _ViewBookingPage extends State<ViewBookingPage> {
 
   Future<void> _refreshBooking() async {
     logit('_refreshBooking');
+    await Repository.get().fetchPnr(widget.rloc);
+    if( gblSettings.wantApis) {
+      await Repository.get().fetchApisStatus(widget.rloc);
+    }
+
     Repository.get().fetchApisStatus(widget.rloc);
     Repository.get().fetchPnr(widget.rloc);
   }
@@ -483,6 +488,11 @@ class _CheckinBoardingPassesWidgetState
             ),
             (seatNo!= '' )? Text(seatNo + '  ') : Container(),
             new Row(children: [
+              ( gblSettings.wantApis) ? Column(
+                children: [
+                apisButtonOption(pnr, i, journey, paxlist),
+                buttonOption(pnr, i, journey, paxlist),
+                ]) :
               buttonOption(pnr, i, journey, paxlist),
             ]),
             //    ),
@@ -783,6 +793,58 @@ class _CheckinBoardingPassesWidgetState
     return result;
   }
 
+  Widget apisButtonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+    //Apis
+    if (apisPnrStatus != null &&
+        (apisPnrStatus.apisRequired(journeyNo)
+/*
+            &&
+            !apisPnrStatus.apisInfoEntered(journeyNo, paxNo + 1)
+*/
+        )) {
+      //return new TextButton(
+      return new TextButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ApisWidget(
+                    apisCmd:
+                    'dsx/${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMMyy').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}/${pnr.pNR.itinerary.itin[journeyNo].depart}/${pnr.pNR.itinerary.itin[journeyNo].arrive}/${pnr.pNR.rLOC + (paxNo + 1).toString()}',
+                    rloc: widget.rloc,
+                    paxIndex: paxNo,
+                    pnr: pnr.pNR,
+                  ),
+                )).then((apisState) {
+              _handleApisInfoChanged(apisState);
+            });
+          },
+          style: TextButton.styleFrom(
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+              primary: Colors.black),
+          child: Row(
+            children: <Widget>[
+              TrText(
+                   'Additional Information',
+                  style: TextStyle(
+                      color:
+                      gblSystemColors.textButtonTextColor)
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5.0),
+              ),
+              Icon(
+                Icons.info_outline,
+                size: 20.0,
+                color: Colors.grey,
+              )
+            ],
+          ));
+
+    }
+
+  }
+
   Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
@@ -817,6 +879,7 @@ class _CheckinBoardingPassesWidgetState
       //       pnr.pNR.rLOC,
       //       paxNo);
       bool hasDownloadedBoardingPass = true;
+      //return new TextButton(
       return new TextButton(
         onPressed: () {
           hasDownloadedBoardingPass
@@ -851,13 +914,13 @@ class _CheckinBoardingPassesWidgetState
                     Icons.confirmation_number,
                     size: 20.0,
                     color:
-                    gblSystemColors.primaryButtonTextColor,
+                    Colors.grey,
                   )
                 : Icon(
                     Icons.file_download,
                     size: 20.0,
                     color:
-                    gblSystemColors.textButtonTextColor,
+                    Colors.grey,
                   )
           ],
         ),
@@ -866,48 +929,6 @@ class _CheckinBoardingPassesWidgetState
 
     //get apis state for the booking DSP/AATQ4T
 
-//Apis
-    if (apisPnrStatus != null &&
-        (apisPnrStatus.apisRequired(journeyNo) &&
-            !apisPnrStatus.apisInfoEntered(journeyNo, paxNo + 1))) {
-      return new TextButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ApisWidget(
-                    apisCmd:
-                        'dsx/${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMMyy').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}/${pnr.pNR.itinerary.itin[journeyNo].depart}/${pnr.pNR.itinerary.itin[journeyNo].arrive}/${pnr.pNR.rLOC + (paxNo + 1).toString()}',
-                    rloc: widget.rloc,
-                    paxIndex: paxNo,
-                    pnr: pnr.pNR,
-                  ),
-                )).then((apisState) {
-              _handleApisInfoChanged(apisState);
-            });
-          },
-          style: TextButton.styleFrom(
-              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: Colors.black),
-          child: Row(
-            children: <Widget>[
-              TrText(
-                'Additional Information',
-                  style: TextStyle(
-                      color:
-                      gblSystemColors.textButtonTextColor)
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 5.0),
-              ),
-              Icon(
-                Icons.info_outline,
-                size: 20.0,
-                color: Colors.white,
-              )
-            ],
-          ));
-    }
 
     bool checkinOpen = false;
 
@@ -932,7 +953,10 @@ class _CheckinBoardingPassesWidgetState
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
 */
-      if( pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null || pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ){
+      if( pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT.isEmpty ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT.isEmpty){
         checkinOpen = false;
       } else {
         checkinOpens = DateTime.parse(
@@ -1046,7 +1070,7 @@ class _CheckinBoardingPassesWidgetState
                   Icons.done,
                   size: 20.0,
                   color:
-                  gblSystemColors.textButtonTextColor,
+                  Colors.grey,
                 ),
                 Text(
                   '',
@@ -1180,7 +1204,7 @@ class _CheckinBoardingPassesWidgetState
             Icons.done,
             size: 20.0,
             color:
-            gblSystemColors.textButtonTextColor,
+            Colors.grey,
           ),
           Text(
             '',
@@ -1763,7 +1787,7 @@ class _CheckinBoardingPassesWidgetState
           Icon(
             Icons.airline_seat_recline_normal,
             size: 20.0,
-            color: gblSystemColors.primaryButtonTextColor,
+            color: Colors.grey,
           ),
           Text(
             paxlist.firstWhere((p) => p.id == paxNo + 1).seat != null

@@ -210,6 +210,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
   Future completeBooking() async {
+    logit('CCP:CompleteBooking');
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
     gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
@@ -337,6 +338,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 data: onValue,
                 delete: 0,
                 nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+            Repository.get().updatePnr(pnrDBCopy);
+            Repository.get()
+                .fetchApisStatus(pnrModel.pNR.rLOC)
+                .then((_) => sendEmailConfirmation(pnrModel))
+                .then((_) => getArgs(pnrModel.pNR))
+                .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
+                '/CompletedPage', (Route<dynamic> route) => false,
+                arguments: args
+              //[pnrModel.pNR.rLOC, result.toString()]
+            ));
+
+/*
             Repository.get()
                 .updatePnr(pnrDBCopy)
                 .then((_) => sendEmailConfirmation(pnrModel))
@@ -346,6 +359,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   '/CompletedPage', (Route<dynamic> route) => false,
                   arguments: arg);
             });
+*/
           });
         } else {
           _error = translate('Declined');
@@ -772,6 +786,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
   Future ticketBooking() async {
+    logit('CCP:ticketBooking');
     String msg = '';
     http.Response response;
     msg = '*$rLOC^';

@@ -1075,7 +1075,9 @@ String _error = '';
     if (validateAndSave()) {
       try {
         fetchBooking();
-        //fetchApisStatus();
+        if( gblSettings.wantApis) {
+          fetchApisStatus(false);
+        }
         print('Getting PNR');
       } catch (e) {
         print('Error: $e');

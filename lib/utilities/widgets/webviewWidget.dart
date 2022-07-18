@@ -25,6 +25,11 @@ void _handleLoad() {
     _stackToView = 0;
   });
 }
+@override
+  void initState() {
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

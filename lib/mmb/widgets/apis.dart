@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,7 @@ class _ApisWidgetState extends State<ApisWidget> {
   void initState() {
     super.initState();
     _loadingInProgress = true;
+    gblCurrentRloc = widget.rloc;
     _loadData(widget.apisCmd);
   }
 
@@ -117,11 +119,41 @@ class _ApisWidgetState extends State<ApisWidget> {
   Future _submitApis() async {
     String url = gblSettings.apisUrl;
     // 'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?';
-    final response = await http.post(Uri.parse(url), body: {
-      'token': gblSettings.xmlTokenPost,
-      'Command': 'DAX/',
-      'FormData': apisForm.toXmlString()
-    });
+
+    Response response = null;
+        String cmd = '';
+    if( gblSettings.useWebApiforVrs) {
+      cmd = 'DAX/' + apisForm.toXmlString();
+      if (gblSession == null) gblSession = new Session('0', '', '0');
+      String msg = json.encode(
+          VrsApiRequest(
+              gblSession, cmd,
+              gblSettings.xmlToken.replaceFirst('token=', ''),
+              vrsGuid: gblSettings.vrsGuid,
+              notifyToken: gblNotifyToken,
+              rloc: gblCurrentRloc,
+              phoneId: gblDeviceId,
+              language: gblLanguage
+          )
+      ) ;
+
+      response = await http.post(Uri.parse('${gblSettings.xmlUrl.replaceAll('PostVRSCommand', 'DoVRSCommand')}VarsSessionID=${gblSession.varsSessionId}'),
+          headers: getXmlHeaders(),
+          body: {
+            'token': gblSettings.xmlTokenPost,
+            'Command': cmd,
+            'req': msg,
+            'FormData': apisForm.toXmlString()
+          });
+    } else {
+      cmd = 'DAX/';
+      final response = await http.post(Uri.parse(url), body: {
+        'token': gblSettings.xmlTokenPost,
+        'Command': cmd,
+        'FormData': apisForm.toXmlString()
+      });
+    }
+
     if (response.statusCode == 200) {
       try {
         String result;
@@ -130,6 +162,11 @@ class _ApisWidgetState extends State<ApisWidget> {
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
         print(result);
+        if( gblSettings.useWebApiforVrs) {
+          Map map = json.decode(result);
+          VrsApiResponse rs = VrsApiResponse.fromJson(map);
+          result = rs.data;
+        }
         if (result.trim() == 'OK') {
           Repository.get().fetchApisStatus(widget.rloc).then((w) {
             Map map = json.decode(w.data);

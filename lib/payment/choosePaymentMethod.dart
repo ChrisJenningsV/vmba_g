@@ -965,6 +965,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   Future ticketBooking() async {
+    logit('CPM:ticketBooking');
     http.Response response;
     String msg = '*${widget.mmbBooking.rloc}^';
     msg += nostop;
