@@ -473,11 +473,15 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           return null;
         }
       } catch (e) {
-        _error = data
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
-        print(_error);
+        logit(e.toString());
+        _error = e.toString();
+        if( data != null ) {
+          _error = data
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '');
+          print(_error);
+        }
         _dataLoaded();
         _showDialog();
       }

@@ -27,7 +27,7 @@ void configFL() {
   SystemColors _systemColors = SystemColors(
      primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
       accentButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
-      accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
 /*      primaryColor: Color.fromRGBO(0xF0, 0x81,0,1),
       textButtonTextColor: Colors.black54  , */
       primaryHeaderColor: Color.fromRGBO(0x1C, 0x37,0x48,1), // orange Color.fromRGBO(0xF0, 0x81,0,1),

@@ -32,7 +32,7 @@ void configKG() {
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
     accentButtonColor: Color.fromRGBO(0XAD, 0xD1, 0x41, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(0X2A, 0x2A, 0x2A, 1),
 
     primaryColor: Color.fromRGBO(0X33, 0x77, 0x42,1),// colour for datepicker header

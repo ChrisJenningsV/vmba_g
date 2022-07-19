@@ -29,7 +29,7 @@ void configAS() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
     accentButtonColor: Color.fromRGBO(0Xfa, 0xb6, 0x00, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
 

@@ -760,13 +760,29 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
 
   @override
   Widget build(BuildContext context) {
+
+    int minCol = -1;
+    int maxCol = -1;
+    //new List<int>();
+
+    this.widget.seatplan.seats.seat.forEach((s) {
+      if(minCol == -1 || minCol > s.sCol ){
+        minCol = s.sCol;
+      }
+      if(s.sCol > maxCol ) {
+        maxCol = s.sCol;
+      }
+    });
     //Get the number of rows
     this.widget.seatplan.seats.seat.sort((a, b) => a.sRow.compareTo(b.sRow));
     int rows = this.widget.seatplan.seats.seat.last.sRow;
 
+
     this.widget.seatplan.seats.seat.sort((a, b) => a.sCol.compareTo(b.sCol));
-    List<int> arrayColumn = [];
-    //new List<int>();
+   // List<int> arrayColumn = [];
+
+
+/*
     this
         .widget
         .seatplan
@@ -778,16 +794,24 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
       var temp = f.sCol;
       arrayColumn.add(temp);
     });
+*/
+
+    if( rows <= 0 || minCol == -1 || maxCol <2 ){
+      return Container( child: buildMessage('SeatPlan error', 'No Columns', onComplete: () {
+        gblPaymentMsg = null;
+        setState(() {});
+      }));
+    }
 
     return new Expanded(
         child: ListView(
       controller: _controller,
       padding: EdgeInsets.only(left: 5, right: 5),
-      children: renderSeats(rows, arrayColumn, widget.rloc),
+      children: renderSeats(rows, minCol, maxCol, widget.rloc),
     ));
   }
 
-  List<Widget> renderSeats(int rows, List<int> columns, String rloc) {
+  List<Widget> renderSeats(int rows, int minCol, int maxCol, String rloc) {
     List<Widget> obj = [];
     // new List<Widget>();
     List<Seat> seats = [];
@@ -801,7 +825,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     bool selectableSeat = true;
 
     // get max no cols
-    int maxCol = 0;
+//    int maxCol = 0;
 
 
 
@@ -813,14 +837,19 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           .seat
           .where((a) => a.sRow == indexRow)
           .toList();
+      if( seats == null ) {
+        String s = 'its null';
+      } else {
+        seats.sort((a, b) => a.sRow.compareTo(b.sCol));
 
-      seats.sort((a, b) => a.sRow.compareTo(b.sCol));
-
-      seats.forEach((element) {
-        if(element.sCol != null && element.sCol > maxCol ){
-          maxCol = element.sCol;
-        }
-      });
+/*
+        seats.forEach((element) {
+          if (element.sCol != null && element.sCol > maxCol) {
+            maxCol = element.sCol;
+          }
+        });
+*/
+      }
       // check for large plane
       if( maxCol > 8){
         cellSize = 30;
@@ -831,8 +860,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
       }
       row = [];
       // new List<Widget>();
-      for (var indexColumn = columns.first;
-          indexColumn <= columns.last;
+      for (var indexColumn = minCol;
+          indexColumn <= maxCol;
           indexColumn++) {
         var seat =
             seats.firstWhere((f) => f.sCol == indexColumn, orElse: () => null);
@@ -841,7 +870,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           currentSeatPrice = seat.sScprice;
           currencyCode = seat.sCur;
         }
-
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
           row.add(Padding(
@@ -851,6 +879,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               width: cellSize,
             ),
           ));
+          //logit('r${indexRow} c${indexColumn} null w${cellSize + cellPadding}');
         } else if (seat == null && indexRow == 1 ||
             seat.sCellDescription == 'Aisle') {
           row.add(
@@ -859,6 +888,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               width: aisleCellSize,
             ),
           );
+          //logit('r${indexRow} c${indexColumn} aisle w${aisleCellSize}');
+
         } else if (seat.sCellDescription.length == 1) {
           row.add(
             Padding(
@@ -871,6 +902,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                           : '')),
                 )),
           );
+          //logit('r${indexRow} c${indexColumn} desc==1 w${cellPadding + cellSize}');
+
         } else if (seat.sCellDescription == 'SeatPlanWidthMarker' ||
             seat.sCellDescription == 'Wing Start' ||
             seat.sCellDescription == 'Wing Middle' ||
@@ -885,6 +918,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                width: cellSize,
             ),
           ));
+          //logit('r${indexRow} c${indexColumn} marker w${cellPadding + cellSize}');
+
         } else if ((seat.sRLOC != null && seat.sRLOC != rloc) ||
             (seat.sSeatID != '0' && seat.sRLOC == null) ||
             (seat.sCellDescription == 'Block Seat')) {
@@ -907,6 +942,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                   )),
                 )),
           );
+          //logit('r${indexRow} c${indexColumn} block w${cellSize}');
+
         } else {
           var color;
           switch (seat.sCellDescription) {
@@ -940,6 +977,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               )));
         }
         selectableSeat = true;
+        //logit('r${indexRow} c${indexColumn} Emerg w${cellPadding } + getSeat');
+
       }
       if (widget.displaySeatPrices &&
           currentSeatPrice != null &&

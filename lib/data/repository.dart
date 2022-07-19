@@ -197,6 +197,7 @@ class Repository {
     logit('cache cities');
 
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
+      gblError = 'WebApi needs upgrade';
     throw('WebApi needs upgrade');
     }
 
@@ -587,8 +588,12 @@ class Repository {
               }
             } else {
               print('settingsJson == null');
+/*
               log('[settings string]' + settingsString);
               log('[body]' + response.body);
+              gblError = 'settingsJson == null';
+              throw('settingsJson == null');
+*/
             }
             if( gblVerbose == true ) {print('successful login');}
 
@@ -598,7 +603,7 @@ class Repository {
             } else if ( mainMatchVersioAction.isNotEmpty){
               gblAction =mainMatchVersioAction;
             }
-            if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || int.parse(xmlVersion) < requiredXmlVersion  )) {
+            if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || (gblSettings.useWebApiforVrs) ? int.parse(xmlVersion) < requiredXmlVersion : int.parse(xmlVersion) < requiredApiVersion  )) {
               if( gblSettings.useWebApiforVrs) {
                 gblError = 'WebService needs update';
               } else {

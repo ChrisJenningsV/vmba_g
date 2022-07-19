@@ -26,7 +26,7 @@ void configGR() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Colors.black,
     accentButtonColor: Colors.black,
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.white,
@@ -51,6 +51,7 @@ void configGR() {
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: false,
 
     airlineName: "FastJet",
@@ -59,10 +60,9 @@ void configGR() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'FN',
-    termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
-    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
-    prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
-    //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
+    termsAndConditionsUrl: 'https://aurigny.com/terms-m/',
+    privacyPolicyUrl:  'https://aurigny.com/PrivacyPolicy.html',
+    prohibitedItemsNoticeUrl:  'https://aurigny.com/prohibited-items-notice/',
 
     locale: 'en-EN',
     bookingLeadTime: 60,
@@ -70,10 +70,9 @@ void configGR() {
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
     useWebApiforVrs: true,
-//  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '1457545908',
     androidAppId: 'com.aurigny.reservations',
-    fqtvName: 'Club',
+    fqtvName: 'Frequent Flyer',
     appFeedbackEmail: 'appfeedback@aurigny.com',
     groupsBookingsEmail: 'groups@aurigny.com',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
@@ -84,7 +83,7 @@ void configGR() {
     searchDateOut: 1,
     searchDateBack: 6,
 
-    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
+    adsTermsUrl: 'https://www.aurigny.com/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
       adults: true,
       child: true,

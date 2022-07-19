@@ -72,6 +72,7 @@ void configSI() {
   gblSettings = Settings(
       wantLeftLogo:  true,
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: true,
       latestBuildiOS: '105',
       latestBuildAndroid: '105',
@@ -138,8 +139,10 @@ void configSI() {
   creditCardProvider: 'videcard', // citypaydirect
 
   testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+//    testXmlUrl:      "http://192.168.100.98/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+//  testApiUrl:      'http://192.168.100.98/blueislands/VARS/webApiV2/api/',
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect

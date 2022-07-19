@@ -842,7 +842,7 @@ class _CheckinBoardingPassesWidgetState
           ));
 
     }
-
+    return Container();
   }
 
   Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {

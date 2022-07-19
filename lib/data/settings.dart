@@ -381,13 +381,13 @@ bool bpShowFastTrack;
       passengerTypes.child = false;
     }
     if( wantApis) {
-      passengerTypes.wantAdultDOB = true;
+   /*   passengerTypes.wantAdultDOB = true;
       passengerTypes.wantYouthDOB = true;
       passengerTypes.wantSeniorDOB = true;
       passengerTypes.wantStudentDOB = true;
 
       wantMiddleName = true;
-      wantGender = true;
+      wantGender = true;*/
 
     }
 

@@ -51,6 +51,7 @@ void configLM() {
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: false,
 
     airlineName: "Loganair",
