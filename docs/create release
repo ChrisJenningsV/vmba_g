@@ -21,6 +21,7 @@ flutter build appbundle -t lib/main.dart --flavor buraq
 flutter build appbundle -t lib/main.dart --flavor blueislands
 flutter build appbundle -t lib/main.dart --flavor fastjet
 flutter build appbundle -t lib/main.dart --flavor hisky
+flutter build appbundle -t lib/main.dart --flavor Aurigny
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 

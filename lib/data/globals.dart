@@ -10,7 +10,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN';
+String gblBuildFlavor = 'UZ';
 bool gblIsLive = false;
 int requiredXmlVersion = 101;
 int requiredApiVersion = 100;
