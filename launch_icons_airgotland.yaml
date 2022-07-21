@@ -6,7 +6,7 @@ flutter_icons:
 
 # flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_airgotland.yaml
 #
-# copy /y lib\assets\airgotland\images\bg.png lib\assets\images
+# copy -path lib\assets\airgotland\images\bg.png -Destination lib\assets\images
 # cp  lib/assets/airgotland/images/bg.png lib/assets/images
 
 
