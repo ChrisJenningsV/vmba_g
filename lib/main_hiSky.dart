@@ -89,6 +89,7 @@ void configH4() {
     searchDateOut: 1,
     searchDateBack: 6,
     wantApis: false,
+   // wantProducts: true,
 
     adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(

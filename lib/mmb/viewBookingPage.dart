@@ -27,8 +27,13 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/vidButtons.dart';
+import '../functions/bookingFunctions.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
+
+int _journeyToChange;
+bool wantChangeAnyFlight = true;
 
 class PnrChangeNotifier with ChangeNotifier {
   PnrModel _pnr = new PnrModel();
@@ -63,6 +68,8 @@ class _ViewBookingPage extends State<ViewBookingPage> {
 
   @override
   Widget build(BuildContext context) {
+    gblCurrentRloc = widget.rloc;
+
     return ChangeNotifierProvider(
       //builder: (context) => PnrChangeNotifier(),
       create: (context) => PnrChangeNotifier(),
@@ -85,13 +92,13 @@ class _ViewBookingPage extends State<ViewBookingPage> {
                 child: new RefreshIndicator(
               child: CheckinBoardingPassesWidget(
                   rloc: widget.rloc, showSnackBar: showSnackBar),
-              onRefresh: _refreshBooking, //(context),
+              onRefresh: refreshBooking //(context),
             )),
           )),
     );
   }
 
-  Future<void> _refreshBooking() async {
+ /* Future<void> _refreshBooking() async {
     logit('_refreshBooking');
     await Repository.get().fetchPnr(widget.rloc);
     if( gblSettings.wantApis) {
@@ -100,7 +107,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
 
     Repository.get().fetchApisStatus(widget.rloc);
     Repository.get().fetchPnr(widget.rloc);
-  }
+  }*/
 
   showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(snackbar(message));
@@ -531,7 +538,7 @@ class _CheckinBoardingPassesWidgetState
           ' ' +
           mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
 
-      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
+      if ( wantChangeAnyFlight || DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
         if( gblSettings.displayErrorPnr && int.parse(objPNR.pNR.basket.outstanding.amount) > 0 ) {
@@ -590,45 +597,20 @@ class _CheckinBoardingPassesWidgetState
 
   }
   Widget _changeFlightButton( pnr ,journeyToChange ) {
-    return Expanded(
-      child: TextButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MmbDatePickerWidget(
-                pnr: pnr,
-                mmbBooking: mmbBooking,
-                journeyToChange: journeyToChange,
-              ),
-            )),
-        style: TextButton.styleFrom(
-            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            primary: gblSystemColors.textButtonTextColor),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TrText(
-              'Change Flight',
-              style: TextStyle(
-                  color: gblSystemColors
-                      .textButtonTextColor),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5.0),
-            ),
-            RotatedBox(
-              quarterTurns: 1,
-              child: Icon(
-                Icons.airplanemode_active,
-                size: 20.0,
-                color: Colors.grey,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    _journeyToChange = journeyToChange;
+    return vidWideTextButton(context, 'Change Flight',  _onPressed, icon: Icons.airplanemode_active, iconRotation: 1);
+  }
 
+  void _onPressed() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MmbDatePickerWidget(
+            pnr: objPNR,
+            mmbBooking: mmbBooking,
+            journeyToChange: _journeyToChange,
+          ),
+        ));
   }
 
   int getJourney(int leg, Itinerary itinerary) {

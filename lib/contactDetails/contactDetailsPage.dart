@@ -17,6 +17,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/repository.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/vidButtons.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -219,7 +220,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                           ),
                         )
                       ]))),
-          floatingActionButton: Padding(
+          floatingActionButton: vidWideTextButton(context, 'PROCEED TO PAYMENT',  validateAndSubmit, icon: Icons.check),
+/*
+          Padding(
               padding: EdgeInsets.only(left: 35.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -242,7 +245,9 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                         validateAndSubmit();
                       }),
                 ],
-              )));
+              ))
+*/
+      );
     }
   }
 
