@@ -83,6 +83,7 @@ class Settings {
   bool wantCitySwap;
   bool wantPageImages;
   bool wantProducts;
+  String productImageMode;
   bool wantDangerousGoods;
   bool wantInternatDialCode;
   bool wantCovidWarning;
@@ -97,6 +98,7 @@ class Settings {
   bool wantKnownTravNo;
   bool wantPushNoticications;
   bool wantNotificationEdit;
+  bool wantCentreTitle;
   bool wantRefund;
   bool wantNewPayment;
   bool useWebApiforVrs;
@@ -170,6 +172,7 @@ class Settings {
   String liveApiUrl;
   String liveSmartApiUrl;
   String liveCreditCardProvider;
+  String avTimeFormat;
 
   bool eVoucher;
   PassengerTypes passengerTypes;
@@ -213,6 +216,7 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
+    this.productImageMode = 'index',
     this.wantDangerousGoods = false,
     this.wantInternatDialCode = false,
     this.defaultCountryCode,
@@ -229,12 +233,14 @@ bool bpShowFastTrack;
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
     this.wantNotificationEdit = false,
+    this.wantCentreTitle = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
     this.useSmartPay = false,
+    this.avTimeFormat='HHmm',
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

@@ -15,6 +15,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../calendar/calendarFunctions.dart';
+
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
   ChangeFlightPage(
@@ -529,202 +531,11 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                         left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
                     child: Column(
                       children: <Widget>[
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(getIntlDate('EEE dd MMM', DateTime.parse(item.flt[0].time.ddaylcl)),
-                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt[0].time.ddaylcl)).toString().substring(0, 10),
-                                    style: new TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w300)),
-                                new Text(
-                                    item.flt.first.time.dtimlcl
-                                        .substring(0, 5)
-                                        .replaceAll(':', ''),
-                                    style: new TextStyle(
-                                        fontSize: 36.0,
-                                        fontWeight: FontWeight.w700)),
-                                FutureBuilder(
-                                  future: cityCodeToName(
-                                    item.flt.first.dep,
-                                  ),
-                                  initialData: item.flt.first.dep.toString(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> text) {
-                                    return new Text(text.data,
-                                        style: new TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w300));
-                                  },
-                                ),
-                              ],
-                            ),
-                            Column(children: [
-                              new RotatedBox(
-                                  quarterTurns: 1,
-                                  child: new Icon(
-                                    Icons.airplanemode_active,
-                                    size: 60.0,
-                                  ))
-                            ]),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(getIntlDate('EEE dd MMM',DateTime.parse(item.flt.last.time.adaylcl)),
-                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt.last.time.adaylcl)).toString().substring(0, 10),
-                                    style: new TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w300)),
-                                new Text(
-                                    item.flt.last.time.atimlcl
-                                        .substring(0, 5)
-                                        .replaceAll(':', ''),
-                                    style: new TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.w700)),
-                                FutureBuilder(
-                                  future: cityCodeToName(
-                                    item.flt.last.arr,
-                                  ),
-                                  initialData: item.flt.last.arr.toString(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> text) {
-                                    return new Text(text.data,
-                                        style: new TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w300));
-                                  },
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+
+                        flightRow(item),
                         Divider(),
                         CannedFactWidget(flt: item.flt),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(children: [
-                              Row(
-                                children: <Widget>[
-                                  Icon(Icons.timer),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(item.journeyDuration()),
-                                  )
-                                ],
-                              )
-                            ]),
-                            Column(children: [
-                              Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(item.flt[0].fltdet.airid + item.flt[0].fltdet.fltno),
-                                  )
-                                ],
-                              )
-                            ]),
-                            Column(
-                              children: <Widget>[
-                                item.flt.length > 1
-                                    ? GestureDetector(
-                                        onTap: () => showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                                actions: <Widget>[
-                                                  new TextButton(
-                                                    child: new Text("OK"),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                ],
-                                                title: new TrText('Connections'),
-                                                content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: (item.flt.map(
-                                                      (f) => Container(
-                                                        child: Row(
-                                                          children: <Widget>[
-                                                            Text(f.dep),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(4.0),
-                                                              child: Text(DateFormat(
-                                                                      'kk:mm')
-                                                                  .format(DateTime.parse(f
-                                                                          .time
-                                                                          .ddaylcl +
-                                                                      ' ' +
-                                                                      f.time
-                                                                          .dtimlcl))
-                                                                  .toString()),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(4.0),
-                                                              child:
-                                                                  new RotatedBox(
-                                                                      quarterTurns:
-                                                                          1,
-                                                                      child:
-                                                                          new Icon(
-                                                                        Icons
-                                                                            .airplanemode_active,
-                                                                        size:
-                                                                            20.0,
-                                                                      )),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(4.0),
-                                                              child:
-                                                                  Text(f.arr),
-                                                            ),
-                                                            Text(DateFormat(
-                                                                    'kk:mm')
-                                                                .format(DateTime.parse(f
-                                                                        .time
-                                                                        .ddaylcl +
-                                                                    ' ' +
-                                                                    f.time
-                                                                        .atimlcl))
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )).toList()));
-                                          },
-                                        ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            new Text(
-                                              item.flt.length == 2
-                                                  ? '${item.flt.length - 1} connection'
-                                                  : '${item.flt.length - 1} connections',
-                                              style: new TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                            new Icon(Icons.expand_more),
-                                          ],
-                                        ),
-                                      )
-                                    : TrText('Direct Flight'),
-                              ],
-                            )
-                          ],
-                        ),
+                        infoRow(context, item),
                         Padding(
                           padding: EdgeInsets.all(0),
                         ),
@@ -745,6 +556,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
               )
               .toList()));
     } else {
+      return noFlightsFound();
+/*
       return Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -759,6 +572,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
           ),
         ],
       ));
+*/
     }
   }
 

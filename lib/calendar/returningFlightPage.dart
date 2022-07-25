@@ -15,6 +15,8 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import 'calendarFunctions.dart';
+
 class ReturnFlightSeletionPage extends StatefulWidget {
   ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
       : super(key: key);
@@ -206,19 +208,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     return new Scaffold(
       key: _key,
       appBar: appBar(context,"Returning Flight"),
-    /*new AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        title: new TrText("Returning Flight",
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),
-
-     */
-      endDrawer: DrawerMenu(),
+        endDrawer: DrawerMenu(),
       body: _buildBody(),
     );
   }
@@ -414,6 +404,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                         left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
                     child: Column(
                       children: <Widget>[
+                        flightRow(item),
+/*
                         new Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -489,10 +481,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             )
                           ],
                         ),
+*/
                         Divider(),
-                        CannedFactWidget(
-                          flt: item.flt,
-                        ),
+                        CannedFactWidget(flt: item.flt,),
+                        infoRow(context, item),
+/*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -613,6 +606,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             )
                           ],
                         ),
+*/
                         Padding(
                           padding: EdgeInsets.all(0),
                         ),
@@ -633,6 +627,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               )
               .toList()));
     } else {
+      return noFlightsFound();
+/*
       return Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -647,6 +643,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           ),
         ],
       ));
+*/
     }
   }
 

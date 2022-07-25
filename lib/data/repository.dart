@@ -2,8 +2,6 @@
 import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
-import 'dart:developer';
-//import 'dart:html';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;

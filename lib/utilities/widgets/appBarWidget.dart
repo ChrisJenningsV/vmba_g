@@ -199,17 +199,30 @@ Widget appBar(BuildContext context, String title,
   }
 
   if( gblSettings.wantLeftLogo && leading == null ) {
+    Widget leading = Text('');
+    if(gblSettings.wantLeftLogo  ) {
+      if( gblSettings.aircode == 'SI') {
+        leading = Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: Image.asset(
+                'lib/assets/$gblAppTitle/images/appBarLeft.png',
+                color: Color.fromRGBO(255, 255, 255, 0.1),
+                colorBlendMode: BlendMode.modulate)
+        );
+      } else {
+        leading = Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Image.asset(
+              'lib/assets/$gblAppTitle/images/appBarLeft.png')
+        );
+      }
+    }
     return AppBar(
       flexibleSpace: flexibleSpace,
       centerTitle: gblCentreTitle,
       toolbarHeight: toolbarHeight,
       elevation: elevalion,
-      leading: gblSettings.wantLeftLogo ? Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: Image.asset(
-              'lib/assets/$gblAppTitle/images/appBarLeft.png',
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-              colorBlendMode: BlendMode.modulate)) :Text(''),
+      leading: leading,
       //brightness: gblSystemColors.statusBar,
       backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(

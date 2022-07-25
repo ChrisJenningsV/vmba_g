@@ -14,6 +14,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/calendar/calendarFunctions.dart';
 
 class FlightSeletionPage extends StatefulWidget {
   FlightSeletionPage({Key key, this.newBooking}) : super(key: key);
@@ -310,7 +311,19 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           scrollDirection: Axis.horizontal,
           children: objAv.availability.cal.day
               .map(
-                (item) => Container(
+                (item) =>
+                    getCalDay(item, 'out', widget.newBooking.departureDate, onPressed:() => {
+                    hasDataConnection().then((result) {
+                    if (result == true) {
+                    _changeSearchDate(DateTime.parse(item.daylcl));
+                    } else {
+                    //showSnackBar('Please, check your internet connection');
+                    noInternetSnackBar(context);
+                    }
+                    })
+                    }),
+/*
+                    Container(
                   decoration: new BoxDecoration(
                       border: new Border.all(color: Colors.black12),
                       color: !isSearchDate(DateTime.parse(item.daylcl),
@@ -370,6 +383,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                             ),
                           ])),
                 ),
+*/
               )
               .toList());
     } else {
@@ -389,88 +403,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                         left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
                     child: Column(
                       children: <Widget>[
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(getIntlDate('EEE dd MMM', DateTime.parse(item.flt[0].time.ddaylcl)),
-                                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(item.flt[0].time.ddaylcl)).toString().substring(0, 10),
-                                    style: new TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w300)),
-                                new Text(
-                                    item.flt.first.time.dtimlcl
-                                        .substring(0, 5)
-                                        .replaceAll(':', ''),
-                                    style: new TextStyle(
-                                        fontSize: 36.0,
-                                        fontWeight: FontWeight.w700)),
-                                FutureBuilder(
-                                  future: cityCodeToName(
-                                    item.flt.first.dep,
-                                  ),
-                                  initialData: item.flt.first.dep.toString(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> text) {
-                                    return TrText(text.data,
-                                        style: new TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w300),
-                                            variety: 'airport',noTrans: true);
-                                  },
-                                ),
-                              ],
-                            ),
-                            Column(children: [
-                              new RotatedBox(
-                                  quarterTurns: 1,
-                                  child: new Icon(
-                                    Icons.airplanemode_active,
-                                    size: 60.0,
-                                  ))
-                            ]),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text( getIntlDate('EEE dd MMM',DateTime.parse(item.flt.last.time.adaylcl)),
-                                    /*new DateFormat('EEE dd MMM h:mm a')
-                                        .format(DateTime.parse(
-                                            item.flt.last.time.adaylcl))
-                                        .toString()
-                                        .substring(0, 10),*/
-                                    style: new TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w300)),
-                                new Text(
-                                    item.flt.last.time.atimlcl
-                                        .substring(0, 5)
-                                        .replaceAll(':', ''),
-                                    style: new TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.w700)),
-                                FutureBuilder(
-                                  future: cityCodeToName(
-                                    item.flt.last.arr,
-                                  ),
-                                  initialData: item.flt.last.arr.toString(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> text) {
-                                    return new TrText(text.data,
-                                        style: new TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w300),
-                                        variety: 'airport', noTrans: true,);
-                                  },
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                        flightRow(item),
                         Divider(),
                         CannedFactWidget(flt: item.flt),
-                        Row(
+                        infoRow(context, item),
+  /*                      Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Column(children: [
@@ -590,7 +527,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                               ],
                             )
                           ],
-                        ),
+                        ),*/
                         Padding(
                           padding: EdgeInsets.all(0),
                         ),
@@ -611,6 +548,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               )
               .toList()));
     } else {
+      return noFlightsFound();
+/*
       return Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -625,6 +564,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           ),
         ],
       ));
+*/
     }
   }
 
@@ -710,10 +650,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
 
   Widget pricebuttons(List<Flt> item) {
-    if( isUmnr() ) {
-
-    }
-    if (item[0].fltav.pri.length > 3) {
+     if (item[0].fltav.pri.length > 3) {
       return Wrap(
           spacing: 8.0, //gap between adjacent chips
           runSpacing: 4.0, // gap between lines

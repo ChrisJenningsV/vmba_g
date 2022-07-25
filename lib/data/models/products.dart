@@ -148,6 +148,7 @@ class Product {
   String applyToClasses;
   bool routeSpecificCombinable;
   int displayOrder;
+  int productImageIndex;
   bool displayOnwebsite;
 
 int count;
@@ -180,6 +181,7 @@ List<String> curProducts ;
     this.productID,
     this.productImageLink,
     this.productImageURL,
+    this.productImageIndex,
     this.productPriceCalc,
     this.requiresQuantity,
     this.restrictPurchaseToAllPaxOrNone,
@@ -292,6 +294,8 @@ List<String> curProducts ;
       additionalInfo = json['additionalInfo'];
       unitOfMeasure = json['unitOfMeasure'];
       productImageLink = json['productImageLink'];
+      productImageURL = json['productImageURL'];
+      productImageIndex = json['productImageIndex'];
       applyToClasses = json['applyToClasses'];
       // ints
       maxQuantity = json['maxQuantity'];

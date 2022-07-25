@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/data/SystemColors.dart';
 
 import '../data/globals.dart';
 

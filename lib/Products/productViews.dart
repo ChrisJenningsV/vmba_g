@@ -1,10 +1,8 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:vmba/Products/productFunctions.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/products.dart';
-import 'package:vmba/data/globals.dart';
-import 'package:vmba/utilities/helper.dart';
 
 class ProductCard extends StatefulWidget {
   final String productType;
@@ -121,7 +119,7 @@ Card getProductCard(String title, List<Product> products ) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Image(image: getBagImage(prod.productCode)),
+          Image(image: getBagImage(prod)),
           Align(alignment: Alignment.centerLeft,
               child: TrText(prod.productName)),
 
@@ -170,8 +168,20 @@ Card getProductCard(String title, List<Product> products ) {
   }
 }
 
-NetworkImage getBagImage(String name){
+/*
+NetworkImage getBagImage(Product product){
   try {
+    String name;
+    if( gblSettings.productImageMode == 'index') {
+      if(product.productImageIndex == null) {
+        name = 'default';
+      } else {
+        name = product.productImageIndex.toString();
+      }
+    } else {
+      name = product.productCode;
+    }
+
     Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
     String pageImage = pageMap[name.toUpperCase()];
     if( pageImage == null || pageImage.isEmpty) {
@@ -187,3 +197,4 @@ NetworkImage getBagImage(String name){
   }
   return null;
 }
+*/

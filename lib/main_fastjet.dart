@@ -25,7 +25,7 @@ void main() {
 void configFN() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(0XFF, 0xC8, 0x32, 1),
-    accentButtonColor: Colors.black,
+    accentButtonColor: Color.fromRGBO(0X48, 0x53, 0x5B, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
@@ -53,8 +53,13 @@ void configFN() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
+    currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR',
+    currency: 'ZAR',
+    wantCurrencyPicker: true,
+    wantCentreTitle: true,
+    avTimeFormat: 'HH:mm',
 
-    airlineName: "FastJet",
+    airlineName: "fastjet",
     gblServerFiles: 'https://customer3.videcom.com/FastJet/AppFiles/',
     testServerFiles: 'https://customertest.videcom.com/FastJet/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
@@ -81,7 +86,7 @@ void configFN() {
     wantClassBandImages: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
-    bpShowAddPassToWalletButton: false,
+    bpShowAddPassToWalletButton: true,
     searchDateOut: 1,
     searchDateBack: 6,
 
@@ -138,7 +143,8 @@ void configFN() {
     wantLeftLogo: true,
     wantCurrencySymbols: true,
     wantMyAccount: true,
-    wantFQTV: true,
+    wantFQTV: false,
+    wantInternatDialCode: true,
     wantFindBookings: true,
     wantNewEditPax: true,
     wantMaterialControls: true,

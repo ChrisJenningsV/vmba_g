@@ -8,6 +8,7 @@ import 'package:vmba/data/models/products.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../../utilities/helper.dart';
+import '../productFunctions.dart';
 import 'complexProductWidget.dart';
 
 //ignore: must_be_immutable
@@ -34,9 +35,9 @@ class ProductsWidgetState extends State<ProductsWidget> {
   @override
   void initState() {
     // TODO: implement initState
-    smallBag = getBagImage('smallBag');
-    cabinBag = getBagImage('cabinBag');
-    holdBag = getBagImage('holdBag');
+    smallBag = bagImage('smallBag');
+    cabinBag = bagImage('cabinBag');
+    holdBag = bagImage('holdBag');
 
     errorMsg = '';
 
@@ -129,10 +130,13 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
     // add  bag products
     if(gblProducts != null ) {
       gblProducts.productCategorys.forEach((pc) {
+        logit('products: add category ${pc.productCategoryName} ${pc.products.length} items');
+
         list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, onComplete: widget.onComplete,
         onError: (msg)
         {
           errorMsg = msg;
+          logit('add category error:$msg');
         }
         ));
       });
@@ -225,7 +229,10 @@ class ProductCardState extends State<ProductCard> {
 
     widget.productCategory.products.forEach((prod) {
       if( isThisProductValid(prod)) {
-        bags.add(getProductRow(index++,  prod));
+   //     logit('products: add ${prod.productName}');
+        bags.add(getProductRow(index++, prod));
+      } else {
+     //   logit('products: NOT add ${prod.productName}');
       }
     });
 
@@ -269,10 +276,10 @@ class ProductCardState extends State<ProductCard> {
       widgets.add(Text(noItems.toString()));
     }
 
-    widgets.add(Image(image: getBagImage(prod.productCode),
-      fit: BoxFit.fill,
-      height: 40,
-      width: 40,),);
+      widgets.add(Image(image: getBagImage(prod),
+        fit: BoxFit.fill,
+        height: 40,
+        width: 40,),);
 
     widgets.add(Align(alignment: Alignment.centerLeft,
         child: TrText(prod.productName)),);
@@ -367,7 +374,8 @@ class ProductCardState extends State<ProductCard> {
 
 
 }
-NetworkImage getBagImage(String name){
+
+NetworkImage bagImage(String name){
   try {
     Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
     String pageImage = pageMap[name.toUpperCase()];
@@ -384,4 +392,5 @@ NetworkImage getBagImage(String name){
   }
   return null;
 }
+
 

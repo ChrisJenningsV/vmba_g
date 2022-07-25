@@ -463,7 +463,12 @@ Widget _getLogo(){
     TextStyle st = new TextStyle( color: gblTitleStyle.color  );
     list.add(Text(txt, style: st, textScaleFactor: 0.75,));
   }
-  return new Row( children: list   );
+  if( gblSettings.wantCentreTitle) {
+    return new Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+  } else {
+    return new Row(children: list);
+
+  }
 }
 
   List<Widget> _getBackImage(var buttonShape, var buttonHeight) {

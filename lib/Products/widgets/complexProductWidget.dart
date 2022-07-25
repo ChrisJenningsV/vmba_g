@@ -5,10 +5,10 @@ import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
-import 'package:vmba/Products/productViews.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/appBarWidget.dart';
+import '../productFunctions.dart';
 
 class ComplextProductWidget extends StatefulWidget {
   final Product product;
@@ -51,11 +51,11 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       units = translate(' Per ') + widget.product.unitOfMeasure;
     }
 
+      rowList.add(Image(image: getBagImage(widget.product),
+        fit: BoxFit.fill,
+        height: 40,
+        width: 40,));
 
-    rowList.add(Image(image: getBagImage(widget.product.productCode),
-      fit: BoxFit.fill,
-      height: 40,
-      width: 40,));
     rowList.add(Padding( padding: EdgeInsets.only(right: 15,)));
     rowList.add(Column( children: [
       Text(formatPrice(widget.product.currencyCode, widget.product.getPrice()) ),
@@ -308,11 +308,10 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
     List<Widget> widgets = [];
 
 
-
-    widgets.add(Image(image: getBagImage(prod.productCode),
-      fit: BoxFit.fill,
-      height: 40,
-      width: 40,),);
+      widgets.add(Image(image: getBagImage(prod),
+        fit: BoxFit.fill,
+        height: 40,
+        width: 40,),);
 
     widgets.add(Align(alignment: Alignment.centerLeft,
         child: TrText(prod.productName)),);
