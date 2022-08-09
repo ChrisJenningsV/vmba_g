@@ -68,7 +68,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   @override
   initState() {
     super.initState();
-    logit('CPM initState');
+    if( gblLogPayment ) { logit('CPM initState');}
 
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
@@ -965,7 +965,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   Future ticketBooking() async {
-    logit('CPM:ticketBooking');
+    if(gblLogPayment) { logit('CPM:ticketBooking');}
     http.Response response;
     String msg = '*${widget.mmbBooking.rloc}^';
     msg += nostop;
@@ -1066,7 +1066,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               child: new Text("Close"),
               onPressed: () {
                 _error = '';
-                logit('Close dialog');
+                if(gblLogPayment) { logit('Close dialog');}
                 if( gblSettings.wantNewEditPax ){
                   // double pop
                   var nav = Navigator.of(context);
@@ -1096,7 +1096,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
 
     if (_displayProcessingIndicator) {
-      logit('CPM Build processing');
+      if(gblLogPayment) { logit('CPM Build processing');}
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
@@ -1118,7 +1118,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         ),
       );
     } else if (gblPaymentMsg != null ) {
-      logit('CPM Build error');
+      if(gblLogPayment) { logit('CPM Build error');}
 
       return new Scaffold(
           key: _key,
@@ -1196,11 +1196,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
       );
     } else {
-      logit('CPM Build normal');
+      if(gblLogPayment) { logit('CPM Build normal');}
 
       return WillPopScope(
         onWillPop: () {
-          logit('CPM Will Pop');
+          if(gblLogPayment) { logit('CPM Will Pop'); }
 
           if( gblSettings.wantNewEditPax ){
             // double pop
@@ -1310,7 +1310,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 List<Widget> getPayOptions(String amount, String cur) {
     List<Widget> list = [];
-    logit('get pay opts');
+    if(gblLogPayment) { logit('get pay opts'); }
 
      list.add( ExpansionTile(
         initiallyExpanded: false,
@@ -1451,20 +1451,22 @@ List<Widget> getPayOptions(String amount, String cur) {
     }
     list.add(Divider());
 
+/*
     if( gblSettings.wantProducts) {
       //if( gblProductsState == LoadState.none) {
         list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
           pnrModel: widget.pnrModel,
           onComplete: (PnrModel pnrModel) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            logit('On Complete products');
+            if(gblLogProducts) { logit('On Complete products');}
             widget.pnrModel = pnrModel;
             pnrModel = pnrModel;
             setState(() {
 
             });
           },));
-      /*} else {
+      */
+/*} else {
         list.add(ExpansionTile(
           tilePadding: EdgeInsets.only(left: 0),
           initiallyExpanded: false,
@@ -1475,8 +1477,12 @@ List<Widget> getPayOptions(String amount, String cur) {
         list.add(Divider());
       }
 
-       */
+       *//*
+
     }
+*/
+
+
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -1501,7 +1507,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         ),
       ));
     } else {
-        logit('render pay buttons');
+        if(gblLogPayment) { logit('render pay buttons');}
         if( gblSettings.wantNewPayment) {
           list.add(  renderNewPaymentButtons());
         } else {
@@ -1542,7 +1548,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
             if ( gblPayBtnDisabled == false ) {
-              logit('pay pressed');
+              if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
               setState(() {
 
@@ -1605,7 +1611,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         pnrModel: widget.pnrModel,
         onComplete: (PnrModel pnrModel) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          logit('Load Providers onComplete');
+          if(gblLogPayment) {logit('Load Providers onComplete');}
           widget.pnrModel = pnrModel;
           pnrModel = pnrModel;
           //setState(() {            });

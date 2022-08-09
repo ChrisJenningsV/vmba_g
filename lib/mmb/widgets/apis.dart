@@ -673,6 +673,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     return widgets;
   }
 }
+/*
 
 void _showErrorDialog(BuildContext context, String error ) {
   // flutter defined function
@@ -706,3 +707,4 @@ void _showErrorDialog(BuildContext context, String error ) {
     },
   );
 }
+*/

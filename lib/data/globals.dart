@@ -4,6 +4,7 @@ import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
 import 'models/notifyMsgs.dart';
+import 'models/pnr.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
 
@@ -36,6 +37,14 @@ String gblPaymentMsg;
 String gblNotifyToken;
 String gblDeviceId;
 
+/* logging */
+bool gblLogProducts = true;
+bool gblLogPayment = false;
+bool gblLogFQ = false;
+bool gblLogCities = false;
+bool gblLogSummary = true;
+
+
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
 bool gblUseCache = true;
@@ -60,6 +69,7 @@ bool gblNoNetwork;
 bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
+PnrModel gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
@@ -98,3 +108,5 @@ List<String> gblTitles = <String>[
   'Rev'
 ];
 Map<String, String > gblPayFormVals;
+
+TextEditingController gblPhoneCodeEditingController;

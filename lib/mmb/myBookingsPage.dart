@@ -22,10 +22,10 @@ class MyBookingsPage extends StatefulWidget {
   MyBookingsPage({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => new _MyBookingsPageState();
+  State<StatefulWidget> createState() => new MyBookingsPageState();
 }
 
-class _MyBookingsPageState extends State<MyBookingsPage> with TickerProviderStateMixin  {
+class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderStateMixin  {
   List<PnrDBCopy> activePnrs = [];
   List<PnrDBCopy> recentPnrs = [];
   // new List<PnrDBCopy>();

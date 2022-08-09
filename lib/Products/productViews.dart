@@ -4,6 +4,9 @@ import 'package:vmba/Products/productFunctions.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/products.dart';
 
+import '../data/globals.dart';
+import '../utilities/helper.dart';
+
 class ProductCard extends StatefulWidget {
   final String productType;
   final List<Product> products;
@@ -12,6 +15,7 @@ class ProductCard extends StatefulWidget {
   ProductCard({this.productType, this.products});
   ProductCardState createState() => ProductCardState();
 
+/*
   bool hasContent() {
     bool found = false;
 
@@ -33,6 +37,7 @@ class ProductCard extends StatefulWidget {
     });
     return found;
   }
+*/
 
 }
 class ProductCardState extends State<ProductCard> {
@@ -53,6 +58,10 @@ class ProductCardState extends State<ProductCard> {
         title = 'Type unknown [${widget.productType}';
         break;
     }
+    widget.products.forEach((prod) {
+      prod.resetProducts(gblPnrModel);
+    });
+
   }
 
   @override
@@ -89,37 +98,15 @@ class ProductCardState extends State<ProductCard> {
   }
 
 
-/*
-Card getProductCard(String title, List<Product> products ) {
-
-  List<Widget> bags = [];
-  int index = 0;
-
-  products.forEach((prod) {
-    if( prod.isBag() ) {
-      bags.add(getProductRow(index++, products, prod));
-    }
-  });
-  if( bags.length > 0 ) {
-    bags.insert(0, ListTile(
-      title: Text(translate(title), textScaleFactor: 1.25),));
-
-    return Card(
-      child: Column(
-        children: bags,),
-    );
-  }
-  return null;
-
-  }
-
- */
-
   Row getProductRow(int index, List<Product> products, Product prod) {
+    if( gblLogProducts ) { logit('getProductRow: ${prod.productName}'); }
+
+    int pCount = products[index].count(0);
+    String sPcount = pCount.toString();
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Image(image: getBagImage(prod)),
+          Image(image: getProductImage(prod)),
           Align(alignment: Alignment.centerLeft,
               child: TrText(prod.productName)),
 
@@ -131,11 +118,12 @@ Card getProductCard(String title, List<Product> products ) {
                       .remove_circle_outline, // color: widget.systemColors.accentButtonColor,
                 ),
                 onPressed: () {
+                  if( gblLogProducts ) { logit('getProductRow-delete: ${prod.productName}'); }
                   delProduct(index);
                   //products[index].count == 0 ? null : products[index].count++;
                 },
               ),
-                new Text(products[index].count.toString(),
+                new Text(sPcount,
                     style: TextStyle(fontSize: 20)),
                 new IconButton(
                   icon: Icon(
@@ -143,6 +131,7 @@ Card getProductCard(String title, List<Product> products ) {
                         .add_circle_outline, //color: widget.systemColors.accentButtonColor
                   ),
                   onPressed: () {
+                    if( gblLogProducts ) { logit('getProductRow-add: ${prod.productName}'); }
                     addProduct(index);
                   },
                 ),
@@ -153,48 +142,18 @@ Card getProductCard(String title, List<Product> products ) {
   }
 
   void delProduct(int index) {
-    if( widget.products[index].count == 0 ) {
+    if( widget.products[index].count(0) == 0 ) {
       return;
     }
     setState(() {
-      widget.products[index].count = widget.products[index].count - 1;
+      widget.products[index].curProducts.removeAt(0);
     });
   }
 
   void addProduct(int index) {
     setState(() {
-      widget.products[index].count = widget.products[index].count + 1;
+      widget.products[index].curProducts.add('0:0');
     });
   }
 }
 
-/*
-NetworkImage getBagImage(Product product){
-  try {
-    String name;
-    if( gblSettings.productImageMode == 'index') {
-      if(product.productImageIndex == null) {
-        name = 'default';
-      } else {
-        name = product.productImageIndex.toString();
-      }
-    } else {
-      name = product.productCode;
-    }
-
-    Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
-    String pageImage = pageMap[name.toUpperCase()];
-    if( pageImage == null || pageImage.isEmpty) {
-      pageImage = name;
-    }
-    if( pageImage == null) {
-      pageImage = 'blank';
-    }
-
-    return NetworkImage( '${gblSettings.gblServerFiles}/productImages/$pageImage.png');
-  } catch(e) {
-    logit(e);
-  }
-  return null;
-}
-*/

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/helper.dart';
 
 class ProductCategorys {
@@ -151,10 +152,11 @@ class Product {
   int productImageIndex;
   bool displayOnwebsite;
 
-int count;
+//int count;
 List<String> curProducts ;
 
-  Product({this.productCode, this.productName, this.productPrice, this.count = 0,
+
+  Product({this.productCode, this.productName, this.productPrice,
       this.productType,
   this.currencyCode,
   this.arrivalCityCode,
@@ -170,7 +172,7 @@ List<String> curProducts ;
     this.currencyRatetoNUC,
     this.displayOnwebsite,
     this.displayOrder,
-    this.maxQuantity,
+    this.maxQuantity = 999,
     this.mmbProductDescription,
     this.operator,
     this.paxRelate,
@@ -195,6 +197,19 @@ List<String> curProducts ;
     this.via1
   });
 
+  int count(int segNo) {
+    if( this.curProducts == null || this.curProducts.length == 0) {
+      return 0;
+    }
+    int c = 0;
+    this.curProducts.forEach((element) {
+      if(element.endsWith(':$segNo' )) {
+        c +=1;
+      }
+    });
+    return c;
+  }
+
 
   bool isBag() {
     if( this.productType == 'BAG' || this.productCode.startsWith('BAG')) {
@@ -209,19 +224,35 @@ List<String> curProducts ;
   return false;
   }
 
-  String _getID(int paxNo, int segNo) {
+  void resetProducts(PnrModel pnrModel) {
+    curProducts = [];
+
+    if( pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
+      pnrModel.pNR.mPS.mP.forEach((element) {
+        if( element.mPID == productCode){
+          curProducts.add(getID(int.parse(element.pax), int.parse(element.seg)));
+        }
+      });
+    }
+
+  }
+  bool hasItem(String paxNo, String segNo) {
+    return curProducts.contains(getID(int.parse(paxNo), int.parse(segNo)));
+  }
+
+  String getID(int paxNo, int segNo) {
     return '$paxNo:$segNo';
   }
   void addProduct(int paxNo, int segNo) {
     if( curProducts == null) curProducts = [];
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
     curProducts.add(str);
-    count +=1;
+   // count +=1;
 
   }
   void removeProduct(int paxNo, int segNo) {
     if( curProducts == null) curProducts = [];
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
 
     int index = 0 ;
     bool found = false;
@@ -229,7 +260,7 @@ List<String> curProducts ;
       if( found == false) {
         if (element == str) {
           found = true;
-          count -=1;
+        //  count -=1;
         } else {
           index += 1;
         }
@@ -246,7 +277,7 @@ List<String> curProducts ;
       curProducts = [];
       return 0;
     }
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
     int cnt = 0;
     curProducts.forEach((element) {
       if( element == str){
@@ -269,7 +300,7 @@ List<String> curProducts ;
 
   Product.fromJson(Map<String, dynamic> json) {
     try {
-      count = 0;
+      //count = 0;
       productID = json['productID'];
       productCode = json['productCode'];
       productName = json['productName'];

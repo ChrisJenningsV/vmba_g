@@ -159,6 +159,29 @@ class PnrModel {
     return '';
   }
 
+  // must has tickets with status OPEN ('O') to be refundable
+  bool canRefund(int journeyToChange) {
+    if( this.pNR.itinerary == null || this.pNR.itinerary.itin == null || this.pNR.itinerary.itin.length == 0 || this.pNR.itinerary.itin.length < journeyToChange-1){
+      return false;
+    }
+
+    if( this.pNR.tickets == null || this.pNR.tickets.tKT == null || this.pNR.tickets.tKT.length == 0){
+      return false;
+    }
+    bool bcanRefund = false;
+    this.pNR.tickets.tKT.forEach((ticket) {
+      if( ticket.segNo.isNotEmpty && int.parse(ticket.segNo) == (journeyToChange)){
+        if( ticket.tKTID == 'ETKT' && ticket.status=='O') {
+          bcanRefund =  true;
+        } else {
+          return false;
+        }
+      }
+    });
+    return bcanRefund;
+  }
+
+
   bool validateTickets(PNR pnr) {
     bool validateTickets = true;
     try {
@@ -422,13 +445,13 @@ class PNR {
   }
 
   void dumpProducts(String from ) {
-    print('Products dump: $from');
+    if( gblLogProducts ) { logit('Products dump: $from');}
     if( mPS == null || mPS.mP == null ) {
-      print('None');
+      if( gblLogProducts ) { logit('None');}
       return ;
     }
     mPS.mP.forEach((p) {
-      print('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');
+      if( gblLogProducts ) { logit('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');};
     }
     );
   }

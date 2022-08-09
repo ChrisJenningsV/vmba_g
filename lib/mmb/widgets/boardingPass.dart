@@ -894,13 +894,13 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     try {
       if (Platform.isAndroid) {
         progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
-        String queryStringParams = await GetQueryStringParameters(pass) ;
-        url = await GetUrlForGooglePass(queryStringParams) as String;
+        String queryStringParams = await getQueryStringParameters(pass) ;
+        url = await getUrlForGooglePass(queryStringParams);
       }
       else {
         progressDialog.showCupertino(message:"Fetching pass..", layout: CupertinoProgressDialogLayout.columnWithCircularActivityIndicator);
-        String queryStringParams = await GetQueryStringParameters(pass) as String;
-        url = await GetUrlForApplePass(queryStringParams) as String;
+        String queryStringParams = await getQueryStringParameters(pass);
+        url = await getUrlForApplePass(queryStringParams);
       }
       if (!url?.isEmpty ?? true) {
         AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
@@ -913,7 +913,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     progressDialog.dismiss();
   }
 
-  Future<String> GetUrlForApplePass(String queryStringParams) async {
+  Future<String> getUrlForApplePass(String queryStringParams) async {
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
     String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
@@ -922,7 +922,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return url;
   }
 
-  Future<String> GetUrlForGooglePass(String queryStringParams) async {
+  Future<String> getUrlForGooglePass(String queryStringParams) async {
     String skinnyPassJwtUrl = "";
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
@@ -938,7 +938,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return skinnyPassJwtUrl;
   }
 
-  Future<String> GetQueryStringParameters(BoardingPass pass) async {
+  Future<String> getQueryStringParameters(BoardingPass pass) async {
     String departCityName = await cityCodeToName(pass.depart);
     String arrivalCityName = await cityCodeToName(pass.arrive);
     var qParams = new StringBuffer();

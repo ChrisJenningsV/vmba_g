@@ -219,12 +219,17 @@ class AppDatabase {
   Future updateCities(Cities cities) async {
     String values = '';
 
-    cities.cities
-      ..forEach((c) =>
+    cities.cities.forEach((c)  async {
+      String name = c.name;
+      if( name.contains("'")) {
+        name = name.replaceAll("'", "&quot;");
+      }
       values +=
-      "('${c.code}', '${c.name}', '${c.shortName}', '${c.mobileBarcodeType}', ${c.webCheckinEnabled}, ${c
-          .webCheckinStart}, ${c.webCheckinEnd}),");
+      "('${c.code}', '$name', '${c.shortName}', '${c.mobileBarcodeType}', ${c.webCheckinEnabled}, ${c.webCheckinStart}, ${c.webCheckinEnd}),";
+
     //  '("${c.code}", "${c.name}", "${c.webCheckinEnabled}", "${c.webCheckinStart}", "${c.webCheckinEnd}"),');
+    });
+    // removefinal comma
     values = values.substring(0, values.length - 1);
     var db = await _getDb();
     await db.rawInsert('INSERT OR REPLACE INTO '
@@ -232,6 +237,7 @@ class AppDatabase {
         .dbShortName}, ${City.dbMobileBarcodeType}, ${City.dbWebCheckinEnabled}, ${City
         .dbWebCheckinStart}, ${City.dbWebCheckinEnd})'
         ' VALUES $values');
+
   }
 
   Future close() async {

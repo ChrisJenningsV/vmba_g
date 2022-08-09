@@ -83,6 +83,8 @@ class Settings {
   bool wantCitySwap;
   bool wantPageImages;
   bool wantProducts;
+  bool wantSeatsWithProducts;
+  bool wantMmbProducts;
   String productImageMode;
   bool wantDangerousGoods;
   bool wantInternatDialCode;
@@ -216,6 +218,8 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
+    this.wantSeatsWithProducts = false,
+    this.wantMmbProducts = false,
     this.productImageMode = 'index',
     this.wantDangerousGoods = false,
     this.wantInternatDialCode = false,

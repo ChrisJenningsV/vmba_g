@@ -362,7 +362,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 */
           });
         } else {
-          _error = translate('Declined');
+          _error = result; // translate('Declined');
           _dataLoaded();
           //_showDialog();
           showAlertDialog(context, 'Error', _error);
@@ -372,7 +372,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (widget.isMmb) {
         msg = '*$rLOC';
         bool deleteDone = false;
-        int i = widget.mmbBooking.newFlights.length - 1;
+//        int i = widget.mmbBooking.newFlights.length - 1;
         widget.mmbBooking.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
@@ -400,7 +400,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
 
           oldCancelled = true;
-          String org = flt.substring(15, 18);
+          //String org = flt.substring(15, 18);
           //String dest = flt.substring(19, 22);
 
          /* widget.mmbBooking.journeys.journey.forEach((j) {
@@ -428,7 +428,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           }
 
         } else {
-            flightLineNumber = GetConnectingFlightLineIdentifier(
+            flightLineNumber = getConnectingFlightLineIdentifier(
               widget.mmbBooking.journeys.journey[widget.mmbBooking
                   .journeyToChange - 1]);
         }
@@ -650,7 +650,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  int GetConnectingFlightLineIdentifier(Journey journey) {
+  int getConnectingFlightLineIdentifier(Journey journey) {
     int connectedLine = -1;
     journey.itin.forEach((itn) {
       if (itn.nostop == "X") {

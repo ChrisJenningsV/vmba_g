@@ -44,7 +44,7 @@ class TrText extends StatelessWidget {
     if( variety != null &&  variety.isNotEmpty) {
       double width = MediaQuery.of(context).size.width;
       Color clr = style.color;
-      double fSize = 16.0;
+      double fSize = style.fontSize ;
 
       switch (variety) {
         case 'airport':

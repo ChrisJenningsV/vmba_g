@@ -134,7 +134,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
       }
     } else {
-      flightLineNumber = GetConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
+      flightLineNumber = getConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
     }
     if (flightLineNumber >= 0){
       print("Journey has a connecting flight on itin($flightLineNumber)");
@@ -175,7 +175,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String capitaliseFirstChar(String data) {
     return "${data[0].toUpperCase()}${data.substring(1).toLowerCase()}";
   }
-  int GetConnectingFlightLine(List<String> newFlights) {
+  int getConnectingFlightLine(List<String> newFlights) {
     int connectedLine = -1;
     if( newFlights.length > 1) return 0;
 
@@ -187,7 +187,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   }
 
 
-  int GetConnectingFlightLineIdentifier(Journey journey) {
+  int getConnectingFlightLineIdentifier(Journey journey) {
     int connectedLine = -1;
     journey.itin.forEach((itn) {
       if (itn.nostop == "X") {

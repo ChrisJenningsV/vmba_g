@@ -4,7 +4,10 @@ import 'package:vmba/components/trText.dart';
 import '../data/globals.dart';
 
 Widget vidWideTextButton(BuildContext context, String caption, void Function() onPressed, {IconData icon, int iconRotation, } ) {
+  return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation ));
+}
 
+Widget vidTextButton(BuildContext context, String caption, void Function() onPressed, {IconData icon, int iconRotation, } ) {
   Widget iconWidget = Container();
   if( icon != null) {
     if( iconRotation != null && iconRotation > 0 ) {
@@ -25,8 +28,8 @@ Widget vidWideTextButton(BuildContext context, String caption, void Function() o
   }
 
 
-  return Expanded(
-    child: TextButton(
+  return
+     TextButton(
       onPressed: () => onPressed() ,
       style: TextButton.styleFrom(
           side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -46,7 +49,6 @@ Widget vidWideTextButton(BuildContext context, String caption, void Function() o
           iconWidget,
         ],
       ),
-    ),
   );
 
 }
@@ -54,6 +56,34 @@ Widget vidWideTextButton(BuildContext context, String caption, void Function() o
 /*
   NEXT button at the bottom of most pages
  */
+Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1} ) {
+  return ElevatedButton(
+    onPressed: () {
+      onPressed(context, param1);
+    },
+    style: ElevatedButton.styleFrom(
+        primary: gblSystemColors
+            .primaryButtonColor, //Colors.black,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0))),
+    child: Row(
+      //mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+        TrText(
+          caption,
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    ),
+  );
+//  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
+}
+
 Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, } ) {
   return Padding(
       padding: EdgeInsets.only(left: 35.0),
@@ -72,3 +102,89 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
             onPressed: () => onPressed(context))
       ]));
 }
+
+Widget vidInfoButton(BuildContext context, {void Function(BuildContext) onPressed}){
+  return vidRoundButton(context, Icons.info_outline, onPressed);
+}
+
+Widget vidAddButton(BuildContext context, {void Function(BuildContext) onPressed,   bool disabled}){
+  Color clr = gblSystemColors.primaryButtonColor;
+  if( disabled != null && disabled) {
+    clr = Colors.grey;
+  }
+  return IconButton(
+    icon: Icon(
+      Icons.add_circle,
+      color: clr,
+    ),
+    onPressed: () {
+         onPressed(context);
+    },
+  );
+  //return vidRoundButton(context, Icons.add_circle_outline, onPressed, btnClr: Colors.white);
+}
+
+Widget vidRemoveButton(BuildContext context, {void Function(BuildContext, int, int) onPressed, int paxNo, int segNo, bool disabled}){
+  Color clr = gblSystemColors.primaryButtonColor;
+      if( disabled != null && disabled) {
+        clr = Colors.grey;
+      }
+  return IconButton(
+    icon: Icon(
+      Icons.remove_circle,
+      color: clr,
+    ),
+    onPressed: () {
+      onPressed(context, paxNo, segNo,);
+    },
+  ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
+}
+
+Widget vidRightButton(BuildContext context, {void Function(BuildContext) onPressed}){
+  return IconButton(
+    icon: Icon(
+      Icons.chevron_right,
+      color: gblSystemColors.primaryButtonColor,
+    ),
+    onPressed: () {
+      onPressed(context);
+    },
+  ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
+}
+
+
+Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildContext) onPressed,{Color btnClr}){
+  if( btnClr == null ) {
+    btnClr = gblSystemColors.primaryButtonColor;
+  }
+
+  return IconButton(
+    icon: Icon(
+      icon,
+      //color: gblSystemColors.primaryButtonColor,
+    ),
+    onPressed: () {
+      onPressed(context);
+    },
+  ); // retur
+
+
+  /*return ElevatedButton(
+    onPressed:() => onPressed(context),
+    style: ElevatedButton.styleFrom(
+      primary: btnClr,
+      shape: CircleBorder(),),
+    child:
+    Icon(icon, color: Colors.white,
+    ),
+  );*/
+}
+
+Widget vidLineButton(BuildContext context, Widget body, int index, void Function(BuildContext, int) onPressed) {
+  return InkWell(
+    splashColor: Colors.green,
+    onTap:() => onPressed(context, index),
+    child: body,
+  );
+}
+

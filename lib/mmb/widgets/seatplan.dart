@@ -16,6 +16,10 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../calendar/bookingFunctions.dart';
+import '../../data/smartApi.dart';
+import '../../home/home_page.dart';
+
 enum SeatType { regular, emergency }
 
 double cellSize = 36.0; //28.0;
@@ -30,7 +34,8 @@ class SeatPlanWidget extends StatefulWidget {
       this.seatplan,
       this.rloc,
       this.journeyNo,
-      this.selectedpaxNo})
+      this.selectedpaxNo,
+      this.isMmb})
       : super(key: key);
 
   final List<Pax> paxlist;
@@ -38,6 +43,7 @@ class SeatPlanWidget extends StatefulWidget {
   final String rloc;
   final String journeyNo;
   final int selectedpaxNo;
+  final bool isMmb;
   _SeatPlanWidgetState createState() => _SeatPlanWidgetState();
 }
 
@@ -130,6 +136,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
 
   }
+/*
 
   Future _sendVRSCommandList(msg) async {
     try {
@@ -145,6 +152,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
 
   }
+*/
 
   Future _loadData(String seatPlanCmd) async {
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
@@ -203,52 +211,72 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       String reply = await callSmartApi('BOOKSEAT', data);
       Map map = json.decode(reply);
       SeatReply seatRs = new SeatReply.fromJson(map);
-      int outstanding = int.parse(seatRs.outstandingAmount);
+      double outstanding = double.parse(seatRs.outstandingAmount);
 
-      if (outstanding == 0 ) { // zero outstanding
-        String msg = json.encode(RunVRSCommand(session, "E"));
+      if( !widget.isMmb) {
+        String msg = json.encode(RunVRSCommand(session, "*R~X"));
         _sendVRSCommand(msg).then(
                 (onValue) =>
                 Repository.get().fetchPnr(widget.rloc).then((pnr) {
                   Map map = json.decode(pnr.data);
                   PnrModel pnrModel = new PnrModel.fromJson(map);
-                  showSnackBar(translate("Seat(s) allocated"));
+                  gblPnrModel = pnrModel;
+                  refreshStatusBar();
+                  //showSnackBar(translate("Seat(s) allocated"));
                   Navigator.pop(context, pnrModel);
                 }));
-      } else if ( outstanding < 0) { // Minus outstanding
-        String msg = json.encode(RunVRSCommand(session, "EMT*R"));
-        _sendVRSCommand(msg).then(
-                (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
-              Map map = json.decode(pnr.data);
-              PnrModel pnrModel = new PnrModel.fromJson(map);
-              showSnackBar(translate("Seat(s) allocated"));
-              Navigator.pop(context, pnrModel);
-            }));
       } else {
-        String msg;
-        if( gblSettings.wantNewPayment) {
-          msg = json.encode(RunVRSCommand(session, "E*R~x"));
+        if (outstanding == 0) { // zero outstanding
+          String msg = json.encode(RunVRSCommand(session, "E"));
+          _sendVRSCommand(msg).then(
+                  (onValue) =>
+                  Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                    Map map = json.decode(pnr.data);
+                    PnrModel pnrModel = new PnrModel.fromJson(map);
+                    gblPnrModel = pnrModel;
+                    refreshStatusBar();
+                    showSnackBar(translate("Seat(s) allocated"));
+                    Navigator.pop(context, pnrModel);
+                  }));
+        } else if (outstanding < 0) { // Minus outstanding
+          String msg = json.encode(RunVRSCommand(session, "EMT*R"));
+          _sendVRSCommand(msg).then(
+                  (onValue) =>
+                  Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                    Map map = json.decode(pnr.data);
+                    PnrModel pnrModel = new PnrModel.fromJson(map);
+                    gblPnrModel = pnrModel;
+                    showSnackBar(translate("Seat(s) allocated"));
+                    Navigator.pop(context, pnrModel);
+                  }));
         } else {
-          msg = json.encode(RunVRSCommand(session, "*${widget.rloc}~x"));
+          String msg;
+          if (gblSettings.wantNewPayment) {
+            msg = json.encode(RunVRSCommand(session, "E*R~x"));
+          } else {
+            msg = json.encode(RunVRSCommand(session, "*${widget.rloc}~x"));
+          }
+          _sendVRSCommand(msg).then((pnrJson) {
+            pnrJson =
+                pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                    .replaceAll('<string xmlns="http://videcom.com/">', '')
+                    .replaceAll('</string>', '');
+
+            Map map = json.decode(pnrJson);
+
+            PnrModel pnrModel = new PnrModel.fromJson(map);
+            gblPnrModel = pnrModel;
+            refreshStatusBar();
+            _navigate(context, pnrModel, session);
+            //  Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ChoosePaymenMethodWidget(
+            //             pnrModel: pnrModel, isMmb: true, session: session)));
+            _resetloadingProgress();
+          });
         }
-        _sendVRSCommand(msg).then((pnrJson) {
-          pnrJson = pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-              .replaceAll('<string xmlns="http://videcom.com/">', '')
-              .replaceAll('</string>', '');
-
-          Map map = json.decode(pnrJson);
-
-          PnrModel pnrModel = new PnrModel.fromJson(map);
-          _navigate(context, pnrModel, session);
-          //  Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => ChoosePaymenMethodWidget(
-          //             pnrModel: pnrModel, isMmb: true, session: session)));
-          _resetloadingProgress();
-        });
       }
-
     } catch(e) {
       print(e.toString());
       _dataLoadedFailed(e);
@@ -414,6 +442,12 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           //brightness: gblSystemColors.statusBar,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: new TrText('Choose a seat',
@@ -421,7 +455,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   color:
                   gblSystemColors.headerTextColor)),
         ),
-        endDrawer: DrawerMenu(),
+        //endDrawer: DrawerMenu(),
+
         body: body(),
         floatingActionButton: _loadingInProgress || _noInternet || _noSeats
             ? null
@@ -838,7 +873,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           .where((a) => a.sRow == indexRow)
           .toList();
       if( seats == null ) {
-        String s = 'its null';
       } else {
         seats.sort((a, b) => a.sRow.compareTo(b.sCol));
 
@@ -863,13 +897,27 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
       for (var indexColumn = minCol;
           indexColumn <= maxCol;
           indexColumn++) {
+        if( indexRow == 14) {
+          var test = 1;
+        }
         var seat =
             seats.firstWhere((f) => f.sCol == indexColumn, orElse: () => null);
         selectableSeat = true;
-        if( seat != null ) {
+
+        // get price for row
+        currentSeatPrice = '0';
+        seats.forEach((element) {
+          if( element != null &&  element.sScprice != null  ) {
+            if( double.parse(element.sScprice) > double.parse(currentSeatPrice)) {
+            currentSeatPrice = element.sScprice;
+            currencyCode = element.sCur;
+            }
+          }
+        });
+        /*if( seat != null ) {
           currentSeatPrice = seat.sScprice;
           currencyCode = seat.sCur;
-        }
+        }*/
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
           row.add(Padding(
@@ -980,6 +1028,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         //logit('r${indexRow} c${indexColumn} Emerg w${cellPadding } + getSeat');
 
       }
+      if( gblLogProducts) logit('price $currentSeatPrice r=$indexRow');
       if (widget.displaySeatPrices &&
           currentSeatPrice != null &&
           currentSeatPrice != "0") {
@@ -1000,13 +1049,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               child: Center(
                 child: Text(
                   formatPrice(currencyCode, double.parse(currentSeatPrice)) +
-/*
-                    NumberFormat.simpleCurrency(
-                            locale: gblSettings.locale,
-                            name: currencyCode)
-                        .format(double.parse(currentSeatPrice)) +
-
- */
                     ' Seat Charge'),
               ),
             ),

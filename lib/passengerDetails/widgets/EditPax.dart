@@ -45,6 +45,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _fqtvTextEditingController = TextEditingController();
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _phoneTextEditingController = TextEditingController();
+//  TextEditingController _phoneCodeEditingController = TextEditingController();
   TextEditingController _disabilityIDTextEditingController = TextEditingController();
   TextEditingController _seniorIDTextEditingController = TextEditingController();
   TextEditingController _redressNoTextEditingController = TextEditingController();
@@ -65,6 +66,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     if( gblSettings.wantPageImages) {
    //   _loadBgCityImage();
     }
+    gblPhoneCodeEditingController = TextEditingController();
 
     if( widget.passengerDetail.country == null ) {
       widget.passengerDetail.country = '';
@@ -197,12 +199,12 @@ return SafeArea(
     EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 2, 0, 2);
 
     //return Column(children: <Widget>[
-    logit('title = ${widget.passengerDetail.title}');
+    //logit('title = ${widget.passengerDetail.title}');
     list.add(Padding(
       padding: _padding,
       child: InkWell(
         onTap: () {
-          formSave();
+          //formSave();
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -322,7 +324,7 @@ return SafeArea(
     ));
 
     bool wantDOB = false;
-    logit('Pax type: ${widget.passengerDetail.paxType.toString()}');
+    //logit('Pax type: ${widget.passengerDetail.paxType.toString()}');
     switch (widget.passengerDetail.paxType) {
       case PaxType.adult:
         if( gblSettings.passengerTypes.wantAdultDOB) {
@@ -527,6 +529,7 @@ return SafeArea(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         popupTitle: translate('Select phone country'),
         controller: _phoneTextEditingController,
+          codeController: gblPhoneCodeEditingController,
         //initialPhoneNumber: _phoneNumberTextEditingController.text,
         decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
         onSaved: (String newNumber) {
@@ -544,25 +547,6 @@ return SafeArea(
         },
         initialPhoneNumber: _phoneTextEditingController.text,
       ));
-
-      /*
-      list.add(InternationalPhoneInput(
-        decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
-        onPhoneNumberChange: (String number, String intNumber, String isoCode) {
-          print(number);
-          setState(() {
-            phoneNumber = number;
-            phoneIsoCode = isoCode;
-          });
-        },
-        initialPhoneNumber: phoneNumber,
-        initialSelection: phoneIsoCode,
-        //enabledCountries: ['+233', '+1'],
-        showCountryCodes: true,
-        showCountryFlags: true,
-      ));
-
-       */
 
     } else {
       list.add(Padding(
@@ -930,7 +914,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     setState(() {
       widget.passengerDetail.title = value;
       _titleTextEditingController.text = translate(value);
-      FocusScope.of(context).requestFocus(new FocusNode());
+      //FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
 

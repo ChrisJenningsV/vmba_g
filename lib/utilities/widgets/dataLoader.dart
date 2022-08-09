@@ -45,6 +45,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     _displayFinalError = false;
     _fullLogging = true;
     _displayProcessingText = '';
+    gblPnrModel = widget.pnrModel;
     _initData();
     _loadData();
 
@@ -61,6 +62,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       noInternetSnackBar(context);
       return Container();
     } else if (_displayProcessingIndicator) {
+/*
       final snackBar = SnackBar(
         content: Text(
           _displayProcessingText, style: TextStyle(color: Colors.red),),
@@ -73,16 +75,24 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           },
         ),
       );
+*/
       SchedulerBinding.instance.addPostFrameCallback((_) {
        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
-      return Text(translate('Loading') + ' ' + translate(_dataName));
+      List <Widget> list = [];
+
+      list.add( new Transform.scale(
+        scale: 0.5,
+        child: CircularProgressIndicator(),
+      ));
+      list.add( Text(translate('Loading') + ' ' + translate(_dataName)));
+      return Row(children: list,);
     } else {
       switch(widget.dataType){
         case LoadDataType.cities:
           break;
         case LoadDataType.products:
-          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
+          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete, wantTitle: true,isMMB: true, );
           break;
         case LoadDataType.providers:
           //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
@@ -220,7 +230,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.providers:
         try {
           gblProviders = Providers.fromJson(data);
-          if(_fullLogging) logit('loaded providers ' + data );
+          if(gblLogPayment) logit('loaded providers ' + data );
         } catch(e) {
           logit(e.toString());
         }

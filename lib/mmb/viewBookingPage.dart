@@ -27,8 +27,13 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
+import '../components/vidGraphics.dart';
+import '../data/smartApi.dart';
 import '../functions/bookingFunctions.dart';
+import '../home/home_page.dart';
+import '../utilities/widgets/dataLoader.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -50,10 +55,10 @@ class ViewBookingPage extends StatefulWidget {
   ViewBookingPage({Key key, this.rloc}) : super(key: key);
   final String rloc;
 
-  _ViewBookingPage createState() => _ViewBookingPage();
+  ViewBookingPageState createState() => ViewBookingPageState();
 }
 
-class _ViewBookingPage extends State<ViewBookingPage> {
+class ViewBookingPageState extends State<ViewBookingPage> {
   //final String rloc;
   //CheckinBoardingPassesPage({this.rloc});
   GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -91,7 +96,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
             child: new Center(
                 child: new RefreshIndicator(
               child: CheckinBoardingPassesWidget(
-                  rloc: widget.rloc, showSnackBar: showSnackBar),
+                  rloc: widget.rloc, showSnackBar: showSnackBar, key: mmbGlobalKeyBooking,),
               onRefresh: refreshBooking //(context),
             )),
           )),
@@ -114,6 +119,7 @@ class _ViewBookingPage extends State<ViewBookingPage> {
     //final _snackbar = snackbar(message);
     //_key.currentState.showSnackBar(_snackbar);
   }
+
 }
 
 class CheckinBoardingPassesWidget extends StatefulWidget {
@@ -124,10 +130,10 @@ class CheckinBoardingPassesWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      new _CheckinBoardingPassesWidgetState();
+      new CheckinBoardingPassesWidgetState();
 }
 
-class _CheckinBoardingPassesWidgetState
+class CheckinBoardingPassesWidgetState
     extends State<CheckinBoardingPassesWidget> {
   //AsyncSnapshot snapshot;
   //GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -218,6 +224,11 @@ class _CheckinBoardingPassesWidgetState
             }));
   }
 
+  void refresh(){
+    setState(() {
+      objPNR = gblPnrModel;
+    });
+  }
   void loadCities(List<Itin> itin) {}
 
   loadJourneys(PnrModel pnrModel) {
@@ -385,25 +396,43 @@ class _CheckinBoardingPassesWidgetState
 
   Widget checkinOrPassesWidget(String rLOC, pnr) {
     //double c_width = MediaQuery.of(context).size.width * 0.95;
+    List<Widget>  list = [];
+    list.add( Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        new TrText("Booking reference",
+            style: new TextStyle(
+                fontSize: 16.0, fontWeight: FontWeight.w700)),
+        new Text(rLOC,
+            style: new TextStyle(
+                fontSize: 16.0, fontWeight: FontWeight.w700)),
+        _refreshButton(pnr),
+      ],
+    ),);
+
+    if( gblSettings.wantMmbProducts
+        && pnr.hasFutureFlightsAddDayOffset(0) ){
+      // only add products if has furture flights
+      list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: null,
+        pnrModel: pnr,
+        onComplete: (PnrModel pnrModel) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          if(gblLogProducts) { logit('On Complete products');}
+          pnr = pnrModel;
+          //pnrModel = pnrModel;
+          setState(() {
+
+          });
+        },));
+
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
       child: Container(
         padding: EdgeInsets.only(left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
         child: new Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new TrText("Booking reference",
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w700)),
-                    new Text(rLOC,
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w700)),
-                _refreshButton(pnr),
-              ],
-            ),
-          ],
+          children: list,
         ),
       ),
       decoration: BoxDecoration(
@@ -484,8 +513,10 @@ class _CheckinBoardingPassesWidgetState
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            (seatNo!= '' ) ? vidSeatIcon(seatNo) : Container(),
             Expanded(
               flex: 7,
+
               child: new Text(
                   pnr.pNR.names.pAX[i].firstName +
                       ' ' +
@@ -493,7 +524,7 @@ class _CheckinBoardingPassesWidgetState
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w400)),
             ),
-            (seatNo!= '' )? Text(seatNo + '  ') : Container(),
+            //(seatNo!= '' )? Text(seatNo + '  ') : Container(),
             new Row(children: [
               ( gblSettings.wantApis) ? Column(
                 children: [
@@ -541,7 +572,7 @@ class _CheckinBoardingPassesWidgetState
       if ( wantChangeAnyFlight || DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
-        if( gblSettings.displayErrorPnr && int.parse(objPNR.pNR.basket.outstanding.amount) > 0 ) {
+        if( gblSettings.displayErrorPnr && double.parse(objPNR.pNR.basket.outstanding.amount) > 0 ) {
           list.add(Row(
               children: <Widget>[
                 Expanded( child: payOutstandingButton(pnr, objPNR.pNR.basket.outstanding.amount))
@@ -553,7 +584,7 @@ class _CheckinBoardingPassesWidgetState
         }
         list.add(Row(
           children: <Widget>[
-            _changeFlightButton(pnr , journeyToChange),
+            _flightButtons(pnr , journeyToChange),
           ],
         ));
 
@@ -596,12 +627,51 @@ class _CheckinBoardingPassesWidgetState
     );
 
   }
-  Widget _changeFlightButton( pnr ,journeyToChange ) {
+  Widget _flightButtons( pnr ,journeyToChange ) {
     _journeyToChange = journeyToChange;
-    return vidWideTextButton(context, 'Change Flight',  _onPressed, icon: Icons.airplanemode_active, iconRotation: 1);
+    if( gblSettings.wantRefund &&
+        objPNR.canRefund(journeyToChange)
+    ){
+        return Expanded(child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            vidTextButton(
+            context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
+            iconRotation: 1),
+        //SizedBox(width: 50),
+        vidTextButton(
+            context, 'Refund', _onPressedRefund, icon: Icons.money,
+            iconRotation: 1),
+        ],));
+    } else {
+      return vidWideTextButton(
+          context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
+          iconRotation: 1);
+    }
   }
 
-  void _onPressed() {
+  void _onPressedRefund() async {
+    RefundRequest rfund = new RefundRequest();
+    rfund.rloc = widget.rloc;
+    rfund.journeyNo = _journeyToChange;
+
+    String data =  json.encode(rfund);
+
+    try {
+      String reply = await callSmartApi('REFUND', data);
+      Map map = json.decode(reply);
+      RefundReply refundRs = new RefundReply.fromJson(map);
+      if( refundRs.success == true ) {
+        showAlertDialog(context, 'Refund', 'Refund successful');
+      } else {
+        showAlertDialog(context, 'Refund', 'refund failed');
+      }
+    } catch(e) {
+      logit(e.toString());
+    }
+  }
+
+  void _onPressedChangeFlt() {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -1011,7 +1081,7 @@ class _CheckinBoardingPassesWidgetState
           if( amount == null || amount.isEmpty ) {
             amount = '0';
           }
-          if( int.parse(amount) > 0 ) {
+          if( double.parse(amount) > 0 ) {
             return payOutstandingButton(pnr, amount);
 
           }
@@ -2083,6 +2153,7 @@ class _CheckinBoardingPassesWidgetState
         MaterialPageRoute(
           builder: (context) => SeatPlanWidget(
             paxlist: paxlist,
+            isMmb: true,
             seatplan:
                 'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,

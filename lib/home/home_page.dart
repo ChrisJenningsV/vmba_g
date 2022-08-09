@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
-//import 'package:package_info/package_info.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-//import 'package:open_appstore/open_appstore.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
@@ -16,8 +14,13 @@ import 'package:vmba/components/selectLang.dart';
 
 import '../components/bottomNav.dart';
 import '../data/repository.dart';
+import '../mmb/viewBookingPage.dart';
+import '../utilities/widgets/appBarWidget.dart';
 
 
+GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
+GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
+GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
 
 class HomePage extends StatefulWidget {
   HomePage({this.ads});
@@ -57,7 +60,6 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
           buildNo = '${packageInfo.buildNumber}'
           );
     }
-    String oldVers;
     getSetting('savedVersion').then((value) {
       if(value == null || value == '' ){
         // if null, old format saved bookings

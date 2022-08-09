@@ -9,7 +9,7 @@ import '../utilities/helper.dart';
 import 'flightPageUtils.dart';
 
 
-Widget flightRow(Itin item) {
+Widget flightRow(avItin item) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -101,7 +101,9 @@ Widget getTime(String tm) {
           fontWeight: FontWeight.w700));
 }
 
-Widget getAirport(String code) {
+Widget getAirport(String code, {double fontSize, FontWeight fontWeight}) {
+  if( fontSize == null ) fontSize = 16;
+  if( fontWeight == null ) fontWeight =  FontWeight.w300;
   return FutureBuilder(
     future: cityCodeToName(
       code,
@@ -111,15 +113,15 @@ Widget getAirport(String code) {
         AsyncSnapshot<String> text) {
       return TrText(text.data,
           style: new TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w300),
+              fontSize: fontSize,
+              fontWeight: fontWeight),
           variety: 'airport', noTrans: true);
     },
   );
 
 }
 
-Widget infoRow(BuildContext context, Itin item ) {
+Widget infoRow(BuildContext context, avItin item ) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -259,7 +261,7 @@ Widget noFlightsFound(){
         ],
       ));
 }
-Widget getCalDay(Day item, String action, DateTime date, {void Function() onPressed} ) {
+Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate, {void Function() onPressed} ) {
   return Container(
     decoration: new BoxDecoration(
         border: new Border.all(color: Colors.black12),
@@ -268,7 +270,7 @@ Widget getCalDay(Day item, String action, DateTime date, {void Function() onPres
             ? Colors.white
             : gblSystemColors.accentButtonColor //Colors.red,
     ),
-    width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())))
+    width: DateTime.parse(item.daylcl).isBefore(hideBeforeDate)
         ? 0
         : 120.0,
     child: new TextButton(
@@ -311,5 +313,5 @@ Widget getCalDay(Day item, String action, DateTime date, {void Function() onPres
               ),
             ])),
   );
-
 }
+

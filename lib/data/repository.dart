@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
+import '../calendar/bookingFunctions.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -144,14 +145,14 @@ class Repository {
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
   Future<ParsedResponse<List<City>>> initCities() async {
     var prefs = await SharedPreferences.getInstance();
-    logit('initCities');
+    if(gblLogCities) {logit('initCities');}
     var cacheTime = prefs.getString('cache_time2');
     if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
 
       if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {
         // change to 2 days!
-        logit('city cache good');
+        if(gblLogCities) {logit('city cache good');}
         return null;
       }
     }
@@ -1186,7 +1187,7 @@ class Repository {
     PnrModel pnrModel = PnrModel();
     if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
-      logit('getfareQuote: ' + data);
+      if(gblLogFQ) {logit('getfareQuote: ' + data); }
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
         Map map = jsonDecode(data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1194,6 +1195,8 @@ class Repository {
             .replaceAll('</string>', ''));
 
         pnrModel = new PnrModel.fromJson(map);
+        gblPnrModel = pnrModel;
+        refreshStatusBar();
       }
       return new ParsedResponse(200, pnrModel);
     } else {
@@ -1202,12 +1205,12 @@ class Repository {
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
             headers: getXmlHeaders())
         .catchError((resp) {
-          logit('getfareQuote: ' + resp);
+          if(gblLogFQ) {logit('getfareQuote: ' + resp);}
 
           return new ParsedResponse(0, null, error: resp);
         });
       if (response == null) {
-        logit('getfareQuote: null' );
+        if(gblLogFQ) { logit('getfareQuote: null' ); }
 
         return new ParsedResponse(noInterent, null);
       }
@@ -1217,7 +1220,7 @@ class Repository {
 
         return new ParsedResponse(response.statusCode, null);
       }
-        logit('getfareQuote: ' + response.body);
+        if(gblLogFQ) {logit('getfareQuote: ' + response.body);}
 
         if( response.body.toUpperCase().contains('ERROR' )){
         String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')
@@ -1285,7 +1288,7 @@ class Repository {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     var prefs = await SharedPreferences.getInstance();
-    logit('initRoutes');
+    if(gblLogCities) {logit('initRoutes');}
     var cacheTime = prefs.getString('route_cache_time2');
     if( cacheTime!= null && cacheTime.isNotEmpty && gblUseCache){
       var cached = DateTime.parse(cacheTime);
@@ -1486,71 +1489,6 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 }
 
 
-
-
-Future<String> callSmartApi(String action, String data) async {
-    String msg =  json.encode(VrsApiRequest(gblSession, action,
-        gblSettings.xmlToken.replaceFirst('token=', ''),
-        vrsGuid: gblSettings.vrsGuid,
-        data: data,
-        notifyToken: gblNotifyToken,
-        rloc: gblCurrentRloc,
-        language: gblLanguage,
-        phoneId: gblDeviceId
-    )); // '{VrsApiRequest: ' + + '}' ;
-
-    print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg');
-
-    http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
-        .catchError((resp) {
-          logit(resp);
-    });
-    if (response == null) {
-      throw 'No Internet';
-      //return new ParsedResponse(noInterent, null);
-    }
-
-    //If there was an error return null
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      logit('callSmartApi (): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-      throw 'callSmartApi: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
-      //return new ParsedResponse(response.statusCode, null);
-    }
-
-    print('callSmartApi_response::${response.body}');
-
-    if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
-      String er = response.body.replaceAll('<string xmlns="http://videcom.com/">' , '');
-      throw er;
-
-    }
-
-    String responseData = response.body
-        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-        .replaceAll('<string xmlns="http://videcom.com/">', '')
-        .replaceAll('</string>', '');
-
-    Map map = jsonDecode(responseData);
-
-   // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-    if (response.body.contains('ERROR')) {
-
-      throw map["errorMsg"];
-      //return new ParsedResponse(0, null, error: response.body);
-    }
-
-    //String jsn = response.body;
-
-    VrsApiResponse rs = VrsApiResponse.fromJson(map);
-   // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-    logit('Server IP ${map['serverIP']}');
-    if( rs.data == null ) {
-      throw 'no data returned';
-    }
-    return rs.data;
-}
 
 
 Future<String> runVrsCommand(String cmd) async {

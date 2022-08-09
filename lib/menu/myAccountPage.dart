@@ -13,6 +13,8 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../utilities/widgets/appBarWidget.dart';
+
 //ignore: must_be_immutable
 class MyAccountPage extends StatefulWidget {
   MyAccountPage(
@@ -198,15 +200,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if( _gotData == false) {
       return Scaffold(
           appBar: AppBar(
-          leading: gblSettings.wantLeftLogo
-          ? Padding(
-          padding: EdgeInsets.only(left: 10.0),
-    child: Image.asset(
-    'lib/assets/$gblAppTitle/images/appBarLeft.png',
-    color: Color.fromRGBO(255, 255, 255, 0.1),
-    colorBlendMode: BlendMode.modulate))
-        : Text(''),
-    //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
     backgroundColor: gblSystemColors.primaryHeaderColor,
     iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
     title: TrText('My Account',
@@ -228,15 +222,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: gblSettings.wantLeftLogo
-              ? Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                  'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                  color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate))
-              : Text(''),
-          //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
           title: TrText('My Account',

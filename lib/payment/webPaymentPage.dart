@@ -11,7 +11,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../components/showDialog.dart';
+import '../data/smartApi.dart';
 import 'choosePaymentMethod.dart';
 
 class WebPayPage extends StatefulWidget {

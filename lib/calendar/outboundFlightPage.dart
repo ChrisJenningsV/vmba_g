@@ -16,6 +16,10 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 
+import '../data/models/pnr.dart';
+import '../passengerDetails/passengerDetailsPage.dart';
+import 'bookingFunctions.dart';
+
 class FlightSeletionPage extends StatefulWidget {
   FlightSeletionPage({Key key, this.newBooking}) : super(key: key);
   final NewBooking newBooking;
@@ -312,7 +316,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           children: objAv.availability.cal.day
               .map(
                 (item) =>
-                    getCalDay(item, 'out', widget.newBooking.departureDate, onPressed:() => {
+                    getCalDay(item, 'out', widget.newBooking.departureDate, DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())),
+                        onPressed:() => {
                     hasDataConnection().then((result) {
                     if (result == true) {
                     _changeSearchDate(DateTime.parse(item.daylcl));
@@ -600,17 +605,19 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(selectedFlt, flts);
+    flightSelected(selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(List<String> flt, List<Flt> outboundflts) {
+  void flightSelected(List<String> flt, List<Flt> outboundflts, String className) {
     if (flt != null) {
       print(flt);
       if (flt != null && flt.length > 0) {
         this.widget.newBooking.outboundflight = flt;
+        this.widget.newBooking.outboundflts = outboundflts;
+        this.widget.newBooking.outboundClass = className;
       }
 
-      hasDataConnection().then((result) {
+      hasDataConnection().then((result) async {
         if (result == true) {
           if (this.widget.newBooking.isReturn &&
               this.widget.newBooking.outboundflight[0] != null) {
@@ -622,11 +629,43 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                           outboundFlight: outboundflts.last,
                         )));
           } else if (this.widget.newBooking.outboundflight[0] != null) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FlightSelectionSummaryWidget(
-                        newBooking: this.widget.newBooking)));
+
+            if( gblSettings.wantProducts) {
+              // first save new booking
+              gblError = '';
+              PnrModel pnrModel = await searchSaveBooking(
+                  this.widget.newBooking);
+              gblPnrModel = pnrModel;
+              refreshStatusBar();
+              // go to options page
+              if (gblError != '') {
+
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PassengerDetailsWidget(
+                            newBooking: widget.newBooking,
+                            pnrModel:  pnrModel,)));
+
+                /*              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            OptionsPageWidget(
+                              newBooking: this.widget.newBooking,
+                              pnrModel: pnrModel,)));*/
+              }
+
+            } else {
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          FlightSelectionSummaryWidget(
+                              newBooking: this.widget.newBooking)));
+            }
           }
         } else {
           //showSnackBar(translate('Please, check your internet connection'));

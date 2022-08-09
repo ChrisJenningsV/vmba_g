@@ -107,3 +107,84 @@ class SeatReply {
     outstandingAmount = json["outstandingAmount"];
   }
 }
+
+
+class AddProductRequest{
+  String rloc;
+  int journeyNo;
+  List<Pax> paxlist;
+
+  AddProductRequest({ this.paxlist, this.rloc, this.journeyNo});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+    map['journeyNo'] = journeyNo;
+
+    if (this.paxlist != null) {
+      map['paxlist'] = this.paxlist.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+class DeleteProductRequest{
+  String rloc;
+  int journeyNo;
+  List<Pax> paxlist;
+
+  DeleteProductRequest({ this.paxlist, this.rloc, this.journeyNo});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+    map['journeyNo'] = journeyNo;
+
+    if (this.paxlist != null) {
+      map['paxlist'] = this.paxlist.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+
+class ProductReply {
+  String reply;
+  bool success;
+
+  ProductReply(this.reply, this.success);
+
+
+  ProductReply.fromJson(Map<String, dynamic> json) {
+    reply = json['reply'];
+    success = json["success"];
+  }
+}
+
+class RefundRequest{
+  String rloc;
+  int journeyNo;
+
+  RefundRequest({ this.rloc, this.journeyNo});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+    map['journeyNo'] = journeyNo;
+
+    return map;
+  }
+}
+
+class RefundReply {
+  String reply;
+  bool success;
+
+  RefundReply(this.reply, this.success);
+
+
+  RefundReply.fromJson(Map<String, dynamic> json) {
+    reply = json['reply'];
+    success = json["success"];
+  }
+}
+

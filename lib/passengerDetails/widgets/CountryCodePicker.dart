@@ -28,7 +28,7 @@ class InternationalPhoneInput extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final String popupTitle;
   final TextEditingController controller;
-  TextEditingController codeController;
+  final TextEditingController codeController;
   final ValueChanged<String> onSaved;
 
   InternationalPhoneInput(
@@ -104,7 +104,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
 
     //phoneTextController.addListener(_validatePhoneNumber);
     //phoneTextController.text = widget.initialPhoneNumber;
-    widget.codeController = new TextEditingController();
+  //  widget.codeController = new TextEditingController();
 
 
     _fetchCountryData().then((list) {
@@ -232,7 +232,9 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                 onChanged: (country) {
                   setState(() {
                     selectedItem = country;
-                    widget.codeController.text = country.dialCode;
+                    if( widget.codeController != null ) {
+                      widget.codeController.text = country.dialCode;
+                    }
 
                   });
                 },
