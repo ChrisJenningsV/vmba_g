@@ -41,6 +41,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   initState() {
     super.initState();
+    gblPnrModel = widget.pnrModel;
+
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
         i++) {

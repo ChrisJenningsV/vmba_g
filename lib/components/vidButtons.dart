@@ -135,7 +135,9 @@ Widget vidRemoveButton(BuildContext context, {void Function(BuildContext, int, i
       color: clr,
     ),
     onPressed: () {
-      onPressed(context, paxNo, segNo,);
+      if( disabled == null || disabled == false) {
+        onPressed(context, paxNo, segNo,);
+      }
     },
   ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
 }

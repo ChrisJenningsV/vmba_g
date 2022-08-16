@@ -94,7 +94,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     for (var infant = 1;
         infant < widget.newBooking.passengers.infants + 1;
         infant++) {
-      sb.write("-TTTT${convertNumberIntoWord(infant)}/infantMr.IN^");
+      sb.write("-TTTT${convertNumberIntoWord(infant)}/infantMr.IN09^");
     }
 
     return sb.toString();

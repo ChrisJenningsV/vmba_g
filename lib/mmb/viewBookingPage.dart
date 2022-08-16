@@ -177,6 +177,8 @@ class CheckinBoardingPassesWidgetState
           // PnrModel
           pnr = new PnrModel.fromJson(map);
           loadJourneys(pnr);
+          gblSelectedCurrency = mmbBooking.currency;
+
           mmbBooking.rloc = pnr.pNR.rLOC;
 
           mmbBooking.passengers.adults =
@@ -750,10 +752,11 @@ class CheckinBoardingPassesWidgetState
     //Map map;
     if (response.statusCode == 200) {
       try {
-        String msg = response.body
+        Map map = jsonDecode( response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '');
+            .replaceAll('</string>', ''));
+        msg = map['data'];
         print(msg);
 
         if (!msg.contains('Error')) {

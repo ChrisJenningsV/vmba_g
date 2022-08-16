@@ -15,12 +15,13 @@ import '../productFunctions.dart';
 
 class ComplextProductWidget extends StatefulWidget {
   final Product product;
+  final Product savedProduct;
   final PnrModel pnrModel;
   final bool isMmb;
   final void Function(Product product) onSaved;
   final void Function(String msg) onError;
 
-  ComplextProductWidget({Key key, this.product, this.pnrModel, this.onSaved, this.onError, this.isMmb})
+  ComplextProductWidget({Key key, this.product,this.savedProduct, this.pnrModel, this.onSaved, this.onError, this.isMmb})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -45,6 +46,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       });
     }*/
     widget.product.resetProducts(widget.pnrModel);
+
     if( widget.isMmb) {
         if(widget.product.segmentRelate || widget.product.paxRelate){
 
@@ -138,6 +140,8 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
             list.add(ProductFlightCard(
               pnrModel: widget.pnrModel,
               product: widget.product,
+              savedProduct: widget.savedProduct,
+              isMmb: widget.isMmb,
               itin: itin,
               stateChange: () {
                 setState(() {
@@ -153,7 +157,12 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
        // not seg related
       widget.pnrModel.pNR.names.pAX.forEach((pax){
         //list.add(Text(pax.firstName + ' ' + pax.surname), );
-        list.add(getProductPaxRow(widget.product, pax, 0, 0,
+        bool disable = widget.product.getCount(int.parse(pax.paxNo), 0) == 0;
+        if( widget.isMmb){
+          disable = widget.product.getCount(int.parse(pax.paxNo), 0) <= widget.savedProduct.getCount(int.parse(pax.paxNo), 0);
+        }
+
+        list.add(getProductPaxRow(widget.product, pax, 0, 0, disable,
           onDelete: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) > 0) {
             setState(() {
@@ -208,11 +217,13 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
 
 class ProductFlightCard extends StatefulWidget {
   final Product product;
+  final Product savedProduct;
   final PnrModel pnrModel;
   final Itin itin;
+  final bool isMmb;
   final void Function() stateChange;
 
-  ProductFlightCard({Key key, this.product, this.pnrModel, this.itin, this.stateChange})
+  ProductFlightCard({Key key, this.product, this.savedProduct, this.pnrModel, this.itin, this.stateChange, this.isMmb})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -264,7 +275,12 @@ class ProductFlightCardState extends State<ProductFlightCard> {
     if (widget.product.paxRelate) {
       widget.pnrModel.pNR.names.pAX.forEach((pax) {
        // list.add(Text(pax.firstName + ' ' + pax.surname),);
-        list.add(getProductPaxRow(widget.product, pax, lineNo, lineNo,
+        bool disable = widget.product.getCount(int.parse(pax.paxNo), lineNo) == 0;
+        if( widget.isMmb && widget.savedProduct != null ){
+            disable = widget.product.getCount(int.parse(pax.paxNo), lineNo) <= widget.savedProduct.getCount(int.parse(pax.paxNo), lineNo);
+        }
+
+        list.add(getProductPaxRow(widget.product, pax, lineNo, lineNo, disable,
           onDelete: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) > 0) {
             setState(() {
@@ -275,11 +291,12 @@ class ProductFlightCardState extends State<ProductFlightCard> {
           onAdd: (int paxNo, int segNo) {
             int max = widget.product.maxQuantity ?? 1;
             if( widget.product.getCount(paxNo, segNo) < max) {
-              setState(() {
                 widget.product.addProduct(paxNo, segNo);
                 widget.stateChange();
+              };
+            setState(() {
               });
-            }},
+            },
         )
         );
       });
@@ -307,7 +324,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   }
 }
 
-Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, { void Function(int paxNo, int segNo) onDelete, void Function(int paxNo, int segNo) onAdd}) {
+Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo) onDelete, void Function(int paxNo, int segNo) onAdd}) {
   List<Widget> widgets = [];
 
   widgets.add(Align(alignment: Alignment.centerLeft,
@@ -315,15 +332,11 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, { void Fun
 
   widgets.add(Spacer(),);
 
-/*
-  if( prod.maxQuantity != null && prod.maxQuantity > 0 ) {
-    max = prod.maxQuantity;
-  }
-*/
+
     widgets.add(Align(alignment: Alignment.centerRight,
         child: Row(children: [
           vidRemoveButton(null, paxNo: int.parse(pax.paxNo), segNo: segNo,
-              disabled: prod.getCount(int.parse(pax.paxNo), segNo) == 0,
+              disabled: disable,
               onPressed: (context, paxNo, segNo) {
             if(gblLogProducts) logit('onDelete p=${pax.paxNo} s=$segNo');
               onDelete(paxNo, segNo);

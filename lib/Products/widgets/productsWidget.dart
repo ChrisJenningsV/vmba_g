@@ -37,6 +37,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
   NetworkImage smallBag;
   NetworkImage cabinBag;
   NetworkImage holdBag;
+  PnrModel savedPnr;
   String errorMsg;
 
   @override
@@ -46,6 +47,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
     cabinBag = bagImage('cabinBag');
     holdBag = bagImage('holdBag');
 
+    savedPnr = widget.pnrModel;
     errorMsg = '';
 
     super.initState();
@@ -62,10 +64,10 @@ class ProductsWidgetState extends State<ProductsWidget> {
         title: Text(
           'Travel Extras',
         ),
-        children: getBagOptions(widget.newBooking, widget.pnrModel),));
+        children: getBagOptions(widget.newBooking, widget.pnrModel, savedPnr),));
 
     } else {
-      list.add(Column( children: getBagOptions(widget.newBooking, widget.pnrModel),));
+      list.add(Column( children: getBagOptions(widget.newBooking, widget.pnrModel, savedPnr),));
     }
     list.add(Divider());
 
@@ -78,13 +80,20 @@ class ProductsWidgetState extends State<ProductsWidget> {
     return Column(children: list,);
   }
 
+
   _loadData() async {
-    if (gblProducts == null ){
+    //String currency = widget.pnrModel.pNR.basket.outstanding.cur;
+
+    if (gblProducts == null || gblBookingCurrency != gblLastCurrecy || gblProductCacheDeparts != gblOrigin || gblProductCacheArrives != gblDestination){
+      //gblBookingCurrency =currency;
       logit('loading products');
+      gblProductCacheDeparts = gblOrigin;
+      gblProductCacheArrives = gblDestination;
+      gblLastCurrecy = gblSelectedCurrency;
       final http.Response response = await http.post(
           Uri.parse('${gblSettings.apiUrl}/product/getproducts'),
           headers: getApiHeaders(),
-          body: json.encode(GetProductsMsg('en', cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson()));
+          body: json.encode(GetProductsMsg('en', currency: gblSelectedCurrency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson()));
 
       //if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
 
@@ -111,7 +120,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
   }
 
 
-List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
+List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel savedPnr) {
   List<Widget> list = [];
 
   if( gblSettings.wantSeatsWithProducts && !widget.isMMB){
@@ -183,7 +192,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel) {
       gblProducts.productCategorys.forEach((pc) {
         if( gblLogProducts ) {logit('products: add category ${pc.productCategoryName} ${pc.products.length} items');}
 
-        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, isMmb: widget.isMMB, onComplete: widget.onComplete,
+        list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, savedPnr: savedPnr, isMmb: widget.isMMB, onComplete: widget.onComplete,
         onError: (msg)
         {
           errorMsg = msg;

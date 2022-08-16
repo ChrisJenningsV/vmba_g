@@ -18,6 +18,7 @@ import 'controller/productCommands.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductCategory productCategory ;
+  final PnrModel savedPnr;
   PnrModel pnrModel;
   final bool isMmb;
   void Function(PnrModel pnrModel) onComplete;
@@ -25,7 +26,7 @@ class ProductCard extends StatefulWidget {
 
 
   // ProductCardState appState = new ProductCardState();
-  ProductCard({this.productCategory, this.pnrModel, this.onComplete, this.onError, this.isMmb});
+  ProductCard({this.productCategory, this.pnrModel, this.savedPnr, this.onComplete, this.onError, this.isMmb});
   ProductCardState createState() => ProductCardState();
 
 }
@@ -122,6 +123,22 @@ class ProductCardState extends State<ProductCard> {
 
 
     if (prod.paxRelate == false && prod.segmentRelate == false) {
+      String units = '';
+      if( prod.unitOfMeasure == null || prod.unitOfMeasure.isEmpty) {
+        units += translate(' Per Unit');
+      } else {
+        units = translate(' Per ') + prod.unitOfMeasure;
+      }
+      // add price
+      widgets0.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(left: 40)),
+          Text(formatPrice(prod.currencyCode, prod.productPrice) + ' ' + units),
+        ],
+      ));
+
+
       if( isThisProductSegmentFixed( widget.pnrModel, prod )) {
         // add segment this prod valid for
         widgets0.add(Row(
@@ -176,12 +193,22 @@ class ProductCardState extends State<ProductCard> {
       )
       ));
     } else {
+      Product savedProd;
+      if( widget.isMmb){
+        //
+        if( savedProd == null ) {
+          savedProd = new Product();
+        }
+        savedProd.productCode = prod.productCode;
+        savedProd.resetProducts(widget.savedPnr);
+      }
+
       // more button
       widgets.add( vidRightButton(context, onPressed: (context) {
         Navigator.push(
             context,
             SlideTopRoute(
-                page: ComplextProductWidget( product: prod, pnrModel: widget.pnrModel, isMmb: widget.isMmb, onSaved: (product) {
+                page: ComplextProductWidget( product: prod, savedProduct: savedProd, pnrModel: widget.pnrModel, isMmb: widget.isMmb, onSaved: (product) {
                   //saveProduct(product, widget.pnrModel.pNR.rLOC);
                 },
                   onError: (msg){

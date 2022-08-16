@@ -14,7 +14,7 @@ import 'models/providers.dart';
 String gblBuildFlavor = 'FN';
 bool gblIsLive = false;
 int requiredXmlVersion = 101;
-int requiredApiVersion = 100;
+int requiredApiVersion = 101;
 int apiBuldVersion;
 bool gblDoVersionCheck = true;
 
@@ -92,7 +92,12 @@ VrsCmdState gblLoadSeatState = VrsCmdState.none;
 VrsCmdState gblBookSeatState = VrsCmdState.none;
 
 ProductCategorys gblProducts ;
+String gblProductCacheDeparts;
+String gblProductCacheArrives;
+String gblSelectedCurrency;
+String gblLastCurrecy = '';
 Providers gblProviders;
+String gblBookingCurrency;
 List<NotificationMessage> gblNotifications;
 
 

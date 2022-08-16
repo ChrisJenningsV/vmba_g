@@ -198,12 +198,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc()));
 
     calenderWidgetSelectedItem = 0;
-    for (var f in objAv.availability.cal.day) {
-      if (DateTime.parse(f.daylcl).isAfter(_currentDate) ||
-          isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
-        calenderWidgetSelectedItem += 1;
-        if (isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
-          break;
+    if(objAv.availability.cal != null && objAv.availability.cal.day != null  ) {
+      for (var f in objAv.availability.cal.day) {
+        if (DateTime.parse(f.daylcl).isAfter(_currentDate) ||
+            isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
+          calenderWidgetSelectedItem += 1;
+          if (isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
+            break;
+          }
         }
       }
     }
@@ -308,7 +310,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget getCalenderWidget() {
-    if (objAv != null || objAv.availability.cal != null) {
+    if (objAv != null && objAv.availability.cal != null && objAv.availability.cal.day != null) {
       return new ListView(
           shrinkWrap: true,
           controller: _scrollController,

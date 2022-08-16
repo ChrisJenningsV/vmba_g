@@ -43,6 +43,7 @@ Future searchSaveBooking(NewBooking newBooking) async {
         }
       }
       // _dataLoaded();
+      gblPnrModel = pnrModel;
       setAmountPayable( pnrModel);
       return pnrModel;
     } else if (rs.statusCode == 0) {
@@ -196,7 +197,7 @@ String buildDummyAddPaxCmd(NewBooking newBooking) {
   for (var infant = 1;
   infant < newBooking.passengers.infants + 1;
   infant++) {
-    sb.write("-TTTT${convertNumberIntoWord(infant)}/infantMr.IN^");
+    sb.write("-TTTT${convertNumberIntoWord(infant)}/infantMr.IN09^");
   }
 
   return sb.toString();
@@ -372,6 +373,7 @@ Future makeBooking(NewBooking newBooking) async {
         Map map = json.decode(pnrJson);
 
         pnrModel = new PnrModel.fromJson(map);
+        gblPnrModel = pnrModel;
         print(pnrModel.pNR.rLOC);
         //bool flightsConfirmed = true;
         if (pnrModel.hasNonHostedFlights() && pnrModel.hasPendingCodeShareOrInterlineFlights()) {

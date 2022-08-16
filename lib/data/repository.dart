@@ -195,6 +195,7 @@ class Repository {
     await database.updateCities(networkCities);
     logit('cache cities');
 
+    logit('website version $apiBuldVersion');
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
       gblError = 'WebApi needs upgrade';
     throw('WebApi needs upgrade');
@@ -602,6 +603,11 @@ class Repository {
             } else if ( mainMatchVersioAction.isNotEmpty){
               gblAction =mainMatchVersioAction;
             }
+            if( gblSettings.useWebApiforVrs) {
+              logit('website version $xmlVersion');
+            } else {
+              logit('API version $xmlVersion');
+            }
             if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || (gblSettings.useWebApiforVrs) ? int.parse(xmlVersion) < requiredXmlVersion : int.parse(xmlVersion) < requiredApiVersion  )) {
               if( gblSettings.useWebApiforVrs) {
                 gblError = 'WebService needs update';
@@ -610,13 +616,14 @@ class Repository {
               }
               print(gblError);
               throw(gblError);
-            }
-          } else {
+            }         } else {
             logit('login failed');
             print(response.body);
             gblErrorTitle = 'Login';
             if ( map != null && map['errorMessage'] != null && map['errorCode'] != null) {
               gblError = map['errorMessage'] + ' :' + map['errorCode'];
+            } else if (map['errorMsg'] != null ) {
+              gblError = map['errorMsg'];
             } else {
               gblError = response.body;
             }

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../globals.dart';
+
 class ProductCategorys {
   List<ProductCategory> productCategorys;
 
@@ -334,6 +336,10 @@ List<String> curProducts ;
       currencyRatetoNUC = json['currencyRatetoNUC'];
       productPriceCalc = json['productPriceCalc'];
       productPrice = json['productPrice'];
+      if( json['exPrice'] != null && json['exPrice'] != ''){
+        productPrice = json['exPrice'];
+        currencyCode = gblSelectedCurrency;
+      }
       taxAmountCalc = json['taxAmountCalc'];
       taxAmount = json['taxAmount'];
       // bools
@@ -361,6 +367,7 @@ class GetProductsMsg {
   String via1;
   String cityCode;
   String arrivalCityCode;
+  String currency;
   bool includeHotels;
   bool displayOnWebsiteOnly;
 
@@ -373,6 +380,7 @@ class GetProductsMsg {
     this.productCategoryID = '',
     this.productCategoryName = '',
     this.productType = '',
+    this.currency = '',
     this.via1= '',
   });
 
@@ -387,6 +395,7 @@ class GetProductsMsg {
     map['ProductCategoryName'] = productCategoryName;
     map['ProductType'] = productType;
     map['Via1'] = via1;
+    map['currency'] = currency;
     return map;
   }
 }

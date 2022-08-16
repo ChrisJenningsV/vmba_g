@@ -164,10 +164,14 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _dataName = 'Travel Extras';
           _url = '${gblSettings.apiUrl}/product/getproducts';
           String currency = gblSettings.currency;
-          if( currency == null || currency.isEmpty) {
+
+          /*if(  widget.pnrModel.pNR!= null &&  widget.pnrModel.pNR.basket != null &&
+              widget.pnrModel.pNR.basket.outstanding != null && widget.pnrModel.pNR.basket.outstanding.cur != null ) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
-          }
-          _msg = json.encode(GetProductsMsg(currency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
+          }*/
+          gblBookingCurrency =currency;
+          _msg = json.encode(GetProductsMsg(currency, currency: gblSelectedCurrency, cityCode: gblOrigin,
+              arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
 
           break;
         case LoadDataType.providers:
