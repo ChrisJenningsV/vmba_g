@@ -355,10 +355,31 @@ double sepTax () {
       ) {
         DateTime dt = DateTime.parse(gblPnrModel.pNR.itinerary.itin[i].depDate);
         dt = dt.add(Duration(days: int.parse(gblPnrModel.pNR.itinerary.itin[i].arrOfst)));
-        arrDate = DateFormat('dd MMM kk:mm').format(dt);
+        arrDate = DateFormat('yyyy-MM-dd').format(dt);
       }
-      widgets.add(tableRow(translate('Arrival Time:'),DateFormat('dd MMM kk:mm').format(DateTime.parse(
-          arrDate  + ' ' + gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+      if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9) {
+        // time includes date
+        widgets.add(tableRow(translate('Arrival Time') + ':',
+            DateFormat('dd MMM kk:mm').format(DateTime.parse(
+                 gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+      } else {
+        if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9 ){
+          widgets.add(tableRow(translate('Arrival Time') + ':',
+              DateFormat('dd MMM kk:mm').format(DateTime.parse(
+                   gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+
+        } else {
+          if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9 ) {
+            widgets.add(tableRow(translate('Arrival Time') + ':',
+                DateFormat('dd MMM kk:mm').format(DateTime.parse(
+                        gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+          } else {
+            DateTime adt = DateTime.parse(arrDate + ' ' +gblPnrModel.pNR.itinerary.itin[i].arrTime);
+            widgets.add(tableRow(translate('Arrival Time') + ':',
+                DateFormat('dd MMM kk:mm').format(adt)));
+          }
+        }
+      }
 
       widgets.add(tableRow(translate('Fare Type:'),gblPnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                 'Fly Flex Plus'

@@ -18,6 +18,7 @@ import '../Products/optionsPage.dart';
 import '../calendar/bookingFunctions.dart';
 import '../components/vidButtons.dart';
 import '../home/home_page.dart';
+import 'package:vmba/components/showDialog.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key, this.newBooking, this.pnrModel}) : super(key: key);
@@ -42,6 +43,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   initState() {
     super.initState();
     gblPnrModel = widget.pnrModel;
+    gblError = '';
 
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
@@ -316,6 +318,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   }
 
   Widget _body(NewBooking newBooking){
+    if( gblError != '') {
+
+      return displayMessage(context,'Booking Error', gblError );
+    }
       return new Form(
         key: formKey,
         child: new SingleChildScrollView(
@@ -594,14 +600,27 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
             } else {
 
               if( gblSettings.wantProducts) {
-                gblPnrModel = await makeBooking(widget.newBooking);
-                refreshStatusBar();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            OptionsPageWidget(
-                              newBooking: this.widget.newBooking)));
+                gblError = '';
+                gblPnrModel = await makeBooking(widget.newBooking).catchError((e) {
+                  setState(() {
+
+                  });
+                });
+
+
+                if( gblError == '') {
+                  refreshStatusBar();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OptionsPageWidget(
+                                  newBooking: this.widget.newBooking)));
+                } else {
+                  setState(() {
+
+                  });
+                }
               } else {
                 var _error = await Navigator.push(
                     context,

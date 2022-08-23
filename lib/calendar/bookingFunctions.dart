@@ -215,6 +215,10 @@ String buildADSCmd(NewBooking newBooking) {
 }
 
 setAmountPayable(PnrModel pnrModel) {
+  if( pnrModel == null || pnrModel.pNR == null ) {
+    gblPayable = '';
+    return;
+  }
   FareStore fareStore = pnrModel
       .pNR
       .fareQuote
@@ -339,9 +343,16 @@ Future makeBooking(NewBooking newBooking) async {
     print('Calling VRS with Cmd = $msg');
     String data = await runVrsCommand(msg).catchError((e) {
       //noInternetSnackBar(context);
-      gblError = 'Network error';
+      gblError = e.toString();
       return null;
     });
+    if( data == null ){
+      if( gblError == '') {
+        gblError = 'Booking Failed';
+      }
+      return null;
+
+    }
 
     try {
       bool flightsConfirmed = true;
@@ -712,7 +723,9 @@ String buildAddPaxCmd(NewBooking newBooking) {
           sb.write('($_dob)');
           wantDOB = true;
         } else if (pax.paxType == PaxType.infant) {
-          sb.write('.IN${ageMonths.toStringAsFixed(2)}');
+          // 2@jones/babyMstr.IN23^3-2FDOB 26Aug2
+          //sb.write('.IN${ageMonths.toStringAsFixed(2)}');
+          sb.write('.IN${ageMonths.toString()}');
           wantDOB = true;
         }
         if( gblSettings.wantApis && wantDOB) {

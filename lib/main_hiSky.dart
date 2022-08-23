@@ -89,7 +89,10 @@ void configH4() {
     searchDateOut: 1,
     searchDateBack: 6,
     wantApis: false,
-   // wantProducts: true,
+    wantMmbProducts: true,
+    wantProducts: true,
+    wantStatusLine: true,
+    wantSeatsWithProducts: true,
 
     adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
@@ -140,7 +143,7 @@ void configH4() {
     wantLeftLogo: false,
     wantCurrencySymbols: true,
     wantMyAccount: true,
-    wantFQTV: true,
+    wantFQTV: false,
     wantFindBookings: true,
     wantNewEditPax: true,
     wantMaterialControls: true,

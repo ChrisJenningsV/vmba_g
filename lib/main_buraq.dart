@@ -159,7 +159,7 @@ void configUZ() {
   wantCitySwap: true,
   wantPushNoticications: false,
   wantNotificationEdit: false,
-  wantRefund: true,
+  wantRefund: false,
   wantNewPayment: true,
   wantCountry: false,
   useWebApiforVrs: true,

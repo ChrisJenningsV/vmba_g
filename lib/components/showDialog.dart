@@ -73,6 +73,22 @@ Future<bool> confirmDialog(BuildContext context, String title, String msg ) asyn
 
   }
 
+Widget displayMessage(BuildContext context,String title, String msg ){
+return AlertDialog(
+actions: <Widget>[
+new TextButton(
+child: new TrText("OK"),
+onPressed: () {
+Navigator.of(context).pop();
+},
+),
+],
+title: new TrText(title),
+content: SingleChildScrollView(
+child: Text(msg),
+));
+}
+
 
 
 void showAlertDialog(BuildContext context, String title, String msg, {void Function() onComplete  }) {

@@ -216,15 +216,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       if( !widget.isMmb) {
         String msg = json.encode(RunVRSCommand(session, "*R~X"));
         _sendVRSCommand(msg).then(
-                (onValue) =>
-                Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                  Map map = json.decode(pnr.data);
+                (onValue) {
+                  //Repository.get().fetchPnr(widget.rloc).then((pnr) {
+                  Map map = json.decode(onValue);
                   PnrModel pnrModel = new PnrModel.fromJson(map);
                   gblPnrModel = pnrModel;
                   refreshStatusBar();
                   //showSnackBar(translate("Seat(s) allocated"));
                   Navigator.pop(context, pnrModel);
-                }));
+                  //            })
+                }
+            );
       } else {
         if (outstanding == 0) { // zero outstanding
           String msg = json.encode(RunVRSCommand(session, "E"));
@@ -764,7 +766,67 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
 
     AlertDialog alert = AlertDialog(
       title: TrText('Emergency seating'),
-      content: Text(isAllowEmergencySeating
+      content: TrText(isAllowEmergencySeating
+          ? acceptTermsText
+          : notAllowEmergencySeatingText),
+      actions: isAllowEmergencySeating
+          ? <Widget>[cancelButton, continueButton]
+          : <Widget>[okButton],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  prmSeatSelection(BuildContext context, Seat selectedSeat) {
+    String acceptTermsText =
+        'This seat is a priority for customers with reduced mobility. As such you may be moved if this seat is required for that purpose. If moved, your seat charge will be refunded.';
+    String notAllowEmergencySeatingText =
+        'Infants con not select this seat';
+    bool isAllowEmergencySeating = true;
+    Pax selectPax = this.paxlist.firstWhere((p) => p.selected == true);
+
+    if( selectedSeat.noInfantSeat) {
+       var paxTypesNotAllowed = ['IN'];
+
+         if( paxTypesNotAllowed.contains(selectPax.paxType)) {
+           isAllowEmergencySeating = false;
+         }
+    }
+    if( gblPnrModel.paxHasInfant(selectPax) ) {
+      notAllowEmergencySeatingText = 'You are trying to allocate a restricted seat to a passenger who is accompanying an infant. Please select another seat.';
+      isAllowEmergencySeating = false;
+    }
+
+    Widget cancelButton = TextButton(
+      child: TrText('Cancel'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: TrText('OK'),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _seatSelected(selectedSeat.sCode);
+      },
+    );
+
+    Widget okButton = TextButton(
+      child: TrText('OK'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: TrText('Notice'),
+      content: TrText(isAllowEmergencySeating
           ? acceptTermsText
           : notAllowEmergencySeatingText),
       actions: isAllowEmergencySeating
@@ -993,16 +1055,28 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           //logit('r${indexRow} c${indexColumn} block w${cellSize}');
 
         } else {
+          //logit( ' seat r${seat.sRow} c${seat.sCol} ${seat.sCellDescription} s${seat.sStatus} i${seat.sSeatID} n${seat.noInfantSeat}');
+
           var color;
           switch (seat.sCellDescription) {
             case 'EmergencySeat':
               color = gblSystemColors.seatPlanColorEmergency;
               break;
             case 'Seat':
-              color = gblSystemColors.seatPlanColorAvailable;
+              if( seat.noInfantSeat) {
+                color = gblSystemColors.seatPlanColorRestricted;
+
+              } else {
+                color = gblSystemColors.seatPlanColorAvailable;
+              }
               break;
             default:
-              color = gblSystemColors.seatPlanColorSelected;
+              if( seat.noInfantSeat) {
+                color = gblSystemColors.seatPlanColorRestricted;
+
+              } else {
+                color = gblSystemColors.seatPlanColorSelected;
+              }
               selectableSeat = false;
           }
 
@@ -1016,12 +1090,16 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               padding: EdgeInsets.all(cellPadding),
               child: GestureDetector(
                 child: getSeat(seat,color),
-                onTap: () =>
-                    selectableSeat && !selectedSeats.contains(seat.sCode)
-                        ? seat.sCellDescription == 'EmergencySeat'
-                            ? emergencySeatSelection(context, seat.sCode)
-                            : _seatSelected(seat.sCode)
-                        : {},
+                onTap: () {
+                  if( selectableSeat && !selectedSeats.contains(seat.sCode)) {
+                      if( seat.sCellDescription == 'EmergencySeat' ) {
+                        emergencySeatSelection(context, seat.sCode);
+                      } else if( seat.PRMSeat == true ) {
+                        prmSeatSelection(context, seat);
+                      } else {
+                        _seatSelected(seat.sCode);
+                      }
+                }},
               )));
         }
         selectableSeat = true;

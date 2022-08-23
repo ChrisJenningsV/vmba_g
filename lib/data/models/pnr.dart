@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'models.dart';
 
@@ -60,6 +61,17 @@ class PnrModel {
     return this.pNR.itinerary.itin.length;
   }
 
+  bool paxHasInfant(Pax pax) {
+    if( gblPnrModel == null ) return false;
+
+    bool found = false;
+    gblPnrModel.pNR.aPFAX.aFX.forEach((element) {
+      if( element.text.contains('P${pax.id}')){
+        found =  true;
+      }
+    });
+    return found ;
+  }
   bool hasFutureFlights() {
     DateTime now = DateTime.now();
     var fltDate;

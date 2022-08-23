@@ -16,7 +16,7 @@ Widget vidExpanderCard(BuildContext context, String caption, bool expanded, Icon
         ),
         Padding(padding: EdgeInsets.all(2)),
         Text(translate(caption), textScaleFactor: 1.25),
-      ],), true,body  );
+      ],), expanded,body  );
 
 /*    vidCard( caption, Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),

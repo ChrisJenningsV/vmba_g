@@ -12,7 +12,7 @@ import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';
 import '../../summary/vidFlightTimeline.dart';
 import '../helper.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:vmba/components/showDialog.dart';
 
 
 
@@ -147,6 +147,9 @@ Widget appBar(BuildContext context, String title,
 }
 
 Widget getSummaryBody(BuildContext context, NewBooking newBooking,  Widget Function(NewBooking newBooking) body, Key key) {
+  if( gblError != '') {
+    return displayMessage(context,'Booking Error', gblError );
+  }
   if (gblSettings.wantProducts) {
     return StatusBar(key: key, newBooking: newBooking, body: body,);
 
@@ -171,6 +174,11 @@ class StatusBarState extends State<StatusBar> {
   Widget build(BuildContext context) {
     setAmountPayable(gblPnrModel);
 
+    Color iconClr = gblSystemColors.headerTextColor;
+    if( gblPnrModel == null || gblPnrModel.pNR == null ){
+      return Container();
+    }
+
     return
       ListView(
           children: [
@@ -183,6 +191,7 @@ class StatusBarState extends State<StatusBar> {
         child: Container(
             padding: EdgeInsets.only(top: 0),
             color: _isExpanded ? Colors.grey.shade200 : gblSystemColors.primaryHeaderColor,
+
             child:
     ListTileTheme(
     contentPadding: EdgeInsets.all(0),
@@ -190,6 +199,10 @@ class StatusBarState extends State<StatusBar> {
         horizontalTitleGap: 0.0,
         //minLeadingWidth: 0,
     child: ExpansionTile(
+              trailing: Icon(
+                _isExpanded ? Icons.keyboard_arrow_up: Icons.keyboard_arrow_down,
+                color: _isExpanded ? Colors.black : iconClr,
+              ),
              // backgroundColor: Colors.grey,
               initiallyExpanded: false,
               title: _getTitle(widget.newBooking, _isExpanded),

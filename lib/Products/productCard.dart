@@ -60,14 +60,20 @@ class ProductCardState extends State<ProductCard> {
         if( prod.maxQuantity == null ){
           prod.maxQuantity = 999;
         }
+        if(index > 0 && index < widget.productCategory.products.length){
+          bags.add(Divider(color: Colors.grey, height: 6.0,));
+        }
         bags.add(getProductRow(index++, prod));
+
+
       } else {
         //   logit('products: NOT add ${prod.productName}');
       }
+
     });
 
     if (bags.length > 0) {
-       return vidExpanderCard(context, widget.productCategory.productCategoryName, false, iconForTitle(widget.productCategory.productCategoryName) , bags);
+       return vidExpanderCard(context, widget.productCategory.productCategoryName, widget.productCategory.autoExpand, iconForTitle(widget.productCategory.productCategoryName) , bags);
 
     }
     return Container();
@@ -92,7 +98,7 @@ class ProductCardState extends State<ProductCard> {
 
   Widget getProductRow(int index, Product prod) {
 
-    List<Widget> widgets0 = [];
+    List<Widget> widgets1 = [];
     List<Widget> widgets = [];
 
 
@@ -123,25 +129,12 @@ class ProductCardState extends State<ProductCard> {
 
 
     if (prod.paxRelate == false && prod.segmentRelate == false) {
-      String units = '';
-      if( prod.unitOfMeasure == null || prod.unitOfMeasure.isEmpty) {
-        units += translate(' Per Unit');
-      } else {
-        units = translate(' Per ') + prod.unitOfMeasure;
-      }
-      // add price
-      widgets0.add(Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(left: 40)),
-          Text(formatPrice(prod.currencyCode, prod.productPrice) + ' ' + units),
-        ],
-      ));
+
 
 
       if( isThisProductSegmentFixed( widget.pnrModel, prod )) {
         // add segment this prod valid for
-        widgets0.add(Row(
+        widgets1.add(Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(padding: EdgeInsets.only(left: 40)),
@@ -192,6 +185,22 @@ class ProductCardState extends State<ProductCard> {
           ]
       )
       ));
+
+      String units = '';
+      if( prod.unitOfMeasure == null || prod.unitOfMeasure.isEmpty) {
+        units += ' ' + translate('Per Unit');
+      } else {
+        units = translate('Per') + ' ' + prod.unitOfMeasure;
+      }
+      // add price
+      widgets1.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(left: 40, top: 0, bottom: 5)),
+          Text(formatPrice(prod.currencyCode, prod.productPrice) + ' ' + units),
+        ],
+      ));
+
     } else {
       Product savedProd;
       if( widget.isMmb){
@@ -234,17 +243,17 @@ class ProductCardState extends State<ProductCard> {
       );
     }
 
-  if( widgets0.length > 0) {
+  if( widgets1.length > 0) {
     return Column(
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: widgets0
-        ),
     Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: widgets
     ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: widgets1
+        ),
     ]);
 
   } else {

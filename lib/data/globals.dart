@@ -11,12 +11,13 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN';
+String gblBuildFlavor = 'UZ';
 bool gblIsLive = false;
 int requiredXmlVersion = 101;
 int requiredApiVersion = 101;
 int apiBuldVersion;
 bool gblDoVersionCheck = true;
+bool gblUseCache = true;
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
@@ -38,16 +39,15 @@ String gblNotifyToken;
 String gblDeviceId;
 
 /* logging */
-bool gblLogProducts = true;
+bool gblLogProducts = false;
 bool gblLogPayment = false;
 bool gblLogFQ = false;
 bool gblLogCities = false;
-bool gblLogSummary = true;
+bool gblLogSummary = false;
 
 
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = true;
 bool gblIsIos = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;

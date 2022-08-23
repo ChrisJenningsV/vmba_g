@@ -156,28 +156,33 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     } else {
        // not seg related
       widget.pnrModel.pNR.names.pAX.forEach((pax){
-        //list.add(Text(pax.firstName + ' ' + pax.surname), );
-        bool disable = widget.product.getCount(int.parse(pax.paxNo), 0) == 0;
-        if( widget.isMmb){
-          disable = widget.product.getCount(int.parse(pax.paxNo), 0) <= widget.savedProduct.getCount(int.parse(pax.paxNo), 0);
-        }
+        if( pax.paxType != 'IN') {
+          //list.add(Text(pax.firstName + ' ' + pax.surname), );
+          bool disable = widget.product.getCount(int.parse(pax.paxNo), 0) == 0;
+          if (widget.isMmb) {
+            disable = widget.product.getCount(int.parse(pax.paxNo), 0) <=
+                widget.savedProduct.getCount(int.parse(pax.paxNo), 0);
+          }
 
-        list.add(getProductPaxRow(widget.product, pax, 0, 0, disable,
-          onDelete: (int paxNo, int segNo) {
-          if( widget.product.getCount(paxNo, segNo) > 0) {
-            setState(() {
-              widget.product.removeProduct(paxNo, segNo);
-            });
-        }},
-          onAdd: (int paxNo, int segNo) {
-            int max = widget.product.maxQuantity ?? 1;
-            if( widget.product.getCount(paxNo, segNo) < max) {
-              setState(() {
-                widget.product.addProduct(paxNo, segNo);
-              });
-            }},
-        )
-        );
+          list.add(getProductPaxRow(widget.product, pax, 0, 0, disable,
+            onDelete: (int paxNo, int segNo) {
+              if (widget.product.getCount(paxNo, segNo) > 0) {
+                setState(() {
+                  widget.product.removeProduct(paxNo, segNo);
+                });
+              }
+            },
+            onAdd: (int paxNo, int segNo) {
+              int max = widget.product.maxQuantity ?? 1;
+              if (widget.product.getCount(paxNo, segNo) < max) {
+                setState(() {
+                  widget.product.addProduct(paxNo, segNo);
+                });
+              }
+            },
+          )
+          );
+        }
       });
     }
 
@@ -280,25 +285,28 @@ class ProductFlightCardState extends State<ProductFlightCard> {
             disable = widget.product.getCount(int.parse(pax.paxNo), lineNo) <= widget.savedProduct.getCount(int.parse(pax.paxNo), lineNo);
         }
 
-        list.add(getProductPaxRow(widget.product, pax, lineNo, lineNo, disable,
-          onDelete: (int paxNo, int segNo) {
-          if( widget.product.getCount(paxNo, segNo) > 0) {
-            setState(() {
-              widget.product.removeProduct(paxNo, segNo);
-              widget.stateChange();
-            });
-          }},
-          onAdd: (int paxNo, int segNo) {
-            int max = widget.product.maxQuantity ?? 1;
-            if( widget.product.getCount(paxNo, segNo) < max) {
-                widget.product.addProduct(paxNo, segNo);
-                widget.stateChange();
-              };
-            setState(() {
-              });
-            },
-        )
-        );
+        if(pax.paxType != 'IN') {
+          list.add(
+              getProductPaxRow(widget.product, pax, lineNo, lineNo, disable,
+                onDelete: (int paxNo, int segNo) {
+                  if (widget.product.getCount(paxNo, segNo) > 0) {
+                    setState(() {
+                      widget.product.removeProduct(paxNo, segNo);
+                      widget.stateChange();
+                    });
+                  }
+                },
+                onAdd: (int paxNo, int segNo) {
+                  int max = widget.product.maxQuantity ?? 1;
+                  if (widget.product.getCount(paxNo, segNo) < max) {
+                    widget.product.addProduct(paxNo, segNo);
+                    widget.stateChange();
+                  };
+                  setState(() {});
+                },
+              )
+          );
+        }
       });
     } else {
       list.add(getProductRow(widget.product, lineNo,

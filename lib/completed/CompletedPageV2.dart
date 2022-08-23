@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+/*
 
 class CompletedPageV2 extends StatelessWidget {
   @override
@@ -65,3 +66,4 @@ class CompletedPageV2 extends StatelessWidget {
         ));
   }
 }
+*/

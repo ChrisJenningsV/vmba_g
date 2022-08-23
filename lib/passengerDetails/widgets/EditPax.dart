@@ -1019,7 +1019,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
       case PaxType.infant:
         {
           _initialDateTime = DateTime.now();
-          _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2)));
+          _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2 -1 )));
         }
         break;
       case PaxType.child:

@@ -676,7 +676,7 @@ class Repository {
     return int.parse(str);
   }
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
-  Future<ParsedResponse<List<City>>> getCities() async {
+ /* Future<ParsedResponse<List<City>>> getCities() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     logit('get cities ${gblSettings.apiUrl}/cities/GetCityList');
@@ -727,7 +727,7 @@ class Repository {
     return new ParsedResponse(
         response.statusCode, []..addAll(networkCities.values));
   }
-
+*/
   City parseNetworkCity(jsonCity) {
     return new City(
       code: jsonCity["code"],
