@@ -3,11 +3,11 @@ import 'package:vmba/components/trText.dart';
 
 import '../data/globals.dart';
 
-Widget vidWideTextButton(BuildContext context, String caption, void Function() onPressed, {IconData icon, int iconRotation, } ) {
-  return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation ));
+Widget vidWideTextButton(BuildContext context, String caption, void Function({int p1}) onPressed, {IconData icon, int iconRotation,int p1 } ) {
+  return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
 }
 
-Widget vidTextButton(BuildContext context, String caption, void Function() onPressed, {IconData icon, int iconRotation, } ) {
+Widget vidTextButton(BuildContext context, String caption, void Function({int p1}) onPressed, {IconData icon, int iconRotation,int p1 } ) {
   Widget iconWidget = Container();
   if( icon != null) {
     if( iconRotation != null && iconRotation > 0 ) {
@@ -30,7 +30,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function() onPre
 
   return
      TextButton(
-      onPressed: () => onPressed() ,
+      onPressed: () => onPressed(p1: p1) ,
       style: TextButton.styleFrom(
           side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
           primary: gblSystemColors.textButtonTextColor),

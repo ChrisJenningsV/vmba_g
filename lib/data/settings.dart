@@ -103,11 +103,13 @@ class Settings {
   bool wantCentreTitle;
   bool wantRefund;
   bool wantNewPayment;
+  bool wantButtonIcons;
   bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
   bool useSmartPay;
 
+  String homePageStyle;
   String defaultCountryCode;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -240,11 +242,13 @@ bool bpShowFastTrack;
     this.wantCentreTitle = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
+    this.wantButtonIcons = true,
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
     this.useSmartPay = false,
     this.avTimeFormat='HHmm',
+    this.homePageStyle='V1',
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

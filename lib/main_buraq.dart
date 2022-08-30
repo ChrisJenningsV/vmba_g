@@ -24,6 +24,10 @@ void main() {
 }
 void configUZ() {
   SystemColors _systemColors = SystemColors(
+      home1ButtonColor: Color.fromRGBO(0X0, 0xA6, 0x50, 1),
+      home2ButtonColor: Colors.white,
+      home1ButtonTextColor: Colors.white,
+      home2ButtonTextColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
       primaryButtonColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
       accentButtonColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
       accentColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
@@ -47,10 +51,15 @@ void configUZ() {
   gblBuildFlavor = 'UZ';
   gblCurrentRloc = '';
 
+
   gblSettings = Settings (
     wantRememberMe: false,
     wantHomeFQTVButton: false,
+    wantButtonIcons: false,
+    wantEnglishTranslation: true,
 
+    homePageStyle: 'V2',
+    buttonStyle: 'RO3',
     airlineName: "Buraq",
   gblServerFiles: 'https://booking.buraq.aero/AppFiles/',
   testServerFiles: 'https://customertest.videcom.com/buraq/AppFiles/',

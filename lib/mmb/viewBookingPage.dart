@@ -37,8 +37,8 @@ import '../utilities/widgets/dataLoader.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
-int _journeyToChange;
-MmbBooking mmbBooking = MmbBooking();
+//int _journeyToChange;
+MmbBooking _mmbBooking = MmbBooking();
 PnrModel pnr;
 
 bool wantChangeAnyFlight = true;
@@ -181,7 +181,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                   MaterialPageRoute(
                       builder: (context) =>
                           ChoosePaymenMethodWidget(
-                            mmbBooking: mmbBooking,
+                            mmbBooking: _mmbBooking,
                             pnrModel: gblPnrModel,
                             isMmb: true,
                             mmbAction: 'PAYOUTSTANDING',
@@ -279,6 +279,7 @@ class CheckinBoardingPassesWidgetState
   void initState() {
     super.initState();
     gblError = '';
+    _mmbBooking = MmbBooking();
     _loadingInProgress = true;
     _displayProcessingText = '';
     initValues();
@@ -301,18 +302,18 @@ class CheckinBoardingPassesWidgetState
           // PnrModel
           pnr = new PnrModel.fromJson(map);
           loadJourneys(pnr);
-          gblSelectedCurrency = mmbBooking.currency;
+          gblSelectedCurrency = _mmbBooking.currency;
 
-          mmbBooking.rloc = pnr.pNR.rLOC;
+          _mmbBooking.rloc = pnr.pNR.rLOC;
           gblPnrModel = pnr;
 
-          mmbBooking.passengers.adults =
+          _mmbBooking.passengers.adults =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'AD').length;
-          mmbBooking.passengers.children =
+          _mmbBooking.passengers.children =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'CH').length;
-          mmbBooking.passengers.youths =
+          _mmbBooking.passengers.youths =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'TH').length;
-          mmbBooking.passengers.infants =
+          _mmbBooking.passengers.infants =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'IN').length;
 
           // save currency
@@ -368,12 +369,15 @@ class CheckinBoardingPassesWidgetState
   void loadCities(List<Itin> itin) {}
 
   loadJourneys(PnrModel pnrModel) {
+    // reset list
+    //_mmbBooking.journeys.journey = [];
+
     int journeyCount = 0;
     pnrModel.pNR.itinerary.itin.forEach((flt) {
-      if (mmbBooking.journeys.journey.length == journeyCount) {
-        mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
+      if (_mmbBooking.journeys.journey.length == journeyCount) {
+        _mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
       }
-      mmbBooking.journeys.journey[journeyCount].itin.add(flt);
+      _mmbBooking.journeys.journey[journeyCount].itin.add(flt);
       if (flt.nostop != 'X') {
         journeyCount++;
       }
@@ -589,10 +593,10 @@ class CheckinBoardingPassesWidgetState
     List<Widget> list = [];
     // new List<Widget>();
     if (pnr.pNR.aPFAX != null) {
-      mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
+      _mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
           .firstWhere((f) => f.aFXID == 'DISC', orElse: () => null);
     } else {
-      mmbBooking.eVoucher = null;
+      _mmbBooking.eVoucher = null;
     }
 
     //TODO:
@@ -700,11 +704,11 @@ class CheckinBoardingPassesWidgetState
     if (pnr.pNR.editFlights == true ) {
       int journeyToChange = getJourney(journey, pnr.pNR.itinerary);
 
-      if(  mmbBooking.journeys.journey.length >= journeyToChange) {
-      var departureDate = DateTime.parse(mmbBooking
+      if(  _mmbBooking.journeys.journey.length >= journeyToChange) {
+      var departureDate = DateTime.parse(_mmbBooking
               .journeys.journey[journeyToChange - 1].itin.first.depDate +
           ' ' +
-          mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
+          _mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
 
       if ( wantChangeAnyFlight || DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ) {
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
@@ -767,7 +771,7 @@ class CheckinBoardingPassesWidgetState
 
   }
   Widget _flightButtons( pnr ,journeyToChange ) {
-    _journeyToChange = journeyToChange;
+    //_journeyToChange = journeyToChange;
     if( gblSettings.wantRefund &&
         objPNR.canRefund(journeyToChange)
     ){
@@ -776,23 +780,23 @@ class CheckinBoardingPassesWidgetState
           children: [
             vidTextButton(
             context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
-            iconRotation: 1),
+            iconRotation: 1, p1: journeyToChange),
         //SizedBox(width: 50),
         vidTextButton(
             context, 'Refund', _onPressedRefund, icon: Icons.money,
-            iconRotation: 1),
+            iconRotation: 1, p1: journeyToChange),
         ],));
     } else {
       return vidWideTextButton(
           context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
-          iconRotation: 1);
+          iconRotation: 1, p1: journeyToChange);
     }
   }
 
-  void _onPressedRefund() async {
+  void _onPressedRefund({int p1}) async {
     RefundRequest rfund = new RefundRequest();
     rfund.rloc = widget.rloc;
-    rfund.journeyNo = _journeyToChange;
+    rfund.journeyNo = p1;
 
     String data =  json.encode(rfund);
 
@@ -810,14 +814,14 @@ class CheckinBoardingPassesWidgetState
     }
   }
 
-  void _onPressedChangeFlt() {
+  void _onPressedChangeFlt({int p1}) {
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => MmbDatePickerWidget(
             pnr: objPNR,
-            mmbBooking: mmbBooking,
-            journeyToChange: _journeyToChange,
+            mmbBooking: _mmbBooking,
+            journeyToChange: p1,
           ),
         ));
   }
@@ -1060,6 +1064,7 @@ class CheckinBoardingPassesWidgetState
                 .where((t) =>
                     t.pax == (paxNo + 1).toString() &&
                     t.segNo == (journeyNo + 1).toString().padLeft(2, '0') &&
+                    t.tktFor != 'MPD' &&
                     t.tKTID == 'ELFT')
                 .length >
             0) {
@@ -1367,7 +1372,7 @@ class CheckinBoardingPassesWidgetState
             MaterialPageRoute(
                 builder: (context) =>
                     ChoosePaymenMethodWidget(
-                      mmbBooking: mmbBooking,
+                      mmbBooking: _mmbBooking,
                       pnrModel: pnr,
                       isMmb: true,
                       mmbAction: 'PAYOUTSTANDING',
