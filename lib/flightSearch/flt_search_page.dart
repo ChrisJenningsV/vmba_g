@@ -121,7 +121,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               ),
               gblSettings.wantCurrencyPicker ?
               _currencyPicker() : Container(),
-              JourneyWidget(
+              SelectJourneyWidget(
                 onChanged: _handleFlightselectedChanged,
               ),
               new Padding(

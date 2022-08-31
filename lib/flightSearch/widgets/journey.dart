@@ -12,15 +12,15 @@ class SelectedRoute {
   SelectedRoute(this.departure, this.arrival);
 }
 
-class JourneyWidget extends StatefulWidget {
-  JourneyWidget({Key key, this.onChanged}) : super(key: key);
+class SelectJourneyWidget extends StatefulWidget {
+  SelectJourneyWidget({Key key, this.onChanged}) : super(key: key);
 
   final ValueChanged<SelectedRoute> onChanged;
 
-  _JourneyWidgetState createState() => _JourneyWidgetState();
+  _SelectJourneyWidgetState createState() => _SelectJourneyWidgetState();
 }
 
-class _JourneyWidgetState extends State<JourneyWidget> {
+class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   String departureAirport = translate('Select departure airport');
   String departureCode = '';
   String arrivalAirport = translate('Select arrival airport');
@@ -78,33 +78,8 @@ class _JourneyWidgetState extends State<JourneyWidget> {
                     // print('$result');
                     _handleDeptureSelectionChanged('$result');
                   },
-                  child: new Column(
-                      // mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        new TrText(
-                          'Fly from',
-                          style: new TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                        _getAirportText(departureAirport, departureCode),
-  /*                      new Text(
-                          departureAirport,
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: departureCode == ''
-                                  ? Colors.grey
-                                  : Colors.black,
-                              fontSize: 18.0),
-                        ),
-
-   */
-                        new Divider(
-                          height: 0.0,
-                        ),
-                      ])),
+                  child: _flyFrom(),
+              ),
               new Padding(
                 padding: EdgeInsets.only(bottom: 5),
               ),
@@ -186,6 +161,25 @@ class _JourneyWidgetState extends State<JourneyWidget> {
               CitiesScreen(filterByCitiesCode: departureCode)),
     );
     _handleArrivalSelectionChanged('$result');
+  }
+
+  Widget _flyFrom() {
+    return new Column(
+      // mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+    TrText(
+    'Fly from',
+      style: new TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15.0,
+      ),
+    ),
+    _getAirportText(departureAirport, departureCode),
+    new Divider(
+    height: 0.0,
+    ),
+    ]);
   }
 }
 

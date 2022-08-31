@@ -329,68 +329,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     }
                     })
                     }),
-/*
-                    Container(
-                  decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.black12),
-                      color: !isSearchDate(DateTime.parse(item.daylcl),
-                              widget.newBooking.departureDate)
-                          ? Colors.white
-                          : gblSystemColors.accentButtonColor //Colors.red,
-                      ),
-                  width: DateTime.parse(item.daylcl).isBefore(DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())))
-                      ? 0
-                      : 120.0,
-                  child: new TextButton(
-                      onPressed: () {
-                        hasDataConnection().then((result) {
-                          if (result == true) {
-                            _changeSearchDate(DateTime.parse(item.daylcl));
-                          } else {
-                            //showSnackBar('Please, check your internet connection');
-                            noInternetSnackBar(context);
-                          }
-                        });
-                      },
-                      child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Text( getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
-                              //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSearchDate(
-                                          DateTime.parse(item.daylcl),
-                                          widget.newBooking.departureDate)
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                            new TrText(
-                              'from',
-                              //textScaleFactor: 1.0,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSearchDate(
-                                          DateTime.parse(item.daylcl),
-                                          widget.newBooking.departureDate)
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                            //new Text(item.cur + item.amt)
-                            new Text(
-                              calenderPrice(item.cur, item.amt, item.miles),
-                              //textScaleFactor: 1.0,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSearchDate(
-                                          DateTime.parse(item.daylcl),
-                                          widget.newBooking.departureDate)
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ])),
-                ),
-*/
+
               )
               .toList());
     } else {
