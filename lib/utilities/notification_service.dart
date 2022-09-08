@@ -113,9 +113,9 @@ class NotificationService {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
 
         RemoteNotification notification = message.notification;
-        AndroidNotification android = message.notification?.android;
+        //AndroidNotification android = message.notification?.android;
         logit('Listener msg received');
-        Map data = message.data;
+        //Map data = message.data;
 
        try {
          Repository.get().updateNotification(message, false, false).then((value) {

@@ -31,7 +31,7 @@ void configAG() {
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
   accentButtonColor: Color.fromRGBO(0Xe5, 0x05, 0x5b, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
     primaryColor: Color.fromRGBO(0Xe5, 0x05, 0x5b,1),// colour for datepicker header

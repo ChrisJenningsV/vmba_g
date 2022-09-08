@@ -1,11 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
+import '../../Products/productFunctions.dart';
+import '../../calendar/bookingFunctions.dart';
+import '../../home/home_page.dart';
+import '../../summary/FareRulesView.dart';
+import '../../summary/summaryView.dart';
+import '../../summary/vidFlightTimeline.dart';
 import '../helper.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:vmba/components/showDialog.dart';
 
 
 
@@ -15,12 +22,14 @@ Widget appBar(BuildContext context, String title,
         NewBooking newBooking,
         String imageName,  double elevalion, NetworkImage backgroundImage,
         Widget bottom, double toolbarHeight,
-        int curStep}) {
+        int curStep, bool statusBarOn}) {
   if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
   if( bottom != null ){
 //    logit( 'bottom on page $title');
   }
   bool wantOutline = false;
+
+
   double height = 80;
   if( gblSettings.wantTallPageImage ) {
     height = 140;
@@ -29,109 +38,6 @@ Widget appBar(BuildContext context, String title,
     curStep = 1;
   }
 
-  if( gblSettings.wantTallPageImage && gblSettings.wantStatusLine && imageName != null && newBooking != null) {
-    Color txtCol = Colors.white;
-    Color backCol = Colors.grey.withOpacity(0.6);
-    TextStyle tStyle = TextStyle( color:  txtCol);
-    //TextStyle cityStyle = TextStyle( color:  txtCol);
-    var row1 = Row(children: [
-
-      FutureBuilder(
-        future: cityCodeToName(
-          newBooking.departure,
-        ),
-        initialData: newBooking.departure.toString(),
-        builder: (BuildContext context, AsyncSnapshot<String> text) {
-          return new Text(text.data,
-              style:  tStyle);
-        },
-      ),
-      //TrText(newBooking.departure, style: tStyle, textScaleFactor: 2) ,
-      RotatedBox(
-          quarterTurns: 1,
-          child: new Icon(
-            Icons.airplanemode_active,
-            size: 20,
-            color: txtCol,
-          )),
-      FutureBuilder(
-        future: cityCodeToName(
-          newBooking.arrival,
-        ),
-        initialData: newBooking.arrival.toString(),
-        builder: (BuildContext context, AsyncSnapshot<String> text) {
-          return new Text(
-            text.data,
-            style: tStyle,
-          );
-        },
-      ),
-      Spacer(),
-      Text( getIntlDate('EEE dd MMM', newBooking.departureDate), style: TextStyle(color: txtCol),)
-    ],);
-
-    List <Widget> list = [];
-
-    list.add(Text(newBooking.passengers.adults.toString() , style: tStyle));
-    list.add(Icon(Icons.person,color: txtCol, size: 15,));
-    list.add(Padding(padding: EdgeInsets.only(left: 5),));
-
-    if( newBooking.passengers.children > 0) {
-      list.add( Text(newBooking.passengers.children.toString(), style: tStyle));
-      list.add(Icon(Icons.child_care,color: txtCol, size: 15));
-      list.add(Padding(padding: EdgeInsets.only(left: 5),));
-    }
-
-    if( newBooking.passengers.infants > 0) {
-      list.add( Text(newBooking.passengers.infants.toString(), style: tStyle));
-      list.add(Icon(Icons.child_friendly,color: txtCol, size: 15));
-      list.add(Padding(padding: EdgeInsets.only(left: 5),));
-    }
-
-    if( newBooking.passengers.youths > 0) {
-      list.add( Text(newBooking.passengers.youths.toString(), style: tStyle));
-      //list.add( Text('Y'));
-      list.add(Icon(Icons.directions_run,color: txtCol, size: 15));
-      list.add(Padding(padding: EdgeInsets.only(left: 5),));
-    }
-
-    if( newBooking.passengers.students > 0) {
-      list.add( Text(newBooking.passengers.students.toString(), style: tStyle));
-      //list.add( Text('Y'));
-      list.add(Icon(Icons.school, color: txtCol, size: 15));
-      list.add(Padding(padding: EdgeInsets.only(left: 5),));
-    }
-
-    if( newBooking.passengers.seniors > 0) {
-      list.add( Text(newBooking.passengers.seniors.toString(), style: tStyle));
-      //list.add( Text('S'));
-      list.add(Icon(Icons.directions_walk,color: txtCol, size: 15));
-      list.add(Padding(padding: EdgeInsets.only(left: 5),));
-    }
-    list.add(Spacer());
-    list.add(Text( gblPayable, style: TextStyle(color: txtCol)));
-
-
-  var row2 = Row(children: list);
-
-
-  List<Widget> widgets = [];
-    widgets.add(row1);
-    widgets.add(row2);
-
-
-    if( gblSettings.wantProgressBar) {
-      Widget status = _getStatus(context, curStep);
-      widgets.add(status);
-    }
-
-    bottom = PreferredSize(
-        child: Container(
-          color: backCol,
-        child: Column( children: widgets, ))
-        , preferredSize: Size.fromHeight(40.0),) ;
-    height = 140;
-  }
 
   Widget flexibleSpace ;
 
@@ -178,7 +84,6 @@ Widget appBar(BuildContext context, String title,
             elevation: elevalion,
             automaticallyImplyLeading: automaticallyImplyLeading,
             centerTitle: gblCentreTitle,
-            //brightness: gblSystemColors.statusBar,
             backgroundColor: Colors.transparent,
 
             iconTheme: IconThemeData(
@@ -199,18 +104,13 @@ Widget appBar(BuildContext context, String title,
   }
 
   if( gblSettings.wantLeftLogo && leading == null ) {
+
     return AppBar(
       flexibleSpace: flexibleSpace,
       centerTitle: gblCentreTitle,
       toolbarHeight: toolbarHeight,
       elevation: elevalion,
-      leading: gblSettings.wantLeftLogo ? Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: Image.asset(
-              'lib/assets/$gblAppTitle/images/appBarLeft.png',
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-              colorBlendMode: BlendMode.modulate)) :Text(''),
-      //brightness: gblSystemColors.statusBar,
+      leading: getAppBarLeft(),
       backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
@@ -231,7 +131,6 @@ Widget appBar(BuildContext context, String title,
       elevation: elevalion,
       automaticallyImplyLeading: automaticallyImplyLeading,
       centerTitle: gblCentreTitle,
-      //brightness: gblSystemColors.statusBar,
       backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
 
       iconTheme: IconThemeData(
@@ -247,7 +146,283 @@ Widget appBar(BuildContext context, String title,
 
 }
 
+Widget getSummaryBody(BuildContext context, NewBooking newBooking,  Widget Function(NewBooking newBooking) body, Key key) {
+  if( gblError != '') {
+    return displayMessage(context,'Booking Error', gblError );
+  }
+  if (gblSettings.wantProducts) {
+    return StatusBar(key: key, newBooking: newBooking, body: body,);
 
+  } else {
+    return body(newBooking);
+  }
+}
+
+class StatusBar extends StatefulWidget {
+  final NewBooking newBooking;
+  final Widget Function(NewBooking newBooking) body;
+
+  StatusBar({Key key, this.newBooking, this.body}) : super(key: key);
+
+  StatusBarState createState() => StatusBarState();
+}
+class StatusBarState extends State<StatusBar> {
+
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    setAmountPayable(gblPnrModel);
+
+    Color iconClr = gblSystemColors.headerTextColor;
+    if( gblPnrModel == null || gblPnrModel.pNR == null ){
+      return Container();
+    }
+
+    return
+      ListView(
+          children: [
+
+      Container(
+     child:
+    Column(children: [
+      Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: Container(
+            padding: EdgeInsets.only(top: 0),
+            color: _isExpanded ? Colors.grey.shade200 : gblSystemColors.primaryHeaderColor,
+
+            child:
+    ListTileTheme(
+    contentPadding: EdgeInsets.all(0),
+        dense: true,
+        horizontalTitleGap: 0.0,
+        //minLeadingWidth: 0,
+    child: ExpansionTile(
+              trailing: Icon(
+                _isExpanded ? Icons.keyboard_arrow_up: Icons.keyboard_arrow_down,
+                color: _isExpanded ? Colors.black : iconClr,
+              ),
+             // backgroundColor: Colors.grey,
+              initiallyExpanded: false,
+              title: _getTitle(widget.newBooking, _isExpanded),
+
+              children: getTabs(context, widget.newBooking, _isExpanded), // getBookingSummaryBar(context, widget.newBooking, _isExpanded),
+              onExpansionChanged: (value) {
+                _isExpanded = value;
+                // whene setState methode is called the widget build function will be replayed with the new changes that we've done
+                setState(() {});
+              },
+            ))
+        ),
+      ),
+      widget.body(widget.newBooking),
+    ])
+    )]);
+  }
+
+  void refresh(){
+    setState(() {
+
+    });
+  }
+}
+
+List<Widget> getTabs(BuildContext context, NewBooking newBooking, bool isExpanded) {
+  List <Widget> tabViews = [];
+  tabViews.add(
+      ListView(
+     // shrinkWrap: false,
+      //mainAxisSize: MainAxisSize.max,
+      children: getBookingSummaryBar(context, newBooking,isExpanded)));
+
+  tabViews.add(SummaryView(newBooking: newBooking,));
+  tabViews.add(FareRulesView(fQItin: gblPnrModel.pNR.fareQuote.fQItin,
+    itin: gblPnrModel.pNR.itinerary.itin,));
+
+  List<Widget> list=[];
+  list.add(
+    DefaultTabController(
+        length: 3,
+
+        child: SizedBox(
+            height: 600,
+            child: Column(
+                children: <Widget>[
+                  TabBar(
+                    labelColor: Colors.grey,
+                    indicatorColor: Colors.blue,
+                    // indicatorSize: ,
+                    tabs: <Widget>[
+                      Tab(text: translate("Journeys"),),
+                      Tab(text: translate("Details"),),
+                      Tab ( text: translate('Fare Rules')),
+                    ],
+            ),
+                  Expanded(
+                      child: TabBarView(
+                        //controller: _controller,
+                        children: tabViews,)
+                  )
+                ])
+        )
+    )
+  );
+  return list;
+}
+
+Widget _getTitle(NewBooking newBooking,bool expanded) {
+  setAmountPayable(gblPnrModel);
+  Color txtCol = gblSystemColors.headerTextColor;
+  if( expanded){
+    txtCol = Colors.black;
+  }
+  TextStyle tStyle = TextStyle( color:  txtCol,fontSize: 20);
+ return Padding(padding: EdgeInsets.only(left: 10, top: 0),
+      child:  Row(children: [
+
+        FutureBuilder(
+          future: cityCodeToName(
+            newBooking.departure,
+          ),
+          initialData: newBooking.departure.toString(),
+          builder: (BuildContext context, AsyncSnapshot<String> text) {
+            return new Text(text.data,
+                style:  tStyle);
+          },
+        ),
+
+        newBooking.isReturn ?
+        new RotatedBox(
+            quarterTurns: 1,
+            child: new Icon(
+              Icons.import_export,
+              size: 20,
+              color: txtCol,
+            ))
+            :
+        new Icon(
+          Icons.arrow_forward_sharp,
+          size: 20,
+          color: txtCol,
+        ),
+
+        FutureBuilder(
+          future: cityCodeToName(
+            newBooking.arrival,
+          ),
+          initialData: newBooking.arrival.toString(),
+          builder: (BuildContext context, AsyncSnapshot<String> text) {
+            return new Text(
+              text.data,
+              style: tStyle,
+            );
+          },
+        ),
+        Spacer(),
+        Text( gblPayable, style: TextStyle(color: txtCol, fontSize: 18)),
+
+      ],));
+
+}
+
+
+List<Widget> getBookingSummaryBar(BuildContext context,  NewBooking newBooking, bool expanded) {
+
+    Color txtCol = Colors.white;
+    if(expanded) {
+      txtCol = Colors.black;
+    }
+
+    List <Widget> widgets = [];
+    DateTime a1 = DateTime.parse(newBooking.outboundflts.first.time.adaygmt + ' ' + newBooking.outboundflts.first.time.atimgmt);
+    DateTime d1 = DateTime.parse(newBooking.outboundflts.last.time.ddaygmt + ' ' + newBooking.outboundflts.last.time.dtimgmt);
+    int diff = d1.difference(a1).inMinutes;
+    String duration = getDuration(diff);
+  if(newBooking.outboundflts.length == 1 ) {
+    widgets.add(TimelineHeader(title: translate('Outbound Flight'), duration: duration));
+  } else {
+    widgets.add(TimelineHeader(title: translate('Outbound Flights'), duration: duration));
+  }
+  widgets.add(TimelineDelivery(newBooking:  newBooking, isReturn:  false,)); // Expanded(child:
+
+  if( newBooking.isReturn){
+
+    DateTime a1 = DateTime.parse(newBooking.returningflts.first.time.adaygmt + ' ' + newBooking.returningflts.first.time.atimgmt);
+    DateTime d1 = DateTime.parse(newBooking.returningflts.last.time.ddaygmt + ' ' + newBooking.returningflts.last.time.dtimgmt);
+    int diff = d1.difference(a1).inMinutes;
+    String duration = getDuration(diff);
+    widgets.add(TimelineHeader(title: 'Return Flight', duration: duration));
+    widgets.add(TimelineDelivery(newBooking:  newBooking, isReturn: true,)); // Expanded(child:
+
+  }
+
+    return widgets;
+}
+getPaxCounts(NewBooking newBooking, List<Widget> listMain, Color txtCol, TextStyle tStyle  ) {
+  List<Widget> list = [];
+  list.add(Text(newBooking.passengers.adults.toString() , style: tStyle));
+  list.add(Icon(Icons.person,color: txtCol, size: 15,));
+  list.add(Padding(padding: EdgeInsets.only(left: 5),));
+
+  if( newBooking.passengers.children > 0) {
+    list.add( Text(newBooking.passengers.children.toString(), style: tStyle));
+    list.add(Icon(Icons.child_care,color: txtCol, size: 15));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+  }
+
+  if( newBooking.passengers.infants > 0) {
+    list.add( Text(newBooking.passengers.infants.toString(), style: tStyle));
+    list.add(Icon(Icons.child_friendly,color: txtCol, size: 15));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+  }
+
+  if( newBooking.passengers.youths > 0) {
+    list.add( Text(newBooking.passengers.youths.toString(), style: tStyle));
+    //list.add( Text('Y'));
+    list.add(Icon(Icons.directions_run,color: txtCol, size: 15));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+  }
+
+  if( newBooking.passengers.students > 0) {
+    list.add( Text(newBooking.passengers.students.toString(), style: tStyle));
+    //list.add( Text('Y'));
+    list.add(Icon(Icons.school, color: txtCol, size: 15));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+  }
+
+  if( newBooking.passengers.seniors > 0) {
+    list.add( Text(newBooking.passengers.seniors.toString(), style: tStyle));
+    //list.add( Text('S'));
+    list.add(Icon(Icons.directions_walk,color: txtCol, size: 15));
+    list.add(Padding(padding: EdgeInsets.only(left: 5),));
+  }
+  listMain.add(Row(children: list,));
+
+}
+
+
+Widget getAppBarLeft() {
+  Widget leading = Text('');
+  if(gblSettings.wantLeftLogo  ) {
+    if( gblSettings.aircode == 'SI') {
+      leading = Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Image.asset(
+              'lib/assets/$gblAppTitle/images/appBarLeft.png',
+              color: Color.fromRGBO(255, 255, 255, 0.1),
+              colorBlendMode: BlendMode.modulate)
+      );
+    } else {
+      leading = Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Image.asset(
+              'lib/assets/$gblAppTitle/images/appBarLeft.png')
+      );
+    }
+  }
+  return leading;
+}
 
 Widget getText(String txt) {
 return Stack(
@@ -275,6 +450,7 @@ return Stack(
 );
 
 }
+/*
 
 Widget _getStatus(BuildContext context, int curStep ) {
   List <String> _steps= ['Search', 'Flights', 'Summary', 'Pax', 'Pay'];
@@ -328,44 +504,5 @@ Color textClr = gblSystemColors.progressTextColor;
   )    );
 
 }
-
-/*
-Widget _drawStep(int index, Color color, int curStep ) {
-  if( index <= curStep) {
-  return Container(
-    color: color,
-    child: Column( children: [
-      Text( index.toString()),
-      Icon(
-      Icons.check,
-      color: Colors.white,
-    )
-  ]
-  ));
-
-  } else {
-  return  Container(
-  color: color,
-  child: Icon(
-  Icons.remove,
-  ));
-}
-}
 */
-/*
-class Underline extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p1 = Offset(0, 0);
-    final p2 = Offset(50, 0);
-    final paint = Paint()
-      ..color = Colors.grey
-      ..strokeWidth = 4;
-    canvas.drawLine(p1, p2, paint);  }
 
-  @override
-  bool shouldRepaint(CustomPainter old) {
-    return false;
-  }
-}
-*/

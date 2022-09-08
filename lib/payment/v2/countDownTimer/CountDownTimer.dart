@@ -56,10 +56,14 @@ class CountDownTimer extends ChangeNotifier {
     if ( gblTimerExpired == false ) {
       notifyListeners();
     } else {
-      _stopwatch.stop();
-      _stopwatch = null;
-      timer.cancel();
-      timer = null;
+      if( _stopwatch != null ) {
+        _stopwatch.stop();
+        _stopwatch = null;
+      }
+      if( timer != null ) {
+        timer.cancel();
+        timer = null;
+      }
 
     }
   }

@@ -39,9 +39,13 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
     firstDate = DateTime.now();
     departureDate = DateTime.parse(mmbBooking
             .journeys.journey[widget.journeyToChange - 1].itin.first.depDate +
-        ' 00:00:00'); 
-        
-        lastDate = DateTime.now().add(Duration(days: 364));// +
+        ' 00:00:00');
+    if (DateTime.now().isAfter(departureDate)) {
+      departureDate = DateTime.now();
+    }
+
+
+    lastDate = DateTime.now().add(Duration(days: 364));// +
     //mmbBooking.journeys.journey[widget.journeyToChange-1].itin.first.depTime);
     //Oneway flight
     if (widget.journeyToChange == 1 &&
@@ -64,6 +68,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
           mmbBooking.journeys.journey.first.itin.last.depDate +
               ' ' +
               mmbBooking.journeys.journey.first.itin.last.arrTime);
+
       if (DateTime.now().isAfter(firstDate)) {
         firstDate = DateTime.now();
       }

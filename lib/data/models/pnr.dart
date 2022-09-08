@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'models.dart';
 
@@ -60,6 +61,17 @@ class PnrModel {
     return this.pNR.itinerary.itin.length;
   }
 
+  bool paxHasInfant(Pax pax) {
+    if( gblPnrModel == null ) return false;
+
+    bool found = false;
+    gblPnrModel.pNR.aPFAX.aFX.forEach((element) {
+      if( element.text.contains('P${pax.id}')){
+        found =  true;
+      }
+    });
+    return found ;
+  }
   bool hasFutureFlights() {
     DateTime now = DateTime.now();
     var fltDate;
@@ -158,6 +170,29 @@ class PnrModel {
 
     return '';
   }
+
+  // must has tickets with status OPEN ('O') to be refundable
+  bool canRefund(int journeyToChange) {
+    if( this.pNR.itinerary == null || this.pNR.itinerary.itin == null || this.pNR.itinerary.itin.length == 0 || this.pNR.itinerary.itin.length < journeyToChange-1){
+      return false;
+    }
+
+    if( this.pNR.tickets == null || this.pNR.tickets.tKT == null || this.pNR.tickets.tKT.length == 0){
+      return false;
+    }
+    bool bcanRefund = false;
+    this.pNR.tickets.tKT.forEach((ticket) {
+      if( ticket.segNo.isNotEmpty && int.parse(ticket.segNo) == (journeyToChange)){
+        if( ticket.tKTID == 'ETKT' && ticket.status=='O') {
+          bcanRefund =  true;
+        } else {
+          return false;
+        }
+      }
+    });
+    return bcanRefund;
+  }
+
 
   bool validateTickets(PNR pnr) {
     bool validateTickets = true;
@@ -291,6 +326,7 @@ class PnrModel {
 }
 
 class PNR {
+  String appVersion;
   String rLOC;
   String aDS;
   String pNRLocked;
@@ -328,7 +364,9 @@ class PNR {
   Fqfields fqfields;
 
   PNR(
-      {this.rLOC,
+      {
+      this.appVersion,
+      this.rLOC,
       this.aDS,
       this.pNRLocked,
       this.pNRLockedReason,
@@ -360,6 +398,7 @@ class PNR {
       this.fqfields});
 
   PNR.fromJson(Map<String, dynamic> json) {
+    appVersion = json['APPVERSION'];
     rLOC = json['RLOC'];
     aDS = json['ADS'];
     pNRLocked = json['PNRLocked'];
@@ -418,13 +457,13 @@ class PNR {
   }
 
   void dumpProducts(String from ) {
-    print('Products dump: ${from}');
+    if( gblLogProducts ) { logit('Products dump: $from');}
     if( mPS == null || mPS.mP == null ) {
-      print('None');
+      if( gblLogProducts ) { logit('None');}
       return ;
     }
     mPS.mP.forEach((p) {
-      print('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');
+      if( gblLogProducts ) { logit('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');};
     }
     );
   }
@@ -445,6 +484,7 @@ class PNR {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['APPVERSION'] = this.appVersion;
     data['RLOC'] = this.rLOC;
     data['ADS'] = this.aDS;
     data['PNRLocked'] = this.pNRLocked;
@@ -663,6 +703,9 @@ class Itin {
   String selectSeat;
   String mMBSelectSeat;
   String openSeating;
+  String mMBCheckinAllowed;
+  String onlineCheckinTimeStartGMT;
+  String onlineCheckinTimeEndGMT;
 
   Itin.getJounrey(
       // this.
@@ -704,7 +747,10 @@ class Itin {
       this.oAWebsite,
       this.selectSeat,
       this.mMBSelectSeat,
-      this.openSeating});
+      this.openSeating,
+      this.mMBCheckinAllowed,
+      this.onlineCheckinTimeEndGMT,
+      this.onlineCheckinTimeStartGMT});
 
   Itin.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -743,6 +789,9 @@ class Itin {
     selectSeat = json['SelectSeat'];
     mMBSelectSeat = json['MMBSelectSeat'];
     openSeating = json['OpenSeating'];
+    mMBCheckinAllowed = json['MMBCheckinAllowed'];
+    onlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
+    onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
   }
 
   Object get cityPair => this.depart + this.arrive;
@@ -785,6 +834,10 @@ class Itin {
     data['SelectSeat'] = this.selectSeat;
     data['MMBSelectSeat'] = this.mMBSelectSeat;
     data['OpenSeating'] = this.openSeating;
+    data['MMBCheckinAllowed'] = mMBCheckinAllowed;
+    data['OnlineCheckinTimeEndGMT'] = onlineCheckinTimeEndGMT ;
+    data['OnlineCheckinTimeStartGMT'] = onlineCheckinTimeStartGMT;
+
     return data;
   }
 

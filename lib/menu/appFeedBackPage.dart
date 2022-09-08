@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/calendar/TabPage.dart';
 
+import '../utilities/widgets/appBarWidget.dart';
+
 class AppFeedBackPage extends StatefulWidget {
   AppFeedBackPage({Key key, this.version}) : super(key: key);
   final String version;
@@ -56,13 +58,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          leading: gblSettings.wantLeftLogo ? Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                  'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                  color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate)) : Text(''),
-          //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -88,13 +84,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: gblSettings.wantLeftLogo ? Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                  'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                  color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate)) : Text(''),
-          //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -480,7 +470,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
 
         gblSine = sine;
-        gblMobileFlags = sineMap['mobileflags'];
+        //gblMobileFlags = sineMap['mobileflags'];
         gblSecurityLevel = int.parse(sineMap['securitylevel'].toString());
         if( gblVerbose == true ) {print('successful login'); }
         return 'OK';

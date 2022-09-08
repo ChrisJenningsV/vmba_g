@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
-//import 'package:package_info/package_info.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-//import 'package:open_appstore/open_appstore.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
@@ -15,8 +13,14 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
 import '../components/bottomNav.dart';
+import '../data/repository.dart';
+import '../mmb/viewBookingPage.dart';
+import '../utilities/widgets/appBarWidget.dart';
 
 
+GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
+GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
+GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
 
 class HomePage extends StatefulWidget {
   HomePage({this.ads});
@@ -36,6 +40,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Image alternativeBackgroundImage;
   bool gotBG = false;
   String buildNo = '';
+  String updateMsg = '';
 
 
   @override
@@ -55,11 +60,29 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
           buildNo = '${packageInfo.buildNumber}'
           );
     }
+    getSetting('savedVersion').then((value) {
+      if(value == null || value == '' ){
+        // if null, old format saved bookings
+        updateMsg = 'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
+      }
+      PackageInfo.fromPlatform()
+          .then((PackageInfo packageInfo) =>
+      packageInfo.version + '.' + packageInfo.buildNumber)
+          .then((String version) {
+            if( value != version) {
+              saveSetting('savedVersion', version);
+            }
+        });
+
+    });
+
 
     _displayProcessingIndicator = true;
     WidgetsBinding.instance?.addObserver(this);
     waitAndThenHideProcessingIndicator();
   }
+
+
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
@@ -233,14 +256,16 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     var buttonShape;
     double buttonHeight;
-    /*
-    Locale myLocale = Localizations.localeOf(context);
-    if( myLocale.countryCode != gblLanguage ){
-      Provider.of<LocaleModel>(context,listen:false).changelocale(Locale(gblLanguage));
+    double elevation = null;
+
+    Color headerClr = gblSystemColors.primaryHeaderColor;
+       bool extendBodyBehindAppBar =  false;
+
+    if( gblSettings.homePageStyle == 'V2') {
+      headerClr = Colors.transparent;
+      elevation = 0;
+      extendBodyBehindAppBar =  true;
     }
-
-     */
-
 
     if (gblSettings.backgroundImageUrl != null &&
         gblSettings.backgroundImageUrl.isNotEmpty) {
@@ -256,26 +281,7 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
     // var appLanguage = new AppLanguage();
     //   appLanguage.changeLanguage('fr');
 
-/*    switch (gblSettings.aircode.toUpperCase()) {
-      case 'SI':
-        buttonShape = RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(60.0),
-                topRight: Radius.circular(60.0)));
-        break;
-      case 'T6':
-        buttonShape = RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(60.0),
-                bottomLeft: Radius.circular(60.0),
-                topLeft: Radius.circular(60.0),
-                topRight: Radius.circular(60.0)));
-        break;
-      default:
-        buttonShape = null;
-    }
 
- */
     buttonHeight = 60;
     switch (gblSettings.buttonStyle.toUpperCase()){
       case 'OFFSET':
@@ -302,6 +308,11 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0)));
         break;
+      case 'RO3':
+        buttonHeight = 42;
+        buttonShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)));
+        break;
     }
 
     if (_displayProcessingIndicator) {
@@ -319,18 +330,98 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
               ],
             ),
           ));
+    } else if (updateMsg != '') {
+
+      return new Scaffold(
+          extendBodyBehindAppBar: extendBodyBehindAppBar,
+          appBar:  new AppBar(
+            elevation: elevation,
+            centerTitle: gblCentreTitle,
+
+            //brightness: gblSystemColors.statusBar,
+            //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
+            backgroundColor: headerClr,
+            title:_getLogo() ,
+            iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
+
+            //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
+          ),
+          endDrawer: DrawerMenu(),
+          backgroundColor: Colors.grey.shade500,
+          body: Center( child: Container(
+
+            //alignment: Alignment.topCenter,
+
+              margin: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
+              decoration: BoxDecoration(    border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(3.0))
+              ),
+              child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                  children: [ Column(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TrText('Update Message', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                        Padding(padding:  EdgeInsets.only(top: 10.0),),
+                        SizedBox(
+                          width: 250,
+                            child:Text( updateMsg),
+
+                        ),
+                        Padding(padding:  EdgeInsets.only(top: 20.0),),
+                        ElevatedButton(
+                          onPressed: () {
+                            updateMsg = '';
+                            setState(() {
+
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: gblSystemColors
+                                  .primaryButtonColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(30.0))),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                              TrText(
+                                'OK',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),])
+
+          ))
+        //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
+      );
+
+
     } else {
       //print(mainBackGroundImage);
       //var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
       //Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
 
       return new Scaffold(
-
+        extendBodyBehindAppBar: extendBodyBehindAppBar,
         appBar: new AppBar(
+          elevation: elevation,
             centerTitle: gblCentreTitle,
             //brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
-            backgroundColor:gblSystemColors.primaryHeaderColor,
+            backgroundColor:headerClr,
             title:_getLogo() ,
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
 
@@ -385,7 +476,12 @@ Widget _getLogo(){
     TextStyle st = new TextStyle( color: gblTitleStyle.color  );
     list.add(Text(txt, style: st, textScaleFactor: 0.75,));
   }
-  return new Row( children: list   );
+  if( gblSettings.wantCentreTitle) {
+    return new Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+  } else {
+    return new Row(children: list);
+
+  }
 }
 
   List<Widget> _getBackImage(var buttonShape, var buttonHeight) {
@@ -416,18 +512,50 @@ Widget _getLogo(){
           .height,
     ));
 
-    list.add(Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: _getButtons(context, buttonShape, buttonHeight),
-      ),
-    ));
+    switch (gblSettings.buttonStyle.toUpperCase()){
+      case 'RO3':
+        list.add(
+          Padding(padding: EdgeInsets.only(left: 20, right: 20),
+            child:
+            Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: _getButtons(context, buttonShape, buttonHeight),
+          ),),
+        ));
+        break;
+      default:
+        list.add(Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: _getButtons(context, buttonShape, buttonHeight),
+          ),
+        ));
+
+        break;
+    }
     return list;
   }
 }
 
   List <Widget> _getButtons(BuildContext context, var buttonShape, var buttonHeight) {
     List <Widget> list = [];
+    Color b1Clr = gblSystemColors.primaryButtonColor;
+    Color b2Clr = gblSystemColors.primaryButtonColor;
+    Color b1TextClr =Colors.white;
+    Color b2TextClr = Colors.white;
+    FontWeight fw = FontWeight.bold;
+    double tsf = 1.0;
+
+    if( gblSettings.homePageStyle == 'V2') {
+      b1Clr = gblSystemColors.home1ButtonColor;
+      b2Clr = gblSystemColors.home2ButtonColor;
+      b1TextClr = gblSystemColors.home1ButtonTextColor;
+      b2TextClr = gblSystemColors.home2ButtonTextColor;
+      fw = FontWeight.normal;
+      tsf = 1.25;
+    }
+
 
     if (gblNoNetwork == false && gblSettings.disableBookings == false) {
       list.add(Row(
@@ -439,8 +567,7 @@ Widget _getLogo(){
                 child: TextButton(
                   style: TextButton.styleFrom(
                       shape: buttonShape,
-                      backgroundColor: gblSystemColors
-                          .primaryButtonColor),
+                      backgroundColor: b1Clr),
                   onPressed: () =>
                       Navigator.of(context)
                           .pushNamedAndRemoveUntil(
@@ -451,18 +578,19 @@ Widget _getLogo(){
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
+                       gblSettings.wantButtonIcons ? Padding(
                           padding: EdgeInsets.only(right: 5),
                           child: Icon(
                             Icons.flight_takeoff,
                             color: Colors.white,
                           ),
-                        ),
+                        ) : Container() ,
                         TrText(
                           'Book a flight',
+                          textScaleFactor: tsf,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                              color: b1TextClr,
+                              fontWeight: fw),
                         ),
                       ],
                     ),
@@ -497,15 +625,16 @@ Widget _getLogo(){
                       mainAxisAlignment:
                       MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
+                        gblSettings.wantButtonIcons ? Padding(
                           padding: EdgeInsets.only(right: 5),
                           child: Icon(
                             Icons.flight_takeoff,
                             color: Colors.white,
                           ),
-                        ),
+                        ) : Container(),
                         TrText(
                           'Book an ADS Flight',
+                          textScaleFactor: tsf,
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
@@ -527,7 +656,7 @@ Widget _getLogo(){
             child: TextButton(
               style: TextButton.styleFrom(
                   shape: buttonShape,
-                  backgroundColor: gblSystemColors.primaryButtonColor),
+                  backgroundColor: b2Clr),
               onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
                   '/MyBookingsPage', (Route<dynamic> route) => false),
               child: Container(
@@ -535,18 +664,19 @@ Widget _getLogo(){
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
+                    gblSettings.wantButtonIcons ? Padding(
                       padding: EdgeInsets.only(right: 5),
                       child: Icon(
                         Icons.card_travel,
                         color: Colors.white,
                       ),
-                    ),
+                    ) : Container(),
                     TrText(
-    'My Bookings & Check-in',
-    style: TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold),
+                      'My Bookings & Check-in',
+                      textScaleFactor: tsf,
+                      style: TextStyle(
+                      color: b2TextClr,
+                      fontWeight: fw),
     ),
     ],
     ),
@@ -584,18 +714,19 @@ Widget _getLogo(){
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
+                        gblSettings.wantButtonIcons ? Padding(
                           padding: EdgeInsets.only(right: 5),
                           child: Icon(
                             Icons.person_pin,
                             color: Colors.white,
                           ),
-                        ),
+                        ) : Container(),
                         TrText(
                           '${gblSettings.fqtvName}       ' ,
+                          textScaleFactor: tsf,
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: fw),
                         ),
                       ],
                     ),

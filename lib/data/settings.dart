@@ -71,6 +71,7 @@ class Settings {
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantCurrencyPicker = false;
+  bool wantPassengerPassport = false;
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
@@ -82,6 +83,9 @@ class Settings {
   bool wantCitySwap;
   bool wantPageImages;
   bool wantProducts;
+  bool wantSeatsWithProducts;
+  bool wantMmbProducts;
+  String productImageMode;
   bool wantDangerousGoods;
   bool wantInternatDialCode;
   bool wantCovidWarning;
@@ -96,12 +100,16 @@ class Settings {
   bool wantKnownTravNo;
   bool wantPushNoticications;
   bool wantNotificationEdit;
+  bool wantCentreTitle;
   bool wantRefund;
   bool wantNewPayment;
+  bool wantButtonIcons;
   bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
+  bool useSmartPay;
 
+  String homePageStyle;
   String defaultCountryCode;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -149,6 +157,7 @@ class Settings {
   String gblLanguages ;
   String currencies;
   String gblServerFiles;
+  String testServerFiles;
   String covidText;
 
 
@@ -167,6 +176,7 @@ class Settings {
   String liveApiUrl;
   String liveSmartApiUrl;
   String liveCreditCardProvider;
+  String avTimeFormat;
 
   bool eVoucher;
   PassengerTypes passengerTypes;
@@ -174,6 +184,7 @@ class Settings {
   String fqtvName="";
   String appFeedbackEmail="";
   String buttonStyle;
+  String upgradeMessage;
 
   String prohibitedItemsNoticeUrl="";
   String groupsBookingsEmail ="";
@@ -184,6 +195,7 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
   int payTimeout;
+  int passportLayoutStyle;
 
 bool bpShowFastTrack;
   Settings({
@@ -198,6 +210,7 @@ bool bpShowFastTrack;
     this.wantLeftLogo = false,
     this.wantCurrencySymbols,
     this.wantCurrencyPicker = false,
+    this.wantPassengerPassport = false,
     this.wantRememberMe = false ,
     this.wantHomeFQTVButton = false,
     this.wantUmnr = false,
@@ -207,6 +220,9 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
+    this.wantSeatsWithProducts = false,
+    this.wantMmbProducts = false,
+    this.productImageMode = 'index',
     this.wantDangerousGoods = false,
     this.wantInternatDialCode = false,
     this.defaultCountryCode,
@@ -223,11 +239,16 @@ bool bpShowFastTrack;
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
     this.wantNotificationEdit = false,
+    this.wantCentreTitle = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
+    this.wantButtonIcons = true,
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
+    this.useSmartPay = false,
+    this.avTimeFormat='HHmm',
+    this.homePageStyle='V1',
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
@@ -265,6 +286,7 @@ bool bpShowFastTrack;
     this.covidText,
     this.currencies,
     this.gblServerFiles,
+    this.testServerFiles,
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
     this.skyFlyToken,
@@ -305,7 +327,9 @@ bool bpShowFastTrack;
     this.liveCreditCardProvider,
     this.fQTVpointsName,
     this.buttonStyle,
+    this.upgradeMessage,
     this.bpShowAddPassToWalletButton,
+    this.passportLayoutStyle = 1,
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {
@@ -371,13 +395,13 @@ bool bpShowFastTrack;
       passengerTypes.child = false;
     }
     if( wantApis) {
-      passengerTypes.wantAdultDOB = true;
+   /*   passengerTypes.wantAdultDOB = true;
       passengerTypes.wantYouthDOB = true;
       passengerTypes.wantSeniorDOB = true;
       passengerTypes.wantStudentDOB = true;
 
       wantMiddleName = true;
-      wantGender = true;
+      wantGender = true;*/
 
     }
 

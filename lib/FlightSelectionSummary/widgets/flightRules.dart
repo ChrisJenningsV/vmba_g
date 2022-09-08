@@ -17,9 +17,10 @@ class FlightRulesWidget extends StatefulWidget {
 class _FlightRulesState extends State<FlightRulesWidget> {
   String fareIDs;
   bool _displayProcessingIndicator = true;
-  List<String> fareRulesPerSegment = [];
+ // List<String> fareRulesPerSegment = [];
+  List<List> fareRulesPerSegment = [];
   // List<String>();
-  List<List> fareRules = [];
+  //List<List> fareRules = [];
   // List<List>();
 
   @override
@@ -34,6 +35,34 @@ class _FlightRulesState extends State<FlightRulesWidget> {
   }
 
   getFareRulesIds() async {
+    String _fareID;
+    String _segment;
+
+    for (FQItin f in widget.fQItin) {
+      _segment = f.seg;
+      _fareID = f.fQI
+          .replaceAll('S', '')
+          .replaceAll('I', "")
+          .replaceAll("T", "")
+          .replaceAll("O", "")
+          .trim();
+      await Repository.get()
+          .getFareRules(_fareID)
+          .then((result) {
+        int seg = int.parse(_segment);
+        while( seg > fareRulesPerSegment.length){
+          List<String> list = [];
+          fareRulesPerSegment.add(list);
+        }
+        fareRulesPerSegment[seg -1].addAll(result.body);
+      });
+
+      /* .then((_) {
+        fareRules.add(fareRulesPerSegment);*/
+    }
+  }
+
+  /*getFareRulesIds() async {
     String _fareID;
 
     for (FQItin f in widget.fQItin) {
@@ -51,7 +80,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
       });
     }
   }
-
+*/
   _dataLoaded() {
     setState(() {
       _displayProcessingIndicator = false;
@@ -60,8 +89,34 @@ class _FlightRulesState extends State<FlightRulesWidget> {
 
   Widget displayRules() {
     List<Widget> rulesWidget = [];
+
+    if( fareRulesPerSegment == null || fareRulesPerSegment.length == 0 ) {
+      rulesWidget.add(TrText('No rules found'));
+    } else {
+      fareRulesPerSegment.asMap().forEach((index, list) {
+        rulesWidget.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 0),
+            child: Text(
+                'Journey ${index + 1}: ${widget.itin[index].depart} ${widget
+                    .itin[index].arrive} (${widget.itin[index]
+                    .classBandDisplayName})',
+                style:
+                new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+          ),
+        );
+        //list.forEach((element) {
+        List<String> copyList = [];
+        list.forEach((element) {
+          copyList.add(element.replaceAll('- ', ''));
+        });
+        rulesWidget.add(
+            BulletList(copyList));
+      });
+          }
+        //});
     // List<Widget>();
-    fareRules.asMap().forEach((index, segment) {
+ /*   fareRules.asMap().forEach((index, segment) {
       rulesWidget.add(
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
@@ -72,14 +127,16 @@ class _FlightRulesState extends State<FlightRulesWidget> {
         ),
       );
 
-/*
+*//*
       segment.forEach((rule) {
         rulesWidget.add(Text(rule));
       });
-*/
+*//*
       rulesWidget.add(BulletList(segment));
 
-    });
+    });*/
+
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(8.0),
       child: Column(
@@ -88,6 +145,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ class AvailabilityModel {
 
 class Availability {
   Classbands classbands;
-  List<Itin> itin;
+  List<avItin> itin;
   Cal cal;
 
   Availability({this.classbands, this.itin, this.cal});
@@ -33,10 +33,10 @@ class Availability {
       //new List<Itin>();
       if (json['itin'] is List) {
         json['itin'].forEach((v) {
-          itin.add(new Itin.fromJson(v));
+          itin.add(new avItin.fromJson(v));
         });
       } else {
-        itin.add(new Itin.fromJson(json['itin']));
+        itin.add(new avItin.fromJson(json['itin']));
       }
     }
 
@@ -135,7 +135,16 @@ class Cbnotvalidwith {
   Cbnotvalidwith({this.cbname});
 
   Cbnotvalidwith.fromJson(Map<String, dynamic> json) {
-    cbname = json['cbname'];
+    cbname = '';
+    if (json['cbname'] is List){
+      json['cbname'].forEach((v) {
+        //   cbtext.add(new Cbtext.fromJson(v));
+        cbname += v + ',';
+      });
+    } else {
+      cbname = json['cbname'];
+    }
+    //cbname = json['cbname'];
   }
 
   Map<String, dynamic> toJson() {
@@ -194,7 +203,7 @@ class Cbtext {
   }
 }
 
-class Itin {
+class avItin {
   String line;
   String dep;
   String arr;
@@ -205,7 +214,7 @@ class Itin {
   String mctii;
   List<Flt> flt;
 
-  Itin(
+  avItin(
       {this.line,
       this.dep,
       this.arr,
@@ -216,7 +225,7 @@ class Itin {
       this.mctii,
       this.flt});
 
-  Itin.fromJson(Map<String, dynamic> json) {
+  avItin.fromJson(Map<String, dynamic> json) {
     line = json['line'];
     dep = json['dep'];
     arr = json['arr'];

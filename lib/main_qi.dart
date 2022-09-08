@@ -61,6 +61,9 @@ void configQI() {
     wantMyAccount: true,
     wantHomeFQTVButton: true,
     airlineName: "IBOM Air",
+    gblServerFiles: 'https://booking.ibomair.com/AppFiles/',
+    testServerFiles: 'https://customertest.videcom.com/ibomair/AppFiles/',
+
     xmlToken: "token=jgxD8XX48HgiBqGbkqmR2qmq6WzfWaQCi59Aa3s1StA%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: "QI",
@@ -77,7 +80,7 @@ void configQI() {
     backgroundImageUrl: "",
  //   hostBaseUrl: 'https://customertest.videcom.com/ibomair/VARS/public',
     iOSAppId: '1457545908',
-    androidAppId: 'com.ibomair',
+    androidAppId: 'com.ibomair.reservations',
 
     eVoucher: false,
     passengerTypes: PassengerTypes(

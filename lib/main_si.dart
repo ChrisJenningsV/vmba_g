@@ -50,7 +50,7 @@ void configSI() {
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
 
     accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
 
     primaryColor: Colors.white,// colour for datepicker header - also it changes menu icon color !!
@@ -72,6 +72,7 @@ void configSI() {
   gblSettings = Settings(
       wantLeftLogo:  true,
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: true,
       latestBuildiOS: '105',
       latestBuildAndroid: '105',
@@ -101,6 +102,7 @@ void configSI() {
       child: true,
       infant: true,
       youths: true,
+      wantYouthDOB: true,
   ),
   fqtvName:  "",
   appFeedbackEmail:  "webmaster@blueislands.com",
@@ -114,7 +116,8 @@ void configSI() {
     wantMaterialControls: true,
     wantCitySwap: true,
     wantPageImages: false,
-    gblServerFiles: 'https://customertest.videcom.com/blueislands/AppFiles',
+    gblServerFiles: 'https://booking.blueislands.com/AppFiles',
+    testServerFiles: 'https://customertest.videcom.com/blueislands/AppFiles',
     pageImageMap: '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "happypax"}',
     wantClassBandImages: false,
     defaultCountryCode: 'GB',
@@ -136,9 +139,12 @@ void configSI() {
   creditCardProvider: 'videcard', // citypaydirect
 
   testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+//    testXmlUrl:      "http://192.168.100.98/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+//  testApiUrl:      'http://192.168.100.98/blueislands/VARS/webApiV2/api/',
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
+ //   testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect
 
   wantPayStack: false,

@@ -27,8 +27,21 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/showDialog.dart';
+import '../components/vidButtons.dart';
+import '../components/vidGraphics.dart';
+import '../data/smartApi.dart';
+import '../functions/bookingFunctions.dart';
+import '../home/home_page.dart';
+import '../utilities/widgets/dataLoader.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
+
+//int _journeyToChange;
+MmbBooking _mmbBooking = MmbBooking();
+PnrModel pnr;
+
+bool wantChangeAnyFlight = true;
 
 class PnrChangeNotifier with ChangeNotifier {
   PnrModel _pnr = new PnrModel();
@@ -45,11 +58,12 @@ class ViewBookingPage extends StatefulWidget {
   ViewBookingPage({Key key, this.rloc}) : super(key: key);
   final String rloc;
 
-  _ViewBookingPage createState() => _ViewBookingPage();
+  ViewBookingPageState createState() => ViewBookingPageState();
 }
 
-class _ViewBookingPage extends State<ViewBookingPage> {
+class ViewBookingPageState extends State<ViewBookingPage> {
   //final String rloc;
+
   //CheckinBoardingPassesPage({this.rloc});
   GlobalKey<ScaffoldState> _key = GlobalKey();
 
@@ -61,60 +75,190 @@ class _ViewBookingPage extends State<ViewBookingPage> {
     super.initState();
   }
 
+  @override void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    gblCurrentRloc = widget.rloc;
+
+    Color menuColor = Colors.white;
+    if (gblPnrModel != null &&
+        double.parse(gblPnrModel.pNR.basket.outstanding.amount) > 0) {
+      menuColor = Colors.red;
+    }
+
     return ChangeNotifierProvider(
       //builder: (context) => PnrChangeNotifier(),
-      create: (context) => PnrChangeNotifier(),
-      child: Scaffold(
-          key: _key,
-          appBar: AppBar(
-            //brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: TrText("My Booking",
-                style: TextStyle(
-                    color: gblSystemColors
-                        .headerTextColor)),
+        create: (context) => PnrChangeNotifier(),
+        child: WillPopScope(
+          onWillPop: _onWillPop,
+          child: Scaffold(
+
+              key: _key,
+              appBar: AppBar(
+                //brightness: gblSystemColors.statusBar,
+                backgroundColor:
+                gblSystemColors.primaryHeaderColor,
+                actions: [
+                  Builder(
+                    builder: (context) =>
+                        IconButton(
+                          icon: Icon(Icons.menu,),
+                          color: menuColor,
+                          onPressed: () {
+                            if (gblPnrModel != null && double.parse(
+                                gblPnrModel.pNR.basket.outstanding.amount) >
+                                0) {
+                              _getDialog();
+                            } else {
+                              Scaffold.of(context).openEndDrawer();
+                            }
+                          },
+                          tooltip: MaterialLocalizations
+                              .of(context)
+                              .openAppDrawerTooltip,
+                        ),
+                  ),
+                ],
+                iconTheme: IconThemeData(
+                    color: gblSystemColors.headerTextColor),
+                title: TrText("My Booking",
+                    style: TextStyle(
+                        color: gblSystemColors
+                            .headerTextColor)),
+              ),
+              endDrawer: DrawerMenu(),
+              body: new Container(
+                child: new Center(
+                    child: new RefreshIndicator(
+                        child: CheckinBoardingPassesWidget(
+                          rloc: widget.rloc,
+                          onLoad: _onLoad,
+                          showSnackBar: showSnackBar,
+                          key: mmbGlobalKeyBooking,),
+                        onRefresh: refreshBooking //(context),
+                    )),
+              )),
+        ));
+  }
+
+ void _onLoad(BuildContext context) {
+    setState(() {
+
+    });
+ }
+
+
+
+  Widget _getDialog() {
+    showDialog(
+      context: context,
+      builder: (context) =>
+      new AlertDialog(
+        title: new TrText('Payment outstanding'),
+        content: new Text(translate('Do you want to pay ') + ' ${formatPrice( gblPnrModel.pNR.basket.outstanding.cur,double.parse(gblPnrModel.pNR.basket.outstanding.amount))} ' + translate('now')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              gblPayBtnDisabled = false;
+              Navigator.of(context).pop(false);
+            },
+            child: new TrText('No'),
           ),
-          endDrawer: DrawerMenu(),
-          body: new Container(
-            child: new Center(
-                child: new RefreshIndicator(
-              child: CheckinBoardingPassesWidget(
-                  rloc: widget.rloc, showSnackBar: showSnackBar),
-              onRefresh: _refreshBooking, //(context),
-            )),
-          )),
+          TextButton(
+            style: TextButton.styleFrom(
+                side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                primary: gblSystemColors.primaryButtonTextColor,
+                backgroundColor: gblSystemColors.primaryButtonColor
+            ),
+            onPressed: () {
+              //gblPnrModel = pnr;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ChoosePaymenMethodWidget(
+                            mmbBooking: _mmbBooking,
+                            pnrModel: gblPnrModel,
+                            isMmb: true,
+                            mmbAction: 'PAYOUTSTANDING',
+                            mmbCmd: '',
+                          )));
+            },
+            child: new TrText('Pay now'),
+          ),
+        ],
+      ),
     );
   }
 
-  Future<void> _refreshBooking() async {
+
+
+ /* Future<void> _refreshBooking() async {
+    logit('_refreshBooking');
+    await Repository.get().fetchPnr(widget.rloc);
+    if( gblSettings.wantApis) {
+      await Repository.get().fetchApisStatus(widget.rloc);
+    }
+
     Repository.get().fetchApisStatus(widget.rloc);
     Repository.get().fetchPnr(widget.rloc);
-  }
+  }*/
 
   showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(snackbar(message));
     //final _snackbar = snackbar(message);
     //_key.currentState.showSnackBar(_snackbar);
   }
+
+
+  Future<bool> _onWillPop() async {
+    if (double.parse(gblPnrModel.pNR.basket.outstanding.amount) == 0) {
+      return true;
+    } else {
+      return (await showDialog(
+        context: context,
+        builder: (context) =>
+        new AlertDialog(
+          title: new TrText('Are you sure?'),
+          content: new TrText('Do you want abandon your booking '),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                gblPayBtnDisabled = false;
+                Navigator.of(context).pop(false);
+              },
+              child: new TrText('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: new TrText('Yes'),
+            ),
+          ],
+        ),
+      )) ?? false;
+    }
+  }
 }
 
 class CheckinBoardingPassesWidget extends StatefulWidget {
-  CheckinBoardingPassesWidget({Key key, this.rloc, this.showSnackBar})
+  CheckinBoardingPassesWidget({Key key, this.rloc, this.showSnackBar, this.onLoad})
       : super(key: key);
   final String rloc;
   final ValueChanged<String> showSnackBar;
+  void Function(BuildContext context) onLoad;
 
   @override
   State<StatefulWidget> createState() =>
-      new _CheckinBoardingPassesWidgetState();
+      new CheckinBoardingPassesWidgetState();
 }
 
-class _CheckinBoardingPassesWidgetState
+class CheckinBoardingPassesWidgetState
     extends State<CheckinBoardingPassesWidget> {
   //AsyncSnapshot snapshot;
   //GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -124,7 +268,7 @@ class _CheckinBoardingPassesWidgetState
 //  String _error = '';
   String _displayProcessingText = '';
   //Journeys journeys = Journeys(List<Journey>());
-  MmbBooking mmbBooking = MmbBooking();
+//  MmbBooking mmbBooking = MmbBooking();
   List<City> cities = [];
   // new List<City>();
   int currentPaxNo;
@@ -135,6 +279,7 @@ class _CheckinBoardingPassesWidgetState
   void initState() {
     super.initState();
     gblError = '';
+    _mmbBooking = MmbBooking();
     _loadingInProgress = true;
     _displayProcessingText = '';
     initValues();
@@ -143,7 +288,6 @@ class _CheckinBoardingPassesWidgetState
   }
 
   initValues() {
-    PnrModel pnr;
     Repository.get()
         .getPnr(widget.rloc)
         .then((pnrDb) {
@@ -158,17 +302,28 @@ class _CheckinBoardingPassesWidgetState
           // PnrModel
           pnr = new PnrModel.fromJson(map);
           loadJourneys(pnr);
-          mmbBooking.rloc = pnr.pNR.rLOC;
+          gblSelectedCurrency = _mmbBooking.currency;
 
-          mmbBooking.passengers.adults =
+          _mmbBooking.rloc = pnr.pNR.rLOC;
+          gblPnrModel = pnr;
+
+          _mmbBooking.passengers.adults =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'AD').length;
-          mmbBooking.passengers.children =
+          _mmbBooking.passengers.children =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'CH').length;
-          mmbBooking.passengers.youths =
+          _mmbBooking.passengers.youths =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'TH').length;
-          mmbBooking.passengers.infants =
+          _mmbBooking.passengers.infants =
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'IN').length;
 
+          // save currency
+          if( pnr.pNR.payments != null && pnr.pNR.payments.fOP.length > 0 ){
+            gblSelectedCurrency =   pnr.pNR.payments.fOP[0].payCur;
+          } else if (pnr.pNR.fareQuote != null && pnr.pNR.fareQuote.fQItin.length > 0 ) {
+            gblSelectedCurrency =pnr.pNR.fareQuote.fQItin[0].cur;
+          }
+
+          widget.onLoad(context);
           // setState(() {
           //   objPNR = pnr;
           // });
@@ -205,15 +360,24 @@ class _CheckinBoardingPassesWidgetState
             }));
   }
 
+  void refresh(){
+    widget.onLoad(null);
+    setState(() {
+      objPNR = gblPnrModel;
+    });
+  }
   void loadCities(List<Itin> itin) {}
 
   loadJourneys(PnrModel pnrModel) {
+    // reset list
+    //_mmbBooking.journeys.journey = [];
+
     int journeyCount = 0;
     pnrModel.pNR.itinerary.itin.forEach((flt) {
-      if (this.mmbBooking.journeys.journey.length == journeyCount) {
-        this.mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
+      if (_mmbBooking.journeys.journey.length == journeyCount) {
+        _mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
       }
-      this.mmbBooking.journeys.journey[journeyCount].itin.add(flt);
+      _mmbBooking.journeys.journey[journeyCount].itin.add(flt);
       if (flt.nostop != 'X') {
         journeyCount++;
       }
@@ -291,7 +455,7 @@ class _CheckinBoardingPassesWidgetState
       _loadingInProgress = true;
     });
 
-    PnrModel pnr;
+    //PnrModel pnr;
     gblCurrentRloc = widget.rloc;
     Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
       if( pnrDb != null ) {
@@ -372,25 +536,43 @@ class _CheckinBoardingPassesWidgetState
 
   Widget checkinOrPassesWidget(String rLOC, pnr) {
     //double c_width = MediaQuery.of(context).size.width * 0.95;
+    List<Widget>  list = [];
+    list.add( Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        new TrText("Booking reference",
+            style: new TextStyle(
+                fontSize: 16.0, fontWeight: FontWeight.w700)),
+        new Text(rLOC,
+            style: new TextStyle(
+                fontSize: 16.0, fontWeight: FontWeight.w700)),
+        _refreshButton(pnr),
+      ],
+    ),);
+
+    if( gblSettings.wantMmbProducts
+        && pnr.hasFutureFlightsAddDayOffset(0) ){
+      // only add products if has furture flights
+      list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: null,
+        pnrModel: pnr,
+        onComplete: (PnrModel pnrModel) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          if(gblLogProducts) { logit('On Complete products');}
+          pnr = pnrModel;
+          //pnrModel = pnrModel;
+          setState(() {
+
+          });
+        },));
+
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
       child: Container(
         padding: EdgeInsets.only(left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
         child: new Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new TrText("Booking reference",
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w700)),
-                    new Text(rLOC,
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w700)),
-                _refreshButton(pnr),
-              ],
-            ),
-          ],
+          children: list,
         ),
       ),
       decoration: BoxDecoration(
@@ -411,10 +593,10 @@ class _CheckinBoardingPassesWidgetState
     List<Widget> list = [];
     // new List<Widget>();
     if (pnr.pNR.aPFAX != null) {
-      mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
+      _mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
           .firstWhere((f) => f.aFXID == 'DISC', orElse: () => null);
     } else {
-      mmbBooking.eVoucher = null;
+      _mmbBooking.eVoucher = null;
     }
 
     //TODO:
@@ -471,8 +653,10 @@ class _CheckinBoardingPassesWidgetState
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            (seatNo!= '' ) ? vidSeatIcon(seatNo) : Container(),
             Expanded(
               flex: 7,
+
               child: new Text(
                   pnr.pNR.names.pAX[i].firstName +
                       ' ' +
@@ -480,8 +664,13 @@ class _CheckinBoardingPassesWidgetState
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w400)),
             ),
-            (seatNo!= '' )? Text(seatNo + '  ') : Container(),
+            //(seatNo!= '' )? Text(seatNo + '  ') : Container(),
             new Row(children: [
+              ( gblSettings.wantApis) ? Column(
+                children: [
+                apisButtonOption(pnr, i, journey, paxlist),
+                buttonOption(pnr, i, journey, paxlist),
+                ]) :
               buttonOption(pnr, i, journey, paxlist),
             ]),
             //    ),
@@ -512,22 +701,25 @@ class _CheckinBoardingPassesWidgetState
       ),
     );
 
-    if (pnr.pNR.editFlights == true) {
+    if (pnr.pNR.editFlights == true ) {
       int journeyToChange = getJourney(journey, pnr.pNR.itinerary);
 
-      var departureDate = DateTime.parse(mmbBooking
+      if(  _mmbBooking.journeys.journey.length >= journeyToChange) {
+      var departureDate = DateTime.parse(_mmbBooking
               .journeys.journey[journeyToChange - 1].itin.first.depDate +
           ' ' +
-          mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
+          _mmbBooking.journeys.journey[journeyToChange - 1].itin.first.depTime);
 
-      if (DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ){
+      if ( wantChangeAnyFlight || DateTime.now().add(Duration(hours: 1)).isBefore(departureDate) ) {
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
-        if( gblSettings.displayErrorPnr && int.parse(objPNR.pNR.basket.outstanding.amount) > 0 ) {
+        if (gblSettings.displayErrorPnr &&
+            double.parse(objPNR.pNR.basket.outstanding.amount) > 0) {
           list.add(Row(
               children: <Widget>[
-                Expanded( child: payOutstandingButton(pnr, objPNR.pNR.basket.outstanding.amount))
-                ]));
+                Expanded(child: payOutstandingButton(
+                    pnr, objPNR.pNR.basket.outstanding.amount))
+              ]));
 
 
 //          'Payment incomplete, ${basket.outstanding.amount} outstanding';
@@ -535,10 +727,10 @@ class _CheckinBoardingPassesWidgetState
         }
         list.add(Row(
           children: <Widget>[
-            _changeFlightButton(pnr , journeyToChange),
+            _flightButtons(pnr, journeyToChange),
           ],
         ));
-
+      }
       }
     }
 
@@ -578,46 +770,60 @@ class _CheckinBoardingPassesWidgetState
     );
 
   }
-  Widget _changeFlightButton( pnr ,journeyToChange ) {
-    return Expanded(
-      child: TextButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MmbDatePickerWidget(
-                pnr: pnr,
-                mmbBooking: mmbBooking,
-                journeyToChange: journeyToChange,
-              ),
-            )),
-        style: TextButton.styleFrom(
-            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            primary: gblSystemColors.textButtonTextColor),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TrText(
-              'Change Flight',
-              style: TextStyle(
-                  color: gblSystemColors
-                      .textButtonTextColor),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5.0),
-            ),
-            RotatedBox(
-              quarterTurns: 1,
-              child: Icon(
-                Icons.airplanemode_active,
-                size: 20.0,
-                color: Colors.grey,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+  Widget _flightButtons( pnr ,journeyToChange ) {
+    //_journeyToChange = journeyToChange;
+    if( gblSettings.wantRefund &&
+        objPNR.canRefund(journeyToChange)
+    ){
+        return Expanded(child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            vidTextButton(
+            context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
+            iconRotation: 1, p1: journeyToChange),
+        //SizedBox(width: 50),
+        vidTextButton(
+            context, 'Refund', _onPressedRefund, icon: Icons.money,
+            iconRotation: 1, p1: journeyToChange),
+        ],));
+    } else {
+      return vidWideTextButton(
+          context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
+          iconRotation: 1, p1: journeyToChange);
+    }
+  }
 
+  void _onPressedRefund({int p1}) async {
+    RefundRequest rfund = new RefundRequest();
+    rfund.rloc = widget.rloc;
+    rfund.journeyNo = p1;
+
+    String data =  json.encode(rfund);
+
+    try {
+      String reply = await callSmartApi('REFUND', data);
+      Map map = json.decode(reply);
+      RefundReply refundRs = new RefundReply.fromJson(map);
+      if( refundRs.success == true ) {
+        showAlertDialog(context, 'Refund', 'Refund successful');
+      } else {
+        showAlertDialog(context, 'Refund', 'refund failed');
+      }
+    } catch(e) {
+      logit(e.toString());
+    }
+  }
+
+  void _onPressedChangeFlt({int p1}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MmbDatePickerWidget(
+            pnr: objPNR,
+            mmbBooking: _mmbBooking,
+            journeyToChange: p1,
+          ),
+        ));
   }
 
   int getJourney(int leg, Itinerary itinerary) {
@@ -669,7 +875,8 @@ class _CheckinBoardingPassesWidgetState
                 vrsGuid: gblSettings.vrsGuid,
                 notifyToken: gblNotifyToken,
                 rloc: gblCurrentRloc,
-                phoneId: gblDeviceId
+                phoneId: gblDeviceId,
+                language: gblLanguage
               )
           );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
@@ -686,10 +893,11 @@ class _CheckinBoardingPassesWidgetState
     //Map map;
     if (response.statusCode == 200) {
       try {
-        String msg = response.body
+        Map map = jsonDecode( response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '');
+            .replaceAll('</string>', ''));
+        msg = map['data'];
         print(msg);
 
         if (!msg.contains('Error')) {
@@ -781,6 +989,58 @@ class _CheckinBoardingPassesWidgetState
     return result;
   }
 
+  Widget apisButtonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+    //Apis
+    if (apisPnrStatus != null &&
+        (apisPnrStatus.apisRequired(journeyNo)
+/*
+            &&
+            !apisPnrStatus.apisInfoEntered(journeyNo, paxNo + 1)
+*/
+        )) {
+      //return new TextButton(
+      return new TextButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ApisWidget(
+                    apisCmd:
+                    'dsx/${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMMyy').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}/${pnr.pNR.itinerary.itin[journeyNo].depart}/${pnr.pNR.itinerary.itin[journeyNo].arrive}/${pnr.pNR.rLOC + (paxNo + 1).toString()}',
+                    rloc: widget.rloc,
+                    paxIndex: paxNo,
+                    pnr: pnr.pNR,
+                  ),
+                )).then((apisState) {
+              _handleApisInfoChanged(apisState);
+            });
+          },
+          style: TextButton.styleFrom(
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+              primary: Colors.black),
+          child: Row(
+            children: <Widget>[
+              TrText(
+                   'Additional Information',
+                  style: TextStyle(
+                      color:
+                      gblSystemColors.textButtonTextColor)
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5.0),
+              ),
+              Icon(
+                Icons.info_outline,
+                size: 20.0,
+                color: Colors.grey,
+              )
+            ],
+          ));
+
+    }
+    return Container();
+  }
+
   Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
@@ -804,6 +1064,7 @@ class _CheckinBoardingPassesWidgetState
                 .where((t) =>
                     t.pax == (paxNo + 1).toString() &&
                     t.segNo == (journeyNo + 1).toString().padLeft(2, '0') &&
+                    t.tktFor != 'MPD' &&
                     t.tKTID == 'ELFT')
                 .length >
             0) {
@@ -815,6 +1076,7 @@ class _CheckinBoardingPassesWidgetState
       //       pnr.pNR.rLOC,
       //       paxNo);
       bool hasDownloadedBoardingPass = true;
+      //return new TextButton(
       return new TextButton(
         onPressed: () {
           hasDownloadedBoardingPass
@@ -849,13 +1111,13 @@ class _CheckinBoardingPassesWidgetState
                     Icons.confirmation_number,
                     size: 20.0,
                     color:
-                    gblSystemColors.primaryButtonTextColor,
+                    Colors.grey,
                   )
                 : Icon(
                     Icons.file_download,
                     size: 20.0,
                     color:
-                    gblSystemColors.textButtonTextColor,
+                    Colors.grey,
                   )
           ],
         ),
@@ -864,48 +1126,6 @@ class _CheckinBoardingPassesWidgetState
 
     //get apis state for the booking DSP/AATQ4T
 
-//Apis
-    if (apisPnrStatus != null &&
-        (apisPnrStatus.apisRequired(journeyNo) &&
-            !apisPnrStatus.apisInfoEntered(journeyNo, paxNo + 1))) {
-      return new TextButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ApisWidget(
-                    apisCmd:
-                        'dsx/${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMMyy').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}/${pnr.pNR.itinerary.itin[journeyNo].depart}/${pnr.pNR.itinerary.itin[journeyNo].arrive}/${pnr.pNR.rLOC + (paxNo + 1).toString()}',
-                    rloc: widget.rloc,
-                    paxIndex: paxNo,
-                    pnr: pnr.pNR,
-                  ),
-                )).then((apisState) {
-              _handleApisInfoChanged(apisState);
-            });
-          },
-          style: TextButton.styleFrom(
-              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: Colors.black),
-          child: Row(
-            children: <Widget>[
-              TrText(
-                'Additional Information',
-                  style: TextStyle(
-                      color:
-                      gblSystemColors.textButtonTextColor)
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 5.0),
-              ),
-              Icon(
-                Icons.info_outline,
-                size: 20.0,
-                color: Colors.white,
-              )
-            ],
-          ));
-    }
 
     bool checkinOpen = false;
 
@@ -920,6 +1140,7 @@ class _CheckinBoardingPassesWidgetState
       DateTime checkinClosed;
       DateTime now;
 
+/*
       checkinOpens = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
               pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
@@ -928,26 +1149,37 @@ class _CheckinBoardingPassesWidgetState
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
-
-    //  logit('checkin opens:${checkinOpens.toString()}');
-      checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
+*/
+      if( pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT.isEmpty ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT.isEmpty){
+        checkinOpen = false;
+      } else {
+        checkinOpens = DateTime.parse(
+            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT);
+       // logit('checkin opens:${checkinOpens.toString()}');
+        /*    checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
               ' ' +
               pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
           .subtract(new Duration(
               hours: cities
                   .firstWhere(
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
-                  .webCheckinEnd));
+                  .webCheckinEnd));*/
 
-     // logit('checkin closed:${checkinClosed.toString()}');
+        checkinClosed = DateTime.parse(
+            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT);
+       // logit('checkin closed:${checkinClosed.toString()}');
 
-      now = new DateTime.now().toUtc();
+        now = new DateTime.now().toUtc();
 
-     // logit('now:${now.toString()}');
+        // logit('now:${now.toString()}');
 
-      checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
-          ? true
-          : false;
+        checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
+            ? true
+            : false;
+      }
     }
 
     if (!isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], -1) &&
@@ -975,6 +1207,7 @@ class _CheckinBoardingPassesWidgetState
                 pnr.pNR.tickets.tKT.forEach((t){
                   if( t.segNo != null && t.segNo.isNotEmpty) {
                     if (int.parse(t.segNo) == (journeyNo + 1) &&
+                        pnr.pNR.names.pAX[int.parse(t.pax) - 1].paxType == 'AD' &&
                         t.tKTID == 'ELFT') {
                       checkedInCount++;
                     }
@@ -993,53 +1226,9 @@ class _CheckinBoardingPassesWidgetState
           if( amount == null || amount.isEmpty ) {
             amount = '0';
           }
-          if( int.parse(amount) > 0 ) {
+          if( double.parse(amount) > 0 ) {
             return payOutstandingButton(pnr, amount);
-/*
-            return new TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChoosePaymenMethodWidget(
-                          mmbBooking: mmbBooking,
-                          pnrModel: pnr,
-                          isMmb: true,
-                          mmbAction: 'PAYOUTSTANDING',
-                          mmbCmd: '',
-                        )));
-              },
-              style: TextButton.styleFrom(
-                  side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                  primary: gblSystemColors.textButtonTextColor),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    translate('Pay') + ' ' + formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(amount)) + ' ' + translate('Outstanding'),
-                    style: TextStyle(
-                        color: gblSystemColors
-                            .textButtonTextColor),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                  ),
-                  Icon(
-                    //Icons.airline_seat_recline_normal,
-                    Icons.done,
-                    size: 20.0,
-                    color:
-                    gblSystemColors.textButtonTextColor,
-                  ),
-                  Text(
-                    '',
-                    style: TextStyle(
-                        color: gblSystemColors
-                            .textButtonTextColor),
-                  )
-                ],
-              ),
-            );
-*/
+
           }
 
           //Checkin Button
@@ -1078,7 +1267,7 @@ class _CheckinBoardingPassesWidgetState
                   Icons.done,
                   size: 20.0,
                   color:
-                  gblSystemColors.textButtonTextColor,
+                  Colors.grey,
                 ),
                 Text(
                   '',
@@ -1183,7 +1372,7 @@ class _CheckinBoardingPassesWidgetState
             MaterialPageRoute(
                 builder: (context) =>
                     ChoosePaymenMethodWidget(
-                      mmbBooking: mmbBooking,
+                      mmbBooking: _mmbBooking,
                       pnrModel: pnr,
                       isMmb: true,
                       mmbAction: 'PAYOUTSTANDING',
@@ -1191,10 +1380,12 @@ class _CheckinBoardingPassesWidgetState
                     )));
       },
       style: TextButton.styleFrom(
-          side: BorderSide(
-              color: gblSystemColors.textButtonTextColor, width: 1),
-          primary: gblSystemColors.textButtonTextColor),
+          backgroundColor: gblSystemColors.primaryButtonColor,
+      /*    side: BorderSide(
+              color: gblSystemColors.primaryButtonColor, width: 1),*/
+          primary: gblSystemColors.primaryButtonTextColor),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             translate('Pay') + ' ' + formatPrice(
@@ -1211,8 +1402,7 @@ class _CheckinBoardingPassesWidgetState
             //Icons.airline_seat_recline_normal,
             Icons.done,
             size: 20.0,
-            color:
-            gblSystemColors.textButtonTextColor,
+            color: gblSystemColors.primaryButtonTextColor,
           ),
           Text(
             '',
@@ -1224,6 +1414,8 @@ class _CheckinBoardingPassesWidgetState
       ),
     );
   }
+
+
   Future<String> checkinStatus(Itin itin) async {
     String response = '';
     DateTime checkinOpens;
@@ -1795,7 +1987,7 @@ class _CheckinBoardingPassesWidgetState
           Icon(
             Icons.airline_seat_recline_normal,
             size: 20.0,
-            color: gblSystemColors.primaryButtonTextColor,
+            color: Colors.grey,
           ),
           Text(
             paxlist.firstWhere((p) => p.id == paxNo + 1).seat != null
@@ -1976,7 +2168,8 @@ class _CheckinBoardingPassesWidgetState
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
               rloc: gblCurrentRloc,
-              phoneId: gblDeviceId
+              phoneId: gblDeviceId,
+              language: gblLanguage
           )
       );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
@@ -2103,11 +2296,14 @@ class _CheckinBoardingPassesWidgetState
   }
 
   preferredSeating(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist) {
+    gblPnrModel = pnr;
+
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => SeatPlanWidget(
             paxlist: paxlist,
+            isMmb: true,
             seatplan:
                 'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,
@@ -2130,7 +2326,7 @@ class _CheckinBoardingPassesWidgetState
       // borderSide: BorderSide(
       //     color: AppConfig.of(context).systemColors.primaryButtonColor))
       //     ,
-      child: Text('Allocate seats randomly',
+      child: TrText('Allocate seats randomly',
           textAlign: TextAlign.center,
           style: new TextStyle(
               color: gblSystemColors.primaryButtonColor)),
@@ -2159,7 +2355,7 @@ class _CheckinBoardingPassesWidgetState
     );
 
     AlertDialog alert = AlertDialog(
-        title: Text('Seating Preference'),
+        title: TrText('Seating Preference'),
         content: Text(text),
         actions: <Widget>[
           autoseatingButton,

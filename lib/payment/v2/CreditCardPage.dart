@@ -22,6 +22,7 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/components/showDialog.dart';
 
 import '../../Helpers/networkHelper.dart';
+import 'package:vmba/data/models/vrsRequest.dart';
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({
@@ -159,7 +160,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   payCallback: () {
                     hasDataConnection().then((result) async {
                       if (result == true) {
-                        makePayment();
+                        if( gblSettings.useWebApiforVrs) {
+                          makePaymentVars();
+                        } else {
+                          makePayment();
+                        }
                         //  signin().then((_) => makePayment());
                       } else {
                         setState(() {
@@ -197,35 +202,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  /*
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Error"),
-          content: _error != null && _error != ''
-              ? new Text(_error)
-              : new Text("Please try again"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new TextButton(
-              child: new Text("Close"),
-              onPressed: () {
-                _error = '';
 
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-   */
   Future<void> signin() async {
     await login().then((result) {
       session = Session(
@@ -238,6 +215,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
   Future completeBooking() async {
+    logit('CCP:CompleteBooking');
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
     gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
@@ -275,6 +253,429 @@ class _CreditCardPageState extends State<CreditCardPage> {
     });
   }
 
+
+  Future makePaymentVars() async {
+    String msg = '';
+    bool oldCancelled = false;
+    http.Response response;
+    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+    setState(() {
+      //_displayProcessingText = 'Processing your payment...';
+      //_displayProcessingIndicator = true;
+    });
+    if (widget.isMmb) {
+      session = widget.session;
+    }
+    if (gblBookingState != BookingState.changeFlt &&
+        gblSession != null &&
+        (session == null ||
+            session.varsSessionId == null ||
+            session.varsSessionId.isEmpty)) {
+      session = gblSession;
+    }
+    if (rLOC.isEmpty) {
+      if (widget.pnrModel != null) {
+        rLOC = widget.pnrModel.pNR.rLOC;
+      }
+    }
+    if (session != null) {
+      if (gblBookingState != BookingState.changeSeat &&
+          gblBookingState != BookingState.bookSeat) {
+        msg = '*$rLOC^';
+      }
+      msg += getPaymentCmd(false);
+      logit(msg);
+      String result = await sendVarsCommand(msg) ;
+
+    if( result != null){
+        print(result);
+
+
+        if (result.contains('Payment Complete') ||
+            result.contains('Receipt e-mailed to:') ||
+            result == 'Payment not accepted, no more to pay for this passenger') {
+          gblTimerExpired = true;
+         // need to re - ticket
+          // MMGBP25^
+          // is it a change flight action ?
+
+          //  EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~xMMGBP25^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x
+          // _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
+          //var cmd = "EMT*R~x";
+          var cmd = "EZT*R~x";
+          if (widget.mmbAction == 'CHANGEFLT') {
+            // get tickets
+            cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R~x"; // server exception
+            //cmd = "EZV*[E][ZWEB]^E*R~x"; // good, no tickets
+            //cmd = "EZV*[E][ZWEB]^EZT*R~x"; // good
+            //cmd = "EZV*[E][ZWEB]^EZT^EMT*R~x"; //
+          }
+          if (widget.mmbAction == 'SEAT') {
+            cmd = "EMT*R^E*R~x";
+          } else if (widget.mmbAction == 'PAYOUTSTANDING') {
+            cmd = "EMT*R~x";
+          }
+
+          String onValue = await sendVarsCommand(cmd) ;
+/*
+          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
+              .then((onValue) {
+*/
+          if( onValue != null )
+          {
+
+            if (onValue.toString().contains('error')) {
+              _error = onValue;
+              _dataLoaded();
+              //_showDialog();
+              showAlertDialog(context, 'Error', _error);
+              return;
+            }
+            if (onValue.toString().contains('Exception:')) {
+              _error = onValue.toString().split('Exception:')[1];
+              if (_error.contains(' at ')) {
+                _error = onValue.toString().split(' at ')[0];
+              }
+              _dataLoaded();
+              //_showDialog();
+              showAlertDialog(context, 'Error', _error);
+              return;
+            }
+            // Server Exception ?
+            Map map = json.decode(onValue);
+            PnrModel pnrModel = new PnrModel.fromJson(map);
+            PnrDBCopy pnrDBCopy = new PnrDBCopy(
+                rloc: pnrModel.pNR.rLOC, //_rloc,
+                data: onValue,
+                delete: 0,
+                nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+            Repository.get().updatePnr(pnrDBCopy);
+            Repository.get()
+                .fetchApisStatus(pnrModel.pNR.rLOC)
+                .then((_) => sendEmailConfirmation(pnrModel))
+                .then((_) => getArgs(pnrModel.pNR))
+                .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
+                '/CompletedPage', (Route<dynamic> route) => false,
+                arguments: args
+              //[pnrModel.pNR.rLOC, result.toString()]
+            ));
+
+/*
+            Repository.get()
+                .updatePnr(pnrDBCopy)
+                .then((_) => sendEmailConfirmation(pnrModel))
+                .then((n) => getArgs(pnrModel.pNR))
+                .then((arg) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/CompletedPage', (Route<dynamic> route) => false,
+                  arguments: arg);
+            });
+*/
+          };
+        } else {
+          _error = result; // translate('Declined');
+          _dataLoaded();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+        }
+      };
+    } else {
+      if (widget.isMmb) {
+        msg = '*$rLOC';
+        bool deleteDone = false;
+//        int i = widget.mmbBooking.newFlights.length - 1;
+        widget.mmbBooking.newFlights.reversed.forEach((flt) {
+          // remove old flight
+          //XLM0032Q15FebABZKOI
+
+          if( deleteDone == false ) {
+            widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+                j) {
+              DateTime fltDate = DateTime.parse(j.ddaygmt);
+              msg +=
+              '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(
+                  fltDate)}${j.depart}${j.arrive}';
+            });
+            deleteDone = true;
+          }
+
+          oldCancelled = true;
+
+          print(flt);
+          msg += '^' + flt;
+        });
+
+        int flightLineNumber=-1;
+        if(  gblBookingState == BookingState.changeFlt ) {
+          /*int connectedLine = -1;
+          if( widget.mmbBooking.newFlights.length > 1) flightLineNumber= 0;*/
+          if( widget.mmbBooking.newFlights.length > 1) {
+            if (widget.mmbBooking.journeyToChange == 1) {
+              // make first line connection
+              flightLineNumber =1;
+            } else {
+              // count lines and add 1
+              flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+            }
+            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+          }
+
+        } else {
+          flightLineNumber = getConnectingFlightLineIdentifier(
+              widget.mmbBooking.journeys.journey[widget.mmbBooking
+                  .journeyToChange - 1]);
+        }
+        if (flightLineNumber >= 0) {
+          print("Journey has a connecting flight.");
+          msg += '^*r^.${flightLineNumber}x';
+        }
+
+        msg += '^e*r~x';
+      } else {
+        if (rLOC.isEmpty) {
+          if (widget.pnrModel != null) {
+            rLOC = widget.pnrModel.pNR.rLOC;
+            msg = '*$rLOC~x';
+          } else {
+            msg = '*R~x';
+          }
+        } else {
+          msg = '*$rLOC~x';
+        }
+      }
+      //msg += '~x';
+      print(msg);
+
+      String data = await runVrsCommand(msg);
+
+      bool flightsConfirmed = true;
+      String _response = data
+          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+          .replaceAll('<string xmlns="http://videcom.com/">', '')
+          .replaceAll('</string>', '');
+      if (data.contains('ERROR - ') || !_response.trim().startsWith('{')) {
+        _error = _response.replaceAll('ERROR - ', '').trim();
+        _dataLoaded();
+        showAlertDialog(context, 'Error', _error);
+        //showSnackBar(_error);
+        return null;
+      } else {
+        Map map = json.decode(_response);
+        pnrModel = new PnrModel.fromJson(map);
+        print(pnrModel.pNR.rLOC);
+        if (pnrModel.hasNonHostedFlights() &&
+            pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+          int noFLts = pnrModel
+              .flightCount(); //if external flights aren't confirmed they get removed from the PNR
+          // which makes it look like the flights are confirmed
+
+          flightsConfirmed = false;
+          for (var i = 0; i < 10; i++) {
+            msg = '*' + pnrModel.pNR.rLOC + '~x';
+
+            String data = await runVrsCommand(msg);
+            if (data.contains('ERROR - ')) {
+              _error = response.body
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '')
+                  .replaceAll('ERROR - ', '')
+                  .trim(); // 'Please check your details';
+              _dataLoaded();
+              return null;
+            } else {
+              String pnrJson = data
+                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '');
+              Map map = json.decode(pnrJson);
+
+              pnrModel = new PnrModel.fromJson(map);
+            }
+
+            if (!pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+              if (noFLts == pnrModel.flightCount()) {
+                flightsConfirmed = true;
+              } else {
+                flightsConfirmed = false;
+              }
+              break;
+            }
+            await new Future.delayed(const Duration(seconds: 2));
+          }
+        }
+      }
+      if (!flightsConfirmed) {
+        setState(() {
+          //_displayProcessingIndicator = false;
+        });
+        showSnackBar(translate('Unable to confirm partner airlines flights.'));
+        //Cnx new flights
+        msg = '*${widget.mmbBooking.rloc}';
+        widget.mmbBooking.newFlights.forEach((flt) {
+          print('x' + flt.split('NN1')[0].substring(2));
+          msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
+        });
+        /*response = await http
+            .get(Uri.parse(
+            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
+            .catchError((resp) {});*/
+        await runVrsCommand(msg);
+        return null;
+      }
+
+      msg = '*$rLOC^';
+      //update to use full cancel segment command
+      if (widget.isMmb) {
+        //msg += '^';
+        if (!oldCancelled) {
+          for (var i = 0;
+          i <
+              widget
+                  .mmbBooking
+                  .journeys
+                  .journey[widget.mmbBooking.journeyToChange - 1]
+                  .itin
+                  .length;
+          i++) {
+            Itin f = widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            String _depDate = DateFormat('ddMMM')
+                .format(DateTime.parse(f.depDate))
+                .toString();
+            msg +=
+            'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
+            if (f.nostop == 'X') {
+              nostop += ".${f.line}X^";
+            }
+          }
+        }
+
+        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFareStore(true);
+
+        msg += 'e*r^';
+        //msg += 'fg^fs1^e*r^';
+      }
+
+      //msg = '*$rLOC^';
+      msg += getPaymentCmd(true);
+
+      try {
+        print("Payment sent $msg");
+      } catch (e) {
+        print(e);
+      }
+
+      if( gblSettings.useSmartPay){
+
+      }
+      data = await runVrsCommand(msg);
+
+      String result = '';
+      try {
+        result = data
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', '');
+
+        if (result.trim() == 'Payment Complete') {
+          gblTimerExpired = true;
+          print('Payment success');
+          // kill timer
+          //         try {
+          //         Provider.of<CountDownTimer>(context, listen: false)
+          //           .stop();
+          //     } catch(e) {
+          //     print(e.toString());
+          // }
+
+          setState(() {
+            //_displayProcessingText = 'Completing your booking...';
+            //_displayProcessingIndicator = true;
+          });
+          if (pnrModel.pNR.tickets != null) {
+            await pullTicketControl(pnrModel.pNR.tickets);
+          }
+          ticketBooking();
+        } else if (result.contains('VrsServerResponse')) {
+          _error = json.decode(result)['VrsServerResponse']['PaymentResult']
+          ['Description'];
+          gblTimerExpired = true;
+          _dataLoaded();
+          //_showDialog();
+          logit(_error);
+          showAlertDialog(context, 'Error', _error);
+        } else if (result.contains('ERROR')) {
+          gblTimerExpired = true;
+          _error = result;
+          logit(_error);
+          _dataLoaded();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+        } else if (result.contains('Payment not')) {
+          gblTimerExpired = true;
+          _error = result;
+          _dataLoaded();
+          logit(_error);
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+        } else {
+          gblTimerExpired = true;
+          print(result);
+          _error = translate('Declined') + ': ' + result;
+          _dataLoaded();
+          //_showDialog();
+          showAlertDialog(context, 'Error', _error);
+        }
+      } catch (e) {
+        gblTimerExpired = true;
+        if (result.isNotEmpty) {
+          _error = result;
+        } else {
+          _error = response.body; // 'Please check your details';
+        }
+        logit(_error);
+        _dataLoaded();
+        //_showDialog();
+        showAlertDialog(context, 'Error', _error);
+      }
+    }
+  }
+
+  Future<String> sendVarsCommand(String msg) async {
+
+      String req = json.encode(
+          VrsApiRequest(
+              gblSession, Uri.encodeComponent( msg),
+              gblSettings.xmlToken.replaceFirst('token=', ''),
+              vrsGuid: gblSettings.vrsGuid,
+              notifyToken: gblNotifyToken,
+              rloc: gblCurrentRloc,
+              phoneId: gblDeviceId,
+              language: gblLanguage
+          )
+      );
+      String xmsg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$req";
+      final response = await http.get(Uri.parse(xmsg),headers: getXmlHeaders());
+      if( response == null ) {
+
+      } else {
+        Map map = jsonDecode(response.body
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', ''));
+
+        String result = map['data'];
+        return result;
+      }
+  }
+
+
+
+
+
   Future makePayment() async {
     String msg = '';
     bool oldCancelled = false;
@@ -306,12 +707,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       msg += getPaymentCmd(false);
       logit(msg);
+
       _sendVRSCommand(json.encode(RunVRSCommand(session, msg).toJson()))
           .then((result) {
+      {
         print(result);
+
+
         if (result == 'Payment Complete' ||
-            result ==
-                'Payment not accepted, no more to pay for this passenger') {
+            result.contains('Receipt e-mailed to:') ||
+            result == 'Payment not accepted, no more to pay for this passenger') {
           gblTimerExpired = true;
 /*          if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
@@ -365,6 +770,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 data: onValue,
                 delete: 0,
                 nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+            Repository.get().updatePnr(pnrDBCopy);
+            Repository.get()
+                .fetchApisStatus(pnrModel.pNR.rLOC)
+                .then((_) => sendEmailConfirmation(pnrModel))
+                .then((_) => getArgs(pnrModel.pNR))
+                .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
+                '/CompletedPage', (Route<dynamic> route) => false,
+                arguments: args
+              //[pnrModel.pNR.rLOC, result.toString()]
+            ));
+
+/*
             Repository.get()
                 .updatePnr(pnrDBCopy)
                 .then((_) => sendEmailConfirmation(pnrModel))
@@ -374,44 +791,79 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   '/CompletedPage', (Route<dynamic> route) => false,
                   arguments: arg);
             });
+*/
           });
         } else {
-          _error = translate('Declined');
+          _error = result; // translate('Declined');
           _dataLoaded();
           //_showDialog();
           showAlertDialog(context, 'Error', _error);
         }
-      });
+      }});
     } else {
       if (widget.isMmb) {
         msg = '*$rLOC';
-        int i = widget.mmbBooking.newFlights.length - 1;
+        bool deleteDone = false;
+//        int i = widget.mmbBooking.newFlights.length - 1;
         widget.mmbBooking.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
+
+          if( deleteDone == false ) {
+            widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+                j) {
+              DateTime fltDate = DateTime.parse(j.ddaygmt);
+              msg +=
+              '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(
+                  fltDate)}${j.depart}${j.arrive}';
+            });
+            deleteDone = true;
+          }
+/*
           Itin j = widget.mmbBooking.journeys
               .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
           i--;
           DateTime fltDate = DateTime.parse(j.ddaygmt);
           msg +=
               '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(fltDate)}${j.depart}${j.arrive}';
+*/
+
+
+
           oldCancelled = true;
-          String org = flt.substring(15, 18);
+          //String org = flt.substring(15, 18);
           //String dest = flt.substring(19, 22);
 
-          widget.mmbBooking.journeys.journey.forEach((j) {
+         /* widget.mmbBooking.journeys.journey.forEach((j) {
             if (j.itin[0].depart == org) {
               //      msg += '^X${j.itin[0].line}';
             }
-          });
+          });*/
           print(flt);
           msg += '^' + flt;
         });
 
-        int flightLineNumber = GetConnectingFlightLineIdentifier(widget
-            .mmbBooking
-            .journeys
-            .journey[widget.mmbBooking.journeyToChange - 1]);
+        int flightLineNumber=-1;
+        if(  gblBookingState == BookingState.changeFlt ) {
+          /*int connectedLine = -1;
+          if( widget.mmbBooking.newFlights.length > 1) flightLineNumber= 0;*/
+          if( widget.mmbBooking.newFlights.length > 1) {
+            if (widget.mmbBooking.journeyToChange == 1) {
+              // make first line connection
+              flightLineNumber =1;
+            } else {
+              // count lines and add 1
+              flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+            }
+            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+          }
+
+        } else {
+            flightLineNumber = getConnectingFlightLineIdentifier(
+              widget.mmbBooking.journeys.journey[widget.mmbBooking
+                  .journeyToChange - 1]);
+        }
         if (flightLineNumber >= 0) {
           print("Journey has a connecting flight.");
           msg += '^*r^.${flightLineNumber}x';
@@ -432,27 +884,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       //msg += '~x';
       print(msg);
-/*      response = await http
-          .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
-      if (response == null) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }
 
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }*/
       String data = await runVrsCommand(msg);
 
       bool flightsConfirmed = true;
@@ -463,7 +895,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (data.contains('ERROR - ') || !_response.trim().startsWith('{')) {
         _error = _response.replaceAll('ERROR - ', '').trim();
         _dataLoaded();
-        showSnackBar(_error);
+        showAlertDialog(context, 'Error', _error);
+        //showSnackBar(_error);
         return null;
       } else {
         Map map = json.decode(_response);
@@ -478,29 +911,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           flightsConfirmed = false;
           for (var i = 0; i < 10; i++) {
             msg = '*' + pnrModel.pNR.rLOC + '~x';
-            /*response = await http
-                .get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-                .catchError((resp) {});
-            if (response == null) {
-              setState(() {
-                //_displayProcessingIndicator = false;
-              });
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            }
 
-            //If there was an error return an empty list
-            if (response.statusCode < 200 || response.statusCode >= 300) {
-              setState(() {
-                //_displayProcessingIndicator = false;
-              });
-
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            } */
             String data = await runVrsCommand(msg);
             if (data.contains('ERROR - ')) {
               _error = response.body
@@ -594,29 +1005,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
       } catch (e) {
         print(e);
       }
-      /* response = await http
-          .get(Uri.parse(
-          "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
 
-      if (response == null) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
+      if( gblSettings.useSmartPay){
+
       }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          //_displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }*/
       data = await runVrsCommand(msg);
 
       String result = '';
@@ -690,7 +1082,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  int GetConnectingFlightLineIdentifier(Journey journey) {
+  int getConnectingFlightLineIdentifier(Journey journey) {
     int connectedLine = -1;
     journey.itin.forEach((itn) {
       if (itn.nostop == "X") {
@@ -826,35 +1218,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
   Future ticketBooking() async {
+    logit('CCP:ticketBooking');
     String msg = '';
     http.Response response;
     msg = '*$rLOC^';
     msg += getTicketingCmd();
 
     logit('ticketBooking: $msg');
-    /*response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-        .catchError((resp) {});
 
-    if (response == null) {
-      setState(() {
-        //_displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      setState(() {
-        //_displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }*/
     String data = await runVrsCommand(msg);
     String pnrJson = '';
     try {

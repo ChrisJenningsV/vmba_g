@@ -30,6 +30,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     super.initState();
     booking = new NewBooking();
     booking.currency = gblSettings.currency;
+    gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
     gblCurrentRloc = null;
 
@@ -201,6 +202,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               value: booking.currency,
               onChanged: (newValue) {
                 setState(() {
+                  gblSelectedCurrency = newValue;
                   booking.currency = newValue;
                 });
               },

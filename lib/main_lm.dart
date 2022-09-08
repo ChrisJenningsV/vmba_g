@@ -26,7 +26,7 @@ void configLM() {
   SystemColors _systemColors = SystemColors(
       primaryButtonColor: Colors.black,
       accentButtonColor: Colors.black,
-      accentColor: Colors.black,
+      accentColor: Colors.grey, // used for calendar selection ends
       primaryColor: Colors.red,
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
@@ -51,10 +51,12 @@ void configLM() {
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
     wantRememberMe: false,
+    wantApis: true,
     wantHomeFQTVButton: false,
 
     airlineName: "Loganair",
-  gblServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
+  gblServerFiles: 'https://booking.loganair.co.uk/AppFiles/',
+  testServerFiles: 'https://customertest.videcom.com/LoganAir/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',
@@ -68,14 +70,14 @@ void configLM() {
   webCheckinNoSeatCharge: false,
   vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
   autoSeatOption: true,
-    useWebApiforVrs: false,
+    //useWebApiforVrs: false,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
   androidAppId: 'uk.co.loganair.booking',
   fqtvName: 'Clan',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',
-    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
+    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options", "editPax", "paxDetails": "passengers"}',
     wantClassBandImages: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
@@ -120,12 +122,25 @@ void configLM() {
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:61667/webservices/VrsApi.asmx/PostVRSCommand?",
+    //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+
 //    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
- //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+
+
+/*
+    testXmlUrl:      "https://customertest.videcom.com/LoganAirinhouse/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testSmartApiUrl:      "https://customertest.videcom.com/LoganAirinhouse/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testApisUrl:      'https://customertest.videcom.com/LoganAirinhouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl:      'https://customertest.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
+*/
+
+    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
+
+
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
@@ -145,7 +160,7 @@ void configLM() {
   wantCitySwap: true,
   wantPushNoticications: true,
   wantNotificationEdit: false,
-  wantRefund: true,
+  //wantRefund: true,
   wantNewPayment: false,
   wantCountry: false,
 //  disableBookings: true,
@@ -155,14 +170,12 @@ void configLM() {
   maxNumberOfPax: 8,
   hideFareRules: false,
 
-/*  bpShowLoungeAccess: true,
-  bpShowFastTrack: true,
-  seatPlanColorEmergency: Colors.red, //Colors.yellow
-  seatPlanColorAvailable: Colors.blue, //Colors.green
-  seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
-  seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
-  seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
- */
+    useWebApiforVrs: true,
+    wantMmbProducts: true,
+    wantProducts: true,
+    wantStatusLine: true,
+    wantSeatsWithProducts: true,
+
   );
   gblSettings.setDefaults();
 }

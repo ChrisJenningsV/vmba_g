@@ -24,6 +24,10 @@ void main() {
 }
 void configUZ() {
   SystemColors _systemColors = SystemColors(
+      home1ButtonColor: Color.fromRGBO(0X0, 0xA6, 0x50, 1),
+      home2ButtonColor: Colors.white,
+      home1ButtonTextColor: Colors.white,
+      home2ButtonTextColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
       primaryButtonColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
       accentButtonColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
       accentColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
@@ -47,18 +51,26 @@ void configUZ() {
   gblBuildFlavor = 'UZ';
   gblCurrentRloc = '';
 
+
   gblSettings = Settings (
     wantRememberMe: false,
     wantHomeFQTVButton: false,
+    wantButtonIcons: false,
+    wantEnglishTranslation: true,
 
+    homePageStyle: 'V2',
+    buttonStyle: 'RO3',
     airlineName: "Buraq",
-  gblServerFiles: 'https://customertest.videcom.com/buraq/AppFiles/',
+  gblServerFiles: 'https://booking.buraq.aero/AppFiles/',
+  testServerFiles: 'https://customertest.videcom.com/buraq/AppFiles/',
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'UZ',
-  termsAndConditionsUrl: ' https://buraq.aero/terms-and-conditions/',
+  termsAndConditionsUrl: 'https://buraq.aero/terms-and-conditions/',
    privacyPolicyUrl:  'https://buraq.aero/privacy-policy/',
   prohibitedItemsNoticeUrl:  'https://buraq.aero/prohibited-items/',
+    faqUrl: 'https://buraq.aero/faqs/',
+    contactUsUrl: 'https://buraq.aero/contact-us/',
 
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
@@ -92,10 +104,11 @@ void configUZ() {
 
 //Production setttings
 
-  liveXmlUrl:      "https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveXmlUrl:      "https://booking.buraq.aero/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.buraq.aero/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.buraq.aero/VARS/webApiv2/api/',
   livePayPage:      'https://booking.buraq.aero/VARS/Public/MobilePaymentStart.aspx',
+  liveSmartApiUrl:      "https://customertest.videcom.com/buraq/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
   liveCreditCardProvider: 'worldpaydirect',
 
@@ -135,8 +148,8 @@ void configUZ() {
 
 
     testApisUrl:      'https://customertest.videcom.com/buraq/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//    testApiUrl:      'https://customertest.videcom.com/buraq/VARS/webApiv2/api/',
-    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+    testApiUrl:      'https://customertest.videcom.com/buraq/VARS/webApiv2/api/',
+//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
   creditCardProvider: '3DS_videcard',
@@ -155,7 +168,7 @@ void configUZ() {
   wantCitySwap: true,
   wantPushNoticications: false,
   wantNotificationEdit: false,
-  wantRefund: true,
+  wantRefund: false,
   wantNewPayment: true,
   wantCountry: false,
   useWebApiforVrs: true,

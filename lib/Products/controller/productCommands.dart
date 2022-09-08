@@ -5,6 +5,9 @@ import 'package:vmba/data/models/products.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../../calendar/bookingFunctions.dart';
+import '../../data/globals.dart';
+
 
 
 /* from Vicki
@@ -29,13 +32,14 @@ cancel msp
 
 
 
-Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) onComplete, void Function(String msg) onError} ) async {
+Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, dynamic p) onComplete, void Function(String msg) onError} ) async {
+  if( gblLogProducts) logit('save product');
   String msg = '';
   String _error;
   msg = '*${pnr.rLOC}^';
   String pCmd = buildSaveProductCmd(product, pnr);
   if( pCmd.isEmpty){
-    onComplete( null);
+    onComplete( null, product);
     return;
   }
   msg += pCmd;
@@ -72,8 +76,13 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       Map map = json.decode(pnrJson);
 
       PnrModel  pnrModel = new PnrModel.fromJson(map);
-      pnrModel.pNR.dumpProducts('after *r');
-      onComplete( pnrModel);
+      if( pnrModel.pNR != null ) {
+        pnrModel.pNR.dumpProducts('after *r');
+        gblPnrModel = pnrModel;
+        refreshStatusBar();
+        refreshMmbBooking();
+      }
+      onComplete( pnrModel, product);
     }
   } catch(e) {
     logit(e);
@@ -86,30 +95,41 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
     if( pnr.mPS != null && pnr.mPS.mP != null ){
       //pnr.mPS.mP.forEach((element) {
       // loop in reverse order, so multi deletes work
+      if( gblLogProducts) logit('delete unwanted products');
       for( int i=pnr.mPS.mP.length-1; i >= 0 ; i--) {
-        print('i=$i');
+        if( gblLogProducts ) { logit('i=$i');}
          MP element = pnr.mPS.mP[i];
         if( element.mPID == product.productCode) {
           // check if this still wanted
           if( product.curProducts == null || product.curProducts.length == 0 ){
             // remove
+            if( gblLogProducts) logit('remove 1 ${element.text }');
             if (cmd.isNotEmpty) cmd += '^';
             cmd += '7X${element.line}';
 
           } else {
+            bool found = false;
             product.curProducts.forEach((p) {
               int paxNo = int.parse(p.split(':')[0]);
               int segNo = int.parse(p.split(':')[1]);
 
               if (int.parse(element.pax) == paxNo &&
                   int.parse(element.seg) == segNo) {
-
+                  found = true;
+/*
               } else {
                 // remove
                 if (cmd.isNotEmpty) cmd += '^';
+                if( gblLogProducts) logit('remove ${element.text }');
                 cmd += '7X${element.line}';
+*/
               }
             });
+            if( !found ){
+              if (cmd.isNotEmpty) cmd += '^';
+              if( gblLogProducts) logit('remove ${element.text }');
+              cmd += '7X${element.line}';
+            }
           }
         }
       }
@@ -123,6 +143,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       bool alreadyAdded = false;
       if( pnr.mPS != null && pnr.mPS.mP != null ){
         pnr.mPS.mP.forEach((p) {
+          if( gblLogProducts) logit('check ${p.mPID} v ${product.productCode}');
           if (p.mPID == product.productCode) {
             // check if already in PNR
             if (( int.parse(p.seg) == segNo ) && (int.parse(p.pax) == paxNo))
@@ -159,5 +180,6 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel) o
       }
       }
     });
+    if( gblLogProducts) logit('sent $cmd');
     return cmd;
   }

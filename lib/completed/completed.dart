@@ -49,7 +49,7 @@ class CompletedPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30.0))),
                   child: TrText(
                     args[1] == 'true'
-                        ? 'View booking and choose a seat'
+                        ? (gblSettings.wantSeatsWithProducts ? 'View your booking' : 'View booking and choose a seat')
                         : 'View booking',
                     style: TextStyle(
                         color: gblSystemColors

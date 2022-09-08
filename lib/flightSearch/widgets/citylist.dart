@@ -8,6 +8,8 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../utilities/helper.dart';
+
 TextEditingController _searchEditingController =   TextEditingController();
 
 Future<List<Routes>> fetchCitylistData(http.Client client) async {
@@ -183,7 +185,7 @@ class DepartureListState extends State<DepartureList> {
 
   @override
   Widget build(BuildContext context) {
-    print('build DepartureList len=${routes.length}');
+    if(gblLogCities ) {logit('build DepartureList len=${routes.length}');}
 //    if( _searchEditingController.text.isNotEmpty) {
       filterCities(_searchEditingController.text);
   //  }
@@ -319,7 +321,7 @@ class _ArrivalsState extends State<Arrivals> {
 
   @override
   Widget build(BuildContext context) {
-      print('build ArrivalList len=${routes.length}');
+    if(gblLogCities ) {logit('build ArrivalList len=${routes.length}');}
 
 //      if( _searchEditingController.text.isNotEmpty) {
         filterCities(_searchEditingController.text);

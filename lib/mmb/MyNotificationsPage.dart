@@ -76,7 +76,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
             ),
           ));
     } else {
-      String title = "My Notifications";
+      String title = translate("My Notifications");
       List <Widget> tabs = [];
       List <Widget> tabeViews = [];
       tabs.add(TrText('All'));
@@ -88,7 +88,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       tabeViews.add(new Container(child: myNotifies('promo')));
 
       if (gblNotifications != null) {
-        title += ' ${gblNotifications.length} found';
+        title += ' ${gblNotifications.length} ' + translate('found');
       }
       return Scaffold(
         appBar: appBar(context, title,

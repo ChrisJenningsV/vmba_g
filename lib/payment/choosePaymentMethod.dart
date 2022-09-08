@@ -23,6 +23,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import 'ProviderFieldsPage.dart';
 
+bool _cancelTimer = false;
+
 //ignore: must_be_immutable
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
@@ -66,6 +68,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   @override
   initState() {
     super.initState();
+    if( gblLogPayment ) { logit('CPM initState');}
+
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
 
@@ -485,7 +489,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('Tax:'),
+            TrText('Tax:'),
             Text(formatPrice(currencyCode, taxTotal) ),
 /*
             Text(NumberFormat.simpleCurrency(
@@ -548,7 +552,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text('Allocated Seats',
+                TrText('Allocated Seats',
                     style: TextStyle(fontWeight: FontWeight.w700))
               ],
             ),
@@ -563,7 +567,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
+                TrText('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
                 Text(formatPrice(seat.cur ?? currencyCode, double.parse(seat.amt) ?? 0.0) ),
               ],
             ),
@@ -611,8 +615,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //final _snackbar = snackbar(message);
     //_key.currentState.showSnackBar(_snackbar);
   }
+/*
 
-  String buildCmd() {
+  Future<String> buildCmd() async {
     //Cancel journey
     //String nostop = '';
     String cmd = '';
@@ -638,6 +643,47 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //cmd += 'fg^fs1^e';
     return cmd;
   }
+*/
+  Future completeBookingNothingtoPayVRS() async {
+    String msg = '';
+    String data;
+
+    widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
+        .itin.reversed
+        .forEach((f) {
+        msg += 'X${f.line}';
+    });
+
+    widget.mmbBooking.newFlights.forEach((flt) {
+      print(flt);
+      msg += '^' + flt;
+    });
+    msg += '^';
+    msg += addFg(widget.mmbBooking.currency, true);
+    msg += addFareStore(true);
+    msg += 'e*r~x';
+    logit('CMP msg:${msg}');
+    try {
+      data = await runVrsCommand(msg);
+    } catch(e) {
+      _error = e.toString();
+      _dataLoaded();
+      _showDialog();
+      return null;
+    }
+
+    try {
+      if (widget.pnrModel.pNR.tickets != null) {
+        await pullTicketControl(widget.pnrModel.pNR.tickets);
+      }
+      logit('ticket booking');
+      ticketBooking();
+
+    } catch(e ) {
+
+    }
+    _dataLoaded();
+  }
 
   Future completeBookingNothingtoPay() async {
     setState(() {
@@ -645,21 +691,38 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       _displayProcessingIndicator = true;
     });
 
-    //New code
-    String msg = '';
-    String data;
-    if( this.isMmb) {
-      msg = '*${widget.mmbBooking.rloc}';
-      widget.mmbBooking.newFlights.forEach((flt) {
-        print(flt);
-        msg += '^' + flt;
-      });
-      msg += '^';
-    }
-    msg += 'e*r~x';
+    if( gblSettings.useWebApiforVrs) {
+      return completeBookingNothingtoPayVRS();
+    } else {
+      //New code
+      String msg = '';
+      String data;
+      if (this.isMmb) {
+        msg = '*${widget.mmbBooking.rloc}';
+
+        // add delete
+/*
+      if( gblSettings.useWebApiforVrs) {
+        widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange -
+            1]
+            .itin.reversed
+            .forEach((f) {
+          msg += '^X${f.line}';
+        });
+      }
+*/
+
+        widget.mmbBooking.newFlights.forEach((flt) {
+          print(flt);
+          msg += '^' + flt;
+        });
+        msg += '^';
+      }
+
+      msg += 'e*r~x';
 
 
-  /*  http.Response response = await http
+      /*  http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
         .catchError((resp) {});
@@ -683,248 +746,175 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return null;
     }*/
 
-    try {
-      data = await runVrsCommand(msg);
+      logit('CMP msg:${msg}');
+      try {
+        data = await runVrsCommand(msg);
 
-      bool flightsConfirmed = true;
-      if (data.contains('ERROR - ')) {
-        _error = data
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '')
-            .replaceAll('ERROR - ', '')
-            .trim();
-        // _dataLoaded();
-        // return null;
+        bool flightsConfirmed = true;
+        if (data.contains('ERROR - ')) {
+          _error = data
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '')
+              .replaceAll('ERROR - ', '')
+              .trim();
+          // _dataLoaded();
+          // return null;
 
-        print('completeBookingNothingtoPay: ' + _error);
+          print('completeBookingNothingtoPay: ' + _error);
 
-        _error =
-        'Unnable to change booking'; //response.body; // 'Please check your details';
-        _dataLoaded();
-        _showDialog();
-        return null;
-      } else if (data.contains('ERROR:')) {
-        _error = data
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '')
-            .replaceAll('ERROR: ', '')
-            .trim();
-        // _dataLoaded();
-        // return null;
+          _error =
+          'Unnable to change booking'; //response.body; // 'Please check your details';
+          _dataLoaded();
+          _showDialog();
+          return null;
+        } else if (data.contains('ERROR:')) {
+          _error = data
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '')
+              .replaceAll('ERROR: ', '')
+              .trim();
+          // _dataLoaded();
+          // return null;
 
-        print('completeBookingNothingtoPay: ' + _error);
+          print('completeBookingNothingtoPay: ' + _error);
 
-        _dataLoaded();
-        _showDialog();
-        return null;
-      } else {
-        String pnrJson = data
+          _dataLoaded();
+          _showDialog();
+          return null;
+        } else {
+          logit('save OK step 1');
+          String pnrJson = data
+              .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+              .replaceAll('<string xmlns="http://videcom.com/">', '')
+              .replaceAll('</string>', '');
+          Map map = json.decode(pnrJson);
+
+          widget.pnrModel = new PnrModel.fromJson(map);
+          print(widget.pnrModel.pNR.rLOC);
+          if (widget.pnrModel.hasNonHostedFlights() &&
+              widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+            int noFLts = widget.pnrModel
+                .flightCount(); //if external flights aren't confirmed they get removed from the PNR
+            // which makes it look like the flights are confirmed
+
+            flightsConfirmed = false;
+            for (var i = 0; i < 4; i++) {
+              msg = '*' + widget.pnrModel.pNR.rLOC + '~x';
+              logit('save cmd ${msg}');
+              String data = await runVrsCommand(msg);
+              if (data.contains('ERROR - ')) {
+                _error = data
+                    .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                    .replaceAll('<string xmlns="http://videcom.com/">', '')
+                    .replaceAll('</string>', '')
+                    .replaceAll('ERROR - ', '')
+                    .trim(); // 'Please check your details';
+                logit(_error);
+                _dataLoaded();
+                return null;
+              } else {
+                String pnrJson = data
+                    .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                    .replaceAll('<string xmlns="http://videcom.com/">', '')
+                    .replaceAll('</string>', '');
+                Map map = json.decode(pnrJson);
+                logit('OK step 2');
+                widget.pnrModel = new PnrModel.fromJson(map);
+              }
+
+              if (!widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
+                if (noFLts == widget.pnrModel.flightCount()) {
+                  flightsConfirmed = true;
+                } else {
+                  flightsConfirmed = false;
+                }
+                break;
+              }
+              await new Future.delayed(const Duration(seconds: 2));
+            }
+          }
+        }
+        if (!flightsConfirmed) {
+          setState(() {
+            _displayProcessingIndicator = false;
+          });
+          showSnackBar(
+              translate('Unable to confirm partner airlines flights.'));
+
+          //Cnx new flights
+          msg = '*${widget.mmbBooking.rloc}';
+          widget.mmbBooking.newFlights.forEach((flt) {
+            print('x' + flt.split('NN1')[0].substring(2));
+            msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
+          });
+          logit('Send msg ${msg}');
+          await runVrsCommand(msg);
+          return null;
+        }
+
+        // }
+        else {
+          msg = '*${widget.mmbBooking.rloc}^';
+          //update to use full cancel segment command
+          for (var i = 0;
+          i <
+              widget.mmbBooking.journeys
+                  .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
+          i++) {
+            Itin f = widget.mmbBooking.journeys
+                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            String _depDate =
+            DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
+            msg +=
+            'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
+            if (f.nostop == 'X') {
+              nostop += ".${f.line}X^";
+            }
+          }
+          msg += addFg(widget.mmbBooking.currency, true);
+          msg += addFareStore(true);
+
+          msg += 'e*r~x';
+          //msg += 'fg^fs1^e*r~x';
+        }
+        logit('sending msg: ${msg}');
+        data = await runVrsCommand(msg);
+
+        String result = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
-        Map map = json.decode(pnrJson);
 
-        widget.pnrModel = new PnrModel.fromJson(map);
-        print(widget.pnrModel.pNR.rLOC);
-        if (widget.pnrModel.hasNonHostedFlights() &&
-            widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-          int noFLts = widget.pnrModel
-              .flightCount(); //if external flights aren't confirmed they get removed from the PNR
-          // which makes it look like the flights are confirmed
+        if (result.contains("ERROR -")) {
+          logit(result);
+          _error = 'Changes not completed';
+          _dataLoaded();
+          _showDialog();
+        } else {
+          Map map = json.decode(result);
+          widget.pnrModel = new PnrModel.fromJson(map);
 
-          flightsConfirmed = false;
-          for (var i = 0; i < 4; i++) {
-            msg = '*' + widget.pnrModel.pNR.rLOC + '~x';
-            String data = await runVrsCommand(msg);
- /*           response = await http
-                .get(Uri.parse(
-                    "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-                .catchError((resp) {});
-            if (response == null) {
-              setState(() {
-                _displayProcessingIndicator = false;
-              });
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            }
+          setState(() {
+            _displayProcessingText = 'Completing your booking...';
+            _displayProcessingIndicator = true;
+          });
 
-            //If there was an error return an empty list
-            if (response.statusCode < 200 || response.statusCode >= 300) {
-              setState(() {
-                _displayProcessingIndicator = false;
-              });
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context);
-              return null;
-            }
-*/            if (data.contains('ERROR - ')) {
-              _error = data
-                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-                  .replaceAll('<string xmlns="http://videcom.com/">', '')
-                  .replaceAll('</string>', '')
-                  .replaceAll('ERROR - ', '')
-                  .trim(); // 'Please check your details';
-              _dataLoaded();
-              return null;
-            } else {
-              String pnrJson = data
-                  .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-                  .replaceAll('<string xmlns="http://videcom.com/">', '')
-                  .replaceAll('</string>', '');
-              Map map = json.decode(pnrJson);
-
-              widget.pnrModel = new PnrModel.fromJson(map);
-            }
-
-            if (!widget.pnrModel.hasPendingCodeShareOrInterlineFlights()) {
-              if (noFLts == widget.pnrModel.flightCount()) {
-                flightsConfirmed = true;
-              } else {
-                flightsConfirmed = false;
-              }
-              break;
-            }
-            await new Future.delayed(const Duration(seconds: 2));
+          if (widget.pnrModel.pNR.tickets != null) {
+            await pullTicketControl(widget.pnrModel.pNR.tickets);
           }
+          logit('ticket booking');
+          ticketBooking();
         }
-      }
-      if (!flightsConfirmed) {
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        showSnackBar(translate('Unable to confirm partner airlines flights.'));
-
-        //Cnx new flights
-        msg = '*${widget.mmbBooking.rloc}';
-        widget.mmbBooking.newFlights.forEach((flt) {
-          print('x' + flt.split('NN1')[0].substring(2));
-          msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
-        });
-        await runVrsCommand(msg);
-/*
-        response = await http
-            .get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-            .catchError((resp) {});
-*/
-
-        return null;
-      }
-
-      // }
-      else {
-        msg = '*${widget.mmbBooking.rloc}^';
-        //update to use full cancel segment command
-        for (var i = 0;
-            i <
-                widget.mmbBooking.journeys
-                    .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
-            i++) {
-          Itin f = widget.mmbBooking.journeys
-              .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
-          String _depDate =
-              DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
-          msg +=
-              'X${f.airID}${f.fltNo}${f.xclass}$_depDate${f.depart}${f.arrive}^';
-          if (f.nostop == 'X') {
-            nostop += ".${f.line}X^";
-          }
-        }
-        msg += addFg(widget.mmbBooking.currency, true);
-        msg += addFareStore(true);
-
-        msg += 'e*r~x';
-        //msg += 'fg^fs1^e*r~x';
-      }
-      data = await runVrsCommand(msg);
- /*     response = await http
-          .get(Uri.parse(
-              "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-          .catchError((resp) {});
-
-      if (response == null) {
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }
-
-      //If there was an error return an empty list
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        setState(() {
-          _displayProcessingIndicator = false;
-        });
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
-        return null;
-      }*/
-      String result = data
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
-
-      if (result.contains("ERROR -")) {
-        _error = 'Changes not completed';
-        _dataLoaded();
-        _showDialog();
-      } else {
-        Map map = json.decode(result);
-        widget.pnrModel = new PnrModel.fromJson(map);
-
-        setState(() {
-          _displayProcessingText = 'Completing your booking...';
-          _displayProcessingIndicator = true;
-        });
-
-        if (widget.pnrModel.pNR.tickets != null) {
-          await pullTicketControl(widget.pnrModel.pNR.tickets);
-        }
-        ticketBooking();
-      }
-      try {
-        // if (result.trim() == 'Payment Complete') {
-        //   print('Payment success');
-        //   setState(() {
-        //     _displayProcessingText = 'Completing your booking...';
-        //     _displayProcessingIndicator = true;
-        //   });
-        //   if (pnrModel.pNR.tickets != null) {
-        //     await pullTicketControl(pnrModel.pNR.tickets);
-        //   }
-        //   ticketBooking();
-        // } else {
-        //   _error = 'Changes not completed';
-        //   _dataLoaded();
-        //   _showDialog();
-        // }
       } catch (e) {
-        _error =data
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', ''); // 'Please check your details';
+        _error = e.toString();
+        logit('e871:${_error}');
         _dataLoaded();
         _showDialog();
         return null;
       }
-    } catch (e) {
-      _error = e.toString();
-           _dataLoaded();
-      _showDialog();
-      return null;
     }
-    // setState(() {
-    //   _displayProcessingText = 'Completing your booking...';
-    //   _displayProcessingIndicator = true;
-    // });
-    // if (pnrModel.pNR.tickets != null) {
-    //   await pullTicketControl(pnrModel.pNR.tickets);
-    // }
-    // ticketBooking();
   }
 
   Future<void> pullTicketControl(Tickets tickets) async {
@@ -959,6 +949,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   Future ticketBooking() async {
+    if(gblLogPayment) { logit('CPM:ticketBooking');}
     http.Response response;
     String msg = '*${widget.mmbBooking.rloc}^';
     msg += nostop;
@@ -1018,7 +1009,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       //sendEmailConfirmation();
 
     } catch (e) {
-      _error = response.body; // 'Please check your details';
+      _error = e; // 'Please check your details';
       _dataLoaded();
       _showDialog();
     }
@@ -1059,6 +1050,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               child: new Text("Close"),
               onPressed: () {
                 _error = '';
+                if(gblLogPayment) { logit('Close dialog');}
                 if( gblSettings.wantNewEditPax ){
                   // double pop
                   var nav = Navigator.of(context);
@@ -1088,6 +1080,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
 
     if (_displayProcessingIndicator) {
+      if(gblLogPayment) { logit('CPM Build processing');}
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
@@ -1109,6 +1102,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         ),
       );
     } else if (gblPaymentMsg != null ) {
+      if(gblLogPayment) { logit('CPM Build error');}
+
       return new Scaffold(
           key: _key,
           appBar: new AppBar(
@@ -1123,29 +1118,74 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
-          body:getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
+          backgroundColor: Colors.grey.shade500,
+          body: buildMessage('Payment Error', gblPaymentMsg, onComplete: () {
+            gblPaymentMsg = null;
+              setState(() {          } ); }),
 /*
-          AlertDialog(
-            title: new TrText("Payment Error"),
-            content: TrText(gblPaymentMsg),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new TextButton(
-                child: new TrText("OK"),
-                onPressed: () {
-                  setState(() {
-                    gblPaymentMsg = null;
-                  });
+          Center( child: Container(
 
-                },
+            //alignment: Alignment.topCenter,
+
+            margin: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
+              decoration: BoxDecoration(    border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(3.0))
               ),
-            ],
-          )
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
+             children: [ Column(
+               // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                 children: [
+                   TrText('Payment Error', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                   Padding(padding:  EdgeInsets.only(top: 10.0),),
+                   Text( gblPaymentMsg),
+                   Padding(padding:  EdgeInsets.only(top: 20.0),),
+                   ElevatedButton(
+                     onPressed: () {
+                       gblPaymentMsg = null;
+                       setState(() {
+
+                       });
+                     },
+                     style: ElevatedButton.styleFrom(
+                         primary: gblSystemColors
+                             .primaryButtonColor,
+                         shape: RoundedRectangleBorder(
+                             borderRadius:
+                             BorderRadius.circular(30.0))),
+                     child: Row(
+                       mainAxisSize: MainAxisSize.min,
+                       children: <Widget>[
+                         Icon(
+                           Icons.check,
+                           color: Colors.white,
+                         ),
+                         TrText(
+                           'OK',
+                           style: TextStyle(color: Colors.white),
+                         ),
+                       ],
+                     ),
+                   ),
+        ]),])
+
+          ))
 */
+        //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
       );
     } else {
+      if(gblLogPayment) { logit('CPM Build normal');}
+
       return WillPopScope(
         onWillPop: () {
+          if(gblLogPayment) { logit('CPM Will Pop'); }
+
           if( gblSettings.wantNewEditPax ){
             // double pop
             var nav = Navigator.of(context);
@@ -1208,8 +1248,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(){
-    Navigator.of(context).pop();
-    //gblPaymentMsg = null;
+    gblPaymentMsg = null;
+//    Navigator.of(context).pop();
+    setState(() {
+    });
   }
 
   Widget _getMiles() {
@@ -1252,7 +1294,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 List<Widget> getPayOptions(String amount, String cur) {
     List<Widget> list = [];
-
+    if(gblLogPayment) { logit('get pay opts'); }
 
      list.add( ExpansionTile(
         initiallyExpanded: false,
@@ -1393,20 +1435,22 @@ List<Widget> getPayOptions(String amount, String cur) {
     }
     list.add(Divider());
 
+/*
     if( gblSettings.wantProducts) {
       //if( gblProductsState == LoadState.none) {
         list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
           pnrModel: widget.pnrModel,
           onComplete: (PnrModel pnrModel) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            logit('On Complete products');
+            if(gblLogProducts) { logit('On Complete products');}
             widget.pnrModel = pnrModel;
             pnrModel = pnrModel;
             setState(() {
 
             });
           },));
-      /*} else {
+      */
+/*} else {
         list.add(ExpansionTile(
           tilePadding: EdgeInsets.only(left: 0),
           initiallyExpanded: false,
@@ -1417,8 +1461,12 @@ List<Widget> getPayOptions(String amount, String cur) {
         list.add(Divider());
       }
 
-       */
+       *//*
+
     }
+*/
+
+
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -1443,6 +1491,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         ),
       ));
     } else {
+        if(gblLogPayment) { logit('render pay buttons');}
         if( gblSettings.wantNewPayment) {
           list.add(  renderNewPaymentButtons());
         } else {
@@ -1483,7 +1532,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
             if ( gblPayBtnDisabled == false ) {
-              logit('pay pressed');
+              if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
               setState(() {
 
@@ -1499,7 +1548,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                     await changeFlt(
                         widget.pnrModel, widget.mmbBooking, context);
                   }
-
+                  _cancelTimer = true;
                   await Navigator.push(
                       context, SlideTopRoute(page: WebPayPage(
                     provider.paymentSchemeName, newBooking: widget.newBooking,
@@ -1546,7 +1595,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         pnrModel: widget.pnrModel,
         onComplete: (PnrModel pnrModel) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          logit('Load Providers onComplete');
+          if(gblLogPayment) {logit('Load Providers onComplete');}
           widget.pnrModel = pnrModel;
           pnrModel = pnrModel;
           //setState(() {            });
@@ -1618,6 +1667,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
   void startTimer() {
     const oneSec = const Duration(milliseconds: 100);
+    _cancelTimer = false;
     _timer = new Timer.periodic(
       oneSec,
           (Timer timer) {
@@ -1691,6 +1741,10 @@ class TimerTextState extends State<TimerText> {
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
+    if(_cancelTimer) {
+      timer.cancel();
+      return;
+    }
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
       gblPayBtnDisabled = false;
       gblPaymentMsg = 'Payment Timeout';

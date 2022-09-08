@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/helper.dart';
+
+import '../globals.dart';
 
 class ProductCategorys {
   List<ProductCategory> productCategorys;
@@ -148,12 +151,14 @@ class Product {
   String applyToClasses;
   bool routeSpecificCombinable;
   int displayOrder;
+  int productImageIndex;
   bool displayOnwebsite;
 
-int count;
+//int count;
 List<String> curProducts ;
 
-  Product({this.productCode, this.productName, this.productPrice, this.count = 0,
+
+  Product({this.productCode, this.productName, this.productPrice,
       this.productType,
   this.currencyCode,
   this.arrivalCityCode,
@@ -169,7 +174,7 @@ List<String> curProducts ;
     this.currencyRatetoNUC,
     this.displayOnwebsite,
     this.displayOrder,
-    this.maxQuantity,
+    this.maxQuantity = 999,
     this.mmbProductDescription,
     this.operator,
     this.paxRelate,
@@ -180,6 +185,7 @@ List<String> curProducts ;
     this.productID,
     this.productImageLink,
     this.productImageURL,
+    this.productImageIndex,
     this.productPriceCalc,
     this.requiresQuantity,
     this.restrictPurchaseToAllPaxOrNone,
@@ -192,6 +198,19 @@ List<String> curProducts ;
     this.unitOfMeasure,
     this.via1
   });
+
+  int count(int segNo) {
+    if( this.curProducts == null || this.curProducts.length == 0) {
+      return 0;
+    }
+    int c = 0;
+    this.curProducts.forEach((element) {
+      if(element.endsWith(':$segNo' )) {
+        c +=1;
+      }
+    });
+    return c;
+  }
 
 
   bool isBag() {
@@ -207,19 +226,35 @@ List<String> curProducts ;
   return false;
   }
 
-  String _getID(int paxNo, int segNo) {
+  void resetProducts(PnrModel pnrModel) {
+    curProducts = [];
+
+    if( pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
+      pnrModel.pNR.mPS.mP.forEach((element) {
+        if( element.mPID == productCode){
+          curProducts.add(getID(int.parse(element.pax), int.parse(element.seg)));
+        }
+      });
+    }
+
+  }
+  bool hasItem(String paxNo, String segNo) {
+    return curProducts.contains(getID(int.parse(paxNo), int.parse(segNo)));
+  }
+
+  String getID(int paxNo, int segNo) {
     return '$paxNo:$segNo';
   }
   void addProduct(int paxNo, int segNo) {
     if( curProducts == null) curProducts = [];
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
     curProducts.add(str);
-    count +=1;
+   // count +=1;
 
   }
   void removeProduct(int paxNo, int segNo) {
     if( curProducts == null) curProducts = [];
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
 
     int index = 0 ;
     bool found = false;
@@ -227,7 +262,7 @@ List<String> curProducts ;
       if( found == false) {
         if (element == str) {
           found = true;
-          count -=1;
+        //  count -=1;
         } else {
           index += 1;
         }
@@ -244,7 +279,7 @@ List<String> curProducts ;
       curProducts = [];
       return 0;
     }
-    String str = _getID(paxNo, segNo);
+    String str = getID(paxNo, segNo);
     int cnt = 0;
     curProducts.forEach((element) {
       if( element == str){
@@ -267,7 +302,7 @@ List<String> curProducts ;
 
   Product.fromJson(Map<String, dynamic> json) {
     try {
-      count = 0;
+      //count = 0;
       productID = json['productID'];
       productCode = json['productCode'];
       productName = json['productName'];
@@ -292,6 +327,8 @@ List<String> curProducts ;
       additionalInfo = json['additionalInfo'];
       unitOfMeasure = json['unitOfMeasure'];
       productImageLink = json['productImageLink'];
+      productImageURL = json['productImageURL'];
+      productImageIndex = json['productImageIndex'];
       applyToClasses = json['applyToClasses'];
       // ints
       maxQuantity = json['maxQuantity'];
@@ -299,6 +336,10 @@ List<String> curProducts ;
       currencyRatetoNUC = json['currencyRatetoNUC'];
       productPriceCalc = json['productPriceCalc'];
       productPrice = json['productPrice'];
+      if( json['exPrice'] != null && json['exPrice'] != ''){
+        productPrice = json['exPrice'];
+        currencyCode = gblSelectedCurrency;
+      }
       taxAmountCalc = json['taxAmountCalc'];
       taxAmount = json['taxAmount'];
       // bools
@@ -326,6 +367,7 @@ class GetProductsMsg {
   String via1;
   String cityCode;
   String arrivalCityCode;
+  String currency;
   bool includeHotels;
   bool displayOnWebsiteOnly;
 
@@ -338,6 +380,7 @@ class GetProductsMsg {
     this.productCategoryID = '',
     this.productCategoryName = '',
     this.productType = '',
+    this.currency = '',
     this.via1= '',
   });
 
@@ -352,6 +395,7 @@ class GetProductsMsg {
     map['ProductCategoryName'] = productCategoryName;
     map['ProductType'] = productType;
     map['Via1'] = via1;
+    map['currency'] = currency;
     return map;
   }
 }

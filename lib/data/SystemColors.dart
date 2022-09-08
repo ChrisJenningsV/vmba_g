@@ -5,6 +5,10 @@ class SystemColors {
   final Color primaryButtonTextColor;
   final Color otherButtonTextColor;
   final Color accentButtonColor;
+  final Color home1ButtonColor;
+  final Color home2ButtonColor;
+  final Color home1ButtonTextColor;
+  final Color home2ButtonTextColor;
 
   //final Color buttonColor; // = Color.fromRGBO(243, 135, 57, 1);
   final Color primaryColor; // = Colors.white;
@@ -40,6 +44,10 @@ class SystemColors {
     this.otherButtonTextColor,
     this.primaryButtonTextColor,
     this.textButtonTextColor,
+    this.home1ButtonColor,
+    this.home2ButtonColor,
+    this.home1ButtonTextColor,
+    this.home2ButtonTextColor,
     this.progressBackColor,
     this.progressTextColor,
     this.primaryHeaderColor,

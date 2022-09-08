@@ -43,8 +43,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     super.initState();
     _displayProcessingIndicator = false;
     _displayFinalError = false;
-    _fullLogging = false;
+    _fullLogging = true;
     _displayProcessingText = '';
+    gblPnrModel = widget.pnrModel;
     _initData();
     _loadData();
 
@@ -61,6 +62,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       noInternetSnackBar(context);
       return Container();
     } else if (_displayProcessingIndicator) {
+/*
       final snackBar = SnackBar(
         content: Text(
           _displayProcessingText, style: TextStyle(color: Colors.red),),
@@ -73,16 +75,24 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           },
         ),
       );
+*/
       SchedulerBinding.instance.addPostFrameCallback((_) {
        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
-      return Text(translate('Loading') + ' ' + translate(_dataName));
+      List <Widget> list = [];
+
+      list.add( new Transform.scale(
+        scale: 0.5,
+        child: CircularProgressIndicator(),
+      ));
+      list.add( Text(translate('Loading') + ' ' + translate(_dataName)));
+      return Row(children: list,);
     } else {
       switch(widget.dataType){
         case LoadDataType.cities:
           break;
         case LoadDataType.products:
-          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
+          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete, wantTitle: true,isMMB: true, );
           break;
         case LoadDataType.providers:
           //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
@@ -132,7 +142,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         }
 
       }
-      print('failed: $_msg');
+      print('failed to get providers: ${response.body}');
       try{
         print (response.body);
         setLoadState(LoadState.loadFailed);
@@ -154,10 +164,14 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _dataName = 'Travel Extras';
           _url = '${gblSettings.apiUrl}/product/getproducts';
           String currency = gblSettings.currency;
-          if( currency == null || currency.isEmpty) {
+
+          /*if(  widget.pnrModel.pNR!= null &&  widget.pnrModel.pNR.basket != null &&
+              widget.pnrModel.pNR.basket.outstanding != null && widget.pnrModel.pNR.basket.outstanding.cur != null ) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
-          }
-          _msg = json.encode(GetProductsMsg(currency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
+          }*/
+          gblBookingCurrency =currency;
+          _msg = json.encode(GetProductsMsg(currency, currency: gblSelectedCurrency, cityCode: gblOrigin,
+              arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
 
           break;
         case LoadDataType.providers:
@@ -220,7 +234,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       case LoadDataType.providers:
         try {
           gblProviders = Providers.fromJson(data);
-          if(_fullLogging) logit('loaded providers');
+          if(gblLogPayment) logit('loaded providers ' + data );
         } catch(e) {
           logit(e.toString());
         }

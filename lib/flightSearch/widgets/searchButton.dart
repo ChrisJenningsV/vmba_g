@@ -8,6 +8,8 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../components/vidButtons.dart';
+
 // ignore: must_be_immutable
 class SearchButtonWidget extends StatelessWidget {
   SearchButtonWidget(
@@ -91,11 +93,17 @@ class SearchButtonWidget extends StatelessWidget {
   //final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
+
+ return vidActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check );
+/*
     return Padding(
         padding: EdgeInsets.only(left: 35.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            vidActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check ),
+*/
+/*
             new FloatingActionButton.extended(
               elevation: 0.0,
               isExtended: true,
@@ -123,9 +131,33 @@ class SearchButtonWidget extends StatelessWidget {
                 });
               },
             ),
+*//*
+
           ],
         ));
+*/
   }
+
+void _onPressed(BuildContext context) {
+  {
+    _clearNewBookingObject();
+    hasDataConnection().then((result) async {
+      if (result == true) {
+        _validate(newBooking)
+            ? this.onChanged(await Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    FlightSeletionPage(
+                        newBooking: newBooking))))
+            : _ackErrorAlert(context);
+      } else {
+//showSnackBar(context, translate('Please, check your internet connection'));
+        noInternetSnackBar(context);
+      }
+    });
+  }
+}
+
 
   Future<void> _ackErrorAlert(BuildContext context) {
     return showDialog<void>(

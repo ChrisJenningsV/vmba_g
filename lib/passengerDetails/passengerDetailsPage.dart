@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/models/models.dart';
+import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/widgets/editPage.dart';
-import 'package:vmba/passengerDetails/widgets/editPax.dart';
+import 'package:vmba/passengerDetails/widgets/EditPax.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
@@ -13,9 +14,16 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
 
+import '../Products/optionsPage.dart';
+import '../calendar/bookingFunctions.dart';
+import '../components/vidButtons.dart';
+import '../home/home_page.dart';
+import 'package:vmba/components/showDialog.dart';
+
 class PassengerDetailsWidget extends StatefulWidget {
-  PassengerDetailsWidget({Key key, this.newBooking}) : super(key: key);
+  PassengerDetailsWidget({Key key, this.newBooking, this.pnrModel}) : super(key: key);
   final NewBooking newBooking;
+  final PnrModel pnrModel;
 
   _PassengerDetailsWidgetState createState() => _PassengerDetailsWidgetState();
 }
@@ -34,6 +42,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   initState() {
     super.initState();
+    gblPnrModel = widget.pnrModel;
+    gblError = '';
+
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
         i++) {
@@ -226,11 +237,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     }
 
     if( gblSettings.wantApis ) {
-      if (passengerDetailRecord.redressNo != null &&
-          passengerDetailRecord.redressNo.length > 0) {
-        _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
-      } else {
-        gotAllDetails = false;
+      if( gblSettings.wantRedressNo) {
+        if (passengerDetailRecord.redressNo != null &&
+            passengerDetailRecord.redressNo.length > 0) {
+          _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
+        } else {
+          gotAllDetails = false;
+        }
       }
 
       if (passengerDetailRecord.knowTravellerNo != null &&
@@ -238,21 +251,25 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         _passengerDetails[paxNo].knowTravellerNo =
             passengerDetailRecord.knowTravellerNo;
       } else {
-        gotAllDetails = false;
+        //gotAllDetails = false;
       }
 
-      if (passengerDetailRecord.gender != null &&
-          passengerDetailRecord.gender.length > 0) {
-        _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
-      } else {
-        gotAllDetails = false;
+      if (gblSettings.wantGender) {
+        if (passengerDetailRecord.gender != null &&
+            passengerDetailRecord.gender.length > 0) {
+          _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
+        } else {
+          gotAllDetails = false;
+        }
       }
 
-      if (passengerDetailRecord.dateOfBirth != null) {
-        _passengerDetails[paxNo].dateOfBirth =
-            passengerDetailRecord.dateOfBirth;
-      } else {
-        gotAllDetails = false;
+      if( gblSettings.passengerTypes.wantAdultDOB) {
+        if (passengerDetailRecord.dateOfBirth != null) {
+          _passengerDetails[paxNo].dateOfBirth =
+              passengerDetailRecord.dateOfBirth;
+        } else {
+          gotAllDetails = false;
+        }
       }
     }
 
@@ -296,20 +313,30 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           imageName:  gblSettings.wantPageImages ? 'paxDetails': null ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
-      body: new Form(
+      body: getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyPax),
+    );
+  }
+
+  Widget _body(NewBooking newBooking){
+    if( gblError != '') {
+
+      return displayMessage(context,'Booking Error', gblError );
+    }
+      return new Form(
         key: formKey,
         child: new SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Column(
-              children: renderPax(widget.newBooking.passengers),
+              children: renderPax(newBooking.passengers),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
+
+
 
   List<Widget> renderPax(Passengers pax) {
     List<Widget> paxWidgets = [];
@@ -403,7 +430,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     //Infant end
 
     if (allPaxDetailsCompleted) {
-      paxWidgets.add(ElevatedButton(
+      paxWidgets.add(
+        vidWideActionButton(context, 'CONTINUE', _onContinuePressed));
+/*
+          ElevatedButton(
         onPressed: () {
           gblPaymentMsg=null;
           validateAndSubmit();
@@ -428,6 +458,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           ],
         ),
       ));
+*/
     }
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
@@ -456,7 +487,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     );
     //print('end paxEntryHeader');
   }
-
+  _onContinuePressed(BuildContext context, dynamic p) {
+    gblPaymentMsg=null;
+    validateAndSubmit();
+  }
   Widget renderFieldsV2(int paxNo, PaxType paxType) {
     //print('renderFieldsV2');
 
@@ -564,16 +598,41 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 //updatePassengerDetails(passengerDetails, paxNo - 1);
               });
             } else {
-              var _error = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ContactDetailsWidget(
-                            newbooking: widget.newBooking,
-                            preLoadDetails: preLoadDetails,
-                            passengerDetailRecord: passengerDetailRecord,
-                          )));
-              displayError(_error);
+
+              if( gblSettings.wantProducts) {
+                gblError = '';
+                gblPnrModel = await makeBooking(widget.newBooking).catchError((e) {
+                  setState(() {
+
+                  });
+                });
+
+
+                if( gblError == '') {
+                  refreshStatusBar();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OptionsPageWidget(
+                                  newBooking: this.widget.newBooking)));
+                } else {
+                  setState(() {
+
+                  });
+                }
+              } else {
+                var _error = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ContactDetailsWidget(
+                              newbooking: widget.newBooking,
+                              preLoadDetails: preLoadDetails,
+                              passengerDetailRecord: passengerDetailRecord,
+                            )));
+                displayError(_error);
+              }
             }
 
         } else {

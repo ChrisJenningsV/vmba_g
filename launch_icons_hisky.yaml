@@ -1,0 +1,12 @@
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/hisky/images/hisky-1024.png"
+
+# flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_hisky.yaml
+#
+#
+# copy -path lib\assets\hisky\images\bg.png -Destination lib\assets\images
+# cp  lib/assets/hisky/images/bg.png lib/assets/images
+# copy key

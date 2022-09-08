@@ -1,4 +1,5 @@
 import 'package:vmba/data/models/pnr.dart';
+import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
@@ -39,8 +40,12 @@ class NewBooking {
   DateTime returnDate;
   Passengers passengers = new Passengers(1, 0, 0, 0, 0, 0, 0);
   List<String> outboundflight = [];
+  List<Flt> outboundflts = [];
+  String outboundClass;
   // List<String>();
   List<String> returningflight = [];
+  List<Flt> returningflts = [];
+  String returningClass;
   // List<String>();
   List<PassengerDetail> passengerDetails = [];
   // List<PassengerDetail>();

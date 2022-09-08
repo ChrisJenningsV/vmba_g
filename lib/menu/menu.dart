@@ -171,7 +171,7 @@ class DrawerMenu extends StatelessWidget {
 
     // FAQ
     if(gblNoNetwork == false &&
-        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI || gblSettings.faqUrl!= null')) {
+        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.faqUrl != null)) {
       list.add(ListTile(
         dense: dense,
         title: _getMenuItem( Icons.live_help, 'FAQs' ),
@@ -192,7 +192,7 @@ class DrawerMenu extends StatelessWidget {
 
     // contact us
     if( gblNoNetwork == false &&
-        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI || gblSettings.contactUsUrl != null')) {
+        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.contactUsUrl != null)) {
       list.add(ListTile(
         dense: dense,
     title: _getMenuItem( Icons.phone, 'Contact us' ),

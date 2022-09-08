@@ -21,6 +21,7 @@ import 'package:http/http.dart' as http;
 import 'package:simpleprogressdialog/simpleprogressdialog.dart';
 
 import '../../Helpers/networkHelper.dart';
+import 'package:vmba/data/models/vrsRequest.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
@@ -230,26 +231,69 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         widget.pnr.pNR.itinerary.itin[widget.journeyNo].depDate));
 
     String _depart = widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart;
-
-    String cmd = '&Command=DF/$_fltNo/$_date/$_depart';
-    String message = gblSettings.xmlUrl +
-        gblSettings.xmlToken +
-        cmd;
-    print(message);
     String data;
 
-    Uri apiUrl = Uri.parse(message);
-
-    HttpClientRequest request = await new HttpClient().getUrl(apiUrl);
-    HttpClientResponse response = await request.close();
-
-    Stream resStream = response.transform(Utf8Decoder());
-    // Map pnrMap;
-    await for (String rs in resStream) {
-      data = rs
+    if( gblSettings.useWebApiforVrs) {
+      String cmd = 'DF/$_fltNo/$_date/$_depart';
+      String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+          gblSettings.xmlToken.replaceFirst('token=', ''),
+          vrsGuid: gblSettings.vrsGuid,
+          notifyToken: gblNotifyToken,
+          rloc: gblCurrentRloc,
+          language: gblLanguage,
+          phoneId: gblDeviceId
+      )); // '{VrsApiRequest: ' + + '}' ;
+      http.Response response = await http
+          .get(Uri.parse(
+          "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+          headers: getXmlHeaders())
+          .catchError((resp) {
+            logit(resp);
+/*
+      var error = '';
+*/
+      });
+      if(response == null ){
+        return null;
+      }
+/*
+      if( response.body.toUpperCase().contains('ERROR')) {
+        return null;
+      }
+*/
+      Map map = jsonDecode(response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
+          .replaceAll('</string>', ''));
+
+      VrsApiResponse rs = VrsApiResponse.fromJson(map);
+      logit('Server IP ${map['serverIP']}');
+      if( rs.data == null ) {
+        throw 'no data returned';
+      }
+      data = rs.data;
+
+    } else {
+      String cmd = '&Command=DF/$_fltNo/$_date/$_depart';
+      String message = gblSettings.xmlUrl +
+          gblSettings.xmlToken +
+          cmd;
+      print(message);
+      String data;
+
+      Uri apiUrl = Uri.parse(message);
+
+      HttpClientRequest request = await new HttpClient().getUrl(apiUrl);
+      HttpClientResponse response = await request.close();
+
+      Stream resStream = response.transform(Utf8Decoder());
+      // Map pnrMap;
+      await for (String rs in resStream) {
+        data = rs
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', '');
+      }
     }
 
     print(data);
@@ -894,13 +938,13 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     try {
       if (Platform.isAndroid) {
         progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
-        String queryStringParams = await GetQueryStringParameters(pass) ;
-        url = await GetUrlForGooglePass(queryStringParams) as String;
+        String queryStringParams = await getQueryStringParameters(pass) ;
+        url = await getUrlForGooglePass(queryStringParams);
       }
       else {
         progressDialog.showCupertino(message:"Fetching pass..", layout: CupertinoProgressDialogLayout.columnWithCircularActivityIndicator);
-        String queryStringParams = await GetQueryStringParameters(pass) as String;
-        url = await GetUrlForApplePass(queryStringParams) as String;
+        String queryStringParams = await getQueryStringParameters(pass);
+        url = await getUrlForApplePass(queryStringParams);
       }
       if (!url?.isEmpty ?? true) {
         AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
@@ -913,7 +957,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     progressDialog.dismiss();
   }
 
-  Future<String> GetUrlForApplePass(String queryStringParams) async {
+  Future<String> getUrlForApplePass(String queryStringParams) async {
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorApple/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorApple/createboardingpass';  //Android Dev
     String webApiUrl = gblSettings.apiUrl + 'PassGeneratorApple/createboardingpass'; //Live
@@ -922,7 +966,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return url;
   }
 
-  Future<String> GetUrlForGooglePass(String queryStringParams) async {
+  Future<String> getUrlForGooglePass(String queryStringParams) async {
     String skinnyPassJwtUrl = "";
     //String webApiUrl = 'https://customertest.videcom.com/videcomair/VARS/webApiV2/api/PassGeneratorGoogle/createboardingpass';
     //String webApiUrl = 'http://10.0.2.2:5000/api/PassGeneratorGoogle/createboardingpass';  //Android Dev
@@ -938,7 +982,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     return skinnyPassJwtUrl;
   }
 
-  Future<String> GetQueryStringParameters(BoardingPass pass) async {
+  Future<String> getQueryStringParameters(BoardingPass pass) async {
     String departCityName = await cityCodeToName(pass.depart);
     String arrivalCityName = await cityCodeToName(pass.arrive);
     var qParams = new StringBuffer();

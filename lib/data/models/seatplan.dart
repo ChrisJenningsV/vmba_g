@@ -198,6 +198,8 @@ class Seat {
   String sTktStatus;
   String sDCSStatus;
   String sSequence;
+  bool noInfantSeat;
+  bool PRMSeat;
 
   Seat(
       {this.sSeatID,
@@ -219,7 +221,9 @@ class Seat {
       this.sPAXNumber,
       this.sTktStatus,
       this.sDCSStatus,
-      this.sSequence});
+      this.sSequence,
+      this.noInfantSeat,
+      this.PRMSeat});
 
   Seat.fromJson(Map<String, dynamic> json) {
     sSeatID = json['SeatID'];
@@ -242,6 +246,17 @@ class Seat {
     sTktStatus = json['TktStatus'];
     sDCSStatus = json['DCSStatus'];
     sSequence = json['Sequence'];
+    if(json['NoInfantSeat'] == '1' || json['NoInfantSeat'] == 'True' ) {
+      noInfantSeat = true;
+    } else {
+      noInfantSeat = false;
+    }
+    if(json['PRMSeat'] == '1' || json['PRMSeat'] == 'True' ) {
+      PRMSeat = true;
+    } else {
+      PRMSeat = false;
+    }
+
   }
 
   Map<String, dynamic> toJson() {

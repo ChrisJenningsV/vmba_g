@@ -9,8 +9,9 @@ class TrText extends StatelessWidget {
   final bool noTrans;
   final TextAlign textAlign;
   final double textScaleFactor;
+  final int maxLines;
 
-  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign, this.textScaleFactor});
+  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign, this.textScaleFactor, this.maxLines});
 
   build(BuildContext context) {
     var txt = labelText;
@@ -43,7 +44,7 @@ class TrText extends StatelessWidget {
     if( variety != null &&  variety.isNotEmpty) {
       double width = MediaQuery.of(context).size.width;
       Color clr = style.color;
-      double fSize = 16.0;
+      double fSize = style.fontSize ;
 
       switch (variety) {
         case 'airport':
@@ -63,9 +64,9 @@ class TrText extends StatelessWidget {
           }
           break;
       }
-      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign, textScaleFactor: textScaleFactor);
+      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
     } else {
-      return Text( txt ,style: style, textAlign: textAlign, textScaleFactor: textScaleFactor,);
+      return Text( txt ,style: style, textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
     }
   }
 }

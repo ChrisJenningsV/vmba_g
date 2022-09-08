@@ -4,14 +4,20 @@ import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
 import 'models/notifyMsgs.dart';
+import 'models/pnr.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
 
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'T6';
+String gblBuildFlavor = 'UZ';
 bool gblIsLive = false;
+int requiredXmlVersion = 101;
+int requiredApiVersion = 101;
+int apiBuldVersion;
+bool gblDoVersionCheck = true;
+bool gblUseCache = true;
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
@@ -23,7 +29,7 @@ String gblErrorTitle = '';
 String gblSine = '';
 String gblVersion = '';
 String gblAction='';
-String gblMobileFlags = '';
+//String gblMobileFlags = '';
 String gblDestination;
 String gblOrigin;
 String gblPayable = '';
@@ -32,9 +38,16 @@ String gblPaymentMsg;
 String gblNotifyToken;
 String gblDeviceId;
 
+/* logging */
+bool gblLogProducts = false;
+bool gblLogPayment = false;
+bool gblLogFQ = false;
+bool gblLogCities = false;
+bool gblLogSummary = false;
+
+
 int gblSecurityLevel = 0;
 int gblFqtvBalance = 0;
-bool gblUseCache = true;
 bool gblIsIos = false;
 bool gblPaySuccess = false;
 bool gblInReview = false;
@@ -56,6 +69,7 @@ bool gblNoNetwork;
 bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
+PnrModel gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
@@ -78,7 +92,12 @@ VrsCmdState gblLoadSeatState = VrsCmdState.none;
 VrsCmdState gblBookSeatState = VrsCmdState.none;
 
 ProductCategorys gblProducts ;
+String gblProductCacheDeparts;
+String gblProductCacheArrives;
+String gblSelectedCurrency;
+String gblLastCurrecy = '';
 Providers gblProviders;
+String gblBookingCurrency;
 List<NotificationMessage> gblNotifications;
 
 
@@ -94,3 +113,5 @@ List<String> gblTitles = <String>[
   'Rev'
 ];
 Map<String, String > gblPayFormVals;
+
+TextEditingController gblPhoneCodeEditingController;

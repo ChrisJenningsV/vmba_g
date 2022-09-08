@@ -15,6 +15,11 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../data/models/pnr.dart';
+import '../passengerDetails/passengerDetailsPage.dart';
+import 'bookingFunctions.dart';
+import 'calendarFunctions.dart';
+
 class ReturnFlightSeletionPage extends StatefulWidget {
   ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
       : super(key: key);
@@ -206,19 +211,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     return new Scaffold(
       key: _key,
       appBar: appBar(context,"Returning Flight"),
-    /*new AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        title: new TrText("Returning Flight",
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),
-
-     */
-      endDrawer: DrawerMenu(),
+        endDrawer: DrawerMenu(),
       body: _buildBody(),
     );
   }
@@ -340,7 +333,19 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           scrollDirection: Axis.horizontal,
           children: objAv.availability.cal.day
               .map(
-                (item) => Container(
+                (item) => getCalDay(item, 'ret' , widget.newBooking.returnDate, _departureDate,
+                    onPressed: () => {
+                    hasDataConnection().then((result) {
+                    if (result == true) {
+                    _changeSearchDate(DateTime.parse(item.daylcl));
+                    } else {
+                    showSnackBar(
+                    'Please check your internet connection');
+                    }
+                    })
+                    })
+/*
+                    Container(
                   decoration: new BoxDecoration(
                     border: new Border.all(color: Colors.black12),
                     color: !isSearchDate(DateTime.parse(item.daylcl),
@@ -395,6 +400,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             ),
                           ])),
                 ),
+*/
               )
               .toList());
     } else {
@@ -414,6 +420,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                         left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
                     child: Column(
                       children: <Widget>[
+                        flightRow(item),
+/*
                         new Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -489,10 +497,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             )
                           ],
                         ),
+*/
                         Divider(),
-                        CannedFactWidget(
-                          flt: item.flt,
-                        ),
+                        CannedFactWidget(flt: item.flt,),
+                        infoRow(context, item),
+/*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -533,7 +542,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                                     },
                                                   ),
                                                 ],
-                                                title: new Text('Connections'),
+                                                title: new TrText('Connections'),
                                                 content: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
@@ -613,6 +622,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             )
                           ],
                         ),
+*/
                         Padding(
                           padding: EdgeInsets.all(0),
                         ),
@@ -633,6 +643,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               )
               .toList()));
     } else {
+      return noFlightsFound();
+/*
       return Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -647,6 +659,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           ),
         ],
       ));
+*/
     }
   }
 
@@ -844,25 +857,52 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(selectedFlt);
+    flightSelected(selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(List<String> flt) {
+  void flightSelected(List<String> flt, List<Flt> flts, String className) {
     print(flt);
     if (flt != null && flt.length > 0) {
       this.widget.newBooking.returningflight = flt;
+      this.widget.newBooking.returningflts = flts;
+      this.widget.newBooking.returningClass = className;
     }
 
     if (this.widget.newBooking.returningflight.length > 0 &&
         this.widget.newBooking.returningflight[0] != null &&
         this.widget.newBooking.outboundflight[0] != null) {
-      hasDataConnection().then((result) {
+      hasDataConnection().then((result) async {
         if (result == true) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FlightSelectionSummaryWidget(
-                      newBooking: this.widget.newBooking)));
+          if( gblSettings.wantProducts) {
+            gblError = '';
+            PnrModel pnrModel = await searchSaveBooking(
+                this.widget.newBooking);
+            // go to options page
+            if (gblError != '') {
+
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PassengerDetailsWidget(
+                          newBooking: widget.newBooking,
+                          pnrModel:  pnrModel)));
+ /*             Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          OptionsPageWidget(
+                            newBooking: this.widget.newBooking,
+                            pnrModel: pnrModel,)));
+*/            }
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FlightSelectionSummaryWidget(
+                            newBooking: this.widget.newBooking)));
+          }
         } else {
           //showSnackBar(translate('Please, check your internet connection'));
           noInternetSnackBar(context);

@@ -30,7 +30,7 @@ void configAH() {
     primaryButtonColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 //    primaryButtonColor: Color.fromRGBO(0X1d, 0x61, 0xa1, 1),
     accentButtonColor: Color.fromRGBO(0X1d, 0x61, 0xa1, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.grey, // used for calendar selection ends
     primaryHeaderColor: Color.fromRGBO(0X00, 0x37, 0x55, 1),
 
 

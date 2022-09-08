@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../components/vidButtons.dart';
+
 class ChooseFlight extends StatelessWidget {
   ChooseFlight(
       {Key key, this.classband, this.flts, this.cabin, this.cb, this.seats})
@@ -37,7 +39,9 @@ class ChooseFlight extends StatelessWidget {
           ],
         ),
         body: classBands(context),
-        floatingActionButton: Padding(
+        floatingActionButton: vidActionButton(context,'CHOOSE FLIGHT', _onPressed, icon: Icons.check ),
+    );
+ /*       Padding(
             padding: EdgeInsets.only(left: 35.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +68,14 @@ class ChooseFlight extends StatelessWidget {
                       //_handleBookSeats(paxlist);
                     }),
               ],
-            )));
+            )));*/
+  }
+  void _onPressed(BuildContext context) {
+    Navigator.of(context).pop(buildfltRequestMsg(
+        flts,
+        classband.cbname,
+        classband.cabin,
+        int.parse(classband.cb)));
   }
 
   Widget classBands(context) {

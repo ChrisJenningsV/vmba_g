@@ -13,6 +13,8 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../utilities/widgets/appBarWidget.dart';
+
 //ignore: must_be_immutable
 class MyAccountPage extends StatefulWidget {
   MyAccountPage(
@@ -79,7 +81,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         } catch (e) {
           print(e);
         }
-        _titleTextEditingController.text = widget.passengerDetail.title;
+        _titleTextEditingController.text = translate(widget.passengerDetail.title);
         _titleTextEditingController.text = widget.passengerDetail.title;
         _firstNameTextEditingController.text = widget.passengerDetail.firstName;
         _middleNameTextEditingController.text = widget.passengerDetail.middleName;
@@ -198,15 +200,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if( _gotData == false) {
       return Scaffold(
           appBar: AppBar(
-          leading: gblSettings.wantLeftLogo
-          ? Padding(
-          padding: EdgeInsets.only(left: 10.0),
-    child: Image.asset(
-    'lib/assets/$gblAppTitle/images/appBarLeft.png',
-    color: Color.fromRGBO(255, 255, 255, 0.1),
-    colorBlendMode: BlendMode.modulate))
-        : Text(''),
-    //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
     backgroundColor: gblSystemColors.primaryHeaderColor,
     iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
     title: TrText('My Account',
@@ -228,15 +222,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: gblSettings.wantLeftLogo
-              ? Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                  'lib/assets/$gblAppTitle/images/appBarLeft.png',
-                  color: Color.fromRGBO(255, 255, 255, 0.1),
-                  colorBlendMode: BlendMode.modulate))
-              : Text(''),
-          //brightness: gblSystemColors.statusBar,
+          leading: getAppBarLeft(),
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
           title: TrText('My Account',
@@ -272,6 +258,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       primaryColorDark: Colors.blue,
     );
 
+    logit('title a = ${widget.passengerDetail.title}');
     // title
     widgets.add(Padding(
       padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
@@ -300,7 +287,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 value.isEmpty ? translate('Title cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.passengerDetail.title = value.trim();
+               // widget.passengerDetail.title = value.trim();
+              //  _titleTextEditingController.text =translate(widget.passengerDetail.title);
               }
             },
           ),
@@ -779,7 +767,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void _updateTitle(String value) {
     setState(() {
-      _titleTextEditingController.text = value;
+      widget.passengerDetail.title = value;
+      _titleTextEditingController.text = translate(value);
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }

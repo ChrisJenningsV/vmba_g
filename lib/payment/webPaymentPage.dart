@@ -11,6 +11,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../data/smartApi.dart';
 import 'choosePaymentMethod.dart';
 
 class WebPayPage extends StatefulWidget {
@@ -94,6 +95,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
         } else {
           gblPayBtnDisabled = false;
           gblPaymentState = PaymentState.needCheck;
+          gblPaymentMsg = 'Payment aborted';
           String reply = await callSmartApi('CANCELPAYMENT', "");
           Navigator.pop(context);
         }
@@ -129,7 +131,8 @@ class _WebViewWidgetState extends State<WebPayPage> {
                     gblPaymentMsg = 'Payment Declined';
                   }
                   _endDetected = true;
-                  //Navigator.pop(context, 'fail');
+               //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -188,6 +191,16 @@ class _WebViewWidgetState extends State<WebPayPage> {
     ));
   }
 
+  void onComplete() {
+    gblPaymentMsg = null;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: false,),
+      ),
+    );
+
+  }
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
