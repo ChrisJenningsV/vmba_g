@@ -250,7 +250,7 @@ bool bpShowFastTrack;
     this.useSmartPay = false,
     this.avTimeFormat='HHmm',
     this.homePageStyle='V1',
-    this.pageStyle = 'V2',
+    this.pageStyle = 'V1',
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,

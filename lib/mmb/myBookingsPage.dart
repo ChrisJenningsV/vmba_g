@@ -943,74 +943,69 @@ String _error = '';
     //AATMRA
     //AATKK7
 
-  /*  http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$_rloc~x'"))
-        .catchError((resp) {});
+    try {
+      gblCurrentRloc = _rloc;
+      String data = await runVrsCommand('*$_rloc~x');
 
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
+      String pnrJson;
+      Map pnrMap;
+      // await for (String pnrRaw in resStream) {
 
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }*/
-    gblCurrentRloc = _rloc;
-    String data = await runVrsCommand('*$_rloc~x');
-
-    String pnrJson;
-    Map pnrMap;
-    // await for (String pnrRaw in resStream) {
-
-    if (data.contains('ERROR - RECORD NOT FOUND -')) {
-      _error = 'Please check your details';
-      _pnrLoaded();
-      //_showDialog();
-      showAlertDialog(context, 'Alert', _error);
-
-    } else {
-      pnrJson = data
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
-
-      pnrMap = json.decode(pnrJson);
-      // }
-
-      try {
-        pnrMap = json.decode(pnrJson);
-        print('Loaded PNR');
-        var objPnr = new PnrModel.fromJson(pnrMap);
-        if (validate(objPnr)) {
-          PnrDBCopy pnrDBCopy = new PnrDBCopy(
-              rloc: objPnr.pNR.rLOC,
-              data: pnrJson,
-              delete: 0,
-              nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
-          Repository.get().updatePnr(pnrDBCopy).then((w) {
-            fetchApisStatus(true);
-            //Navigator.of(context).pop();
-          });
-
-          print('matched rloc and name');
-          //   Navigator.of(context).pop();
-        } else {
-          _pnrLoaded();
-          //_showDialog();
-          if( _error == '') {
-            _error = translate('name does not match booking');
-          }
-          showAlertDialog(context, 'Alert', _error);
-
-          print('did not matched rloc and name');
-        }
-      } catch (e) {
-
-        showAlertDialog(context, 'Alert', _error);
+      if (data.contains('ERROR - RECORD NOT FOUND -')) {
+        _error = 'Please check your details';
+        _pnrLoaded();
         //_showDialog();
-        print('$e');
+        showAlertDialog(context, 'Alert', _error);
+      } else {
+        pnrJson = data
+            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+            .replaceAll('<string xmlns="http://videcom.com/">', '')
+            .replaceAll('</string>', '');
+
+        pnrMap = json.decode(pnrJson);
+        // }
+
+        try {
+          pnrMap = json.decode(pnrJson);
+          print('Loaded PNR');
+          var objPnr = new PnrModel.fromJson(pnrMap);
+          if (validate(objPnr)) {
+            PnrDBCopy pnrDBCopy = new PnrDBCopy(
+                rloc: objPnr.pNR.rLOC,
+                data: pnrJson,
+                delete: 0,
+                nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+            Repository.get().updatePnr(pnrDBCopy).then((w) {
+              fetchApisStatus(true);
+              //Navigator.of(context).pop();
+            });
+
+            print('matched rloc and name');
+            //   Navigator.of(context).pop();
+          } else {
+            _pnrLoaded();
+            //_showDialog();
+            if (_error == '') {
+              _error = translate('name does not match booking');
+            }
+            showAlertDialog(context, 'Alert', _error);
+
+            print('did not matched rloc and name');
+          }
+        } catch (e) {
+          _pnrLoaded();
+          _error = e.toString();
+          showAlertDialog(context, 'Alert', _error);
+          //_showDialog();
+          print('$e');
+        }
       }
+    } catch(e) {
+      _pnrLoaded();
+      _error = e.toString();
+      showAlertDialog(context, 'Alert', _error);
+      //_showDialog();
+      print('$e');
     }
   }
 
