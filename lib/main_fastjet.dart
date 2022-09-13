@@ -53,7 +53,7 @@ void configFN() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR',
+    currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',
     wantCurrencyPicker: true,
     wantCentreTitle: true,
@@ -68,7 +68,7 @@ void configFN() {
     termsAndConditionsUrl: 'https://www.fastjet.com/en/footer-about/terms-and-conditions',
     privacyPolicyUrl:  'https://www.fastjet.com/en/footer-about/policies',
     prohibitedItemsNoticeUrl:  'https://www.fastjet.com/en/information-central/restricted-items-dangerous-goods',
-    faqUrl: 'https://www.fastjet.com/en/footer-contact/faqs',
+ //   faqUrl: 'https://www.fastjet.com/en/footer-contact/faqs',
     contactUsUrl: 'https://www.fastjet.com/en/footer-contact/customer-service-call-centre',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 

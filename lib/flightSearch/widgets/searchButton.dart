@@ -94,51 +94,10 @@ class SearchButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
- return vidActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check );
-/*
-    return Padding(
-        padding: EdgeInsets.only(left: 35.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            vidActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check ),
-*/
-/*
-            new FloatingActionButton.extended(
-              elevation: 0.0,
-              isExtended: true,
-              label: TrText(
-                'SEARCH FLIGHTS',
-                style: TextStyle(color: systemColors.primaryButtonTextColor),
-              ),
-              icon: Icon(Icons.check, color: systemColors.primaryButtonTextColor),
-              backgroundColor:
-                  systemColors.primaryButtonColor, //new Color(0xFF000000),
-              onPressed: () {
-                _clearNewBookingObject();
-                hasDataConnection().then((result) async {
-                  if (result == true) {
-                    _validate(newBooking)
-                        ? this.onChanged(await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => FlightSeletionPage(
-                                    newBooking: newBooking))))
-                        : _ackErrorAlert(context);
-                  } else {
-                    //showSnackBar(context, translate('Please, check your internet connection'));
-                    noInternetSnackBar(context);
-                  }
-                });
-              },
-            ),
-*//*
-
-          ],
-        ));
-*/
+ return vidWideActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check, offset: 35.0 );
   }
 
-void _onPressed(BuildContext context) {
+void _onPressed(BuildContext context, dynamic p ) {
   {
     _clearNewBookingObject();
     hasDataConnection().then((result) async {

@@ -52,7 +52,7 @@ Widget vidExpanderCardExt(BuildContext context, Widget title, bool expanded,  Li
 }
 
 Widget vidCard( String caption,  Widget body) {
-  return Padding(padding: EdgeInsets.only(top: 5, left: 3, right: 3, bottom: 3),
+  return Padding(padding: EdgeInsets.only(top:2, left: 3, right: 3, bottom: 0),
       child: Card(
         elevation: 3,
         child: ClipPath(

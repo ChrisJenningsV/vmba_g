@@ -9,7 +9,6 @@ import 'package:vmba/data/models/products.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../../Helpers/networkHelper.dart';
-import '../../components/vidButtons.dart';
 import '../../payment/choosePaymentMethod.dart';
 import '../../utilities/helper.dart';
 import '../productCard.dart';
@@ -200,17 +199,19 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
         }
         ));
       });
-      if( widget.wantButton) {
+      /*if( widget.wantButton) {
         list.add(Padding(padding: EdgeInsets.only(left: 10, right: 10),
-            child: vidWideActionButton(context, 'Continue', onComplete))
+            child: vidActionButton(context,'Continue', onComplete, icon: Icons.check ) )
+            //vidWideActionButton(context, 'Continue', onComplete))
               );
         list.add( Divider(height: 100,));
-      }
+      }*/
+      list.add( Divider(height: 200,));
     }
 
   return list;
 }
-  onComplete(BuildContext context, dynamic p ) {
+  onComplete(BuildContext context ) {
     try {
       Navigator.push(
           context,

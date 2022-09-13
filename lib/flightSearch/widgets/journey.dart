@@ -5,6 +5,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../components/pageStyleV2.dart';
+
 class SelectedRoute {
   String departure;
   String arrival;
@@ -121,6 +123,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         ]);
   }
 
+
   Widget _getAirportText(String airportName, String code) {
     Color c;
     FontWeight fw;
@@ -164,22 +167,32 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   }
 
   Widget _flyFrom() {
-    return new Column(
-      // mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-    TrText(
-    'Fly from',
-      style: new TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 15.0,
-      ),
-    ),
-    _getAirportText(departureAirport, departureCode),
-    new Divider(
-    height: 0.0,
-    ),
-    ]);
+    if( gblSettings.pageStyle == 'V3') {
+      return v2BorderBox(context,  ' ' + translate('Fly From'), Row(
+          children: <Widget>[
+            Icon(Icons.flight_takeoff),
+            Padding(padding: EdgeInsets.all(2)),
+            Text(departureAirport)
+          ]));
+
+    } else {
+      return new Column(
+        // mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TrText(
+              'Fly from',
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
+            ),
+            _getAirportText(departureAirport, departureCode),
+            new Divider(
+              height: 0.0,
+            ),
+          ]);
+    }
   }
 }
 
