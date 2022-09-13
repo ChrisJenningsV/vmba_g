@@ -22,8 +22,9 @@ NetworkImage getProductImage(Product product){
           name = product.productImageURL;
 
         } else {
-          name = gblSettings.gblServerFiles.replaceAll('AppFiles/', 'Public') +
-              product.productImageURL.replaceAll('..', '');
+          name = gblSettings.gblServerFiles.replaceAll('AppFiles/', 'Public');
+          name = name.replaceAll('AppFiles', 'Public');
+          name +=  product.productImageURL.replaceAll('..', '');
         }
       } else {
         if (product.productImageIndex == null) {

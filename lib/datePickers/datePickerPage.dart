@@ -4,6 +4,7 @@ import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import '../components/vidButtons.dart';
 
 class DatePickerWidget extends StatefulWidget {
   DatePickerWidget({Key key, this.departureDate}) : super(key: key);
@@ -53,7 +54,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
                 onChanged: _handleDateChanged),
           ],
         ),
-        floatingActionButton: Padding(
+        floatingActionButton: vidWideActionButton(context,'Done', onPressed, icon: Icons.check, offset: 35.0 ) );
+/*
+        Padding(
             padding: EdgeInsets.only(left: 35.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,5 +81,15 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
                     }),
               ],
             )));
+*/
+  }
+  void onPressed(BuildContext context, dynamic p) {
+    Navigator.pop(
+        context,
+        FlightDates(
+            DateTime.parse(
+                DateFormat('y-MM-dd').format(departureDate) +
+                    ' 00:00:00'),
+            null));
   }
 }

@@ -56,8 +56,12 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int p1
 /*
   NEXT button at the bottom of most pages
  */
-Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1} ) {
-  return ElevatedButton(
+Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0} ) {
+  return
+    Padding(
+      padding: EdgeInsets.only(left: offset),
+  child:
+    ElevatedButton(
     onPressed: () {
       onPressed(context, param1);
     },
@@ -80,7 +84,8 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
         ),
       ],
     ),
-  );
+  )
+    );
 //  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
 }
 

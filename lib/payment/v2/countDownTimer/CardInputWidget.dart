@@ -78,7 +78,7 @@ void initState() {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0))),
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                          //mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             (gblPayBtnDisabled ) ?

@@ -21,6 +21,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../utilities/smartApiPage.dart';
 import 'ProviderFieldsPage.dart';
 
 bool _cancelTimer = false;
@@ -682,7 +683,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     } catch(e ) {
 
     }
-    _dataLoaded();
+   // _dataLoaded();
   }
 
   Future completeBookingNothingtoPay() async {
@@ -837,9 +838,11 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           }
         }
         if (!flightsConfirmed) {
+/*
           setState(() {
             _displayProcessingIndicator = false;
           });
+*/
           showSnackBar(
               translate('Unable to confirm partner airlines flights.'));
 
@@ -1392,6 +1395,13 @@ List<Widget> getPayOptions(String amount, String cur) {
         ],
       ));
     if( gblSettings.termsAndConditionsUrl != null &&  gblSettings.termsAndConditionsUrl.isNotEmpty  ) {
+      String url = gblSettings.termsAndConditionsUrl;
+      if( url.startsWith('{')){
+        Map urls = json.decode(url);
+        if( urls.length > 0 && urls[gblLanguage ] != null){
+          url = urls[gblLanguage ];
+        }
+      }
       list.add(Divider());
       list.add(Row(
         mainAxisAlignment:
@@ -1406,13 +1416,20 @@ List<Widget> getPayOptions(String amount, String cur) {
                     SlideTopRoute(
                         page: WebViewWidget(
                             title: 'Terms & Conditions',
-                            url: gblSettings
-                                .termsAndConditionsUrl))),
+                            url: url))),
           )
         ],
       ));
     }
     if( gblSettings.privacyPolicyUrl != null && gblSettings.privacyPolicyUrl.isNotEmpty ) {
+      String url = gblSettings.privacyPolicyUrl;
+      if( url.startsWith('{')){
+        Map urls = json.decode(url);
+        if( urls.length > 0 && urls[gblLanguage ] != null){
+          url = urls[gblLanguage ];
+        }
+      }
+
       list.add(Divider());
       list.add(Row(
         mainAxisAlignment:
@@ -1427,8 +1444,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                     SlideTopRoute(
                         page: WebViewWidget(
                             title: translate('Privacy Policy'),
-                            url: gblSettings
-                                .privacyPolicyUrl))),
+                            url: url))),
           )
         ],
       ));
@@ -1473,12 +1489,17 @@ List<Widget> getPayOptions(String amount, String cur) {
             primary: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
-        onPressed: () => completeBookingNothingtoPay(),
+        onPressed: () {
+          if(_displayProcessingIndicator == false ) {
+            completeBookingNothingtoPay();
+          }
+        },
         child: Column(
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                ( _displayProcessingIndicator == true) ? CircularProgressIndicator() : Container(),
                 Text(
                   this.isMmb
                       ? translate('AGREE AND MAKE CHANGES')
@@ -1520,6 +1541,9 @@ List<Widget> getPayOptions(String amount, String cur) {
           case 'CreditCard':
             bShow = true;
             break;
+          case 'FundTransferPayment':
+            bShow = true;
+            break;
         }
 
         if( bShow){
@@ -1554,7 +1578,8 @@ List<Widget> getPayOptions(String amount, String cur) {
                     provider.paymentSchemeName, newBooking: widget.newBooking,
                     pnrModel: widget.pnrModel,
                     isMmb: widget.isMmb,)));
-                  setState(() { });
+                  setState(() {});
+
                 } else {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) =>
@@ -1564,6 +1589,14 @@ List<Widget> getPayOptions(String amount, String cur) {
                         mmbBooking: widget.mmbBooking,
                         mmbAction: widget.mmbAction,)));
                 }
+              } else if ( provider.paymentType == 'FundTransferPayment') {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) =>
+                    SmartApiPage(
+                      provider: provider,
+                      mmbAction: widget.mmbAction,))
+                );
+
               } else {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
@@ -1579,7 +1612,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText)
+                  children: _getPayButton(btnText, provider.paymentType)
               ),
             ],
           ),
@@ -1652,7 +1685,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText)
+                  children: _getPayButton(btnText, 'ExternalPayment')
               ),
             ],
           ),
@@ -1678,7 +1711,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   }
 
 
-  List<Widget> _getPayButton(String text) {
+  List<Widget> _getPayButton(String text, String providerType) {
     List<Widget> list = [];
     if(text == null  ) {
       text = 'AGREE AND PAY';
@@ -1705,17 +1738,20 @@ List<Widget> getPayOptions(String amount, String cur) {
       list.add(TrText( text,
       style: new TextStyle(color: Colors.black),
       ));
-    list.add(Image.asset(
-    'lib/assets/images/payment/visa.png',
-    height: 40,
-    ));
-    list.add(Padding(
-    padding: EdgeInsets.all(4),
-    ));
-    list.add(Image.asset(
-    'lib/assets/images/payment/mastercard.png',
-    height: 40,
-    ));
+
+      if( providerType == 'ExternalPayment' || providerType == 'CreditCard') {
+        list.add(Image.asset(
+          'lib/assets/images/payment/visa.png',
+          height: 40,
+        ));
+        list.add(Padding(
+          padding: EdgeInsets.all(4),
+        ));
+        list.add(Image.asset(
+          'lib/assets/images/payment/mastercard.png',
+          height: 40,
+        ));
+      }
     }
     return list;
 
@@ -1743,6 +1779,7 @@ class TimerTextState extends State<TimerText> {
   void callback(Timer timer) {
     if(_cancelTimer) {
       timer.cancel();
+      timer = null;
       return;
     }
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
@@ -1751,6 +1788,7 @@ class TimerTextState extends State<TimerText> {
       print('expired 2');
       if( timer != null ) {
         timer.cancel();
+        timer = null;
       }
       //Navigator.of(context).pop();
       Navigator.of(context)
@@ -1760,7 +1798,7 @@ class TimerTextState extends State<TimerText> {
       }
       return;
     }
-    if (stopwatch.isRunning) {
+    if (stopwatch.isRunning && timer != null ) {
        setState(() {});
     }
   }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import '../components/vidButtons.dart';
+
 
 class RangePickerWidget extends StatefulWidget {
   RangePickerWidget({Key key, this.departureDate, this.returnDate})
@@ -61,7 +62,9 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
             departureDate: widget.departureDate,
             returnDate: widget.returnDate,
             onChanged: _handleDateChanged),
-        floatingActionButton: Padding(
+        floatingActionButton: vidWideActionButton(context,'Done', onPressed, icon: Icons.check, offset: 35.0 ) );
+/*
+        Padding(
             padding: EdgeInsets.only(left: 35.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,5 +91,18 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
                     }),
               ],
             )));
+*/
+  }
+  void onPressed( BuildContext context, dynamic p) {
+    Navigator.pop(
+        context,
+        FlightDates(
+            DateTime.parse(
+                DateFormat('y-MM-dd').format(startOfPeriod) +
+                    ' 00:00:00'),
+            DateTime.parse(
+                DateFormat('y-MM-dd').format(endOfPeriod) +
+                    ' 00:00:00')));
+
   }
 }

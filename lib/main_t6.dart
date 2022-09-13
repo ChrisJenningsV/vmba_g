@@ -90,7 +90,9 @@ void configT6() {
     wantFindBookings: true,
     wantClassBandImages: true,
     wantCountry: true,
-    wantTallPageImage: true,
+    wantTallPageImage: false,
+    pageStyle: 'V2',
+    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers"}',
     useWebApiforVrs: true,
 
 
@@ -128,10 +130,13 @@ void configT6() {
   testCreditCardProvider: 'videcard|MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
-    wantNewPayment: true,
   wantPayStack: false,
     wantPushNoticications: true,
     wantNotificationEdit: false,
+    wantNewPayment: true,
+    wantMmbProducts: true,
+    wantStatusLine: true,
+    wantSeatsWithProducts: true,
 
     wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',

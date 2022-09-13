@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/components/vidGraphics.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../components/trText.dart';
@@ -262,6 +263,50 @@ Widget noFlightsFound(){
       ));
 }
 Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate, {void Function() onPressed} ) {
+  List <Widget> list = [];
+  bool showNoFlightIcon = false;
+  if( gblRedeemingAirmiles== false && item.amt.length == 0 ){
+    if( gblSettings.pageStyle == 'V2') {
+      showNoFlightIcon = true;
+    }
+  }
+
+
+  list.add(Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+    //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
+    style: TextStyle(
+        fontSize: 14,
+        color: isSearchDate(
+            DateTime.parse(item.daylcl),
+            date)
+            ? Colors.white
+            : Colors.black),
+  ));
+
+  if( showNoFlightIcon ){
+    list.add(vidNoFlights());
+  } else {
+    list.add(TrText('from', style: TextStyle(fontSize: 14,
+        color: isSearchDate(DateTime.parse(item.daylcl), date) ? Colors.white
+            : Colors.black),
+    ));
+
+    list.add(Text(
+      calenderPrice(item.cur, item.amt, item.miles),
+      //textScaleFactor: 1.0,
+      style: TextStyle(
+          fontSize: 14,
+          color: isSearchDate(
+              DateTime.parse(item.daylcl),
+              date)
+              ? Colors.white
+              : Colors.black),
+    ));
+  }
+
+
+
+
   return Container(
     decoration: new BoxDecoration(
         border: new Border.all(color: Colors.black12),
@@ -277,41 +322,7 @@ Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate
         onPressed: onPressed,
         child: new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Text( getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
-                //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isSearchDate(
-                        DateTime.parse(item.daylcl),
-                        date)
-                        ? Colors.white
-                        : Colors.black),
-              ),
-              new TrText(
-                'from',
-                //textScaleFactor: 1.0,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isSearchDate(
-                        DateTime.parse(item.daylcl),
-                        date)
-                        ? Colors.white
-                        : Colors.black),
-              ),
-              //new Text(item.cur + item.amt)
-              new Text(
-                calenderPrice(item.cur, item.amt, item.miles),
-                //textScaleFactor: 1.0,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isSearchDate(
-                        DateTime.parse(item.daylcl),
-                        date)
-                        ? Colors.white
-                        : Colors.black),
-              ),
-            ])),
+            children: list)),
   );
 }
 

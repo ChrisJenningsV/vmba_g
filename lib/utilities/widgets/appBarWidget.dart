@@ -288,6 +288,7 @@ Widget _getTitle(NewBooking newBooking,bool expanded) {
           initialData: newBooking.departure.toString(),
           builder: (BuildContext context, AsyncSnapshot<String> text) {
             return new Text(text.data,
+                textScaleFactor: 0.75,
                 style:  tStyle);
           },
         ),
@@ -315,12 +316,13 @@ Widget _getTitle(NewBooking newBooking,bool expanded) {
           builder: (BuildContext context, AsyncSnapshot<String> text) {
             return new Text(
               text.data,
+              textScaleFactor: 0.75,
               style: tStyle,
             );
           },
         ),
         Spacer(),
-        Text( gblPayable, style: TextStyle(color: txtCol, fontSize: 18)),
+        Text( gblPayable, style: TextStyle(color: txtCol), textScaleFactor: 1.0,),
 
       ],));
 

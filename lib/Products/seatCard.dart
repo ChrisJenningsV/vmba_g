@@ -128,10 +128,10 @@ class SeatCardState extends State<SeatCard> {
                   Row(
                     children: [
                       getAirport(
-                          dep, fontSize: 20, fontWeight: FontWeight.bold),
+                          dep, ),
                       Icon(Icons.arrow_right_alt),
                       getAirport(
-                          arr, fontSize: 20, fontWeight: FontWeight.bold),
+                          arr, ),
                       Spacer(),
                       Icon(Icons.chevron_right, size: 30,
                         color: gblSystemColors.primaryHeaderColor,),

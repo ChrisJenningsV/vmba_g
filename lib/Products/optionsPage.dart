@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
 
+import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../data/models/models.dart';
 import '../home/home_page.dart';
@@ -39,6 +38,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
             imageName: gblSettings.wantPageImages ? 'options' : null),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
         endDrawer: DrawerMenu(),
+        floatingActionButton: vidWideActionButton(context,'Continue', onComplete, icon: Icons.check, offset: 35.0 ) ,
         body:getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyOptions),
     );
   }
@@ -74,7 +74,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
   }
 
 
-  onComplete(BuildContext context, dynamic p ) {
+  onComplete(BuildContext context, dynamic p) {
     try {
       Navigator.push(
           context,

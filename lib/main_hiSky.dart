@@ -47,9 +47,12 @@ void configH4() {
   gblBuildFlavor = 'H4';
   gblCurrentRloc = '';
 
+
   gblSettings = Settings (
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
+//    homePageStyle: 'V2',
+    pageStyle: 'V2',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
@@ -64,9 +67,9 @@ void configH4() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'H4',
-    termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
-    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
-    prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
+    termsAndConditionsUrl: '{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
+    privacyPolicyUrl:  '{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
+    //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
     locale: 'en-EN',
@@ -94,7 +97,6 @@ void configH4() {
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 
-    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
       adults: true,
       child: true,

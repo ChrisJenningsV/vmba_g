@@ -5,6 +5,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../components/pageStyleV2.dart';
+
 class SelectedRoute {
   String departure;
   String arrival;
@@ -12,15 +14,15 @@ class SelectedRoute {
   SelectedRoute(this.departure, this.arrival);
 }
 
-class JourneyWidget extends StatefulWidget {
-  JourneyWidget({Key key, this.onChanged}) : super(key: key);
+class SelectJourneyWidget extends StatefulWidget {
+  SelectJourneyWidget({Key key, this.onChanged}) : super(key: key);
 
   final ValueChanged<SelectedRoute> onChanged;
 
-  _JourneyWidgetState createState() => _JourneyWidgetState();
+  _SelectJourneyWidgetState createState() => _SelectJourneyWidgetState();
 }
 
-class _JourneyWidgetState extends State<JourneyWidget> {
+class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   String departureAirport = translate('Select departure airport');
   String departureCode = '';
   String arrivalAirport = translate('Select arrival airport');
@@ -78,33 +80,8 @@ class _JourneyWidgetState extends State<JourneyWidget> {
                     // print('$result');
                     _handleDeptureSelectionChanged('$result');
                   },
-                  child: new Column(
-                      // mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        new TrText(
-                          'Fly from',
-                          style: new TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                        _getAirportText(departureAirport, departureCode),
-  /*                      new Text(
-                          departureAirport,
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: departureCode == ''
-                                  ? Colors.grey
-                                  : Colors.black,
-                              fontSize: 18.0),
-                        ),
-
-   */
-                        new Divider(
-                          height: 0.0,
-                        ),
-                      ])),
+                  child: _flyFrom(),
+              ),
               new Padding(
                 padding: EdgeInsets.only(bottom: 5),
               ),
@@ -146,6 +123,7 @@ class _JourneyWidgetState extends State<JourneyWidget> {
         ]);
   }
 
+
   Widget _getAirportText(String airportName, String code) {
     Color c;
     FontWeight fw;
@@ -186,6 +164,35 @@ class _JourneyWidgetState extends State<JourneyWidget> {
               CitiesScreen(filterByCitiesCode: departureCode)),
     );
     _handleArrivalSelectionChanged('$result');
+  }
+
+  Widget _flyFrom() {
+    if( gblSettings.pageStyle == 'V3') {
+      return v2BorderBox(context,  ' ' + translate('Fly From'), Row(
+          children: <Widget>[
+            Icon(Icons.flight_takeoff),
+            Padding(padding: EdgeInsets.all(2)),
+            Text(departureAirport)
+          ]));
+
+    } else {
+      return new Column(
+        // mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TrText(
+              'Fly from',
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
+            ),
+            _getAirportText(departureAirport, departureCode),
+            new Divider(
+              height: 0.0,
+            ),
+          ]);
+    }
   }
 }
 

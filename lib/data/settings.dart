@@ -110,6 +110,7 @@ class Settings {
   bool useSmartPay;
 
   String homePageStyle;
+  String pageStyle;
   String defaultCountryCode;
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
@@ -249,6 +250,7 @@ bool bpShowFastTrack;
     this.useSmartPay = false,
     this.avTimeFormat='HHmm',
     this.homePageStyle='V1',
+    this.pageStyle = 'V1',
 
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
