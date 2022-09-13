@@ -104,7 +104,7 @@ void configFN() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.FastJet.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.FastJet.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.FastJet.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.FastJet.com/VARS/webApiv2/api/',
     livePayPage:      'https://booking.FastJet.com/VARS/Public/MobilePaymentStart.aspx',
@@ -161,7 +161,7 @@ void configFN() {
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 
-    wantFQTVNumber: true,
+    wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
     maxNumberOfPax: 8,
     hideFareRules: false,
