@@ -12,6 +12,7 @@ import '../../Helpers/networkHelper.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
+import 'package:vmba/utilities/errorPages.dart';
 
 
 class DataLoaderWidget extends StatefulWidget {
@@ -148,6 +149,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         _displayFinalError = true;
          _displayProcessingText = 'failed to get providers';
 
+         criticalErrorPage(context, 'failed to get providers', title: 'Payment error');
         setLoadState(LoadState.loadFailed);
         setState(() {
 

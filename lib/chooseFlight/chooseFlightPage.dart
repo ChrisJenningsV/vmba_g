@@ -39,7 +39,7 @@ class ChooseFlight extends StatelessWidget {
           ],
         ),
         body: classBands(context),
-        floatingActionButton: vidActionButton(context,'CHOOSE FLIGHT', _onPressed, icon: Icons.check ),
+        floatingActionButton: vidWideActionButton(context,'CHOOSE FLIGHT', _onPressed, icon: Icons.check, offset: 35 ),
     );
  /*       Padding(
             padding: EdgeInsets.only(left: 35.0),
@@ -70,7 +70,7 @@ class ChooseFlight extends StatelessWidget {
               ],
             )));*/
   }
-  void _onPressed(BuildContext context) {
+  void _onPressed(BuildContext context, dynamic p) {
     Navigator.of(context).pop(buildfltRequestMsg(
         flts,
         classband.cbname,
