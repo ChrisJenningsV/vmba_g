@@ -162,7 +162,7 @@ void configFN() {
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 
-    wantFQTVNumber: true,
+    wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
     maxNumberOfPax: 8,
     hideFareRules: false,
