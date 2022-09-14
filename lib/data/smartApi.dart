@@ -62,6 +62,15 @@ Future<String> callSmartApi(String action, String data) async {
   VrsApiResponse rs = VrsApiResponse.fromJson(map);
   // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
   logit('Server IP ${map['serverIP']}');
+  if( rs.isSuccessful == false) {
+    if( rs.data != null && rs.data.isNotEmpty) {
+     throw rs.data;
+    } else {
+      throw rs.errorMsg;
+    }
+  }
+
+
   if( rs.data == null ) {
     throw 'no data returned';
   }

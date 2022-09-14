@@ -95,7 +95,7 @@ void configGR() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.aurigny.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.aurigny.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.aurigny.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.aurigny.com/VARS/webApiv2/api/',
     livePayPage:      'https://booking.aurigny.com/VARS/Public/MobilePaymentStart.aspx',

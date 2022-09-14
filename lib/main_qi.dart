@@ -95,7 +95,7 @@ void configQI() {
     groupsBookingsEmail: "",
     maxNumberOfPax: 8,
     hideFareRules: true,
-    liveXmlUrl:      "https://booking.ibom.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.ibom.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:       'https://booking.ibom.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.ibom.com/ANCwebApi/api/',
     livePayPage:      'https://booking.ibom.com/VARS/Public/MobilePaymentStart.aspx',

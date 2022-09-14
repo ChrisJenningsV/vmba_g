@@ -56,6 +56,7 @@ void configFN() {
     currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',
     wantCurrencyPicker: true,
+    wantBuyNowPayLater: false,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
 
@@ -104,7 +105,7 @@ void configFN() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.FastJet.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.FastJet.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.FastJet.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.FastJet.com/VARS/webApiv2/api/',
     livePayPage:      'https://booking.FastJet.com/VARS/Public/MobilePaymentStart.aspx',
@@ -129,8 +130,8 @@ void configFN() {
 
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-//       testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
-    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+       testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local

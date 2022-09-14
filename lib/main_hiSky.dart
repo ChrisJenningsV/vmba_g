@@ -108,7 +108,7 @@ void configH4() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.hisky.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.hisky.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.hisky.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.hisky.com/VARS/webApiv2/api/',
     livePayPage:      'https://booking.hisky.com/VARS/Public/MobilePaymentStart.aspx',

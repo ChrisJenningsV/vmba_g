@@ -145,6 +145,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       print('failed to get providers: ${response.body}');
       try{
         print (response.body);
+        _displayFinalError = true;
+         _displayProcessingText = 'failed to get providers';
+
         setLoadState(LoadState.loadFailed);
         setState(() {
 

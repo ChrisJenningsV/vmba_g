@@ -105,7 +105,7 @@ void configT6() {
   ),
 
 //Production setttings
-  liveXmlUrl:      "https://booking.airswift.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  liveXmlUrl:      "https://booking.airswift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.airswift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.airswift.com/webApiv2/api/',
     livePayPage: 'https://booking.airswift.com/VARS/Public/MobilePaymentStart.aspx',

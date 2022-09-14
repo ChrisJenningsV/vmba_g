@@ -71,6 +71,7 @@ class Settings {
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantCurrencyPicker = false;
+  bool wantBuyNowPayLater = false;
   bool wantPassengerPassport = false;
   bool wantRememberMe = false;
   bool wantHomeFQTVButton = false;
@@ -211,6 +212,7 @@ bool bpShowFastTrack;
     this.wantLeftLogo = false,
     this.wantCurrencySymbols,
     this.wantCurrencyPicker = false,
+    this.wantBuyNowPayLater = false,
     this.wantPassengerPassport = false,
     this.wantRememberMe = false ,
     this.wantHomeFQTVButton = false,

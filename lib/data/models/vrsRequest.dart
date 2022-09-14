@@ -188,3 +188,34 @@ class RefundReply {
   }
 }
 
+
+class PaymentRequest{
+  String rloc;
+  String paymentType;
+  String cmd;
+
+  PaymentRequest({ this.rloc, this.paymentType});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+    map['paymentType'] = paymentType;
+
+    return map;
+  }
+}
+
+class PaymentReply {
+  String reply;
+
+  PaymentReply(this.reply);
+
+
+  PaymentReply.fromJson(Map<String, dynamic> json) {
+    reply = json['reply'];
+  }
+}
+
+
+
+

@@ -121,7 +121,7 @@ void configKG() {
 
     apiKey: '75998e0697a04bc0bbb7dd9a38cf0745',
 //Staging setttings
-    liveXmlUrl:      "https://booking.airgotland.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.airgotland.se/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:       'https://booking.airgotland.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.airgotland.se/VARS/webApiV2/api/',
     liveCreditCardProvider: 'worldpaydirect',

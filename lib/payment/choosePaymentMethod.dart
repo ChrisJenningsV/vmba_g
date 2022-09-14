@@ -1542,7 +1542,9 @@ List<Widget> getPayOptions(String amount, String cur) {
             bShow = true;
             break;
           case 'FundTransferPayment':
-            bShow = true;
+            if( gblSettings.wantBuyNowPayLater) {
+              bShow = true;
+            }
             break;
         }
 
@@ -1590,11 +1592,19 @@ List<Widget> getPayOptions(String amount, String cur) {
                         mmbAction: widget.mmbAction,)));
                 }
               } else if ( provider.paymentType == 'FundTransferPayment') {
+                _displayProcessingIndicator = false;
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
                     SmartApiPage(
                       provider: provider,
-                      mmbAction: widget.mmbAction,))
+                      onComplete:(dynamic p) {
+                        gblError = '';
+                        gblPayBtnDisabled = false;
+                        _displayProcessingIndicator = false;
+                        setState(() {
+                        });
+                      },
+                      pnrModel: gblPnrModel,))
                 );
 
               } else {
@@ -1751,7 +1761,9 @@ List<Widget> getPayOptions(String amount, String cur) {
           'lib/assets/images/payment/mastercard.png',
           height: 40,
         ));
-      }
+      } else if (providerType == 'FundTransferPayment') {
+        list.add(Icon(Icons.bookmark_border, color: Colors.grey,));
+        }
     }
     return list;
 
