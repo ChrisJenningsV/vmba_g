@@ -18,6 +18,7 @@ import 'package:vmba/calendar/calendarFunctions.dart';
 
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
+import '../utilities/messagePages.dart';
 import 'bookingFunctions.dart';
 
 class FlightSeletionPage extends StatefulWidget {
@@ -42,6 +43,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     _loadingInProgress = true;
     _noInternet = false;
     gblBookingState = BookingState.newBooking;
+
     _loadData();
   }
 
@@ -144,7 +146,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Future _loadData() async {
-    Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
+
+      Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();
@@ -215,7 +218,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     } else if (calenderWidgetSelectedItem == 2) {
       animateTo = 150;
     }
-
+    endProgressMessage();
     setState(() {
       _loadingInProgress = false;
     });
@@ -269,18 +272,23 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   Widget _buildBody() {
     if (_loadingInProgress) {
-      return new Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText('Searching for Flights'),
-            )
-          ],
-        ),
-      );
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        return Container();
+      } else {
+        return new Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TrText('Searching for Flights'),
+              )
+            ],
+          ),
+        );
+      }
     } else if (_noInternet ) {
       return new Center(
         child: Column(

@@ -74,6 +74,7 @@ class Settings {
   bool wantBuyNowPayLater = false;
   bool wantPassengerPassport = false;
   bool wantRememberMe = false;
+  bool wantCustomProgress;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
   bool youthIsAdult = false;
@@ -215,6 +216,7 @@ bool bpShowFastTrack;
     this.wantBuyNowPayLater = false,
     this.wantPassengerPassport = false,
     this.wantRememberMe = false ,
+    this.wantCustomProgress = true,
     this.wantHomeFQTVButton = false,
     this.wantUmnr = false,
     this.want24HourClock = false,

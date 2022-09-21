@@ -15,12 +15,14 @@ import 'package:vmba/components/selectLang.dart';
 import '../components/bottomNav.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
+import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
 GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
+GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePageState>();
 
 class HomePage extends StatefulWidget {
   HomePage({this.ads});

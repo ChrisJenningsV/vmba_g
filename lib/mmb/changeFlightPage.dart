@@ -16,6 +16,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../calendar/calendarFunctions.dart';
+import '../utilities/messagePages.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -265,6 +266,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     } else if (calenderWidgetSelectedItem == 2) {
       animateTo = 150;
     }
+    endProgressMessage();
 
     setState(() {
       _loadingInProgress = false;
@@ -394,18 +396,23 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   Widget _buildBody() {
     if (_loadingInProgress) {
-      return new Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText('Searching for Flights'),
-            )
-          ],
-        ),
-      );
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        return Container();
+      } else {
+        return new Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TrText('Searching for Flights'),
+              )
+            ],
+          ),
+        );
+      }
     } else if (_noInternet) {
       return new Center(
         child: Column(

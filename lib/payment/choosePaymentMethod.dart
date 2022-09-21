@@ -21,6 +21,10 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../data/models/providers.dart';
+import '../data/models/vrsRequest.dart';
+import '../data/smartApi.dart';
+import '../utilities/messagePages.dart';
 import '../utilities/smartApiPage.dart';
 import 'ProviderFieldsPage.dart';
 
@@ -143,6 +147,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   void _dataLoaded() {
     setState(() {
+      endProgressMessage();
       _displayProcessingIndicator = false;
     });
   }
@@ -1084,26 +1089,31 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     if (_displayProcessingIndicator) {
       if(gblLogPayment) { logit('CPM Build processing');}
-      return Scaffold(
-        key: _key,
-        appBar: appBar(context, 'Payment',
-          newBooking: widget.newBooking,
-          curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
-        endDrawer: DrawerMenu(),
-        body: new Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new TrText(_displayProcessingText),
-              ),
-            ],
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(context, _displayProcessingText, title: 'Payment');
+        return Container();
+      } else {
+        return Scaffold(
+          key: _key,
+          appBar: appBar(context, 'Payment',
+            newBooking: widget.newBooking,
+            curStep: 5,
+            imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
+          endDrawer: DrawerMenu(),
+          body: new Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                new CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new TrText(_displayProcessingText),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else if (gblPaymentMsg != null ) {
       if(gblLogPayment) { logit('CPM Build error');}
 
@@ -1592,20 +1602,23 @@ List<Widget> getPayOptions(String amount, String cur) {
                         mmbAction: widget.mmbAction,)));
                 }
               } else if ( provider.paymentType == 'FundTransferPayment') {
+                endProgressMessage();
                 _displayProcessingIndicator = false;
-                Navigator.push(
+                doFundTransferPayment(provider);
+              /*  Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
                     SmartApiPage(
                       provider: provider,
                       onComplete:(dynamic p) {
                         gblError = '';
                         gblPayBtnDisabled = false;
+                        endProgressMessage();
                         _displayProcessingIndicator = false;
                         setState(() {
                         });
                       },
                       pnrModel: gblPnrModel,))
-                );
+                );*/
 
               } else {
                 Navigator.push(
@@ -1644,6 +1657,40 @@ List<Widget> getPayOptions(String amount, String cur) {
           //setState(() {            });
           startTimer();
         },);
+    }
+  }
+  Future<void> doFundTransferPayment( Provider provider) async {
+    progressMessagePage(context, 'Making payment', title:  'Payment');
+    try {
+      PaymentRequest pay = new PaymentRequest();
+      pay.rloc = widget.pnrModel.pNR.rLOC;
+      pay.paymentType = provider.paymentType;
+      pay.paymentName = provider.paymentSchemeName;
+      pay.amount = widget.pnrModel.pNR.basket.outstanding.amount;
+      pay.currency = widget.pnrModel.pNR.basket.outstanding.cur;
+      pay.confirmation = 'SMS';
+
+      String data = json.encode(pay);
+      try {
+        String reply = await callSmartApi('MAKEPAYMENT', data);
+        Map map = json.decode(reply);
+        PaymentReply payRs = new PaymentReply.fromJson(map);
+        endProgressMessage();
+        if (payRs != null) {
+          successMessagePage(context, 'payRs');
+        } else {
+          criticalErrorPage(context, 'gblError', title: 'Payment Error');
+        }
+      } catch (e) {
+        gblError = e.toString();
+        endProgressMessage();
+        criticalErrorPage(context, gblError, title: 'Payment Error');
+      }
+    } catch(e) {
+      gblError = e.toString();
+      endProgressMessage();
+      criticalErrorPage(context, gblError, title: 'Payment Error');
+
     }
   }
 

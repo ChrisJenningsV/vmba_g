@@ -79,6 +79,7 @@ class RootPageState extends State<RootPage> {
   }
 
   loadData() async {
+    logit('loadData');
     _dataLoaded = true;
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>

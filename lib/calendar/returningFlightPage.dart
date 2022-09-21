@@ -17,6 +17,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
+import '../utilities/messagePages.dart';
 import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
 
@@ -191,6 +192,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     } else if (calenderWidgetSelectedItem == 2) {
       animateTo = 150;
     }
+    endProgressMessage();
 
     setState(() {
       _loadingInProgress = false;
@@ -218,6 +220,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   Widget _buildBody() {
     if (_loadingInProgress) {
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        return Container();
+      } else {
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -230,6 +236,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           ],
         ),
       );
+      }
     } else if (_noInternet) {
       return new Center(
         child: Column(

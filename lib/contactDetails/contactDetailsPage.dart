@@ -18,6 +18,7 @@ import 'package:vmba/data/repository.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/vidButtons.dart';
+import '../utilities/messagePages.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -76,26 +77,31 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     if (_displayProcessingIndicator) {
-      return Scaffold(
-        key: _key,
-        appBar: appBar(context, 'Payment',
-          curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(context, _displayProcessingText, title: 'Payment');
+        return Container();
+      } else {
+        return Scaffold(
+          key: _key,
+          appBar: appBar(context, 'Payment',
+            curStep: 5,
+            imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
 
-        endDrawer: DrawerMenu(),
-        body: new Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new TrText(_displayProcessingText),
-              ),
-            ],
+          endDrawer: DrawerMenu(),
+          body: new Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                new CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new TrText(_displayProcessingText),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else if (_tooManyUmnr) {
       return new Scaffold(
           key: _key,
@@ -287,6 +293,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           makeBooking();
         } else {
           setState(() {
+            endProgressMessage();
             _displayProcessingIndicator = false;
           });
           //showSnackBar(translate('Please, check your internet connection'));
@@ -381,6 +388,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
           if (data.contains('TOO MANY UMNR')) {
             setState(() {
+              endProgressMessage();
               _displayProcessingIndicator = false;
               _tooManyUmnr = true;
             });
@@ -414,6 +422,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               .catchError((resp) {});
               if (response == null) {
                 setState(() {
+                  endProgressMessage();
                   _displayProcessingIndicator = false;
                 });
                 //showSnackBar(translate('Please, check your internet connection'));
@@ -424,6 +433,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               //If there was an error return an empty list
               if (response.statusCode < 200 || response.statusCode >= 300) {
                 setState(() {
+                  endProgressMessage();
                   _displayProcessingIndicator = false;
                 });
                 //showSnackBar(translate('Please, check your internet connection'));
@@ -469,6 +479,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           gotoChoosePaymentPage();
         } else {
           setState(() {
+            endProgressMessage();
             _displayProcessingIndicator = false;
           });
           _error = translate('Unable to confirm partner airlines flights.');
@@ -502,6 +513,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         if (response == null) {
           //return new ParsedResponse(NO_INTERNET, []);
           setState(() {
+            endProgressMessage();
             _displayProcessingIndicator = false;
           });
           //showSnackBar(translate('Please, check your internet connection'));
@@ -512,6 +524,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         //If there was an error return an empty list
         if (response.statusCode < 200 || response.statusCode >= 300) {
           setState(() {
+            endProgressMessage();
             _displayProcessingIndicator = false;
           });
           //showSnackBar(translate('Please, check your internet connection'));
@@ -532,6 +545,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
             if (response.body.contains('TOO MANY UMNR')) {
               setState(() {
+                endProgressMessage();
                 _displayProcessingIndicator = false;
                 _tooManyUmnr = true;
               });
@@ -566,6 +580,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                     .catchError((resp) {});
                 if (response == null) {
                   setState(() {
+                    endProgressMessage();
                     _displayProcessingIndicator = false;
                   });
                   //showSnackBar(translate('Please, check your internet connection'));
@@ -576,6 +591,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                 //If there was an error return an empty list
                 if (response.statusCode < 200 || response.statusCode >= 300) {
                   setState(() {
+                    endProgressMessage();
                     _displayProcessingIndicator = false;
                   });
                   //showSnackBar(translate('Please, check your internet connection'));
@@ -622,6 +638,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             gotoChoosePaymentPage();
           } else {
             setState(() {
+              endProgressMessage();
               _displayProcessingIndicator = false;
             });
             _error = translate('Unable to confirm partner airlines flights.');
@@ -658,6 +675,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   void _dataLoaded() {
     setState(() {
+      endProgressMessage();
       _displayProcessingIndicator = false;
     });
   }

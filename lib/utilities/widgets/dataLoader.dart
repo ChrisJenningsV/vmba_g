@@ -12,7 +12,7 @@ import '../../Helpers/networkHelper.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
-import 'package:vmba/utilities/errorPages.dart';
+import 'package:vmba/utilities/messagePages.dart';
 
 
 class DataLoaderWidget extends StatefulWidget {

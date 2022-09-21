@@ -13,6 +13,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/utilities/messagePages.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget({Key key, this.newBooking}) : super(key: key);
@@ -226,6 +227,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           if (gblFqtvBalance < miles) {
             setState(() {
               _loadingInProgress = false;
+              endProgressMessage();
+
               _eVoucherNotValid = false;
               _tooManyUmnr = false;
               _hasError = true;
@@ -242,10 +245,14 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         _hasError = true;
         setState(() {
           _loadingInProgress = false;
+          endProgressMessage();
+
         });
       } else {
         setState(() {
           _loadingInProgress = false;
+          endProgressMessage();
+
           _noInternet = true;
         });
       }
@@ -259,6 +266,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         if (_error.contains('ERROR: E-VOUCHER ')) {
           setState(() {
             _loadingInProgress = false;
+            endProgressMessage();
+
             _eVoucherNotValid = true;
           });
         } else if(_error.contains('TOO MANY UMNR ')) {
@@ -269,6 +278,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         } else {
           setState(() {
             _loadingInProgress = false;
+            endProgressMessage();
+
             _eVoucherNotValid = false;
             _hasError = true;
           });
@@ -282,6 +293,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       else {
         _error = resp;
         _loadingInProgress = false;
+        endProgressMessage();
+
         _hasError = true;
         setState(() {});
       }
@@ -307,6 +320,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   void _dataLoaded() {
     setState(() {
       _loadingInProgress = false;
+      endProgressMessage();
+
     });
   }
 
@@ -665,26 +680,32 @@ Row airMiles() {
   @override
   Widget build(BuildContext context) {
     if (_loadingInProgress) {
-      return Scaffold(
-        appBar: appBar(context, 'Summary',
-          newBooking: widget.newBooking,
-        curStep: 3,
-        imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
-        extendBodyBehindAppBar: gblSettings.wantPageImages,
-        endDrawer: DrawerMenu(),
-        body: new Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new TrText("Calculating your price..."),
-              ),
-            ],
+      if( gblSettings.wantCustomProgress) {
+        progressMessagePage(
+            context, 'Calculating your price...', title: 'Summary');
+        return Container();
+      } else {
+        return Scaffold(
+          appBar: appBar(context, 'Summary',
+            newBooking: widget.newBooking,
+            curStep: 3,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,),
+          extendBodyBehindAppBar: gblSettings.wantPageImages,
+          endDrawer: DrawerMenu(),
+          body: new Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                new CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new TrText("Calculating your price..."),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else if (_noInternet) {
       return Scaffold(
           key: _key,

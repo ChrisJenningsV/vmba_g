@@ -242,7 +242,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     }
   }
 
-  List<Widget> airportsInputs(BuildContext context) {
+ /* List<Widget> airportsInputs(BuildContext context) {
     return [
       new Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         new Expanded(
@@ -282,7 +282,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             height: 0.0,
           )),
     ];
-  }
+  }*/
 }
 
 

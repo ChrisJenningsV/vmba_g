@@ -199,7 +199,7 @@ class Seat {
   String sDCSStatus;
   String sSequence;
   bool noInfantSeat;
-  bool PRMSeat;
+  bool pRMSeat;
 
   Seat(
       {this.sSeatID,
@@ -223,7 +223,7 @@ class Seat {
       this.sDCSStatus,
       this.sSequence,
       this.noInfantSeat,
-      this.PRMSeat});
+      this.pRMSeat});
 
   Seat.fromJson(Map<String, dynamic> json) {
     sSeatID = json['SeatID'];
@@ -252,9 +252,9 @@ class Seat {
       noInfantSeat = false;
     }
     if(json['PRMSeat'] == '1' || json['PRMSeat'] == 'True' ) {
-      PRMSeat = true;
+      pRMSeat = true;
     } else {
-      PRMSeat = false;
+      pRMSeat = false;
     }
 
   }

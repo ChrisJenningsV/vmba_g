@@ -1094,7 +1094,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
                   if( selectableSeat && !selectedSeats.contains(seat.sCode)) {
                       if( seat.sCellDescription == 'EmergencySeat' ) {
                         emergencySeatSelection(context, seat.sCode);
-                      } else if( seat.PRMSeat == true ) {
+                      } else if( seat.pRMSeat == true ) {
                         prmSeatSelection(context, seat);
                       } else {
                         _seatSelected(seat.sCode);

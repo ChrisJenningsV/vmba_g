@@ -9,6 +9,8 @@ import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
+import '../main.dart';
+import '../utilities/messagePages.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -198,7 +200,8 @@ class Repository {
     logit('website version $apiBuldVersion');
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
       gblError = 'WebApi needs upgrade';
-    throw('WebApi needs upgrade');
+      criticalErrorPage(NavigationService.navigatorKey.currentContext,'WebApi needs upgrade',title: 'Login', wantButtons: false);
+      //throw('WebApi needs upgrade');
     }
 
 
@@ -615,7 +618,8 @@ class Repository {
                 gblError = 'WebApi needs update';
               }
               print(gblError);
-              throw(gblError);
+              criticalErrorPage(NavigationService.navigatorKey.currentContext,gblError,title: 'Login', wantButtons: false );
+              //throw(gblError);
             }         } else {
             logit('login failed');
             print(response.body);

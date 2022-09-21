@@ -304,6 +304,11 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   Widget build(BuildContext context) {
     //Show dialog
     //print('build');
+    Widget floatBtn ;
+    if (allPaxDetailsCompleted) {
+      floatBtn = vidWideActionButton(context, 'CONTINUE', _onContinuePressed, offset: 35);
+    }
+
 
     return new Scaffold(
       key: _key,
@@ -314,6 +319,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
       body: getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyPax),
+      floatingActionButton: floatBtn,
     );
   }
 
@@ -429,37 +435,12 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     }
     //Infant end
 
+/*
     if (allPaxDetailsCompleted) {
       paxWidgets.add(
         vidWideActionButton(context, 'CONTINUE', _onContinuePressed));
-/*
-          ElevatedButton(
-        onPressed: () {
-          gblPaymentMsg=null;
-          validateAndSubmit();
-        },
-        style: ElevatedButton.styleFrom(
-            primary: gblSystemColors
-                .primaryButtonColor, //Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0))),
-        child: Row(
-          //mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-            TrText(
-              'CONTINUE',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      ));
-*/
     }
+*/
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));

@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/calendar/TabPage.dart';
 
+import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 class AppFeedBackPage extends StatefulWidget {
@@ -170,7 +171,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               subtitle: Text(title),
             ),
 
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
@@ -182,7 +183,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 ),
 
 
-                const SizedBox(width: 8),
+                //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -195,7 +196,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
                 ),
 
-                const SizedBox(width: 8),
+                //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -209,7 +210,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 ),
 
 
-                const SizedBox(width: 8),
+                //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
@@ -222,6 +223,44 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   },
 
                 ),
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Error msg'),
+                  onPressed: () {
+                    criticalErrorPage(context, 'this is a test error message', title: 'Error title');
+                  },
+                ),
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Success msg'),
+                  onPressed: () {
+                    successMessagePage(context, 'this is a test success message', title: 'Booking Confirmed');
+                  },
+                ),
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      primary: gblSystemColors.textButtonTextColor),
+                  child: TrText('Progress msg'),
+                  onPressed: () {
+                    progressMessagePage(context, 'this is a progress message', title: 'loading');
+
+                    Timer(Duration(seconds: 3), () {
+                      setProgressMessage('3 seconds');
+                    });
+                    Timer(Duration(seconds: 10), () {
+                      endProgressMessage();
+                    });
+                  },
+                ),
+
               ],
             ),
 
@@ -309,8 +348,10 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         return AlertDialog(
           title: Row(
               children:[
+/*
                 Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
                   width: 50, height: 50, fit: BoxFit.contain,),
+*/
                 TrText('LOGIN')
               ]
           ),
@@ -359,7 +400,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Sine',
+                  labelText: 'Sine (4ch)7973  ',
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),

@@ -192,6 +192,10 @@ class RefundReply {
 class PaymentRequest{
   String rloc;
   String paymentType;
+  String paymentName;
+  String amount;
+  String currency;
+  String confirmation;
   String cmd;
 
   PaymentRequest({ this.rloc, this.paymentType});
@@ -200,7 +204,10 @@ class PaymentRequest{
     Map map = new Map();
     map['rloc'] = rloc;
     map['paymentType'] = paymentType;
-
+    map['paymentName'] = paymentName;
+    map['amount'] = amount;
+    map['currency'] = currency;
+    map['confirmation'] = confirmation;
     return map;
   }
 }

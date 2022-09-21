@@ -1,7 +1,9 @@
+/*
 import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:vmba/utilities/messagePages.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 
@@ -161,14 +163,16 @@ class SmartApiPageState extends State<SmartApiPage> {
                     radius: 48,
                     child: Image.asset('lib/assets/$gblAppTitle/images/loader.png') //Icon(Icons.check),
                 )),
-            /*SizedBox(
+            */
+/*SizedBox(
           width: 100,
           height: 100,
           child: CircularProgressIndicator(
             color: Colors.grey,
            // value: 1,
           ),
-        ),*/
+        ),*//*
+
             SizedBox(
               width: 150,
               height: 150,
@@ -197,19 +201,32 @@ class SmartApiPageState extends State<SmartApiPage> {
         PaymentRequest pay = new PaymentRequest();
         pay.rloc = widget.pnrModel.pNR.rLOC;
         pay.paymentType = widget.provider.paymentType;
+        pay.paymentName = widget.provider.paymentSchemeName;
+        pay.amount = widget.pnrModel.pNR.basket.outstanding.amount;
+        pay.currency = widget.pnrModel.pNR.basket.outstanding.cur;
+        pay.confirmation = 'SMS';
 
         String data =  json.encode(pay);
         try {
           String reply = await callSmartApi('MAKEPAYMENT', data);
           Map map = json.decode(reply);
           PaymentReply payRs = new PaymentReply.fromJson(map);
+          if( payRs != null )  {
+            successMessagePage(context, 'payRs' );
+          } else {
+            criticalErrorPage(context, 'gblError', title: 'Payment Error');
+          }
         } catch(e) {
           gblError = e.toString();
-         setState(() {
+          criticalErrorPage(context, gblError, title: 'Payment Error');
+ */
+/*        setState(() {
 
-          });
+          });*//*
+
         }
         break;
     }
   }
 }
+*/

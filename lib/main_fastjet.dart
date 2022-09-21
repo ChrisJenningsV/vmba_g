@@ -24,6 +24,7 @@ void main() {
 }
 void configFN() {
   SystemColors _systemColors = SystemColors(
+    progressColor: Colors.yellow,
     primaryButtonColor: Color.fromRGBO(0XFF, 0xC8, 0x32, 1),
     accentButtonColor: Color.fromRGBO(0X48, 0x53, 0x5B, 1),
     accentColor: Colors.grey, // used for calendar selection ends
@@ -56,7 +57,7 @@ void configFN() {
     currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',
     wantCurrencyPicker: true,
-    wantBuyNowPayLater: false,
+    wantBuyNowPayLater: true,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
 
@@ -128,9 +129,9 @@ void configFN() {
 //    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
 
-//    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-       testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
+    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+       testSmartApiUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/MobileSmartApi",
 //    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',

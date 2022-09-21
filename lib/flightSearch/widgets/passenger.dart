@@ -120,7 +120,7 @@ class _PassengerWidgetState extends State<PassengerWidget> {
                     style: new TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 15.0)),
                 new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     new IconButton(
                       icon: Icon(

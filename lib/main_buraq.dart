@@ -35,6 +35,7 @@ void configUZ() {
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
       primaryHeaderColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
+      progressColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
       headerTextColor: Colors.white,
       statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow

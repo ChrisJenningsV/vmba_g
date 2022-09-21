@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class SystemColors {
   final Color primaryButtonColor;
+  Color progressColor;
   final Color primaryButtonTextColor;
   final Color otherButtonTextColor;
   final Color accentButtonColor;
@@ -40,6 +41,7 @@ class SystemColors {
     @required this.accentButtonColor,
     @required this.primaryColor,
     @required this.accentColor,
+    this.progressColor,
     this.otherButtonColor,
     this.otherButtonTextColor,
     this.primaryButtonTextColor,
@@ -86,7 +88,7 @@ class SystemColors {
 
     if(progressBackColor == null ) progressBackColor = primaryHeaderColor;
     if(progressTextColor == null) progressTextColor = headerTextColor;
-
+    if( progressColor == null ) progressColor =  primaryHeaderColor;
 
   }
 }
