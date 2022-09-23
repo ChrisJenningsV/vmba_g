@@ -1,4 +1,4 @@
-
+import 'package:html_unescape/html_unescape.dart';
 
 
 String convertNumberIntoWord(int number) {
@@ -22,4 +22,7 @@ String convertNumberIntoWord(int number) {
     'Sixteen'
   ];
   return _arrWordList[number];
+}
+String parseHtmlString(String htmlString) {
+  return  HtmlUnescape().convert(htmlString);
 }

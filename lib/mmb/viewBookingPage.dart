@@ -109,7 +109,9 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                           icon: Icon(Icons.menu,),
                           color: menuColor,
                           onPressed: () {
-                            if (gblPnrModel != null && double.parse(
+                            if (gblPnrModel != null &&
+                                gblPnrModel.isFundTransferPayment() == false &&
+                                double.parse(
                                 gblPnrModel.pNR.basket.outstanding.amount) >
                                 0) {
                               _getDialog();
@@ -534,7 +536,7 @@ class CheckinBoardingPassesWidgetState
     return list;
   }
 
-  Widget checkinOrPassesWidget(String rLOC, pnr) {
+  Widget checkinOrPassesWidget(String rLOC, PnrModel pnr) {
     //double c_width = MediaQuery.of(context).size.width * 0.95;
     List<Widget>  list = [];
     list.add( Row(
@@ -551,6 +553,7 @@ class CheckinBoardingPassesWidgetState
     ),);
 
     if( gblSettings.wantMmbProducts
+        && pnr.isFundTransferPayment() == false
         && pnr.hasFutureFlightsAddDayOffset(0) ){
       // only add products if has furture flights
       list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: null,
@@ -701,7 +704,12 @@ class CheckinBoardingPassesWidgetState
       ),
     );
 
-    if (pnr.pNR.editFlights == true ) {
+    if( pnr.isFundTransferPayment()) {
+      list.add(Padding(padding: EdgeInsets.all(3)));
+      list.add(_paymentPending(pnr));
+    }
+
+    if (pnr.pNR.editFlights == true && pnr.isFundTransferPayment() == false  ) {
       int journeyToChange = getJourney(journey, pnr.pNR.itinerary);
 
       if(  _mmbBooking.journeys.journey.length >= journeyToChange) {
@@ -736,6 +744,33 @@ class CheckinBoardingPassesWidgetState
 
     return list;
   }
+
+  Widget _paymentPending(PnrModel pnr){
+    return
+      Container(
+          color: Colors.grey.shade200,
+          padding: EdgeInsets.all(5),
+          child: Column(
+            children: [
+            Row(
+            children: [
+              Icon(Icons.warning_amber),
+              Padding(padding: EdgeInsets.all(2)),
+              TrText('Payment Pending'),
+              Padding(padding: EdgeInsets.all(4)),
+              Text(formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(pnr.pNR.basket.outstanding.amount)))
+            ],
+          ),
+              Row(
+                children: [
+                  TrText('If you have paid, press '),
+                  TrText('RELOAD', style: TextStyle(fontWeight: FontWeight.bold),)
+                ],
+              )
+        ])
+      );
+  }
+
   Widget _refreshButton( pnr  ) {
     return ElevatedButton(
         onPressed: () {
@@ -1291,7 +1326,12 @@ class CheckinBoardingPassesWidgetState
                         'fly'
                     ? true
                     : false;
-            return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,chargeForPreferredSeating);
+            if( pnr.isFundTransferPayment()) {
+              return Container();
+            } else {
+              return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
+                  chargeForPreferredSeating);
+            }
           } else if (pnr.pNR.names.pAX[paxNo].paxType == 'IN') {
             return new Padding(
               padding: EdgeInsets.all(20),
@@ -1318,7 +1358,12 @@ class CheckinBoardingPassesWidgetState
       }
       if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
           pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
-        return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,chargeForPreferredSeating);
+        if( pnr.isFundTransferPayment()) {
+          return Container();
+        } else {
+          return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
+              chargeForPreferredSeating);
+        }
       }
 
       if (pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True') {
@@ -1473,11 +1518,7 @@ class CheckinBoardingPassesWidgetState
 
   Widget getFlightViewWidgets(PnrModel pnr, int journey) {
     var timeFormat = 'h:mm a';
-    /*
-    if( gblSettings.want24HourClock ){
-      timeFormat = 'HH:mm';
-    }
-*/
+    bool isFundTransferPayment = pnr.isFundTransferPayment();
 
     bool isFltPassedDate(Itin journey, int offset) {
       DateTime now = DateTime.now();
@@ -1493,206 +1534,201 @@ class CheckinBoardingPassesWidgetState
       return result;
     }
     if (!isFltPassedDate(pnr.pNR.itinerary.itin[journey], 24 * 7)) { // was 24
+      List <Widget> list = [];
+        list.add( Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Row(children: [
+                new Icon(Icons.date_range),
+                new Padding(
+                  child: new Text(
+                    //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime))
+                    //  .toString().substring(0, 10),
+                      getIntlDate('EEE dd MMM', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)),
+                      style: new TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.w300)),
+                  padding: EdgeInsets.only(left: 8.0),
+                )
+              ]),
+            ],
+          ));
+        list.add( Divider());
+        list.add( Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Text(pnr.pNR.itinerary.itin[journey].depart,
+                  style: new TextStyle(
+                      fontSize: 32.0, fontWeight: FontWeight.w700)),
+              new RotatedBox(
+                  quarterTurns: 1,
+                  child: new Icon(
+                    Icons.airplanemode_active,
+                    size: 32.0,
+                  )),
+              new Text(pnr.pNR.itinerary.itin[journey].arrive,
+                  style: new TextStyle(
+                      fontSize: 32.0, fontWeight: FontWeight.w700))
+            ],
+          ));
+        list.add( Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              FutureBuilder(
+                future: cityCodeToName(
+                  pnr.pNR.itinerary.itin[journey].depart,
+                ),
+                initialData:
+                pnr.pNR.itinerary.itin[journey].depart.toString(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> text) {
+                  return new Text(text.data,
+                      style: new TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w300));
+                },
+              ),
+              FutureBuilder(
+                future: cityCodeToName(
+                  pnr.pNR.itinerary.itin[journey].arrive,
+                ),
+                initialData:
+                pnr.pNR.itinerary.itin[journey].arrive.toString(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> text) {
+                  return new Text(text.data,
+                      style: new TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w300));
+                },
+              ),
+            ],
+          ));
+        list.add( Divider());
+        if( pnr.isFundTransferPayment()){
+          list.add( TrText('Payment Pending'));
+        }
+        if (pnr.pNR.itinerary.itin[journey].status == 'QQ') {
+          list.add( Row(children: [
+            TrText('Flight Not Operating, contact airline',
+              style: TextStyle(color: Colors.red, fontSize: 18.0),)
+          ],));
+        }
+        list.add( Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Row(
+                children: [
+                  new DecoratedBox(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: new BorderRadius.all(
+                              new Radius.circular(2.0))),
+                      child: Transform.rotate(
+                        angle: -math.pi / 4,
+                        child: new Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 14.0,
+                        ),
+                      )),
+                  new Padding(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: new Text(
+                        translate('Depart') + ' ' +
+                            //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
+                            //            ' ' + pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
+                            getIntlDate(timeFormat, DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate  + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).replaceFirst('12:00 AM', '00:00 AM'),
+                        style: new TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  ),
+                ],
+              ),
+              new Row(
+                children: [
+                  new DecoratedBox(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: new BorderRadius.all(
+                              new Radius.circular(2.0))),
+                      child: Transform.rotate(
+                        angle: math.pi / 4,
+                        child: new Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 14.0,
+                        ),
+                      )),
+                  new Padding(
+                      padding: EdgeInsets.only(left: 5.0),
+                      child: new Text(
+                        translate('Arrival') + ' ' +
+                            //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +
+                            //           pnr.pNR.itinerary.itin[journey].arrTime))).replaceFirst('12:00 AM', '00:00 AM'),
+                            getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime)).replaceFirst('12:00 AM', '00:00 AM'),
+
+                        //'Arrival ${snapshot.data['arrivalTimes'][journey]}',
+                        style: new TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      )),
+                ],
+              ),
+            ],
+          ));
+        list.add(  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.query_builder,
+                    size: 20.0,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        (pnr.pNR.itinerary.itin[journey]
+                            .getFlightDuration()),
+                      ))
+                ],
+              ),
+              Padding(padding: EdgeInsets.all(15)),
+              Row(
+                children: <Widget>[
+                  new RotatedBox(
+                      quarterTurns: 1,
+                      child: new Icon(
+                        Icons.airplanemode_active,
+                        size: 20.0,
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(pnr.pNR.itinerary.itin[journey].airID +
+                          pnr.pNR.itinerary.itin[journey].fltNo))
+                ],
+              )
+            ],
+          ));
+
+        list.add( Divider());
+        list.add(Padding(
+            padding: EdgeInsets.only(bottom: 5.0),
+          ));
+        list.add( Column(
+            children: getPassengerViewWidgets(pnr, journey),
+          ));
+          // new Divider(),
+
+
       return Container(
         margin: EdgeInsets.only(bottom: 10.0),
         child: Container(
           padding:
               EdgeInsets.only(left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
           child: new Column(children: [
+            //starting col
             new Column(
-              children: [
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Row(children: [
-                      new Icon(Icons.date_range),
-                      new Padding(
-                        child: new Text(
-                            //new DateFormat('EEE dd MMM h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime))
-                              //  .toString().substring(0, 10),
-                            getIntlDate('EEE dd MMM', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)),
-                            style: new TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.w300)),
-                        padding: EdgeInsets.only(left: 8.0),
-                      )
-                    ]),
-                  ],
-                ),
-                new Divider(),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text(pnr.pNR.itinerary.itin[journey].depart,
-                        style: new TextStyle(
-                            fontSize: 32.0, fontWeight: FontWeight.w700)),
-                    new RotatedBox(
-                        quarterTurns: 1,
-                        child: new Icon(
-                          Icons.airplanemode_active,
-                          size: 32.0,
-                        )),
-                    new Text(pnr.pNR.itinerary.itin[journey].arrive,
-                        style: new TextStyle(
-                            fontSize: 32.0, fontWeight: FontWeight.w700))
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    FutureBuilder(
-                      future: cityCodeToName(
-                        pnr.pNR.itinerary.itin[journey].depart,
-                      ),
-                      initialData:
-                          pnr.pNR.itinerary.itin[journey].depart.toString(),
-                      builder:
-                          (BuildContext context, AsyncSnapshot<String> text) {
-                        return new Text(text.data,
-                            style: new TextStyle(
-                                fontSize: 14.0, fontWeight: FontWeight.w300));
-                      },
-                    ),
-                    FutureBuilder(
-                      future: cityCodeToName(
-                        pnr.pNR.itinerary.itin[journey].arrive,
-                      ),
-                      initialData:
-                          pnr.pNR.itinerary.itin[journey].arrive.toString(),
-                      builder:
-                          (BuildContext context, AsyncSnapshot<String> text) {
-                        return new Text(text.data,
-                            style: new TextStyle(
-                                fontSize: 14.0, fontWeight: FontWeight.w300));
-                      },
-                    ),
-                  ],
-                ),
-                new Divider(),
-                (pnr.pNR.itinerary.itin[journey].status == 'QQ') ?
-                  new Row( children: [
-                    TrText('Flight Not Operating, contact airline' , style: TextStyle( color: Colors.red , fontSize: 18.0 ),)],) : Text(''),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Row(
-                      children: [
-                        new DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: new BorderRadius.all(
-                                    new Radius.circular(2.0))),
-                            child: Transform.rotate(
-                              angle: -math.pi / 4,
-                              child: new Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 14.0,
-                              ),
-                            )),
-                        new Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: new Text(
-                              translate('Depart') + ' ' +
-                                  //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate +
-                                  //            ' ' + pnr.pNR.itinerary.itin[journey].depTime))).replaceAll('12:00 AM', '00:00 AM'),
-                              getIntlDate(timeFormat, DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate  + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).replaceFirst('12:00 AM', '00:00 AM'),
-                              style: new TextStyle(
-                                  fontSize: 14.0, fontWeight: FontWeight.w500)),
-                        ),
-                      ],
-                    ),
-                    new Row(
-                      children: [
-                        new DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: new BorderRadius.all(
-                                    new Radius.circular(2.0))),
-                            child: Transform.rotate(
-                              angle: math.pi / 4,
-                              child: new Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 14.0,
-                              ),
-                            )),
-                        new Padding(
-                            padding: EdgeInsets.only(left: 5.0),
-                            child: new Text(
-                                translate('Arrival') + ' ' +
-                                  //(new DateFormat('h:mm a').format(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' +
-                                   //           pnr.pNR.itinerary.itin[journey].arrTime))).replaceFirst('12:00 AM', '00:00 AM'),
-                                    getIntlDate('h:mm a', DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime)).replaceFirst('12:00 AM', '00:00 AM'),
-
-                              //'Arrival ${snapshot.data['arrivalTimes'][journey]}',
-                              style: new TextStyle(
-                                  fontSize: 14.0, fontWeight: FontWeight.w500),
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.query_builder,
-                          size: 20.0,
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(
-                              (pnr.pNR.itinerary.itin[journey]
-                                  .getFlightDuration()),
-                            ))
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.all(15)),
-                    Row(
-                      children: <Widget>[
-                        new RotatedBox(
-                            quarterTurns: 1,
-                            child: new Icon(
-                              Icons.airplanemode_active,
-                              size: 20.0,
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(pnr.pNR.itinerary.itin[journey].airID +
-                                pnr.pNR.itinerary.itin[journey].fltNo))
-                      ],
-                    )
-                  ],
-                ),
-                // Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // children: <Widget>[
-                //   Text('Change Booking'),
-                // ],
-                // ),
-
-                //All passenger
-                // true ?
-                // new Column(
-                //   children:
-                // checkinAllButton(),
-                // ) : Padding(padding: EdgeInsets.all(0),),
-
-                new Divider(),
-                //Text(''),
-                //true ? new Text('') : new Text('Already checked in'),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 5.0),
-                ),
-                new Column(
-                  children: getPassengerViewWidgets(pnr, journey),
-                ),
-                // new Divider(),
-              ],
+              children: list,
             )
           ]),
+          // end col
         ),
         decoration: BoxDecoration(
           color: Colors.white,

@@ -41,6 +41,20 @@ class PnrModel {
     return result;
   }
 
+  bool isFundTransferPayment() {
+    if (this.pNR != null &&
+        this.pNR.zpay != null &&
+        this.pNR.timeLimits != null &&
+        this.pNR.basket.outstanding != null &&
+        this.pNR.basket.outstanding.amount.isNotEmpty &&
+        double.parse(this.pNR.basket.outstanding.amount) > 0 &&
+        this.pNR.tickets ==null ) {
+
+      return true;
+    }
+    return false;
+  }
+
   bool hasNonHostedFlights() {
     bool result = false;
     if (this.pNR != null &&

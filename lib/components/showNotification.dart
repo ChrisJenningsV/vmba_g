@@ -229,26 +229,6 @@ List<Widget> _getBody(
       ));
     }
 
-    // button(s)
-    /*   if( data['actions'] != null && data['rloc'] != null && data['actions'].toString().isNotEmpty &&
-          data['rloc'].toString().isNotEmpty) {
-        String actions = data['actions'];
-
-        if( actions.contains('scheduleChange') ){
-          list2.add(SizedBox(height: 5.0,));
-          list2.add(smallButton( text: translate('Show Booking'), icon: Icons.check,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ViewBookingPage(
-                        rloc: data['rloc'],
-                      )),
-                );
-          }),);
-        }
-
-      }*/
   }
 
   list.add(Padding(
@@ -258,23 +238,6 @@ List<Widget> _getBody(
       children: list2,
     ),
   ));
-
-  /*
-    list.add(
-    Positioned( // will be positioned in the top right of the container
-    top: -12,
-    right: -12,
-    child: new IconButton(
-    icon: Icon(
-    Icons.cancel,
-    color: Colors.red,
-    ),
-    onPressed: () {
-    Navigator.of(context).pop();
-    }), //
-    )
-    );
-  */
 
   return list;
 }

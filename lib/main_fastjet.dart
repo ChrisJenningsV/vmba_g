@@ -54,7 +54,7 @@ void configFN() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    currencies: 'bw,BWP,gb,GBP,us,USD,za,ZAR,zw,ZWL',
+    currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',
     wantCurrencyPicker: true,
     wantBuyNowPayLater: true,
@@ -114,7 +114,7 @@ void configFN() {
 
     liveCreditCardProvider: 'worldpaydirect',
 
-    eVoucher: true,
+    eVoucher: false,
     xmlUrl:      "https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
@@ -126,13 +126,13 @@ void configFN() {
 
  */
 
-//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
-    testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
+ //   testPayPage: 'http://10.0.2.2:50311/MobilePaymentStart.aspx',
+   testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
 
-    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
-//    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-       testSmartApiUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/MobileSmartApi",
-//    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+//    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//       testSmartApiUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/MobileSmartApi",
+    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local

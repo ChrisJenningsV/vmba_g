@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/models/providers.dart' as PaymentProvider;
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../components/trText.dart';
 import '../data/globals.dart';
@@ -21,6 +22,7 @@ class MessagePage extends StatefulWidget {
     this.titleBackClr,
     this.titleTextClr,
     this.icon,
+    this.isHtml,
     this.displayFormat,
   }) : super(key: key);
 
@@ -34,6 +36,7 @@ class MessagePage extends StatefulWidget {
   Color titleBackClr;
   Color titleTextClr;
   IconData icon;
+  bool isHtml;
   String displayFormat;
   void Function(dynamic p) onComplete;
 
@@ -100,35 +103,7 @@ class MessagePageState extends State<MessagePage> {
                     gblSystemColors.headerTextColor)),
           ),
           //endDrawer: DrawerMenu(),
-          body: AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            titlePadding: const EdgeInsets.all(0),
-              title: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: widget.titleBackClr,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
-                padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(widget.title,style: TextStyle(color: Colors.white),)
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-                children: <Widget> [
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: widget.backClr,
-                        border: Border.all(color: widget.borderClr, width: 3)
-                    ),
-                    child: Icon(widget.icon, color: widget.iconClr ,size: 100,),
-                  ),
-                  Padding(padding: EdgeInsets.all(5)),
-                  Text(widget.msg),
-                ]),
-            actions: widget.actions,
-
-          )
+          body: messageBodyWidget(widget.title, widget.msg, widget.icon, widget.titleBackClr, widget.backClr,widget.borderClr, widget.iconClr,actions: widget.actions, isHtml: widget.isHtml )
       );
     }
     else if( widget.displayFormat == '2') {
@@ -162,23 +137,6 @@ class MessagePageState extends State<MessagePage> {
                 child: Text(widget.title,style: TextStyle(color: widget.titleTextClr),)
             ),
             content: dialogBody(),
-/*
-            actions: <Widget>[
-              Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
-                    child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
-                    onPressed: () {
-                      //Put your code here which you want to execute on Cancel button click.
-                      if( widget.onComplete != null ){
-                        widget.onComplete(false);
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  )),
-            ],
-*/
 
           )
       );
@@ -247,6 +205,22 @@ class MessagePageState extends State<MessagePage> {
   }
 }
 
+Widget messageWidget() {
+
+}
+
+Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons}) {
+  List<Widget> actionList ;
+  if( wantButtons != null && wantButtons == false) {
+    actionList = [];
+    actionList.add(Container());
+  }
+  return messageBodyWidget(title, msg,
+      Icons.close, Colors.red,
+      Colors.red,Colors.red,
+      Colors.yellow,
+      actions: actionList );
+}
 
 void criticalErrorPage(BuildContext context, String msg, {String title, bool wantButtons}){
   List<Widget> actionList ;
@@ -268,7 +242,7 @@ void criticalErrorPage(BuildContext context, String msg, {String title, bool wan
   );
 }
 
-void successMessagePage(BuildContext context, String msg, {String title}){
+void successMessagePage(BuildContext context, String msg, {String title, bool isHtml, List<Widget> actions}){
   Navigator.push(
       context, MaterialPageRoute(builder: (context) =>
       MessagePage( msg: msg,
@@ -278,6 +252,8 @@ void successMessagePage(BuildContext context, String msg, {String title}){
         icon: Icons.check,
         titleBackClr: Colors.blue,
         displayFormat: '1',
+        isHtml: isHtml,
+        actions: actions,
         title: title,))
   );
 }
@@ -325,4 +301,56 @@ void endProgressMessage() {
   } catch (e) {
 
   }
+}
+Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBackClr, Color backClr, Color borderClr, Color iconClr, {List<Widget> actions, bool isHtml }  )  {
+  Widget msgWidget;
+  final Completer<WebViewController> _controller =  Completer<WebViewController>();
+
+  if(isHtml != null && isHtml == true) {
+    msgWidget = Container(
+        height: 250,
+        width: 500,
+        child: WebView(
+      initialUrl: Uri.dataFromString(
+          '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
+              msg +
+              '</body></html>',
+          mimeType: 'text/html')
+          .toString(),
+      onWebViewCreated: (WebViewController webViewController) {
+        _controller.complete(webViewController);
+      },
+    ));
+  } else {
+    msgWidget = Text(msg);
+  }
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)),
+    titlePadding: const EdgeInsets.all(0),
+    title: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: titleBackClr,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        child: Text(title,style: TextStyle(color: Colors.white),)
+    ),
+    content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget> [
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: backClr,
+                border: Border.all(color: borderClr, width: 3)
+            ),
+            child: Icon(icon, color: iconClr ,size: 100,),
+          ),
+          Padding(padding: EdgeInsets.all(5)),
+          msgWidget,
+        ]),
+    actions: actions,
+  );
 }

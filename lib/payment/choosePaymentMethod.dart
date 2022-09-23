@@ -13,6 +13,7 @@ import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/payment/v2/CreditCardPage.dart';
 import 'package:vmba/payment/webPaymentPage.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:vmba/utilities/widgets/dataLoader.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
@@ -21,9 +22,11 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../Helpers/stringHelpers.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
+import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/smartApiPage.dart';
 import 'ProviderFieldsPage.dart';
@@ -1116,6 +1119,25 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     } else if (gblPaymentMsg != null ) {
       if(gblLogPayment) { logit('CPM Build error');}
+      return new Scaffold(
+          key: _key,
+          appBar: new AppBar(
+            //brightness: gblSystemColors.statusBar,
+            backgroundColor:
+            gblSystemColors.primaryHeaderColor,
+            iconTheme: IconThemeData(
+                color: gblSystemColors.headerTextColor),
+            title: new TrText('Payment',
+                style: TextStyle(
+                    color: gblSystemColors
+                        .headerTextColor)),
+          ),
+          //endDrawer: DrawerMenu(),
+          backgroundColor: Colors.grey.shade500,
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error')
+      );
+      gblPaymentMsg = null;
+      return Container();
 
       return new Scaffold(
           key: _key,
@@ -1135,61 +1157,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           body: buildMessage('Payment Error', gblPaymentMsg, onComplete: () {
             gblPaymentMsg = null;
               setState(() {          } ); }),
-/*
-          Center( child: Container(
 
-            //alignment: Alignment.topCenter,
-
-            margin: const EdgeInsets.all(30.0),
-            padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30, bottom: 20),
-              decoration: BoxDecoration(    border: Border.all(color: Colors.black),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(3.0))
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-
-             children: [ Column(
-               // crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                 children: [
-                   TrText('Payment Error', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
-                   Padding(padding:  EdgeInsets.only(top: 10.0),),
-                   Text( gblPaymentMsg),
-                   Padding(padding:  EdgeInsets.only(top: 20.0),),
-                   ElevatedButton(
-                     onPressed: () {
-                       gblPaymentMsg = null;
-                       setState(() {
-
-                       });
-                     },
-                     style: ElevatedButton.styleFrom(
-                         primary: gblSystemColors
-                             .primaryButtonColor,
-                         shape: RoundedRectangleBorder(
-                             borderRadius:
-                             BorderRadius.circular(30.0))),
-                     child: Row(
-                       mainAxisSize: MainAxisSize.min,
-                       children: <Widget>[
-                         Icon(
-                           Icons.check,
-                           color: Colors.white,
-                         ),
-                         TrText(
-                           'OK',
-                           style: TextStyle(color: Colors.white),
-                         ),
-                       ],
-                     ),
-                   ),
-        ]),])
-
-          ))
-*/
         //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
       );
     } else {
@@ -1668,16 +1636,63 @@ List<Widget> getPayOptions(String amount, String cur) {
       pay.paymentName = provider.paymentSchemeName;
       pay.amount = widget.pnrModel.pNR.basket.outstanding.amount;
       pay.currency = widget.pnrModel.pNR.basket.outstanding.cur;
-      pay.confirmation = 'SMS';
+      pay.confirmation = 'EMAIL';
 
       String data = json.encode(pay);
       try {
         String reply = await callSmartApi('MAKEPAYMENT', data);
         Map map = json.decode(reply);
-        PaymentReply payRs = new PaymentReply.fromJson(map);
+        var objPnr = new PnrModel.fromJson(map);
+//        PaymentReply payRs = new PaymentReply.fromJson(map);
         endProgressMessage();
-        if (payRs != null) {
-          successMessagePage(context, 'payRs');
+        if (objPnr != null) {
+          PnrDBCopy pnrDBCopy = new PnrDBCopy(
+              rloc: objPnr.pNR.rLOC,
+              data: reply,
+              delete: 0,
+              nextFlightSinceEpoch: objPnr.getnextFlightEpoch());
+          Repository.get().updatePnr(pnrDBCopy).then((w) {
+            String msg ;
+            bool isHtml = false;
+            if( objPnr.pNR.zpay != null && objPnr.pNR.zpay.info != null ) {
+
+              msg= translate(parseHtmlString(objPnr.pNR.zpay.info));
+              msg = msg.replaceAll('[[mbcurrency]]', objPnr.pNR.zpay.mbcurrency);
+              msg = msg.replaceAll('[[mbamount]]', objPnr.pNR.zpay.mbamount);
+              msg = msg.replaceAll('[[mbtotalfare]]', objPnr.pNR.zpay.mbtotalfare);
+              msg = msg.replaceAll('[[mbtotaltax]]', objPnr.pNR.zpay.mbtotaltax);
+              msg = msg.replaceAll('[[ttl]]', objPnr.pNR.zpay.ttl);
+              msg = msg.replaceAll('[[reference]]', '<b>' + objPnr.pNR.rLOC + '</b>') ;
+              isHtml = true;
+            } else {
+              msg = translate('Your booking is confirmed. Booking reference is') + ' ${objPnr.pNR.rLOC}'; 
+            }
+            List <Widget> actions = <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                smallButton(text: 'Show Booking',
+                    onPressed: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) =>
+                        ViewBookingPage(
+                        rloc: objPnr.pNR.rLOC,
+                        )),
+                        );
+                    },
+                 ),
+              smallButton(text: 'Home',
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/HomePage', (Route<dynamic> route) => false);
+                },
+              ),
+            ])
+            ];
+            successMessagePage(context,msg, title: 'Payment Complete', isHtml: isHtml, actions: actions );
+          });
         } else {
           criticalErrorPage(context, 'gblError', title: 'Payment Error');
         }
@@ -1693,6 +1708,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
     }
   }
+
 
 
   Widget renderPaymentButtons() {

@@ -71,6 +71,7 @@ dependencies:
   simpleprogressdialog: ^1.0.8
   flutter_html: ^3.0.0-alpha.5
   timeline_tile: ^2.0.0
+  html_unescape: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -120,20 +121,17 @@ flutter:
     - lib/assets/loganair/images/loader.png
     - lib/assets/fastjet/images/loader.png
     - lib/assets/fastjet/images/app.png
-    - lib/assets/fastjet/images/bg.png
     - lib/assets/fastjet/images/appBar.png
     - lib/assets/fastjet/images/logo.png
     - lib/assets/fastjet/images/appBarLeft.png
     - lib/assets/fastjet/json/countries.json
     - lib/assets/hisky/images/loader.png
     - lib/assets/hisky/images/app.png
-    - lib/assets/hisky/images/bg.png
     - lib/assets/hisky/images/appBar.png
     - lib/assets/hisky/images/logo.png
     - lib/assets/hisky/json/countries.json
     - lib/assets/aurigny/images/loader.png
     - lib/assets/aurigny/images/app.png
-    - lib/assets/aurigny/images/bg.png
     - lib/assets/aurigny/images/appBar.png
     - lib/assets/aurigny/images/logo.png
     - lib/assets/aurigny/json/countries.json

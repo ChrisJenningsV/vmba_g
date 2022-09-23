@@ -552,17 +552,6 @@ String _error = '';
   }
 
   Widget _buildListItem(BuildContext context, PnrDBCopy document) {
-    // bool hasFutureFlights(Itin flt) {
-    //   DateTime now = DateTime.now();
-    //   var fltDate;
-    //   fltDate = DateTime.parse(flt.depDate + ' ' + flt.depTime)
-    //       .add(Duration(days: 1));
-    //   if (now.isAfter(fltDate)) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // }
 
     String pnrJson =document.data;
     //pnrJson = pnrJson.replaceAll('"APPVERSION": 1.0.0.98,','"');
@@ -592,6 +581,7 @@ String _error = '';
           ),
           new Divider(),
           fltLines(pnr),
+          pnr.isFundTransferPayment() ? _paymentPending(pnr) : Container(),
         ]),
         onPressed: () {
           if(pnr.pNR.appVersion  != null ) {
@@ -626,6 +616,25 @@ String _error = '';
 //       );
 //    }
   }
+
+  Widget _paymentPending(PnrModel pnr){
+    return
+      Container(
+        color: Colors.grey.shade200,
+        padding: EdgeInsets.all(5),
+      child: Row(
+
+      children: [
+        Icon(Icons.warning_amber),
+        Padding(padding: EdgeInsets.all(2)),
+        TrText('Payment Pending'),
+        Padding(padding: EdgeInsets.all(4)),
+        Text(formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(pnr.pNR.basket.outstanding.amount)))
+      ],
+    )
+      );
+  }
+
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
@@ -894,19 +903,7 @@ String _error = '';
 
   Future<String> loadBooking(String rloc) async {
 
-   /* http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x'"))
-        .catchError((resp) {});
 
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }*/
     String data = await runVrsCommand('*$rloc~x');
     String pnrJson;
     //Map pnrMap;
@@ -1013,22 +1010,6 @@ String _error = '';
     //AATMRA
     //AATKK7
 
-/*
-
-    http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=DSP/$_rloc'"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }
-*/
     String data = await runVrsCommand('DSP/$_rloc');
     String apisStatusJson;
     //Map map;
