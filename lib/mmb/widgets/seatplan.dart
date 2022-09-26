@@ -917,6 +917,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     // new List<Widget>();
 
     String currentSeatPrice;
+    String currentSeatPriceLabel;
     String currencyCode;
     String previousSeatPrice;
     bool selectableSeat = true;
@@ -972,6 +973,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           if( element != null &&  element.sScprice != null  ) {
             if( double.parse(element.sScprice) > double.parse(currentSeatPrice)) {
             currentSeatPrice = element.sScprice;
+            currentSeatPriceLabel = element.sScinfo;
             currencyCode = element.sCur;
             }
           }
@@ -1127,7 +1129,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               child: Center(
                 child: Text(
                   formatPrice(currencyCode, double.parse(currentSeatPrice)) +
-                    ' Seat Charge'),
+                    ' ' + currentSeatPriceLabel), //' Seat Charge'),
               ),
             ),
           );

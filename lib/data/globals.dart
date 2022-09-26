@@ -12,7 +12,7 @@ import 'models/providers.dart';
 // initialized in main_XX.dart
 //
 String gblBuildFlavor = 'FN';
-bool gblIsLive = false;
+bool gblIsLive = true;
 int requiredXmlVersion = 103;
 int requiredApiVersion = 101;
 int apiBuldVersion;

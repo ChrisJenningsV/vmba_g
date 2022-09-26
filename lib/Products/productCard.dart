@@ -111,10 +111,12 @@ class ProductCardState extends State<ProductCard> {
       }
     }
 
-    widgets.add(Image(image: getProductImage(prod),
-      fit: BoxFit.fill,
-      height: 40,
-      width: 40,),);
+    if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
+      widgets.add(Image(image: getProductImage(prod),
+        fit: BoxFit.fill,
+        height: 40,
+        width: 40,),);
+    }
 
     widgets.add(Align(alignment: Alignment.centerLeft,
         child: TrText(prod.productName)),);

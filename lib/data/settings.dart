@@ -111,6 +111,7 @@ class Settings {
   bool disableBookings;
   bool useSmartPay;
 
+  String productFormat;
   String homePageStyle;
   String pageStyle;
   String defaultCountryCode;
@@ -256,6 +257,7 @@ bool bpShowFastTrack;
     this.homePageStyle='V1',
     this.pageStyle = 'V1',
 
+    this.productFormat = 'web',
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl,
     this.adsTermsUrl,

@@ -92,11 +92,12 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     } else {
       units = translate(' Per ') + widget.product.unitOfMeasure;
     }
-
+    if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
       rowList.add(Image(image: getProductImage(widget.product),
         fit: BoxFit.fill,
         height: 40,
         width: 40,));
+    }
 
     rowList.add(Padding( padding: EdgeInsets.only(right: 15,)));
     rowList.add(Column( children: [

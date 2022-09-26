@@ -160,6 +160,7 @@ void configFN() {
     wantCountry: false,
     wantMmbProducts: true,
     wantProducts: true,
+    productImageMode: 'none',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 
