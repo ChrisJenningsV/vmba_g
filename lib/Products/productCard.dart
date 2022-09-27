@@ -108,6 +108,9 @@ class ProductCardState extends State<ProductCard> {
 
       if (noItems > 0) {
         widgets.add(Text(noItems.toString()));
+        widgets.add(Text(' '));
+        widgets.add(TrText(prod.unitOfMeasure)  );
+        widgets.add(Text(' '));
       }
     }
 

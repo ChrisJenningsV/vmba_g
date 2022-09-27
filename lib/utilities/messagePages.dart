@@ -209,11 +209,28 @@ Widget messageWidget() {
 
 }
 
-Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons}) {
+Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
   List<Widget> actionList ;
   if( wantButtons != null && wantButtons == false) {
     actionList = [];
     actionList.add(Container());
+  } else {
+    actionList = <Widget>[
+        Align(
+            alignment: Alignment.center,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+              child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+              onPressed: () {
+                //Put your code here which you want to execute on Cancel button click.
+                if( onComplete != null ){
+                  onComplete(false);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            )),
+      ];
   }
   return messageBodyWidget(title, msg,
       Icons.close, Colors.red,

@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
+import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
@@ -385,6 +386,13 @@ class Repository {
                   case 'pageImageMap':
                     gblSettings.pageImageMap = item['value'];
                     break;
+                  case 'payImageMap':
+                    if( gblSettings.paySettings == null  ){
+                      gblSettings.paySettings = PaySettings();
+                    }
+                    gblSettings.paySettings.payImageMap = item['value'];
+                    break;
+
                   case 'productImageMap':
                     gblSettings.productImageMap = item['value'];
                     break;

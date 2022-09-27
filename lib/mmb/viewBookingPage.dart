@@ -552,6 +552,20 @@ class CheckinBoardingPassesWidgetState
       ],
     ),);
 
+    if( pnr.pNR.zpay != null && pnr.pNR.zpay.reference.isNotEmpty){
+      list.add( Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          new TrText("Payment Reference Number",
+              style: new TextStyle(
+                  fontSize: 16.0, fontWeight: FontWeight.w700)),
+          new Text(pnr.pNR.zpay.reference,
+              style: new TextStyle(
+                  fontSize: 16.0, fontWeight: FontWeight.w700)),
+        ],
+      ),);
+    }
+
     if( gblSettings.wantMmbProducts
         && pnr.isFundTransferPayment() == false
         && pnr.hasFutureFlightsAddDayOffset(0) ){
@@ -1185,7 +1199,7 @@ class CheckinBoardingPassesWidgetState
                       (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
                   .webCheckinStart));
 */
-      if( pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
+      if( pnr.  pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
           pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT.isEmpty ||
           pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ||
           pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT.isEmpty){
@@ -1297,13 +1311,13 @@ class CheckinBoardingPassesWidgetState
                 Padding(
                   padding: EdgeInsets.only(left: 5.0),
                 ),
-                Icon(
+               /* Icon(
                   //Icons.airline_seat_recline_normal,
                   Icons.done,
                   size: 20.0,
                   color:
                   Colors.grey,
-                ),
+                ),*/
                 Text(
                   '',
                   style: TextStyle(
@@ -1472,16 +1486,18 @@ class CheckinBoardingPassesWidgetState
     city = await Repository.get().getCityByCode(itin.depart);
 
     if (city != null) {
-/*      checkinOpens = DateTime.parse(itin.depDate + ' ' + itin.depTime)
-          .subtract(new Duration(hours: city.webCheckinStart));
-      checkinClosed = DateTime.parse(itin.depDate + ' ' + itin.depTime)
-          .subtract(new Duration(hours: city.webCheckinEnd));
 
- */
-      checkinOpens = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt )
+
+
+     /* checkinOpens = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt )
           .subtract(new Duration(hours: city.webCheckinStart));
       checkinClosed = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt)
-          .subtract(new Duration(hours: city.webCheckinEnd));
+          .subtract(new Duration(hours: city.webCheckinEnd));*/
+      checkinOpens = DateTime.parse(
+          itin.onlineCheckinTimeStartGMT);
+
+      checkinClosed = DateTime.parse(
+          itin.onlineCheckinTimeEndGMT);
 
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = new DateTime.now().toUtc();
@@ -1502,8 +1518,15 @@ class CheckinBoardingPassesWidgetState
           itin.airID != gblSettings.aircode) {
         response = translate('Check-in with other airline ');
       } else if (now.isBefore(checkinOpens)) {
-        response = translate('Online check-in opens at ') +
-            getIntlDate('H:mm a dd MMM', checkinOpens);
+        // get date time local
+        if( itin.onlineCheckinTimeStartLocal == null ) {
+          response = translate('Please Reload');
+        } else {
+          DateTime dt = DateTime.parse(
+              itin.onlineCheckinTimeStartLocal);
+          response = translate('Online check-in opens at ') +
+              getIntlDate('H:mm a dd MMM', dt);
+        }
             //DateFormat('H:mm a dd MMM').format(checkinOpens);
       } else if (now.isAfter(checkinClosed) &&
           now.isBefore(departureDateTime)) {
@@ -2020,11 +2043,11 @@ class CheckinBoardingPassesWidgetState
           Padding(
             padding: EdgeInsets.only(left: 5.0),
           ),
-          Icon(
+  /*        Icon(
             Icons.airline_seat_recline_normal,
             size: 20.0,
             color: Colors.grey,
-          ),
+          ),*/
           Text(
             paxlist.firstWhere((p) => p.id == paxNo + 1).seat != null
                 ? paxlist.firstWhere((p) => p.id == paxNo + 1).seat

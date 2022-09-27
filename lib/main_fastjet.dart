@@ -51,6 +51,7 @@ void configFN() {
   gblSettings = Settings (
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
+    paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none"}' ),
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
@@ -163,6 +164,7 @@ void configFN() {
     productImageMode: 'none',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
+    wantEnglishTranslation: true,
 
     wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',

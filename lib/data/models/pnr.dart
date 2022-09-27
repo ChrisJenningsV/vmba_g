@@ -720,6 +720,8 @@ class Itin {
   String mMBCheckinAllowed;
   String onlineCheckinTimeStartGMT;
   String onlineCheckinTimeEndGMT;
+  String onlineCheckinTimeStartLocal;
+  String onlineCheckinTimeEndLocal;
 
   Itin.getJounrey(
       // this.
@@ -764,7 +766,9 @@ class Itin {
       this.openSeating,
       this.mMBCheckinAllowed,
       this.onlineCheckinTimeEndGMT,
-      this.onlineCheckinTimeStartGMT});
+      this.onlineCheckinTimeStartGMT,
+      this.onlineCheckinTimeStartLocal,
+      this.onlineCheckinTimeEndLocal});
 
   Itin.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -806,6 +810,8 @@ class Itin {
     mMBCheckinAllowed = json['MMBCheckinAllowed'];
     onlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
     onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
+    onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
+    onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
   }
 
   Object get cityPair => this.depart + this.arrive;

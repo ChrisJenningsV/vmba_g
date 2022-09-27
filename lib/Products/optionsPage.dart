@@ -76,6 +76,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
 
   onComplete(BuildContext context, dynamic p) {
     try {
+      gblPaymentMsg = null;
       Navigator.push(
           context,
           MaterialPageRoute(

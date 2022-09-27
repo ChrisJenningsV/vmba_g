@@ -592,7 +592,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       getSeat(null, gblSystemColors.seatPlanColorAvailable),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
-                        child: Text("Available",
+                        child: TrText("Available",
                             style: TextStyle(
                               fontSize: cellFontSize,
                             )),
@@ -604,7 +604,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                     getSeat(null,gblSystemColors.seatPlanColorEmergency),
                     Padding(
                         padding: const EdgeInsets.only(top: 6.0),
-                        child: Text("Emergency",
+                        child: TrText("Emergency",
                             style: TextStyle(
                               fontSize: cellFontSize,
                             )),
@@ -616,7 +616,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       getSeat(null,gblSystemColors.seatPlanColorRestricted),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
-                        child: Text("Restricted",
+                        child: TrText("Restricted",
                             style: TextStyle(
                               fontSize: cellFontSize,
                             )),
@@ -642,7 +642,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
-                        child: Text("Unavailable",
+                        child: TrText("Unavailable",
                             style: TextStyle(
                               fontSize: cellFontSize,
                             )),

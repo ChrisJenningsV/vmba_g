@@ -182,7 +182,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.providers:
           _dataName = 'Providers';
           _url = '${gblSettings.apiUrl}/provider/getpaymentproviderlist';
-          String currency = gblSettings.currency;
+          String currency = gblSelectedCurrency; // gblSettings.currency;
           if( currency == null || currency.isEmpty) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
           }

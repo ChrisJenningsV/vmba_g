@@ -52,8 +52,15 @@ class GobalSettings {
 
   Settings settings = Settings();
 }
+class PaySettings {
+  String payImageMap;
+
+
+  PaySettings({this.payImageMap});
+}
 
 class Settings {
+  PaySettings paySettings;
   String xmlToken;
   String xmlTokenPost;
   String aircode;
@@ -203,6 +210,7 @@ class Settings {
 
 bool bpShowFastTrack;
   Settings({
+    this.paySettings,
     this.xmlToken,
     this.xmlTokenPost,
     this.aircode,

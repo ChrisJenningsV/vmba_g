@@ -92,6 +92,34 @@ class CannedFactWidget extends StatelessWidget {
       textSpliter(endText).forEach((widget) {
         widgets.add(widget);
       });
+    } else  if (text.contains('<a href="')) {
+        String startText = text.split('<a href="')[0];
+        String endText = startText.split('>')[1];
+        String url = text.split('<a href="')[1].split('"')[0];
+        String linkText = endText.split('>')[0];
+        linkText = linkText.split('<')[0];
+
+/*
+            .toLowerCase()
+            .split('><u>')[1]
+            .toLowerCase()
+            .split('</u></a>')[0];
+*/
+
+        textSpliter(startText).forEach((widget) {
+          widgets.add(widget);
+        });
+
+        widgets.add(appLinkWidget(
+            url,
+            Text(linkText,
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.w700,
+                ))));
+        textSpliter(endText).forEach((widget) {
+          widgets.add(widget);
+        });
     } else {
       widgets.add(Text(text));
     }

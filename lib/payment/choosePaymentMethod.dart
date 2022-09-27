@@ -1134,9 +1134,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error')
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete)
       );
-      gblPaymentMsg = null;
+    /*  gblPaymentMsg = null;
       return Container();
 
       return new Scaffold(
@@ -1159,7 +1159,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               setState(() {          } ); }),
 
         //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
-      );
+      );*/
     } else {
       if(gblLogPayment) { logit('CPM Build normal');}
 
@@ -1228,7 +1228,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     }
   }
 
-  void onComplete(){
+  void onComplete(dynamic p){
     gblPaymentMsg = null;
 //    Navigator.of(context).pop();
     setState(() {
@@ -1603,7 +1603,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText, provider.paymentType)
+                  children: _getPayButton(btnText, provider.paymentType, provider)
               ),
             ],
           ),
@@ -1691,7 +1691,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               ),
             ])
             ];
-            successMessagePage(context,msg, title: 'Payment Complete', isHtml: isHtml, actions: actions );
+            successMessagePage(context,msg, title: translate('Booking Complete-Payment Pending'), isHtml: isHtml, actions: actions );
           });
         } else {
           criticalErrorPage(context, 'gblError', title: 'Payment Error');
@@ -1758,7 +1758,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText, 'ExternalPayment')
+                  children: _getPayButton(btnText, 'ExternalPayment', null)
               ),
             ],
           ),
@@ -1784,7 +1784,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   }
 
 
-  List<Widget> _getPayButton(String text, String providerType) {
+  List<Widget> _getPayButton(String text, String providerType, Provider provider) {
     List<Widget> list = [];
     if(text == null  ) {
       text = 'AGREE AND PAY';
@@ -1811,19 +1811,27 @@ List<Widget> getPayOptions(String amount, String cur) {
       list.add(TrText( text,
       style: new TextStyle(color: Colors.black),
       ));
+      String action = '';
+      if( provider != null && gblSettings.paySettings != null && gblSettings.paySettings.payImageMap != null ) {
+        Map pageMap = json.decode(            gblSettings.paySettings.payImageMap.toUpperCase());
+         action = pageMap[provider.paymentSchemeName.toUpperCase()];
+      }
+
 
       if( providerType == 'ExternalPayment' || providerType == 'CreditCard') {
-        list.add(Image.asset(
-          'lib/assets/images/payment/visa.png',
-          height: 40,
-        ));
-        list.add(Padding(
-          padding: EdgeInsets.all(4),
-        ));
-        list.add(Image.asset(
-          'lib/assets/images/payment/mastercard.png',
-          height: 40,
-        ));
+          if( action == 'VISAMC' || action == '' ) {
+            list.add(Image.asset(
+              'lib/assets/images/payment/visa.png',
+              height: 40,
+            ));
+            list.add(Padding(
+              padding: EdgeInsets.all(4),
+            ));
+            list.add(Image.asset(
+              'lib/assets/images/payment/mastercard.png',
+              height: 40,
+            ));
+          }
       } else if (providerType == 'FundTransferPayment') {
         list.add(Icon(Icons.bookmark_border, color: Colors.grey,));
         }
