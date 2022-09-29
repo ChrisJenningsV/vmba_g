@@ -1564,11 +1564,11 @@ class CheckinBoardingPassesWidgetState
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
       } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
-        response = translate('no Check-in online ');
+        response = translate('Online Check in closed ');
       } else if ( city.webCheckinEnabled == 0 ) {
         response = translate('no Check-in online for this city ');
       } else if ( itin.onlineCheckin != null &&  itin.onlineCheckin == 'False' ) {
-        response = translate('no Check-in online ');
+        response = translate('Online Check in closed ');
       } else if (isBeforeClosed &&
           isAfterOpens &&
           itin.airID != gblSettings.aircode) {
