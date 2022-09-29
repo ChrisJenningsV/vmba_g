@@ -41,14 +41,29 @@ class PnrModel {
     return result;
   }
 
+  bool allPaxCheckedIn() {
+    if (this.pNR != null &&
+        this.pNR.tickets != null   ) {
+      bool checkedIn = true;
+      this.pNR.tickets.tKT.forEach((element) {
+        if( element.tKTID != 'ELFT' && element.tktFor != 'MPD') {
+          checkedIn = false;
+        }
+      });
+      return checkedIn;
+    }
+    return false;
+  }
+
   bool isFundTransferPayment() {
     if (this.pNR != null &&
         this.pNR.zpay != null &&
         this.pNR.timeLimits != null &&
         this.pNR.basket.outstanding != null &&
         this.pNR.basket.outstanding.amount.isNotEmpty &&
-        double.parse(this.pNR.basket.outstanding.amount) > 0 &&
-        this.pNR.tickets ==null ) {
+        double.parse(this.pNR.basket.outstanding.amount) > 0  ) {
+      // &&
+      //         this.pNR.tickets ==null
 
       return true;
     }

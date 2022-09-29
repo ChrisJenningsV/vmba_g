@@ -54,6 +54,7 @@ void configUZ() {
 
 
   gblSettings = Settings (
+    paySettings: PaySettings(payImageMap: '{"Seerafa": "image" }' ),
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     wantButtonIcons: false,

@@ -1521,7 +1521,9 @@ List<Widget> getPayOptions(String amount, String cur) {
             break;
           case 'FundTransferPayment':
             if( gblSettings.wantBuyNowPayLater) {
-              bShow = true;
+              if( ! isMmb) {
+                bShow = true;
+              }
             }
             break;
         }
@@ -1662,7 +1664,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               msg = msg.replaceAll('[[mbtotalfare]]', objPnr.pNR.zpay.mbtotalfare);
               msg = msg.replaceAll('[[mbtotaltax]]', objPnr.pNR.zpay.mbtotaltax);
               msg = msg.replaceAll('[[ttl]]', objPnr.pNR.zpay.ttl);
-              msg = msg.replaceAll('[[reference]]', '<b>' + objPnr.pNR.rLOC + '</b>') ;
+              msg = msg.replaceAll('[[reference]]', '<b>' + objPnr.pNR.zpay.reference + '</b>') ;
               isHtml = true;
             } else {
               msg = translate('Your booking is confirmed. Booking reference is') + ' ${objPnr.pNR.rLOC}'; 
@@ -1831,6 +1833,11 @@ List<Widget> getPayOptions(String amount, String cur) {
               'lib/assets/images/payment/mastercard.png',
               height: 40,
             ));
+          } else if (action == 'IMAGE') {
+            list.add(Padding(
+              padding: EdgeInsets.all(4),
+            ));
+            list.add(Image.network('${gblSettings.gblServerFiles}/pageImages/${provider.paymentSchemeName}.png', width: 30,));
           }
       } else if (providerType == 'FundTransferPayment') {
         list.add(Icon(Icons.bookmark_border, color: Colors.grey,));

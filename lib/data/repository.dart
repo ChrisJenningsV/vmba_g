@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/xmlApi.dart';
+import 'package:vmba/mmb/viewBookingPage.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
 import '../main.dart';
@@ -979,30 +980,20 @@ class Repository {
 
 
     Future<PnrDBCopy> fetchPnr(String rloc) async {
+      String data;
+      try {
+        data = await runVrsCommand('*$rloc~x');
+      } catch(e) {
+        logit('catch ${e.toString()}');
+        throw (e);
+      }
+      if( ! data.startsWith('{')){
+        PnrDBCopy pnr = PnrDBCopy(rloc: '', data: data);
+        pnr.success = false;
+        return pnr;
 
+      }
 
- /*   http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$rloc~x"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      // return new ParsedResponse(response.statusCode, []);
-    }
-
-    String pnrJson;
-
-    pnrJson = response.body
-        .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-        .replaceAll('<string xmlns="http://videcom.com/">', '')
-        .replaceAll('</string>', '');
-*/
-      String data = await runVrsCommand('*$rloc~x');
       String pnrJson;
       //logit('RX: $data');
 
@@ -1560,9 +1551,12 @@ Future<String> runVrsCommand(String cmd) async {
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
       if( map["errorMsg"] != null ) {
-        throw map["errorMsg"];
+        logit('runVrs ${map["errorMsg"]}');
+        //throw map["errorMsg"];
+        return map["errorMsg"];
       }
       if( map["data"] != null ) {
+        logit('runVrs ${map["data"]}');
         throw map["data"];
       }
       throw "Error returned from server";

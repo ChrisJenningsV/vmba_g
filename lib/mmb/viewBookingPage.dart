@@ -26,6 +26,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
+import '../Helpers/dateTimeHelper.dart';
 import '../Helpers/networkHelper.dart';
 import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
@@ -72,6 +73,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
   @override
   initState() {
+    gblError = null;
     super.initState();
   }
 
@@ -357,6 +359,9 @@ class CheckinBoardingPassesWidgetState
         .then((onValue) => (pnr.validate()=='') ? null : pnr = null)
         .then((onValue) => setState(() {
               objPNR = pnr;
+              if( pnr.isFundTransferPayment()) {
+                gblError = null;
+              }
               _loadingInProgress = false;
               _displayProcessingText = '';
             }));
@@ -401,7 +406,11 @@ class CheckinBoardingPassesWidgetState
           ],
         ),
       );
-    if (objPNR == null)
+    if ((objPNR == null || (gblError != null && gblError.isNotEmpty)) && ! objPNR.isFundTransferPayment()) {
+      String er = 'Sorry your booking can\'t be loaded';
+      if( gblError.isNotEmpty){
+        er = gblError;
+      }
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -409,7 +418,7 @@ class CheckinBoardingPassesWidgetState
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TrText(
-                'Sorry your booking can\'t be loaded',
+                er,
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
@@ -449,6 +458,7 @@ class CheckinBoardingPassesWidgetState
           ],
         ),
       );
+    }
     return ListView(children: getBookingViewWidgets(objPNR));
   }
 
@@ -459,56 +469,62 @@ class CheckinBoardingPassesWidgetState
 
     //PnrModel pnr;
     gblCurrentRloc = widget.rloc;
-    Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
-      if( pnrDb != null ) {
-        if( pnrDb.success) {
-          Map<String, dynamic> map = jsonDecode(pnrDb.data);
-          pnr = new PnrModel.fromJson(map);
-          setState(() {
-            objPNR = pnr;
-            loadJourneys(objPNR);
-          });
-        } else {
+    try {
+      Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
+        if (pnrDb != null) {
+          if (pnrDb.success == false) {
+            gblError = pnrDb.data;
+            return;
+          }
 
-        }
-      } else {
-/*        setState(() {
-          _loadingInProgress = false;
-          _error = 'Booking not found';
-          objPNR = null;
-        });
-
- */
-        return;
-
-      }
-    }).then((onValue) {
-      if (objPNR != null) {
-        //GET APIS STATUS
-        Repository.get()
-            .getPnrApisStatus(widget.rloc)
-            .then((record) {
-              if( record.data != null && record.data.isNotEmpty) {
-                Map<String, dynamic> map = jsonDecode(record.data);
-                ApisPnrStatusModel _apisPnrStatus =
-                new ApisPnrStatusModel.fromJson(map);
-                apisPnrStatus = _apisPnrStatus;
-
-              }
-                setState(() {
-                });
-        })
-            .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
-            .then((onValue) =>
+          if (pnrDb.success) {
+            Map<String, dynamic> map = jsonDecode(pnrDb.data);
+            pnr = new PnrModel.fromJson(map);
             setState(() {
               objPNR = pnr;
-              _loadingInProgress = false;
-              _displayProcessingText = '';
-            }));
-      }
-      }
-    );
+              loadJourneys(objPNR);
+            });
+          } else {
 
+          }
+        } else {
+          return;
+        }
+      }).then((onValue) {
+        if (objPNR != null) {
+          //GET APIS STATUS
+          Repository.get()
+              .getPnrApisStatus(widget.rloc)
+              .then((record) {
+            if (record.data != null && record.data.isNotEmpty) {
+              Map<String, dynamic> map = jsonDecode(record.data);
+              ApisPnrStatusModel _apisPnrStatus =
+              new ApisPnrStatusModel.fromJson(map);
+              apisPnrStatus = _apisPnrStatus;
+            }
+            setState(() {});
+          })
+              .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
+              .then((onValue) =>
+              setState(() {
+                if( pnr.isFundTransferPayment()) {
+                  gblError = null;
+                }
+                objPNR = pnr;
+                _loadingInProgress = false;
+                _displayProcessingText = '';
+              }));
+        }
+      }
+      );
+    } catch(e) {
+      gblError = e.toString();
+      _loadingInProgress = false;
+      setState(() {
+
+      });
+
+    }
   }
 
   void _actionCompleted() {
@@ -697,26 +713,42 @@ class CheckinBoardingPassesWidgetState
     }
 
     list.add(Divider());
-    list.add(
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+    if( pnr.allPaxCheckedIn()) {
+      list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
           Icon(Icons.info),
-          Padding(
-            padding: EdgeInsets.only(left: 5),
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: checkinStatus(pnr.pNR.itinerary.itin[journey]),
-              initialData: 'Check-in not open',
-              builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(text.data);
-              },
+        Padding(
+          padding: EdgeInsets.only(left: 5)),
+          Text('All passengers checked in'),
+        ]
+      ));
+    } else {
+      list.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(Icons.info),
+            Padding(
+              padding: EdgeInsets.only(left: 5),
             ),
-          )
-        ],
-      ),
-    );
+            Expanded(
+              child: FutureBuilder(
+                future: checkinStatus(pnr.pNR.itinerary.itin[journey]),
+                initialData: 'Check-in not open',
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  if (text.data != null) {
+                    return new Text(text.data);
+                  } else {
+                    return Text('');
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+      );
+    }
 
     if( pnr.isFundTransferPayment()) {
       list.add(Padding(padding: EdgeInsets.all(3)));
@@ -1224,10 +1256,29 @@ class CheckinBoardingPassesWidgetState
         now = new DateTime.now().toUtc();
 
         // logit('now:${now.toString()}');
+/*
+        bool isBeforeClosed = now.difference(checkinClosed).inMinutes <0;
+        bool isAfterClosed = now.difference(checkinClosed).inMinutes >0;
+        bool isAfterOpens = checkinOpens.difference(now).inMinutes < 0;
+*/
+        bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
+        bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
+        bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
 
-        checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
+
+
+        //checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
+        checkinOpen = (isBeforeClosed && isAfterOpens)
             ? true
             : false;
+        if(  pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != null &&
+                pnr.pNR.itinerary.itin[journeyNo].onlineCheckin == 'False' ) {
+          checkinOpen = false;
+        }
+        if( pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null &&
+            pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed == 'False' ) {
+          checkinOpen = false;
+        }
       }
     }
 
@@ -1475,6 +1526,7 @@ class CheckinBoardingPassesWidgetState
   }
 
 
+
   Future<String> checkinStatus(Itin itin) async {
     String response = '';
     DateTime checkinOpens;
@@ -1502,22 +1554,32 @@ class CheckinBoardingPassesWidgetState
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = new DateTime.now().toUtc();
 
+      bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
+      bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
+      bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
+      // nb DateTime isBefore and isAfter do not work accurateley !!!
     //  logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
+
 
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
+      } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
+        response = translate('no Check-in online ');
       } else if ( city.webCheckinEnabled == 0 ) {
         response = translate('no Check-in online for this city ');
-      } else if (now.isBefore(checkinClosed) &&
-          now.isAfter(checkinOpens) &&
+      } else if ( itin.onlineCheckin != null &&  itin.onlineCheckin == 'False' ) {
+        response = translate('no Check-in online ');
+      } else if (isBeforeClosed &&
+          isAfterOpens &&
           itin.airID != gblSettings.aircode) {
         response = translate('Check-in with other airline ');
-      } else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
+        //} else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
+      } else if ( isBeforeClosed  && isAfterOpens) {
         response = translate('Online check-in open ');
-      } else if (now.isBefore(checkinOpens) &&
+      } else if (isBeforeClosed &&
           itin.airID != gblSettings.aircode) {
         response = translate('Check-in with other airline ');
-      } else if (now.isBefore(checkinOpens)) {
+      } else if (isBeforeClosed) {
         // get date time local
         if( itin.onlineCheckinTimeStartLocal == null ) {
           response = translate('Please Reload');
@@ -1528,7 +1590,7 @@ class CheckinBoardingPassesWidgetState
               getIntlDate('H:mm a dd MMM', dt);
         }
             //DateFormat('H:mm a dd MMM').format(checkinOpens);
-      } else if (now.isAfter(checkinClosed) &&
+      } else if (isAfterClosed &&
           now.isBefore(departureDateTime)) {
         response = translate('Online check-in closed ');
       } else {
