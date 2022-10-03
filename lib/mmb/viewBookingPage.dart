@@ -74,6 +74,8 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   @override
   initState() {
     gblError = null;
+    gblPaymentMsg = '';
+
     super.initState();
   }
 

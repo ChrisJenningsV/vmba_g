@@ -790,6 +790,20 @@ Row airMiles() {
             ),
           ));
     } else {
+      List<Widget> list = [];
+
+      if(gblSettings.wantButtonIcons) {
+        list.add(Icon(
+          Icons.check,
+          color: Colors.white,
+        ));
+      }
+        list.add(TrText(
+          'CONTINUE',
+          style: TextStyle(color: Colors.white),
+        ));
+
+
       return new Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
@@ -943,16 +957,7 @@ Row airMiles() {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      ),
-                      TrText(
-                        'CONTINUE',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                    children: list,
                   ),
                 ),
               ])));

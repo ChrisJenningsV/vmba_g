@@ -51,7 +51,7 @@ void configFN() {
   gblSettings = Settings (
 //    latestBuildiOS: '1.0.5',
 //    latestBuildAndroid: '1.0.0.98',
-    paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none"}' ),
+    paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,

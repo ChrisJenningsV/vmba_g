@@ -346,6 +346,20 @@ void initState() {
     if (cvvCode != null) {
       _cvvCodeController.text = cvvCode.toString();
     }
+    List<Widget> list = [];
+    if( gblSettings.wantButtonIcons) {
+      list.add(
+          Icon(
+            Icons.check,
+            color: Colors.white,
+          ));
+    }
+     list.add( TrText(
+        'Done',
+        style: TextStyle(color: Colors.white),
+      ));
+
+
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -555,16 +569,7 @@ void initState() {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   //  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                    ),
-                                    TrText(
-                                      'Done',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
+                                  children: list,
                                 ),
                               ),
                             ),
@@ -674,10 +679,25 @@ void initState() {
       );
     }
 
+    List<Widget> list =[];
+    if( gblSettings.wantButtonIcons) {
+      list.add(
+          Icon(
+            Icons.check,
+            color: Colors.white,
+          ));
+    }
+    list.add( TrText(
+      'Done',
+      style: TextStyle(color: Colors.white),
+    ));
+
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
+
+
         return Dialog(
           backgroundColor: Colors.transparent,
           insetPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -827,16 +847,7 @@ void initState() {
                                           BorderRadius.circular(30.0))),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                  ),
-                                  TrText(
-                                    'Done',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
+                                children: list,
                               ),
                             ),
                           ),

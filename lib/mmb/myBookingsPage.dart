@@ -49,6 +49,9 @@ String _error = '';
   @override
   void initState() {
     super.initState();
+    gblPaymentMsg = '';
+    gblError = '';
+
     _loadingInProgress = true;
     _isButtonDisabled = false;
     _isHidden = true;

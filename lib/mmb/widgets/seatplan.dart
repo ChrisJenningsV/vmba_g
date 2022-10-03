@@ -62,6 +62,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   @override
   void initState() {
     super.initState();
+    gblPaymentMsg = '';
+    gblError = '';
     _noInternet = false;
     _noSeats = false;
     _loadingInProgress = true;
@@ -190,6 +192,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   void _handleBookSeats(List<Pax> paxValue) {
    // _bookSeats();
+    gblError = '';
     smartBookSeats();
     setState(() {
       paxlist = paxValue;
@@ -579,7 +582,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                       getSeat(null, gblSystemColors.seatPlanColorSelected),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
-                        child: Text("Selected",
+                        child: TrText("Selected",
                             style: TextStyle(
                               fontSize: cellFontSize,
                             )),

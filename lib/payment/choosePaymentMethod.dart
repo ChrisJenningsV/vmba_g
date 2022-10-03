@@ -81,6 +81,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
 
+    gblPaymentMsg = '';
+    gblError = '';
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
     //gblPaymentMsg = null;
@@ -1117,7 +1119,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
         );
       }
-    } else if (gblPaymentMsg != null ) {
+    } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
       return new Scaffold(
           key: _key,
@@ -1840,7 +1842,9 @@ List<Widget> getPayOptions(String amount, String cur) {
             list.add(Image.network('${gblSettings.gblServerFiles}/pageImages/${provider.paymentSchemeName}.png', width: 30,));
           }
       } else if (providerType == 'FundTransferPayment') {
-        list.add(Icon(Icons.bookmark_border, color: Colors.grey,));
+        if( action != 'NONE') {
+          list.add(Icon(Icons.bookmark_border, color: Colors.grey,));
+        }
         }
     }
     return list;

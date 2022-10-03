@@ -98,6 +98,7 @@ void configLM() {
 //Production setttings
 
   liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+//    liveXmlUrl:      "https://booking.loganair.co.uk/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
   livePayPage:      'https://booking.loganair.co.uk/VARS/Public/MobilePaymentStart.aspx',
@@ -138,8 +139,8 @@ void configLM() {
 //////    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+ //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
-
 
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 

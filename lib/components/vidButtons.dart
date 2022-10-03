@@ -57,6 +57,18 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int p1
   NEXT button at the bottom of most pages
  */
 Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0} ) {
+
+  List<Widget> list = [];
+  if( gblSettings.wantButtonIcons) {
+    list.add(Icon(
+      Icons.check,
+      color: Colors.white,
+    ));
+  }
+  list.add(TrText(
+  caption,
+  style: TextStyle(color: Colors.white),
+  ));
   return
     Padding(
       padding: EdgeInsets.only(left: offset),
@@ -73,16 +85,8 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
     child: Row(
       //mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          Icons.check,
-          color: Colors.white,
-        ),
-        TrText(
-          caption,
-          style: TextStyle(color: Colors.white),
-        ),
-      ],
+      children:  list
+,
     ),
   )
     );
@@ -101,9 +105,10 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
               caption,
               style: TextStyle(color: gblSystemColors.primaryButtonTextColor),
             ),
-            icon: Icon(Icons.check,
-                color: gblSystemColors.primaryButtonTextColor),
-            backgroundColor: gblSystemColors.primaryButtonColor,
+
+            icon: gblSettings.wantButtonIcons ? Icon(Icons.check,
+                color: gblSystemColors.primaryButtonTextColor) : null ,
+            backgroundColor: gblSystemColors.primaryButtonColor ,
             onPressed: () => onPressed(context))
       ]));
 }
