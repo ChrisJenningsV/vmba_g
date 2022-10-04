@@ -152,6 +152,7 @@ class SeatCardState extends State<SeatCard> {
               SeatPlanWidget(
                 paxlist: paxlist,
                 isMmb: false,
+                ischeckinOpen: false,
                 seatplan:
                 'ls${gblPnrModel.pNR.itinerary.itin[journeyNo].airID +
                     gblPnrModel.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat(

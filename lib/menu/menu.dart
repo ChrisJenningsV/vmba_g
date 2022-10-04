@@ -56,6 +56,7 @@ class DrawerMenu extends StatelessWidget {
         onTap: () {
           // Update the state of the app
           // ...
+          gblCurPage = 'FlightSearch';
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/FlightSearchPage', (Route<dynamic> route) => false);
           //Navigator.pop(context);
@@ -69,6 +70,7 @@ class DrawerMenu extends StatelessWidget {
           // contentPadding: EdgeInsets.zero,
           title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS flight'),
           onTap: () {
+            gblCurPage = 'BookAds';
             Navigator.push(context, SlideTopRoute(page: AdsPage()));
           },
         ));
@@ -81,6 +83,7 @@ class DrawerMenu extends StatelessWidget {
           onTap: () {
             // Update the state of the app
             // ...
+            gblCurPage = 'MyBookings';
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/MyBookingsPage', (Route<dynamic> route) => false);
           },
@@ -94,6 +97,7 @@ class DrawerMenu extends StatelessWidget {
           onTap: () {
             // Update the state of the app
             // ...
+            gblCurPage = 'MyNotifications';
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/MyNotificationsPage', (Route<dynamic> route) => false);
           },
@@ -107,6 +111,7 @@ class DrawerMenu extends StatelessWidget {
             onTap: () {
               // Update the state of the app
               // ...
+              gblCurPage = 'AddBooking';
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/AddBookingPage', (Route<dynamic> route) => false);
             },

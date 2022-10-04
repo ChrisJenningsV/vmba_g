@@ -57,7 +57,8 @@ class PnrChangeNotifier with ChangeNotifier {
 
 class ViewBookingPage extends StatefulWidget {
   ViewBookingPage({Key key, this.rloc}) : super(key: key);
-  final String rloc;
+  String rloc;
+
 
   ViewBookingPageState createState() => ViewBookingPageState();
 }
@@ -73,8 +74,12 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
   @override
   initState() {
+    gblCurPage = 'ViewBooking';
     gblError = null;
     gblPaymentMsg = '';
+    if(widget.rloc == null || widget.rloc == ''){
+      widget.rloc = gblCurrentRloc;
+    }
 
     super.initState();
   }
@@ -255,7 +260,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 class CheckinBoardingPassesWidget extends StatefulWidget {
   CheckinBoardingPassesWidget({Key key, this.rloc, this.showSnackBar, this.onLoad})
       : super(key: key);
-  final String rloc;
+  String rloc;
   final ValueChanged<String> showSnackBar;
   void Function(BuildContext context) onLoad;
 
@@ -375,7 +380,19 @@ class CheckinBoardingPassesWidgetState
       objPNR = gblPnrModel;
     });
   }
+  void reload( String rloc){
+
+    gblCurrentRloc = rloc;
+    widget.rloc = rloc;
+    initValues();
+    setState(() {
+    });
+  }
+
+
+
   void loadCities(List<Itin> itin) {}
+
 
   loadJourneys(PnrModel pnrModel) {
     // reset list
@@ -2079,7 +2096,7 @@ class CheckinBoardingPassesWidgetState
           autoSeatingSelection(
               paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
         } else {
-          preferredSeating(paxNo, journeyNo, pnr, paxlist);
+          preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
         }
       },
       style: TextButton.styleFrom(
@@ -2418,7 +2435,7 @@ class CheckinBoardingPassesWidgetState
     // );
   }
 
-  preferredSeating(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist) {
+  preferredSeating(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist, bool checkinOpen) {
     gblPnrModel = pnr;
 
     Navigator.push(
@@ -2427,6 +2444,7 @@ class CheckinBoardingPassesWidgetState
           builder: (context) => SeatPlanWidget(
             paxlist: paxlist,
             isMmb: true,
+            ischeckinOpen: checkinOpen,
             seatplan:
                 'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,
@@ -2473,7 +2491,7 @@ class CheckinBoardingPassesWidgetState
       ),
       onPressed: () {
         Navigator.of(context).pop();
-        preferredSeating(paxNo, journeyNo, pnr, paxlist);
+        preferredSeating(paxNo, journeyNo, pnr, paxlist,false);
       },
     );
 

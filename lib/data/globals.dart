@@ -13,7 +13,7 @@ import 'models/providers.dart';
 //
 String gblBuildFlavor = 'FN';
 bool gblIsLive = true;
-int requiredXmlVersion = 104;
+int requiredXmlVersion = 105;
 int requiredApiVersion = 101;
 int apiBuldVersion;
 bool gblDoVersionCheck = true;
@@ -37,6 +37,7 @@ String gblCurrentRloc;
 String gblPaymentMsg;
 String gblNotifyToken;
 String gblDeviceId;
+String gblCurPage;
 
 /* logging */
 bool gblLogProducts = false;

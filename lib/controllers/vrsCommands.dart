@@ -1,7 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
+
+import '../data/models/apis_pnr.dart';
+import '../utilities/helper.dart';
 //
 // Building VRS ProcessCimport 'package:vmba/completed/ProcessCommands
 //
@@ -56,6 +61,43 @@ sendEmailConfirmation(PnrModel pnrModel) async {
         .replaceAll('</string>', ''));
   } catch (e) {
     print(e.toString());
+  }
+}
+
+
+void refreshBooking(String rloc) {
+  PnrModel objPNR;
+  gblCurrentRloc = rloc;
+  try {
+    logit('fetchpnr $rloc');
+    Repository.get().fetchPnr(rloc).then((pnrDb) {
+      if (pnrDb != null) {
+        if (pnrDb.success == false) {
+          gblError = pnrDb.data;
+          return;
+        }
+
+        if (pnrDb.success) {
+          Map<String, dynamic> map = jsonDecode(pnrDb.data);
+          objPNR = new PnrModel.fromJson(map);
+//            loadJourneys(objPNR);
+        } else {
+
+        }
+      } else {
+        return;
+      }
+    }).then((onValue) {
+      if (objPNR != null) {
+        logit('fetchAPIS $rloc');
+        //GET APIS STATUS
+        Repository.get()
+            .fetchApisStatus(rloc);
+        }});
+
+  } catch(e) {
+    gblError = e.toString();
+    logit(gblError);
   }
 }
 

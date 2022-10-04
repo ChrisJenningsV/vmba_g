@@ -790,6 +790,15 @@ void refreshMmbBooking() {
 
   }
 }
+void reloadMmbBooking(String rloc) {
+  try {
+    if( mmbGlobalKeyBooking != null && mmbGlobalKeyBooking.currentState != null ) {
+      mmbGlobalKeyBooking.currentState.reload(rloc);
+    }
+  } catch (e) {
+
+  }
+}
 void refreshStatusBar() {
   try {
 

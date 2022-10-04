@@ -12,6 +12,7 @@ import 'package:vmba/mmb/myBookingsPage.dart';
 import 'package:vmba/mmb/myNotificationsPage.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/home/home_page.dart';
+import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -225,6 +226,7 @@ bool bFirstTime = true;
         '/AdsPage': (BuildContext context) => new AdsPage(),
         '/ErrorPage': (BuildContext context) => new ErrorPage(),
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
+        '/ViewBookingPage': (BuildContext context) => new ViewBookingPage(),
         '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),
       },

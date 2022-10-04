@@ -11,6 +11,7 @@ import 'package:vmba/mmb/widgets/boardingPass.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../calendar/bookingFunctions.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 
@@ -201,7 +202,17 @@ List<Widget> _getBody(
                     case 'APP':
                       switch (d.toUpperCase()) {
                         case 'OPENPNR':
-                          Navigator.push(
+                          gblPnrModel = null;
+                          gblCurrentRloc = d2;
+                          // get current page
+
+                          if( gblCurPage  == 'ViewBooking') {
+                              Navigator.of(context).pop();
+                              gblCurrentRloc = d2;
+                              reloadMmbBooking(d2);
+
+                          } else {
+                            Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
@@ -209,6 +220,13 @@ List<Widget> _getBody(
                                       rloc: d2,
                                     )),
                           );
+
+                            /*
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/ViewBookingPage', (Route<
+                                dynamic> route) => false,);
+*/
+                          }
                           break;
                         case 'RELOADPNR':
                           break;

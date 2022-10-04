@@ -477,6 +477,9 @@ class Repository {
                   case 'wantPassengerPassport':
                     gblSettings.wantPassengerPassport = parseBool(item['value']);
                     break;
+                  case 'webCheckinNoSeatCharge':
+                    gblSettings.webCheckinNoSeatCharge = parseBool(item['value']);
+                    break;
 
                   case 'wantClassBandImages':
                     gblSettings.wantClassBandImages = parseBool(item['value']);
@@ -619,7 +622,7 @@ class Repository {
               gblAction =mainMatchVersioAction;
             }
             if( gblSettings.useWebApiforVrs) {
-              logit('website version $xmlVersion');
+              logit('website version $xmlVersion required XML version $requiredXmlVersion' );
             } else {
               logit('API version $xmlVersion');
             }

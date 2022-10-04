@@ -9,6 +9,7 @@ import 'package:vmba/components/showNotification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../controllers/vrsCommands.dart';
 import '../data/repository.dart';
 import '../main.dart';
 import 'helper.dart';
@@ -126,7 +127,7 @@ class NotificationService {
        } catch(e) {
 
        }
-
+        processNotification(message.data);
         showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
 
      /*     flutterLocalNotificationsPlugin.show(
@@ -163,7 +164,22 @@ class NotificationService {
     }
   }
 
+void processNotification(Map data){
+    logit('processNotify data=$data');
+    if( data == null ) {
 
+      return ;
+    }
+
+    String action = data['actions'];
+    String rloc = data['rloc'];
+
+    if(action == 'paycomplete'){
+      // reload booking
+      refreshBooking(rloc);
+    }
+
+  }
 void onClickNotification(String s) {
     print('onClickNotification');
 }

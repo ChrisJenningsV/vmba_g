@@ -35,7 +35,8 @@ class SeatPlanWidget extends StatefulWidget {
       this.rloc,
       this.journeyNo,
       this.selectedpaxNo,
-      this.isMmb})
+      this.isMmb,
+      this.ischeckinOpen})
       : super(key: key);
 
   final List<Pax> paxlist;
@@ -44,6 +45,7 @@ class SeatPlanWidget extends StatefulWidget {
   final String journeyNo;
   final int selectedpaxNo;
   final bool isMmb;
+  final bool ischeckinOpen;
   _SeatPlanWidgetState createState() => _SeatPlanWidgetState();
 }
 
@@ -206,7 +208,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     seat.paxlist = paxlist;
     seat.rloc = widget.rloc;
     seat.journeyNo = int.parse(widget.journeyNo);
-    seat.webCheckinNoSeatCharge = gblSettings.webCheckinNoSeatCharge;
+    if( widget.isMmb && widget.ischeckinOpen) {
+      seat.webCheckinNoSeatCharge = gblSettings.webCheckinNoSeatCharge;
+    } else {
+      seat.webCheckinNoSeatCharge = false;
+    }
 
     String data =  json.encode(seat);
 

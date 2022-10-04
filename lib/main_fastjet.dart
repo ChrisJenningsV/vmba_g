@@ -77,7 +77,7 @@ void configFN() {
 
     locale: 'en-EN',
     bookingLeadTime: 60,
-    webCheckinNoSeatCharge: false,
+    webCheckinNoSeatCharge: true,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: false,
     useWebApiforVrs: true,
