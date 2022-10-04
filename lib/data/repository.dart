@@ -247,7 +247,7 @@ class Repository {
     Map<String, String>       headers = {
         'Content-Type': 'application/json',
         'Videcom_ApiKey': gblSettings.apiKey,
-        '__SkyFkyTok': gblSettings.skyFlyToken,
+        '__SkyFlyTok_V1': gblSettings.skyFlyToken,
         'VARS_SessionId': 'TestTest'};
 
 
