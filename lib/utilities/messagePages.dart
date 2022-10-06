@@ -372,3 +372,58 @@ Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBa
     actions: actions,
   );
 }
+
+Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widget> actions}) {
+  Color titleBackClr = gblSystemColors.primaryHeaderColor;
+  Color borderClr = Colors.green;
+  Color backClr = Colors.green;
+  Color iconClr = Colors.white;
+
+  if( titleBackClr == Colors.white) {
+    titleBackClr = gblSystemColors.primaryButtonColor;
+  }
+  if( actions == null ){
+    actions = <Widget>[
+      Align(
+          alignment: Alignment.center,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+            child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+            onPressed: () {
+              //Put your code here which you want to execute on Cancel button click.
+              Navigator.of(context).pop();
+            },
+          )),
+    ];
+  }
+
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)),
+    titlePadding: const EdgeInsets.all(0),
+    title: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: titleBackClr,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        child: Text(title,style: TextStyle(color: Colors.white),)
+    ),
+    content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget> [
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: backClr,
+                border: Border.all(color: borderClr, width: 3)
+            ),
+           // child: Icon(icon, color: iconClr ,size: 100,),
+          ),
+          Padding(padding: EdgeInsets.all(5)),
+          content,
+        ]),
+    actions: actions,
+  );
+}

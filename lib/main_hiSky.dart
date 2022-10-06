@@ -152,7 +152,7 @@ void configH4() {
     wantCitySwap: true,
     wantPushNoticications: true,
     wantNotificationEdit: false,
-    wantRefund: true,
+    wantRefund: false,
     wantNewPayment: true,
     wantCountry: false,
     useSmartPay: false,

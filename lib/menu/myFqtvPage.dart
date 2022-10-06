@@ -149,26 +149,29 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       );
     } else if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
         widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
+      Color titleBackClr = gblSystemColors.primaryHeaderColor;
+      if( titleBackClr == Colors.white) {
+        titleBackClr = gblSystemColors.primaryButtonColor;
+      }
 
-      return AlertDialog(
+      return  Scaffold(
+          body: AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         titlePadding: EdgeInsets.only(top: 0),
         contentPadding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 0),
-        title: Column(
-            children: [
-              ListTile(
-          leading: Icon(Icons.person_pin, color: Colors.blue, size: 40,),
-            title: Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN')),
-            ),
-              Divider(
-                color: Colors.grey,
-                height: 4.0,
-              ),
-        ]),
+        title: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: titleBackClr,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+              padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'),
+                style: TextStyle(color: Colors.white),)
+        ),
         content: contentBox(context),
         //actions: <Widget>[)    ]
-      );
+      ));
     }
 
     return Scaffold(
@@ -269,7 +272,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   ),
                   SizedBox(width: 20,),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                    style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryButtonColor),
                     child: Row(children: <Widget>[
                       (_isButtonDisabled)
                           ? new Transform.scale(
