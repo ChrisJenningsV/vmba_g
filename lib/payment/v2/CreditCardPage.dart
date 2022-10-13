@@ -383,20 +383,23 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (widget.isMmb) {
         msg = '*$rLOC';
         bool deleteDone = false;
-//        int i = widget.mmbBooking.newFlights.length - 1;
         widget.mmbBooking.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
 
           if( deleteDone == false ) {
-            widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
-                j) {
-              DateTime fltDate = DateTime.parse(j.ddaygmt);
-              msg +=
-              '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(
-                  fltDate)}${j.depart}${j.arrive}';
-            });
+            if( widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1].itin.length ==1 ){
+              msg += '^X${widget.mmbBooking.journeyToChange}';
+            } else {
+              widget.mmbBooking.journeys
+                  .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+                  j) {
+                DateTime fltDate = DateTime.parse(j.ddaygmt);
+                msg +=
+                '^X${j.airID}${j.fltNo}${j.xclass}${DateFormat('ddMMM').format(
+                    fltDate)}${j.depart}${j.arrive}';
+              });
+            }
             deleteDone = true;
           }
 

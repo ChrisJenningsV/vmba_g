@@ -493,13 +493,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Text(
-                            gblSettings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
-                            style: new TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.w700)),
-                      )
+                      _airlineName(),
                     ],
                   ),
                   Column(
@@ -884,6 +878,21 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       ),
     );
   }
+
+  Widget _airlineName() {
+    if( gblSettings.wantBpLogo == null || gblSettings.wantBpLogo == true  ) {
+      return Image.asset('lib/assets/$gblAppTitle/images/appBar.png', width: 80);
+    }
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Text(
+          gblSettings.airlineName, //"Loganair", //snapshot.data['arrivalCodes'][journey],
+          style: new TextStyle(
+              fontSize: 18.0, fontWeight: FontWeight.w700)),
+    );
+  }
+
+
 
   Widget drawAddPassToWalletButton(BoardingPass pass) {
     if (canShowAddBoardingPassToWalletButton() == false) {

@@ -1033,7 +1033,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   InputDecoration _getDecoration(String label) {
    // var borderRadius = 10.0;
 
-    if ( gblSettings.wantMaterialControls == true ) {
+   // if ( gblSettings.wantMaterialControls == true ) {
       return InputDecoration(
         fillColor: Colors.grey.shade100,
         filled: true,
@@ -1047,7 +1047,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 //        fillColor: Colors.white,
       );
 
-    }
+   // }
 
     return InputDecoration(
         contentPadding:

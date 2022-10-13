@@ -153,9 +153,35 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       if( titleBackClr == Colors.white) {
         titleBackClr = gblSystemColors.primaryButtonColor;
       }
+      Widget flexibleSpace ;
+      if( gblSettings.pageImageMap != null ) {
+        Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
+        String pageImage = pageMap['FQTV'];
+
+        if( pageImage != null && pageImage.isNotEmpty){
+          NetworkImage backgroundImage = NetworkImage('${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
+          flexibleSpace = Image(
+            image:
+            backgroundImage,
+            fit: BoxFit.cover,);
+          //backgroundColor = Colors.transparent;
+
+        }
+      }
 
       return  Scaffold(
-          body: AlertDialog(
+       /*   appBar: AppBar(
+            flexibleSpace: flexibleSpace,
+            toolbarHeight: 400,
+            backgroundColor: Colors.transparent,
+            title: Text(''),
+            automaticallyImplyLeading: false,
+          ),*/
+          body:
+              Column (
+              children: [
+                flexibleSpace,
+                        AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         titlePadding: EdgeInsets.only(top: 0),
@@ -171,8 +197,12 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         ),
         content: contentBox(context),
         //actions: <Widget>[)    ]
-      ));
+      ),
+                ])
+              );
     }
+
+
 
     return Scaffold(
       appBar: AppBar(

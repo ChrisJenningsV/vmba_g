@@ -120,7 +120,7 @@ void configQI() {
 
     wantNewPayment: true,
     wantNewEditPax: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantPushNoticications: true,
     wantNotificationEdit: false,
     wantPayStack: false,

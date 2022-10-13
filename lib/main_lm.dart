@@ -157,8 +157,10 @@ void configLM() {
   wantFQTV: true,
   wantFindBookings: true,
   wantNewEditPax: true,
-  wantMaterialControls: true,
+  //wantMaterialControls: true,
+  wantAllColorButtons: false,
   wantCitySwap: true,
+    wantBpLogo: false,
   wantPushNoticications: true,
   wantNotificationEdit: false,
   //wantRefund: true,
@@ -171,11 +173,11 @@ void configLM() {
   maxNumberOfPax: 8,
   hideFareRules: false,
 
-    useWebApiforVrs: true,
-    wantMmbProducts: true,
-    wantProducts: true,
+    useWebApiforVrs: false,
+    wantMmbProducts: false,
+    wantProducts: false,
     wantStatusLine: true,
-    wantSeatsWithProducts: true,
+    wantSeatsWithProducts: false,
 
   );
   gblSettings.setDefaults();

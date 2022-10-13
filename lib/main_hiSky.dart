@@ -148,7 +148,7 @@ void configH4() {
     wantFQTV: false,
     wantFindBookings: true,
     wantNewEditPax: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantCitySwap: true,
     wantPushNoticications: true,
     wantNotificationEdit: false,

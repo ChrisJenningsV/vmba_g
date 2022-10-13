@@ -474,7 +474,7 @@ Widget warningBox(String txt ) {
 InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}) {
   var borderRadius = 10.0;
 
-  if ( gblSettings.wantMaterialControls == true ) {
+  //if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(
       fillColor: Colors.grey.shade100,
       filled: true,
@@ -491,7 +491,7 @@ InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}
 //        fillColor: Colors.white,
     );
 
-  }
+  //}
 
   // old style
   return InputDecoration(

@@ -440,9 +440,11 @@ class Repository {
                   case 'wantRefund':
                     gblSettings.wantRefund  = parseBool(item['value']);
                     break;
+/*
                   case 'wantMaterialControls':
                     gblSettings.wantMaterialControls = parseBool(item['value']);
                     break;
+*/
                   case 'wantProfileList':
                     gblSettings.wantProfileList = parseBool(item['value']);
                     break;

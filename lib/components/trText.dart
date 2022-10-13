@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'dart:developer';
 
+bool LogginOn = false;
+
 class TrText extends StatelessWidget {
   final String labelText;
   final TextStyle style;
@@ -36,7 +38,7 @@ class TrText extends StatelessWidget {
           //var msg = 'need trans for "$txt"';
           var msg = ' "$txt": ""';
           //print(msg);
-          log(msg);
+          if( LogginOn) log(msg);
         }
       }
     }
@@ -80,6 +82,6 @@ String translate( String str ) {
   }
   var msg = ' "$str": ""';
   //print(msg);
-  log(msg);
+  if( LogginOn) log(msg);
   return str;
 }

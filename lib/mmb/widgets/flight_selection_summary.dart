@@ -96,8 +96,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     Intl.defaultLocale = 'en';
     String cmd = '';
     cmd = '*${widget.mmbBooking.rloc}^';
-    widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
-        .itin.reversed
+    widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1].itin.reversed
         .forEach((f) {
              cmd += 'X${f.line}^';
     });

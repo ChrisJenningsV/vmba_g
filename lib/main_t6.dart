@@ -61,12 +61,15 @@ void configT6() {
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     gblServerFiles: 'https://booking.air-swift.com/AppFiles',
-    testServerFiles: 'https://customertest.videcom.com/airswift/vars/AppFiles',
+    testServerFiles: 'https://customertest.videcom.com/airswift/AppFiles',
+    faqUrl: 'https://air-swift.com/faqs/ ',
+    contactUsUrl: 'https://air-swift.com/contact-us/ ',
+    termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
+    privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
+    prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/ ',
 
     aircode: 'T6',
-      termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
-      privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
-     // prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
+
       locale: 'en-EN',
       bookingLeadTime: 60,
       webCheckinNoSeatCharge: false,
@@ -82,18 +85,20 @@ void configT6() {
       bpShowLoungeAccess: true,
   	  bpShowAddPassToWalletButton: false,
       buttonStyle: 'RO2',
+      wantAllColorButtons: true,
       wantNewEditPax: true,
-      wantMaterialControls: true,
+      //wantMaterialControls: true,
       wantCitySwap: true,
       wantPageImages: true,
     wantProducts: true,
     wantFindBookings: true,
     wantClassBandImages: true,
     wantCountry: true,
-    wantTallPageImage: false,
+    wantTallPageImage: true,
     pageStyle: 'V2',
-    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers"}',
+    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
     useWebApiforVrs: true,
+    wantEnglishTranslation: true,
 
 
     passengerTypes: PassengerTypes(
@@ -102,6 +107,12 @@ void configT6() {
       infant: true,
       youths: false,
       senior:  true,
+      wantAdultDOB: true,
+      wantChildDOB: true,
+      wantInfantDOB: true,
+      wantSeniorDOB: true,
+      wantStudentDOB: true,
+      wantYouthDOB: true,
   ),
 
 //Production setttings
@@ -127,7 +138,7 @@ void configT6() {
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
  testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-  testCreditCardProvider: 'videcard|MX payment,3DS_Paynamics|Paynamics payment',
+  testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
   wantPayStack: false,
@@ -135,6 +146,7 @@ void configT6() {
     wantNotificationEdit: false,
     wantNewPayment: true,
     wantMmbProducts: true,
+    productImageMode: 'none',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 

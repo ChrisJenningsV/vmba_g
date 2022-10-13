@@ -60,7 +60,7 @@ void configKG() {
     wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantPageImages: true,
     wantTallPageImage: true,
 

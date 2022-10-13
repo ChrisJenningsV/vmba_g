@@ -59,7 +59,7 @@ void configAG() {
     wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantPageImages: true,
 	  youthIsAdult: true,
 	

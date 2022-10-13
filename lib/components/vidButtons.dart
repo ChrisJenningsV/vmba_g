@@ -93,13 +93,20 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
 //  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
 }
 
-Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, } ) {
+Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, bool isRectangular } ) {
+  ShapeBorder shape;
+  if(isRectangular != null &&  isRectangular == true ){
+    shape = RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5.0))
+    );
+  }
   return Padding(
       padding: EdgeInsets.only(left: 35.0),
       child:
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
         FloatingActionButton.extended(
             elevation: 0.0,
+            shape: shape,
             isExtended: true,
             label: TrText(
               caption,

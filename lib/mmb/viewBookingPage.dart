@@ -501,6 +501,7 @@ class CheckinBoardingPassesWidgetState
             pnr = new PnrModel.fromJson(map);
             setState(() {
               objPNR = pnr;
+              _mmbBooking.journeys.journey = [];
               loadJourneys(objPNR);
             });
           } else {
@@ -875,21 +876,51 @@ class CheckinBoardingPassesWidgetState
     if( gblSettings.wantRefund &&
         objPNR.canRefund(journeyToChange)
     ){
-        return Expanded(child:  Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            vidTextButton(
-            context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
-            iconRotation: 1, p1: journeyToChange),
-        //SizedBox(width: 50),
-        vidTextButton(
-            context, 'Refund', _onPressedRefund, icon: Icons.money,
-            iconRotation: 1, p1: journeyToChange),
-        ],));
+        if( gblSettings.wantAllColorButtons ) {
+          return Expanded(child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              vidTextButton(
+                  context, 'Change Flight', _onPressedChangeFlt,
+                  icon: Icons.airplanemode_active,
+                  iconRotation: 1, p1: journeyToChange),
+              //SizedBox(width: 50),
+              vidTextButton(
+                  context, 'Refund', _onPressedRefund, icon: Icons.money,
+                  iconRotation: 1, p1: journeyToChange),
+            ],));
+        } else {
+          return Expanded(child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              vidTextButton(
+                  context, 'Change Flight', _onPressedChangeFlt,
+                  icon: Icons.airplanemode_active,
+                  iconRotation: 1, p1: journeyToChange),
+              //SizedBox(width: 50),
+              vidTextButton(
+                  context, 'Refund', _onPressedRefund, icon: Icons.money,
+                  iconRotation: 1, p1: journeyToChange),
+            ],));
+        }
     } else {
-      return vidWideTextButton(
-          context, 'Change Flight', _onPressedChangeFlt, icon: Icons.airplanemode_active,
-          iconRotation: 1, p1: journeyToChange);
+      if( gblSettings.wantAllColorButtons ) {
+        return Expanded(child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          vidWideActionButton(
+            context, 'Change Flight', _onPressedChangeFlt2,
+            icon: Icons.airplanemode_active,
+            iconRotation: 1, param1: journeyToChange),
+          ])
+        );
+      } else {
+        return vidWideTextButton(
+            context, 'Change Flight', _onPressedChangeFlt,
+            icon: Icons.airplanemode_active,
+            iconRotation: 1, p1: journeyToChange);
+
+      }
     }
   }
 
@@ -925,7 +956,17 @@ class CheckinBoardingPassesWidgetState
           ),
         ));
   }
-
+  void _onPressedChangeFlt2(BuildContext context, dynamic p1) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MmbDatePickerWidget(
+            pnr: objPNR,
+            mmbBooking: _mmbBooking,
+            journeyToChange: p1,
+          ),
+        ));
+  }
   int getJourney(int leg, Itinerary itinerary) {
     int journey = 0;
     for (var i = 0; i <= leg; i++) {
@@ -2086,59 +2127,118 @@ class CheckinBoardingPassesWidgetState
 
   Widget seatButton(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist,
       bool checkinOpen, bool chargeForPreferredSeating) {
-    return new TextButton(
+    String btnText = '';
+    if(checkinOpen) {
+      btnText = 'Check-in';
+    } else {
+        if(paxlist
+          .firstWhere((p) => p.id == paxNo + 1)
+          .seat == null ||
+          paxlist
+              .firstWhere((p) => p.id == paxNo + 1)
+              .seat ==
+              '') {
+          btnText = 'Choose Seat';
+        } else {
+          btnText = 'Change Seat';
+        }
+    }
 
-      onPressed: () {
+
+    if( gblSettings.wantAllColorButtons) {
+      if( paxlist
+          .firstWhere((p) => p.id == paxNo + 1)
+          .seat != null
+          ) {
+        btnText += '  ' +  (paxlist.firstWhere((p) => p.id == paxNo + 1).seat);
+      }
+      return vidActionButton(context, btnText, (p0){
         if (gblSettings.autoSeatOption &&
-            (paxlist.firstWhere((p) => p.id == paxNo + 1).seat == null ||
-                paxlist.firstWhere((p) => p.id == paxNo + 1).seat == '') &&
+            (paxlist
+                .firstWhere((p) => p.id == paxNo + 1)
+                .seat == null ||
+                paxlist
+                    .firstWhere((p) => p.id == paxNo + 1)
+                    .seat == '') &&
             checkinOpen) {
           autoSeatingSelection(
               paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
         } else {
           preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
         }
-      },
-      style: TextButton.styleFrom(
-          side: BorderSide(color: gblSystemColors.textButtonTextColor, width: 1),
-          primary: gblSystemColors.textButtonTextColor),
-      child: Row(
-        children: <Widget>[
-          checkinOpen
-              ? TrText(
-                  'Check-in',
-                  style: TextStyle(
-                      color: gblSystemColors
-                          .textButtonTextColor),
-                )
-              : Text(
-                  (paxlist.firstWhere((p) => p.id == paxNo + 1).seat == null ||
-                          paxlist.firstWhere((p) => p.id == paxNo + 1).seat ==
-                              '')
-                      ? 'Choose Seat'
-                      : 'Change Seat',
-                  style: TextStyle(
-                      color: gblSystemColors
-                          .textButtonTextColor),
-                ),
-          Padding(
-            padding: EdgeInsets.only(left: 5.0),
-          ),
-  /*        Icon(
+      } , isRectangular: true );
+
+    } else {
+      return new TextButton(
+
+        onPressed: () {
+          if (gblSettings.autoSeatOption &&
+              (paxlist
+                  .firstWhere((p) => p.id == paxNo + 1)
+                  .seat == null ||
+                  paxlist
+                      .firstWhere((p) => p.id == paxNo + 1)
+                      .seat == '') &&
+              checkinOpen) {
+            autoSeatingSelection(
+                paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
+          } else {
+            preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
+          }
+        },
+        style: TextButton.styleFrom(
+            side: BorderSide(
+                color: gblSystemColors.textButtonTextColor, width: 1),
+            primary: gblSystemColors.textButtonTextColor),
+        child: Row(
+          children: <Widget>[
+            TrText(btnText,style: TextStyle(
+                color: gblSystemColors
+                    .textButtonTextColor)),
+            /*checkinOpen
+                ? TrText(
+              'Check-in',
+              style: TextStyle(
+                  color: gblSystemColors
+                      .textButtonTextColor),
+            )
+                : Text(
+              (paxlist
+                  .firstWhere((p) => p.id == paxNo + 1)
+                  .seat == null ||
+                  paxlist
+                      .firstWhere((p) => p.id == paxNo + 1)
+                      .seat ==
+                      '')
+                  ? 'Choose Seat'
+                  : 'Change Seat',
+              style: TextStyle(
+                  color: gblSystemColors
+                      .textButtonTextColor),
+            ),*/
+            Padding(
+              padding: EdgeInsets.only(left: 5.0),
+            ),
+            /*        Icon(
             Icons.airline_seat_recline_normal,
             size: 20.0,
             color: Colors.grey,
           ),*/
-          Text(
-            paxlist.firstWhere((p) => p.id == paxNo + 1).seat != null
-                ? paxlist.firstWhere((p) => p.id == paxNo + 1).seat
-                : '',
-            style: TextStyle(
-                color: gblSystemColors.primaryButtonTextColor),
-          ),
-        ],
-      ),
-    );
+            Text(
+              paxlist
+                  .firstWhere((p) => p.id == paxNo + 1)
+                  .seat != null
+                  ? paxlist
+                  .firstWhere((p) => p.id == paxNo + 1)
+                  .seat
+                  : '',
+              style: TextStyle(
+                  color: gblSystemColors.primaryButtonTextColor),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   autoseat(PnrModel pnr, int journey) {

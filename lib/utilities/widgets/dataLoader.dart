@@ -169,6 +169,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _dataName = 'Travel Extras';
           _url = '${gblSettings.apiUrl}/product/getproducts';
           String currency = gblSettings.currency;
+          if( currency == null || currency.isEmpty){
+            currency = gblSelectedCurrency;
+          }
 
           /*if(  widget.pnrModel.pNR!= null &&  widget.pnrModel.pNR.basket != null &&
               widget.pnrModel.pNR.basket.outstanding != null && widget.pnrModel.pNR.basket.outstanding.cur != null ) {

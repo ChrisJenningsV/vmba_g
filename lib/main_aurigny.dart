@@ -138,7 +138,7 @@ void configGR() {
     wantFQTV: true,
     wantFindBookings: true,
     wantNewEditPax: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantCitySwap: true,
     wantPushNoticications: true,
     wantNotificationEdit: false,

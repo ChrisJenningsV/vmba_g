@@ -84,7 +84,7 @@ void configAS() {
     wantProducts: false,
     wantFindBookings: true,
     wantClassBandImages: true,
-    wantMaterialControls: true,
+    //wantMaterialControls: true,
     wantPageImages: true,
     want24HourClock: true,
     wantDangerousGoods: true ,

@@ -88,7 +88,7 @@ class Settings {
   bool wantEnglishTranslation = false;
   bool want24HourClock;
   bool wantNewEditPax;
-  bool wantMaterialControls;
+// bool wantMaterialControls;
   bool wantCitySwap;
   bool wantPageImages;
   bool wantProducts;
@@ -117,6 +117,8 @@ class Settings {
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
   bool useSmartPay;
+  bool wantAllColorButtons;
+  bool wantBpLogo;
 
   String productFormat;
   String homePageStyle;
@@ -230,7 +232,7 @@ bool bpShowFastTrack;
     this.wantUmnr = false,
     this.want24HourClock = false,
     this.wantNewEditPax = false,
-    this.wantMaterialControls = false,
+    //this.wantMaterialControls = false,
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
@@ -257,6 +259,8 @@ bool bpShowFastTrack;
     this.wantRefund = false,
     this.wantNewPayment = false,
     this.wantButtonIcons = true,
+    this.wantAllColorButtons = true,
+    this.wantBpLogo = true,
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
@@ -392,9 +396,11 @@ bool bpShowFastTrack;
     if( wantCitySwap == null ) {
       wantCitySwap= false;
     }
+/*
     if(wantMaterialControls == null ){
       wantMaterialControls= false;
     }
+*/
     if( wantPageImages == null ) {
       wantPageImages = false;
     }
