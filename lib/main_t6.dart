@@ -57,7 +57,7 @@ void configT6() {
     wantFQTV:  true,
     wantMyAccount: true,
 
-    airlineName: "Air Swift",
+    airlineName: "Air SWIFT",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     gblServerFiles: 'https://booking.air-swift.com/AppFiles',
