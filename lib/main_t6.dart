@@ -79,8 +79,8 @@ void configT6() {
       iOSAppId: '1457545908',
       androidAppId: 'com.airswift',
       fqtvName: 'Travel Club',
-      appFeedbackEmail: 'appfeedback@airswift.com',
-      groupsBookingsEmail: 'groups@airswift.com',
+      appFeedbackEmail: 'appfeedback@air-swift.com',
+      groupsBookingsEmail: 'groups@air-swift.com',
       bpShowFastTrack: true,
       bpShowLoungeAccess: true,
   	  bpShowAddPassToWalletButton: false,
@@ -116,11 +116,11 @@ void configT6() {
   ),
 
 //Production setttings
-  liveXmlUrl:      "https://booking.airswift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-  liveApisUrl:      'https://booking.airswift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  liveApiUrl: 'https://booking.airswift.com/webApiv2/api/',
-    livePayPage: 'https://booking.airswift.com/VARS/Public/MobilePaymentStart.aspx',
-    liveSmartApiUrl:  "https://booking.airswift.co.uk/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+  liveXmlUrl:      "https://booking.air-swift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+  liveApisUrl:      'https://booking.air-swift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+  liveApiUrl: 'https://booking.air-swift.com/webApiv2/api/',
+    livePayPage: 'https://booking.air-swift.com/VARS/Public/MobilePaymentStart.aspx',
+    liveSmartApiUrl:  "https://booking.air-swift.co.uk/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,

@@ -82,8 +82,8 @@ void configH4() {
     iOSAppId: '1457545908',
     androidAppId: 'aero.hisky.reservations',
     fqtvName: 'Club',
-    appFeedbackEmail: 'appfeedback@hisky.com',
-    groupsBookingsEmail: 'groups@hisky.com',
+    appFeedbackEmail: 'appfeedback@hisky.md',
+    groupsBookingsEmail: 'groups@hisky.md',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
     wantClassBandImages: true,
     bpShowFastTrack: true,
@@ -108,11 +108,11 @@ void configH4() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.hisky.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    liveApisUrl:      'https://booking.hisky.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    liveApiUrl:      'https://booking.hisky.com/VARS/webApiv2/api/',
-    livePayPage:      'https://booking.hisky.com/VARS/Public/MobilePaymentStart.aspx',
-    liveSmartApiUrl:  "https://booking.hisky.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    liveApisUrl:      'https://booking.hisky.md/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl:      'https://booking.hisky.md/VARS/webApiv2/api/',
+    livePayPage:      'https://booking.hisky.md/VARS/Public/MobilePaymentStart.aspx',
+    liveSmartApiUrl:  "https://booking.hisky.md/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
     liveCreditCardProvider: 'worldpaydirect',
 
