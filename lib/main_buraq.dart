@@ -113,7 +113,7 @@ void configUZ() {
   liveApiUrl:      'https://booking.buraq.aero/VARS/webApiv2/api/',
   //  liveApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',
     livePayPage:      'https://booking.buraq.aero/VARS/Public/MobilePaymentStart.aspx',
-  liveSmartApiUrl:      "https://customertest.videcom.com/buraq/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+  liveSmartApiUrl:      "https://booking.buraq.aero/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
   liveCreditCardProvider: 'worldpaydirect',
 
