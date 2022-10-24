@@ -29,7 +29,7 @@ class InternationalPhoneInput extends StatefulWidget {
   final String popupTitle;
   final TextEditingController controller;
   final TextEditingController codeController;
-  final ValueChanged<String> onSaved;
+  final ValueChanged<String > onSaved;
 
   InternationalPhoneInput(
       {this.onPhoneNumberChange,
@@ -122,7 +122,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                 (e) =>
             (widget.initialPhoneNumber.toUpperCase().startsWith(e.dialCode)),
             orElse: () => list[0]);
-      } else if (widget.codeController.text != null && widget.codeController.text.isNotEmpty) {
+      } else if (widget.codeController != null &&  widget.codeController.text != null && widget.codeController.text.isNotEmpty) {
         preSelectedItem = list.firstWhere(
                 (e) =>
             (e.code.toUpperCase() ==
@@ -138,7 +138,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
       } else {
         preSelectedItem = list[0];
       }
-      if(preSelectedItem != null)  {
+      if(preSelectedItem != null && widget.codeController != null)  {
         widget.codeController.text = preSelectedItem.dialCode ;
         // strip off code
         //phoneTextController.text = widget.initialPhoneNumber.substring(preSelectedItem.dialCode.length);
@@ -263,7 +263,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
             //validator: (value) => value.isEmpty ? translate('Cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.onSaved(value + widget.controller.text);
+                widget.onSaved(value); // + widget.controller.text);
                 //widget.passengerDetail.title = value.trim();
               }
             },

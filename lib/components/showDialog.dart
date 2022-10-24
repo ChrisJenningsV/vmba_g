@@ -12,6 +12,7 @@ void showError(String msg) {
   //showAlertDialog(NavigationService.navigatorKey.currentContext, 'Error', msg);
 
 }
+
 Future<bool> confirmDialog(BuildContext context, String title, String msg ) async {
   // flutter defined function
 

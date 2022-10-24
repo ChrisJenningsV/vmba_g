@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/Services/PushNotificationService.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
 import 'dart:convert';
@@ -36,6 +37,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _lastNameTextEditingController = TextEditingController();
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _phoneNumberTextEditingController = TextEditingController();
+  TextEditingController _phoneCodeTextEditingController = TextEditingController();
 //  TextEditingController _dateOfBirthTextEditingController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
   TextEditingController _adsNumberTextEditingController = TextEditingController();
@@ -81,8 +83,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
         } catch (e) {
           print(e);
         }
-        _titleTextEditingController.text = translate(widget.passengerDetail.title);
-        _titleTextEditingController.text = widget.passengerDetail.title;
+        _initFields();
+
+       /* _titleTextEditingController.text = translate(widget.passengerDetail.title);
+        //_titleTextEditingController.text = widget.passengerDetail.title;
         _firstNameTextEditingController.text = widget.passengerDetail.firstName;
         _middleNameTextEditingController.text = widget.passengerDetail.middleName;
         _lastNameTextEditingController.text = widget.passengerDetail.lastName;
@@ -106,7 +110,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
         _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
         _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
-
+*/
         if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
           _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
           logit('genderPicker index:$_curGenderIndex');
@@ -125,6 +129,60 @@ class _MyAccountPageState extends State<MyAccountPage> {
       });
     });
     // _displayProcessingIndicator = false;
+  }
+
+  void _initFields() {
+    _titleTextEditingController.text = translate(widget.passengerDetail.title);
+    //_titleTextEditingController.text = widget.passengerDetail.title;
+    _firstNameTextEditingController.text = widget.passengerDetail.firstName;
+    _middleNameTextEditingController.text = widget.passengerDetail.middleName;
+    _lastNameTextEditingController.text = widget.passengerDetail.lastName;
+    _emailTextEditingController.text = widget.passengerDetail.email;
+    _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
+    oldNotify =  widget.passengerDetail.wantNotifications;
+
+    //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
+    if( widget.passengerDetail.dateOfBirth != null ) {
+      _dobController.text = DateFormat('dd-MMM-yyyy')
+          .format( widget.passengerDetail.dateOfBirth);
+    }
+    _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
+    _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
+
+    _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
+    _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
+    oldADSNumber = widget.passengerDetail.adsNumber;
+    oldADSpin = widget.passengerDetail.adsPin;
+
+    _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
+    _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
+    _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
+
+  }
+
+  void _clearFields() {
+    _titleTextEditingController.clear();
+    //_titleTextEditingController.text = widget.passengerDetail.title;
+    _firstNameTextEditingController.clear();
+    _middleNameTextEditingController.clear();
+    _lastNameTextEditingController.clear();
+    _emailTextEditingController.clear();
+    _phoneNumberTextEditingController.clear();
+/*
+    if( widget.passengerDetail.dateOfBirth != null ) {
+      _dobController.text = DateFormat('dd-MMM-yyyy')
+          .format( widget.passengerDetail.dateOfBirth);
+    }
+*/
+    _fqtvTextEditingController.clear();
+    _fqtvPasswordEditingController.clear();
+
+    _adsNumberTextEditingController.clear();
+    _adsPinTextEditingController.clear();
+    _seniorIDTextEditingController.clear();
+    _knownTravellerNoTextEditingController.clear();
+    _redressNoTextEditingController.clear();
+
   }
 
   void _populateFromGlobalProfile() {
@@ -394,12 +452,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
           padding:const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
           popupTitle: translate('Select phone country'),
           controller: _phoneNumberTextEditingController,
+          codeController: _phoneCodeTextEditingController,
           //initialPhoneNumber: _phoneNumberTextEditingController.text,
           decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
-          onSaved: (String newNumber) {
+          onSaved: ( String newNumber) {
             setState(() {
-              _phoneNumberTextEditingController.text = newNumber;
-              widget.passengerDetail.phonenumber = newNumber;
+              _phoneCodeTextEditingController.text = newNumber;
+              widget.passengerDetail.phonenumber = newNumber + _phoneNumberTextEditingController.text;
+ /*             _phoneNumberTextEditingController.text = newNumber;
+              widget.passengerDetail.phonenumber = newNumber;*/
             });
           },
           onPhoneNumberChange: (String number, String intNumber,
@@ -683,31 +744,90 @@ class _MyAccountPageState extends State<MyAccountPage> {
       ));
     }
 
-    widgets.add(ElevatedButton(
-      onPressed: () {
-        validateAndSubmit();
-      },
-      style: ElevatedButton.styleFrom(
-          primary: gblSystemColors.primaryButtonColor, //Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0))),
-      child: Row(
-        //mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            Icons.check,
-            color: Colors.white,
+
+    if( widget.passengerDetail.firstName != null && widget.passengerDetail.firstName.isNotEmpty )
+    {
+    widgets.add(
+    Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    mainAxisSize: MainAxisSize.max,
+    children: [
+    vid3DActionButton(context, 'Delete', _deleteAccount, icon: Icons.close) ,
+        vid3DActionButton(context, 'SAVE', validateAndSubmit),
+ /*   ElevatedButton(
+    onPressed: () {
+    validateAndSubmit();
+    },
+    style: ElevatedButton.styleFrom(
+    primary: gblSystemColors.primaryButtonColor, //Colors.black,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(30.0))),
+    child: Row(
+    //mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+    Icon(
+    Icons.check,
+    color: Colors.white,
+    ),
+    TrText(
+    'SAVE',
+    style: TextStyle(color: Colors.white),
+    ),
+    ],
+    ),
+    )*/
+    ])
+    );
+    } else {
+      widgets.add( vid3DActionButton(context, 'SAVE', validateAndSubmit),);
+    }
+    return widgets;
+  }
+
+  void _deleteAccount(dynamic context) {
+    showDialog(
+      context: context,
+        builder: (BuildContext context)
+    {
+      return AlertDialog(
+        title: new Text('Delete Account'),
+        content: new Text('All Account data will be removed'),
+        actions: <Widget>[
+          new ElevatedButton(
+            onPressed: () => Navigator.pop(context), // Closes the dialog
+            child: new Text('No'),
           ),
-          TrText(
-            'SAVE',
-            style: TextStyle(color: Colors.white),
+          new ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context); // Closes the dialog
+              _doDeleteAccount(context);
+            },
+            child: new Text('Yes'),
           ),
         ],
-      ),
-    ));
+      );
+    });
+  }
+    void _doDeleteAccount(dynamic context){
+    widget.passengerDetail = new PassengerDetail();
+    gblPassengerDetail = widget.passengerDetail;
 
-    return widgets;
+    List<UserProfileRecord> _userProfileRecordList = [];
+    UserProfileRecord _profileRecord = new UserProfileRecord(
+        name: 'PAX1',
+        value: json
+            .encode(widget.passengerDetail.toJson())
+            .replaceAll('"', "'"));
+
+    _userProfileRecordList.add(_profileRecord);
+    Repository.get().updateUserProfile(_userProfileRecordList);
+
+    _clearFields();
+
+    setState(() {
+
+    });
   }
 
   ListView optionListView() {
@@ -892,7 +1012,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       return null;
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(dynamic context) async {
     if (validateAndSave()) {
       if (gblBuildFlavor == 'LM' &&
           widget.isLeadPassenger &&

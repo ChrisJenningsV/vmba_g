@@ -993,7 +993,7 @@ class Repository {
         throw (e);
       }
       if( ! data.startsWith('{')){
-        PnrDBCopy pnr = PnrDBCopy(rloc: '', data: data);
+        PnrDBCopy pnr = PnrDBCopy(rloc: '', data: data, delete: 0);
         pnr.success = false;
         return pnr;
 

@@ -93,6 +93,39 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
 //  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
 }
 
+Widget vid3DActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, bool isRectangular } ) {
+  if( icon == null) {
+    icon = Icons.check;
+  }
+  return ElevatedButton(
+    onPressed: () {
+      onPressed(context);
+    },
+    style: ElevatedButton.styleFrom(
+        primary: gblSystemColors.primaryButtonColor, //Colors.black,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0))),
+    child: Row(
+      //mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          icon,
+          color: Colors.white,
+        ),
+        TrText(
+          caption,
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+
+
 Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, bool isRectangular } ) {
   ShapeBorder shape;
   if(isRectangular != null &&  isRectangular == true ){

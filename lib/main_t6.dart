@@ -118,9 +118,9 @@ void configT6() {
 //Production setttings
   liveXmlUrl:      "https://booking.air-swift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.air-swift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  liveApiUrl: 'https://booking.air-swift.com/webApiv2/api/',
+  liveApiUrl: 'https://booking.air-swift.com/VARS/webApiv2/api/',
     livePayPage: 'https://booking.air-swift.com/VARS/Public/MobilePaymentStart.aspx',
-    liveSmartApiUrl:  "https://booking.air-swift.co.uk/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    liveSmartApiUrl:  "https://booking.air-swift.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   liveCreditCardProvider: 'worldpaydirect',
 
   eVoucher: true,

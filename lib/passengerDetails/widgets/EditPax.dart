@@ -534,7 +534,7 @@ return SafeArea(
         decoration: InputDecoration.collapsed(hintText: '(123) 123-1234'),
         onSaved: (String newNumber) {
           setState(() {
-            widget.passengerDetail.phonenumber = newNumber;
+            widget.passengerDetail.phonenumber = newNumber + _phoneTextEditingController.text; //newNumber ;
           });
         },
         onPhoneNumberChange: (String number, String intNumber,
