@@ -62,7 +62,7 @@ void configH4() {
     wantPassengerPassport: true,
 
     airlineName: "hiSky",
-    gblServerFiles: 'https://booking.hisky.md/hisky/AppFiles/',
+    gblServerFiles: 'https://booking.hisky.md/VARS/AppFiles/',
     testServerFiles: 'https://customertest.videcom.com/hisky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
@@ -110,7 +110,7 @@ void configH4() {
 
     liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.hisky.md/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    liveApiUrl:      'https://booking.hisky.md/VARS/webApiv2/api/',
+    liveApiUrl:      'https://booking.hisky.md/VARS/webApiV2/api/',
     livePayPage:      'https://booking.hisky.md/VARS/Public/MobilePaymentStart.aspx',
     liveSmartApiUrl:  "https://booking.hisky.md/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 

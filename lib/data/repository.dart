@@ -182,6 +182,7 @@ class Repository {
 
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
+      print('GetCityList error ${response.reasonPhrase}');
       throw(response.reasonPhrase);
     }
 

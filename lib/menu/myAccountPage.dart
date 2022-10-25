@@ -791,19 +791,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
         builder: (BuildContext context)
     {
       return AlertDialog(
-        title: new Text('Delete Account'),
-        content: new Text('All Account data will be removed'),
+        title: new TrText('Delete Account'),
+        content: new TrText('All Account data will be removed'),
         actions: <Widget>[
           new ElevatedButton(
             onPressed: () => Navigator.pop(context), // Closes the dialog
-            child: new Text('No'),
+            child: new TrText('No'),
           ),
           new ElevatedButton(
             onPressed: () {
               Navigator.pop(context); // Closes the dialog
               _doDeleteAccount(context);
             },
-            child: new Text('Yes'),
+            child: new TrText('Yes'),
           ),
         ],
       );

@@ -97,6 +97,7 @@ class RootPageState extends State<RootPage> {
       ).catchError((e) {
         setState(() {
           _displayProcessingText = 'Error loading : ' + e.toString();
+          gblError = 'Error loading : ' + e.toString();
           _displayFinalError = true;
           _displayProcessingIndicatorS = false;
           _dataLoaded = false;
@@ -133,6 +134,8 @@ class RootPageState extends State<RootPage> {
             }).catchError((e) {
               setState(() {
                 _displayProcessingText = 'Error loading routes: ' + e.toString() ;
+                gblError= 'Error loading routes: ' + e.toString() ;
+                print(_displayProcessingText);
                 _displayFinalError = true;
                 _displayProcessingIndicatorR = false;
                 _dataLoaded = false;

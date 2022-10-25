@@ -27,6 +27,7 @@ flutter build appbundle -t lib/main.dart --flavor Aurigny
  buildRelease\airswift.bat
 buildRelease\fastjet.bat
 buildRelease\buraq.bat
+buildRelease\hisky.bat
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 
