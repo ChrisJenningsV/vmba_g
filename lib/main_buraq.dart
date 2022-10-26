@@ -83,7 +83,7 @@ void configUZ() {
   vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
   autoSeatOption: true,
   iOSAppId: '1457545908',
-  androidAppId: 'com.buraq.booking', // aero.buraq.booking
+  androidAppId: 'aero.buraq.booking', // aero.buraq.booking for ios
   fqtvName: 'club',
   appFeedbackEmail: 'appfeedback@buraq.com',
   groupsBookingsEmail: 'groups@buraq.com',

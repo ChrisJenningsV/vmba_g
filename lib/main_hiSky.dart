@@ -111,6 +111,7 @@ void configH4() {
     liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.hisky.md/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.hisky.md/VARS/webApiV2/api/',
+    //liveApiUrl:      'http://10.0.2.2:5000/api',
     livePayPage:      'https://booking.hisky.md/VARS/Public/MobilePaymentStart.aspx',
     liveSmartApiUrl:  "https://booking.hisky.md/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 

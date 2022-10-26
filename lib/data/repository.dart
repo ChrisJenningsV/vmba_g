@@ -200,7 +200,7 @@ class Repository {
     await database.updateCities(networkCities);
     logit('cache cities');
 
-    logit('website version $apiBuldVersion');
+    logit('webAPI version $apiBuldVersion');
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
       gblError = 'WebApi needs upgrade';
       criticalErrorPage(NavigationService.navigatorKey.currentContext,'WebApi needs upgrade',title: 'Login', wantButtons: false);
