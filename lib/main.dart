@@ -17,6 +17,7 @@ import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import 'components/selectLang.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_aurigny.dart';
@@ -121,7 +122,14 @@ bool bFirstTime = true;
   void initState() {
     super.initState();
     _initLangs();
+    if( gblLangFileLoaded == false ) {
+      //initLang(gblLanguage);
+      initLangCached(gblLanguage).then((x){
+        setState(() {
 
+        });
+      });
+    }
 /*
     if( gblSettings.wantPushNoticications) {
        initFirebase(context);

@@ -51,11 +51,15 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    gblCurPage = 'Home';
+    gblCurPage = 'HOME';
     logit('init HomeState');
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
-      initLangCached(gblLanguage);
+      initLangCached(gblLanguage).then((x){
+        setState(() {
+
+        });
+      });
     }
     if( gblIsLive == false) {
       PackageInfo.fromPlatform()

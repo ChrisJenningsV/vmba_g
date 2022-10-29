@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
 
+import '../Helpers/bookingHelper.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../data/models/models.dart';
@@ -22,6 +23,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
   @override
   initState() {
     super.initState();
+    gblCurPage = 'OPTIONS';
 
   }
 
@@ -30,7 +32,9 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
     //Show dialog
     //print('build');
 
-    return new Scaffold(
+    return WillPopScope(
+        onWillPop: _onWillPop,
+        child:  Scaffold(
         key: _key,
         appBar: appBar(context, 'Options',
             curStep: 4,
@@ -40,7 +44,10 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
         endDrawer: DrawerMenu(),
         floatingActionButton: vidWideActionButton(context,'Continue', onComplete, icon: Icons.check, offset: 35.0 ) ,
         body:getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyOptions),
-    );
+    ));
+  }
+  Future<bool> _onWillPop() async {
+    return onWillPop(context);
   }
 
   Widget _body(NewBooking newBooking) {

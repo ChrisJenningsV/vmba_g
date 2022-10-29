@@ -21,6 +21,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/components/showDialog.dart';
 
+import '../../Helpers/bookingHelper.dart';
 import '../../Helpers/networkHelper.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
@@ -114,7 +115,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
       // showAlertDialog(context, 'Error making payment', gblError);
       // return null;
     }
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: _onWillPop,
+        child:  Scaffold(
       key: _key,
       appBar: appBar(
         context,
@@ -179,9 +182,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 ),
         ]),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    ));
   }
 
+  Future<bool> _onWillPop() async {
+    return onWillPop(context);
+  }
   void _dataLoaded() {
     setState(() {
       gblPayBtnDisabled = false;

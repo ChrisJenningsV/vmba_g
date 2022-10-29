@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'dart:developer';
 
-bool LogginOn = false;
+bool LogginOn = true;
 
 class TrText extends StatelessWidget {
   final String labelText;
@@ -76,7 +76,9 @@ String translate( String str ) {
  /* if (gblLanguage == 'en') {
     return str;
   }*/
-
+  if (gblLanguage == 'en' && !gblSettings.wantEnglishTranslation ) {
+    return str;
+  }
   if( gblLangMap != null && gblLangMap[str] != null && gblLangMap[str].isNotEmpty ) {
     return gblLangMap[str];
   }

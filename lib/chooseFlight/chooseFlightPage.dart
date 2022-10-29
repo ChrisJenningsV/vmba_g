@@ -19,6 +19,7 @@ class ChooseFlight extends StatelessWidget {
   //ChooseFlight(Band classband);
   @override
   Widget build(BuildContext context) {
+    gblCurPage = 'CHOOSEFLIGHT';
     return Scaffold(
         appBar: AppBar(
           //brightness: gblSystemColors.statusBar,

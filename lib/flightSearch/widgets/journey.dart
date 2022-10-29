@@ -23,9 +23,9 @@ class SelectJourneyWidget extends StatefulWidget {
 }
 
 class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
-  String departureAirport = translate('Select departure airport');
+  String departureAirport;
   String departureCode = '';
-  String arrivalAirport = translate('Select arrival airport');
+  String arrivalAirport;
   String arrivalCode = '';
   SelectedRoute route;
 
@@ -33,6 +33,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   initState() {
     super.initState();
     route = new SelectedRoute('', '');
+    departureAirport = translate('Select departure airport');
+    arrivalAirport = translate('Select arrival airport');
   }
 
   void _handleDeptureSelectionChanged(String newValue) {

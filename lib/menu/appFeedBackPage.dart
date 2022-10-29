@@ -400,7 +400,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Sine (4ch)7973  ',
+                  labelText: 'Sine (4ch)  ',
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -482,6 +482,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
             .replaceAll('\r\n', '')
             .replaceAll('</string>', '');
         if( !str.startsWith('{')) {
+          print(str);
           gblError = 'not found or bad password';
           return gblError;
         }

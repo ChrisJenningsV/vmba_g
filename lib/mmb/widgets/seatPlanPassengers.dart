@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/pax.dart';
 
+import '../../components/trText.dart';
+
 class SeatPlanPassengersWidget extends StatefulWidget {
   SeatPlanPassengersWidget(
       {Key key, this.onChanged, this.paxList, this.systemColors})
@@ -69,7 +71,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
               ),
               Text(
                 paxlist[pax].seat == null || paxlist[pax].seat == ''
-                    ? 'Select Seat'
+                    ? translate('Select Seat')
                     : paxlist[pax].seat,
                 style: TextStyle(
                     color: paxlist[pax].selected == true

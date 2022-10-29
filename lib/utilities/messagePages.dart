@@ -124,18 +124,10 @@ class MessagePageState extends State<MessagePage> {
           //endDrawer: DrawerMenu(),
           body: AlertDialog(
 
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: alertShape(),
             titlePadding: const EdgeInsets.all(0),
-            title: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: widget.titleBackClr,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
-                padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+            title: alertTitle(widget.title, widget.titleTextClr, widget.titleBackClr),
 
-                child: Text(widget.title,style: TextStyle(color: widget.titleTextClr),)
-            ),
             content: dialogBody(),
 
           )
@@ -344,8 +336,7 @@ Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBa
   }
 
   return AlertDialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)),
+    shape: alertShape(),
     titlePadding: const EdgeInsets.all(0),
     title: Container(
         alignment: Alignment.center,
@@ -399,9 +390,8 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
 
 
   return AlertDialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)),
-    titlePadding: const EdgeInsets.all(0),
+    shape: alertShape(),
+    titlePadding: alertTitlePadding(),
     title: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -426,4 +416,21 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
         ]),
     actions: actions,
   );
+}
+ShapeBorder alertShape() {
+  return RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0));
+}
+Widget alertTitle(String title, Color titleTextClr, Color  titleBackClr) {
+  return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+      color: titleBackClr,
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+  padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+
+  child: Text(title,style: TextStyle(color: titleTextClr),));
+}
+EdgeInsets alertTitlePadding() {
+  return const EdgeInsets.all(0);
 }

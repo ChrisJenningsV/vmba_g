@@ -74,7 +74,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
   @override
   initState() {
-    gblCurPage = 'ViewBooking';
+    gblCurPage = 'VIEWBOOKING';
     gblError = null;
     gblPaymentMsg = '';
     if(widget.rloc == null || widget.rloc == ''){

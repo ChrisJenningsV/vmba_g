@@ -112,6 +112,7 @@ class Settings {
   bool wantCentreTitle;
   bool wantRefund;
   bool wantNewPayment;
+  bool useWebView;
   bool wantButtonIcons;
   bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
@@ -142,6 +143,8 @@ class Settings {
   String previousVrsGuid;
   bool autoSeatOption;
   String backgroundImageUrl;
+  String iOSDemoBuilds;
+  String androidDemoBuilds;
   String customMenu1;
   String customMenu2;
   String customMenu3;
@@ -258,6 +261,7 @@ bool bpShowFastTrack;
     this.wantCentreTitle = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
+    this.useWebView = true,
     this.wantButtonIcons = true,
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
@@ -350,6 +354,12 @@ bool bpShowFastTrack;
     this.upgradeMessage,
     this.bpShowAddPassToWalletButton,
     this.passportLayoutStyle = 1,
+    this.iOSDemoBuilds,
+    this.androidDemoBuilds,
+    this.customMenu1,
+    this.customMenu2,
+    this.customMenu3,
+
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {

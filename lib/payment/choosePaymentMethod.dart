@@ -22,6 +22,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../Helpers/bookingHelper.dart';
 import '../Helpers/stringHelpers.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
@@ -1121,7 +1122,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
-      return new Scaffold(
+      return WillPopScope(
+          onWillPop: _onWillPop,
+          child:  Scaffold(
           key: _key,
           appBar: new AppBar(
             //brightness: gblSystemColors.statusBar,
@@ -1137,49 +1140,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
           body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete)
-      );
-    /*  gblPaymentMsg = null;
-      return Container();
+      ));
 
-      return new Scaffold(
-          key: _key,
-          appBar: new AppBar(
-            //brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
-            iconTheme: IconThemeData(
-                color: gblSystemColors.headerTextColor),
-            title: new TrText('Payment',
-                style: TextStyle(
-                    color: gblSystemColors
-                        .headerTextColor)),
-          ),
-          endDrawer: DrawerMenu(),
-          backgroundColor: Colors.grey.shade500,
-          body: buildMessage('Payment Error', gblPaymentMsg, onComplete: () {
-            gblPaymentMsg = null;
-              setState(() {          } ); }),
-
-        //getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete ),
-      );*/
     } else {
       if(gblLogPayment) { logit('CPM Build normal');}
 
       return WillPopScope(
-        onWillPop: () {
-          if(gblLogPayment) { logit('CPM Will Pop'); }
-
-          if( gblSettings.wantNewEditPax ){
-            // double pop
-            var nav = Navigator.of(context);
-            nav.pop();
-            nav.pop();
-          } else {
-            Navigator.pop(context, true);
-          }
-          return true as Future<bool>;
-        },
-        child: new Scaffold(
+        onWillPop: _onWillPop,
+        child:   Scaffold(
             key: _key,
             appBar: appBar(context, 'Payment',
               newBooking: widget.newBooking,
@@ -1228,6 +1196,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             )),
       );
     }
+  }
+
+  Future<bool> _onWillPop() async {
+    return onWillPop(context);
   }
 
   void onComplete(dynamic p){

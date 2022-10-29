@@ -206,7 +206,7 @@ List<Widget> _getBody(
                           gblCurrentRloc = d2;
                           // get current page
 
-                          if( gblCurPage  == 'ViewBooking') {
+                          if( gblCurPage  == 'VIEWBOOKING') {
                               Navigator.of(context).pop();
                               gblCurrentRloc = d2;
                               reloadMmbBooking(d2);

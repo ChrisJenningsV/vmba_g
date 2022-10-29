@@ -56,7 +56,7 @@ class DrawerMenu extends StatelessWidget {
         onTap: () {
           // Update the state of the app
           // ...
-          gblCurPage = 'FlightSearch';
+          gblCurPage = 'FLIGHTSEARCH';
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/FlightSearchPage', (Route<dynamic> route) => false);
           //Navigator.pop(context);
@@ -70,7 +70,7 @@ class DrawerMenu extends StatelessWidget {
           // contentPadding: EdgeInsets.zero,
           title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS flight'),
           onTap: () {
-            gblCurPage = 'BookAds';
+            gblCurPage = 'BOOKADS';
             Navigator.push(context, SlideTopRoute(page: AdsPage()));
           },
         ));
@@ -83,7 +83,7 @@ class DrawerMenu extends StatelessWidget {
           onTap: () {
             // Update the state of the app
             // ...
-            gblCurPage = 'MyBookings';
+            gblCurPage = 'MYBOOKINGS';
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/MyBookingsPage', (Route<dynamic> route) => false);
           },
@@ -97,7 +97,7 @@ class DrawerMenu extends StatelessWidget {
           onTap: () {
             // Update the state of the app
             // ...
-            gblCurPage = 'MyNotifications';
+            gblCurPage = 'MYNOTIFICATIONS';
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/MyNotificationsPage', (Route<dynamic> route) => false);
           },
@@ -111,7 +111,7 @@ class DrawerMenu extends StatelessWidget {
             onTap: () {
               // Update the state of the app
               // ...
-              gblCurPage = 'AddBooking';
+              gblCurPage = 'ADDBOOKING';
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/AddBookingPage', (Route<dynamic> route) => false);
             },
@@ -257,6 +257,54 @@ class DrawerMenu extends StatelessWidget {
         logit(e);
       }
     }
+    // custom3
+    if( gblSettings.customMenu3 != null && gblSettings.customMenu3.isNotEmpty) {
+      try{
+        var menuText = gblSettings.customMenu3.split(',')[0];
+        var pageText = gblSettings.customMenu3.split(',')[1].trim();
+        var url = gblSettings.customMenu3.split(',')[2];
+        if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
+          list.add(ListTile(
+              dense: dense,
+              title: _getMenuItem(Icons.web, menuText),
+              onTap: () {
+                Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
+              }));
+        }
+      } catch(e) {
+        logit(e);
+      }
+    }
+
+    // DEMO login - for Apple acreditation
+    if( gblSettings.iOSDemoBuilds != null && gblSettings.iOSDemoBuilds.isNotEmpty) {
+      try{
+        String buildNo = '';
+        PackageInfo.fromPlatform()
+            .then((PackageInfo packageInfo) {
+          buildNo = packageInfo.buildNumber;
+          if (gblSettings.iOSDemoBuilds.contains('#$buildNo#')) {
+
+          }
+
+            list.add(ListTile(
+                dense: dense,
+                title: _getMenuItem(Icons.web, translate('Demo login')),
+                onTap: () {
+                  // do login
+                  /*Navigator.push(context,
+                      SlideTopRoute(page: CustomPageWeb(pageText, url)));*/
+                }));
+
+        });
+      } catch(e) {
+        logit(e);
+      }
+
+    }
+
+
+
     // feed back
     list.add(ListTile(
     title:  _getMenuItem( Icons.stay_primary_portrait, 'App feedback' ),

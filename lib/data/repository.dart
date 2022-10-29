@@ -522,6 +522,12 @@ class Repository {
                   case 'customMenu3':
                     gblSettings.customMenu3 = item['value'];
                     break;
+                  /*case 'iOSDemoBuilds':
+                    gblSettings.iOSDemoBuilds = item['value'];
+                    break;
+                  case 'androidDemoBuilds':
+                    gblSettings.androidDemoBuilds = item['value'];
+                    break;*/
 
                 /*
                   URLs

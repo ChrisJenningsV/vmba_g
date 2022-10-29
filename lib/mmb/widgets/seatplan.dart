@@ -479,7 +479,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                     new FloatingActionButton.extended(
                         elevation: 0.0,
                         isExtended: true,
-                        label: Text(
+                        label: TrText(
                           'SELECT SEAT',
                           style: TextStyle(
                               color: gblSystemColors

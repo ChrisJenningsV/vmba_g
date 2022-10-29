@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ initLangCached(String lang) async {
         var serverFile = parseUkDateTime(gblLangFileModTime);
         if(modified.isBefore( serverFile )) {
           logit('lang new server file available');
-          initLang(lang);
+          await initLang(lang);
           return;
 
         }
@@ -82,16 +83,21 @@ initLangCached(String lang) async {
         gblLangMap = json.decode(result);
         gblLangFileLoaded = true;
         logit('using internal copy of $filePath');
+/*
+        Timer(Duration(seconds: 1), () {
+          //
+        });
+*/
         return;
       });
     } else {
       logit('no cached lang file');
-      initLang(lang);
+      await initLang(lang);
       return;
       }
 
     } else {
-      initLang(lang);
+      await initLang(lang);
     }
   }
 
@@ -243,6 +249,7 @@ dialogContent(BuildContext context) {
               gblLangFileLoaded = false;
               initLang(gblLanguage);
               saveLang(gblLanguage);
+
               Navigator.of(context).pop();
               },
             child: TrText("Submit"

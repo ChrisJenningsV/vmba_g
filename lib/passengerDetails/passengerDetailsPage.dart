@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/Helpers/bookingHelper.dart';
 import 'dart:convert';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/models/models.dart';
@@ -35,6 +36,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   final formKey = new GlobalKey<FormState>();
   bool allPaxDetailsCompleted = false;
   bool preLoadDetails = false;
+  bool backPressed = false;
 
   //UserProfileRecord userProfileRecord;
   PassengerDetail passengerDetailRecord;
@@ -42,6 +44,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   initState() {
     super.initState();
+    if( gblCurPage != 'CHOOSEFLIGHT') {
+      backPressed = true;
+    }
+    gblCurPage = 'PASSENGERDETAILS';
     gblPnrModel = widget.pnrModel;
     gblError = '';
 
@@ -309,8 +315,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       floatBtn = vidWideActionButton(context, 'CONTINUE', _onContinuePressed, offset: 35);
     }
 
-
-    return new Scaffold(
+    return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
       key: _key,
       appBar: appBar(context, 'Passengers Details',
           curStep: 4,
@@ -320,7 +327,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       endDrawer: DrawerMenu(),
       body: getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyPax),
       floatingActionButton: floatBtn,
-    );
+    ))  ;
+  }
+  Future<bool> _onWillPop() async {
+    return onWillPop(context);
   }
 
   Widget _body(NewBooking newBooking){
