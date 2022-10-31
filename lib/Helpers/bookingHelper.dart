@@ -1,8 +1,4 @@
-
-
-
 import 'package:flutter/material.dart';
-import 'package:vmba/data/models/models.dart';
 
 import '../components/trText.dart';
 import '../data/globals.dart';
@@ -24,6 +20,9 @@ Future<bool> onWillPop(BuildContext context) async {
       ]),
       actions: <Widget>[
         TextButton(
+          style: TextButton.styleFrom(
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+              primary: gblSystemColors.textButtonTextColor),
           onPressed: () {
             gblPayBtnDisabled = false;
             Navigator.of(context).pop(false);
@@ -31,6 +30,9 @@ Future<bool> onWillPop(BuildContext context) async {
           child: new TrText('No'),
         ),
         TextButton(
+          style: TextButton.styleFrom(
+              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+              primary: gblSystemColors.textButtonTextColor),
           onPressed: ()  {
             // delete PNR contents
             deletePnrContent().then((x) {
@@ -48,7 +50,7 @@ Future<bool> onWillPop(BuildContext context) async {
 }
 
 Future deletePnrContent() async {
-  if( gblPnrModel.pNR.rLOC != null && gblPnrModel.pNR.rLOC.isNotEmpty){
+  if( gblPnrModel != null &&  gblPnrModel.pNR.rLOC != null && gblPnrModel.pNR.rLOC.isNotEmpty){
     String msg = '';
     String data = '';
       gblPnrModel.pNR.itinerary.itin.reversed.forEach((flt) {

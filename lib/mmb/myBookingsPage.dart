@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/bottomNav.dart';
 
 
 class MyBookingsPage extends StatefulWidget {
@@ -51,6 +52,7 @@ String _error = '';
     super.initState();
     gblPaymentMsg = '';
     gblError = '';
+    gblCurPage = 'MYBOOKINGS';
 
     _loadingInProgress = true;
     _isButtonDisabled = false;
@@ -169,6 +171,7 @@ String _error = '';
           ),
           ),// translated in appBar
           endDrawer: DrawerMenu(),
+        bottomNavigationBar: getBottomNav(context, ),
           body: TabBarView(
               controller: _controller,
               children: tabeViews,

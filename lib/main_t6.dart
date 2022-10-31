@@ -145,7 +145,7 @@ void configT6() {
     wantPushNoticications: true,
     wantNotificationEdit: false,
     wantNewPayment: true,
-    //useWebView: false,
+    useScrollWebViewiOS: true,
     wantMmbProducts: true,
     productImageMode: 'none',
     wantStatusLine: true,

@@ -4,10 +4,75 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/showNotification.dart';
+import 'package:vmba/components/vidButtons.dart';
 
+import '../Helpers/pageHelper.dart';
+import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
+import '../utilities/helper.dart';
+import '../utilities/messagePages.dart';
+import 'trText.dart';
 
-Widget getBottomNav(BuildContext context ) {
+void _logout({int p1}){
+
+}
+Widget getBottomNav(BuildContext context, {Widget popButton, String helpText} ) {
+  if( gblDemoMode == true){
+    List <Widget> list = [];
+
+    //list.add(vidTextButton(context, 'logout', _logout)
+    list.add(TextButton(
+        onPressed: () {
+          logit('logout');
+          gblDemoMode = false;
+          gblIsLive = true;
+          setLiveTest();
+          if( gblCurPage != 'HOME') {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/HomePage', (Route<dynamic> route) => false);
+          } else {
+            reloadPage(context);
+          }
+            //(context as Element).reassemble();
+        },
+
+        child:Text('logout')));
+
+      if ( popButton != null ){
+        list.add(popButton);
+      }
+      //Text('Demo Mode'),
+      if( helpText != null && helpText.isNotEmpty) {
+      list.add(VidBlinkingButton(title: 'Demo mode', color: Colors.lightBlue.shade400, onClick: (c) {
+        demoDialog(context, helpText: helpText);
+        },));
+      } else {
+        list.add(vidDemoButton(context, 'Demo mode',  (c) {
+          demoDialog(context, helpText: helpText);
+        },));
+      }
+
+
+
+    return Container(
+        decoration: BoxDecoration(
+          color: Colors.lightBlue.shade50,
+          border: Border(top: BorderSide(color: Colors.grey, width: 1)),
+        ),
+      //
+        child: Row(
+
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+    children: list
+      )
+    );
+  }
+
+  if( gblCurPage != 'HOME'){
+    return null;
+  }
+
   int _selectedIndex = 0;
     if( gblNotifications == null ){
       return null;
@@ -114,4 +179,18 @@ Widget getNotification(int counter, IconData icon){
            '/MyNotificationsPage', (Route<dynamic> route) => false, arguments: args);
      }
    }
+}
+void demoDialog(BuildContext context, {String helpText} ) {
+  if( helpText == null || helpText.isEmpty){
+    helpText = 'You are now in Demo mode, connected to our test system. This system is also used for training and Beta testing, some may not always be available. ' +
+        '\n\nThe test system doe not have as many fares and route configures as LIVE. \n\nIf the demo button is flashing more information for the current page is available.';
+  }
+  showDialog(
+      context: context,
+      builder: (BuildContext context)
+  {
+    return msgDialog(context, translate('Demo mode'),
+        Text(helpText));
+  }
+  );
 }

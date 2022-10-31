@@ -10,6 +10,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart' as inapp;
 
 import '../data/smartApi.dart';
 import 'choosePaymentMethod.dart';
@@ -38,17 +39,9 @@ class _WebViewWidgetState extends State<WebPayPage> {
   Completer<WebViewController>();
 
   // new bits
- /* final GlobalKey webViewKey = GlobalKey();
+  final GlobalKey webViewKey = GlobalKey();
 
-  InAppWebViewController? webViewController;
-  InAppWebViewSettings settings = InAppWebViewSettings(
-      useShouldOverrideUrlLoading: true,
-      mediaPlaybackRequiresUserGesture: false,
-      allowsInlineMediaPlayback: true,
-      iframeAllow: "camera; microphone",
-      iframeAllowFullscreen: true
-  );*/
-// end enw bits
+
 
   num _stackToView = 1;
   Timer _timer;
@@ -120,83 +113,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           index: _stackToView,
           children: <Widget>[
             _getView(),
-           /* WebView(
-              initialUrl: _getPayUrl(),
-              javascriptMode: JavascriptMode.unrestricted,
 
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller.complete(webViewController);
-              },
-
-
-              navigationDelegate: (NavigationRequest request) {
-                logit('Web Payment Page change url to ${request.url}');
-                if (request.url.contains(gblSettings.payFailUrl)) {
-                  // FAILED
-                  print('payment failed $request}');
-                  gblPayBtnDisabled = false;
-                  gblPaymentState = PaymentState.declined;
-                  if( request.url.contains('?')) {
-                    String err = request.url.split('?')[1];
-                    err = err.split('=')[1];
-                    gblPaymentMsg = Uri.decodeFull(err);
-                  } else {
-                    gblPaymentMsg = 'Payment Declined';
-                  }
-                  _endDetected = true;
-               //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: false,),
-                    ),
-                  );
-
-                  return NavigationDecision.prevent;
-                }
-                if (request.url.contains('returnfromexternalpayment') && request.url.contains('success')) {
-                  // may need this if page closed
-                  gblPaySuccess = true;
-                }
-                if (request.url.contains(gblSettings.paySuccessUrl)) {
-                  // SUCCESS
-                  print('payment success $request}');
-                  gblPaymentState = PaymentState.success;
-                  //_successfulPayment();
-                  _gotoSuccessPage(widget.pnrModel);
-                  return NavigationDecision.prevent;
-                }
-                if (request.url.startsWith('https://www.youtube.com/')) {
-                  print('blocking navigation to $request}');
-                  return NavigationDecision.prevent;
-                }
-                print('allowing navigation to $request');
-                return NavigationDecision.navigate;
-              },
-              onPageFinished: (String url) {
-                _handleLoad();
-                print('Page finished loading: $url');
-                if (url.contains('returnfromexternalpayment') && url.contains('success')) {
-                  // may need this if page closed
-                  gblPaySuccess = true;
-                }
-              },
-            ),*/
-
-            new Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:  Text(translate('Loading') + ' '  + translate('${'Payment page'}')),
-                  ),
-                ],
-              ),
-            ),
           ],
         );
       }),
@@ -205,7 +122,84 @@ class _WebViewWidgetState extends State<WebPayPage> {
   }
 
   Widget _getView() {
-    if( gblSettings.useWebView) {
+    if( gblSettings.useScrollWebViewiOS && gblIsIos) {
+      return SingleChildScrollView(
+          child:
+          Container(
+          height: MediaQuery.of(context).size.height -50,
+    width: MediaQuery.of(context).size.width + 10,
+    child:
+    WebView(
+        initialUrl: _getPayUrl(),
+        javascriptMode: JavascriptMode.unrestricted,
+
+        onWebViewCreated: (WebViewController webViewController) {
+          _controller.complete(webViewController);
+        },
+
+
+        navigationDelegate: (NavigationRequest request) {
+          logit('Web Payment Page change url to ${request.url}');
+          if (request.url.contains(gblSettings.payFailUrl)) {
+            // FAILED
+            print('payment failed $request}');
+            gblPayBtnDisabled = false;
+            gblPaymentState = PaymentState.declined;
+            if (request.url.contains('?')) {
+              String err = request.url.split('?')[1];
+              err = err.split('=')[1];
+              gblPaymentMsg = Uri.decodeFull(err);
+            } else {
+              gblPaymentMsg = 'Payment Declined';
+            }
+            _endDetected = true;
+            //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ChoosePaymenMethodWidget(newBooking: widget.newBooking,
+                      pnrModel: widget.pnrModel,
+                      isMmb: false,),
+              ),
+            );
+
+            return NavigationDecision.prevent;
+          }
+          if (request.url.contains('returnfromexternalpayment') &&
+              request.url.contains('success')) {
+            // may need this if page closed
+            gblPaySuccess = true;
+          }
+          if (request.url.contains(gblSettings.paySuccessUrl)) {
+            // SUCCESS
+            print('payment success $request}');
+            gblPaymentState = PaymentState.success;
+            //_successfulPayment();
+            _gotoSuccessPage(widget.pnrModel);
+            return NavigationDecision.prevent;
+          }
+          if (request.url.startsWith('https://www.youtube.com/')) {
+            print('blocking navigation to $request}');
+            return NavigationDecision.prevent;
+          }
+          print('allowing navigation to $request');
+          return NavigationDecision.navigate;
+        },
+        onPageFinished: (String url) {
+          _handleLoad();
+          print('Page finished loading: $url');
+          if (url.contains('returnfromexternalpayment') &&
+              url.contains('success')) {
+            // may need this if page closed
+            gblPaySuccess = true;
+          }
+        },
+      )
+    )
+      );
+    } else {
       return WebView(
         initialUrl: _getPayUrl(),
         javascriptMode: JavascriptMode.unrestricted,
@@ -274,122 +268,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           }
         },
       );
-    } else {
-/*
-      return InAppWebView(
-        key: webViewKey,
-        initialUrlRequest:
-        URLRequest(url: Uri.parse('https://flutter.dev')),
-        // initialUrlRequest:
-        // URLRequest(url: Uri.parse(Uri.base.toString().replaceFirst("/#/", "/") + 'page.html')),
-        // initialFile: "assets/index.html",
-        initialUserScripts: UnmodifiableListView<UserScript>([]),
-        initialSettings: settings,
-        // contextMenu: contextMenu,
-        pullToRefreshController: pullToRefreshController,
-        onWebViewCreated: (controller) async {
-          webViewController = controller;
-          print(await controller.getUrl());
-        },
-        onLoadStart: (controller, url) async {
-          setState(() {
-            this.url = url.toString();
-            urlController.text = this.url;
-          });
-        },
-        onPermissionRequest: (controller, request) async {
-          return PermissionResponse(
-              resources: request.resources,
-              action: PermissionResponseAction.GRANT);
-        },
-        shouldOverrideUrlLoading:
-            (controller, navigationAction) async {
-          var uri = navigationAction.request.url!;
 
-          if (![
-            "http",
-            "https",
-            "file",
-            "chrome",
-            "data",
-            "javascript",
-            "about"
-          ].contains(uri.scheme)) {
-            if (await canLaunchUrl(uri)) {
-              // Launch the App
-              await launchUrl(
-                uri,
-              );
-              // and cancel the request
-              return NavigationActionPolicy.CANCEL;
-            }
-          }
-
-          return NavigationActionPolicy.ALLOW;
-        },
-        onLoadStop: (controller, url) async {
-          pullToRefreshController?.endRefreshing();
-          setState(() {
-            this.url = url.toString();
-            urlController.text = this.url;
-          });
-        },
-        onReceivedError: (controller, request, error) {
-          pullToRefreshController?.endRefreshing();
-        },
-        onProgressChanged: (controller, progress) {
-          if (progress == 100) {
-            pullToRefreshController?.endRefreshing();
-          }
-          setState(() {
-            this.progress = progress / 100;
-            urlController.text = this.url;
-          });
-        },
-        onUpdateVisitedHistory: (controller, url, isReload) {
-          setState(() {
-            this.url = url.toString();
-            urlController.text = this.url;
-          });
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print(consoleMessage);
-        },
-      );
-*/
-
-
-
-
-    /*progress < 1.0
-    ? LinearProgressIndicator(value: progress)
-        : Container(),
-    ],
-    ),
-    ),
-    ButtonBar(
-    alignment: MainAxisAlignment.center,
-    children: <Widget>[
-    ElevatedButton(
-    child: Icon(Icons.arrow_back),
-    onPressed: () {
-    webViewController?.goBack();
-    },
-    ),
-    ElevatedButton(
-    child: Icon(Icons.arrow_forward),
-    onPressed: () {
-    webViewController?.goForward();
-    },
-    ),
-    ElevatedButton(
-    child: Icon(Icons.refresh),
-    onPressed: () {
-    webViewController?.reload();
-    },
-    ),
-    ],
-    ),*/
     }
   }
 

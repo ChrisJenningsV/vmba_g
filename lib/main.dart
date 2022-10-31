@@ -17,6 +17,7 @@ import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
@@ -141,7 +142,8 @@ bool bFirstTime = true;
   Widget build(BuildContext context) {
    // Locale myLocale = Localizations.localeOf(context);
     bFirstTime = false;
-    if(gblIsLive == true) {
+    setLiveTest();
+    /*if(gblIsLive == true) {
       //gblSettings.payUrl = gblSettings.livePayUrl;
       gblSettings.payPage = gblSettings.livePayPage;
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
@@ -160,7 +162,7 @@ bool bFirstTime = true;
       if( gblSettings.testServerFiles != null && gblSettings.testServerFiles.isNotEmpty){
         gblSettings.gblServerFiles = gblSettings.testServerFiles;
       }
-    }
+    }*/
     // check for invalid settings
     if(gblSettings.fQTVpointsName== null || gblSettings.fQTVpointsName.isEmpty){
       gblSettings.fQTVpointsName = 'airmiles';

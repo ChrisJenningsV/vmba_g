@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -24,6 +25,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../Helpers/bookingHelper.dart';
 import '../Helpers/stringHelpers.dart';
+import '../components/bottomNav.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
@@ -1118,6 +1120,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               ],
             ),
           ),
+          bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
         );
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
@@ -1139,7 +1142,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete)
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete),
+          bottomNavigationBar: getBottomNav(context),
       ));
 
     } else {
@@ -1193,7 +1197,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                   _getTotals(),
                 ],
               ),
-            )),
+            ),
+          bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
+        ),
       );
     }
   }

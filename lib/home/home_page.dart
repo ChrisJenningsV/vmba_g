@@ -23,17 +23,18 @@ GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
 GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
 GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePageState>();
+//GlobalKey<HomeState> homePageKeyProgress = new GlobalKey<HomeState>();
 
 class HomePage extends StatefulWidget {
-  HomePage({this.ads});
+  HomePage({this.ads, Key key}): super(key: key);
 
   final bool ads;
 
   @override
-  State<StatefulWidget> createState() => new _HomeState();
+  State<StatefulWidget> createState() => new HomeState();
 }
 
-class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
+class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   AssetImage appBarImage;
   Image appBarImageLeft;
   AssetImage mainBackGroundImage;
@@ -89,6 +90,11 @@ class _HomeState extends State<HomePage>  with WidgetsBindingObserver {
     waitAndThenHideProcessingIndicator();
   }
 
+  void refresh(){
+    setState(() {
+
+    });
+  }
 
   @override
   void dispose() {

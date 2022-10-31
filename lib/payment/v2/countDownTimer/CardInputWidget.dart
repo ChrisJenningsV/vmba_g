@@ -19,10 +19,10 @@ class CardInputWidget extends StatefulWidget {
     this.paymentDetails}) : super(key: key);
 
   @override
-  _CardInputWidgetState createState() => _CardInputWidgetState();
+  CardInputWidgetState createState() => CardInputWidgetState();
 }
 
-class _CardInputWidgetState extends State<CardInputWidget> {
+class CardInputWidgetState extends State<CardInputWidget> {
   final formKey = new GlobalKey<FormState>();
   String cardNumber = '';
   String cardHolderName = '';
@@ -39,8 +39,33 @@ class _CardInputWidgetState extends State<CardInputWidget> {
 @override
 void initState() {
   super.initState();
+  _initPaymentDetails(widget.paymentDetails);
   gblPayBtnDisabled = false;
 }
+
+  _initPaymentDetails(PaymentDetails paymentDetails) {
+    if( paymentDetails != null && paymentDetails.cardNumber != null && paymentDetails.cardNumber.isNotEmpty){
+      cardNumber =paymentDetails.cardNumber ;
+      cardHolderName = paymentDetails.cardHolderName   ;
+      expiryDate = paymentDetails.expiryDate ;
+      cvvCode = paymentDetails.cVV   ;
+
+      street = paymentDetails.addressLine1  ;
+      town = paymentDetails.town  ;
+      state = paymentDetails.state  ;
+      postcode = paymentDetails.postCode  ;
+      country = paymentDetails.country   ;
+
+
+    }
+  }
+
+  initPayDetails(PaymentDetails paymentDetails){
+    _initPaymentDetails(paymentDetails);
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

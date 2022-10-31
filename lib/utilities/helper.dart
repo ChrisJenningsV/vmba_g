@@ -572,11 +572,11 @@ Widget addCountry(DbCountry country) {
   Image img;
   String name = country.enShortName;
   String name2 = '';
-  if( name.length > 30) {
+  if( name.length > 20) {   // was 30 but not work on old iPhone
     // split on a space'
     //name2 = name.substring(30);
     //name = name.substring(0,30);
-    int  middle = 30; // (name.length / 2).round();
+    int  middle = 20; // (name.length / 2).round();
     int before = name.lastIndexOf(' ', middle);
     int after = name.indexOf(' ', middle + 1);
 

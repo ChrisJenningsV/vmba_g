@@ -11,7 +11,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'H4';
+String gblBuildFlavor = 'T6';
 bool gblIsLive = true;
 int requiredXmlVersion = 105;
 int requiredApiVersion = 101;
@@ -70,6 +70,7 @@ bool gblNoNetwork;
 bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
+bool gblDemoMode = false;
 PnrModel gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 

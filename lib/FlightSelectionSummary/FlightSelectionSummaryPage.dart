@@ -3,6 +3,7 @@ import 'package:vmba/FlightSelectionSummary/widgets/flightRules.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/passengerDetailsPage.dart';
 import 'package:vmba/utilities/helper.dart';
+import '../components/bottomNav.dart';
 import '../data/models/models.dart';
 import 'dart:async';
 import '../data/models/pnr.dart';
@@ -44,6 +45,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _eVoucherNotValid = false;
     _tooManyUmnr = false;
     _hasError = false;
+    gblCurPage = 'FLIGHTSEARCH';
     _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
 
@@ -812,6 +814,7 @@ Row airMiles() {
             imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
+          bottomNavigationBar: getBottomNav(context),
           body: new Container(
               padding: EdgeInsets.all(16.0),
               child: new ListView(children: [

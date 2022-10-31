@@ -25,6 +25,13 @@ import '../../Helpers/bookingHelper.dart';
 import '../../Helpers/networkHelper.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
+import '../../Helpers/pageHelper.dart';
+import '../../components/bottomNav.dart';
+import '../../components/vidButtons.dart';
+
+GlobalKey<CardInputWidgetState> ccInputGlobalKeyOptions = new GlobalKey<CardInputWidgetState>();
+
+
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({
     Key key,
@@ -91,6 +98,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           imageName: gblSettings.wantPageImages ? 'paymentPage' : null,
         ),
         endDrawer: DrawerMenu(),
+
         body: new Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -115,6 +123,31 @@ class _CreditCardPageState extends State<CreditCardPage> {
       // showAlertDialog(context, 'Error making payment', gblError);
       // return null;
     }
+    Widget popButton;
+    if( gblSettings.creditCardProvider != null && gblSettings.creditCardProvider == 'videcard' ) {
+      bool gotVideCard = false;
+      popButton= vidDemoButton((context), 'Use Test CC', (p0) {
+        // populate test card
+        this.paymentDetails.cardNumber = '4242424242424242';
+        this.paymentDetails.expiryDate = '1234';
+        this.paymentDetails.cVV = '1234';
+
+        paymentDetails.addressLine1 = 'Windsor Castle' ;
+        paymentDetails.addressLine2 = 'Castle Hill' ;
+        paymentDetails.town = 'Windsor';
+        paymentDetails.state = 'Berkshire';
+        paymentDetails.postCode = 'SL4 1PD' ;
+        paymentDetails.country  = 'UK' ;
+
+
+        if(widget.pnrModel != null && widget.pnrModel.pNR != null && widget.pnrModel.pNR.names != null ) {
+          this.paymentDetails.cardHolderName =
+              widget.pnrModel.pNR.names.pAX[0].firstName + ' ' +
+                  widget.pnrModel.pNR.names.pAX[0].surname;
+        }
+        ccInputGlobalKeyOptions.currentState.initPayDetails(paymentDetails);
+      });
+    }
     return WillPopScope(
         onWillPop: _onWillPop,
         child:  Scaffold(
@@ -127,6 +160,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         imageName: gblSettings.wantPageImages ? 'paymentPage' : null,
       ),
       endDrawer: DrawerMenu(),
+      bottomNavigationBar: getBottomNav(context, popButton: popButton, helpText: 'The test CC will popular field with working test card values.'),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
           Row(children: <Widget>[
@@ -159,7 +193,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
           ]),
           widget.pnrModel.pNR.basket.outstanding.amount == '0'
               ? TrText('Completing booking...')
-              : CardInputWidget(
+              : new CardInputWidget(
+                  key: ccInputGlobalKeyOptions,
                   payCallback: () {
                     hasDataConnection().then((result) async {
                       if (result == true) {

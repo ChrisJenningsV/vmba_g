@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/Helpers/pageHelper.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
 import 'package:vmba/menu/faqs_page.dart';
@@ -12,6 +13,10 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
+
+import '../Helpers/settingsHelper.dart';
+import '../home/home_page.dart';
+import '../utilities/messagePages.dart';
 
 
 class DrawerMenu extends StatelessWidget {
@@ -277,26 +282,73 @@ class DrawerMenu extends StatelessWidget {
     }
 
     // DEMO login - for Apple acreditation
-    if( gblSettings.iOSDemoBuilds != null && gblSettings.iOSDemoBuilds.isNotEmpty) {
+    if(  (gblSettings.iOSDemoBuilds != null && gblSettings.iOSDemoBuilds.isNotEmpty  && gblIsIos == true ) ||
+        (gblSettings.androidDemoBuilds != null && gblSettings.androidDemoBuilds.isNotEmpty  && gblIsIos == false )){
       try{
         String buildNo = '';
-        PackageInfo.fromPlatform()
-            .then((PackageInfo packageInfo) {
-          buildNo = packageInfo.buildNumber;
-          if (gblSettings.iOSDemoBuilds.contains('#$buildNo#')) {
+          buildNo = gblVersion.split('.')[3];
+          if ((gblIsIos && gblSettings.iOSDemoBuilds.contains('#$buildNo#')) ||
+              (gblIsIos == false && gblSettings.androidDemoBuilds.contains('#$buildNo#'))){
+            if(  gblDemoMode == true ) {
+   /*           list.add(ListTile(
+                  dense: dense,
+                  title: _getMenuItem(Icons.web, translate('Logout')),
+                  onTap: () {
+                    // do logout
+                    gblIsLive = true;
+                    setLiveTest();
 
+                    gblDemoMode = false;
+                    if( gblCurPage != 'HOME') {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/HomePage', (Route<dynamic> route) => false);
+                    } else {
+                      Navigator.of(context).pop();
+                     // homePageKeyProgress.currentState.refresh();
+                       //reloadPage(context);
+                    }
+                   // if ( ModalRoute.of(context).hasActiveRouteBelow ) {
+                    //}
+                   // Navigator.push(context, SlideTopRoute(page: HomePage()));
+      *//*              Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/HomePage', (Route<dynamic> route) => false);
+*//*
+                  }));
+*/
+            } else if( gblIsLive == true) {
+              list.add(ListTile(
+                  dense: dense,
+                  title: _getMenuItem(Icons.web, translate('Login')),
+                  onTap: () {
+                    // do login
+                    loginPage(context, '',
+                        onOk: (dynamic p, String user, String pw) {
+                          if( user == gblSettings.demoUser && pw == gblSettings.demoPsssword) {
+                            gblIsLive = false;
+                            setLiveTest();
+                            gblDemoMode = true;
+                            // abandon any search / booking
+
+                            if( gblCurPage != 'HOME') {
+                            /*  Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/HomePage', (Route<dynamic> route) => false);*/
+                              /*Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/HomePage', (Route<dynamic> route) => false);*/
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                            return 'OK';
+                          } else {
+                            return 'Login FAILED';
+                          }
+                        }
+                    );
+                  }));
+            }
           }
-
-            list.add(ListTile(
-                dense: dense,
-                title: _getMenuItem(Icons.web, translate('Demo login')),
-                onTap: () {
-                  // do login
-                  /*Navigator.push(context,
-                      SlideTopRoute(page: CustomPageWeb(pageText, url)));*/
-                }));
-
-        });
       } catch(e) {
         logit(e);
       }

@@ -13,6 +13,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../components/bottomNav.dart';
+
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads});
   final bool ads;
@@ -29,6 +31,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   initState() {
     super.initState();
     booking = new NewBooking();
+    gblCurPage = 'FLIGHTSEARCH';
     booking.currency = gblSettings.currency;
     gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
@@ -87,6 +90,10 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   Widget build(BuildContext context) {
     final List<String> args = ModalRoute.of(context).settings.arguments;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+    String helpText ='';
+    if( gblBuildFlavor == 'UZ') {
+      helpText = 'Route Tripoli to Istanbul normally has some fares available.';
+    }
 
     if( firstBuild == true &&  args != null && args.contains('wantRedeemMiles' )) {
       gblRedeemingAirmiles = true;
@@ -103,6 +110,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
           onChanged: _reloadSearch,
         )
             : null,
+        bottomNavigationBar: getBottomNav(context, helpText:  helpText),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
           child: Column(

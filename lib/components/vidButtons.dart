@@ -240,3 +240,51 @@ Widget vidLineButton(BuildContext context, Widget body, int index, void Function
   );
 }
 
+class VidBlinkingButton extends StatefulWidget {
+  void Function(dynamic p) onClick;
+  String title;
+  Color color;
+
+  VidBlinkingButton({this.onClick, this.title, this.color});
+
+  @override
+  _MyBlinkingButtonState createState() => _MyBlinkingButtonState();
+}
+
+class _MyBlinkingButtonState extends State<VidBlinkingButton>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController =
+    new AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController.repeat(reverse: true);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _animationController,
+      child: MaterialButton(
+        onPressed: () => widget.onClick(context),
+        child: Text(widget.title, style: TextStyle(color: Colors.white),),
+        color: widget.color,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+}
+
+Widget vidDemoButton(BuildContext context, String caption ,void Function(dynamic p) onClick ){
+  return   MaterialButton(
+      onPressed: () => onClick(context),
+  child: Text(caption, style: TextStyle(color: Colors.white),),
+  color: Colors.lightBlue.shade400);
+}

@@ -17,6 +17,7 @@ import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
 
 import '../Products/optionsPage.dart';
 import '../calendar/bookingFunctions.dart';
+import '../components/bottomNav.dart';
 import '../components/vidButtons.dart';
 import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
@@ -325,6 +326,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           imageName:  gblSettings.wantPageImages ? 'paxDetails': null ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
+          bottomNavigationBar: getBottomNav(context, ),
       body: getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyPax),
       floatingActionButton: floatBtn,
     ))  ;

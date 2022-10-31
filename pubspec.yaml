@@ -72,6 +72,7 @@ dependencies:
   flutter_html: ^3.0.0-alpha.5
   timeline_tile: ^2.0.0
   html_unescape: ^1.0.2
+#  flutter_inappwebview: ^5.7.1
 
 dev_dependencies:
   flutter_test:

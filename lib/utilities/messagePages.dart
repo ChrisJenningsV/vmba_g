@@ -24,6 +24,7 @@ class MessagePage extends StatefulWidget {
     this.icon,
     this.isHtml,
     this.displayFormat,
+    this.onOk,
   }) : super(key: key);
 
   final String action;
@@ -39,6 +40,8 @@ class MessagePage extends StatefulWidget {
   bool isHtml;
   String displayFormat;
   void Function(dynamic p) onComplete;
+  String Function(dynamic p, String user, String pw) onOk;
+  String _errorMsg;
 
   @override
   MessagePageState createState() => MessagePageState();
@@ -47,12 +50,15 @@ class MessagePage extends StatefulWidget {
 class MessagePageState extends State<MessagePage> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
   String _msg;
+  TextEditingController _sineController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 //  final formKey = new GlobalKey<FormState>();
   //String errorlevel;
   @override
   initState() {
     super.initState();
     _msg = widget.msg;
+    widget._errorMsg = '';
     if( widget.title == null ) {
       widget.title = 'Critical error';
     }
@@ -126,16 +132,131 @@ class MessagePageState extends State<MessagePage> {
 
             shape: alertShape(),
             titlePadding: const EdgeInsets.all(0),
-            title: alertTitle(widget.title, widget.titleTextClr, widget.titleBackClr),
+            title: alertTitle(
+                widget.title, widget.titleTextClr, widget.titleBackClr),
 
             content: dialogBody(),
 
           )
       );
+    } else if( widget.displayFormat == '3') {
+      return Scaffold(
+          key: _key,
+          appBar: new AppBar(
+            //brightness: gblSystemColors.statusBar,
+            automaticallyImplyLeading: false,
+            backgroundColor:
+            gblSystemColors.primaryHeaderColor,
+            iconTheme: IconThemeData(
+                color: gblSystemColors.headerTextColor),
+            title: new TrText('',
+                style: TextStyle(
+                    color:
+                    gblSystemColors.headerTextColor)),
+          ),
+          //endDrawer: DrawerMenu(),
+          body:     AlertDialog(
+            shape: alertShape(),
+            titlePadding: const EdgeInsets.all(0),
+            title: alertTitle(
+                translate('LOGIN'), widget.titleTextClr, widget.titleBackClr),
+    content: contentBox(context),
+    actions: <Widget>[
+    ElevatedButton(
+      style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+    child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+    onPressed: () {
+    //Put your code here which you want to execute on Cancel button click.
+    Navigator.of(context).pop();
+    },
+    ),
+    ElevatedButton(
+      style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryHeaderColor) ,
+    child: TrText("CONTINUE"),
+    onPressed: () {
+      String result = widget.onOk(context, _sineController.text, _passwordController.text);
+      widget._errorMsg = '';
+      if( result == 'OK') {
+        // close dialog
+        Navigator.of(context).pop();
+      }else {
+        // error
+        widget._errorMsg = result;
+        setState(() {
+
+        });
+      }
+    },
+    ),
+],
+    ));
     }
+
+
     // no error
     return Container();
 
+  }
+  Widget  contentBox(context){
+
+
+    return Stack(
+      children: <Widget>[
+        Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new TextFormField(
+                decoration: InputDecoration(
+                  contentPadding:
+                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  labelText: 'User',
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(5.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
+                controller: _sineController,
+                //keyboardType: TextInputType.number ,
+
+
+                onSaved: (value) {
+                  if (value != null) {
+                    //.contactInfomation.phonenumber = value.trim()
+                  }
+                },
+              ),
+              SizedBox(height: 15,),
+              new TextFormField(
+                obscureText: true,
+                obscuringCharacter: "*",
+                controller: _passwordController ,
+                decoration: InputDecoration(
+                  contentPadding:
+                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  labelText: 'Password',
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(5.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
+               // keyboardType: TextInputType.visiblePassword,
+
+                onSaved: (value) {
+                  if (value != null) {
+                    //.contactInfomation.phonenumber = value.trim()
+                  }
+                },
+              ),
+              Padding(padding: EdgeInsets.all(2)),
+              Text(widget._errorMsg),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget dialogBody() {
@@ -247,6 +368,28 @@ void criticalErrorPage(BuildContext context, String msg, {String title, bool wan
         icon: Icons.close,
         titleBackClr: Colors.red,
         displayFormat: '1',
+        title: title,))
+  );
+}
+
+void loginPage(BuildContext context, String msg, {String title, bool wantButtons,String Function(dynamic p, String user, String pw) onOk }){
+  List<Widget> actionList ;
+  if( wantButtons != null && wantButtons == false) {
+    actionList = [];
+    actionList.add(Container());
+  }
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) =>
+      MessagePage( msg: msg,
+        borderClr: Colors.red,
+        actions: actionList,
+        backClr: gblSystemColors.primaryHeaderColor,
+        iconClr: gblSystemColors.headerTextColor,
+        icon: Icons.close,
+        titleBackClr: gblSystemColors.primaryHeaderColor,
+        titleTextClr: gblSystemColors.headerTextColor,
+        displayFormat: '3',
+        onOk: onOk,
         title: title,))
   );
 }
@@ -417,6 +560,8 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
     actions: actions,
   );
 }
+
+
 ShapeBorder alertShape() {
   return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0));

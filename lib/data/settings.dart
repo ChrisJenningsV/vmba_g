@@ -112,7 +112,7 @@ class Settings {
   bool wantCentreTitle;
   bool wantRefund;
   bool wantNewPayment;
-  bool useWebView;
+  bool useScrollWebViewiOS;
   bool wantButtonIcons;
   bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
@@ -145,6 +145,9 @@ class Settings {
   String backgroundImageUrl;
   String iOSDemoBuilds;
   String androidDemoBuilds;
+  String demoUser;
+  String demoPsssword;
+
   String customMenu1;
   String customMenu2;
   String customMenu3;
@@ -261,7 +264,7 @@ bool bpShowFastTrack;
     this.wantCentreTitle = false,
     this.wantRefund = false,
     this.wantNewPayment = false,
-    this.useWebView = true,
+    this.useScrollWebViewiOS = false,
     this.wantButtonIcons = true,
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
@@ -356,6 +359,8 @@ bool bpShowFastTrack;
     this.passportLayoutStyle = 1,
     this.iOSDemoBuilds,
     this.androidDemoBuilds,
+    this.demoUser,
+    this.demoPsssword,
     this.customMenu1,
     this.customMenu2,
     this.customMenu3,
