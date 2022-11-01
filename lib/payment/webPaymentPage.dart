@@ -121,153 +121,90 @@ class _WebViewWidgetState extends State<WebPayPage> {
     ));
   }
 
+  Widget _getWebView() {
+    return WebView(
+      initialUrl: _getPayUrl(),
+      javascriptMode: JavascriptMode.unrestricted,
+
+      onWebViewCreated: (WebViewController webViewController) {
+        _controller.complete(webViewController);
+      },
+
+
+      navigationDelegate: (NavigationRequest request) {
+        logit('Web Payment Page change url to ${request.url}');
+        if (request.url.contains(gblSettings.payFailUrl)) {
+          // FAILED
+          print('payment failed $request}');
+          gblPayBtnDisabled = false;
+          gblPaymentState = PaymentState.declined;
+          if (request.url.contains('?')) {
+            String err = request.url.split('?')[1];
+            err = err.split('=')[1];
+            gblPaymentMsg = Uri.decodeFull(err);
+          } else {
+            gblPaymentMsg = 'Payment Declined';
+          }
+          _endDetected = true;
+          //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ChoosePaymenMethodWidget(newBooking: widget.newBooking,
+                    pnrModel: widget.pnrModel,
+                    isMmb: false,),
+            ),
+          );
+
+          return NavigationDecision.prevent;
+        }
+        if (request.url.contains('returnfromexternalpayment') &&
+            request.url.contains('success')) {
+          // may need this if page closed
+          gblPaySuccess = true;
+        }
+        if (request.url.contains(gblSettings.paySuccessUrl)) {
+          // SUCCESS
+          print('payment success $request}');
+          gblPaymentState = PaymentState.success;
+          //_successfulPayment();
+          _gotoSuccessPage(widget.pnrModel);
+          return NavigationDecision.prevent;
+        }
+        if (request.url.startsWith('https://www.youtube.com/')) {
+          print('blocking navigation to $request}');
+          return NavigationDecision.prevent;
+        }
+        print('allowing navigation to $request');
+        return NavigationDecision.navigate;
+      },
+      onPageFinished: (String url) {
+        _handleLoad();
+        print('Page finished loading: $url');
+        if (url.contains('returnfromexternalpayment') &&
+            url.contains('success')) {
+          // may need this if page closed
+          gblPaySuccess = true;
+        }
+      },
+    );
+  }
+
   Widget _getView() {
     if( gblSettings.useScrollWebViewiOS && gblIsIos) {
       return SingleChildScrollView(
           child:
           Container(
           height: MediaQuery.of(context).size.height -50,
-    width: MediaQuery.of(context).size.width + 10,
-    child:
-    WebView(
-        initialUrl: _getPayUrl(),
-        javascriptMode: JavascriptMode.unrestricted,
+    width: MediaQuery.of(context).size.width + 100,
+    child: _getWebView(),
 
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-
-
-        navigationDelegate: (NavigationRequest request) {
-          logit('Web Payment Page change url to ${request.url}');
-          if (request.url.contains(gblSettings.payFailUrl)) {
-            // FAILED
-            print('payment failed $request}');
-            gblPayBtnDisabled = false;
-            gblPaymentState = PaymentState.declined;
-            if (request.url.contains('?')) {
-              String err = request.url.split('?')[1];
-              err = err.split('=')[1];
-              gblPaymentMsg = Uri.decodeFull(err);
-            } else {
-              gblPaymentMsg = 'Payment Declined';
-            }
-            _endDetected = true;
-            //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ChoosePaymenMethodWidget(newBooking: widget.newBooking,
-                      pnrModel: widget.pnrModel,
-                      isMmb: false,),
-              ),
-            );
-
-            return NavigationDecision.prevent;
-          }
-          if (request.url.contains('returnfromexternalpayment') &&
-              request.url.contains('success')) {
-            // may need this if page closed
-            gblPaySuccess = true;
-          }
-          if (request.url.contains(gblSettings.paySuccessUrl)) {
-            // SUCCESS
-            print('payment success $request}');
-            gblPaymentState = PaymentState.success;
-            //_successfulPayment();
-            _gotoSuccessPage(widget.pnrModel);
-            return NavigationDecision.prevent;
-          }
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            print('blocking navigation to $request}');
-            return NavigationDecision.prevent;
-          }
-          print('allowing navigation to $request');
-          return NavigationDecision.navigate;
-        },
-        onPageFinished: (String url) {
-          _handleLoad();
-          print('Page finished loading: $url');
-          if (url.contains('returnfromexternalpayment') &&
-              url.contains('success')) {
-            // may need this if page closed
-            gblPaySuccess = true;
-          }
-        },
-      )
     )
       );
     } else {
-      return WebView(
-        initialUrl: _getPayUrl(),
-        javascriptMode: JavascriptMode.unrestricted,
-
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-
-
-        navigationDelegate: (NavigationRequest request) {
-          logit('Web Payment Page change url to ${request.url}');
-          if (request.url.contains(gblSettings.payFailUrl)) {
-            // FAILED
-            print('payment failed $request}');
-            gblPayBtnDisabled = false;
-            gblPaymentState = PaymentState.declined;
-            if (request.url.contains('?')) {
-              String err = request.url.split('?')[1];
-              err = err.split('=')[1];
-              gblPaymentMsg = Uri.decodeFull(err);
-            } else {
-              gblPaymentMsg = 'Payment Declined';
-            }
-            _endDetected = true;
-            //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ChoosePaymenMethodWidget(newBooking: widget.newBooking,
-                      pnrModel: widget.pnrModel,
-                      isMmb: false,),
-              ),
-            );
-
-            return NavigationDecision.prevent;
-          }
-          if (request.url.contains('returnfromexternalpayment') &&
-              request.url.contains('success')) {
-            // may need this if page closed
-            gblPaySuccess = true;
-          }
-          if (request.url.contains(gblSettings.paySuccessUrl)) {
-            // SUCCESS
-            print('payment success $request}');
-            gblPaymentState = PaymentState.success;
-            //_successfulPayment();
-            _gotoSuccessPage(widget.pnrModel);
-            return NavigationDecision.prevent;
-          }
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            print('blocking navigation to $request}');
-            return NavigationDecision.prevent;
-          }
-          print('allowing navigation to $request');
-          return NavigationDecision.navigate;
-        },
-        onPageFinished: (String url) {
-          _handleLoad();
-          print('Page finished loading: $url');
-          if (url.contains('returnfromexternalpayment') &&
-              url.contains('success')) {
-            // may need this if page closed
-            gblPaySuccess = true;
-          }
-        },
-      );
+      return _getWebView();
 
     }
   }
