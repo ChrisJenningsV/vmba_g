@@ -46,6 +46,7 @@ Future<String> callSmartApi(String action, String data) async {
   String responseData = response.body
       .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
       .replaceAll('<string xmlns="http://videcom.com/">', '')
+      .replaceAll('<string xmlns="http://videcom.com/" />', '')
       .replaceAll('</string>', '');
 
   Map map = jsonDecode(responseData);

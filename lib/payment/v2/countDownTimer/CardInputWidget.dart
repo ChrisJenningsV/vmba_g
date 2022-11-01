@@ -111,16 +111,17 @@ void initState() {
                                 scale: 0.5,
                                 child: CircularProgressIndicator(),
                               )   :
-                            Icon(Icons.check,
+                           /* Icon(Icons.check,
                               color: Colors.white,
-                            ),
+                            ),*/
                             gblPayBtnDisabled ?  new TrText("Completing Payment...", style: TextStyle(color: Colors.white)) : TrText('PAY NOW',
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
                         ),
                       )
-                    : Text('')
+                    : Text(''),
+                Padding(padding: EdgeInsets.all(5),)
               ],
             ),
           ),

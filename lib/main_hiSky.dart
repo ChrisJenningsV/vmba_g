@@ -61,7 +61,7 @@ void configH4() {
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
 
-    airlineName: "hiSky",
+    airlineName: "HiSky",
     gblServerFiles: 'https://booking.hisky.md/VARS/AppFiles/',
     testServerFiles: 'https://customertest.videcom.com/hisky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",

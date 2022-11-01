@@ -132,13 +132,15 @@ void configT6() {
   creditCardProvider: 'videcard',
 
     testPayPage: 'https://customertest.videcom.com/airswift/VARS/Public/MobilePaymentStart.aspx',
+    //testPayPage: 'http://10.0.2.2:50311/MobilePaymentStart.aspx',
  // testXmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/airswift/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-   // testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
  testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-  testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
+
+    testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
   wantPayStack: false,

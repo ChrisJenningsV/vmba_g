@@ -12,7 +12,7 @@ Future<bool> onWillPop(BuildContext context) async {
     builder: (context) => new AlertDialog(
       shape: alertShape(),
       titlePadding: alertTitlePadding(),
-      title: alertTitle('Are you sure?', gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
+      title: alertTitle(translate('Are you sure?'), gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
       content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget> [

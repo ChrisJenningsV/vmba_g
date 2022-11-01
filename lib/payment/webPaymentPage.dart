@@ -101,7 +101,11 @@ class _WebViewWidgetState extends State<WebPayPage> {
           gblPayBtnDisabled = false;
           gblPaymentState = PaymentState.needCheck;
           gblPaymentMsg = 'Payment aborted';
-          String reply = await callSmartApi('CANCELPAYMENT', "");
+          try {
+            String reply = await callSmartApi('CANCELPAYMENT', "");
+          } catch(e) {
+          }
+
           Navigator.pop(context);
         }
       },
@@ -113,7 +117,17 @@ class _WebViewWidgetState extends State<WebPayPage> {
           index: _stackToView,
           children: <Widget>[
             _getView(),
+            new Center(
+                child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                CircularProgressIndicator(),
 
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child:  Text(translate('Loading Payment Page' ) )
+            ),
+            ])),
           ],
         );
       }),
