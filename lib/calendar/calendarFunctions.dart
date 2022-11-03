@@ -20,21 +20,8 @@ Widget flightRow(avItin item) {
           getDate(item.flt[0].time.ddaylcl),
           getTime(item.flt.first.time.dtimlcl),
           getAirport(item.flt.first.dep),
- /*         FutureBuilder(
-            future: cityCodeToName(
-              item.flt.first.dep,
-            ),
-            initialData: item.flt.first.dep.toString(),
-            builder: (BuildContext context,
-                AsyncSnapshot<String> text) {
-              return TrText(text.data,
-                  style: new TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w300),
-                  variety: 'airport', noTrans: true);
-            },
-          ),
-*/        ],
+          getTerminal(item.flt.first, true),
+        ],
       ),
       Column(children: [
         new RotatedBox(
@@ -50,29 +37,7 @@ Widget flightRow(avItin item) {
           getDate(item.flt.last.time.adaylcl),
           getTime(item.flt.last.time.atimlcl),
           getAirport(item.flt.last.arr),
-/*
-          new Text(
-              item.flt.last.time.atimlcl
-                  .substring(0, 5)
-                  .replaceAll(':', ''),
-              style: new TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w700)),
-*/
-/*          FutureBuilder(
-            future: cityCodeToName(
-              item.flt.last.arr,
-            ),
-            initialData: item.flt.last.arr.toString(),
-            builder: (BuildContext context,
-                AsyncSnapshot<String> text) {
-              return new TrText(text.data,
-                style: new TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w300),
-                variety: 'airport', noTrans: true,);
-            },
-          ),*/
+          getTerminal(item.flt.first, false),
         ],
       )
     ],
@@ -121,6 +86,20 @@ Widget getAirport(String code, {double fontSize, FontWeight fontWeight}) {
   );
 
 }
+Widget getTerminal(Flt flt, bool depart){
+  if( gblSettings.wantTerminal == false ) return Container();
+  if( depart == true &&  (flt.fltdet.depterm == null || flt.fltdet.depterm.isEmpty) ) return Container();
+  if( depart == false &&  (flt.fltdet.arrterm == null || flt.fltdet.arrterm.isEmpty)) return Container();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+          TrText('Terminal'),
+          Padding(padding: EdgeInsets.only(left: 10)),
+          Text( depart ? flt.fltdet.depterm : flt.fltdet.arrterm, textScaleFactor: 1.5,),
+        ]);
+}
+
 
 Widget infoRow(BuildContext context, avItin item ) {
   return Row(
@@ -251,11 +230,11 @@ Widget noFlightsFound(){
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
+          TrText(
             'Sorry no flights found',
             style: TextStyle(fontSize: 14.0),
           ),
-          Text(
+          TrText(
             'Try search for a different date',
             style: TextStyle(fontSize: 14.0),
           ),

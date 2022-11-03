@@ -372,8 +372,10 @@ class Fltdet {
   String eqp;
   String stp;
   Canfac canfac;
+  String depterm;
+  String arrterm;
 
-  Fltdet({this.airid, this.fltno, this.seq, this.eqp, this.stp, this.canfac});
+  Fltdet({this.airid, this.fltno, this.seq, this.eqp, this.stp, this.canfac, this.depterm, this.arrterm});
 
   Fltdet.fromJson(Map<String, dynamic> json) {
     airid = json['airid'];
@@ -381,6 +383,8 @@ class Fltdet {
     seq = json['seq'];
     eqp = json['eqp'];
     stp = json['stp'];
+    depterm = json['depterm'];
+    arrterm = json['arrterm'];
     canfac =
         json['canfac'] != null ? new Canfac.fromJson(json['canfac']) : null;
   }
@@ -392,6 +396,8 @@ class Fltdet {
     data['seq'] = this.seq;
     data['eqp'] = this.eqp;
     data['stp'] = this.stp;
+    data['depterm'] = this.depterm;
+    data['arrterm'] = this.arrterm;
     if (this.canfac != null) {
       data['canfac'] = this.canfac.toJson();
     }

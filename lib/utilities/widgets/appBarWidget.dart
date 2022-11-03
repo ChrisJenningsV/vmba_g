@@ -354,7 +354,7 @@ List<Widget> getBookingSummaryBar(BuildContext context,  NewBooking newBooking, 
     DateTime d1 = DateTime.parse(newBooking.returningflts.last.time.ddaygmt + ' ' + newBooking.returningflts.last.time.dtimgmt);
     int diff = d1.difference(a1).inMinutes;
     String duration = getDuration(diff);
-    widgets.add(TimelineHeader(title: 'Return Flight', duration: duration));
+    widgets.add(TimelineHeader(title: translate('Return Flight'), duration: duration));
     widgets.add(TimelineDelivery(newBooking:  newBooking, isReturn: true,)); // Expanded(child:
 
   }

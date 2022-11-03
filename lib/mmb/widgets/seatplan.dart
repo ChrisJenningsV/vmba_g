@@ -69,7 +69,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     _noInternet = false;
     _noSeats = false;
     _loadingInProgress = true;
-    _displayProcessingText = 'Loading seat plan...';
+    _displayProcessingText = translate('Loading seat plan...');
     seatplan = widget.seatplan;
     _loadData(widget.seatplan);
     paxlist = widget.paxlist;
@@ -199,7 +199,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     setState(() {
       paxlist = paxValue;
       _loadingInProgress = true;
-      _displayProcessingText = 'Booking your seat selection...';
+      _displayProcessingText = translate('Booking your seat selection...');
     });
   }
 

@@ -88,9 +88,9 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
 
 
     if( widget.product.unitOfMeasure == null || widget.product.unitOfMeasure.isEmpty) {
-      units += translate(' Per Unit');
+      units += ' ' + translate('Per Unit');
     } else {
-      units = translate(' Per ') + widget.product.unitOfMeasure;
+      units = ' ' + translate('Per') + ' ' + widget.product.unitOfMeasure;
     }
     if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
       rowList.add(Image(image: getProductImage(widget.product),

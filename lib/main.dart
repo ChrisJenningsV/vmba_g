@@ -27,6 +27,7 @@ import 'main_fastjet.dart';
 import 'main_fl.dart';
 import 'main_hiSky.dart';
 import 'main_lm.dart';
+import 'main_medSky.dart';
 import 'main_qi.dart';
 import 'main_si.dart';
 import 'main_t6.dart';
@@ -73,6 +74,9 @@ void main() async {
         break;
       case 'H4':
         configH4();
+        break;
+      case 'M1':
+        configM1();
         break;
       case 'GR':
         configGR();

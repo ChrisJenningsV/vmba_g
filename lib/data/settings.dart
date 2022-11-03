@@ -120,6 +120,8 @@ class Settings {
   bool useSmartPay;
   bool wantAllColorButtons;
   bool wantBpLogo;
+  bool wantCanFacs;
+  bool wantTerminal;
 
   String productFormat;
   String homePageStyle;
@@ -268,6 +270,9 @@ bool bpShowFastTrack;
     this.wantButtonIcons = true,
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
+    this.wantCanFacs = true,
+    this.wantTerminal = true,
+
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,

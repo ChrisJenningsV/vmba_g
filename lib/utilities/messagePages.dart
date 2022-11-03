@@ -133,7 +133,7 @@ class MessagePageState extends State<MessagePage> {
             shape: alertShape(),
             titlePadding: const EdgeInsets.all(0),
             title: alertTitle(
-                widget.title, widget.titleTextClr, widget.titleBackClr),
+                translate(widget.title), widget.titleTextClr, widget.titleBackClr),
 
             content: dialogBody(),
 

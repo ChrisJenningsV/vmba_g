@@ -8,12 +8,12 @@ import 'main.dart';
 import 'data/globals.dart';
 
 void main() {
-  configH4();
+  configM1();
 
   var configuredApp = AppConfig(
-    appTitle: 'hisky',
+    appTitle: 'medsky',
     child: App(),
-    buildFlavor: 'H4',
+    buildFlavor: 'M1',
     systemColors: gblSystemColors,
     settings: gblSettings,);
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ void main() {
     runApp(configuredApp);
   });
 }
-void configH4() {
+void configM1() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
     accentButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
@@ -43,33 +43,30 @@ void configH4() {
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
-  gblAppTitle = 'hisky';
-  gblBuildFlavor = 'H4';
+  gblAppTitle = 'medsky';
+  gblBuildFlavor = 'M1';
   gblCurrentRloc = '';
 
 
   gblSettings = Settings (
-//    latestBuildiOS: '1.0.5',
-//    latestBuildAndroid: '1.0.0.98',
-//    homePageStyle: 'V2',
     pageStyle: 'V2',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
-    gblLanguages: 'ro,Romanian,en,English',
-    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
+//    gblLanguages: 'ro,Romanian,en,English',
+//    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
     currency: 'RON',
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
     wantCanFacs: false,
 
-    airlineName: "HiSky",
-    gblServerFiles: 'https://booking.hisky.md/VARS/AppFiles/',
-    testServerFiles: 'https://customertest.videcom.com/hisky/VARS/AppFiles/',
+    airlineName: "Medsky",
+    gblServerFiles: 'https://customer3.videcom.com/Medsky/VARS/AppFiles/',
+    testServerFiles: 'https://customertest.videcom.com/medsky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'H4',
-    termsAndConditionsUrl: '{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
-    privacyPolicyUrl:  '{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
+    termsAndConditionsUrl: '', //'''{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
+    privacyPolicyUrl:  '', //'''{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
     //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
@@ -81,10 +78,10 @@ void configH4() {
     useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '1457545908',
-    androidAppId: 'aero.hisky.reservations',
+    androidAppId: 'aero.medsky.reservations',
     fqtvName: 'Club',
-    appFeedbackEmail: 'appfeedback@hisky.md',
-    groupsBookingsEmail: 'groups@hisky.md',
+    appFeedbackEmail: 'appfeedback@medsky.md',
+    groupsBookingsEmail: 'groups@medsky.md',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
     wantClassBandImages: true,
     bpShowFastTrack: true,
@@ -109,38 +106,38 @@ void configH4() {
 
 //Production setttings
 
-    liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    liveApisUrl:      'https://booking.hisky.md/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    liveApiUrl:      'https://booking.hisky.md/VARS/webApiV2/api/',
+    liveXmlUrl:      "https://customer3.videcom.com/Medsky/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    liveApisUrl:      'https://customer3.videcom.com/Medsky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl:      'https://customer3.videcom.com/Medsky/VARS/webApiV2/api/',
     //liveApiUrl:      'http://10.0.2.2:5000/api',
-    livePayPage:      'https://booking.hisky.md/VARS/Public/MobilePaymentStart.aspx',
-    liveSmartApiUrl:  "https://booking.hisky.md/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    livePayPage:      'https://customer3.videcom.com/Medsky/VARS/Public/MobilePaymentStart.aspx',
+    liveSmartApiUrl:  "https://customer3.videcom.com/Medsky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
-    liveCreditCardProvider: 'worldpaydirect',
+    //liveCreditCardProvider: 'worldpaydirect',
 
     eVoucher: true,
-    xmlUrl:      "https://customertest.videcom.com/hisky/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    apisUrl:      'https://customertest.videcom.com/hisky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    xmlUrl:      "https://customertest.videcom.com/medsky/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    apisUrl:      'https://customertest.videcom.com/medsky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 
 //    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
-    testPayPage: 'https://customertest.videcom.com/hisky/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'https://customertest.videcom.com/medsky/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/hisky/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/medsky/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 ///////    testXmlUrl:      "https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
-    testSmartApiUrl:      "https://customertest.videcom.com/hisky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-    testApisUrl:      'https://customertest.videcom.com/hisky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl:      'https://customertest.videcom.com/hisky/VARS/webApiv2/api/',
+    testSmartApiUrl:      "https://customertest.videcom.com/medsky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testApisUrl:      'https://customertest.videcom.com/medsky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl:      'https://customertest.videcom.com/medsky/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
-    creditCardProvider: '3DS_videcard',
+ /*   creditCardProvider: '3DS_videcard',
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
-
+*/
     displayErrorPnr: true,    // just for test, to display pnr problems
     wantPayStack: false,
     wantPageImages: false,

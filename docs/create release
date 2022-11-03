@@ -21,6 +21,7 @@ flutter build appbundle -t lib/main.dart --flavor buraq
 flutter build appbundle -t lib/main.dart --flavor blueislands
 flutter build appbundle -t lib/main.dart --flavor fastjet
 flutter build appbundle -t lib/main.dart --flavor hisky
+flutter build appbundle -t lib/main.dart --flavor medsky
 flutter build appbundle -t lib/main.dart --flavor Aurigny
 
 # batch file - run in terminal for \vmba
@@ -28,6 +29,7 @@ flutter build appbundle -t lib/main.dart --flavor Aurigny
 buildRelease\fastjet.bat
 buildRelease\buraq.bat
 buildRelease\hisky.bat
+buildRelease\medsky.bat
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 

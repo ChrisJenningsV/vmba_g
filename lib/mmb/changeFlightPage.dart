@@ -541,7 +541,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
                         flightRow(item),
                         Divider(),
-                        CannedFactWidget(flt: item.flt),
+                        gblSettings.wantCanFacs ? CannedFactWidget(flt: item.flt) : Container(),
                         infoRow(context, item),
                         Padding(
                           padding: EdgeInsets.all(0),

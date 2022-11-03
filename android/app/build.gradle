@@ -72,6 +72,11 @@ android {
             resValue "string", "flavored_app_name", "hiSky"
             applicationId "aero.hisky.reservations"
         }
+        medSky {
+            dimension "version"
+            resValue "string", "flavored_app_name", "medSky"
+            applicationId "aero.medsky.reservations"
+        }
         Aurigny {
             dimension "version"
             resValue "string", "flavored_app_name", "Aurigny"

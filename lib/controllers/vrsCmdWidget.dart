@@ -219,7 +219,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
     switch(params.dataType){
       case VrsCmdType.bookSeats:
         //_dataName = 'Book Seats';
-        _displayProcessingText = 'Booking your seat selection...';
+        _displayProcessingText = translate('Booking your seat selection...');
         _wantOK = false;
         _bookSeats(params);
         //_msg = json.encode(GetProductsMsg(currency ).toJson());

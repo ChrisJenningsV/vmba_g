@@ -131,6 +131,10 @@ flutter:
     - lib/assets/hisky/images/appBar.png
     - lib/assets/hisky/images/logo.png
     - lib/assets/hisky/json/countries.json
+    - lib/assets/medsky/images/loader.png
+    - lib/assets/medsky/images/app.png
+    - lib/assets/medsky/images/appBar.png
+    - lib/assets/medsky/images/logo.png
     - lib/assets/aurigny/images/loader.png
     - lib/assets/aurigny/images/app.png
     - lib/assets/aurigny/images/appBar.png
@@ -181,8 +185,6 @@ flutter:
     - lib/assets/lang/en.json
     - lib/assets/lang/fr.json
 
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

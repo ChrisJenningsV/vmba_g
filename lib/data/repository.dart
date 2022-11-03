@@ -493,6 +493,13 @@ class Repository {
                   case 'wantNotificationEdit':
                     gblSettings.wantNotificationEdit = parseBool(item['value']);
                     break;
+                  case 'wantCanFacs':
+                    gblSettings.wantCanFacs = parseBool(item['value']);
+                    break;
+                  case 'wantTerminal':
+                    gblSettings.wantTerminal = parseBool(item['value']);
+                    break;
+
                   case 'eVoucher':
                     gblSettings.eVoucher = parseBool(item['value']);
                     break;
