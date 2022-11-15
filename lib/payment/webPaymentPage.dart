@@ -139,9 +139,13 @@ class _WebViewWidgetState extends State<WebPayPage> {
     return WebView(
       initialUrl: _getPayUrl(),
       javascriptMode: JavascriptMode.unrestricted,
-
+      //debuggingEnabled: true,
       onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
+        print('on created');
+      },
+      onWebResourceError: (WebResourceError e) {
+        print('resource error $e');
       },
 
 
@@ -207,15 +211,26 @@ class _WebViewWidgetState extends State<WebPayPage> {
   }
 
   Widget _getView() {
-    if( gblSettings.useScrollWebViewiOS && gblIsIos) {
-      return SingleChildScrollView(
-          child:
-          Container(
-          height: MediaQuery.of(context).size.height -50,
-    width: MediaQuery.of(context).size.width + 100,
-    child: _getWebView(),
+    if( gblSettings.useScrollWebViewiOS && gblIsIos  ) { // gblSettings.useScrollWebViewiOS && gblIsIos
+      final ScrollController controller = ScrollController();
+      final ScrollController controller2 = ScrollController();
+      print('go wide');
 
-    )
+      return Scrollbar(
+          controller: controller2,
+          child: SingleChildScrollView(
+              controller: controller2,
+              scrollDirection: Axis.horizontal,
+              child: SingleChildScrollView(
+                  controller: controller,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height +200,
+                    width: MediaQuery.of(context).size.width + 300,
+                    child: _getWebView(),
+
+                  )
+              )
+          )
       );
     } else {
       return _getWebView();
@@ -293,7 +308,8 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
     if( gblPayFormVals != null) {
       gblPayFormVals.forEach((key, value) {
-          url += '&$key=$value';
+        String qValue = value.replaceAll(' ', '%20');
+          url += '&$key=$qValue';
       });
     }
 
