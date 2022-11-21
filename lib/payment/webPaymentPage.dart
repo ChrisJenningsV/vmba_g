@@ -216,6 +216,10 @@ class _WebViewWidgetState extends State<WebPayPage> {
       final ScrollController controller2 = ScrollController();
       print('go wide');
 
+      double addWidth = 0;
+      if(gblSettings.aircode == 'T6'){
+        addWidth = 10;
+      }
       return Scrollbar(
           controller: controller2,
           child: SingleChildScrollView(
@@ -225,7 +229,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
                   controller: controller,
                   child: Container(
                     height: MediaQuery.of(context).size.height +200,
-                    width: MediaQuery.of(context).size.width + 300,
+                    width: MediaQuery.of(context).size.width + addWidth,
                     child: _getWebView(),
 
                   )
