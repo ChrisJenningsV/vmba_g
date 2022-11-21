@@ -1,0 +1,147 @@
+--
+--  setup / check database settings for mobile app
+--
+--
+DECLARE @AirlineID varchar(2)
+SET @AirlineID = (SELECT LTRIM(RTRIM([Value])) FROM SemiPerm WHERE Parameter = 'AirlineID')
+
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'vrs_mob_user')
+BEGIN
+print('add vrs_mob_user')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','vrs_mob_user','bsia9992aw/eb',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'vrs_mob_password')
+BEGIN
+print('add vrs_mob_password')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','vrs_mob_password','HI84JW5',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Videcom_ApiKey')
+BEGIN
+	-- used for WebApi
+	print('add Videcom_ApiKey')
+
+	INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+		VALUES(@AirlineID,'HDQ','Videcom_ApiKey','93a9626c78514c2baab494f4f6e0c197',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Videcom_ApiKeyV2')
+BEGIN
+	-- used for WebApi
+	print('add Videcom_ApiKeyV2')
+
+	INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+		VALUES(@AirlineID,'HDQ','Videcom_ApiKeyV2','93a9626c78514c2baab494f4f6e0c197',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Mobile_iOSDemoBuilds')
+BEGIN
+print('add Mobile_iOSDemoBuilds')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','Mobile_iOSDemoBuilds','#273#',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Mobile_androidDemoBuilds')
+BEGIN
+print('add Mobile_androidDemoBuilds')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','Mobile_androidDemoBuilds','#273#',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Mobile_demoUser')
+BEGIN
+print('add Mobile_demoUser')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','Mobile_demoUser','K1ngCh@rles3',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'Mobile_demoPassword')
+BEGIN
+print('add Mobile_demoPassword')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','Mobile_demoPassword','88776655',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'googleNotifyKey')
+BEGIN
+print('add googleNotifyKey ')
+INSERT INTO Config(AirLineID,City,Parameter,[Value],Units,MinVal,MaxVal,ValType,UserConfigurable,UserDisplay,ParameterTypeID,WebParameter,Info,SharedParameter)
+	VALUES(@AirlineID,'HDQ','googleNotifyKey','c7137da1854e4e3f9e5d58f6e78616ee',NULL,NULL,NULL,'AlphaNumeric',NULL,NULL,18,NULL,NULL,1)
+END
+
+
+-- add MsgQSessionServerRq, MsgQSessionServerRS entried in config table
+--IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'MsgQSessionServerRq')
+--BEGIN
+--	print('Please add MsgQSessionServerRq')
+--END
+--IF NOT EXISTS(SELECT * FROM Config WHERE Parameter = 'MsgQSessionServerRS')
+--BEGIN
+--	print('Please add MsgQSessionServerRS ')
+--END
+
+
+
+
+IF NOT EXISTS(SELECT * FROM Agent WHERE SineCode = '9992AW/EB')
+BEGIN
+	print('No sine for 9992')
+	INSERT INTO AGENT ( SineCode , SineNo, SineAlpha, DutyCode, SecurityLevel, ShortName,
+					FullName, City, AirlineID, IssOffCode, IssAgtID, Currency, Restricted,
+					GHA, Country, AgentType, MTktValidB4FOP, Password, AgentETKT, AgentPTKT,
+					AgentSuspended,AgentRR,AgentHL,AgentFOPCash, AgentFOPCheque, AgentFOPCC, AgentFOPInvoice,
+					AgentFOPInvoiceIssOffCode,AgentVOID,AgentCredit,AgentFQM,AgentAllQs,AgentIML, AgentClassFare,
+					AgentFTKNOB4PTKT,AGENTRO,AgentFOPFQTV,AgentCreditLimitUpdate,AgentRemittance,SkipPasswordCheck,AgentPasswordCheck,
+					AgentRefund,AgentCXEXWaiver,SubIssOffCode,SubOffice,SineOnMsg,TktNumValidationSkip,FOPMandatoryBeforeTktNo,
+					CCChargeExempt,AgentManualXBAGEntry,NetCommission,SOCommand,AgentFOPInvoiceVoucher,SOCL,SOTQ,
+					EZRCEZRE,[Profile],AgentChangeNames, AgentEmail, SineGeneric, RestrictInvoiceRef, AllowAccessVia,
+					AgentTEUCaseON, AgentTEFontSize, AgentTEBackgroundColour, AgentTEForegroundColour, AgentTEBackgroundImageOff, VidecomSineCode, ItineraryDrivenCurrencyInUse,
+					ApiIpAddress, RefundBSPTickets, VarsConfigXml, VarsExpertStartPage, VarsAgentStartPage, AgentFOPVoucher, IsValid,
+					ZSRC, CanClaimPnr, PhoneNumber, CacheSine)
+			VALUES ('9992AW/EB',9992,'AW','EB',99,'VIDWEB'
+			,'VIDWEB','LHR',@AirlineID,'MOB001','WEB03','USD','0',
+			0,'GB','B',0,'FAAF10BC88D337',-1,-1,
+			0,0,0,0,0,-1,0,
+			-1,-1,0,-1,-1,0,0,
+			0,0,0,0,0,	NULL,-1,
+			0,-1,NULL,0,0,0,0,
+			0,NULL,0,0,0,-1,1,
+			-1,0,0,NULL,NULL,NULL,NULL,
+			NULL,1,0,NULL,0,NULL,NULL,
+			NULL,0,1,0,NULL,0,NULL,NULL,0,0,0)
+
+
+
+END
+
+
+DECLARE @AgentSineID numeric(18,0)
+SET @AgentSineID = (SELECT AgentSineID FROM Agent WHERE SineCode = '9992AW/EB')
+
+
+print('AgentSineID = '  )
+print(@AgentSineID)
+
+IF NOT EXISTS(SELECT * FROM AgentGuid WHERE AgentGuid.AgentSineID = @AgentSineID)
+BEGIN
+	print('No GUID for 9992')
+	INSERT INTO AgentGuid( AgentSineID, [Guid], PreviousGuid) VALUES
+	(@AgentSineID,	'6e294c5f-df72-4eff-b8f3-1806b247340c','6e294c5f-df72-4eff-b8f3-1806b247340c')
+
+END
+
+
+
+
+

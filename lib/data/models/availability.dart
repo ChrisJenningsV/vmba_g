@@ -1,3 +1,8 @@
+import 'package:vmba/Helpers/settingsHelper.dart';
+import 'package:vmba/Helpers/stringHelpers.dart';
+
+import '../../components/trText.dart';
+
 class AvailabilityModel {
   Availability availability;
 
@@ -265,6 +270,10 @@ class avItin {
 //'${DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime.trim()).add(Duration(days: int.tryParse(pnr.pNR.itinerary.itin[journey].arrOfst.trim()) ?? (0))).difference(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).inHours.toString()}h.
 //${(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime).add(Duration(days: int.tryParse(pnr.pNR.itinerary.itin[journey].arrOfst.trim()) ?? (0))).difference(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).inMinutes % 60).toString()}min',
 
+    // translate duration
+    if( wantRtl()) {
+      return translateNo('${hours}') + translate('h.') + ' ' + translateNo('${min}') + translate('min');
+    }
     return '${hours}h. ${min}min';
   }
 }

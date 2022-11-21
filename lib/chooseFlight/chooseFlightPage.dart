@@ -5,6 +5,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../components/vidButtons.dart';
+import '../utilities/messagePages.dart';
 
 class ChooseFlight extends StatelessWidget {
   ChooseFlight(
@@ -35,41 +36,18 @@ class ChooseFlight extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
-            )
+              onPressed: () {
+                    endProgressMessage();
+                    Navigator.pop(context);
+                }
+              ),
+
           ],
         ),
         body: classBands(context),
         floatingActionButton: vidWideActionButton(context,'CHOOSE FLIGHT', _onPressed, icon: Icons.check, offset: 35 ),
     );
- /*       Padding(
-            padding: EdgeInsets.only(left: 35.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new FloatingActionButton.extended(
-                    elevation: 0.0,
-                    isExtended: true,
-                    label: TrText('CHOOSE FLIGHT',
-                        style: TextStyle(
-                            color: gblSystemColors
-                                .primaryButtonTextColor)),
-                    icon: Icon(
-                      Icons.check,
-                      color: gblSystemColors.primaryButtonTextColor,
-                    ),
-                    backgroundColor: gblSystemColors
-                        .primaryButtonColor, //new Color(0xFF000000),
-                    onPressed: () {
-                      Navigator.of(context).pop(buildfltRequestMsg(
-                          flts,
-                          classband.cbname,
-                          classband.cabin,
-                          int.parse(classband.cb)));
-                      //_handleBookSeats(paxlist);
-                    }),
-              ],
-            )));*/
+
   }
   void _onPressed(BuildContext context, dynamic p) {
     Navigator.of(context).pop(buildfltRequestMsg(

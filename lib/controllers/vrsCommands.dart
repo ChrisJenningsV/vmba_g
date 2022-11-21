@@ -5,7 +5,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 
-import '../data/models/apis_pnr.dart';
 import '../utilities/helper.dart';
 //
 // Building VRS ProcessCimport 'package:vmba/completed/ProcessCommands

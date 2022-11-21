@@ -15,6 +15,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../calendar/calendarFunctions.dart';
 import '../utilities/messagePages.dart';
 
@@ -532,34 +533,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
           scrollDirection: Axis.vertical,
           children: (objAv.availability.itin
               .map(
-                (item) => Container(
-                    margin: EdgeInsets.only(bottom: 10.0),
-                    padding: EdgeInsets.only(
-                        left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
-                    child: Column(
-                      children: <Widget>[
+                (item) => flightItem(item),
 
-                        flightRow(item),
-                        Divider(),
-                        gblSettings.wantCanFacs ? CannedFactWidget(flt: item.flt) : Container(),
-                        infoRow(context, item),
-                        Padding(
-                          padding: EdgeInsets.all(0),
-                        ),
-                        new Divider(),
-                        pricebuttons(item.flt),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: const Color(0x90000000),
-                          offset: Offset(0.0, 6.0),
-                          blurRadius: 10.0,
-                        ),
-                      ],
-                    )),
               )
               .toList()));
     } else {
@@ -601,6 +576,42 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       ],
     );
   }
+
+  Widget flightItem(avItin item) {
+    if( wantPageV2() ) {
+      return CalFlightItemWidget(  objAv:  objAv, item: item, flightSelected: flightSelected ,); //  calFlightItem(context,widget.newBooking, objAv, item);
+    } else {
+      return Container(
+          margin: EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.only(
+              left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
+          child: Column(
+            children: <Widget>[
+
+              flightRow(context, item),
+              Divider(),
+              gblSettings.wantCanFacs ? CannedFactWidget(flt: item.flt) : Container(),
+              infoRow(context, item),
+              Padding(
+                padding: EdgeInsets.all(0),
+              ),
+              new Divider(),
+              pricebuttons(item.flt),
+            ],
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: const Color(0x90000000),
+                offset: Offset(0.0, 6.0),
+                blurRadius: 10.0,
+              ),
+            ],
+          ));
+    }
+    }
+
 
   void goToClassScreen(int index, List<Flt> flts) async {
     var selectedFlt = await Navigator.push(
@@ -659,10 +670,10 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       .length)
               .toString(),
         )));
-    flightSelected(selectedFlt, flts);
+    flightSelected(context, selectedFlt, flts, '');
   }
 
-  void flightSelected(List<String> flt, List<Flt> outboundflts) {
+  void flightSelected(BuildContext context, List<String> flt, List<Flt> outboundflts, String c) {
     NewBooking newFlight = NewBooking();
     newFlight.outboundflight = [];
     // List<String>();

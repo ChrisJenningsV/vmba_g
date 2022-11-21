@@ -495,7 +495,7 @@ String _error = '';
                   decoration: getDecoration(translate("Enter your surname")),
                   validator: (value) {
                     if (value.isEmpty) {
-                      return translate('Please enter a surmane');
+                      return translate('Please enter a surname');
                     } else {
                       return null;
                     }
@@ -1084,7 +1084,7 @@ String _error = '';
       return true;
     }
 
-    _error = 'No furture flights';
+    _error = 'No future flights';
     return false;
   }
 

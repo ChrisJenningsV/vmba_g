@@ -207,7 +207,7 @@ class DepartureListState extends State<DepartureList> {
             return new ListTile(
               //dense: true,
                 title: Text(
-                  '${routes[i]}'.split('|')[1],
+                translate('${routes[i]}'.split('|')[1]),
                 ),
                 onTap: () {
                   //Navigator.pop(context, '${routes[i].org}');
@@ -334,7 +334,7 @@ class _ArrivalsState extends State<Arrivals> {
           itemBuilder: (BuildContext context, i) {
             return new ListTile(
                 title: Text(
-                  '${routes[i]}'.split('|')[1],
+                  translate('${routes[i]}'.split('|')[1]),
                 ),
                 onTap: () {
                   Navigator.pop(context, '${routes[i]}');

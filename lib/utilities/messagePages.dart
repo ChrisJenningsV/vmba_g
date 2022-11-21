@@ -260,6 +260,9 @@ class MessagePageState extends State<MessagePage> {
   }
 
   Widget dialogBody() {
+    // scale and offset image if required, default offset 25 gives radius 48
+    double radius = 73 - gblSettings.progressFactor ; // 48
+    double offset = gblSettings.progressFactor; // 25
     return Center(
         heightFactor: 1,
         child:
@@ -269,12 +272,12 @@ class MessagePageState extends State<MessagePage> {
         Stack(
           children:  [
             Positioned(
-                left: 25,
-                top: 25,
+                left: offset,
+                top: offset,
                 child:
                 CircleAvatar(
                     backgroundColor: Colors.white,
-                    radius: 48,
+                    radius: radius,
                     child: Image.asset('lib/assets/$gblAppTitle/images/loader.png') //Icon(Icons.check),
                 )),
             /*SizedBox(

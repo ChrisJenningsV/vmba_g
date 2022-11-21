@@ -35,12 +35,11 @@ class WebPayPage extends StatefulWidget {
 }
 
 class _WebViewWidgetState extends State<WebPayPage> {
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+
 
   // new bits
   final GlobalKey webViewKey = GlobalKey();
-
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
 
 
   num _stackToView = 1;
@@ -139,7 +138,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
     return WebView(
       initialUrl: _getPayUrl(),
       javascriptMode: JavascriptMode.unrestricted,
-      //debuggingEnabled: true,
+
       onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
         print('on created');
@@ -147,6 +146,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
       onWebResourceError: (WebResourceError e) {
         print('resource error $e');
       },
+
 
 
       navigationDelegate: (NavigationRequest request) {
@@ -211,29 +211,29 @@ class _WebViewWidgetState extends State<WebPayPage> {
   }
 
   Widget _getView() {
-    if( gblSettings.useScrollWebViewiOS && gblIsIos  ) { // gblSettings.useScrollWebViewiOS && gblIsIos
+    if(gblSettings.useScrollWebViewiOS && gblIsIos ) { //
       final ScrollController controller = ScrollController();
       final ScrollController controller2 = ScrollController();
-      print('go wide');
-
       double addWidth = 0;
       if(gblSettings.aircode == 'T6'){
         addWidth = 10;
       }
+
+
       return Scrollbar(
           controller: controller2,
           child: SingleChildScrollView(
-              controller: controller2,
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                  controller: controller,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height +200,
-                    width: MediaQuery.of(context).size.width + addWidth,
-                    child: _getWebView(),
+          controller: controller2,
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+          controller: controller,
+          child: Container(
+          height: MediaQuery.of(context).size.height + 200 ,
+    width: MediaQuery.of(context).size.width + addWidth,
+    child: _getWebView(),
 
-                  )
-              )
+    )
+    )
           )
       );
     } else {
@@ -312,7 +312,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
     if( gblPayFormVals != null) {
       gblPayFormVals.forEach((key, value) {
-        String qValue = value.replaceAll(' ', '%20');
+          String qValue = value.replaceAll(' ', '%20');
           url += '&$key=$qValue';
       });
     }

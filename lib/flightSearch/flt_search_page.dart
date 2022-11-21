@@ -13,6 +13,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 
 class FlightSearchPage extends StatefulWidget {
@@ -91,6 +92,10 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     final List<String> args = ModalRoute.of(context).settings.arguments;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     String helpText ='';
+    EdgeInsets pad = EdgeInsets.all(16.0);
+    if( wantPageV2()) {
+      pad = EdgeInsets.all(15.0);
+    }
     if( gblBuildFlavor == 'UZ') {
       helpText = 'Route Tripoli to Istanbul normally has some fares available.';
     }
@@ -112,7 +117,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             : null,
         bottomNavigationBar: getBottomNav(context, helpText:  helpText),
         body: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: pad,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -140,20 +145,22 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               ),
               JourneyDateWidget(
                   isReturn: _isReturn, onChanged: _handleDateChanged),
+              (wantPageV2()) ?  Container() :
               new Padding(
                 padding: EdgeInsets.only(bottom: 5, top: 5),
                 child: new Divider(
                   height: 0.0,
                 ),
-              ),
+              ) ,
               //Pax selection
               PassengerWidget(
                 systemColors: gblSystemColors,
                 passengers: booking.passengers,
                 onChanged: _handlePaxNumberChanged,
               ),
+              (wantPageV2()) ?  Container() :
               new Padding(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
+                padding: EdgeInsets.only(bottom: 5, top: 0),
                 child: new Divider(
                   height: 0.0,
                 ),
@@ -182,6 +189,10 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   }
 
   Widget _currencyPicker() {
+    if( gblSettings.currencies == null || gblSettings.currencies.isEmpty || gblSettings.currencies.contains(',') == false){
+      return Container();
+    }
+
     List<String> _currencies = []; //['SEK', 'NOK', 'DKK', 'EUR', 'GBP'];
     Map<String, String> countryCodes = {}; // {'S
     var curArray = gblSettings.currencies.split(','); // EK': 'se', 'NOK': 'no', 'DKK': 'dk', 'EUR': 'eu', 'GBP': 'gb'};

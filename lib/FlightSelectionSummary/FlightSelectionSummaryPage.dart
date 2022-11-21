@@ -3,7 +3,9 @@ import 'package:vmba/FlightSelectionSummary/widgets/flightRules.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/passengerDetailsPage.dart';
 import 'package:vmba/utilities/helper.dart';
+import '../Helpers/stringHelpers.dart';
 import '../components/bottomNav.dart';
+import '../components/vidButtons.dart';
 import '../data/models/models.dart';
 import 'dart:async';
 import '../data/models/pnr.dart';
@@ -553,12 +555,12 @@ Row airMiles() {
               ),
               initialData: pnrModel.pNR.itinerary.itin[i].depart.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(text.data,
+                return new Text(translate(text.data),
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
             ),
             Text(
-              ' to ',
+              ' ' + translate('to') + ' ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
             FutureBuilder(
@@ -568,7 +570,7 @@ Row airMiles() {
               initialData: pnrModel.pNR.itinerary.itin[i].arrive.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
                 return new Text(
-                  text.data,
+                  translate(text.data),
                   style: TextStyle(fontWeight: FontWeight.w700),
                 );
               },
@@ -606,7 +608,7 @@ Row airMiles() {
             Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
-                : pnrModel.pNR.itinerary.itin[i].classBandDisplayName)
+                : translate(pnrModel.pNR.itinerary.itin[i].classBandDisplayName))
           ],
         ),
       );
@@ -823,7 +825,7 @@ Row airMiles() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(translate('No of ') + translate('Adults') + ': '),
-                          Text(widget.newBooking.passengers.adults.toString()),
+                          Text(translateNo(widget.newBooking.passengers.adults.toString())),
                         ],
                       )
                     : Padding(
@@ -834,7 +836,7 @@ Row airMiles() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(translate('No of ') + translate('Youths') + ': '),
-                          Text(widget.newBooking.passengers.youths.toString()),
+                          Text(translateNo(widget.newBooking.passengers.youths.toString())),
                         ],
                       )
                     : Padding(
@@ -845,7 +847,7 @@ Row airMiles() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(translate('No of ') + translate('Students') + ': '),
-                    Text(widget.newBooking.passengers.students.toString()),
+                    Text(translateNo(widget.newBooking.passengers.students.toString())),
                   ],
                 )
                     : Padding(
@@ -856,7 +858,7 @@ Row airMiles() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(translate('No of ') + translate('Seniors') + ': '),
-                    Text(widget.newBooking.passengers.seniors.toString()),
+                    Text(translateNo(widget.newBooking.passengers.seniors.toString())),
                   ],
                 )
                     : Padding(
@@ -868,7 +870,7 @@ Row airMiles() {
                         children: <Widget>[
                           TrText('No of children: '),
                           Text(
-                              widget.newBooking.passengers.children.toString()),
+                            translateNo(widget.newBooking.passengers.children.toString())),
                         ],
                       )
                     : Padding(
@@ -879,7 +881,7 @@ Row airMiles() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(translate('No of ') + translate('Infants') +': '),
-                          Text(widget.newBooking.passengers.infants.toString()),
+                          Text(translateNo(widget.newBooking.passengers.infants.toString())),
                         ],
                       )
                     : Padding(
@@ -942,7 +944,7 @@ Row airMiles() {
                       primary: gblSystemColors
                           .primaryButtonColor, //Colors.black,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
+                          borderRadius: getButtonRadius())),
                   onPressed: () {
                     hasDataConnection().then((result) {
                       if (result == true) {

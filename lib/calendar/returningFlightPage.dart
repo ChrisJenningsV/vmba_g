@@ -15,6 +15,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -35,6 +36,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   bool _loadingInProgress;
   ScrollController _scrollController;
   bool _noInternet;
+  String _loading = '';
   String avErrorMsg = 'Please check your internet connection';
 
   DateTime _departureDate;
@@ -44,6 +46,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   @override
   void initState() {
     super.initState();
+    _loading = 'Searching for Flights';
+
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
@@ -221,7 +225,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        progressMessagePage(context, _loading, title: 'loading');
         return Container();
       } else {
       return new Center(
@@ -231,7 +235,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             CircularProgressIndicator(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TrText('Searching for Flights'),
+              child: TrText(_loading),
             )
           ],
         ),
@@ -292,7 +296,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TrText(
-                'Your outbound flight is now after your original requested return date. You will need to select a new return date to contine.',
+                'Your outbound flight is now after your original requested return date. You will need to select a new return date to continue.',
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -421,35 +425,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
           scrollDirection: Axis.vertical,
           children: (objAv.availability.itin
               .map(
-                (item) => Container(
-                    margin: EdgeInsets.only(bottom: 10.0),
-                    padding: EdgeInsets.only(
-                        left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
-                    child: Column(
-                      children: <Widget>[
-                        flightRow(item),
+                (item) =>flightItem( item),
 
-                        Divider(),
-                        gblSettings.wantCanFacs ? CannedFactWidget(flt: item.flt) : Container(),
-                        infoRow(context, item),
-
-                        Padding(
-                          padding: EdgeInsets.all(0),
-                        ),
-                        new Divider(),
-                        pricebuttons(item.flt),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: const Color(0x90000000),
-                          offset: Offset(0.0, 6.0),
-                          blurRadius: 10.0,
-                        ),
-                      ],
-                    )),
               )
               .toList()));
     } else {
@@ -472,6 +449,47 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 */
     }
   }
+
+  Widget flightItem( avItin item) {
+    if( wantPageV2() ) {
+      return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected,);
+        //calFlightItem(context,widget.newBooking, objAv, item);
+    } else {
+      return
+        Container(
+            margin: EdgeInsets.only(bottom: 10.0),
+            padding: EdgeInsets.only(
+                left: 3.0, right: 3.0, bottom: 3.0, top: 3.0),
+            child: Column(
+              children: <Widget>[
+                flightRow(context, item),
+
+                Divider(),
+                gblSettings.wantCanFacs
+                    ? CannedFactWidget(flt: item.flt)
+                    : Container(),
+                infoRow(context, item),
+
+                Padding(
+                  padding: EdgeInsets.all(0),
+                ),
+                new Divider(),
+                pricebuttons(item.flt),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: const Color(0x90000000),
+                  offset: Offset(0.0, 6.0),
+                  blurRadius: 10.0,
+                ),
+              ],
+            ));
+    }
+  }
+
 
   validateSelection(index, item) {
     if (item[0].fltav.fav[index] == '0') {
@@ -655,6 +673,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   void goToClassScreen(int index, List<Flt> flts) async {
+    _loadingInProgress = true;
+    _loading = 'Loading';
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
@@ -667,10 +687,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(List<String> flt, List<Flt> flts, String className) {
+  void flightSelected(BuildContext context ,List<String> flt, List<Flt> flts, String className) {
     print(flt);
     if (flt != null && flt.length > 0) {
       this.widget.newBooking.returningflight = flt;
@@ -678,6 +698,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       this.widget.newBooking.returningClass = className;
     }
 
+    _loadingInProgress = true;
+    _loading = 'loading';
     if (this.widget.newBooking.returningflight.length > 0 &&
         this.widget.newBooking.returningflight[0] != null &&
         this.widget.newBooking.outboundflight[0] != null) {

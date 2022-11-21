@@ -1523,7 +1523,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               setState(() {
 
               });
-
+              gblSettings.creditCardProvider = provider.paymentSchemeName;
               if (provider.paymentType == 'ExternalPayment') {
                 gblCurrentRloc = widget.pnrModel.pNR.rLOC;
                 gblPaymentMsg = null;

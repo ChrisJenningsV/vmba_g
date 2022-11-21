@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/components/trText.dart';
@@ -56,17 +57,24 @@ class _RangePickerPageState extends State<RangePickerPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    BorderRadius startDecor =  BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0));
+    BorderRadius lastDecor = BorderRadius.only(topRight: Radius.circular(20.0),bottomRight: Radius.circular(20.0));
+
+    if( wantRtl()){
+      // swap them over
+      lastDecor =  BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0));
+      startDecor = BorderRadius.only(topRight: Radius.circular(20.0),bottomRight: Radius.circular(20.0));
+    }
+
     // add selected colors to default settings
     DatePickerRangeStyles styles = DatePickerRangeStyles(
       selectedPeriodLastDecoration: BoxDecoration(
           color: selectedPeriodLastColor,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0))),
+          borderRadius: lastDecor),
       selectedPeriodStartDecoration: BoxDecoration(
         color: selectedPeriodStartColor,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+        borderRadius: startDecor,
       ),
       selectedPeriodMiddleDecoration: BoxDecoration(
           color: selectedPeriodMiddleColor, shape: BoxShape.rectangle),

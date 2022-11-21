@@ -129,7 +129,7 @@ initLang(String lang) async {
               String filePath = '$path/lang.json';
               File file = File(filePath);
               await file.writeAsString(data);
-              logit('saved lang file $filePath');
+              logit('saved $lang lang file $filePath');
 
             } catch(e) {
               logit( 'save file error:$e');
@@ -250,7 +250,12 @@ dialogContent(BuildContext context) {
               initLang(gblLanguage);
               saveLang(gblLanguage);
 
+              // close dialog
               Navigator.of(context).pop();
+              // close menu
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/HomePage', (Route<dynamic> route) => false);
               },
             child: TrText("Submit"
               //fontWeight: FontWeight.bold,

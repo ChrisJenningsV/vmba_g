@@ -13,9 +13,7 @@ import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import 'trText.dart';
 
-void _logout({int p1}){
 
-}
 Widget getBottomNav(BuildContext context, {Widget popButton, String helpText} ) {
   if( gblDemoMode == true){
     List <Widget> list = [];

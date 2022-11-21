@@ -185,6 +185,7 @@ bool bFirstTime = true;
       Locale('da', ''),
       Locale('no', ''),
       Locale('fi', ''),
+      Locale('ar', ''),
     ];
     if( gblSettings.gblLanguages != null && gblSettings.gblLanguages.isNotEmpty) {
       // sv,Swedish,no,Norwegian,da,Danish,fi,Finnish,en,English,fr,French
@@ -202,10 +203,10 @@ bool bFirstTime = true;
     return ChangeNotifierProvider(
       create: (_) => new LocaleModel(),
       child: Consumer<LocaleModel>(
-          builder: (context, provider, child) => MaterialApp(
+          builder: (context, provider, child) =>
+              MaterialApp(
             navigatorKey: NavigationService.navigatorKey,
       localizationsDelegates: localizationsDelegates,
-      //locale: Locale('fr', ''), // locale: Locale(gblLanguage, ''),
       locale: Provider.of<LocaleModel>(context).getLocale(),
       supportedLocales: locales,
 
@@ -224,7 +225,10 @@ bool bFirstTime = true;
         primaryColor: gblSystemColors.primaryColor,
         colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
       ),
-      home: new RootPage(),
+      home: Directionality(
+                textDirection: wantRtl() ? TextDirection.rtl : TextDirection.ltr, 
+                child: RootPage()
+      ),
       routes: <String, WidgetBuilder>{
         /* '/UserProfile': (BuildContext context) => new ProfileWidget(),*/
         '/HomePage': (BuildContext context) => new HomePage(),

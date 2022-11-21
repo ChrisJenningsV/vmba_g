@@ -27,10 +27,10 @@ void configT6() {
   SystemColors _systemColors = SystemColors(
       textButtonTextColor: Colors.black54,
      seatPlanColorEmergency: Colors.red, //Colors.yellow
-      seatPlanColorAvailable: Colors.blue, //Colors.green
-      seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
+      seatPlanColorAvailable: Color.fromRGBO(0, 0x9A, 0xCE, 1), //Colors.green
+      seatPlanColorSelected: Color.fromRGBO(0, 0x67, 0xA0, 1), //Colors.grey.shade600
       seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
-      seatPlanColorRestricted: Colors.green[200],
+      seatPlanColorRestricted: Color.fromRGBO(0x80, 0x80, 0x80, 1),
       primaryButtonColor: Color.fromRGBO(83, 40, 99, 1),
       accentButtonColor: Color.fromRGBO(83, 40, 99, 1),
          // Color.fromRGBO(73, 201, 245, 1), 
@@ -78,7 +78,7 @@ void configT6() {
  //     hostBaseUrl:  'https://customertest.videcom.com/airswift/VARS/public',
       iOSAppId: '1457545908',
       androidAppId: 'com.airswift.reservations',
-      fqtvName: 'Travel Club',
+      fqtvName: 'My SWIFT Rewards Club',
       appFeedbackEmail: 'appfeedback@air-swift.com',
       groupsBookingsEmail: 'groups@air-swift.com',
       bpShowFastTrack: true,
@@ -95,10 +95,11 @@ void configT6() {
     wantClassBandImages: true,
     wantCountry: true,
     wantTallPageImage: true,
-    pageStyle: 'V2',
+    //pageStyle: 'V2',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
     useWebApiforVrs: true,
     wantEnglishTranslation: true,
+    progressFactor: -30,
 
 
     passengerTypes: PassengerTypes(
@@ -149,13 +150,14 @@ void configT6() {
     wantNewPayment: true,
     useScrollWebViewiOS: true,
     wantMmbProducts: true,
-    productImageMode: 'none',
+    productImageMode: 'index',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
 
     wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',
-  maxNumberOfPax: 8,
+  maxNumberOfPax: 9,
+    maxNumberOfInfants: 4,
   hideFareRules: false,
     searchDateOut: 1,
     searchDateBack: 6,

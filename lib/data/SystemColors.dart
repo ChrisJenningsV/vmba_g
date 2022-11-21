@@ -22,6 +22,8 @@ class SystemColors {
   Color progressTextColor;
    Color headerTextColor;
    Color promoBackColor;
+   Color textEditBorderColor;
+   Color textEditIconColor;
 
   final Brightness statusBar;
 
@@ -55,6 +57,8 @@ class SystemColors {
     this.primaryHeaderColor,
     this.headerTextColor,
     this.statusBar,
+    this.textEditBorderColor,
+    this.textEditIconColor,
 //    this.primaryTitle,
  //   this.accentTitle,
  //   this.accentBody,
@@ -89,6 +93,8 @@ class SystemColors {
     if(progressBackColor == null ) progressBackColor = primaryHeaderColor;
     if(progressTextColor == null) progressTextColor = headerTextColor;
     if( progressColor == null ) progressColor =  primaryHeaderColor;
+    if( textEditBorderColor == null ) textEditBorderColor = Colors.grey.shade300;
+    if( textEditIconColor == null ) textEditIconColor =Colors.grey.shade500;
 
   }
 }

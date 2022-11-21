@@ -26,3 +26,18 @@ void setLiveTest() {
     }
   }
 }
+
+bool wantRtl() {
+  if( gblLanguage == 'ar'){
+    return true;
+  }
+  return false;
+}
+
+bool wantPageV2() {
+  if( gblSettings.pageStyle == 'V2') {
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -211,12 +211,14 @@ class Settings {
   String groupsBookingsEmail ="";
   bool hideFareRules;
   int maxNumberOfPax;
+  int maxNumberOfInfants;
 //  bool fqtvEnabled;
   bool bpShowLoungeAccess;
   int searchDateOut;
   int searchDateBack;
   int payTimeout;
   int passportLayoutStyle;
+  double progressFactor;
 
 bool bpShowFastTrack;
   Settings({
@@ -328,6 +330,7 @@ bool bpShowFastTrack;
     this.prohibitedItemsNoticeUrl,
     this.groupsBookingsEmail,
     this.maxNumberOfPax,
+    this.maxNumberOfInfants = 9,
     this.hideFareRules,
     //this.fqtvEnabled,
     this.bpShowFastTrack,
@@ -369,6 +372,7 @@ bool bpShowFastTrack;
     this.customMenu1,
     this.customMenu2,
     this.customMenu3,
+    this.progressFactor = 25,
 
   });
   void setDefaults() {

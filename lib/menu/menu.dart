@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/Helpers/pageHelper.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
 import 'package:vmba/menu/faqs_page.dart';
@@ -7,7 +6,6 @@ import 'package:vmba/menu/myAccountPage.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/trText.dart';
-//import 'package:package_info/package_info.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
@@ -19,10 +17,21 @@ import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   DrawerMenu({
     Key key,
   }) : super(key: key);
+
+
+  _DrawerMenuState createState() => _DrawerMenuState();
+}
+
+  class _DrawerMenuState extends State<DrawerMenu> {
+
+    @override
+    initState() {
+      super.initState();
+    }
 
   @override
   Widget build(BuildContext context) {

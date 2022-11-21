@@ -12,6 +12,7 @@ import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
@@ -274,7 +275,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     Color headerClr = gblSystemColors.primaryHeaderColor;
        bool extendBodyBehindAppBar =  false;
 
-    if( gblSettings.homePageStyle == 'V2') {
+    if( wantPageV2()) {
       headerClr = Colors.transparent;
       elevation = 0;
       extendBodyBehindAppBar =  true;
@@ -560,7 +561,7 @@ Widget _getLogo(){
     FontWeight fw = FontWeight.bold;
     double tsf = 1.0;
 
-    if( gblSettings.homePageStyle == 'V2') {
+    if( wantPageV2()) {
       b1Clr = gblSystemColors.home1ButtonColor;
       b2Clr = gblSystemColors.home2ButtonColor;
       b1TextClr = gblSystemColors.home1ButtonTextColor;

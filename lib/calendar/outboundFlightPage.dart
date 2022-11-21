@@ -16,6 +16,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -35,12 +36,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
   bool _noInternet;
   String avErrorMsg = 'Please check your internet connection';
+  String _loading = '';
 
   @override
   void initState() {
     super.initState();
     _scrollController = new ScrollController();
     _loadingInProgress = true;
+    _loading = 'Searching for Flights';
     _noInternet = false;
     gblBookingState = BookingState.newBooking;
 
@@ -273,7 +276,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        progressMessagePage(context, _loading, title: 'loading');
         return Container();
       } else {
         return new Center(
@@ -283,7 +286,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TrText('Searching for Flights'),
+                child: TrText(_loading),
               )
             ],
           ),
@@ -351,54 +354,50 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           scrollDirection: Axis.vertical,
           children: (objAv.availability.itin
               .map(
-                (item) => Container(
-                    margin: EdgeInsets.only(bottom: 10.0),
-                    padding: EdgeInsets.only(
-                        left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
-                    child: Column(
-                      children: <Widget>[
-                        flightRow(item),
-                        Divider(),
-                        gblSettings.wantCanFacs ? CannedFactWidget(flt: item.flt) : Container(),
-                        infoRow(context, item),
-                        Padding(
-                          padding: EdgeInsets.all(0),
-                        ),
-                        new Divider(),
-                        pricebuttons(item.flt),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: const Color(0x90000000),
-                          offset: Offset(0.0, 6.0),
-                          blurRadius: 10.0,
-                        ),
-                      ],
-                    )),
+                (item) => flightItem( item),
+
               )
               .toList()));
     } else {
       return noFlightsFound();
-/*
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TrText(
-            'Sorry no flights found',
-            style: TextStyle(fontSize: 14.0),
-          ),
-          TrText(
-            'Try search for a different date',
-            style: TextStyle(fontSize: 14.0),
-          ),
-        ],
-      ));
-*/
     }
+  }
+
+  Widget flightItem(avItin item){
+      if( wantPageV2() ) {
+        return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected ,); //  calFlightItem(context,widget.newBooking, objAv, item);
+      } else {
+        return Container(
+            margin: EdgeInsets.only(bottom: 10.0),
+            padding: EdgeInsets.only(
+                left: 8.0, right: 8.0, bottom: 8.0, top: 8.0),
+            child: Column(
+              children: <Widget>[
+                flightRow(context, item),
+                Divider(),
+                gblSettings.wantCanFacs
+                    ? CannedFactWidget(flt: item.flt)
+                    : Container(),
+                infoRow(context, item),
+                Padding(
+                  padding: EdgeInsets.all(0),
+                ),
+                new Divider(),
+                pricebuttons(item.flt),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: const Color(0x90000000),
+                  offset: Offset(0.0, 6.0),
+                  blurRadius: 10.0,
+                ),
+              ],
+            )
+        );
+      }
   }
 
   flightSelection() {
@@ -421,6 +420,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   void goToClassScreen(int index, List<Flt> flts) async {
+    _loadingInProgress = true;
+    _loading = 'Loading';
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
@@ -433,10 +434,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(List<String> flt, List<Flt> outboundflts, String className) {
+  void flightSelected(BuildContext context, List<String> flt, List<Flt> outboundflts, String className) {
+    /*setState(() {
+
+    });*/
     if (flt != null) {
       print(flt);
       if (flt != null && flt.length > 0) {
@@ -446,7 +450,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       }
 
       hasDataConnection().then((result) async {
+      //  endProgressMessage();
         if (result == true) {
+          _loadingInProgress = false;
           if (this.widget.newBooking.isReturn &&
               this.widget.newBooking.outboundflight[0] != null) {
             Navigator.push(
@@ -476,13 +482,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                             newBooking: widget.newBooking,
                             pnrModel:  pnrModel,)));
 
-                /*              Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            OptionsPageWidget(
-                              newBooking: this.widget.newBooking,
-                              pnrModel: pnrModel,)));*/
+
               }
 
             } else {
@@ -497,6 +497,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           }
         } else {
           //showSnackBar(translate('Please, check your internet connection'));
+       //   endProgressMessage();
           noInternetSnackBar(context);
         }
       });

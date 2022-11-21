@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
 

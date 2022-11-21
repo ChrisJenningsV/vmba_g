@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'dart:developer';
 
-bool LogginOn = true;
+import '../Helpers/settingsHelper.dart';
+
+
 
 class TrText extends StatelessWidget {
   final String labelText;
@@ -22,11 +24,11 @@ class TrText extends StatelessWidget {
       if (gblLanguage != 'en' || gblSettings.wantEnglishTranslation ) {
         var testTxt = '';
         if( variety == 'title' && gblIsLive == false) {
-            if( gblLangMap['Test Mode: '] != null && gblLangMap['Test Mode: '].isNotEmpty ) {
+           /* if( gblLangMap['Test Mode: '] != null && gblLangMap['Test Mode: '].isNotEmpty ) {
               testTxt = gblLangMap['Test Mode: '];
             } else {
               testTxt = 'Test Mode: ';
-            }
+            }*/
         }
 
 
@@ -38,7 +40,7 @@ class TrText extends StatelessWidget {
           //var msg = 'need trans for "$txt"';
           var msg = ' "$txt": ""';
           //print(msg);
-          if( LogginOn) log(msg);
+          if( gblLanguageLogging) log(msg);
         }
       }
     }
@@ -66,9 +68,13 @@ class TrText extends StatelessWidget {
           }
           break;
       }
-      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize), textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
+      return Text( txt ,style: TextStyle(color: clr, fontSize:  fSize),
+        textDirection: wantRtl() ? TextDirection.rtl : TextDirection.ltr,
+        textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
     } else {
-      return Text( txt ,style: style, textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
+      return Text( txt ,style: style,
+        textDirection: wantRtl() ? TextDirection.rtl : TextDirection.ltr,
+        textAlign: textAlign, textScaleFactor: textScaleFactor, maxLines: maxLines,);
     }
   }
 }
@@ -84,6 +90,6 @@ String translate( String str ) {
   }
   var msg = ' "$str": ""';
   //print(msg);
-  if( LogginOn) log(msg);
+  if( gblLanguageLogging) log(msg);
   return str;
 }

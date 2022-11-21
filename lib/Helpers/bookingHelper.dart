@@ -63,7 +63,7 @@ Future deletePnrContent() async {
       if( msg.isNotEmpty){
         msg = '*${gblPnrModel.pNR.rLOC}^' + msg;
         msg += '^E';
-        logit('deletePnrContent msg:${msg} ');
+        logit('deletePnrContent msg:$msg ');
         try {
           data = await runVrsCommand(msg);
           logit(data);

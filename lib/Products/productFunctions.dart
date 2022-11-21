@@ -23,7 +23,11 @@ NetworkImage getProductImage(Product product){
 
         } else {
           name = gblSettings.gblServerFiles.replaceAll('AppFiles/', 'Public');
-          name = name.replaceAll('AppFiles', 'Public');
+          if( name.contains('/VARS' )) {
+            name = name.replaceAll('AppFiles', 'Public');
+          } else {
+            name = name.replaceAll('AppFiles', 'VARS/Public');
+          }
           name +=  product.productImageURL.replaceAll('..', '');
         }
       } else {

@@ -116,9 +116,9 @@ class ProductCardState extends State<ProductCard> {
 
     if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
       widgets.add(Image(image: getProductImage(prod),
-        fit: BoxFit.fill,
-        height: 40,
-        width: 40,),);
+        fit: BoxFit.fitWidth,
+        //height: 40,
+        width: 70,),);
     }
 
     widgets.add(Align(alignment: Alignment.centerLeft,

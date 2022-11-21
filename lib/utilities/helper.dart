@@ -8,6 +8,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
+import 'package:vmba/Helpers/stringHelpers.dart';
 import 'package:vmba/data/models/cities.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
@@ -118,7 +120,7 @@ Future<String> cityCodeToName(String code) async {
 
   if(city != null ){
     if( city.shortName != null && city.shortName != 'null' && city.shortName.isNotEmpty) {
-      return city.shortName;
+      return translate(city.shortName);
     } else {
       return city.name;
     }
@@ -376,6 +378,9 @@ String formatPrice(String currency, double price) {
 
   if( gblSettings.wantCurrencySymbols == true ) {
     _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
+  }
+  if( wantRtl()) {
+    return translateNo(price.toStringAsFixed(2)) + ' ' + translate(_currencySymbol)  ;
   }
   return _currencySymbol + price.toStringAsFixed(2);
  // return _currencySymbol + formatCurrency.format(price);

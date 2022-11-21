@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/Helpers/stringHelpers.dart';
 import 'package:vmba/utilities/helper.dart';
 import '../components/vidTextFormatting.dart';
 import '../data/models/models.dart';
@@ -115,25 +116,26 @@ class SummaryView extends StatelessWidget {
 
   void getPax(list) {
     if (newBooking.passengers.adults != 0) {
-      list.add(tableRow(translate('No of ') + translate('Adults') + ': ',newBooking.passengers.adults.toString()));
-
+      list.add(tableRow(translate('No of ') + translate('Adults') + ': ',
+          translateNo(newBooking.passengers.adults.toString())));
+    }
       if (newBooking.passengers.youths != 0) {
-        list.add(tableRow(translate('No of ') + translate('Youths') + ': ', newBooking.passengers.youths.toString()));
+        list.add(tableRow(translate('No of ') + translate('Youths') + ': ', translateNo(newBooking.passengers.youths.toString())));
       }
       if (newBooking.passengers.students != 0) {
-        list.add(tableRow(translate('No of ') + translate('Students') + ': ',newBooking.passengers.students.toString()));
+        list.add(tableRow(translate('No of ') + translate('Students') + ': ',translateNo(newBooking.passengers.students.toString())));
       }
       if (newBooking.passengers.seniors != 0) {
-        list.add(translate('No of ') + translate('Seniors') + ': ',newBooking.passengers.seniors.toString());
+        list.add(translate('No of ') + translate('Seniors') + ': ',translateNo(newBooking.passengers.seniors.toString()));
       }
       if (newBooking.passengers.children != 0) {
-        list.add(translate('No of children: '),newBooking.passengers.children.toString());
+        list.add(translate('No of children: '),translateNo(newBooking.passengers.children.toString()));
       }
 
       if (newBooking.passengers.infants != 0) {
-        list.add(tableRow(translate('No of ') + translate('Infants') + ': ',newBooking.passengers.infants.toString()));
+        list.add(tableRow(translate('No of ') + translate('Infants') + ': ',translateNo(newBooking.passengers.infants.toString())));
       }
-    }
+
   }
 
   Widget taxTotal() {

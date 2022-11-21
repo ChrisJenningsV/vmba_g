@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:vmba/data/models/availability.dart';
-import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../../utilities/messagePages.dart';
@@ -74,34 +73,6 @@ class CannedFactWidget extends StatelessWidget {
   }
 
   Widget additionalInfoWidget(String text) {
-    List<Widget> widgets = [];
-    // List<Widget>();
-/*
-    if (text.contains('&lt;a href="')) {
-      String startText = text.split('&lt;a href="')[0];
-      String endText = text.split('&lt;/a&gt;')[1];
-      String url = text.split('&lt;a href="')[1].split('"')[0];
-      String linkText = text
-          .toLowerCase()
-          .split('&gt;&lt;u&gt;')[1]
-          .toLowerCase()
-          .split('&lt;/u&gt;&lt;/a&gt;')[0];
-
-      textSpliter(startText).forEach((widget) {
-        widgets.add(widget);
-      });
-
-      widgets.add(appLinkWidget(
-          url,
-          Text(linkText,
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontWeight: FontWeight.w700,
-              ))));
-      textSpliter(endText).forEach((widget) {
-        widgets.add(widget);
-      });
-*/
     if (text.contains('<')) {
         Widget w = Container(
           height: 200,

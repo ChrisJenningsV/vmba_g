@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'dart:async';
 import 'package:vmba/flightSearch/widgets/citylist.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
 
 class SelectedRoute {
@@ -64,7 +66,9 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Container(
+      //color: Colors.red,
+      child: Row(
 
         //mainAxisSize: MainAxisSize.max,
         // mainAxisAlignment: MainAxisAlignment.start,
@@ -93,36 +97,12 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
                         ? print('Pick departure city first')
                         : await arrivalSelection(context);
                   },
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [ (gblSettings.wantCitySwap && departureCode.isNotEmpty && arrivalCode.isNotEmpty) ?
-                        Row( children: [
-                          TrText('Fly to',style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
-                            icon: Icon(Icons.import_export), color: Colors.blueGrey,
-                            tooltip: translate('Swap Origin and Destination'),
-                            onPressed: () {
-                            setState(() {
-                              var dest = departureAirport;
-                              departureAirport =arrivalAirport;
-                              arrivalAirport = dest;
-                            });
-                            },)
-                        ],)
-                        :new TrText('Fly to',
-                          style: new TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15.0)),
-                  _getAirportText(arrivalAirport,arrivalCode),
-                      new Divider(
-                        height: 0.0,
-                      ),
-                    ],
-                  ))
+                  child: _flyTo(),
+              )
             ],
           )
-        ]);
+        ])
+    );
   }
 
 
@@ -148,7 +128,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
     return FittedBox(
         fit: BoxFit.contain,
         child: TrText(
-      airportName,
+      translate(airportName),
       noTrans: true,
       style: new TextStyle(
           fontWeight: fw,
@@ -168,13 +148,78 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
     _handleArrivalSelectionChanged('$result');
   }
 
+  Widget _airport(String fullName){
+    if( fullName.contains('(')) {
+      String airport = fullName.split('(')[0];
+      String code = fullName.split('(')[1];
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(translate(airport.trim()), textScaleFactor: 1.5,
+            style: TextStyle(fontWeight: FontWeight.bold),),
+          Padding(padding: EdgeInsets.only(left: 5)),
+          Text(code.replaceAll(')', ''),),
+        ],
+      );
+    } else {
+      return Text(fullName);
+    }
+  }
+
+  Widget _flyTo() {
+    if( wantPageV2()) {
+      return v2BorderBox(context,  ' ' + translate('Fly to'), Row(
+          children: <Widget>[
+            Icon(PhosphorIcons.airplane_landing, color:  gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
+            Padding(padding: EdgeInsets.all(5)),
+            _airport(arrivalAirport), /// Text(departureAirport)
+          ]));
+
+    } else {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        (gblSettings.wantCitySwap && departureCode.isNotEmpty &&
+            arrivalCode.isNotEmpty) ?
+        Row(children: [
+          TrText('Fly to', style: new TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 15.0)),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            icon: Icon(Icons.import_export),
+            color: Colors.blueGrey,
+            tooltip: translate('Swap Origin and Destination'),
+            onPressed: () {
+              setState(() {
+                var dest = departureAirport;
+                departureAirport = arrivalAirport;
+                arrivalAirport = dest;
+              });
+            },)
+        ],)
+            : new TrText('Fly to',
+            style: new TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 15.0)),
+        _getAirportText(arrivalAirport, arrivalCode),
+        new Divider(
+          height: 0.0,
+        ),
+      ],
+    );
+  }
+  }
+
+
+
   Widget _flyFrom() {
-    if( gblSettings.pageStyle == 'V3') {
+    if( wantPageV2()) {
       return v2BorderBox(context,  ' ' + translate('Fly From'), Row(
           children: <Widget>[
-            Icon(Icons.flight_takeoff),
-            Padding(padding: EdgeInsets.all(2)),
-            Text(departureAirport)
+            Icon(PhosphorIcons.airplane_takeoff, color: gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
+            Padding(padding: EdgeInsets.all(5)),
+            _airport(departureAirport), /// Text(departureAirport)
           ]));
 
     } else {

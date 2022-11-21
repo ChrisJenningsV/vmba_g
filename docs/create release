@@ -30,6 +30,7 @@ buildRelease\fastjet.bat
 buildRelease\buraq.bat
 buildRelease\hisky.bat
 buildRelease\medsky.bat
+buildRelease\blueislands.bat
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 

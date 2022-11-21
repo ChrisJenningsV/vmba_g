@@ -12,6 +12,9 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
 
+import '../../Helpers/settingsHelper.dart';
+import '../../components/pageStyleV2.dart';
+
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
       {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger, this.destination, this.newBooking})
@@ -188,7 +191,280 @@ return SafeArea(
 
   }
 
+Widget _getTitle(){
+    if( wantPageV2()) {
+      return v2BorderBox(context,  ' ' + translate('Title'),
+        TextFormField(
+    decoration: v2Decoration(),
 
+  controller: _titleTextEditingController,
+  validator: (value) =>
+  value.isEmpty ? translate('Title cannot be empty') : null,
+  onSaved: (value) {
+  if (value != null) {
+  }
+  },
+  ),
+        padding: EdgeInsets.only(left: 10, right: 10),
+      );
+        } else {
+  return TextFormField(
+  decoration: getDecoration('Title'),
+  // initialValue: translate(widget.passengerDetail.title),
+
+  controller: _titleTextEditingController,
+  validator: (value) =>
+  value.isEmpty ? translate('Title cannot be empty') : null,
+  onSaved: (value) {
+  if (value != null) {
+  //widget.passengerDetail.title = value.trim();
+  //_titleTextEditingController.text =translate(widget.passengerDetail.title);
+  }
+  },
+  );
+  }
+}
+
+Widget getFirstname() {
+ /* if( wantPageV2()) {
+    return V2TextWidget(
+      title: 'First name (as Passport)',
+      validator: (value) => value.isEmpty ? translate('First name cannot be empty') : null,
+      textInputAction:  TextInputAction.done,
+        controller: _firstNameTextEditingController,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.firstName = value;
+        },
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+      ],
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.firstName = value.trim();
+          }
+        }
+    );
+
+
+
+
+  return v2BorderBox(context,  ' ' + translate('First name (as Passport)'),
+      TextFormField(
+          decoration: v2Decoration(),
+        controller: _firstNameTextEditingController,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.firstName = value;
+        },
+        textInputAction: TextInputAction.done,
+        // keyboardType: TextInputType.text,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+        ],
+        validator: (value) =>
+        value.isEmpty ? translate('First name cannot be empty') : null,
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.firstName = value.trim();
+          }
+        },
+      ),
+      padding: EdgeInsets.only(left: 10, right: 10),
+    );
+          } else {*/
+    return V2TextWidget(
+      maxLength: 50,
+      decoration: getDecoration('First name (as Passport)'),
+      controller: _firstNameTextEditingController,
+      onFieldSubmitted: (value) {
+        widget.passengerDetail.firstName = value;
+      },
+      textInputAction: TextInputAction.done,
+      // keyboardType: TextInputType.text,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+      ],
+      validator: (value) =>
+      value.isEmpty ? translate('First name cannot be empty') : null,
+      onSaved: (value) {
+        if (value != null) {
+          widget.passengerDetail.firstName = value.trim();
+        }
+      },
+    );
+  //}
+}
+
+  Widget getLastname() {
+ /* if( wantPageV2()){
+    return V2TextWidget(
+        title: 'Last name (as Passport)',
+      maxLength: 50,
+      controller: _lastNameTextEditingController,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+      ],
+      onFieldSubmitted: (value) {
+        widget.passengerDetail.lastName = value;
+      },
+      validator: (value) =>
+      value.isEmpty ? translate('Last name cannot be empty') : null,
+      onSaved: (value) {
+        if (value != null) {
+          widget.passengerDetail.lastName = value.trim();
+        }
+      },
+    );
+  } else {*/
+    return   V2TextWidget(
+      maxLength: 50,
+      decoration: getDecoration('Last name (as Passport)'),
+      controller: _lastNameTextEditingController,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+      ],
+      onFieldSubmitted: (value) {
+        widget.passengerDetail.lastName = value;
+      },
+      validator: (value) =>
+      value.isEmpty ? translate('Last name cannot be empty') : null,
+      onSaved: (value) {
+        if (value != null) {
+          widget.passengerDetail.lastName = value.trim();
+        }
+      },
+    );
+ //}
+  }
+
+  Widget getMiddlename() {
+   /* if( wantPageV2()){
+      return V2TextWidget(
+          title: 'Middle name (or NONE)',
+        controller: _middleNameTextEditingController,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.middleName = value;
+        },
+        textInputAction: TextInputAction.done,
+        // keyboardType: TextInputType.text,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+        ],
+        validator: (value) =>
+        value.isEmpty ? translate(
+            'Middle name cannot be empty - type NONE if none') : null,
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.middleName = value.trim();
+          }
+        },
+      );
+    } else {*/
+      return V2TextWidget(
+        maxLength: 50,
+        decoration: getDecoration('Middle name (or NONE)'),
+        controller: _middleNameTextEditingController,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.middleName = value;
+        },
+        textInputAction: TextInputAction.done,
+        // keyboardType: TextInputType.text,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+        ],
+        validator: (value) =>
+        value.isEmpty ? translate(
+            'Middle name cannot be empty - type NONE if none') : null,
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.middleName = value.trim();
+          }
+        },
+      );
+    //}
+  }
+
+  Widget getFqtv() {
+  /*  if( wantPageV2()){
+      return V2TextWidget(
+          title: gblSettings.fqtvName == null
+              ? 'FQTV number'
+              : '${gblSettings.fqtvName} ' + translate('number'),
+        maxLength: 20,
+        keyboardType: TextInputType.text,
+        controller: _fqtvTextEditingController,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+        ],
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.fqtv = value;
+        },
+        validator: (value) => null, // value.isEmpty ? null, val,
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.fqtv = value.trim();
+          }
+        },
+      );
+          } else {*/
+    return V2TextWidget(
+          maxLength: 20,
+          decoration: getDecoration( gblSettings.fqtvName == null
+          ? 'FQTV number'
+              : '${gblSettings.fqtvName} ' + translate('number')),
+          keyboardType: TextInputType.text,
+          controller: _fqtvTextEditingController,
+          inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+          ],
+          onFieldSubmitted: (value) {
+          widget.passengerDetail.fqtv = value;
+          },
+          validator: (value) => null, // value.isEmpty ? null, val,
+          onSaved: (value) {
+          if (value != null) {
+          widget.passengerDetail.fqtv = value.trim();
+          }
+          },
+          );
+        //  }
+  }
+  Widget getPhoneNumber() {
+   /* if( wantPageV2()) {
+      return V2TextWidget(
+        title:'Phone Number',
+        maxLength: 50,
+        controller: _phoneTextEditingController,
+        keyboardType: TextInputType.number,
+        validator: (value) =>
+        value.isEmpty ? translate('Phone Number cannot be empty') : null,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.phonenumber = value;
+        },
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.phonenumber = value.trim();
+          }
+        },
+      );
+    } else {*/
+      return V2TextWidget(
+        maxLength: 50,
+        decoration: getDecoration('Phone Number'),
+        controller: _phoneTextEditingController,
+        keyboardType: TextInputType.number,
+        validator: (value) =>
+        value.isEmpty ? translate('Phone Number cannot be empty') : null,
+        onFieldSubmitted: (value) {
+          widget.passengerDetail.phonenumber = value;
+        },
+        onSaved: (value) {
+          if (value != null) {
+            widget.passengerDetail.phonenumber = value.trim();
+          }
+        },
+      );
+    //}
+  }
 
  List <Widget> renderFields() {
     List <Widget> list = [];
@@ -200,6 +476,7 @@ return SafeArea(
 
     //return Column(children: <Widget>[
     //logit('title = ${widget.passengerDetail.title}');
+    list.add(Padding(padding: EdgeInsets.all(5)));
     list.add(Padding(
       padding: _padding,
       child: InkWell(
@@ -219,20 +496,7 @@ return SafeArea(
           );
         },
         child: IgnorePointer(
-          child: TextFormField(
-            decoration: getDecoration('Title'),
-           // initialValue: translate(widget.passengerDetail.title),
-
-            controller: _titleTextEditingController,
-            validator: (value) =>
-            value.isEmpty ? translate('Title cannot be empty') : null,
-            onSaved: (value) {
-              if (value != null) {
-                //widget.passengerDetail.title = value.trim();
-                //_titleTextEditingController.text =translate(widget.passengerDetail.title);
-              }
-            },
-          ),
+          child: _getTitle(),
         ),
       ),
     ));
@@ -242,26 +506,8 @@ return SafeArea(
       padding: _padding,
       child: new Theme(
         data: theme ,
-        child: TextFormField(
-          maxLength: 50,
-          decoration: getDecoration('First name (as Passport)'),
-          controller: _firstNameTextEditingController,
-          onFieldSubmitted: (value) {
-            widget.passengerDetail.firstName = value;
-          },
-          textInputAction: TextInputAction.done,
-          // keyboardType: TextInputType.text,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-          ],
-          validator: (value) =>
-          value.isEmpty ? translate('First name cannot be empty') : null,
-          onSaved: (value) {
-            if (value != null) {
-              widget.passengerDetail.firstName = value.trim();
-            }
-          },
-        ),
+        child: getFirstname(),
+
       ),
     ));
 
@@ -271,26 +517,7 @@ return SafeArea(
         padding: _padding,
         child: new Theme(
           data: theme ,
-          child: TextFormField(
-            maxLength: 50,
-            decoration: getDecoration('Middle name (or NONE)'),
-            controller: _middleNameTextEditingController,
-            onFieldSubmitted: (value) {
-              widget.passengerDetail.middleName = value;
-            },
-            textInputAction: TextInputAction.done,
-            // keyboardType: TextInputType.text,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-            ],
-            validator: (value) =>
-            value.isEmpty ? translate('Middle name cannot be empty - type NONE if none') : null,
-            onSaved: (value) {
-              if (value != null) {
-                widget.passengerDetail.middleName = value.trim();
-              }
-            },
-          ),
+          child: getMiddlename(),
         ),
       ));
 
@@ -302,24 +529,8 @@ return SafeArea(
       padding: _padding,
       child: new Theme(
         data: theme,
-        child: TextFormField(
-          maxLength: 50,
-          decoration: getDecoration('Last name (as Passport)'),
-          controller: _lastNameTextEditingController,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-          ],
-          onFieldSubmitted: (value) {
-            widget.passengerDetail.lastName = value;
-          },
-          validator: (value) =>
-          value.isEmpty ? translate('Last name cannot be empty') : null,
-          onSaved: (value) {
-            if (value != null) {
-              widget.passengerDetail.lastName = value.trim();
-            }
-          },
-        ),
+        child: getLastname(),
+
       ),
     ));
 
@@ -392,26 +603,7 @@ return SafeArea(
         padding: _padding,
         child: new Theme(
           data: theme,
-          child: TextFormField(
-            maxLength: 20,
-            decoration: getDecoration( gblSettings.fqtvName == null
-                  ? 'FQTV number'
-                  : '${gblSettings.fqtvName} ' + translate('number')),
-            keyboardType: TextInputType.text,
-            controller: _fqtvTextEditingController,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-            ],
-            onFieldSubmitted: (value) {
-              widget.passengerDetail.fqtv = value;
-            },
-            validator: (value) => null, // value.isEmpty ? null, val,
-            onSaved: (value) {
-              if (value != null) {
-                widget.passengerDetail.fqtv = value.trim();
-              }
-            },
-          ),
+          child: getFqtv(),
         ),
       ));
 
@@ -553,22 +745,7 @@ return SafeArea(
         padding: _padding,
         child: new Theme(
           data: theme,
-          child: TextFormField(
-            maxLength: 50,
-            decoration: getDecoration('Phone Number'),
-            controller: _phoneTextEditingController,
-            keyboardType: TextInputType.number,
-            validator: (value) =>
-            value.isEmpty ? translate('Phone Number cannot be empty') : null,
-            onFieldSubmitted: (value) {
-              widget.passengerDetail.phonenumber = value;
-            },
-            onSaved: (value) {
-              if (value != null) {
-                widget.passengerDetail.phonenumber = value.trim();
-              }
-            },
-          ),
+          child: getPhoneNumber(),
         ),
       ));
     }
@@ -578,7 +755,7 @@ return SafeArea(
         padding: _padding,
         child: new Theme(
           data: theme,
-          child: TextFormField(
+          child: V2TextWidget(
             maxLength: 50,
             decoration: getDecoration('Email'),
             controller: _emailTextEditingController,

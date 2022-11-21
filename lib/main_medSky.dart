@@ -38,6 +38,10 @@ void configM1() {
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
+    home1ButtonColor: Color.fromRGBO(0X1A, 0x1E, 0x4E, 1),
+    home2ButtonColor: Colors.white,
+    home1ButtonTextColor: Colors.white,
+    home2ButtonTextColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
@@ -50,12 +54,14 @@ void configM1() {
 
   gblSettings = Settings (
     pageStyle: 'V2',
+    homePageStyle: 'V2',
+    buttonStyle: 'RO3',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
-//    gblLanguages: 'ro,Romanian,en,English',
+    gblLanguages: 'ar,Arabic,en,English',
 //    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
     currency: 'RON',
-    wantCurrencyPicker: true,
+    wantCurrencyPicker: false,
     wantPassengerPassport: true,
     wantCanFacs: false,
 
@@ -132,8 +138,10 @@ void configM1() {
     testSmartApiUrl:      "https://customertest.videcom.com/medsky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/medsky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/medsky/VARS/webApiv2/api/',
-//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+  //  testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
+// website
+// http://10.0.2.2:50311/TEST/PushTest.aspx
 
  /*   creditCardProvider: '3DS_videcard',
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
@@ -157,7 +165,7 @@ void configM1() {
     useSmartPay: false,
 
     wantFQTVNumber: true,
-    apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
+    apiKey: '93a9626c78514c2baab494f4f6e0c197',
     maxNumberOfPax: 8,
     hideFareRules: false,
 

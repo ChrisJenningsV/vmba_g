@@ -71,6 +71,7 @@ void configSI() {
 
   gblSettings = Settings(
       wantLeftLogo:  true,
+    useWebApiforVrs: true,
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: true,
@@ -140,7 +141,13 @@ void configSI() {
   apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
   creditCardProvider: 'videcard', // citypaydirect
 
-  testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    // for local debugging \VARS\Config\applicationhost.config needs (in <site name="VARS Public(7)" id="23">)
+    //<binding protocol="http" bindingInformation="*:63954:localhost" />
+    // 					<binding protocol="http" bindingInformation="*:63954:127.0.0.1" />
+
+ // testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/blueislands/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://192.168.100.98/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
@@ -149,7 +156,8 @@ void configSI() {
  //   testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect
 
-  wantPayStack: false,
+    wantNewPayment: true,
+    wantPayStack: false,
   bpShowFastTrack: false,
   bpShowLoungeAccess: false,
   wantPushNoticications: true,

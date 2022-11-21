@@ -5,6 +5,10 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../Helpers/settingsHelper.dart';
+import '../../Helpers/stringHelpers.dart';
+import '../../components/pageStyleV2.dart';
+
 class PassengerWidget extends StatefulWidget {
   PassengerWidget({Key key, this.systemColors, this.passengers, this.onChanged})
       : super(key: key);
@@ -112,36 +116,9 @@ class _PassengerWidgetState extends State<PassengerWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         new Expanded(
-          child: new Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                new TrText("Adults (16+)",
-                    style: new TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15.0)),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    new IconButton(
-                      icon: Icon(
-                        Icons
-                            .remove_circle_outline, // color: widget.systemColors.accentButtonColor,
-                      ),
-                      onPressed: adults == 1 ? null : _removeAdult,
-                    ),
-                    new Text(adults.toString(), style: TextStyle(fontSize: 20)),
-                    new IconButton(
-                      icon: Icon(
-                        Icons
-                            .add_circle_outline, //color: widget.systemColors.accentButtonColor
-                      ),
-                      onPressed: _addAdult,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+
+          child: _getAdults(),
+
           flex: 1,
         ),
         Container(
@@ -152,46 +129,145 @@ class _PassengerWidgetState extends State<PassengerWidget> {
               width: 4,
             )),
         new Expanded(
-          child: new Container(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              new TrText("Other Passengers", //"Children & Infants",
-                  style: new TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15.0)),
-              new GestureDetector(
-                onTap: () {
-                  //  _selectedDate(context);
-                  _navigateToNewScreen(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Expanded(
-                        child: (infants + children + youths + seniors + students + teachers) == 0
-                            ? TrText("Select",
-                                style: new TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 20.0,
-                                    color: Colors.grey))
-                            : Text((infants + children + youths + seniors + students + teachers ).toString(),
-                                style: new TextStyle(
-                                  //fontWeight: FontWeight.w300,
-                                  fontSize: 20.0,
-                                  //color: Colors.grey
-                                )),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-          ),
+          child: _getOtherPax(),
+
           flex: 1,
         ),
       ],
     );
+  }
+  Widget _getOtherPax() {
+    if( wantPageV2()) {
+      return v2BorderBox(context,  ' ' + translate('Other Passengers'),
+        GestureDetector(
+    onTap: () {
+    //  _selectedDate(context);
+    _navigateToNewScreen(context);
+    },
+    child: Padding(
+    padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
+    child: Row(
+    mainAxisSize: MainAxisSize.max,
+    children: <Widget>[
+    Expanded(
+    child: (infants + children + youths + seniors + students + teachers) == 0
+    ? TrText("Select",
+    style: new TextStyle(
+    fontWeight: FontWeight.w300,
+    fontSize: 20.0,
+    color: Colors.grey))
+        : Text(translateNo((infants + children + youths + seniors + students + teachers ).toString()),
+    style: new TextStyle(
+    //fontWeight: FontWeight.w300,
+    fontSize: 20.0,
+    //color: Colors.grey
+    )),
+    ),
+    ],
+    ),
+    ),
+    ),
+        height: 70
+      );
+
+    } else {
+      return  Container(
+        child:
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          new TrText("Other Passengers", //"Children & Infants",
+              style: new TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 15.0)),
+          new GestureDetector(
+            onTap: () {
+              //  _selectedDate(context);
+              _navigateToNewScreen(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: (infants + children + youths + seniors + students + teachers) == 0
+                        ? TrText("Select",
+                        style: new TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20.0,
+                            color: Colors.grey))
+                        : Text((infants + children + youths + seniors + students + teachers ).toString(),
+                        style: new TextStyle(
+                          //fontWeight: FontWeight.w300,
+                          fontSize: 20.0,
+                          //color: Colors.grey
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      );
+    }
+  }
+
+  Widget _getAdults() {
+    if( wantPageV2()) {
+      return v2BorderBox(context,  ' ' + translate('Adults 16+'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new IconButton(
+                icon: Icon(
+                  adults <= 1 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
+                ),
+                onPressed: adults == 1 ? null : _removeAdult,
+              ),
+              new Text(translateNo(adults.toString()), style: TextStyle(fontSize: 20)),
+              new IconButton(
+                icon: Icon(
+                  adults < gblSettings.maxNumberOfPax ?
+                  Icons.add_circle_outlined : Icons.add_circle_outline,
+                ),
+                onPressed: adults < gblSettings.maxNumberOfPax ? _addAdult : null ,
+              ),
+            ],
+          ),
+        height: 70,
+      );
+
+    } else {
+      return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            new TrText("Adults (16+)",
+                style: new TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 15.0)),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new IconButton(
+                  icon: Icon(
+                    adults <= 1 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
+                  ),
+                  onPressed: adults == 1 ? null : _removeAdult,
+                ),
+                new Text(adults.toString(), style: TextStyle(fontSize: 20)),
+                new IconButton(
+
+                    icon: Icon(
+                      adults < gblSettings.maxNumberOfPax ?
+                      Icons.add_circle_outlined : Icons.add_circle_outline,
+                    ),
+                    onPressed: adults < gblSettings.maxNumberOfPax ? _addAdult : null ,
+
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   _navigateToNewScreen(BuildContext context) async {
@@ -396,16 +472,16 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                           children: <Widget>[
                             new IconButton(
                               icon: Icon(
-                                Icons.remove_circle_outline,
+                                passengers.adults == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                               ),
                               onPressed: () {
-                                _removeAdult();
+                                passengers.adults == 0 ? null : _removeAdult();
                               },
                             ),
                             new Text(passengers.adults.toString()),
                             new IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: _addAdult,
+                              icon: Icon( passengers.adults < gblSettings.maxNumberOfPax ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                              onPressed: passengers.adults < gblSettings.maxNumberOfPax ?  _addAdult : null ,
                             ),
                           ],
                         ),
@@ -436,7 +512,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                                 children: <Widget>[
                                   new IconButton(
                                     icon: Icon(
-                                      Icons.remove_circle_outline,
+                                      passengers.youths == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                                     ),
                                     onPressed: passengers.youths == 0
                                         ? null
@@ -444,8 +520,9 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                                   ),
                                   new Text(passengers.youths.toString()),
                                   new IconButton(
-                                    icon: Icon(Icons.add_circle_outline),
-                                    onPressed: _addYouth,
+                                    icon: Icon(
+                                      passengers.youths < gblSettings.maxNumberOfPax ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                                    onPressed: passengers.youths < gblSettings.maxNumberOfPax ? _addYouth : null ,
                                   ),
                                 ],
                               ),
@@ -479,7 +556,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                           children: <Widget>[
                             new IconButton(
                               icon: Icon(
-                                Icons.remove_circle_outline,
+                                passengers.seniors == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                               ),
                               onPressed: passengers.seniors == 0
                                   ? null
@@ -487,8 +564,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                             ),
                             new Text(passengers.seniors.toString()),
                             new IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: _addSenior,
+                              icon: Icon(passengers.seniors < gblSettings.maxNumberOfPax ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                              onPressed: passengers.seniors < gblSettings.maxNumberOfPax ? _addSenior : null ,
                             ),
                           ],
                         ),
@@ -523,7 +600,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                           children: <Widget>[
                             new IconButton(
                               icon: Icon(
-                                Icons.remove_circle_outline,
+                                passengers.students == 0 ? Icons.remove_circle_outline : Icons.add_circle_outlined,
                               ),
                               onPressed: passengers.students == 0
                                   ? null
@@ -531,8 +608,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                             ),
                             new Text(passengers.students.toString()),
                             new IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: _addStudent,
+                              icon: Icon(passengers.students < gblSettings.maxNumberOfPax ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                              onPressed: passengers.students < gblSettings.maxNumberOfPax ? _addStudent : null ,
                             ),
                           ],
                         ),
@@ -564,7 +641,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                           children: <Widget>[
                             new IconButton(
                               icon: Icon(
-                                Icons.remove_circle_outline,
+                                passengers.children == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                               ),
                               onPressed: passengers.children == 0
                                   ? null
@@ -572,8 +649,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                             ),
                             new Text(passengers.children.toString()),
                             new IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: _addChild,
+                              icon: Icon(passengers.children < gblSettings.maxNumberOfPax ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                              onPressed: passengers.children < gblSettings.maxNumberOfPax ? _addChild : null,
                             ),
                           ],
                         ),
@@ -601,7 +678,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                           children: <Widget>[
                             new IconButton(
                               icon: Icon(
-                                Icons.remove_circle_outline,
+                                passengers.infants == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                               ),
                               onPressed: passengers.infants == 0
                                   ? null
@@ -609,8 +686,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                             ),
                             new Text(passengers.infants.toString()),
                             new IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: _addInfant,
+                              icon: Icon(passengers.infants < gblSettings.maxNumberOfInfants ? Icons.add_circle_outlined : Icons.add_circle_outline),
+                              onPressed: passengers.infants < gblSettings.maxNumberOfInfants ? _addInfant : null,
                             ),
                           ],
                         ),

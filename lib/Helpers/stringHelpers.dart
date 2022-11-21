@@ -1,4 +1,5 @@
 import 'package:html_unescape/html_unescape.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
 
 
 String convertNumberIntoWord(int number) {
@@ -25,4 +26,25 @@ String convertNumberIntoWord(int number) {
 }
 String parseHtmlString(String htmlString) {
   return  HtmlUnescape().convert(htmlString);
+}
+
+String translateNo(String input) {
+  if( input == null || input.isEmpty) {
+    return '';
+  }
+  if( wantRtl()){
+    return numberToArabic(input);
+  }
+  return input;
+}
+
+String numberToArabic(String input) {
+  const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const farsi = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+  for (int i = 0; i < english.length; i++) {
+    input = input.replaceAll(english[i], farsi[i]);
+  }
+
+  return input;
 }

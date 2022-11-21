@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 
 Widget vidWideTextButton(BuildContext context, String caption, void Function({int p1}) onPressed, {IconData icon, int iconRotation,int p1 } ) {
@@ -53,6 +54,14 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int p1
 
 }
 
+BorderRadius getButtonRadius() {
+  BorderRadius radius = BorderRadius.circular(30.0);
+  if(wantPageV2() ){
+    radius = BorderRadius.circular(5.0);
+  }
+  return radius;
+}
+
 /*
   NEXT button at the bottom of most pages
  */
@@ -69,9 +78,16 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   caption,
   style: TextStyle(color: Colors.white),
   ));
+
+  EdgeInsets padding = EdgeInsets.only(left: offset);
+  if( wantRtl()) {
+    padding = EdgeInsets.only(right: offset);
+  }
+
+
   return
     Padding(
-      padding: EdgeInsets.only(left: offset),
+      padding: padding,
   child:
     ElevatedButton(
     onPressed: () {
@@ -81,7 +97,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
         primary: gblSystemColors
             .primaryButtonColor, //Colors.black,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0))),
+            borderRadius: getButtonRadius())),
     child: Row(
       //mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,

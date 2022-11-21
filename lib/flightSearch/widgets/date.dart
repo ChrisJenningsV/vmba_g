@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/rangePickerPage.dart';
 import 'package:vmba/datePickers/datePickerPage.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+
+import '../../Helpers/settingsHelper.dart';
+import '../../components/pageStyleV2.dart';
 
 
 class JourneyDateWidget extends StatefulWidget {
@@ -23,6 +27,8 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
   DateTime _returningDate =
       new DateTime.now().add(new Duration(days: gblSettings.searchDateBack)); //new DateTime.now();
   bool dateSelected = false;
+  String _returningText;
+  String _displayText;
 
   void _selectedDate(FlightDates _flightDates) {
 
@@ -48,9 +54,9 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
       _returningDate = null;
     }
 
-    String _displayText =
-        widget.isReturn ? 'Choose travel dates' : 'Choose travel date';
-    String _returningText = widget.isReturn ? 'Returning' : '';
+    _displayText =
+        widget.isReturn ? translate('Choose travel dates') : translate('Choose travel date');
+     _returningText = widget.isReturn ? 'Returning' : '';
 
     return Row(children: [
       new Expanded(
@@ -72,88 +78,155 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
             _selectedDate(_flightDates);
           },
           child: Column(
-            children: <Widget>[
-              Row(children: <Widget>[
-                Expanded(
-                    child: TrText('Departing',
-                        style: new TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.0))),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: TrText(_returningText,
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.0)),
-                ))
-              ]),
-              dateSelected
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(getIntlDate('E d', _departingingDate),
-                                //DateFormat('E d').format(_departingingDate).toString(), //'Wed 3',
-                                style: new TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 18.0,
-                                    //color: Colors.grey,
-                                    )),
-                            Text(getIntlDate('MMMM yyyy', _departingingDate),
-                                //DateFormat('MMMM yyyy').format(_departingingDate).toString(), //'July 2019',
-                                style: new TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 18.0,
-                                   // color: Colors.grey,
-                                    ))
-                          ],
-                        )),
-                        Expanded(
-                            child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: //<Widget>[
-                             widget.isReturn ? [Text(getIntlDate('E d', _returningDate),
-                                  //DateFormat('E d').format(_returningDate).toString(), //'Sun 7',
-                                  style: new TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 18.0,
-                                      //color: Colors.grey,
-                                      )),
-                              Text(getIntlDate('MMMM yyyy', _returningDate),
-                                  //DateFormat('MMMM yyyy').format(_returningDate).toString(), //'July 2019',
-                                  style: new TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 18.0,
-                                      //color: Colors.grey,
-                                      ))] :
-                                      [Text('')],
-                            //],
-                          ),
-                        ))
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: TrText(_displayText,
-                              style: new TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey,
-                              )),
-                        ),
-                      ],
-                    ),
-            ],
+            children: _getDates(),
           ),
         ),
       ))
     ]);
   }
+  List <Widget> _getDates() {
+    List <Widget> list = [];
+
+    if( wantPageV2()) {
+      List <Widget> list2 = [];
+      if (dateSelected) {
+        list2.add(
+            Expanded(
+              flex: 1,
+               child: v2BorderBox(context, ' ' + translate('Departing'),
+            Row(
+              children: [
+                Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ),
+                Text(getIntlDate('dd MMM yyyy', _departingingDate), textScaleFactor: 1.25,style: TextStyle(fontWeight: FontWeight.bold),),
+              ],
+            )))
+            );
+        list2.add(Padding(padding: EdgeInsets.all(5)));
+        list2.add(
+          Expanded(
+              flex: 1,
+              child: v2BorderBox(context, ' ' + translate(_returningText),
+            Row(
+          children: [
+            widget.isReturn ? Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) : Container(),
+            Text(getIntlDate('dd MMM yyyy', _returningDate), textScaleFactor: 1.25,style: TextStyle(fontWeight: FontWeight.bold),),
+          ],
+        ))
+          )
+        );
+      } else {
+
+          list2.add(
+              Expanded(
+                  flex: 1,
+                  child:v2BorderBox(context, ' ' + translate('Departing'),
+              Row(
+                children: [
+                  Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ),
+                  Text(_displayText),
+                ],
+              ))));
+          list2.add(Padding(padding: EdgeInsets.all(5)));
+          list2.add(
+            Expanded(
+                flex: 1,
+                child: widget.isReturn ? v2BorderBox(context, ' ' + translate(_returningText),
+              Row(
+                children: [
+                  Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) ,
+                  Text(''),
+                ],
+              ))
+                    : Container())
+          );
+
+      }
+      list.add(Row(children: list2,));
+    } else {
+      list.add(Row(children: <Widget>[
+        Expanded(
+            child: TrText('Departing',
+                style: new TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 15.0))),
+        Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: TrText(_returningText,
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 15.0)),
+            ))
+      ]));
+
+      if (dateSelected) {
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(getIntlDate('E d', _departingingDate),
+                        //DateFormat('E d').format(_departingingDate).toString(), //'Wed 3',
+                        style: new TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 18.0,
+                          //color: Colors.grey,
+                        )),
+                    Text(getIntlDate('MMMM yyyy', _departingingDate),
+                        //DateFormat('MMMM yyyy').format(_departingingDate).toString(), //'July 2019',
+                        style: new TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 18.0,
+                          // color: Colors.grey,
+                        ))
+                  ],
+                )),
+            Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: //<Widget>[
+                    widget.isReturn ? [Text(getIntlDate('E d', _returningDate),
+                        //DateFormat('E d').format(_returningDate).toString(), //'Sun 7',
+                        style: new TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 18.0,
+                          //color: Colors.grey,
+                        )),
+                      Text(getIntlDate('MMMM yyyy', _returningDate),
+                          //DateFormat('MMMM yyyy').format(_returningDate).toString(), //'July 2019',
+                          style: new TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 18.0,
+                            //color: Colors.grey,
+                          ))
+                    ] :
+                    [Text('')],
+                    //],
+                  ),
+                ))
+          ],
+        )
+        );
+      } else {
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: TrText(_displayText,
+                  style: new TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.grey,
+                  )),
+            ),
+          ],
+        ));
+      }
+    }
+    return list;
+  }
+
 }

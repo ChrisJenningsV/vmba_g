@@ -1,9 +1,12 @@
+import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
 import 'package:intl/intl.dart';
 //import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/models/models.dart';
+
+import '../Helpers/stringHelpers.dart';
 
 
 
@@ -19,12 +22,21 @@ String calenderPrice(String currency, String price, String miles) {
     if (price.length == 0) {
       return 'N/A';
     } else {
+      // translate price
+      if( wantRtl()) {
+        return translate(_currencySymbol) + translateNo(price);
+      }
       return _currencySymbol + price;
     }
   }
 }
 
 String getIntlDate(String format, DateTime dt ) {
+  if( dt== null ){
+    print('Null passed to getIntlDate');
+    return '';
+
+  }
   Intl.defaultLocale = gblLanguage;
   if ( gblSettings.want24HourClock ) {
     format = format.replaceFirst('H:mm a', 'HH:mm');

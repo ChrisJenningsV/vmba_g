@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/xmlApi.dart';
-import 'package:vmba/mmb/viewBookingPage.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
 import '../main.dart';
@@ -278,6 +277,7 @@ class Repository {
         String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
             vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
+        print('login_uri = ${gblSettings.xmlUrl}');
 
         response = await http.get(
             Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
