@@ -1726,7 +1726,7 @@ class CheckinBoardingPassesWidgetState
                 pnr.pNR.itinerary.itin[journey].depart.toString(),
                 builder:
                     (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(text.data,
+                  return new Text(translate(text.data),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },
@@ -1739,7 +1739,7 @@ class CheckinBoardingPassesWidgetState
                 pnr.pNR.itinerary.itin[journey].arrive.toString(),
                 builder:
                     (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(text.data,
+                  return new Text(translate(text.data),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },

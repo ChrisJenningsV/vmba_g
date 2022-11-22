@@ -3,7 +3,7 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "lib/assets/icon/AirSwift_1024x1024.png"
+  image_path: "lib/assets/airswift/images/AirSwift_1024x1024.png"
 
 # flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f launch_icons_airswift.yaml
 #

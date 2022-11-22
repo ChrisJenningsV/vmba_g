@@ -262,7 +262,7 @@ class MessagePageState extends State<MessagePage> {
   Widget dialogBody() {
     // scale and offset image if required, default offset 25 gives radius 48
     double radius = 73 - gblSettings.progressFactor ; // 48
-    double offset = gblSettings.progressFactor; // 25
+    double offset =  gblSettings.progressFactor; // 25
     return Center(
         heightFactor: 1,
         child:

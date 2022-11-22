@@ -173,10 +173,15 @@ class DrawerMenu extends StatefulWidget {
     }
 
     //FQTV
+    String fqtvName = 'My ${gblSettings.fqtvName}';
+    if( gblSettings.fqtvName.startsWith('My')) {
+      fqtvName = '${gblSettings.fqtvName}';
+    }
+
     if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
       list.add(ListTile(
         dense: dense,
-        title: _getMenuItem( Icons.person_pin, 'My ${gblSettings.fqtvName}' ),
+        title: _getMenuItem( Icons.person_pin, fqtvName ),
         onTap: () {
           Navigator.push(
               context, SlideTopRoute(page: MyFqtvPage(

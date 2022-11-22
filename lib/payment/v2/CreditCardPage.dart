@@ -416,8 +416,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
         } else {
           _error = result; // translate('Declined');
           _dataLoaded();
-          //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          if( result.contains('PaymentDeclined')) {
+            _error = 'Declined';
+          }
+            //_showDialog();
+            showAlertDialog(context, 'Error', _error);
+
         }
       };
     } else {

@@ -579,7 +579,15 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   Widget flightItem(avItin item) {
     if( wantPageV2() ) {
-      return CalFlightItemWidget(  objAv:  objAv, item: item, flightSelected: flightSelected ,); //  calFlightItem(context,widget.newBooking, objAv, item);
+      int seatCount =
+        this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'AD').length +
+          this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'CH').length +
+          this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'CD').length +
+          this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'SD').length +
+          this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'TD').length +
+          this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'TH').length;
+
+      return CalFlightItemWidget(  objAv:  objAv, item: item, flightSelected: flightSelected ,seatCount: seatCount,); //  calFlightItem(context,widget.newBooking, objAv, item);
     } else {
       return Container(
           margin: EdgeInsets.only(bottom: 10.0),

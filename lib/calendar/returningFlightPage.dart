@@ -452,7 +452,13 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   Widget flightItem( avItin item) {
     if( wantPageV2() ) {
-      return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected,);
+      int seatCount = widget.newBooking.passengers.adults +
+          widget.newBooking.passengers.youths +
+          widget.newBooking.passengers.seniors +
+          widget.newBooking.passengers.students +
+          widget.newBooking.passengers.children;
+
+      return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected,seatCount: seatCount,);
         //calFlightItem(context,widget.newBooking, objAv, item);
     } else {
       return

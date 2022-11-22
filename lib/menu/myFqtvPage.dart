@@ -148,12 +148,13 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         ),
       );
     } else if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
-        widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword.isEmpty  ) {
+        widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword == null ||
+        widget.passengerDetail.fqtvPassword.isEmpty  ) {
       Color titleBackClr = gblSystemColors.primaryHeaderColor;
       if( titleBackClr == Colors.white) {
         titleBackClr = gblSystemColors.primaryButtonColor;
       }
-      Widget flexibleSpace ;
+      Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
       if( gblSettings.pageImageMap != null ) {
         Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
         String pageImage = pageMap['FQTV'];
@@ -203,6 +204,10 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     }
 
 
+    String fqtvName = 'My ${gblSettings.fqtvName}';
+    if( gblSettings.fqtvName.startsWith('My')) {
+      fqtvName = '${gblSettings.fqtvName}';
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -211,7 +216,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: TrText('My ${gblSettings.fqtvName}',
+        title: TrText(fqtvName ,
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),

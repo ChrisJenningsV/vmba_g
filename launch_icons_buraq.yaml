@@ -3,7 +3,7 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "lib/assets/icon/buraq_1024x1024.png"
+  image_path: "lib/assets/buraq/images/buraq_1024x1024.png"
 
 # flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_buraq.yaml
 #

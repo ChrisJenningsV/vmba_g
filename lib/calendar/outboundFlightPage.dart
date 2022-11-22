@@ -365,7 +365,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   Widget flightItem(avItin item){
       if( wantPageV2() ) {
-        return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected ,); //  calFlightItem(context,widget.newBooking, objAv, item);
+        int seatCount = widget.newBooking.passengers.adults +
+            widget.newBooking.passengers.youths +
+            widget.newBooking.passengers.seniors +
+            widget.newBooking.passengers.students +
+            widget.newBooking.passengers.children;
+        return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected ,seatCount: seatCount,); //  calFlightItem(context,widget.newBooking, objAv, item);
       } else {
         return Container(
             margin: EdgeInsets.only(bottom: 10.0),

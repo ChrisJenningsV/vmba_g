@@ -168,6 +168,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     _lastNameTextEditingController.clear();
     _emailTextEditingController.clear();
     _phoneNumberTextEditingController.clear();
+    _disabilityTextEditingController.clear();
 /*
     if( widget.passengerDetail.dateOfBirth != null ) {
       _dobController.text = DateFormat('dd-MMM-yyyy')

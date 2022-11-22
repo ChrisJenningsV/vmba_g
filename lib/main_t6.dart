@@ -47,7 +47,7 @@ void configT6() {
   gblTitleStyle =  new TextStyle( color: Colors.grey.shade400) ;
   gblAppTitle = 'airswift';
   gblBuildFlavor = 'T6';
-
+  gblTitles = <String>['Mr','Mrs','Ms','Miss','Mstr','Dr'  ];
 
   gblSettings = Settings (
       latestBuildiOS: '105',
@@ -67,6 +67,8 @@ void configT6() {
     termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
     privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
     prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/ ',
+    customMenu1: 'AirSWIFT Picks, AirSWIFT Picks, http://www.airswiftpicks.com',
+    customMenu2: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
 
     aircode: 'T6',
 
@@ -99,7 +101,7 @@ void configT6() {
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
     useWebApiforVrs: true,
     wantEnglishTranslation: true,
-    progressFactor: -30,
+    progressFactor: -15, //-30,
 
 
     passengerTypes: PassengerTypes(

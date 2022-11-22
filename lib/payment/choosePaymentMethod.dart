@@ -1260,7 +1260,7 @@ List<Widget> getPayOptions(String amount, String cur) {
      list.add( ExpansionTile(
         initiallyExpanded: false,
         title: Text(
-          'Total ' +
+          translate('Total') + ' ' +
               formatPrice(cur, double.parse(amount) ?? 0.0) ,
           style: TextStyle(fontWeight: FontWeight.w700),
         ),

@@ -760,7 +760,7 @@ String _error = '';
                 future: cityCodeToName(journey.last.arrive),
                 initialData: journey.last.arrive.toString(),
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(text.data,
+                  return new Text(translate(text.data),
                       style: new TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.w700));
                 },
@@ -769,7 +769,7 @@ String _error = '';
                 future: cityCodeToName(journey.first.depart),
                 initialData: journey.first.depart.toString(),
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate('from ') + text.data,
+                  return new Text(translate('from ') + translate(text.data),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },

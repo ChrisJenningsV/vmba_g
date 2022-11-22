@@ -16,11 +16,12 @@ import 'flightPageUtils.dart';
 class CalFlightItemWidget extends StatefulWidget {
   final void Function(BuildContext context, List<String> flt, List<Flt> outboundflts, String className) flightSelected;
 
-  CalFlightItemWidget({Key key,this.newBooking, this.objAv, this.item, this.flightSelected})
+  CalFlightItemWidget({Key key,this.newBooking, this.objAv, this.item, this.flightSelected, this.seatCount})
       : super(key: key);
   NewBooking newBooking;
   AvailabilityModel objAv;
   avItin item;
+  int seatCount;
   //void flightSelected(List<String> list, List<Flt> flts, String class);
 
 
@@ -40,17 +41,15 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
   }
 
   void goToClassScreen(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, int index, List<Flt> flts) async {
+
+
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
             page: ChooseFlight(
               classband: objAv.availability.classbands.band[index],
               flts: flts, //objAv.availability.itin[0].flt,
-              seats: newBooking.passengers.adults +
-                  newBooking.passengers.youths +
-                  newBooking.passengers.seniors +
-                  newBooking.passengers.students +
-                  newBooking.passengers.children,
+              seats: widget.seatCount,
             )));
     widget.flightSelected(context,  selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }

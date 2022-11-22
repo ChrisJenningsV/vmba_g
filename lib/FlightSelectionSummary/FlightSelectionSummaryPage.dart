@@ -4,6 +4,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/passengerDetailsPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import '../Helpers/stringHelpers.dart';
+import '../calendar/flightPageUtils.dart';
 import '../components/bottomNav.dart';
 import '../components/vidButtons.dart';
 import '../data/models/models.dart';
@@ -588,6 +589,23 @@ Row airMiles() {
           ],
         ),
       );
+
+      widgets.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            TrText('Departure Time:'),
+            Text(getIntlDate('dd MMM kk:mm',DateTime.parse(
+                pnrModel.pNR.itinerary.itin[i].depDate +
+                    ' ' +
+                    pnrModel.pNR.itinerary.itin[i].depTime)))
+          ],
+        ),
+      );
+
+
+
+/*
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -600,6 +618,7 @@ Row airMiles() {
           ],
         ),
       );
+*/
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -2,6 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/utilities/helper.dart';
+import '../../Helpers/settingsHelper.dart';
+import '../../Helpers/stringHelpers.dart';
+import '../../components/trText.dart';
 import 'models.dart';
 
 class PnrModel {
@@ -885,6 +888,10 @@ class Itin {
     String durationMinutes;
     durationHours = hours != 0 ? hours.toString() + 'h. ' : '';
     durationMinutes = minutes != 0 ? minutes.toString() + 'min. ' : '';
+    if( wantRtl()) {
+      return translateNo('${hours}') + translate('h.') + ' ' + translateNo('${minutes}') + translate('min');
+    }
+
     return durationHours + durationMinutes;
   }
 }
