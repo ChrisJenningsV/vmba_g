@@ -1170,17 +1170,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
    // }
 
-    return InputDecoration(
-        contentPadding:
-        new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        labelText: translate(label),
-        fillColor: Colors.white,
-        border: new OutlineInputBorder(
-          borderRadius: new BorderRadius.circular(25.0),
-          borderSide: new BorderSide(),
-        )
-    );
-    // old style
 
   }
 }

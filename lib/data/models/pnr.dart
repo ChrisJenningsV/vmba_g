@@ -73,6 +73,18 @@ class PnrModel {
     return false;
   }
 
+  bool hasContactDetails() {
+    if (this.pNR != null &&
+        this.pNR.contacts != null &&
+        this.pNR.contacts.cTC != null &&
+        this.pNR.contacts.cTC.length >= 2  ) {
+      return true;
+    }
+    return false;
+  }
+
+
+
   bool hasNonHostedFlights() {
     bool result = false;
     if (this.pNR != null &&

@@ -28,12 +28,14 @@ import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/dateTimeHelper.dart';
 import '../Helpers/networkHelper.dart';
+import '../components/pageStyleV2.dart';
 import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
 import '../components/vidGraphics.dart';
 import '../data/smartApi.dart';
 import '../functions/bookingFunctions.dart';
 import '../home/home_page.dart';
+import '../utilities/messagePages.dart';
 import '../utilities/widgets/dataLoader.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
@@ -263,6 +265,7 @@ class CheckinBoardingPassesWidget extends StatefulWidget {
   String rloc;
   final ValueChanged<String> showSnackBar;
   void Function(BuildContext context) onLoad;
+  final formKey = new GlobalKey<FormState>();
 
   @override
   State<StatefulWidget> createState() =>
@@ -1322,7 +1325,7 @@ class CheckinBoardingPassesWidgetState
         bool isAfterOpens = checkinOpens.difference(now).inMinutes < 0;
 */
         bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
-        bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
+        //bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
         bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
 
 
@@ -1663,7 +1666,7 @@ class CheckinBoardingPassesWidgetState
 
   Widget getFlightViewWidgets(PnrModel pnr, int journey) {
     var timeFormat = 'h:mm a';
-    bool isFundTransferPayment = pnr.isFundTransferPayment();
+    //bool isFundTransferPayment = pnr.isFundTransferPayment();
 
     bool isFltPassedDate(Itin journey, int offset) {
       DateTime now = DateTime.now();
@@ -2153,6 +2156,11 @@ class CheckinBoardingPassesWidgetState
         btnText += '  ' +  (paxlist.firstWhere((p) => p.id == paxNo + 1).seat);
       }
       return vidActionButton(context, btnText, (p0){
+
+        if( gblPnrModel.hasContactDetails()) {
+
+        }
+
         if (gblSettings.autoSeatOption &&
             (paxlist
                 .firstWhere((p) => p.id == paxNo + 1)
@@ -2172,6 +2180,10 @@ class CheckinBoardingPassesWidgetState
       return new TextButton(
 
         onPressed: () {
+         /* if( ! gblPnrModel.hasContactDetails()) {
+            return addContactDetails();
+          }*/
+
           if (gblSettings.autoSeatOption &&
               (paxlist
                   .firstWhere((p) => p.id == paxNo + 1)
@@ -2240,6 +2252,121 @@ class CheckinBoardingPassesWidgetState
       );
     }
   }
+
+  addContactDetails(){
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _phoneController = TextEditingController();
+
+    if( gblPnrModel.pNR.contacts != null && gblPnrModel.pNR.contacts.cTC.length > 1) {
+      gblPnrModel.pNR.contacts.cTC.forEach((element) {
+        if( element.cTCID == 'E') {
+          _emailController.text = element.text;
+        } else  if( element.cTCID == 'M') {
+          _phoneController.text = element.text;
+        }
+      });
+
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: alertShape(),
+          titlePadding: const EdgeInsets.all(0),
+          title: alertTitle(
+              translate('Add Contact details'), gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
+          content: Form(
+          key: widget.formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+            V2TextWidget(
+            maxLength: 50,
+            decoration: getDecoration('Phone Number'),
+            controller: _phoneController,
+            keyboardType: TextInputType.number,
+            validator: (value) =>
+            value.isEmpty ? translate('Phone Number cannot be empty') : null,
+            onFieldSubmitted: (value) {
+              //widget.passengerDetail.phonenumber = value;
+            },
+            onSaved: (value) {
+              if (value != null) {
+               // widget.passengerDetail.phonenumber = value.trim();
+              }
+            },
+          ),
+              Padding(
+                padding: EdgeInsets.all(4),
+              ),
+              V2TextWidget(
+                maxLength: 50,
+                decoration: getDecoration('Email'),
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => validateEmail(value.trim()),
+                onFieldSubmitted: (value) {
+                //  widget.passengerDetail.email = value;
+                },
+                onSaved: (value) {
+                  if (value != null) {
+                    //widget.passengerDetail.email = value.trim();
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.all(4),
+              ),
+
+            ],
+          )),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              child: new TrText("Cancel",
+                  style: new TextStyle(color: Colors.black)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  primary:
+                  gblSystemColors.primaryButtonColor),
+              child: new Text(
+                "Save",
+                style: new TextStyle(
+                    color: gblSystemColors
+                        .primaryButtonTextColor),
+              ),
+              onPressed: () {
+                final form = widget.formKey.currentState;
+                if (form.validate()) {
+                  form.save();
+// add ctc to PNR
+
+                  // save
+
+                  // back
+                  Navigator.of(context).pop();
+                  return true;
+                } else {
+                  return false;
+                }
+
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
   autoseat(PnrModel pnr, int journey) {
     currentJourneyNo = journey;

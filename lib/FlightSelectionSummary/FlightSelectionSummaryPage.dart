@@ -10,7 +10,6 @@ import '../components/vidButtons.dart';
 import '../data/models/models.dart';
 import 'dart:async';
 import '../data/models/pnr.dart';
-import 'package:intl/intl.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../data/repository.dart';
 import 'package:vmba/data/globals.dart';

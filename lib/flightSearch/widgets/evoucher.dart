@@ -3,7 +3,6 @@ import 'package:vmba/components/trText.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
-import '../../data/globals.dart';
 
 class EVoucherWidget extends StatefulWidget {
   EVoucherWidget({Key key, this.evoucherNo, this.onChanged}) : super(key: key);
