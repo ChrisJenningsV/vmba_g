@@ -128,6 +128,7 @@ void configSI() {
 
  // liveXmlUrl:      "https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     liveXmlUrl:      "https://booking.blueislands.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+  //liveXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:       'https://booking.blueislands.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.blueislands.com/VARS/webApiV2/api/',
   livePayPage:      'https://booking.blueislands.com/VARS/Public/MobilePaymentStart.aspx',

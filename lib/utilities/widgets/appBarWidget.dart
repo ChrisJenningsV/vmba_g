@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:vmba/calendar/flightPageUtils.dart';
-import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import '../../Products/productFunctions.dart';
 import '../../calendar/bookingFunctions.dart';
-import '../../home/home_page.dart';
 import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';
 import '../../summary/vidFlightTimeline.dart';
@@ -331,10 +328,12 @@ Widget _getTitle(NewBooking newBooking,bool expanded) {
 
 List<Widget> getBookingSummaryBar(BuildContext context,  NewBooking newBooking, bool expanded) {
 
-    Color txtCol = Colors.white;
+    //Color txtCol = Colors.white;
+/*
     if(expanded) {
       txtCol = Colors.black;
     }
+*/
 
     List <Widget> widgets = [];
     DateTime a1 = DateTime.parse(newBooking.outboundflts.first.time.adaygmt + ' ' + newBooking.outboundflts.first.time.atimgmt);

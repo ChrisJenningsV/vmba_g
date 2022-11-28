@@ -37,6 +37,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
     gblCurrentRloc = null;
+    gblActionBtnDisabled = false;
 
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&

@@ -51,6 +51,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     gblCurPage = 'PASSENGERDETAILS';
     gblPnrModel = widget.pnrModel;
     gblError = '';
+    gblActionBtnDisabled = false;
 
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
@@ -481,8 +482,14 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     //print('end paxEntryHeader');
   }
   _onContinuePressed(BuildContext context, dynamic p) {
-    gblPaymentMsg=null;
-    validateAndSubmit();
+    if( !gblActionBtnDisabled) {
+      gblPaymentMsg = null;
+      gblActionBtnDisabled = true;
+      setState(() {
+
+      });
+      validateAndSubmit();
+    }
   }
   Widget renderFieldsV2(int paxNo, PaxType paxType) {
     //print('renderFieldsV2');
@@ -575,6 +582,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   void validateAndSubmit() async {
     try {
+
+
       if (widget.newBooking.ads.isAdsBooking()) {
         widget.newBooking.ads.number = _passengerDetails[0].adsNumber;
         widget.newBooking.ads.pin = _passengerDetails[0].adsPin;
@@ -611,7 +620,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                                   newBooking: this.widget.newBooking)));
                 } else {
                   setState(() {
-
+                    gblActionBtnDisabled = false;
                   });
                 }
               } else {
@@ -630,10 +639,12 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
         } else {
           //showSnackBar('Please, check your internet connection');
+          gblActionBtnDisabled = false;
           noInternetSnackBar(context);
         }
       });
     } catch (e) {
+      gblActionBtnDisabled = false;
       print('Error: $e');
     }
   }

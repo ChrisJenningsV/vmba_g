@@ -141,7 +141,6 @@ void configH4() {
     creditCardProvider: '3DS_videcard',
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
-    displayErrorPnr: true,    // just for test, to display pnr problems
     wantPayStack: false,
     wantPageImages: false,
     wantLeftLogo: false,

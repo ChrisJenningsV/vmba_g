@@ -11,7 +11,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'SI';
+String gblBuildFlavor = 'T6';
 bool gblIsLive = true;
 int requiredXmlVersion = 105;
 int requiredApiVersion = 101;
@@ -45,7 +45,7 @@ bool gblLogPayment = false;
 bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;
-bool gblLanguageLogging = true;
+bool gblLanguageLogging = false;
 
 
 int gblSecurityLevel = 0;
@@ -55,6 +55,7 @@ bool gblPaySuccess = false;
 bool gblInReview = false;
 bool gblTimerExpired = false;
 bool gblPayBtnDisabled = false;
+bool gblActionBtnDisabled = false;
 bool gblRememberMe = false;
 bool gblRedeemingAirmiles = false;
 bool shownUpdate = false;
@@ -72,6 +73,7 @@ bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
 bool gblDemoMode = false;
+bool gblDebugMode = false;
 PnrModel gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 

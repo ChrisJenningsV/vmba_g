@@ -7,6 +7,8 @@ import '../../Helpers/stringHelpers.dart';
 import '../../components/trText.dart';
 import 'models.dart';
 
+
+bool logPnrErrors = false;
 class PnrModel {
   bool success;
   PNR pNR;
@@ -130,6 +132,9 @@ class PnrModel {
   }
 
   bool hasFutureFlightsAddDayOffset(int days) {
+    if(this.pNR == null || this.pNR.itinerary == null || this.pNR.itinerary.itin == null ){
+      return false;
+    }
     DateTime now = DateTime.now();
     var fltDate;
     fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
@@ -143,6 +148,9 @@ class PnrModel {
     }
   }
   bool hasFutureFlightsMinusDayOffset(int days) {
+    if(this.pNR == null || this.pNR.itinerary == null || this.pNR.itinerary.itin == null ){
+      return false;
+    }
     DateTime now = DateTime.now();
     var fltDate;
     fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
@@ -169,7 +177,7 @@ class PnrModel {
 
   Itin getNextFlight() {
     Itin flight = new Itin();
-    if (this.pNR != null) {
+    if (this.pNR != null && this.pNR.itinerary != null && this.pNR.itinerary.itin != null) {
       for (Itin _flight in this.pNR.itinerary.itin) {
         loop:
         if (DateTime.now().isBefore(
@@ -282,7 +290,7 @@ class PnrModel {
                     .length) &&
             (pnr.payments.fOP.where((p) => p.fOPID == 'III').length > 0)) {
           validateTickets = false;
-          print('validateTickets = false;');
+          if( logPnrErrors) print('validateTickets = false;');
           return validateTickets;
         }
 
@@ -291,15 +299,15 @@ class PnrModel {
                 .where((flt) => flt.status == 'HK' || flt.status == 'RR')
                 .length)) {
           validateTickets = false;
-          print('validateTickets = false;');
+          if( logPnrErrors) print('validateTickets = false;');
           return validateTickets;
         }
         return validateTickets;
       });
     } catch (ex) {
-      print(ex.toString());
+      if( logPnrErrors) print(ex.toString());
       validateTickets = false;
-      print('validateTickets = false;');
+      if( logPnrErrors) print('validateTickets = false;');
     }
     return validateTickets;
   }
@@ -310,7 +318,7 @@ class PnrModel {
       hasTickets = true;
     } else {
       hasTickets = false;
-      print('hasTickets = false');
+      if( logPnrErrors) print('hasTickets = false');
     }
 
     return hasTickets;
@@ -324,7 +332,7 @@ class PnrModel {
       hasItinerary = true;
     } else {
       hasItinerary = false;
-      print('hasItinerary = false');
+      if( logPnrErrors)  print('hasItinerary = false');
     }
     return hasItinerary;
   }
@@ -341,7 +349,7 @@ class PnrModel {
       validateItineraryStatus = true;
     } else {
       validateItineraryStatus = false;
-      print('validateItineraryStatus = false');
+      if( logPnrErrors) print('validateItineraryStatus = false');
     }
     return validateItineraryStatus;
   }
@@ -352,7 +360,7 @@ class PnrModel {
       validatePayment = true;
     } else {
       if( double.parse(basket.outstanding.amount) <= 0 ){
-        print('validatePayment less than 0;');
+        if( logPnrErrors) print('validatePayment less than 0;');
         validatePayment = true;
       } else {
         if( gblSettings.displayErrorPnr) {
@@ -362,7 +370,7 @@ class PnrModel {
         } else {
           validatePayment = false;
         }
-        print('validatePayment = false;');
+        if( logPnrErrors) print('validatePayment = false;');
       }
     }
     return validatePayment;
@@ -889,6 +897,10 @@ class Itin {
     data['OnlineCheckinTimeStartGMT'] = onlineCheckinTimeStartGMT;
 
     return data;
+  }
+
+  DateTime getDepartureDateTime(){
+    return DateTime.parse(depDate + ' ' + depTime);
   }
 
   String getFlightDuration() {

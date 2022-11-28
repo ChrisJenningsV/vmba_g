@@ -41,6 +41,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   @override
   void initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _loading = 'Searching for Flights';

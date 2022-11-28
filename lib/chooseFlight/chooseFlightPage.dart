@@ -99,7 +99,8 @@ class ChooseFlight extends StatelessWidget {
 //0LM0032 14Dec12ABZKOINN1/08550950(CAB=Y)[CB=Fly]]
     for (var f in flts) {
       String _date =
-          DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaygmt));
+          DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaylcl));
+//      DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaygmt));
       String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
       String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
       msg.add(

@@ -349,8 +349,7 @@ double sepTax () {
       widgets.add(
           tableRow(translate('Flight No:'),'${gblPnrModel.pNR.itinerary.itin[i].airID}${gblPnrModel.pNR.itinerary.itin[i].fltNo}'));
 
-      widgets.add(tableRow(translate('Departure Time:'),DateFormat('dd MMM kk:mm').format(DateTime.parse(
-          gblPnrModel.pNR.itinerary.itin[i].depDate + ' ' + gblPnrModel.pNR.itinerary.itin[i].depTime))));
+      widgets.add(tableRow(translate('Departure Time:'),DateFormat('dd MMM kk:mm').format(gblPnrModel.pNR.itinerary.itin[i].getDepartureDateTime())));
       String arrDate = gblPnrModel.pNR.itinerary.itin[i].depDate;
       if(gblPnrModel.pNR.itinerary.itin[i].arrOfst != null &&  gblPnrModel.pNR.itinerary.itin[i].arrOfst != '0'
         && gblPnrModel.pNR.itinerary.itin[i].arrOfst.trim() != ''

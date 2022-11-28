@@ -68,11 +68,18 @@ BorderRadius getButtonRadius() {
 Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0} ) {
 
   List<Widget> list = [];
-  if( gblSettings.wantButtonIcons) {
+  if( gblSettings.wantButtonIcons && !gblActionBtnDisabled) {
     list.add(Icon(
       Icons.check,
       color: Colors.white,
     ));
+  }
+  if( gblActionBtnDisabled ){
+    list.add(Transform.scale(
+      scale: 0.5,
+      child: CircularProgressIndicator( color: Colors.white,),
+    ));
+    list.add(Padding(padding: EdgeInsets.all(2)));
   }
   list.add(TrText(
   caption,

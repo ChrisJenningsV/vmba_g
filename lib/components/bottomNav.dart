@@ -9,12 +9,75 @@ import 'package:vmba/components/vidButtons.dart';
 import '../Helpers/pageHelper.dart';
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
+import '../utilities/blueScreen.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import 'trText.dart';
 
+void _selectPage(BuildContext context, int index) {
+switch (index) {
+  case 0:
+    // logout
+    logit('logout');
+    gblDebugMode = false;
+    if( gblCurPage != 'HOME') {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          '/HomePage', (Route<dynamic> route) => false);
+    } else {
+      reloadPage(context);
+    }
 
+    break;
+  case 1:
+    // blue screen
+    logit('launch BlueScreen');
+    startBlueScreen(context);
+    break;
+
+}
+}
 Widget getBottomNav(BuildContext context, {Widget popButton, String helpText} ) {
+  int _selectedPageIndex = 0;
+  if( gblDebugMode == true){
+    return BottomNavigationBar(
+      onTap:(index) {
+        _selectPage(context, index);
+      },
+      currentIndex: _selectedPageIndex,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        //home
+        BottomNavigationBarItem(
+          icon: Icon(Icons.logout, color: Colors.red),
+          activeIcon: Icon(Icons.logout, color: Colors.red),
+          label: 'Logout',
+
+        ),
+        //favorite
+        BottomNavigationBarItem(
+          icon: Icon(Icons.screen_search_desktop_outlined, color: Colors.blue),
+          activeIcon:
+          Icon(Icons.screen_search_desktop_outlined, color: Colors.green),
+          label: '',
+        ),
+        //loockback
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart, color: Colors.blue),
+          activeIcon:
+          Icon(Icons.bar_chart, color: Colors.green),
+          label: '',
+        ),
+        //info & support
+        BottomNavigationBarItem(
+          icon: Icon(Icons.info, color: Colors.blue),
+          activeIcon: Icon(Icons.info, color: Colors.green),
+          label: '',
+        ),
+      ],
+    );
+
+  }
+
   if( gblDemoMode == true){
     List <Widget> list = [];
 

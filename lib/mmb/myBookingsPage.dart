@@ -29,6 +29,7 @@ class MyBookingsPage extends StatefulWidget {
 class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderStateMixin  {
   List<PnrDBCopy> activePnrs = [];
   List<PnrDBCopy> recentPnrs = [];
+  List<PnrDBCopy> oldPnrs = [];
   // new List<PnrDBCopy>();
   bool _loadingInProgress;
   Offset _tapPosition;
@@ -50,6 +51,7 @@ String _error = '';
   @override
   void initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     gblPaymentMsg = '';
     gblError = '';
     gblCurPage = 'MYBOOKINGS';
@@ -59,6 +61,9 @@ String _error = '';
     _isHidden = true;
 
     var tablen = 3;
+    if( gblSettings.displayErrorPnr) {
+      tablen = 4;
+    }
     if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
       tablen +=1;
     }
@@ -72,6 +77,8 @@ String _error = '';
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
       List<PnrDBCopy> thisOldpnrs = [];
+      List<PnrDBCopy> cancelledPnrs = [];
+      List<PnrDBCopy> olderPnrs = [];
       // new List<PnrDBCopy>();
       logit('get my bookings');
       for (var item in pnrsDBCopy) {
@@ -97,11 +104,14 @@ String _error = '';
             thispnrs.add(_pnrs);
           } else if ( _pnr.hasFutureFlightsMinusDayOffset(7)) {
             thisOldpnrs.add(_pnrs);
+          } else {
+            olderPnrs.add(_pnrs);
           }
 
         } else {
           // remove old booking
           try {
+            print('Deleting ${item.rloc}');
             Repository.get().deletePnr(item.rloc);
             Repository.get().deleteApisPnr(item.rloc);
           } catch(e) {
@@ -117,6 +127,7 @@ String _error = '';
       setState(() {
         activePnrs = thispnrs;
         recentPnrs = thisOldpnrs;
+        oldPnrs = olderPnrs;
         _loadingInProgress = false;
       });
     });
@@ -144,10 +155,16 @@ String _error = '';
       List <Widget> tabeViews = [];
       tabs.add(TrText('Active'));
       tabs.add(TrText('Recent'));
+      if( gblSettings.displayErrorPnr) {
+        tabs.add(TrText('Old'));
+      }
       tabs.add(TrText('Add Booking'));
 
-      tabeViews.add(new Container(child: myTrips(true)));
-      tabeViews.add(new Container(child: myTrips(false)));
+      tabeViews.add(new Container(child: myTrips('A')));
+      tabeViews.add(new Container(child: myTrips('R')));
+      if( gblSettings.displayErrorPnr) {
+        tabeViews.add(new Container(child: myTrips('O')));
+      }
       tabeViews.add(new Container(child: addBooking()));
 
       if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
@@ -533,17 +550,22 @@ String _error = '';
         ));
   }
 
-  Widget myTrips(bool showActive) {
+  Widget myTrips(String typePnr) {
     List<PnrDBCopy> pnrs = activePnrs;
 
     Center noFutureBookingsFound =  Center(
         child: TrText('No future bookings found',
             style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
-    if( showActive == false  ) {
+    if(typePnr == 'R'  ) {
       pnrs = recentPnrs;
-      noFutureBookingsFound =  Center(
-        child: TrText('No recent bookings found',
-            style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
+      noFutureBookingsFound = Center(
+          child: TrText('No recent bookings found',
+              style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
+    } else if(typePnr == 'O'  ) {
+        pnrs = oldPnrs;
+        noFutureBookingsFound =  Center(
+            child: TrText('No old bookings found',
+                style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
     }
     if (pnrs.length == 0) return noFutureBookingsFound;
 
@@ -733,15 +755,18 @@ String _error = '';
     }
 
 
-    int noFlts = pnr.pNR.itinerary.itin.length;
-    pnr.pNR.itinerary.itin.forEach((f) {
-      flt.add(f);
-     if (f.nostop != 'X' || (f.nostop == 'X' && noFlts == 1)) {
-        journeys.add(flt);
-        flt = [];
-        // List<Itin>();
-      }
-    });
+    int noFlts = 0;
+    if(pnr.pNR.itinerary != null && pnr.pNR.itinerary.itin != null  ) {
+      noFlts = pnr.pNR.itinerary.itin.length;
+      pnr.pNR.itinerary.itin.forEach((f) {
+        flt.add(f);
+        if (f.nostop != 'X' || (f.nostop == 'X' && noFlts == 1)) {
+          journeys.add(flt);
+          flt = [];
+          // List<Itin>();
+        }
+      });
+    }
 
     if (fltWidgets.length > 1) {
       new Divider();

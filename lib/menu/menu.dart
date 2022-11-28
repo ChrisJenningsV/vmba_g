@@ -337,7 +337,7 @@ class DrawerMenu extends StatefulWidget {
                     // do login
                     loginPage(context, '',
                         onOk: (dynamic p, String user, String pw) {
-                          if( user == gblSettings.demoUser && pw == gblSettings.demoPsssword) {
+                          if( user == gblSettings.demoUser && pw == gblSettings.demoPassword) {
                             gblIsLive = false;
                             setLiveTest();
                             gblDemoMode = true;

@@ -46,6 +46,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   @override
   void initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     _loading = 'Searching for Flights';
 
     _scrollController = new ScrollController();

@@ -24,7 +24,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
   initState() {
     super.initState();
     gblCurPage = 'OPTIONS';
-
+    gblActionBtnDisabled = false;
   }
 
   @override

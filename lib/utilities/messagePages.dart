@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vmba/utilities/widgets/appBarWidget.dart';
-import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../components/trText.dart';
@@ -320,10 +318,10 @@ class MessagePageState extends State<MessagePage> {
     });
   }
 }
-
+/*
 Widget messageWidget() {
 
-}
+}*/
 
 Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
   List<Widget> actionList ;
@@ -514,7 +512,7 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
   Color titleBackClr = gblSystemColors.primaryHeaderColor;
   Color borderClr = Colors.green;
   Color backClr = Colors.green;
-  Color iconClr = Colors.white;
+  //Color iconClr = Colors.white;
 
   if( titleBackClr == Colors.white) {
     titleBackClr = gblSystemColors.primaryButtonColor;

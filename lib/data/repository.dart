@@ -539,7 +539,13 @@ class Repository {
                     gblSettings.demoUser = item['value'];
                     break;
                   case 'demoPassword':
-                    gblSettings.demoPsssword = item['value'];
+                    gblSettings.demoPassword = item['value'];
+                    break;
+                  case 'debugUser':
+                    gblSettings.debugUser = item['value'];
+                    break;
+                  case 'debugPassword':
+                    gblSettings.debugPassword = item['value'];
                     break;
 
                 /*

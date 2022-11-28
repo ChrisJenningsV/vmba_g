@@ -293,7 +293,7 @@ class SlideTopRoute extends PageRouteBuilder {
                   child: child),
         );
 }
-
+/*
 Widget appLink(String uri, String displayValue) {
   return GestureDetector(
     onTap: () async {
@@ -306,7 +306,7 @@ Widget appLink(String uri, String displayValue) {
     },
     child: Text(displayValue),
   );
-}
+}*/
 
 Widget appLinkWidget(String uri, Widget displayWidget) {
   return GestureDetector(
@@ -498,18 +498,6 @@ InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}
 
   //}
 
-  // old style
-  return InputDecoration(
-    counter: Spacer(),
-    contentPadding:
-    new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-    labelText: translate(label),
-    fillColor: Colors.white,
-    border: new OutlineInputBorder(
-      borderRadius: new BorderRadius.circular(borderRadius),
-      borderSide: new BorderSide(),
-    ),
-  );
 }
 
 String cleanInt(String str) {

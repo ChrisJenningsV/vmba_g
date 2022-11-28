@@ -17,7 +17,7 @@ enum TimelineAxis {
 }
 
 /// The alignment used on the [TimelineTile].
-enum vidTimelineAlign {
+enum VidTimelineAlign {
   /// Automatically align the line to the start according to [TimelineAxis],
   /// only the ([TimelineTile.rightChild]) will be available.
   start,
@@ -37,11 +37,11 @@ enum vidTimelineAlign {
 }
 
 /// A tile that renders a timeline format.
-class vidTimelineTile extends StatelessWidget {
-  const vidTimelineTile({
+class VidTimelineTile extends StatelessWidget {
+  const VidTimelineTile({
     Key key,
     this.axis = TimelineAxis.vertical,
-    this.alignment = vidTimelineAlign.start,
+    this.alignment = VidTimelineAlign.start,
     this.startChild,
     this.endChild,
     this.lineXY,
@@ -53,12 +53,12 @@ class vidTimelineTile extends StatelessWidget {
     this.height = 100,
     LineStyle afterLineStyle,
   })  : afterLineStyle = afterLineStyle ?? beforeLineStyle,
-        assert(alignment != vidTimelineAlign.start || startChild == null,
+        assert(alignment != VidTimelineAlign.start || startChild == null,
         'Cannot provide startChild with automatic alignment to the left'),
-        assert(alignment != vidTimelineAlign.end || endChild == null,
+        assert(alignment != VidTimelineAlign.end || endChild == null,
         'Cannot provide endChild with automatic alignment to the right'),
         assert(
-        alignment != vidTimelineAlign.manual ||
+        alignment != VidTimelineAlign.manual ||
             (lineXY != null && lineXY >= 0.0 && lineXY <= 1.0),
         'The lineX must be provided when aligning manually, '
             'and must be a value between 0.0 and 1.0 inclusive'),
@@ -72,7 +72,7 @@ class vidTimelineTile extends StatelessWidget {
 
   /// The alignment used on the line. See [TimelineAlign].
   /// It defaults to [TimelineAlign.start]
-  final vidTimelineAlign alignment;
+  final VidTimelineAlign alignment;
 
   /// The child widget positioned at the start
   final Widget startChild;
@@ -147,13 +147,13 @@ class vidTimelineTile extends StatelessWidget {
         final defaultChild = axis == TimelineAxis.vertical
             ? Container(height: height)
             : Container(width: 100);
-        if (alignment == vidTimelineAlign.start) {
+        if (alignment == VidTimelineAlign.start) {
           children.add(Expanded(child: endChild ?? defaultChild));
-        } else if (alignment == vidTimelineAlign.end) {
+        } else if (alignment == VidTimelineAlign.end) {
           children.insert(0, Expanded(child: startChild ?? defaultChild));
         } else {
           final indicatorAxisXY =
-          alignment == vidTimelineAlign.center ? 0.5 : lineXY;
+          alignment == VidTimelineAlign.center ? 0.5 : lineXY;
           final indicatorTotalSize = _indicatorTotalSize();
 
           final positioning = calculateAxisPositioning(

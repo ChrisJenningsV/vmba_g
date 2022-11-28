@@ -88,8 +88,8 @@ class TimelineDelivery extends StatelessWidget {
   }
 
   Widget startTile(Flt flt, String className) {
-    return vidTimelineTile(
-      alignment: vidTimelineAlign.manual,
+    return VidTimelineTile(
+      alignment: VidTimelineAlign.manual,
       lineXY: 0.1,
       isFirst: true,
       indicatorStyle: IndicatorStyle(
@@ -125,8 +125,8 @@ class TimelineDelivery extends StatelessWidget {
   }
 
   Widget endTile(Flt flt) {
-    return vidTimelineTile(
-      alignment: vidTimelineAlign.manual,
+    return VidTimelineTile(
+      alignment: VidTimelineAlign.manual,
       lineXY: 0.1,
       isLast: true,
       height: 35,

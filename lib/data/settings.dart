@@ -148,7 +148,9 @@ class Settings {
   String iOSDemoBuilds;
   String androidDemoBuilds;
   String demoUser;
-  String demoPsssword;
+  String demoPassword;
+  String debugUser;
+  String debugPassword;
 
   String customMenu1;
   String customMenu2;
@@ -368,7 +370,7 @@ bool bpShowFastTrack;
     this.iOSDemoBuilds,
     this.androidDemoBuilds,
     this.demoUser,
-    this.demoPsssword,
+    this.demoPassword,
     this.customMenu1,
     this.customMenu2,
     this.customMenu3,

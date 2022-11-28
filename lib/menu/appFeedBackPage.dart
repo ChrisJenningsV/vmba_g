@@ -375,9 +375,9 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
                 });
                   });
-
-
                 Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/HomePage', (Route<dynamic> route) => false);
               },
             ),
           ],
@@ -459,20 +459,24 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
   }
 
   Future <String>  _sineIn(String sine, String pas) async {
-    gblError = '';
-    var msg = 'zua[sine=$sine,pwd=$pas]~X';
-    /*   if( !sine.contains('BSIA')) {
-      msg = 'BSIA';
+
+    // check for debug mode
+    if( gblSettings.debugUser != null && gblSettings.debugUser.isNotEmpty &&
+        gblSettings.debugPassword != null  && gblSettings.debugPassword.isNotEmpty){
+
+        if( sine == gblSettings.debugUser && pas == gblSettings.debugPassword){
+          gblDebugMode = true;
+
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/HomePage', (Route<dynamic> route) => false);
+          return 'OK';
+        }
     }
 
-  */
 
-   /* http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"))
-        .catchError((resp) {
-      print(resp);
-    });*/
+    gblError = '';
+    var msg = 'zua[sine=$sine,pwd=$pas]~X';
+
     String data = await runVrsCommand(msg);
     if (data != null) {
       try {

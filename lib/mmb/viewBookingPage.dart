@@ -401,16 +401,18 @@ class CheckinBoardingPassesWidgetState
     // reset list
     //_mmbBooking.journeys.journey = [];
 
-    int journeyCount = 0;
-    pnrModel.pNR.itinerary.itin.forEach((flt) {
-      if (_mmbBooking.journeys.journey.length == journeyCount) {
-        _mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
-      }
-      _mmbBooking.journeys.journey[journeyCount].itin.add(flt);
-      if (flt.nostop != 'X') {
-        journeyCount++;
-      }
-    });
+    if( pnrModel.pNR != null && pnrModel.pNR.itinerary != null && pnrModel.pNR.itinerary.itin != null ) {
+      int journeyCount = 0;
+      pnrModel.pNR.itinerary.itin.forEach((flt) {
+        if (_mmbBooking.journeys.journey.length == journeyCount) {
+          _mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
+        }
+        _mmbBooking.journeys.journey[journeyCount].itin.add(flt);
+        if (flt.nostop != 'X') {
+          journeyCount++;
+        }
+      });
+    }
   }
 
   @override
@@ -527,16 +529,28 @@ class CheckinBoardingPassesWidgetState
             }
             setState(() {});
           })
-              .then((onValue) => (pnr.validate() == '') ? null : pnr = null)
-              .then((onValue) =>
+              .then((onValue){
+                String val = pnr.validate();
+
               setState(() {
+                _loadingInProgress = false;
+                _displayProcessingText = '';
+                if( val == '') {
                 if( pnr.isFundTransferPayment()) {
                   gblError = null;
                 }
                 objPNR = pnr;
-                _loadingInProgress = false;
-                _displayProcessingText = '';
-              }));
+
+              } else {
+                  if( val == 'No Flights'){
+                    gblError = 'Cancelled';
+                  } else {
+                    gblError = val;
+                  }
+                }
+              });
+
+          });
         }
       }
       );
@@ -2180,9 +2194,9 @@ class CheckinBoardingPassesWidgetState
       return new TextButton(
 
         onPressed: () {
-         /* if( ! gblPnrModel.hasContactDetails()) {
+          if( ! gblPnrModel.hasContactDetails()) {
             return addContactDetails();
-          }*/
+          }
 
           if (gblSettings.autoSeatOption &&
               (paxlist
@@ -2257,7 +2271,7 @@ class CheckinBoardingPassesWidgetState
     TextEditingController _emailController = TextEditingController();
     TextEditingController _phoneController = TextEditingController();
 
-    if( gblPnrModel.pNR.contacts != null && gblPnrModel.pNR.contacts.cTC.length > 1) {
+    if( gblPnrModel.pNR.contacts != null && gblPnrModel.pNR.contacts.cTC.length > 0) {
       gblPnrModel.pNR.contacts.cTC.forEach((element) {
         if( element.cTCID == 'E') {
           _emailController.text = element.text;
@@ -2348,7 +2362,7 @@ class CheckinBoardingPassesWidgetState
                 if (form.validate()) {
                   form.save();
 // add ctc to PNR
-
+                  saveContactDetails(_emailController.text, _phoneController.text);
                   // save
 
                   // back
@@ -2366,6 +2380,31 @@ class CheckinBoardingPassesWidgetState
     );
   }
 
+  saveContactDetails(String email, String phone) async {
+    StringBuffer sb = new StringBuffer();
+    // remove old contact
+    sb.write('9X1^9X1^');
+    sb.write('9M*$phone^');
+    sb.write('9E*$email^E*R');
+    String data = await runVrsCommand(sb.toString());
+
+    Repository.get().fetchPnr(gblPnrModel.pNR.rLOC).then((pnrDb) {
+      if (pnrDb != null) {
+        if (pnrDb.success == false) {
+          gblError = pnrDb.data;
+          showSnackBar(gblError, context);
+          return;
+        }
+
+        if (pnrDb.success) {
+          Map<String, dynamic> map = jsonDecode(pnrDb.data);
+          gblPnrModel = new PnrModel.fromJson(map);
+          showSnackBar('Saved', context);
+        }
+      }
+    });
+
+  }
 
 
   autoseat(PnrModel pnr, int journey) {
