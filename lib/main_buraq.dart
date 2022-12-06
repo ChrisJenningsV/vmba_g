@@ -163,7 +163,7 @@ void configUZ() {
   testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
   wantPayStack: false,
-  wantPageImages: true,
+  wantPageImages: false,
   wantLeftLogo: false,
   wantCurrencySymbols: true,
   wantMyAccount: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/Helpers/bookingHelper.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
 import 'dart:convert';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/models/models.dart';
@@ -18,6 +19,7 @@ import 'package:vmba/passengerDetails/DangerousGoodsWidget.dart';
 import '../Products/optionsPage.dart';
 import '../calendar/bookingFunctions.dart';
 import '../components/bottomNav.dart';
+import '../components/pageStyleV2.dart';
 import '../components/vidButtons.dart';
 import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
@@ -364,47 +366,70 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     int i = 0;
 //    paxWidgets.add(Padding(padding: EdgeInsets.all(50),));
 
+
     //Adult start
-    if (pax.adults == 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.adult, true));
-    } else if (pax.adults > 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.adult, false));
-    }
-    for (var adults = 1; adults < pax.adults + 1; adults++) {
-      paxWidgets.add(renderFieldsV2(i += 1, PaxType.adult));
-    }
-    if (pax.adults != 0) {
-      paxWidgets.add(Divider());
-    }
-    //Adult end
+    if( wantPageV2()){
+      paxWidgets.add(paxTypeEntry(PaxType.adult, pax.adults, i));
+      i += pax.adults;
+      if( pax.youths > 0) {
+        paxWidgets.add(paxTypeEntry(PaxType.youth, pax.youths, i));
+        i += pax.youths;
+      }
+      if( pax.students > 0) {
+        paxWidgets.add(paxTypeEntry(PaxType.student, pax.students, i));
+        i += pax.students;
+      }
+      if( pax.seniors > 0) {
+        paxWidgets.add(paxTypeEntry(PaxType.senior, pax.seniors, i));
+        i += pax.seniors;
+      }
+      if( pax.children > 0) {
+        paxWidgets.add(paxTypeEntry(PaxType.child, pax.children, i));
+        i += pax.children;
+      }
+      if( pax.infants > 0) {
+        paxWidgets.add(paxTypeEntry(PaxType.infant, pax.infants, i));
+        i += pax.infants;
+      }
 
-    //Youth start
-    if (pax.youths == 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.youth, true));
-    } else if (pax.youths > 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.youth, false));
-    }
-    for (var youths = 1; youths < pax.youths + 1; youths++) {
-      paxWidgets.add(renderFieldsV2(i += 1, PaxType.youth));
-    }
-    if (pax.youths != 0) {
-      paxWidgets.add(Divider());
-    }
-    //Youth end
-
-    //studentstart
-    if (pax.students == 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.student, true));
-    } else if (pax.students > 1) {
-      paxWidgets.add(paxEntryHeader(PaxType.student, false));
-    }
-    for (var students = 1; students < pax.students + 1; students++) {
-      paxWidgets.add(renderFieldsV2(i += 1, PaxType.student));
-    }
-    if (pax.students != 0) {
-      paxWidgets.add(Divider());
-    }
-    //student
+    } else {
+      if (pax.adults == 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.adult, true));
+      } else if (pax.adults > 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.adult, false));
+      }
+      for (var adults = 1; adults < pax.adults + 1; adults++) {
+        paxWidgets.add(renderFieldsV2(i += 1, PaxType.adult));
+      }
+      if (pax.adults != 0) {
+        paxWidgets.add(Divider());
+      }
+      //Youth start
+      if (pax.youths == 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.youth, true));
+      } else if (pax.youths > 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.youth, false));
+      }
+      for (var youths = 1; youths < pax.youths + 1; youths++) {
+        paxWidgets.add(renderFieldsV2(i += 1, PaxType.youth));
+      }
+      if (pax.youths != 0) {
+        paxWidgets.add(Divider());
+      }
+      //Youth end
+      //studentstart
+      if (pax.students == 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.student, true));
+      } else if (pax.students > 1) {
+        paxWidgets.add(paxEntryHeader(PaxType.student, false));
+      }
+      for (var students = 1; students < pax.students + 1; students++) {
+        paxWidgets.add(renderFieldsV2(i += 1, PaxType.student));
+      }
+      if (pax.students != 0) {
+        paxWidgets.add(Divider());
+      }
+      //student
 
     //senior start
     if (pax.seniors == 1) {
@@ -447,6 +472,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       paxWidgets.add(Divider());
     }
     //Infant end
+    }
+
 
 /*
     if (allPaxDetailsCompleted) {
@@ -459,6 +486,24 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     ));
     //print('end renderPax');
     return paxWidgets;
+  }
+
+  Widget paxTypeEntry(PaxType paxType, int count, int paxNo){
+    String _passenger = translate('Passengers');
+    List<Widget> list = [];
+
+    if (count == 1) {
+      _passenger = translate('Passenger');
+    }
+    String pType = translate(capitalize(paxType.toString().split('.')[1]));
+
+    for (var c = 1; c < count + 1; c++) {
+      list.add(renderFieldsV2(paxNo += 1, PaxType.adult));
+    }
+
+    return v2BorderBox(context,   '$pType $_passenger',
+        Column(children: list), titleText: true);
+
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
@@ -532,7 +577,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
               }
             },
-            icon: Icon(Icons.edit),
+            icon: Icon(Icons.edit, color: wantPageV2() ? gblSystemColors.primaryHeaderColor : null ,),
             iconSize: 20,
           )
         ],
@@ -572,7 +617,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   });
                 }
               },
-              icon: Icon(Icons.add_circle),
+              icon: Icon(Icons.add_circle,color: wantPageV2() ? gblSystemColors.primaryHeaderColor : null ),
               iconSize: 20)
         ],
       );

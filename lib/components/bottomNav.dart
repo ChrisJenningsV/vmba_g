@@ -13,69 +13,12 @@ import '../utilities/blueScreen.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import 'trText.dart';
+void Function() _custom;
 
-void _selectPage(BuildContext context, int index) {
-switch (index) {
-  case 0:
-    // logout
-    logit('logout');
-    gblDebugMode = false;
-    if( gblCurPage != 'HOME') {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          '/HomePage', (Route<dynamic> route) => false);
-    } else {
-      reloadPage(context);
-    }
+Widget getBottomNav(BuildContext context, {Widget popButton, String helpText, void Function() custom } ) {
 
-    break;
-  case 1:
-    // blue screen
-    logit('launch BlueScreen');
-    startBlueScreen(context);
-    break;
-
-}
-}
-Widget getBottomNav(BuildContext context, {Widget popButton, String helpText} ) {
-  int _selectedPageIndex = 0;
   if( gblDebugMode == true){
-    return BottomNavigationBar(
-      onTap:(index) {
-        _selectPage(context, index);
-      },
-      currentIndex: _selectedPageIndex,
-      type: BottomNavigationBarType.fixed,
-      items: [
-        //home
-        BottomNavigationBarItem(
-          icon: Icon(Icons.logout, color: Colors.red),
-          activeIcon: Icon(Icons.logout, color: Colors.red),
-          label: 'Logout',
-
-        ),
-        //favorite
-        BottomNavigationBarItem(
-          icon: Icon(Icons.screen_search_desktop_outlined, color: Colors.blue),
-          activeIcon:
-          Icon(Icons.screen_search_desktop_outlined, color: Colors.green),
-          label: '',
-        ),
-        //loockback
-        BottomNavigationBarItem(
-          icon: Icon(Icons.bar_chart, color: Colors.blue),
-          activeIcon:
-          Icon(Icons.bar_chart, color: Colors.green),
-          label: '',
-        ),
-        //info & support
-        BottomNavigationBarItem(
-          icon: Icon(Icons.info, color: Colors.blue),
-          activeIcon: Icon(Icons.info, color: Colors.green),
-          label: '',
-        ),
-      ],
-    );
-
+    return DebugBottomNav(custom: custom,);
   }
 
   if( gblDemoMode == true){
@@ -255,3 +198,118 @@ void demoDialog(BuildContext context, {String helpText} ) {
   }
   );
 }
+
+
+class DebugBottomNav extends StatefulWidget {
+  void Function() custom;
+  DebugBottomNav({ Key key, void Function() custom });
+
+  @override
+  DebugBottomNavState createState() => DebugBottomNavState();
+}
+
+class DebugBottomNavState extends State<DebugBottomNav> {
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int _selectedPageIndex = 0;
+    List<BottomNavigationBarItem> list = [];
+
+    // logout
+    list.add(BottomNavigationBarItem(
+      icon: Icon(Icons.logout, color: Colors.red),
+      activeIcon: Icon(Icons.logout, color: Colors.red),
+      label: 'Logout',));
+
+    // blue screen
+    list.add(BottomNavigationBarItem(
+      icon: Icon(Icons.screen_search_desktop_outlined, color: Colors.blue),
+      backgroundColor: Colors.lightBlue,
+      activeIcon:
+      Icon(Icons.screen_search_desktop_outlined, color: Colors.green),
+      label: 'emu',
+    ));
+
+    // live / test
+    list.add(BottomNavigationBarItem(
+      icon: Icon(Icons.swap_horiz_outlined, color: gblIsLive ? Colors.red : Colors.blue),
+      activeIcon:
+      Icon(Icons.swap_horiz_outlined, color:  gblIsLive ? Colors.red : Colors.blue),
+      label: gblIsLive ?  'Live' : 'Test',
+    ));
+
+    logit( 'cc=${gblSettings.creditCardProvider} page=${gblCurPage}');
+    if( gblCurPage == 'CREDITCARDPAGE' && gblSettings.creditCardProvider.toLowerCase() == 'videcard' ) {
+      logit('add');
+      _custom = widget.custom;
+      // populate test CC
+      list.add( BottomNavigationBarItem(
+        icon: Icon(Icons.credit_card, color: Colors.blue),
+        activeIcon: Icon(Icons.credit_card, color: Colors.green),
+        label: 'add CC',
+      ));
+    }
+
+
+    return BottomNavigationBar(
+        onTap:(index) {
+          _selectPage(context, index, _custom);
+        },
+        currentIndex: _selectedPageIndex,
+        type: BottomNavigationBarType.fixed,
+        items: list
+    );
+
+  }
+  void _selectPage(BuildContext context, int index, void Function() custom) {
+    switch (index) {
+      case 0:
+      // logout
+        logit('logout');
+        gblDebugMode = false;
+        if( gblCurPage != 'HOME') {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/HomePage', (Route<dynamic> route) => false);
+        } else {
+          reloadPage(context);
+        }
+
+        break;
+      case 1:
+      // blue screen
+        logit('launch BlueScreen');
+        startBlueScreen(context);
+        break;
+      case 2:
+      // swap live / text
+        logit('swap live test');
+        gblIsLive = !gblIsLive;
+        setLiveTest() ;
+        // force reload
+        gblProviders = null;
+        if( gblCurPage != 'HOME') {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/HomePage', (Route<dynamic> route) => false);
+        } else {
+          reloadPage(context);
+        }
+        break;
+      case 3:
+      // custom
+        logit('custom action');
+        if( custom != null ){
+          custom();
+        }
+        break;
+
+
+    }
+  }
+  }
+
+

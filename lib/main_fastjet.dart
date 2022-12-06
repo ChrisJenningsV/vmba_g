@@ -166,6 +166,7 @@ void configFN() {
     wantSeatsWithProducts: true,
     wantEnglishTranslation: true,
     wantBpLogo: false,
+    defaultCountryCode: 'ZA',
 
     wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',

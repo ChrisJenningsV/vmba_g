@@ -52,12 +52,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
 
   Widget _body(NewBooking newBooking) {
     return
-/*
-      Container(
-      height: 700,
-        padding: EdgeInsets.only(bottom: 50),
-        child:
-*/
+
     SizedBox(
       height: 700,
       child:    ListView(
@@ -83,14 +78,21 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
 
   onComplete(BuildContext context, dynamic p) {
     try {
-      gblPaymentMsg = null;
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ChoosePaymenMethodWidget(
-                newBooking: widget.newBooking, pnrModel: gblPnrModel, isMmb: false,)
-            //CreditCardExample()
-          ));
+      if( !gblActionBtnDisabled) {
+        
+        gblActionBtnDisabled;
+        gblPaymentMsg = null;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ChoosePaymenMethodWidget(
+                      newBooking: widget.newBooking,
+                      pnrModel: gblPnrModel,
+                      isMmb: false,)
+              //CreditCardExample()
+            ));
+      }
     } catch (e) {
       print('Error: $e');
     }

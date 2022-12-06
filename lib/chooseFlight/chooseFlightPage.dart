@@ -50,11 +50,14 @@ class ChooseFlight extends StatelessWidget {
 
   }
   void _onPressed(BuildContext context, dynamic p) {
-    Navigator.of(context).pop(buildfltRequestMsg(
-        flts,
-        classband.cbname,
-        classband.cabin,
-        int.parse(classband.cb)));
+    if( !gblActionBtnDisabled) {
+      gblActionBtnDisabled = true;
+      Navigator.of(context).pop(buildfltRequestMsg(
+          flts,
+          classband.cbname,
+          classband.cabin,
+          int.parse(classband.cb)));
+    }
   }
 
   Widget classBands(context) {

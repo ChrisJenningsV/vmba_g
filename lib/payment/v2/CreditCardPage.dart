@@ -73,6 +73,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
   @override
   initState() {
     super.initState();
+    gblCurPage = 'CREDITCARDPAGE';
+    logit(gblCurPage);
     double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
     gblError = '';
     if (am <= 0) {
@@ -124,28 +126,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
       // return null;
     }
     Widget popButton;
-    if( gblSettings.creditCardProvider != null && gblSettings.creditCardProvider == 'videcard' ) {
-      bool gotVideCard = false;
+    void Function() customAction;
+    if( gblSettings.creditCardProvider != null && gblSettings.creditCardProvider.toLowerCase() == 'videcard' ) {
+      //bool gotVideCard = false;
+      customAction =_populateCC;
+
       popButton= vidDemoButton((context), 'Use Test CC', (p0) {
-        // populate test card
-        this.paymentDetails.cardNumber = '4242424242424242';
-        this.paymentDetails.expiryDate = '1234';
-        this.paymentDetails.cVV = '1234';
+        _populateCC();
 
-        paymentDetails.addressLine1 = 'Windsor Castle' ;
-        paymentDetails.addressLine2 = 'Castle Hill' ;
-        paymentDetails.town = 'Windsor';
-        paymentDetails.state = 'Berkshire';
-        paymentDetails.postCode = 'SL4 1PD' ;
-        paymentDetails.country  = 'UK' ;
-
-
-        if(widget.pnrModel != null && widget.pnrModel.pNR != null && widget.pnrModel.pNR.names != null ) {
-          this.paymentDetails.cardHolderName =
-              widget.pnrModel.pNR.names.pAX[0].firstName + ' ' +
-                  widget.pnrModel.pNR.names.pAX[0].surname;
-        }
-        ccInputGlobalKeyOptions.currentState.initPayDetails(paymentDetails);
       });
     }
     return WillPopScope(
@@ -160,7 +148,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         imageName: gblSettings.wantPageImages ? 'paymentPage' : null,
       ),
       endDrawer: DrawerMenu(),
-      bottomNavigationBar: getBottomNav(context, popButton: popButton, helpText: 'The test CC will popular field with working test card values.'),
+      bottomNavigationBar: getBottomNav(context, popButton: popButton, helpText: 'The test CC will popular field with working test card values.', custom: customAction),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
           Row(children: <Widget>[
@@ -218,6 +206,27 @@ class _CreditCardPageState extends State<CreditCardPage> {
         ]),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     ));
+  }
+  void _populateCC(){
+    // populate test card
+    this.paymentDetails.cardNumber = '4242424242424242';
+    this.paymentDetails.expiryDate = '1234';
+    this.paymentDetails.cVV = '1234';
+
+    paymentDetails.addressLine1 = 'Windsor Castle' ;
+    paymentDetails.addressLine2 = 'Castle Hill' ;
+    paymentDetails.town = 'Windsor';
+    paymentDetails.state = 'Berkshire';
+    paymentDetails.postCode = 'SL4 1PD' ;
+    paymentDetails.country  = 'UK' ;
+
+
+    if(widget.pnrModel != null && widget.pnrModel.pNR != null && widget.pnrModel.pNR.names != null ) {
+      this.paymentDetails.cardHolderName =
+          widget.pnrModel.pNR.names.pAX[0].firstName + ' ' +
+              widget.pnrModel.pNR.names.pAX[0].surname;
+    }
+    ccInputGlobalKeyOptions.currentState.initPayDetails(paymentDetails);
   }
 
   Future<bool> _onWillPop() async {

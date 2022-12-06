@@ -6,8 +6,13 @@ import 'package:vmba/data/globals.dart';
 
 
 
-Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData icon, double height, EdgeInsets padding}) {
+Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData icon, double height, EdgeInsets padding, bool titleText}) {
   double w = MediaQuery.of(context).size.width -30 ;
+  TextStyle textStyle = TextStyle(color: gblSystemColors.textEditIconColor, fontSize: 14);
+  if( titleText != null && titleText){
+    textStyle = TextStyle( fontSize: 18, fontWeight: FontWeight.bold);
+  }
+
   if( padding == null ){
     padding = EdgeInsets.all(10.0);
   }
@@ -39,7 +44,7 @@ Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData i
               color: Colors.white,
               child: Text(
                 label,
-                style: TextStyle(color: gblSystemColors.textEditIconColor, fontSize: 14),
+                style: textStyle,
               ),
             )),
       ]
