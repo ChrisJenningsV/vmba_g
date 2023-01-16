@@ -1036,17 +1036,6 @@ class Repository {
     print('Fetch PNR');
     PnrModel pnrModel = new PnrModel.fromJson(map);
 
-/*      // set app version saved with
-      String latestVersion = Platform.isIOS
-          ? gblSettings.latestBuildiOS
-          : gblSettings.latestBuildAndroid;*/
-
-     // pnrJson = pnrJson.replaceAll('"APPVERSION": 1.0.0.98,','');
-/*
-      if( pnrJson.contains('APPVERSION') == false){
-        pnrJson = pnrJson.replaceAll('{"RLOC":', '{"APPVERSION": "$latestVersion", "RLOC":');
-      }
-*/
       // {"RLOC":
 
       PnrDBCopy pnrDBCopy = new PnrDBCopy(

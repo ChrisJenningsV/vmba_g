@@ -221,6 +221,7 @@ class Settings {
   int payTimeout;
   int passportLayoutStyle;
   double progressFactor;
+  String blockedUrls;
 
 bool bpShowFastTrack;
   Settings({
@@ -375,7 +376,7 @@ bool bpShowFastTrack;
     this.customMenu2,
     this.customMenu3,
     this.progressFactor = 25,
-
+    this.blockedUrls,
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {

@@ -363,6 +363,9 @@ class PnrModel {
         if( logPnrErrors) print('validatePayment less than 0;');
         validatePayment = true;
       } else {
+        // allow payment outstanding
+        validatePayment = true;
+/*
         if( gblSettings.displayErrorPnr) {
           validatePayment = true;
           gblError = 'Payment incomplete, ${basket.outstanding.amount} outstanding';
@@ -371,6 +374,7 @@ class PnrModel {
           validatePayment = false;
         }
         if( logPnrErrors) print('validatePayment = false;');
+*/
       }
     }
     return validatePayment;

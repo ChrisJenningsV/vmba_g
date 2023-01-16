@@ -1873,6 +1873,17 @@ class CheckinBoardingPassesWidgetState
         list.add(Padding(
             padding: EdgeInsets.only(bottom: 5.0),
           ));
+
+        // outstanding ?
+        if( pnr.isFundTransferPayment() == false &&
+            double.parse(pnr.pNR.basket.outstanding.amount) >0) {
+            list.add(Row(
+                children: <Widget>[
+                  Expanded(child: payOutstandingButton(
+                      pnr, objPNR.pNR.basket.outstanding.amount))
+                ]));
+        }
+
         list.add( Column(
             children: getPassengerViewWidgets(pnr, journey),
           ));
@@ -2726,7 +2737,7 @@ class CheckinBoardingPassesWidgetState
   autoSeatingSelection(int paxNo, int journeyNo, PnrModel pnr,
       List<Pax> paxlist, bool chargeForPreferredSeating) {
     String text =
-        'Your remaining unallocated seats will now be allocated randomly, do you wish to proceed?';
+        translate('Your remaining unallocated seats will now be allocated randomly, do you wish to proceed?');
 
     Widget autoseatingButton = OutlinedButton(
       // style: OutlinedButton.styleFrom(

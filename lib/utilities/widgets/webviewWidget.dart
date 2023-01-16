@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:vmba/data/globals.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:vmba/components/trText.dart';
 
@@ -59,14 +60,14 @@ void _handleLoad() {
               },
               
             
-              // navigationDelegate: (NavigationRequest request) {
-              //   if (request.url.startsWith('https://www.youtube.com/')) {
-              //     print('blocking navigation to $request}');
-              //     return NavigationDecision.prevent;
-              //   }
-              //   print('allowing navigation to $request');
-              //   return NavigationDecision.navigate;
-              // },
+               navigationDelegate: (NavigationRequest request) {
+                 if ( gblSettings.blockedUrls != null && gblSettings.blockedUrls.contains( request.url)) {
+                   print('blocking navigation to $request}');
+                   return NavigationDecision.prevent;
+                 }
+                 print('allowing navigation to $request');
+                 return NavigationDecision.navigate;
+               },
               onPageFinished: (String url) {
                 _handleLoad();
                 print('Page finished loading: $url');

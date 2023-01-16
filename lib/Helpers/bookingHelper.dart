@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../components/trText.dart';
 import '../data/globals.dart';
+import '../data/models/pnr.dart';
+import '../data/models/pnrs.dart';
 import '../data/repository.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
@@ -33,14 +37,22 @@ Future<bool> onWillPop(BuildContext context) async {
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
               primary: gblSystemColors.textButtonTextColor),
-          onPressed: ()  {
-            // delete PNR contents
-            deletePnrContent().then((x) {
-              // return to choose flights
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/FlightSearchPage', (Route<dynamic> route) => false);
-          });
-            //Navigator.of(context).pop(true);
+          onPressed: () {
+            if (pnrCompleted()) {
+              resetPnrContent(gblPnrModel.pNR.rLOC).then((x) {
+                // return to choose flights
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/HomePage', (Route<dynamic> route) => false);
+              });
+            } else {
+              // delete PNR contents
+              deletePnrContent().then((x) {
+                // return to choose flights
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/FlightSearchPage', (Route<dynamic> route) => false);
+              });
+              //Navigator.of(context).pop(true);
+            }
           },
           child: new TrText('Yes'),
         ),
@@ -48,6 +60,14 @@ Future<bool> onWillPop(BuildContext context) async {
     ),
   )) ?? false;
 }
+
+bool pnrCompleted() {
+  if( gblPnrModel != null && gblPnrModel.pNR.payments != null && gblPnrModel.pNR.payments.fOP.length >0 ){
+    return true;
+  }
+  return false;
+}
+
 
 Future deletePnrContent() async {
   if( gblPnrModel != null &&  gblPnrModel.pNR.rLOC != null && gblPnrModel.pNR.rLOC.isNotEmpty){
@@ -73,3 +93,50 @@ Future deletePnrContent() async {
       }
   }
 }
+
+
+
+Future<PnrDBCopy> resetPnrContent(String rloc) async {
+  String data;
+  try {
+    logit('reset $rloc');
+    data = await runVrsCommand('I^*$rloc~x');
+  } catch(e) {
+    logit('catch ${e.toString()}');
+    throw (e);
+  }
+  if( ! data.startsWith('{')){
+    PnrDBCopy pnr = PnrDBCopy(rloc: '', data: data, delete: 0);
+    pnr.success = false;
+    return pnr;
+
+  }
+
+  String pnrJson;
+  //logit('RX: $data');
+
+  pnrJson = data
+      .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+      .replaceAll('<string xmlns="http://videcom.com/">', '')
+      .replaceAll('</string>', '');
+  Map map = json.decode(pnrJson);
+  print('Fetch PNR');
+  PnrModel pnrModel = new PnrModel.fromJson(map);
+
+  // {"RLOC":
+
+  PnrDBCopy pnrDBCopy = new PnrDBCopy(
+      rloc: pnrModel.pNR.rLOC, //_rloc,
+      data: pnrJson,
+      success: true,
+      delete: 0,
+      nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
+
+
+
+  Repository.get().updatePnr(pnrDBCopy);
+
+  return pnrDBCopy;
+}
+
+

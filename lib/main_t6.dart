@@ -102,6 +102,7 @@ void configT6() {
     useWebApiforVrs: true,
     wantEnglishTranslation: true,
     progressFactor: -15, //-30,
+    blockedUrls: '',
 
 
     passengerTypes: PassengerTypes(
