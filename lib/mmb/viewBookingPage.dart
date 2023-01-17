@@ -836,12 +836,16 @@ class CheckinBoardingPassesWidgetState
           child: Column(
             children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.warning_amber),
-              Padding(padding: EdgeInsets.all(2)),
+              //Icon(Icons.warning_amber),
+              //Padding(padding: EdgeInsets.all(2)),
               TrText('Payment Pending'),
-              Padding(padding: EdgeInsets.all(4)),
-              Text(formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(pnr.pNR.basket.outstanding.amount)))
+              payOutstandingButton(
+                        pnr, objPNR.pNR.basket.outstanding.amount),
+
+           //   Padding(padding: EdgeInsets.all(4)),
+           //   Text(formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(pnr.pNR.basket.outstanding.amount)))
             ],
           ),
               Row(

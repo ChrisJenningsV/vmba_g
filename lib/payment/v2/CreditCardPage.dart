@@ -187,8 +187,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
                     hasDataConnection().then((result) async {
                       if (result == true) {
                         if( gblSettings.useWebApiforVrs) {
+                          logit('CCP MakePaymentVars');
                           makePaymentVars();
                         } else {
+                          logit('CCP MakePayment');
                           makePayment();
                         }
                         //  signin().then((_) => makePayment());
@@ -363,7 +365,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
           if (widget.mmbAction == 'SEAT') {
             cmd = "EMT*R^E*R~x";
           } else if (widget.mmbAction == 'PAYOUTSTANDING') {
-            cmd = "EMT*R~x";
+            if( widget.pnrModel.hasTickets(widget.pnrModel.pNR.tickets) ) {
+              cmd = "EMT*R~x";
+            } else {
+              // issue tickets and MPD's
+              cmd = "EZT*R~x";
+            }
           }
 
           String onValue = await sendVarsCommand(cmd) ;

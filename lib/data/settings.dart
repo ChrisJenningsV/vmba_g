@@ -68,6 +68,7 @@ class Settings {
   String airlineName;
   bool wantApis;
   bool displayErrorPnr;
+  bool needTicketsToImport = false;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
   bool wantMyAccount ;
@@ -235,6 +236,7 @@ bool bpShowFastTrack;
     this.displayErrorPnr = false,
     this.wantPayStack = false,
     this.wantLeftLogo = false,
+    this.needTicketsToImport = false,
     this.wantCurrencySymbols,
     this.wantCurrencyPicker = false,
     this.wantBuyNowPayLater = false,

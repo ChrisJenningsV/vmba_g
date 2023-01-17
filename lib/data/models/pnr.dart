@@ -76,11 +76,17 @@ class PnrModel {
   }
 
   bool hasContactDetails() {
+    bool bFound = false;
     if (this.pNR != null &&
         this.pNR.contacts != null &&
         this.pNR.contacts.cTC != null &&
-        this.pNR.contacts.cTC.length >= 2  ) {
-      return true;
+        this.pNR.contacts.cTC.length >= 1  ) {
+      this.pNR.contacts.cTC.forEach((element) {
+        if( element.cTCID == 'E') {
+          bFound =  true;
+        }
+      });
+      return bFound;
     }
     return false;
   }
@@ -206,7 +212,7 @@ class PnrModel {
       //return 'Payment invalid';
     }
 
-    if (!hasTickets(this.pNR.tickets)) {
+    if (!hasTickets(this.pNR.tickets) && gblSettings.needTicketsToImport ) {
       if( gblSettings.displayErrorPnr) {
         gblError += '   No Tickets';
         return '';
@@ -214,7 +220,7 @@ class PnrModel {
         return 'No Tickets';
       }
     }
-    if (!validateTickets(this.pNR)) {
+    if (!validateTickets(this.pNR)  && gblSettings.needTicketsToImport) {
       return 'Please contact ${gblSettings.airlineName} to complete booking: tickets not valid';
 
 //      return 'Tickets invalid';

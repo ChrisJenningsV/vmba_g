@@ -726,6 +726,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     if (validate()) {
       hasDataConnection().then((result) async {
         if (result == true) {
+          logit('P MakePayment');
           makePayment();
         } else {
           setState(() {
@@ -841,7 +842,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  smallButton( text: 'PAY NOW', icon: Icons.check, onPressed: () { validateAndSubmit();}),
+                  smallButton( text: 'PAY NOW', icon: Icons.check, onPressed: () {
+                    validateAndSubmit();
+                  }),
                   /*
                   new FloatingActionButton.extended(
                       elevation: 0.0,
