@@ -223,6 +223,45 @@ class PaymentReply {
   }
 }
 
+class FqtvLoginRequest{
+  String user;
+  String password;
+
+  FqtvLoginRequest({ this.user, this.password});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['user'] = user;
+    map['password'] = password;
+    return map;
+  }
+}
+
+
+class FqtvLoginReply {
+  String reply;
+  String title;
+  String firstname;
+  String surname;
+  String phoneMobile;
+  String phoneHome;
+  String email;
+  String balance;
+
+  FqtvLoginReply(this.reply);
+
+  FqtvLoginReply.fromJson(Map<String, dynamic> json) {
+    //reply = json['reply'];
+     title = json['title'];
+     firstname = json['firstname'];
+     surname = json['surname'];
+     phoneMobile = json['phoneMobile'];
+     phoneHome = json['phoneHome'];
+     email = json['email'];
+     balance = json['balance'];
+  }
+}
+
 
 
 
