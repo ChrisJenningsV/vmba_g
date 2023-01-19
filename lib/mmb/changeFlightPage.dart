@@ -125,6 +125,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         'SalesCity=${this.widget.pnr.pNR.itinerary.itin[widget.mmbBooking.journeyToChange - 1].depart}');
     buffer.write(',Vars=True');
     buffer.write(',ClassBands=True');
+    buffer.write(',QuoteCurrency=${gblSettings.currency}');
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }

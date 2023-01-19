@@ -85,7 +85,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
 
-    gblPaymentMsg = '';
+    //gblPaymentMsg = '';
     gblError = '';
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;

@@ -189,6 +189,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
             ),
             onPressed: () {
               //gblPnrModel = pnr;
+              gblPaymentMsg = '';
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -967,6 +968,10 @@ class CheckinBoardingPassesWidgetState
   }
 
   void _onPressedChangeFlt({int p1}) {
+    if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
+      gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
+    }
+
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -978,6 +983,9 @@ class CheckinBoardingPassesWidgetState
         ));
   }
   void _onPressedChangeFlt2(BuildContext context, dynamic p1) {
+    if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
+      gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
+    }
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -1558,6 +1566,7 @@ class CheckinBoardingPassesWidgetState
   Widget payOutstandingButton(PnrModel pnr, String amount) {
     return new TextButton(
       onPressed: () {
+        gblPaymentMsg = '';
         Navigator.push(
             context,
             MaterialPageRoute(

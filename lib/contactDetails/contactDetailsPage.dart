@@ -661,6 +661,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   void gotoChoosePaymentPage() {
     try {
+      gblPaymentMsg = '';
       Navigator.push(
           context,
           MaterialPageRoute(

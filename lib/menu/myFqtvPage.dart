@@ -127,7 +127,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
       _passwordEditingController.text = gblPassengerDetail.fqtvPassword;
 
-      _fqtvLogin();
+      //_fqtvLogin();
 
     }
 
@@ -749,15 +749,23 @@ Widget _getTrans() {
     progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
     try {
       FqtvLoginRequest rq = new FqtvLoginRequest( user: _fqtvTextEditingController.text, password: _passwordEditingController.text);
+      fqtvNo = _fqtvTextEditingController.text;
+      fqtvPass = _passwordEditingController.text;
+
       String data = json.encode(rq);
       try {
         String reply = await callSmartApi('FQTVLOGIN', data);
         Map map = json.decode(reply);
         FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
 
-        fqtvNo = _fqtvTextEditingController.text;
-        gblPassengerDetail.fqtv = _fqtvTextEditingController.text;
-        gblPassengerDetail.fqtvPassword = _passwordEditingController.text;
+        if( gblPassengerDetail == null ) {
+          gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
+        }
+        gblPassengerDetail.fqtv = fqtvNo;
+        gblPassengerDetail.fqtvPassword = fqtvPass;
+        widget.passengerDetail.fqtv = fqtvNo;
+        widget.passengerDetail.fqtvPassword = fqtvPass;
+
         gblPassengerDetail.title = fqtvLoginReply.title;
         gblPassengerDetail.firstName = fqtvLoginReply.firstname;
         gblPassengerDetail.lastName = fqtvLoginReply.surname;
@@ -779,21 +787,27 @@ Widget _getTrans() {
         endProgressMessage();
 //      setState(() {});
       } catch (e) {
+        fqtvNo = '';
+        fqtvPass = '';
+
         gblError = e.toString();
         _isButtonDisabled = false;
         _loadingInProgress = false;
         _actionCompleted();
         endProgressMessage();
-        criticalErrorPage(context, gblError, title: 'Payment Error');
+        criticalErrorPage(context, gblError, title: 'Login Error');
       }
     } catch(e){
+      fqtvNo = '';
+      fqtvPass = '';
+
       _error = e.toString();
       _isButtonDisabled = false;
       _loadingInProgress = false;
       _actionCompleted();
       //_showDialog();
       endProgressMessage();
-      criticalErrorPage(context, gblError, title: 'Payment Error');
+      criticalErrorPage(context, gblError, title: 'Login Error');
       return;
     }
 

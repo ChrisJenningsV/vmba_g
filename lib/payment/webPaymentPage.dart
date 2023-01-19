@@ -59,7 +59,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
       Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: false,),
+        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: widget.isMmb,),
       ),
     );
     });
@@ -172,7 +172,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
               builder: (context) =>
                   ChoosePaymenMethodWidget(newBooking: widget.newBooking,
                     pnrModel: widget.pnrModel,
-                    isMmb: false,),
+                    isMmb: widget.isMmb,),
             ),
           );
 
@@ -249,7 +249,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: false,),
+        builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: widget.isMmb,),
       ),
     );
 
@@ -270,7 +270,13 @@ class _WebViewWidgetState extends State<WebPayPage> {
             child: new TrText('No'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              try {
+                String reply = await callSmartApi('CANCELPAYMENT', "");
+              } catch(e) {
+              }
+
+              gblPayBtnDisabled = false;
               Navigator.of(context).pop(true);
               },
             child: new TrText('Yes'),
@@ -306,7 +312,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
     String _getPayUrl(){
     String provider = widget.provider.replaceFirst('3DS_', '');
     String action = 'NEWBOOKING';
-    String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action&guid=${gblSettings.vrsGuid}';
+    String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action&guid=${gblSettings.vrsGuid}&mmb=${widget.isMmb}';
     if(gblSession != null) {
       url += '&VARSSessionID=${gblSession.varsSessionId}';
       logit('Session = ${gblSession.varsSessionId}');

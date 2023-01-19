@@ -213,6 +213,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
 }
   onComplete(BuildContext context ) {
     try {
+      gblPaymentMsg = '';
       Navigator.push(
           context,
           MaterialPageRoute(

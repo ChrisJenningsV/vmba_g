@@ -764,6 +764,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                           await saveChanges(context);
                         }
 */
+                        gblPaymentMsg = '';
                         Navigator.push(
                             context,
                             MaterialPageRoute(

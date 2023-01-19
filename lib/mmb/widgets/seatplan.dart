@@ -401,6 +401,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   _navigate(BuildContext context, PnrModel pnrModel, Session session) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
+    gblPaymentMsg = '';
     final result = await Navigator.push(
       context,
       // Create the SelectionScreen in the next step.
