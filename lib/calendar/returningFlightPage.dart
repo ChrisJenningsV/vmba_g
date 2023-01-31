@@ -681,6 +681,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   void goToClassScreen(int index, List<Flt> flts) async {
     _loadingInProgress = true;
+    gblActionBtnDisabled = false;
     _loading = 'Loading';
     var selectedFlt = await Navigator.push(
         context,

@@ -241,10 +241,12 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   bool _canDoRedeem() {
 
     if( gblPassengerDetail == null ) {
+      gblRedeemingAirmiles = false;
       return false;
     }
 
     if( gblPassengerDetail.fqtv == null || gblPassengerDetail.fqtv.isEmpty) {
+      gblRedeemingAirmiles = false;
       return false;
     }
 

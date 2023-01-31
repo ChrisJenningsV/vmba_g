@@ -149,14 +149,14 @@ void configSI() {
 
  // testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/blueislands/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-//    testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://192.168.100.98/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-   // testSmartApiUrl:  "http://10.0.2.2:63954/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:  "http://10.0.2.2:63954/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-//  testApiUrl:      'http://192.168.100.98/blueislands/VARS/webApiV2/api/',
+
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
- //   testApiUrl:      'http://10.0.2.2:5000/api',
+  //  testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect
 
     wantNewPayment: true,

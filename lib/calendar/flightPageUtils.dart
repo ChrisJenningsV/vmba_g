@@ -16,8 +16,13 @@ String calenderPrice(String currency, String price, String miles) {
   if( gblSettings.wantCurrencySymbols == true ) {
     _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
   }
-  if( gblRedeemingAirmiles== true && miles.isNotEmpty){
-    return '$miles ${translate("points")}';
+  if( gblRedeemingAirmiles== true ){
+    if( miles.isEmpty) {
+      return 'N/A';
+
+    } else {
+      return '$miles ${translate("points")}';
+    }
   } else {
     if (price.length == 0) {
       return 'N/A';

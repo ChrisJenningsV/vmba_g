@@ -623,6 +623,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
 
   void goToClassScreen(int index, List<Flt> flts) async {
+    gblActionBtnDisabled = false;
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(

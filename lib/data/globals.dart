@@ -11,8 +11,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN';
-bool gblIsLive = true;
+String gblBuildFlavor = 'SI';
+bool gblIsLive = false;
 int requiredXmlVersion = 105;
 int requiredApiVersion = 101;
 int apiBuldVersion;
@@ -60,6 +60,7 @@ bool gblRememberMe = false;
 bool gblRedeemingAirmiles = false;
 bool shownUpdate = false;
 bool gblCentreTitle = false;
+bool gblFqtvLoggedIn = false;
 String gblFqtvNumber = '';
 //String gblAdsNo = '';
 //String gblAdsPin = '';

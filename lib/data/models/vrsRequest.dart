@@ -247,6 +247,7 @@ class FqtvLoginReply {
   String phoneHome;
   String email;
   String balance;
+  String joiningDate;
 
   FqtvLoginReply(this.reply);
 
@@ -259,6 +260,7 @@ class FqtvLoginReply {
      phoneHome = json['phoneHome'];
      email = json['email'];
      balance = json['balance'];
+     joiningDate = json['joiningDate'];
   }
 }
 

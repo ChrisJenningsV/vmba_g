@@ -12,6 +12,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/vidButtons.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
 import '../utilities/messagePages.dart';
@@ -26,6 +27,7 @@ class MyFqtvPage extends StatefulWidget {
   _MyFqtvPageState createState() => _MyFqtvPageState();
 
   PassengerDetail passengerDetail;
+  String joiningDate;
   final bool isAdsBooking;
   final bool isLeadPassenger;
 
@@ -74,6 +76,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   @override
   initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     _isButtonDisabled = false;
    // _loadingInProgress = true;
     _isHidden = true;
@@ -83,6 +86,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
         gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty) {
       widget.passengerDetail = gblPassengerDetail;
+      fqtvNo = gblPassengerDetail.fqtv;
+      fqtvPass = gblPassengerDetail.fqtvPassword;
     } else {
       Repository.get()
           .getNamedUserProfile('PAX1').then((profile) {
@@ -135,6 +140,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 
   @override
   Widget build(BuildContext context) {
+   // gblActionBtnDisabled = false;
     if (_loadingInProgress) {
       return Scaffold(
         body: new Center(
@@ -150,7 +156,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           ),
         ),
       );
-    } else if( widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
+    } else if( gblFqtvLoggedIn == false || widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
         widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword == null ||
         widget.passengerDetail.fqtvPassword.isEmpty  ) {
       Color titleBackClr = gblSystemColors.primaryHeaderColor;
@@ -211,6 +217,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     if( gblSettings.fqtvName.startsWith('My')) {
       fqtvName = '${gblSettings.fqtvName}';
     }
+    gblRedeemingAirmiles = true;
 
     return Scaffold(
       appBar: AppBar(
@@ -365,7 +372,9 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     String name = '';
     String email = '';
     String fqtv = '';
-    String joining = '' ;
+    String joining = widget.joiningDate ;
+    if( joining == null) joining = '';
+    if( joining.length > 11) joining = joining.substring(0,11);
 
 if (widget.passengerDetail != null) {
   if( widget.passengerDetail.firstName != null &&
@@ -384,7 +393,15 @@ if (widget.passengerDetail != null) {
 if ( memberDetails != null ) {
   name = memberDetails.member.title + ' ' + memberDetails.member.firstname + ' ' + memberDetails.member.surname ;
   email = memberDetails.member.email;
-  joining = DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate));
+
+}
+if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
+  try {
+  joining = DateFormat('dd MMM yyyy').format(DateTime.parse(widget.joiningDate));
+  } catch(e) {
+
+  }
+
 }
 
 
@@ -423,8 +440,8 @@ if ( memberDetails != null ) {
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w700)),
                 new Text(name,
-                    style: new TextStyle(
-                        fontSize: 14.0, fontWeight: FontWeight.w300)),
+                //    style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)
+                ),
               ],
             ),
           ],
@@ -441,8 +458,8 @@ if ( memberDetails != null ) {
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               new Text(fqtv,
-                  style: new TextStyle(
-                      fontSize: 14.0, fontWeight: FontWeight.w300)),
+                  //style: new TextStyle(                      fontSize: 14.0, fontWeight: FontWeight.w300)
+              ),
             ],
           ),
         ],
@@ -459,8 +476,8 @@ if ( memberDetails != null ) {
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               new Text(email,
-                  style: new TextStyle(
-                      fontSize: 14.0, fontWeight: FontWeight.w300)),
+              //    style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)
+              ),
             ],
           ),
         ],
@@ -476,16 +493,17 @@ if ( memberDetails != null ) {
               new TrText("Joining date",
                   style: new TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
-              new Text(joining,
-                  style: new TextStyle(
-                      fontSize: 14.0, fontWeight: FontWeight.w300)),
+              new Text(joining,),
             ],
           ),
         ],
       ),
     ),);
 
-    widgets.add(ElevatedButton(
+
+    widgets.add(vidWideActionButton(context, 'Show Transactions', _showTransactions, wantIcon: false));
+    widgets.add(vidWideActionButton(context, 'Refresh Points', _reloadPoints, wantIcon: false));
+ /*   widgets.add(ElevatedButton(
       onPressed: () {
         isPending = false;
         _showTransactions();
@@ -499,7 +517,9 @@ if ( memberDetails != null ) {
           TrText(
             'Show Transactions',
             style: TextStyle(color: Colors.white),)
-    ));
+    ));*/
+    widgets.add(vidWideActionButton(context, 'Show Pending Transactions', _showPendingTransactions, wantIcon: false));
+/*
     widgets.add(ElevatedButton(
         onPressed: () {
           isPending = true;
@@ -515,7 +535,10 @@ if ( memberDetails != null ) {
           'Show Pending Transactions',
           style: TextStyle(color: Colors.white),)
     ));
-    widgets.add(ElevatedButton(
+*/
+    widgets.add(vidWideActionButton(context, 'Change Password', _changePasswordDialog, wantIcon: false));
+
+ /*   widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: gblSystemColors
                 .primaryButtonColor, //Colors.black,
@@ -526,8 +549,9 @@ if ( memberDetails != null ) {
           _changePasswordDialog();
           //Navigator.of(context).pop();
         }));
-
-    widgets.add(ElevatedButton(
+*/
+    widgets.add(vidWideActionButton(context, 'Book a flight', _bookAFlight, wantIcon: false));
+ /*   widgets.add(ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: gblSystemColors
               .primaryButtonColor, //Colors.black,
@@ -541,8 +565,10 @@ if ( memberDetails != null ) {
             '/FlightSearchPage', (Route<dynamic> route) => false, arguments: args);
       },
     ));
+*/
+    widgets.add(vidWideActionButton(context, 'Logout', _logout, wantIcon: false));
 
-    widgets.add(ElevatedButton(
+ /*   widgets.add(ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: gblSystemColors
               .primaryButtonColor, //Colors.black,
@@ -559,77 +585,131 @@ if ( memberDetails != null ) {
         Navigator.of(context).pushNamedAndRemoveUntil(
             '/HomePage', (Route<dynamic> route) => false);
       },
-    ));
+    ));*/
 
     if(_error != null && _error.isNotEmpty){
       widgets.add(Text(_error));
     }
 
     if( transactions != null ) {
-      widgets.add(new SingleChildScrollView(
+          widgets.add(_getTrans());
+ /*     widgets.add(new SingleChildScrollView(
         padding: EdgeInsets.only(left: 1.0, right: 1.0),
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
             child: _getTrans()
         ),
-      ));
+      ));*/
    }
     return widgets;
   }
+
+  void _reloadPoints(BuildContext context, dynamic p) {
+    _fqtvLogin();
+  }
+
+  void _logout(BuildContext context, dynamic p) {
+    gblFqtvNumber = "";
+    gblFqtvLoggedIn = false;
+    widget.passengerDetail.fqtv = '';
+    fqtvNo = '';
+    fqtvEmail = '';
+    fqtvPass = '';
+    gblPassengerDetail.fqtv = '';
+    gblPassengerDetail.fqtvPassword = '';
+    gblFqtvBalance = 0;
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/HomePage', (Route<dynamic> route) => false);
+  }
+
+  void _bookAFlight(BuildContext context, dynamic p) {
+    List<String> args = [];
+    args.add('wantRedeemMiles');
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/FlightSearchPage', (Route<dynamic> route) => false, arguments: args);
+  }
+
 Widget _getTrans() {
   List<Widget> tranWidgets = [];
 
-  tranWidgets.add( TrText(title));
+  tranWidgets.add( TrText(title, textScaleFactor: 1.5, style: TextStyle(fontWeight: FontWeight.bold),) );
 
   for(var tran in  transactions) {
     if(( tran.airMiles != '0' && tran.airMiles != '0.0' ) || isPending) {
 
+      List<Widget> list = [];
+
+      if( isPending ){
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            tran.flightDate  == null ? Text('') : Text(DateFormat(
+                'dd MMM yyyy').format(DateTime.parse(tran.flightDate)), textScaleFactor: 1.2,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(' '),
+            Text( tran.pnr, textScaleFactor: 1.2, style: TextStyle(fontWeight: FontWeight.bold),),
+          ],  ));
+
+      } else {
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // 2023-01-18T00:00:00
+            tran.transactionDateTime == null ? Text('') : Text(DateFormat(
+                'dd MMM yyyy').format(DateTime.parse(tran.transactionDateTime)), textScaleFactor: 1.2,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(' '),
+            Text( tran.pnr, textScaleFactor: 1.2, style: TextStyle(fontWeight: FontWeight.bold),),
+          ],  ));
+      }
+
+      if( tran.flightNumber.isNotEmpty ) {
+        list.add(Row(
+          children: [
+            //Padding(padding: EdgeInsets.only(right: 8.0),child: Icon(Icons.favorite,color: Colors.green,),),
+            Text(tran.flightNumber),
+            Text(' '),
+            Text(tran.departureCityCode,),
+            Text(' '),
+            Text(tran.arrivalCityCode),
+            Text(' '),
+            if(tran.flightDate.isNotEmpty &&
+                (!tran.flightDate.startsWith(('0001'))) )Text(
+                DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate))),
+          ],));
+      }
+
+  list.add(Row(
+  children: [
+  Expanded(
+  child: Container(
+  child: Text(tran.description ,
+  maxLines: 5, overflow: TextOverflow.ellipsis,)))]));
+
+  // third row
+  if( getAirMilesDisplayValue(tran.airMiles) != '') {
+    list.add(Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(getAirMilesDisplayValue(tran.airMiles), textScaleFactor: 1.2,
+          style: TextStyle(fontWeight: FontWeight.bold),),
+      ],
+    ));
+  }
+
+  list.add(Divider(color: Colors.grey, height: 6.0,),);
+
+
       tranWidgets.add(Container(
         width: MediaQuery.of(context).size.width * 0.95 ,
-        margin: EdgeInsets.all(1.0),
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          border: Border.all(),
-          borderRadius: BorderRadius.all(Radius.circular(3.0))
-        ),
+        //margin: EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(5),
         child: Column(
 
           // this makes the column height hug its content
           mainAxisSize: MainAxisSize.min,
-          children: [
-
-      // first row
-      Row(
-      children: [
-      //Padding(padding: EdgeInsets.only(right: 8.0),child: Icon(Icons.favorite,color: Colors.green,),),
-        Text( tran.flightNumber), Text(' '),
-        Text(tran.departureCityCode ,style: TextStyle(color: Colors.white,  )), Text(' '),
-        Text(tran.arrivalCityCode), Text(' '),
-        if(tran.flightDate.isNotEmpty && (!tran.flightDate.startsWith(('0001')))  )Text(DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate)),
-            style: TextStyle(color: Colors.white,  )),
-
-        ],  ),
-
-  // second row (single item)
-          Row(
-              children: [
-        Expanded(
-          child: Container(
-            child: Text(tran.description ,
-            maxLines: 5,
-            style: TextStyle( color: Colors.white, ), overflow: TextOverflow.ellipsis,)))]),
-            // third row
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-            Text(getAirMilesDisplayValue(tran.airMiles),style: TextStyle(color: Colors.white, ) ,
-    ),
-
-            Text(tran.pnr + '      ',style: TextStyle(color: Colors.black,  ),  ),
-        ],
-          )]
-      )
+          children: list
+     )
       )
 
       );
@@ -761,6 +841,7 @@ Widget _getTrans() {
         if( gblPassengerDetail == null ) {
           gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
         }
+        gblFqtvLoggedIn = true;
         gblPassengerDetail.fqtv = fqtvNo;
         gblPassengerDetail.fqtvPassword = fqtvPass;
         widget.passengerDetail.fqtv = fqtvNo;
@@ -769,6 +850,9 @@ Widget _getTrans() {
         gblPassengerDetail.title = fqtvLoginReply.title;
         gblPassengerDetail.firstName = fqtvLoginReply.firstname;
         gblPassengerDetail.lastName = fqtvLoginReply.surname;
+        widget.passengerDetail.firstName = fqtvLoginReply.firstname;
+        widget.passengerDetail.lastName = fqtvLoginReply.surname;
+
         gblPassengerDetail.phonenumber = fqtvLoginReply.phoneMobile;
         if (gblPassengerDetail.phonenumber == null ||
             gblPassengerDetail.phonenumber.isEmpty) {
@@ -777,6 +861,9 @@ Widget _getTrans() {
         gblFqtvBalance = int.parse(fqtvLoginReply.balance);
 
         gblPassengerDetail.email =fqtvLoginReply.email;
+        widget.passengerDetail.email = fqtvLoginReply.email;
+        widget.joiningDate = fqtvLoginReply.joiningDate;
+        //DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate))
         gblError ='';
         _isButtonDisabled = false;
         _loadingInProgress = false;
@@ -814,100 +901,6 @@ Widget _getTrans() {
   }
 
 
-  void _xfqtvLogin() async {
-    Session ses;
-//    if ( gblSession == null || gblSession.isTimedOut()) {
-      await login().then((result) {
-        ses =            Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
-        print('new session');
-      });
-  //  }
-    FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
-        _fqtvTextEditingController.text,
-        _passwordEditingController.text);
-    String msg = json.encode(FqTvCommand(ses, fqtvMsg ).toJson());
-    String method = 'GetAirMilesBalance';
-
-   print(msg);
-   try {
-     _sendVRSCommand(msg, method).then((result) {
-       if (result == null || result == '') {
-         _error = translate('Bad server response logging on');
-         _isButtonDisabled = false;
-         _loadingInProgress = false;
-         _actionCompleted();
-         _showDialog();
-         return;
-       }
-       Map map = json.decode(result);
-       ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(
-           map);
-       _loadingInProgress = false;
-       if (resp.statusCode != 'OK') {
-         _error = resp.message;
-         _isButtonDisabled = false;
-         _actionCompleted();
-         _showDialog();
-       } else {
-         _error = '';
-         widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
-         fqtvNo = _fqtvTextEditingController.text;
-         gblFqtvNumber = fqtvNo;
-         fqtvEmail = _emailEditingController.text;
-         fqtvPass = _passwordEditingController.text;
-         gblFqtvBalance = resp.balance;
-
-         method = 'GetDetailsByUsername';
-         msg = json.encode(
-             ApiFqtvGetDetailsRequest(fqtvEmail, fqtvNo, fqtvPass).toJson());
-
-         _sendVRSCommand(msg, method).then((result) {
-           Map map = json.decode(result);
-
-           try {
-             ApiFqtvMemberDetailsResponse resp = new ApiFqtvMemberDetailsResponse
-                 .fromJson(map);
-             if (resp.statusCode != 'OK') {
-               _error = resp.message;
-               _actionCompleted();
-               _isButtonDisabled = false;
-               _showDialog();
-             } else {
-               memberDetails = resp;
-               widget.passengerDetail.fqtvPassword = fqtvPass;
-               widget.passengerDetail.fqtv = fqtvNo;
-               if (gblPassengerDetail == null) {
-                 gblPassengerDetail = widget.passengerDetail;
-               }
-               gblPassengerDetail.fqtv = fqtvNo;
-               gblPassengerDetail.fqtvPassword = fqtvPass;
-               gblPassengerDetail.title = memberDetails.member.title;
-               gblPassengerDetail.firstName = memberDetails.member.firstname;
-               gblPassengerDetail.lastName = memberDetails.member.surname;
-               gblPassengerDetail.phonenumber =
-                   memberDetails.member.phoneMobile;
-               if (gblPassengerDetail.phonenumber == null ||
-                   gblPassengerDetail.phonenumber.isEmpty) {
-                 gblPassengerDetail.phonenumber =
-                     memberDetails.member.phoneHome;
-               }
-
-               gblPassengerDetail.email = memberDetails.member.email;
-               setState(() {});
-             }
-           } catch (e) {
-             _loadingInProgress = false;
-             print(e);
-           }
-         });
-       }
-     });
-   } catch(e) {
-     print(e);
-
-   }
-   }
-
   Future _sendVRSCommand(msg, method) async {
     final http.Response response = await http.post(
         Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
@@ -930,8 +923,8 @@ Widget _getTrans() {
     }
   }
 
- void  _showTransactions() async {
-
+ void  _showTransactions(BuildContext context, dynamic p) async {
+   isPending = false;
    ApiFqtvGetDetailsRequest fqtvMsg = ApiFqtvGetDetailsRequest(fqtvEmail,
        fqtvNo,
        fqtvPass);
@@ -956,8 +949,8 @@ Widget _getTrans() {
    });
   }
 
-  void  _showPendingTransactions() async {
-
+  void  _showPendingTransactions(BuildContext context, dynamic p) async {
+    isPending = true;
     ApiFqtvPendingRequest fqtvMsg = ApiFqtvPendingRequest(
         fqtvNo,
         fqtvPass);
@@ -990,7 +983,7 @@ Widget _getTrans() {
   }
 
 
-  void _changePasswordDialog() {
+  void _changePasswordDialog(BuildContext context, dynamic p ) {
    showDialog(
        context: context,
        builder: (BuildContext context) {

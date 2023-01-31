@@ -492,6 +492,7 @@ class ApiFQTVMemberTransaction {
   String pnr;
   String flightNumber;
   String flightDate;
+  String transactionDateTime;
   String departureCityCode;
   String arrivalCityCode;
   String airMiles;
@@ -499,6 +500,7 @@ class ApiFQTVMemberTransaction {
 
   ApiFQTVMemberTransaction(this.pnr, this.flightNumber,
       this.flightDate,
+      this.transactionDateTime,
       this.departureCityCode, this.arrivalCityCode,
        this.airMiles, this.description);
 }
@@ -520,6 +522,7 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
         transactions.add( new ApiFQTVMemberTransaction(_getString(tran['pnr']),
             _getString(tran['flightNumber']),
             _getString(tran['flightDate']),
+            _getString(tran['transactionDateTime']),
             _getString(tran['departureCityCode']),
             _getString(tran['arrivalCityCode']),
             _getNumber(tran['airMiles']),

@@ -65,10 +65,10 @@ BorderRadius getButtonRadius() {
 /*
   NEXT button at the bottom of most pages
  */
-Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0} ) {
+Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0, bool wantIcon = true} ) {
 
   List<Widget> list = [];
-  if( gblSettings.wantButtonIcons && !gblActionBtnDisabled) {
+  if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
     list.add(Icon(
       Icons.check,
       color: Colors.white,

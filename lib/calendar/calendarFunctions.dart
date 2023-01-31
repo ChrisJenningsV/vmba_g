@@ -41,7 +41,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
   }
 
   void goToClassScreen(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, int index, List<Flt> flts) async {
-
+    gblActionBtnDisabled = false;
 
     var selectedFlt = await Navigator.push(
         context,

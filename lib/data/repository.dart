@@ -106,16 +106,21 @@ class Repository {
 
                 //print(msg);
                 _sendVRSCommand(msg, method).then((result){
-                  Map map = json.decode(result);
-                  ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(map);
-                  if( resp.statusCode != 'OK') {
+                  if( result == null ) {
+                    gblFqtvBalance = 0;
+                  } else {
+                    Map map = json.decode(result);
+                    ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp
+                        .fromJson(map);
+                    if (resp.statusCode != 'OK') {
 /*                    _error = resp.message;
                     _actionCompleted();
                     _showDialog();
 
  */
-                  } else {
-                    gblFqtvBalance = resp.balance;
+                    } else {
+                      gblFqtvBalance = resp.balance;
+                    }
                   }
                 });
               }
