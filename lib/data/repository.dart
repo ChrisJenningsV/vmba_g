@@ -97,7 +97,7 @@ class Repository {
                 gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
                 gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty){
               // get balance
-              if ( gblSession != null ){
+      /*        if ( gblSession != null ){
                 FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(gblPassengerDetail.email,
                     gblPassengerDetail.fqtv,
                     gblPassengerDetail.fqtvPassword);
@@ -113,17 +113,17 @@ class Repository {
                     ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp
                         .fromJson(map);
                     if (resp.statusCode != 'OK') {
-/*                    _error = resp.message;
+*//*                    _error = resp.message;
                     _actionCompleted();
                     _showDialog();
 
- */
+ *//*
                     } else {
                       gblFqtvBalance = resp.balance;
                     }
                   }
                 });
-              }
+              }*/
             }
         } catch (e) {
           print(e);
@@ -141,7 +141,7 @@ class Repository {
       print('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed: $msg');
+      print('failed4: $msg');
       try{
         print (response.body);
       } catch(e){}
@@ -1225,7 +1225,7 @@ class Repository {
     PnrModel pnrModel = PnrModel();
     if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
-      if(gblLogFQ) {logit('getfareQuote: ' + data); }
+      if(gblLogFQ) {logit('getfareQuote3: ' + data); }
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
         Map map = jsonDecode(data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1243,22 +1243,22 @@ class Repository {
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
             headers: getXmlHeaders())
         .catchError((resp) {
-          if(gblLogFQ) {logit('getfareQuote: ' + resp);}
+          if(gblLogFQ) {logit('getfareQuote4: ' + resp);}
 
           return new ParsedResponse(0, null, error: resp);
         });
       if (response == null) {
-        if(gblLogFQ) { logit('getfareQuote: null' ); }
+        if(gblLogFQ) { logit('getfareQuote5: null' ); }
 
         return new ParsedResponse(noInterent, null);
       }
 
       if (response.statusCode < 200 || response.statusCode >= 300) {
-        logit('getfareQuote: error' + response.statusCode.toString());
+        logit('getfareQuote6: error' + response.statusCode.toString());
 
         return new ParsedResponse(response.statusCode, null);
       }
-        if(gblLogFQ) {logit('getfareQuote: ' + response.body);}
+        if(gblLogFQ) {logit('getfareQuote7: ' + response.body);}
 
         if( response.body.toUpperCase().contains('ERROR' )){
         String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')

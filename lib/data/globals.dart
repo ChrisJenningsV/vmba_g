@@ -38,6 +38,7 @@ String gblPaymentMsg;
 String gblNotifyToken;
 String gblDeviceId;
 String gblCurPage;
+String gblUndoCommand;
 
 /* logging */
 bool gblLogProducts = false;
@@ -58,6 +59,7 @@ bool gblPayBtnDisabled = false;
 bool gblActionBtnDisabled = false;
 bool gblRememberMe = false;
 bool gblRedeemingAirmiles = false;
+bool gblShowRedeemingAirmiles = false;
 bool shownUpdate = false;
 bool gblCentreTitle = false;
 bool gblFqtvLoggedIn = false;

@@ -268,7 +268,7 @@ Future _sendVRSCommand(msg) async {
     print('message send successfully: $msg' );
     return response.body.trim();
   } else {
-    print('failed: $msg');
+    print('failed2: $msg');
   }
 }
 
@@ -283,7 +283,7 @@ Future _sendVRSCommandList(msg) async {
     print('message send successfully: $msg');
     return response.body.trim();
   } else {
-    print('failed: $msg');
+    print('failed3: $msg');
   }
 }
 

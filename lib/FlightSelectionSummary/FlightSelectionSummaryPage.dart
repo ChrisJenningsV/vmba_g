@@ -47,6 +47,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _eVoucherNotValid = false;
     _tooManyUmnr = false;
     _hasError = false;
+    _error = null;
+    gblError = null;
     gblCurPage = 'FLIGHTSEARCH';
     _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
@@ -212,7 +214,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd += addFareStore(true);
     cmd += '*r~x';
 //    cmd += 'fg^fs1^*r~x';
-    logit('getFareQuote: ' + cmd);
+    logit('getFareQuote2: ' + cmd);
     return cmd;
   }
 
@@ -235,11 +237,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
               _eVoucherNotValid = false;
               _tooManyUmnr = false;
-              _hasError = true;
+              _hasError = false;
               _error =
               'You do not have enough ${gblSettings
-                  .fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings
+                  .fQTVpointsName} to pay for this booking\nBalance = $gblFqtvBalance, \n${gblSettings
                   .fQTVpointsName} required = $miles';
+              gblError = _error;
+              gblErrorTitle = 'Booking Error';
             });
           }
         }
@@ -261,7 +265,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         });
       }
     }).catchError((resp) {
-      logit(resp);
+      logit('catchError1: $resp');
       if (resp is FormatException) {
         //String _error;
         FormatException ex = resp;
@@ -324,7 +328,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   void _dataLoaded() {
     setState(() {
       _loadingInProgress = false;
-      endProgressMessage();
+      //endProgressMessage();
 
     });
   }
@@ -765,7 +769,7 @@ Row airMiles() {
           appBar: appBar(context, 'Summary',
             curStep: 3,
             newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,),
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: Center(
@@ -776,26 +780,26 @@ Row airMiles() {
                   padding: const EdgeInsets.all(8.0),
                   child: _eVoucherNotValid
                       ? TrText('Promo code not vaild')
-                      : Text( _error                          ,
-                          textAlign: TextAlign.center,
-                        ),
+                      : Text(_error,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 _eVoucherNotValid
                     ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            primary: Colors.black),
-                        onPressed: () {
-                          widget.newBooking.eVoucherCode = '';
-                          retryBooking();
-                        },
-                        child: TrText(
-                          'Remove and retry booking',
-                          style: new TextStyle(color: Colors.white),
-                        ),
-                      )
-                    :               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      primary: Colors.black),
+                  onPressed: () {
+                    widget.newBooking.eVoucherCode = '';
+                    retryBooking();
+                  },
+                  child: TrText(
+                    'Remove and retry booking',
+                    style: new TextStyle(color: Colors.white),
+                  ),
+                )
+                    : ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
@@ -803,14 +807,16 @@ Row airMiles() {
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/FlightSearchPage', (Route<dynamic> route) => false);
-                    },
-                    child: TrText('Restart booking',
+                  },
+                  child: TrText('Restart booking',
                     style: new TextStyle(color: Colors.white),
                   ),
                 ),
               ],
             ),
           ));
+    } else if (_error != null && _error.isNotEmpty) {
+      return criticalErrorPageWidget( context, _error,title: 'Booking Error', onComplete:  onComplete);
     } else {
       List<Widget> list = [];
 
@@ -987,4 +993,9 @@ Row airMiles() {
     }
   }
 
+  void onComplete (dynamic p) {
+      _error = null;
+      setState(() {});
+      Navigator.of(context).pop();
+  }
 }

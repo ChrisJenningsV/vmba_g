@@ -159,7 +159,7 @@ String buildCmd(NewBooking newBooking) {
   cmd += addFareStore(true);
   cmd += '*r~x';
 //    cmd += 'fg^fs1^*r~x';
-  logit('getFareQuote: ' + cmd);
+  logit('getFareQuote1: ' + cmd);
   return cmd;
 }
 String buildDummyAddPaxCmd(NewBooking newBooking) {

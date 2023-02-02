@@ -33,6 +33,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     super.initState();
     booking = new NewBooking();
     gblCurPage = 'FLIGHTSEARCH';
+    gblUndoCommand = '';
     booking.currency = gblSettings.currency;
     gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
@@ -102,7 +103,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     }
 
     if( firstBuild == true &&  args != null && args.contains('wantRedeemMiles' )) {
-      gblRedeemingAirmiles = true;
+      gblShowRedeemingAirmiles = true;
     }
     firstBuild = false;
     return new Scaffold(
@@ -242,11 +243,13 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
     if( gblPassengerDetail == null ) {
       gblRedeemingAirmiles = false;
+      gblShowRedeemingAirmiles = false;
       return false;
     }
 
     if( gblPassengerDetail.fqtv == null || gblPassengerDetail.fqtv.isEmpty) {
       gblRedeemingAirmiles = false;
+      gblShowRedeemingAirmiles = false;
       return false;
     }
 
@@ -254,7 +257,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     if( gblFqtvBalance != null && gblFqtvBalance > 0 ) {
       return true;
     }
-    return false;
+    return gblShowRedeemingAirmiles;
   }
   void _reloadSearch(NewBooking newBooking) {
     if (newBooking != null) {

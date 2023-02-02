@@ -242,6 +242,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   @override
   Widget build(BuildContext context) {
+  if ( gblError!= null && gblError.isNotEmpty  ){
+    return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete);
+
+
+  }
     return new Scaffold(
       key: _key,
       appBar: appBar(context,  "Outbound Flight", leading: new IconButton(
@@ -272,6 +277,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     );
 
     //return _buildBody();
+  }
+  void onComplete (dynamic p) {
+    gblError = null;
+    setState(() {});
   }
 
   Widget _buildBody() {
@@ -457,6 +466,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       }
 
       hasDataConnection().then((result) async {
+        logit('FlightSelected: $result');
       //  endProgressMessage();
         if (result == true) {
           _loadingInProgress = false;
@@ -503,6 +513,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             }
           }
         } else {
+          logit('FlightSelected: no iternet');
           //showSnackBar(translate('Please, check your internet connection'));
        //   endProgressMessage();
           noInternetSnackBar(context);

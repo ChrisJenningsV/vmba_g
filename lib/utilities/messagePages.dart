@@ -322,6 +322,26 @@ class MessagePageState extends State<MessagePage> {
 Widget messageWidget() {
 
 }*/
+Widget criticalErrorPageWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
+  return Scaffold(
+      //key: _key,
+      appBar: new AppBar(
+        automaticallyImplyLeading: false,
+        //brightness: gblSystemColors.statusBar,
+        backgroundColor:
+        gblSystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(
+            color: gblSystemColors.headerTextColor),
+        title: new TrText('',
+            style: TextStyle(
+                color:
+                gblSystemColors.headerTextColor)),
+      ),
+      //endDrawer: DrawerMenu(),
+      body: criticalErrorWidget(context,msg,title: title, wantButtons: wantButtons, onComplete: onComplete)
+  );
+}
+
 
 Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
   List<Widget> actionList ;

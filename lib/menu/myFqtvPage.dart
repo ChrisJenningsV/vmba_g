@@ -77,6 +77,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   initState() {
     super.initState();
     gblActionBtnDisabled = false;
+    gblRedeemingAirmiles = false;
     _isButtonDisabled = false;
    // _loadingInProgress = true;
     _isHidden = true;
@@ -163,6 +164,11 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       if( titleBackClr == Colors.white) {
         titleBackClr = gblSystemColors.primaryButtonColor;
       }
+      try {
+        endProgressMessage();
+      } catch(e) {
+
+      }
       Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
       if( gblSettings.pageImageMap != null ) {
         Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
@@ -217,7 +223,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     if( gblSettings.fqtvName.startsWith('My')) {
       fqtvName = '${gblSettings.fqtvName}';
     }
-    gblRedeemingAirmiles = true;
+    gblShowRedeemingAirmiles = true;
 
     return Scaffold(
       appBar: AppBar(
@@ -612,6 +618,7 @@ if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
   void _logout(BuildContext context, dynamic p) {
     gblFqtvNumber = "";
     gblFqtvLoggedIn = false;
+    gblRedeemingAirmiles = false;
     widget.passengerDetail.fqtv = '';
     fqtvNo = '';
     fqtvEmail = '';
@@ -827,6 +834,7 @@ Widget _getTrans() {
 
   void _fqtvLogin() async {
     progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
+    gblRedeemingAirmiles = false;
     try {
       FqtvLoginRequest rq = new FqtvLoginRequest( user: _fqtvTextEditingController.text, password: _passwordEditingController.text);
       fqtvNo = _fqtvTextEditingController.text;
@@ -911,7 +919,7 @@ Widget _getTrans() {
       print('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed: $msg');
+      print('failed5: $msg');
       _error = translate('message failed');
       try{
         print (response.body);
