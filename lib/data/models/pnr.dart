@@ -518,6 +518,29 @@ class PNR {
         : null;
   }
 
+  int seatCount() {
+    if( aPFAX == null || aPFAX.aFX == null ) {
+      return 0;
+    }
+    int noSeats = 0;
+    aPFAX.aFX.forEach((element) {
+      if( element.aFXID =='SEAT'){
+        noSeats ++;
+      }
+    });
+    return noSeats;
+  }
+  int paxCount() {
+    if( names == null || names.pAX == null ) {
+      return 0;
+    }
+    int noSeats = 0;
+    names.pAX.forEach((element) {
+        noSeats ++;
+    });
+    return noSeats;
+  }
+
   void dumpProducts(String from ) {
     if( gblLogProducts ) { logit('Products dump: $from');}
     if( mPS == null || mPS.mP == null ) {

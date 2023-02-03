@@ -7,6 +7,7 @@ import '../data/globals.dart';
 import '../data/models/pnr.dart';
 import '../data/models/pnrs.dart';
 import '../data/repository.dart';
+import '../data/smartApi.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 
@@ -37,7 +38,12 @@ Future<bool> onWillPop(BuildContext context) async {
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
               primary: gblSystemColors.textButtonTextColor),
-          onPressed: () {
+          onPressed: () async {
+            try {
+              String reply = await callSmartApi('CANCELPAYMENT', "");
+            } catch(e) {
+            }
+
             if (pnrCompleted()) {
               resetPnrContent(gblPnrModel.pNR.rLOC).then((x) {
                 // return to choose flights
@@ -45,6 +51,7 @@ Future<bool> onWillPop(BuildContext context) async {
                     '/HomePage', (Route<dynamic> route) => false);
               });
             } else {
+
               // delete PNR contents
               deletePnrContent().then((x) {
                 // return to choose flights

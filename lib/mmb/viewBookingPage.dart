@@ -101,6 +101,8 @@ class ViewBookingPageState extends State<ViewBookingPage> {
       menuColor = Colors.red;
     }
 
+  //  int noSeats = gblPnrModel.pNR.seatCount();
+
     return ChangeNotifierProvider(
       //builder: (context) => PnrChangeNotifier(),
         create: (context) => PnrChangeNotifier(),

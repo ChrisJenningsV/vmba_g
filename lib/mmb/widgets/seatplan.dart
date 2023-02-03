@@ -262,7 +262,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   }));
         } else {
           String msg;
+          int noSeats = 0;
           if (gblSettings.wantNewPayment) {
+            // build undo
+            noSeats = gblPnrModel.pNR.seatCount();
+
             msg = json.encode(RunVRSCommand(session, "E*R~x"));
           } else {
             msg = json.encode(RunVRSCommand(session, "*${widget.rloc}~x"));
@@ -277,13 +281,20 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
             PnrModel pnrModel = new PnrModel.fromJson(map);
             gblPnrModel = pnrModel;
+            int newSeatCount = gblPnrModel.pNR.seatCount();
+            gblUndoCommand ='';
+            for( int i = newSeatCount; i > noSeats; i--){
+              if(gblUndoCommand.length > 0 ){
+                gblUndoCommand += '^';
+              }
+              gblUndoCommand += '4X${i}';
+            }
+            if(gblUndoCommand.length > 0 ){
+              gblUndoCommand += '^E*R';
+            }
             refreshStatusBar();
             _navigate(context, pnrModel, session);
-            //  Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => ChoosePaymenMethodWidget(
-            //             pnrModel: pnrModel, isMmb: true, session: session)));
+
             _resetloadingProgress();
           });
         }

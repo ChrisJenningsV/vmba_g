@@ -132,7 +132,7 @@ void configFN() {
 
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
- //      testSmartApiUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/MobileSmartApi",
+//       testSmartApiUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',

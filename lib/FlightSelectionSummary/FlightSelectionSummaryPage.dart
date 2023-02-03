@@ -50,7 +50,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _error = null;
     gblError = null;
     gblCurPage = 'FLIGHTSEARCH';
-    _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
+    // _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
 
     // save some stuff
@@ -246,6 +246,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               gblErrorTitle = 'Booking Error';
             });
           }
+        } else {
+          endProgressMessage();
         }
         _dataLoaded();
       } else if (rs.statusCode == 0) {

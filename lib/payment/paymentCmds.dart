@@ -284,6 +284,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
     if (result.trim() == 'Payment Complete') {
       gblTimerExpired = true;
       print('Payment success');
+      gblUndoCommand = '';
 
 /*
       setState(() {

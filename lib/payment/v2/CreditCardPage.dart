@@ -347,6 +347,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             result.contains('Receipt e-mailed to:') ||
             result == 'Payment not accepted, no more to pay for this passenger') {
           gblTimerExpired = true;
+          gblUndoCommand = '';
          // need to re - ticket
           // MMGBP25^
           // is it a change flight action ?
@@ -647,6 +648,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         if (result.trim() == 'Payment Complete') {
           gblTimerExpired = true;
           print('Payment success');
+          gblUndoCommand = '';
           // kill timer
           //         try {
           //         Provider.of<CountDownTimer>(context, listen: false)
@@ -794,6 +796,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           //  EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~xMMGBP25^EZV*[E][ZWEB]^EZT*R^EMT*R^E*R^EZRE/en^*r~x
           // _sendVRSCommand(json.encode(RunVRSCommand(session, "EMT*R~x")))
           //var cmd = "EMT*R~x";
+          gblUndoCommand = '';
           var cmd = "EZT*R~x";
           if (widget.mmbAction == 'CHANGEFLT') {
             // get tickets
@@ -1085,6 +1088,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         if (result.trim() == 'Payment Complete') {
           gblTimerExpired = true;
           print('Payment success');
+          gblUndoCommand = '';
           // kill timer
           //         try {
           //         Provider.of<CountDownTimer>(context, listen: false)

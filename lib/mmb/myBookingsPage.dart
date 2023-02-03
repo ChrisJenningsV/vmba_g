@@ -599,6 +599,7 @@ String _error = '';
               new Text(document.rloc, //document['rloc'],
                   style: new TextStyle(
                       fontSize: 20.0, fontWeight: FontWeight.w700)),
+              _getIcons(pnr),
               TrText((pnr.pNR.appVersion  == null ) ?'Needs Reload' : ' ', style: TextStyle(color: Colors.red),),
               GestureDetector(
                 child: Icon(Icons.more_vert),
@@ -644,6 +645,23 @@ String _error = '';
 //       );
 //    }
   }
+  
+  Widget _getIcons(PnrModel pnr){
+    if( pnr == null || pnr.pNR == null ){
+      return Container();
+    }
+    int noPax = pnr.pNR.paxCount();
+    int noSeats = pnr.pNR.seatCount();
+    return Row( mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(noPax.toString()),
+        Icon(Icons.person),
+        Padding(padding: EdgeInsets.all(2)),
+        Text(noSeats.toString()),
+        Icon(Icons.event_seat),
+
+      ],);
+  } 
 
   Widget _paymentPending(PnrModel pnr){
     return

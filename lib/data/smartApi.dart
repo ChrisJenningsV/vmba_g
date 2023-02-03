@@ -8,6 +8,7 @@ Future<String> callSmartApi(String action, String data) async {
   String msg =  json.encode(VrsApiRequest(gblSession, action,
       gblSettings.xmlToken.replaceFirst('token=', ''),
       vrsGuid: gblSettings.vrsGuid,
+      undoCmd: gblUndoCommand,
       data: data,
       notifyToken: gblNotifyToken,
       rloc: gblCurrentRloc,

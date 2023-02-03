@@ -242,6 +242,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               RunVRSCommand(widget.session, getPaymentCmd(false)).toJson()))
           .then((result) {
         if (result == 'Payment Complete') {
+          gblUndoCommand = '';
           _sendVRSCommand(json.encode(RunVRSCommand(widget.session, "EMT*R~x")))
               .then((onValue) {
             Map map = json.decode(onValue);
@@ -482,6 +483,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
         if (result.trim() == 'Payment Complete') {
           print('Payment success');
+          gblUndoCommand = '';
           setState(() {
             _displayProcessingText = 'Completing your booking...';
             _displayProcessingIndicator = true;
