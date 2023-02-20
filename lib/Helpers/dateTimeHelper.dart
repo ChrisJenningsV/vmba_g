@@ -26,10 +26,10 @@ bool is1After2( DateTime dt1, DateTime dt2) {
   if( dt1.hour < dt2.hour ){
     return false;
   }
-  if( dt1.minute > dt2.minute){
+  if( dt1.minute >= dt2.minute){
     return true;
   }
-  if( dt1.minute < dt2.minute ){
+  if( dt1.minute <= dt2.minute ){
     return false;
   }
   return false;
