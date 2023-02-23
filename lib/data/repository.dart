@@ -588,6 +588,11 @@ class Repository {
                   case 'action':
                     gblAction = item['value'];
                     break;
+                  case 'testflags':
+                    gblTestFlags = item['value'];
+                    break;
+
+
                 /*
                   EMAILS
                    */

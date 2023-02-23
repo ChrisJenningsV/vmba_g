@@ -230,10 +230,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               int.tryParse(
                   this.pnrModel.pNR.basket.outstandingairmiles.airmiles) ??
                   0;
+          endProgressMessage();
           if (gblFqtvBalance < miles) {
             setState(() {
               _loadingInProgress = false;
-              endProgressMessage();
+
 
               _eVoucherNotValid = false;
               _tooManyUmnr = false;
