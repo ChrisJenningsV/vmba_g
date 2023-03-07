@@ -340,7 +340,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       String result = await sendVarsCommand(msg) ;
 
     if( result != null){
-        print(result);
+        print('MakePaymentVars: ' + result);
 
 
         if (result.contains('Payment Complete') ||

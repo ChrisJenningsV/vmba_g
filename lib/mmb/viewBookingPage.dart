@@ -1582,10 +1582,10 @@ class CheckinBoardingPassesWidgetState
                     )));
       },
       style: TextButton.styleFrom(
-          backgroundColor: gblSystemColors.primaryButtonColor,
-      /*    side: BorderSide(
-              color: gblSystemColors.primaryButtonColor, width: 1),*/
-          primary: gblSystemColors.primaryButtonTextColor),
+          //backgroundColor:  gblSystemColors.te,
+          side: BorderSide(
+              color: gblSystemColors.textButtonTextColor, width: 1),
+          primary: gblSystemColors.textButtonTextColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -1604,7 +1604,7 @@ class CheckinBoardingPassesWidgetState
             //Icons.airline_seat_recline_normal,
             Icons.done,
             size: 20.0,
-            color: gblSystemColors.primaryButtonTextColor,
+            color: gblSystemColors.textButtonTextColor,
           ),
           Text(
             '',

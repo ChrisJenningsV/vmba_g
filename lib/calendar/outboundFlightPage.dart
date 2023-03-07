@@ -80,6 +80,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
     //SalesCity=ABZ
     buffer.write('SalesCity=${this.widget.newBooking.departure}');
+    // voucher
+    if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
+      buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode.trim()}');
+    }
     //&Vars=True
     buffer.write(',Vars=True');
     //&ClassBands=True
@@ -136,7 +140,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //Intl.defaultLocale = gblLanguage;
 
     String msg =buffer.toString();
-    logit('getAvCommand: ' + msg);
+    logit('getAvCommand out: ' + msg);
     if( bRaw) {
       return msg;
     }
@@ -552,7 +556,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: <Widget>[
+                      children:
+                      <Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
@@ -592,9 +597,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 )),
-
-                        // Text(calenderPrice('NGN', '55000'),
-                        //  style: TextStyle(color: Colors.white)),
                       ],
                     ),
                   ))));
@@ -624,60 +626,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: new Column(
-                    children: <Widget>[
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new TrText(
-                            objAv.availability.classbands.band[index]
-                                        .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                ? 'Fly Flex +'
-                                : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                            style: new TextStyle(
-                              color: gblSystemColors
-                                  .primaryButtonTextColor,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          item[0].fltav.fav[index] != '0'
-                              ? new Text(
-                                  calenderPrice(
-                                      item[0].fltav.cur[index],
-                                      item
-                                          .fold(
-                                              0.0,
-                                              (previous, current) =>
-                                                  previous +
-                                                  (double.tryParse(current
-                                                          .fltav.pri[index]) ??
-                                                      0.0) +
-                                                  (double.tryParse(current
-                                                          .fltav.tax[index]) ??
-                                                      0.0))
-                                          .toStringAsFixed(2),
-                                      item[0].fltav.miles[index]),
-                                  style: new TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor,
-                                    fontSize: 12.0,
-                                  ),
-                                )
-                              : new TrText('No Seats',
-                                  style: new TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor,
-                                    fontSize: 12.0,
-                                  )),
-                        ],
-                      )
-                    ],
+                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
                   ),
                 )),
           ));

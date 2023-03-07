@@ -95,7 +95,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     //Cancel journey
     Intl.defaultLocale = 'en';
     String cmd = '';
-    cmd = '*${widget.mmbBooking.rloc}^';
+    cmd = '*${widget.mmbBooking.rloc}[MMB]^';
     widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1].itin.reversed
         .forEach((f) {
              cmd += 'X${f.line}^';

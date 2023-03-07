@@ -123,6 +123,12 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     }
     buffer.write(
         'SalesCity=${this.widget.pnr.pNR.itinerary.itin[widget.mmbBooking.journeyToChange - 1].depart}');
+/*
+    if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
+      buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode}');
+    }
+*/
+
     buffer.write(',Vars=True');
     buffer.write(',ClassBands=True');
     buffer.write(',QuoteCurrency=${gblSettings.currency}');
@@ -192,13 +198,12 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
 
+    String msg =buffer.toString();
+    logit('getAvCommand ch: ' + msg);
     if( bRaw) {
-      return buffer.toString();
+      return msg;
     }
-
-    //Intl.defaultLocale = gblLanguage;
-    return buffer
-        .toString()
+    return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')
         .replaceAll('/', '%2F')
@@ -208,6 +213,12 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Future _loadData() async {
+    // rload booking
+    String cmd = '*${this.widget.pnr.pNR.rLOC}[MMB]';
+    logit(cmd);
+    await await runVrsCommand(cmd);
+
+
     Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
@@ -804,7 +815,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: new Column(
-                    children: <Widget>[
+                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+        /*            <Widget>[
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -856,7 +868,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                                   )),
                         ],
                       )
-                    ],
+                    ],*/
                   ),
                 )),
           ));

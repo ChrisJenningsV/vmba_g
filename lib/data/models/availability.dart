@@ -443,6 +443,7 @@ class Fltav {
   List<String> awards;
   List<String> fid;
   List<String> finf;
+  List<String> discprice;
 
   Fltav(
       {this.cb,
@@ -456,7 +457,8 @@ class Fltav {
       this.miles,
       this.awards,
       this.fid,
-      this.finf});
+      this.finf,
+      this.discprice});
 
   Fltav.fromJson(Map<String, dynamic> json) {
     if (json['cb'] is List) {
@@ -554,6 +556,13 @@ class Fltav {
       //new List<String>();
       finf.add(json['finf']);
     }
+    if (json['discprice'] is List) {
+      discprice = json['discprice'].cast<String>();
+    } else {
+      discprice = [];
+      //new List<String>();
+      discprice.add(json['discprice']);
+    }
 
     //av = json['av'].cast<String>();
     //cur = json['cur'].cast<String>();
@@ -581,6 +590,7 @@ class Fltav {
     data['awards'] = this.awards;
     data['fid'] = this.fid;
     data['finf'] = this.finf;
+    data['discprice'] = this.discprice;
     return data;
   }
 }

@@ -127,8 +127,6 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                                   fontSize: 12.0,
                                 )),
 
-                            // Text(calenderPrice('NGN', '55000'),
-                            //  style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       )))
@@ -168,66 +166,71 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: new Column(
-                        children: <Widget>[
-                          new Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              new TrText(
-                                objAv.availability.classbands.band[index]
-                                    .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                    ? 'Fly Flex +'
-                                    : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          new Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              item[0].fltav.fav[index] != '0'
-                                  ? new Text(
-                                calenderPrice(
-                                    item[0].fltav.cur[index],
-                                    item
-                                        .fold(
-                                        0.0,
-                                            (previous, current) =>
-                                        previous +
-                                            (double.tryParse(current
-                                                .fltav.pri[index]) ??
-                                                0.0) +
-                                            (double.tryParse(current
-                                                .fltav.tax[index]) ??
-                                                0.0))
-                                        .toStringAsFixed(2),
-                                    item[0].fltav.miles[index]),
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 12.0,
-                                ),
-                              )
-                                  : new TrText('No Seats',
-                                  style: new TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor,
-                                    fontSize: 12.0,
-                                  )),
-                            ],
-                          )
-                        ],
+                        children: _getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index)
+
                       ),
                     )),
               )
           )
       );
     }
+  }
+
+
+  List<Widget> _getPriceButtonList(String cbName, List<Flt> flts, int index){
+    String cur = flts[0].fltav.cur[index];
+    String miles = flts[0].fltav.miles[index];
+    List<Widget> list = [];
+
+//    if( cbName == 'Fly Flex Plus') cbName = 'Fly Flex +';
+
+
+    list.add(getClassNameRow(cbName));
+/*
+      new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:
+        <Widget>[
+        new TrText(cbName,
+        style: new TextStyle(
+          color: gblSystemColors
+              .primaryButtonTextColor,
+          fontSize: 16.0,
+        ),
+      )
+      ])
+    );
+*/
+
+    if( flts[0].fltav.fav[index] != '0') {
+      list.add(getNoSeatsRow());
+    } else {
+      list.add(new Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              calenderPrice(
+                  cur,
+                  flts.fold(0.0,
+                          (previous, current) =>
+                      previous +
+                          (double.tryParse(current
+                              .fltav.pri[index]) ??
+                              0.0) +
+                          (double.tryParse(current
+                              .fltav.tax[index]) ??
+                              0.0))
+                      .toStringAsFixed(2),
+                  miles),
+              style: new TextStyle(
+                color: gblSystemColors.primaryButtonTextColor, fontSize: 12.0,),
+            )
+          ]
+      )
+      );
+    }
+
+    return list;
   }
 
 
@@ -755,3 +758,146 @@ void flightSelected(BuildContext context, NewBooking newBooking, List<String> fl
 }
 
 */
+Widget getClassNameRow( String cbName){
+  if( cbName == 'Fly Flex Plus') cbName = 'Fly Flex +';
+  return new Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children:
+      <Widget>[
+        new TrText(cbName,
+          style: new TextStyle(
+            color: gblSystemColors
+                .primaryButtonTextColor,
+            fontSize: 16.0,
+          ),
+        )
+      ]);
+}
+Widget getNoSeatsRow() {
+  return TrText('No Seats',
+      style: new TextStyle(
+        color: gblSystemColors
+            .primaryButtonTextColor,
+        fontSize: 12.0,
+      ));
+}
+Widget getPriceRow(List<Flt> item, int index){
+  return  new Text(
+    calenderPrice(
+        item[0].fltav.cur[index],
+        item
+            .fold(
+            0.0,
+                (previous, current) =>
+            previous +
+                (double.tryParse(current
+                    .fltav.pri[index]) ??
+                    0.0) +
+                (double.tryParse(current
+                    .fltav.tax[index]) ??
+                    0.0))
+            .toStringAsFixed(2),
+        item[0].fltav.miles[index]),
+    style: new TextStyle(
+      color: gblSystemColors
+          .primaryButtonTextColor,
+      fontSize: 12.0,
+    ),
+  );
+}
+Widget getPromoPriceRow(List<Flt> item, int index){
+  return  new Text(
+    calenderPrice(
+        item[0].fltav.cur[index],
+        item
+            .fold(
+            0.0,
+                (previous, current) =>
+            previous +
+                (double.tryParse(current
+                    .fltav.discprice[index]) ??
+                    0.0) )
+            .toStringAsFixed(2),
+        item[0].fltav.miles[index]),
+    style: new TextStyle(
+      color: gblSystemColors
+          .primaryButtonTextColor,
+      fontSize: 12.0,
+    ),
+  );
+}
+Widget getWasPriceRow(List<Flt> item, int index){
+  return  new Text(
+    calenderPrice(
+        item[0].fltav.cur[index],
+        item
+            .fold(
+            0.0,
+                (previous, current) =>
+            previous +
+                (double.tryParse(current
+                    .fltav.pri[index]) ??
+                    0.0) +
+                (double.tryParse(current
+                    .fltav.tax[index]) ??
+                    0.0))
+            .toStringAsFixed(2),
+        item[0].fltav.miles[index]),
+    style: new TextStyle(
+      color: Colors.red,
+      decoration: TextDecoration.lineThrough,
+      fontSize: 12.0,
+    ),
+  );
+}
+List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index) {
+
+  List<Widget> list = [];
+  List<Widget> rlist = [];
+
+      list.add(getClassNameRow(cbName));
+/*
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          new TrText(
+                            objAv.availability.classbands.band[index]
+                                        .cbdisplayname ==
+                                    'Fly Flex Plus'
+                                ? 'Fly Flex +'
+                                : objAv.availability.classbands.band[index]
+                                    .cbdisplayname,
+                            style: new TextStyle(
+                              color: gblSystemColors
+                                  .primaryButtonTextColor,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+*/
+
+
+  if( item[0].fltav.discprice[index] != ''){
+
+  }
+
+  if(item[0].fltav.fav[index] != '0') {
+    if( item[0].fltav.discprice[index] != ''){
+      list.add(getWasPriceRow(item, index));
+      rlist.add(getPromoPriceRow(item, index));
+    } else {
+      rlist.add(getPriceRow(item, index));
+    }
+  } else {
+    rlist.add(getNoSeatsRow());
+  }
+
+  list.add(Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: rlist,
+     ));
+
+    return list;
+
+}

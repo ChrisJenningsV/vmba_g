@@ -173,7 +173,7 @@ void configLM() {
   maxNumberOfPax: 8,
   hideFareRules: false,
 
-    useWebApiforVrs: false,
+    useWebApiforVrs: true,
     wantMmbProducts: false,
     wantProducts: false,
     wantStatusLine: true,

@@ -70,6 +70,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(this.widget.newBooking.departure);
 
     buffer.write('[SalesCity=${this.widget.newBooking.arrival},Vars=True');
+    if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
+      buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode.trim()}');
+    }
+
     buffer.write(
         ',ClassBands=True,StartCity=${this.widget.newBooking.departure}');
 
@@ -115,11 +119,12 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(
         ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(this.widget.newBooking.departureDate)}]');
 
-    if(bRaw) {
-      return buffer.toString();
+    String msg =buffer.toString();
+    logit('getAvCommand ret: ' + msg);
+    if( bRaw) {
+      return msg;
     }
-    return buffer
-        .toString()
+    return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')
         .replaceAll('/', '%2F')
@@ -544,7 +549,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: <Widget>[
+                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+                     /* <Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
@@ -587,7 +593,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
                         // Text(calenderPrice('NGN', '55000'),
                         //  style: TextStyle(color: Colors.white)),
-                      ],
+                      ],*/
                     ),
                   ))));
     } else {
@@ -619,7 +625,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: new Column(
-                    children: <Widget>[
+                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+/*                    <Widget>[
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -672,7 +679,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                                   )),
                         ],
                       )
-                    ],
+                    ],*/
                   ),
                 )),
           ));

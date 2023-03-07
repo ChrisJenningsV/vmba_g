@@ -193,12 +193,22 @@ class _ApisWidgetState extends State<ApisWidget> {
 
   void _updateApisData(String sectionname, String fieldname, String value) {
     setState(() {
-      apisForm.apis.sections.section
+/*      apisForm.apis.sections.section
           .firstWhere((section) => section.sectionname == sectionname)
           .fields
           .field
           .firstWhere((field) => field.displayname == fieldname)
-          .value = value;
+          .value = value;*/
+
+      apisForm.apis.sections.section.forEach((section) {
+        if( section.sectionname == sectionname){
+          section.fields.field.forEach((field) {
+            if(field.displayname == fieldname) {
+              field.value = value;
+            }
+          });
+        }
+      });
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
@@ -354,21 +364,39 @@ class _ApisWidgetState extends State<ApisWidget> {
                 ? '${field.displayname} can\'t be empty'
                 : null,
             onFieldSubmitted: (value) {
-              apisForm.apis.sections.section
+/*              apisForm.apis.sections.section
                   .firstWhere((s) => s.sectionname == section.sectionname)
                   .fields
                   .field
                   .firstWhere((f) => f.displayname == field.displayname)
-                  .value = value.trim();
+                  .value = value.trim();*/
+              apisForm.apis.sections.section.forEach((s) {
+                if( section.sectionname == s.sectionname){
+                  section.fields.field.forEach((f) {
+                    if(field.displayname == f.displayname) {
+                      field.value = value;
+                    }
+                  });
+                }
+              });
             },
             onSaved: (value) {
               if (value != null) {
-                apisForm.apis.sections.section
+/*                apisForm.apis.sections.section
                     .firstWhere((s) => s.sectionname == section.sectionname)
                     .fields
                     .field
                     .firstWhere((f) => f.displayname == field.displayname)
-                    .value = value.trim();
+                    .value = value.trim();*/
+                apisForm.apis.sections.section.forEach((s) {
+                  if( section.sectionname == s.sectionname){
+                    section.fields.field.forEach((f) {
+                      if(field.displayname == f.displayname) {
+                        field.value = value;
+                      }
+                    });
+                  }
+                });
               }
             },
           ));

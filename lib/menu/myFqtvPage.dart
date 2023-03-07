@@ -345,7 +345,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                             _passwordEditingController.text.isNotEmpty) {
                           _isButtonDisabled = true;
                           _loadingInProgress = true;
-                          setState(() {});
+                          //setState(() {});
                           _fqtvLogin();
                         } else {
                           _error = "Please complete both fields";
@@ -888,9 +888,12 @@ Widget _getTrans() {
         gblError = e.toString();
         _isButtonDisabled = false;
         _loadingInProgress = false;
-        _actionCompleted();
+        //_actionCompleted();
         endProgressMessage();
         criticalErrorPage(context, gblError, title: 'Login Error');
+        print(gblError);
+        _error = gblError;
+        //_showDialog();
       }
     } catch(e){
       fqtvNo = '';
@@ -899,7 +902,7 @@ Widget _getTrans() {
       _error = e.toString();
       _isButtonDisabled = false;
       _loadingInProgress = false;
-      _actionCompleted();
+      //_actionCompleted();
       //_showDialog();
       endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Login Error');

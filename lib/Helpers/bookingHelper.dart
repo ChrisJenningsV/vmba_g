@@ -40,7 +40,8 @@ Future<bool> onWillPop(BuildContext context) async {
               primary: gblSystemColors.textButtonTextColor),
           onPressed: () async {
             try {
-              String reply = await callSmartApi('CANCELPAYMENT', "");
+              await callSmartApi('CANCELPAYMENT', "");
+              //print(reply);
             } catch(e) {
             }
 
