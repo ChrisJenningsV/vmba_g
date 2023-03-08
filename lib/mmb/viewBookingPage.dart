@@ -281,6 +281,7 @@ class CheckinBoardingPassesWidgetState
   //GlobalKey<ScaffoldState> _key = GlobalKey();
   PnrModel objPNR;
   ApisPnrStatusModel apisPnrStatus;
+  bool apisOK;
   bool _loadingInProgress;
 //  String _error = '';
   String _displayProcessingText = '';
@@ -302,6 +303,7 @@ class CheckinBoardingPassesWidgetState
     initValues();
     currentJourneyNo = 0;
     currentPaxNo = 0;
+    apisOK = false;
   }
 
   initValues() {
@@ -1184,7 +1186,9 @@ class CheckinBoardingPassesWidgetState
                     pnr: pnr.pNR,
                   ),
                 )).then((apisState) {
+              apisOK = true;
               _handleApisInfoChanged(apisState);
+
             });
           },
           style: TextButton.styleFrom(
@@ -1214,6 +1218,10 @@ class CheckinBoardingPassesWidgetState
   }
 
   Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+
+    if( gblSettings.wantApis && apisOK == false) {
+      return Container();
+    }
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
       // departed, no actions

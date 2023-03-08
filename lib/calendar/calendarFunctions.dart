@@ -805,6 +805,7 @@ Widget getPriceRow(List<Flt> item, int index){
     ),
   );
 }
+
 Widget getPromoPriceRow(List<Flt> item, int index){
   return  new Text(
     calenderPrice(
@@ -878,12 +879,10 @@ List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index) {
 */
 
 
-  if( item[0].fltav.discprice[index] != ''){
-
-  }
-
   if(item[0].fltav.fav[index] != '0') {
-    if( item[0].fltav.discprice[index] != ''){
+    if( item[0].fltav.discprice.length > index &&
+        item[0].fltav.discprice[index] != null &&  item[0].fltav.discprice[index] != '')
+    {
       list.add(getWasPriceRow(item, index));
       rlist.add(getPromoPriceRow(item, index));
     } else {
