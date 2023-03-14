@@ -558,6 +558,11 @@ class CheckinBoardingPassesWidgetState
           });
         }
       }
+      ).catchError((e) {
+        gblError = e.toString();
+        _loadingInProgress = false;
+        setState(() {      });
+            }
       );
     } catch(e) {
       gblError = e.toString();
