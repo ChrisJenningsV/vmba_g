@@ -758,20 +758,30 @@ void flightSelected(BuildContext context, NewBooking newBooking, List<String> fl
 }
 
 */
-Widget getClassNameRow( String cbName){
+Widget getClassNameRow( String cbName, {bool inRow = true}){
   if( cbName == 'Fly Flex Plus') cbName = 'Fly Flex +';
-  return new Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children:
-      <Widget>[
-        new TrText(cbName,
-          style: new TextStyle(
-            color: gblSystemColors
-                .primaryButtonTextColor,
-            fontSize: 16.0,
-          ),
-        )
-      ]);
+  if( inRow ) {
+    return new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:
+        <Widget>[
+          new TrText(cbName,
+            style: new TextStyle(
+              color: gblSystemColors
+                  .primaryButtonTextColor,
+              fontSize: 16.0,
+            ),
+          )
+        ]);
+  } else {
+    return TrText(cbName,
+      style: new TextStyle(
+        color: gblSystemColors
+            .primaryButtonTextColor,
+        fontSize: 16.0,
+      ),
+    );
+  }
 }
 Widget getNoSeatsRow() {
   return TrText('No Seats',
@@ -807,6 +817,18 @@ Widget getPriceRow(List<Flt> item, int index){
 }
 
 Widget getPromoPriceRow(List<Flt> item, int index){
+  double pri = 0.0;
+  item.forEach((element) {
+    if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
+        element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
+      pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+    } else {
+      pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+    }
+  });
+
+  logit('promo pri = $pri');
+
   return  new Text(
     calenderPrice(
         item[0].fltav.cur[index],
@@ -851,12 +873,12 @@ Widget getWasPriceRow(List<Flt> item, int index){
     ),
   );
 }
-List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index) {
+List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index, {bool inRow = true}) {
 
   List<Widget> list = [];
   List<Widget> rlist = [];
 
-      list.add(getClassNameRow(cbName));
+      list.add(getClassNameRow(cbName, inRow: inRow));
 /*
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -884,19 +906,35 @@ List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index) {
         item[0].fltav.discprice[index] != null &&  item[0].fltav.discprice[index] != '')
     {
       list.add(getWasPriceRow(item, index));
-      rlist.add(getPromoPriceRow(item, index));
+      if( inRow) {
+        rlist.add(getPromoPriceRow(item, index));
+      } else {
+        list.add(getPromoPriceRow(item, index));
+      }
     } else {
-      rlist.add(getPriceRow(item, index));
+      if( inRow) {
+        rlist.add(getPriceRow(item, index));
+      } else {
+        list.add(getPriceRow(item, index));
+      }
     }
   } else {
-    rlist.add(getNoSeatsRow());
+    if( inRow) {
+      rlist.add(getNoSeatsRow());
+    } else {
+      list.add(getNoSeatsRow());
+    }
   }
-
+if( inRow) {
   list.add(Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: rlist,
-     ));
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: rlist,
+  ));
 
-    return list;
+  return list;
+} else {
+  return list;
+}
+
 
 }

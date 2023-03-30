@@ -528,7 +528,7 @@ Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBa
   );
 }
 
-Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widget> actions}) {
+Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widget> actions, EdgeInsets ipad = null, bool wide = false }) {
   Color titleBackClr = gblSystemColors.primaryHeaderColor;
   Color borderClr = Colors.green;
   Color backClr = Colors.green;
@@ -555,6 +555,8 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
 
   return AlertDialog(
     shape: alertShape(),
+    insetPadding: ipad,
+    contentPadding: (wide) ? EdgeInsets.all(5): null ,
     titlePadding: alertTitlePadding(),
     title: Container(
         alignment: Alignment.center,
@@ -568,6 +570,7 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
         mainAxisSize: MainAxisSize.min,
         children: <Widget> [
           Container(
+            width: (wide==true) ? MediaQuery.of(context).size.width : null,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: backClr,

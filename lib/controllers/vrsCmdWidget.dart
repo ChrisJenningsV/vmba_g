@@ -265,10 +265,10 @@ Future _sendVRSCommand(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully: $msg' );
+    logit('message send successfully: $msg' );
     return response.body.trim();
   } else {
-    print('failed2: $msg');
+    logit('failed2: $msg');
   }
 }
 
@@ -280,10 +280,10 @@ Future _sendVRSCommandList(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully: $msg');
+    logit('message send successfully: $msg');
     return response.body.trim();
   } else {
-    print('failed3: $msg');
+    logit('failed3: $msg');
   }
 }
 

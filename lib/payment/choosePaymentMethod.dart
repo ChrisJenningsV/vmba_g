@@ -1121,7 +1121,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               ],
             ),
           ),
-          bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
+         // bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
         );
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
@@ -1485,7 +1485,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
   Widget renderNewPaymentButtons() {
     List<Widget> paymentButtons = [];
-    if( gblProviders != null ) {
+    if( gblProviders != null &&  gblSelectedCurrency == gblLastProviderCurrecy ) {
       paymentButtons.add(Padding(
         padding: EdgeInsets.only(top: 8.0),
       ));

@@ -111,11 +111,11 @@ String _error = '';
         } else {
           // remove old booking
           try {
-            print('Deleting ${item.rloc}');
+            logit('Deleting ${item.rloc}');
             Repository.get().deletePnr(item.rloc);
             Repository.get().deleteApisPnr(item.rloc);
           } catch(e) {
-            print(e);
+            logit(e);
           }
         }
 
@@ -329,7 +329,7 @@ String _error = '';
       await login().then((result) {
         gblSession =
             Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
-        print('new session');
+        logit('new session');
       });
     }
     FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
@@ -338,7 +338,7 @@ String _error = '';
     String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
     String method = 'GetAirMilesBalance';
 
-    print(msg);
+    logit(msg);
     _sendVRSCommand(msg, method).then((result) {
       if( result == null || result == ''){
         _error = translate('Bad server response logging on');
@@ -412,7 +412,7 @@ String _error = '';
     String msg = json.encode(fqtvMsg.toJson());
     String method = 'GetPendingTransactions';
 
-    print(msg);
+    logit(msg);
     _sendVRSCommand(msg, method).then((result){
       if( result == null || result == '') {
         //_error = translate('Error searching for bookings');
@@ -449,14 +449,14 @@ String _error = '';
         body: msg);
 
     if (response.statusCode == 200) {
-      print('message send successfully: $msg' );
+      logit('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed1: $msg error: ${response.statusCode}');
+      logit('failed1: $msg error: ${response.statusCode}');
       _error = translate('message failed Error code ') + response.statusCode.toString();
       try{
         if( response.body != null && response.body.isNotEmpty) {
-          print(response.body);
+          logit(response.body);
           _error = response.body;
         }
       } catch(e){}
@@ -733,15 +733,23 @@ String _error = '';
       _loadingInProgress = true;
 
     });
-    await Repository.get().fetchApisStatus(rloc);
-    await Repository.get().fetchPnr(rloc);
-    Future.delayed(const Duration(milliseconds: 500), ()
-    {
-      getmybookings();
+    try {
+      await Repository.get().fetchApisStatus(rloc);
+      await Repository.get().fetchPnr(rloc);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        getmybookings();
+        setState(() {
+          _loadingInProgress = false;
+        });
+      });
+    } catch(e) {
+      logit(e.toString());
+      _error = e.toString();
       setState(() {
         _loadingInProgress = false;
       });
-    });
+      showAlertDialog(context, 'Error', _error);
+    }
 
     }
 
@@ -913,7 +921,7 @@ String _error = '';
           pnrJson = pnrJson.replaceAll('\n', '').replaceAll('\r', '');
           if (pnrJson.startsWith('{')) {
             Map pnrMap = json.decode(pnrJson);
-            print('Loaded PNR: ${tran.pnr}');
+            logit('Loaded PNR: ${tran.pnr}');
             var objPnr = new PnrModel.fromJson(pnrMap);
             _rloc = tran.pnr;
 
@@ -974,11 +982,11 @@ String _error = '';
 
       try {
         //pnrMap = json.decode(pnrJson);
-        print('Loaded PNR');
+        logit('Loaded PNR');
         //var objPnr = new PnrModel.fromJson(pnrMap);
         return pnrJson;
       } catch (e) {
-        print(e);
+        logit(e);
       }
     }
     return null;
@@ -1013,7 +1021,7 @@ String _error = '';
 
         try {
           pnrMap = json.decode(pnrJson);
-          print('Loaded PNR');
+          logit('Loaded PNR');
           var objPnr = new PnrModel.fromJson(pnrMap);
           if (validate(objPnr)) {
             PnrDBCopy pnrDBCopy = new PnrDBCopy(
@@ -1026,7 +1034,7 @@ String _error = '';
               //Navigator.of(context).pop();
             });
 
-            print('matched rloc and name');
+            logit('matched rloc and name');
             //   Navigator.of(context).pop();
           } else {
             _pnrLoaded();
@@ -1036,14 +1044,14 @@ String _error = '';
             }
             showAlertDialog(context, 'Alert', _error);
 
-            print('did not matched rloc and name');
+            logit('did not matched rloc and name');
           }
         } catch (e) {
           _pnrLoaded();
           _error = e.toString();
           showAlertDialog(context, 'Alert', _error);
           //_showDialog();
-          print('$e');
+          logit('$e');
         }
       }
     } catch(e) {
@@ -1051,7 +1059,7 @@ String _error = '';
       _error = e.toString();
       showAlertDialog(context, 'Alert', _error);
       //_showDialog();
-      print('$e');
+      logit('$e');
     }
   }
 
@@ -1070,7 +1078,7 @@ String _error = '';
         .trim();
     try {
       Map map = json.decode(apisStatusJson);
-      print('Loaded APIS status');
+      logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
       DatabaseRecord databaseRecord = new DatabaseRecord(
           rloc: apisPnrStatus.xml.pnrApis.pnr, //_rloc,
@@ -1086,7 +1094,7 @@ String _error = '';
     } catch (e) {
       showAlertDialog(context, 'Alert', e);
       //_showDialog();
-      print('$e');
+      logit('$e');
     }
   }
 
@@ -1107,9 +1115,9 @@ String _error = '';
         if( gblSettings.wantApis) {
           fetchApisStatus(false);
         }
-        print('Getting PNR');
+        logit('Getting PNR');
       } catch (e) {
-        print('Error: $e');
+        logit('Error: $e');
       }
     }
   }

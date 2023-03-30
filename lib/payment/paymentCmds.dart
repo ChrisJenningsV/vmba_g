@@ -39,6 +39,7 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   } else {
     cmd += 'E*r~x';
   }
+  logit('change flt $cmd');
   await runVrsCommand(cmd);
 
  /* http.Response response;

@@ -17,7 +17,7 @@ void Function() _custom;
 
 Widget getBottomNav(BuildContext context, {Widget popButton, String helpText, void Function() custom } ) {
 
-  if( gblDebugMode == true){
+  if( gblDebugMode == true ){
     return DebugBottomNav(custom: custom,);
   }
 

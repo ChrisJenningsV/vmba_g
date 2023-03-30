@@ -138,12 +138,12 @@ class Repository {
         body: msg);
 
     if (response.statusCode == 200) {
-      print('message send successfully: $msg' );
+      logit('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed4: $msg');
+      logit('failed4: $msg');
       try{
-        print (response.body);
+        logit (response.body);
       } catch(e){}
 
     }
@@ -324,7 +324,7 @@ class Repository {
 
           if( gblSettings.useWebApiforVrs) {
             gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-            logit('Server IP ${map['serverIP']}');
+            logit('gs Server IP ${map['serverIP']}');
           } else {
             gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
           }
@@ -430,6 +430,9 @@ class Repository {
                     break;
                   case 'wantCityImages': // for back compatibility
                     gblSettings.wantPageImages = parseBool(item['value']);
+                    break;
+                  case 'wantLogBuffer': // for back compatibility
+                    gblWantLogBuffer = parseBool(item['value']);
                     break;
                   case 'wantPageImages': // was wantCityImages
                     gblSettings.wantPageImages = parseBool(item['value']);
@@ -1105,7 +1108,7 @@ class Repository {
         .replaceAll('<string xmlns="http://videcom.com/" />', '');
     if (apisStatusJson.trim() != '') {
       Map map = json.decode(apisStatusJson);
-      print('Loaded APIS status');
+      logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
 
       DatabaseRecord databaseRecord = new DatabaseRecord(
@@ -1524,7 +1527,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
   VrsApiResponse rs = VrsApiResponse.fromJson(map);
   gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-  logit('Server IP ${map['serverIP']}');
+  logit('rfc Server IP ${map['serverIP']}');
   if( rs.data == null ) {
     throw 'no data returned';
   }
@@ -1600,8 +1603,9 @@ Future<String> runVrsCommand(String cmd) async {
 
     VrsApiResponse rs = VrsApiResponse.fromJson(map);
     gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-    logit('Server IP ${map['serverIP']}');
+    logit('rvc Server IP ${map['serverIP']}');
     if( rs.data == null ) {
+      logit('no data returned');
       throw 'no data returned';
     }
     return rs.data;
@@ -1624,6 +1628,7 @@ Future<String> runVrsCommand(String cmd) async {
     });
     if( response == null )
       {
+        logit('no data returned 2');
         throw 'no data returned';
       }
     return response.body;

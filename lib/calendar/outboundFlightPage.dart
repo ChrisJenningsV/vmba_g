@@ -65,6 +65,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //String _equalsSafeString = '%3D';
     //String _commaSafeString = '%2C';
     //Intl.defaultLocale = 'en'; // VRS need UK format
+
     buffer.write('A');
     buffer.write(
         new DateFormat('dd').format(this.widget.newBooking.departureDate));
@@ -154,6 +155,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Future _loadData() async {
+    // clear out any current booking
+    String rsI = await runVrsCommand('I');
+
 
       Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
       if (rs.isOk()) {
@@ -556,8 +560,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children:
-                      <Widget>[
+                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                      /*<Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
@@ -597,7 +601,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                       .primaryButtonTextColor,
                                   fontSize: 12.0,
                                 )),
-                      ],
+                      ],*/
                     ),
                   ))));
     } else {

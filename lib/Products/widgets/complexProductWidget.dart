@@ -131,7 +131,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     list.add(Divider());
 
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
-    int segNo = 1;
+    int segNo = 0;
     if (widget.product.segmentRelate) {
       widget.pnrModel.pNR.itinerary.itin.forEach((itin) {
         if( widget.product.applyToClasses == null ||

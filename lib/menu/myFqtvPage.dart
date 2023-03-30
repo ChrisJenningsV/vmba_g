@@ -919,13 +919,13 @@ Widget _getTrans() {
         body: msg);
 
     if (response.statusCode == 200) {
-      print('message send successfully: $msg' );
+      logit('message send successfully: $msg' );
       return response.body.trim();
     } else {
-      print('failed5: $msg');
+      logit('failed5: $msg');
       _error = translate('message failed');
       try{
-        print (response.body);
+        logit(response.body);
         _error = response.body;
       } catch(e){}
 

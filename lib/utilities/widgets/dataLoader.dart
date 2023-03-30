@@ -122,7 +122,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       _displayProcessingIndicator = false;
-      print('message send successfully: $_msg' );
+      logit('message send successfully 3: $_msg' );
       saveData(response.body.trim());
       setLoadState(LoadState.loaded);
       setState(() {
@@ -185,6 +185,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.providers:
           _dataName = 'Providers';
           _url = '${gblSettings.apiUrl}/provider/getpaymentproviderlist';
+          gblLastProviderCurrecy =gblSelectedCurrency;
           String currency = gblSelectedCurrency; // gblSettings.currency;
           if( currency == null || currency.isEmpty) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;

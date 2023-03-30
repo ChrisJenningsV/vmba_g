@@ -742,7 +742,9 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: <Widget>[
+                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+/*
+                      <Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
                                         .cbdisplayname ==
@@ -784,6 +786,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                         // Text(calenderPrice('NGN', '55000'),
                         //  style: TextStyle(color: Colors.white)),
                       ],
+*/
                     ),
                   ))));
     } else {

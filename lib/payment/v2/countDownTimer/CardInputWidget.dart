@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
+import '../../../components/vidButtons.dart';
 import '../CreditCardHelper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -121,7 +122,8 @@ void initState() {
                         ),
                       )
                     : Text(''),
-                Padding(padding: EdgeInsets.all(5),)
+                Padding(padding: EdgeInsets.all(5),),
+                _fillCcButton(),
               ],
             ),
           ),
@@ -129,6 +131,43 @@ void initState() {
       ),
     );
   }
+
+  Widget _fillCcButton(){
+    if( gblDebugMode == true) {
+      return Container();
+    }
+    if( gblIsLive == false && gblSettings.creditCardProvider.toLowerCase() == 'videcard'){
+      return vidDemoButton((context), 'Populate Test CC', (p0) {
+        _populateCC();
+      });
+
+    }
+    return Container();
+  }
+  void _populateCC(){
+    // populate test card
+    widget.paymentDetails.cardNumber = '4242424242424242';
+    widget.paymentDetails.expiryDate = '1234';
+    widget.paymentDetails.cVV = '1234';
+    widget.paymentDetails.cardHolderName = gblPnrModel.pNR.names.pAX[0].firstName + ' ' +
+        gblPnrModel.pNR.names.pAX[0].surname;
+
+    widget.paymentDetails.addressLine1 = 'Windsor Castle' ;
+    widget.paymentDetails.addressLine2 = 'Castle Hill' ;
+    widget.paymentDetails.town = 'Windsor';
+    widget.paymentDetails.state = 'Berkshire';
+    widget.paymentDetails.postCode = 'SL4 1PD' ;
+    widget.paymentDetails.country  = 'UK' ;
+
+
+  /*  if(widget.pnrModel != null && widget.pnrModel.pNR != null && widget.pnrModel.pNR.names != null ) {
+      this.paymentDetails.cardHolderName =
+          widget.pnrModel.pNR.names.pAX[0].firstName + ' ' +
+              widget.pnrModel.pNR.names.pAX[0].surname;
+    }*/
+    initPayDetails(widget.paymentDetails);
+  }
+
 
   saveSettings() {
     widget.paymentDetails.cardNumber =  cardNumber ;

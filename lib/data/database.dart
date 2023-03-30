@@ -13,6 +13,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
 
+import '../utilities/helper.dart';
 import 'models/notifyMsgs.dart';
 
 class AppDatabase {
@@ -523,7 +524,7 @@ class AppDatabase {
     try {
       await db.insert(tableNamePnrApisStatus, map);
     } catch (e) {
-      print(e.toString());
+      logit(e.toString());
       //await db.update(tableNamePnrApisStatus, map);
 
       await db.update(tableNamePnrApisStatus, map,

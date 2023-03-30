@@ -295,6 +295,35 @@ class DrawerMenu extends StatefulWidget {
       }
     }
 
+    if( gblIsLive == false && gblWantLogBuffer) {
+      list.add(ListTile(
+          dense: dense,
+          title: _getMenuItem(Icons.web, 'Log Buffer'),
+          onTap: () {
+            String logText = 'Log Buffer';
+            List<Widget> list = [];
+            gblLogBuffer.forEach((element) {
+              if(element.length > 40){
+                list.add(Row( children: [Icon(Icons.adjust, size: 10,), Padding(padding: EdgeInsets.all(2)), Text(element.substring(0,40))]));
+              } else {
+                list.add(Row( children: [Icon(Icons.adjust, size: 10,), Padding(padding: EdgeInsets.all(2)), Text(element)]));
+              }
+            });
+
+            showDialog(
+                context: context,
+                builder: (BuildContext context)
+                {
+                  return msgDialog(context, translate('Log Buffer'),
+                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: list), ipad: EdgeInsets.zero, wide: true);
+                }
+            );
+          }));
+    }
+
     // DEMO login - for Apple acreditation
     if(  (gblSettings.iOSDemoBuilds != null && gblSettings.iOSDemoBuilds.isNotEmpty  && gblIsIos == true ) ||
         (gblSettings.androidDemoBuilds != null && gblSettings.androidDemoBuilds.isNotEmpty  && gblIsIos == false )){

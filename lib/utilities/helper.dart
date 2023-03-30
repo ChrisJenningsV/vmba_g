@@ -65,10 +65,10 @@ Future sendVRSCommand(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully: $msg');
+    logit('message send successfully 1: $msg');
     return response.body.trim();
   } else {
-    print('failed6: $msg');
+    logit('failed6: $msg');
   }
 }
 
@@ -79,10 +79,10 @@ Future sendVRSCommandList(msg) async {
       body: msg);
 
   if (response.statusCode == 200) {
-    print('message send successfully: $msg');
+    logit('message send successfully 2: $msg');
     return response.body.trim();
   } else {
-    print('failed');
+    logit('failed');
   }
 }
 
@@ -347,6 +347,7 @@ Future<bool> hasDataConnection() async {
       connectivityResult == ConnectivityResult.wifi) {
     return true;
   } else {
+    logit('check connectivity result ${connectivityResult.toString()}');
     return false;
   }
 }
@@ -417,7 +418,13 @@ void logit(String msg) {
   var now = DateTime.now();
 
   log( '${now.hour}:${now.minute}:${now.second}:${now.millisecond} $msg', name: ':');
-
+  // add to msg buffer
+  if( gblWantLogBuffer) {
+    if (gblLogBuffer.length >= 15) {
+      gblLogBuffer.removeAt(0);
+    }
+    gblLogBuffer.add(msg);
+  }
 }
 // convert UK dd/mm/yyyy G
 DateTime parseUkDateTime(String str) {

@@ -1224,9 +1224,9 @@ class CheckinBoardingPassesWidgetState
 
   Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
 
-    if( gblSettings.wantApis && apisOK == false) {
+/*    if( gblSettings.wantApis && apisOK == false) {
       return Container();
-    }
+    }*/
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
       // departed, no actions

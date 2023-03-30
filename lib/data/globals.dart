@@ -11,14 +11,16 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
+bool gblWantLogBuffer = true;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
 int apiBuldVersion;
 bool gblDoVersionCheck = true;
 bool gblUseCache = false;
 String gblTestFlags = '';
+List<String> gblLogBuffer= [];
 
 String gblAppTitle ;
 String gblLanguage = 'en' ;
@@ -105,6 +107,7 @@ String gblProductCacheDeparts;
 String gblProductCacheArrives;
 String gblSelectedCurrency;
 String gblLastCurrecy = '';
+String gblLastProviderCurrecy = '';
 Providers gblProviders;
 String gblBookingCurrency;
 List<NotificationMessage> gblNotifications;

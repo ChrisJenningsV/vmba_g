@@ -549,7 +549,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
                      /* <Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
