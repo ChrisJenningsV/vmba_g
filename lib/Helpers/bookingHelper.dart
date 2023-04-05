@@ -45,7 +45,7 @@ Future<bool> onWillPop(BuildContext context) async {
             } catch(e) {
             }
 
-            if (pnrCompleted()) {
+            if (pnrCompleted() ||  pnrHasTTL()) {
               resetPnrContent(gblPnrModel.pNR.rLOC).then((x) {
                 // return to choose flights
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -75,6 +75,13 @@ bool pnrCompleted() {
   }
   return false;
 }
+bool pnrHasTTL() {
+  if( gblPnrModel != null && gblPnrModel.pNR.timeLimits != null && gblPnrModel.pNR.timeLimits.tTL != null ){
+    return true;
+  }
+  return false;
+}
+
 
 
 Future deletePnrContent() async {

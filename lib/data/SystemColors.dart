@@ -22,6 +22,7 @@ class SystemColors {
   Color progressTextColor;
    Color headerTextColor;
    Color promoBackColor;
+   Color oldPriceColor;
    Color textEditBorderColor;
    Color textEditIconColor;
 
@@ -76,6 +77,7 @@ class SystemColors {
 
     if( textButtonTextColor == null ) textButtonTextColor = Colors.black;
     if( accentColor == null ) accentColor = Colors.black;
+    if( oldPriceColor == null ) oldPriceColor = Colors.red;
 
     //final Color primaryHeaderColor;
     //final Color headerTextColor;

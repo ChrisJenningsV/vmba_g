@@ -42,6 +42,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   void initState() {
     super.initState();
     gblActionBtnDisabled = false;
+    gblPayAction = 'NEWBOOKING';
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _loading = 'Searching for Flights';

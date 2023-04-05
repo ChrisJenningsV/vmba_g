@@ -4,6 +4,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../utilities/helper.dart';
 import '../../utilities/widgets/bullet_widget.dart';
 
 class FlightRulesWidget extends StatefulWidget {
@@ -50,11 +51,17 @@ class _FlightRulesState extends State<FlightRulesWidget> {
           .getFareRules(_fareID)
           .then((result) {
         int seg = int.parse(_segment);
+        logit('rules for ${seg} fareID $_fareID');
         while( seg > fareRulesPerSegment.length){
           List<String> list = [];
           fareRulesPerSegment.add(list);
         }
-        fareRulesPerSegment[seg -1].addAll(result.body);
+        logit(' add to seg ${seg-1} cur len= ${fareRulesPerSegment.length} body=${result.body}');
+        if( result.body == null ) {
+          fareRulesPerSegment[seg -1].add('no fare rules for segment $seg');
+        } else {
+          fareRulesPerSegment[seg -1].addAll(result.body);
+        }
       });
 
       /* .then((_) {

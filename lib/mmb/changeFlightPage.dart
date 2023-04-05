@@ -49,6 +49,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
+    //gblPayAction = 'CHANGEFLT';
+
     gblBookingState = BookingState.changeFlt;
 
     // check if we are redeeming airmiles

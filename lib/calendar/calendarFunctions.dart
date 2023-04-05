@@ -867,7 +867,7 @@ Widget getWasPriceRow(List<Flt> item, int index){
             .toStringAsFixed(2),
         item[0].fltav.miles[index]),
     style: new TextStyle(
-      color: Colors.red,
+      color: gblSystemColors.oldPriceColor,
       decoration: TextDecoration.lineThrough,
       fontSize: 12.0,
     ),

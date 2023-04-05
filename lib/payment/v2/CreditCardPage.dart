@@ -389,7 +389,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               cmd = "EZT*R~x";
             }
           }
-
+          logit('MakePayments send:$cmd');
           String onValue = await sendVarsCommand(cmd) ;
 /*
           _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))

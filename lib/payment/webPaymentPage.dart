@@ -312,6 +312,10 @@ class _WebViewWidgetState extends State<WebPayPage> {
     String _getPayUrl(){
     String provider = widget.provider.replaceFirst('3DS_', '');
     String action = 'NEWBOOKING';
+    if( gblPayAction != null && gblPayAction != '' )
+      {
+        action = gblPayAction;
+      }
     String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action&guid=${gblSettings.vrsGuid}&mmb=${widget.isMmb}';
     if(gblSession != null) {
       url += '&VARSSessionID=${gblSession.varsSessionId}';

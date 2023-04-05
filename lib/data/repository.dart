@@ -556,6 +556,10 @@ class Repository {
                     gblSettings.debugPassword = item['value'];
                     break;
 
+                  case 'oldPriceColor':
+                    gblSystemColors.oldPriceColor = item['value'];
+                    break;
+
                 /*
                   URLs
                    */
