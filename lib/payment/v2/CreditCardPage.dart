@@ -28,6 +28,7 @@ import 'package:vmba/data/models/vrsRequest.dart';
 import '../../Helpers/pageHelper.dart';
 import '../../components/bottomNav.dart';
 import '../../components/vidButtons.dart';
+import '../paymentCmds.dart';
 
 GlobalKey<CardInputWidgetState> ccInputGlobalKeyOptions = new GlobalKey<CardInputWidgetState>();
 
@@ -348,7 +349,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       logit('CCP Sess not null');
 
       if (gblBookingState != BookingState.changeSeat &&
-          gblBookingState != BookingState.bookSeat) {
+          gblBookingState != BookingState.bookSeat &&
+          gblBookingState != BookingState.changeFlt) {
         msg = '*$rLOC^';
       }
       msg += getPaymentCmd(false);
@@ -359,9 +361,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
       logit('MakePaymentVars: ' + result);
 
 
+/*
         if (result.contains('Payment Complete') ||
             result.contains('Receipt e-mailed to:') ||
             result == 'Payment not accepted, no more to pay for this passenger') {
+*/
+      if( isSuccessfulPayment(result)) {
           gblTimerExpired = true;
           gblUndoCommand = '';
          // need to re - ticket

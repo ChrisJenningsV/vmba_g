@@ -282,7 +282,8 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '');
 
-    if (result.trim() == 'Payment Complete') {
+//    if (result.trim() == 'Payment Complete') {
+    if( isSuccessfulPayment(result) ){
       gblTimerExpired = true;
       print('Payment success');
       gblUndoCommand = '';
@@ -343,6 +344,24 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
     showAlertDialog(context, 'Error', _error);
 
   }
+}
+
+bool isSuccessfulPayment( String reply){
+  if( reply == null || reply.isEmpty){
+    return  false;
+  }
+
+  if( reply.contains('Payment Complete')){
+    logit('isSuccessfulPayment true');
+    return true;
+  }
+  if( reply.contains('Receipt e-mailed to:') ||
+      reply.contains('Payment not accepted, no more to pay for this passenger') ||
+      reply.contains('Message sent to') ){
+    logit('isSuccessfulPayment true');
+    return true;
+  }
+  return false;
 }
 void _dataLoaded() {
 /*  setState(() {

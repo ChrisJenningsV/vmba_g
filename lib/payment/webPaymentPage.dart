@@ -334,9 +334,10 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
   Future<void> _successfulPayment() async {
     logit('Load booking  $gblCurrentRloc');
+    String data;
 
 
-    String data = await runVrsCommand('*$gblCurrentRloc~x');
+      data = await runVrsCommand('*$gblCurrentRloc~x');
   /*  http.Response response = await http
         .get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$gblCurrentRloc~x"))

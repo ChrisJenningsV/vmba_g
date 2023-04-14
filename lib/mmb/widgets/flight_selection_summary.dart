@@ -104,7 +104,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     widget.mmbBooking.newFlights.forEach((flt) {
       int index = flt.indexOf('/');
       String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
-      print(bkFlt);
+      logit('BC:' + bkFlt);
       cmd += bkFlt + '^';
 
 //      print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
@@ -136,7 +136,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       flightLineNumber = getConnectingFlightLineIdentifier(widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]);
     }
     if (flightLineNumber >= 0){
-      print("Journey has a connecting flight on itin($flightLineNumber)");
+      logit("Journey has a connecting flight on itin($flightLineNumber)");
       cmd += '*r^.${flightLineNumber}x^';
     }
 
@@ -147,9 +147,9 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     gblPayCmd = gblPayCmd.replaceAll('QQ', 'NN');
 */
     cmd = cmd.replaceAll('QQ', 'NN');
-    cmd += 'E*r~x';
+    cmd += '*r~x';
 //    cmd += 'E*r~x';
-    print("flight selection cmd=$cmd");
+    logit("flight selection cmd=$cmd");
     return cmd;
   }
 
@@ -233,7 +233,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         String _error;
 
         FormatException ex = resp;
-        print(ex.source.toString().trim());
+        logit('GFQ:' + ex.source.toString().trim());
         _error = ex.source.toString().trim();
 
         _userErrorMessage = displayUserErrorMessage(_error);
@@ -257,7 +257,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           .cur;
     } catch (ex) {
       currencyCode = '';
-      print(ex.toString());
+      logit('SCC:' + ex.toString());
     }
   }
 

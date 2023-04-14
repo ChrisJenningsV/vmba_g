@@ -49,7 +49,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
-    //gblPayAction = 'CHANGEFLT';
+    gblPayAction = 'CHANGEFLT';
 
     gblBookingState = BookingState.changeFlt;
 

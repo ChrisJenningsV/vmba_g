@@ -31,6 +31,7 @@ String addFareStore(bool multiPart) {
 }
 
 String addCreditCard(String currency, double amount, String provider ){
+  logit('addCC');
   return 'MK$currency${amount.toStringAsFixed(2)}($provider)';
 }
 

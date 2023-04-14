@@ -10,6 +10,7 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/payment/choosePaymentMethod.dart';
+import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
@@ -241,7 +242,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       _sendVRSCommand(json.encode(
               RunVRSCommand(widget.session, getPaymentCmd(false)).toJson()))
           .then((result) {
-        if (result == 'Payment Complete') {
+ //       if (result == 'Payment Complete') {
+        if( isSuccessfulPayment(result) ) {
           gblUndoCommand = '';
           _sendVRSCommand(json.encode(RunVRSCommand(widget.session, "EMT*R~x")))
               .then((onValue) {
@@ -481,7 +483,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
 
-        if (result.trim() == 'Payment Complete') {
+//        if (result.trim() == 'Payment Complete') {
+    if( isSuccessfulPayment(result)) {
           print('Payment success');
           gblUndoCommand = '';
           setState(() {
