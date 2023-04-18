@@ -81,6 +81,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     super.initState();
     if( gblLogPayment ) { logit('CPM initState');}
     gblCurPage = 'CHOOSEPAY';
+    gblPnrModel = widget.pnrModel;
     logit(gblCurPage);
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;

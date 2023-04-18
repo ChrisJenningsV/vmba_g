@@ -149,9 +149,11 @@ void initState() {
     widget.paymentDetails.cardNumber = '4242424242424242';
     widget.paymentDetails.expiryDate = '1234';
     widget.paymentDetails.cVV = '1234';
-    widget.paymentDetails.cardHolderName = gblPnrModel.pNR.names.pAX[0].firstName + ' ' +
-        gblPnrModel.pNR.names.pAX[0].surname;
-
+    if( gblPnrModel != null ) {
+      widget.paymentDetails.cardHolderName =
+          gblPnrModel.pNR.names.pAX[0].firstName + ' ' +
+              gblPnrModel.pNR.names.pAX[0].surname;
+    }
     widget.paymentDetails.addressLine1 = 'Windsor Castle' ;
     widget.paymentDetails.addressLine2 = 'Castle Hill' ;
     widget.paymentDetails.town = 'Windsor';
