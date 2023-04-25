@@ -49,7 +49,10 @@ class ContactUs extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ))),
       Padding(padding: EdgeInsets.all(8)),
-      Text('09:00-17:30 Mon-Fri (except bank holidays)')
+      Text('09:00-17:30 Mon-Fri (except bank holidays)'),
+      Padding(padding: EdgeInsets.all(8)),
+      Text('10:00-16:00 Sat-Sun (and bank holidays)'),
+
     ];
   }
 

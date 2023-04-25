@@ -103,7 +103,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     widget.mmbBooking.newFlights.forEach((flt) {
       int index = flt.indexOf('/');
-      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      String bkFlt = flt.substring(0, index-3) + 'NN' + flt.substring(index-1);
       logit('BC:' + bkFlt);
       cmd += bkFlt + '^';
 
@@ -146,7 +146,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     gblPayCmd = cmd + '*r~x';
     gblPayCmd = gblPayCmd.replaceAll('QQ', 'NN');
 */
-    cmd = cmd.replaceAll('QQ', 'NN');
+   // cmd = cmd.replaceAll('QQ', 'NN');
     cmd += '*r~x';
 //    cmd += 'E*r~x';
     logit("flight selection cmd=$cmd");
