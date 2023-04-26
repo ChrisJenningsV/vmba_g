@@ -2487,8 +2487,10 @@ class CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              TrText(
-                  'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
+              (gblSettings.aircode != 'SI' )?
+                TrText(
+                    'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
+              : Container()
             ],
           ),
           actions: <Widget>[
@@ -2553,8 +2555,10 @@ class CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
+              (gblSettings.aircode != 'SI' )?
               TrText(
                   'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
+                  : Container()
             ],
           ),
           actions: <Widget>[
