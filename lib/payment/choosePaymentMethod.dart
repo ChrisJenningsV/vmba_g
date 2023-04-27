@@ -1492,6 +1492,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
 
       gblProviders.providers.forEach((provider) {
+        logit('provider: ${provider.paymentSchemeName} name: ${provider.paymentSchemeDisplayName} type: ${provider.paymentType.toString()}');
         bool bShow = false;
 
         switch (provider.paymentType) {

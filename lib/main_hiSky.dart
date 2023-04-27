@@ -56,9 +56,9 @@ void configH4() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
-    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
-    currency: 'RON',
-    wantCurrencyPicker: true,
+ //   currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
+    currency: 'MDL',
+    wantCurrencyPicker: false,
     wantPassengerPassport: true,
     wantCanFacs: false,
 
