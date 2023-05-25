@@ -935,7 +935,7 @@ class Repository {
       "NOV",
       "DEC"
     ];
-    print(months.indexOf("SEP"));
+    //print(months.indexOf("SEP"));
     VrsBoardingPass vrsBoardingPass = new VrsBoardingPass.fromJson(map);
     DateTime flightdate = DateTime.parse(vrsBoardingPass
             .mobileboardingpass.flightdate
@@ -958,15 +958,19 @@ class Repository {
       fltno: vrsBoardingPass.mobileboardingpass.flight,
       depart: vrsBoardingPass.mobileboardingpass.departcitycode,
       arrive: vrsBoardingPass.mobileboardingpass.arrivecitycode,
+      gate: vrsBoardingPass.mobileboardingpass.gate,
       depdate: flightdate,
+      departTime: vrsBoardingPass.mobileboardingpass.departtime,
+      arriveTime: vrsBoardingPass.mobileboardingpass.arrivetime,
+      boardingTime: vrsBoardingPass.mobileboardingpass.boardtime,
       // boarding: vrsBoardingPass.mobileboardingpass.boardtime,
       // depa
       paxname: vrsBoardingPass.mobileboardingpass.passengername,
       paxno: int.parse(cmd[34]) - 1,
       barcodedata: vrsBoardingPass.mobileboardingpass.barcode,
       seat: vrsBoardingPass.mobileboardingpass.seat,
-      gate: null,
       classBand: vrsBoardingPass.mobileboardingpass.classband,
+      fastTrack: (vrsBoardingPass.mobileboardingpass.fareextras != null && vrsBoardingPass.mobileboardingpass.fareextras.contains('FAST')) ? 'true': 'false',
     );
 
     await database.updateBoardingPass(boardingPass);

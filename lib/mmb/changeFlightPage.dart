@@ -133,7 +133,9 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
     buffer.write(',Vars=True');
     buffer.write(',ClassBands=True');
-    buffer.write(',QuoteCurrency=${gblSettings.currency}');
+    // get currency from booking
+
+    buffer.write(',QuoteCurrency=${this.widget.pnr.getBookingCurrency()}');
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }
@@ -699,6 +701,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   void flightSelected(BuildContext context, List<String> flt, List<Flt> outboundflts, String c) {
     NewBooking newFlight = NewBooking();
     newFlight.outboundflight = [];
+    widget.mmbBooking.currency = this.widget.pnr.getBookingCurrency();
     // List<String>();
     if(flt != null) {
       //print(flt);

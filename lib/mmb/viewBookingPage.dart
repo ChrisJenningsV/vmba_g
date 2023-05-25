@@ -978,7 +978,9 @@ class CheckinBoardingPassesWidgetState
 
   void _onPressedChangeFlt({int p1}) {
     if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
-      gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
+      if( objPNR.pNR.payments != null && objPNR.pNR.payments.fOP != null && objPNR.pNR.payments.fOP.length > 0) {
+        gblSettings.currency = objPNR.pNR.payments.fOP[0].payCur;
+      }
     }
 
     Navigator.push(
@@ -993,7 +995,10 @@ class CheckinBoardingPassesWidgetState
   }
   void _onPressedChangeFlt2(BuildContext context, dynamic p1) {
     if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
-      gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
+      //gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
+      if( objPNR.pNR.payments != null && objPNR.pNR.payments.fOP != null && objPNR.pNR.payments.fOP.length > 0) {
+        gblSettings.currency = objPNR.pNR.payments.fOP[0].payCur;
+      }
     }
     Navigator.push(
         context,

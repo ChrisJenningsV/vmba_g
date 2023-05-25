@@ -30,7 +30,7 @@ class AppDatabase {
   final String tableNameVRSBoardingPasses = "VRSBoardingPasses";
   final String tableNameNotifications = "Notifications";
 
-  static final _databaseVersion = 7;
+  static final _databaseVersion = 9;
 
   Database db;
 
@@ -84,7 +84,10 @@ class AppDatabase {
                   "${BoardingPass.dbSeat} TEXT,"
                   "${BoardingPass.dbGate} TEXT,"
                   "${BoardingPass.dbBoarding} INTEGER,"
-                  "${BoardingPass.dbClassBand} TEXT"
+                  "${BoardingPass.dbClassBand} TEXT,"
+                  "${BoardingPass.dbFastTrack} TEXT,"
+                  "${BoardingPass.dbLoungeAccess} TEXT,"
+                  "${BoardingPass.dbBoardingTime} TEXT"
                   ");");
           await db.execute("CREATE TABLE IF NOT EXISTS $tableNamePNRs ("
               "${PnrDBCopy.dbRloc} TEXT PRIMARY KEY,"
@@ -147,7 +150,41 @@ class AppDatabase {
             await db.execute(
                 'ALTER TABLE $tableNameCities ADD ${City.dbMobileBarcodeType} TEXT');
           }
-          //if (oldVersion < 7)
+          if (oldVersion < 8) {
+            logit('alter boarding pass table');
+            await db.execute(
+                'ALTER TABLE $tableNameBoardingPasses ADD ${BoardingPass.dbFastTrack} TEXT');
+            await db.execute(
+                'ALTER TABLE $tableNameBoardingPasses ADD ${BoardingPass.dbLoungeAccess} TEXT');
+            /*await db.execute("DROP TABLE [IF EXISTS] $tableNameBoardingPasses ");
+            await db.execute(
+                "CREATE TABLE IF NOT EXISTS $tableNameBoardingPasses ("
+                    "${BoardingPass.dbRloc} TEXT PRIMARY KEY,"
+                    "${BoardingPass.dbFltno} TEXT,"
+                    "${BoardingPass.dbDepart} TEXT,"
+                    "${BoardingPass.dbArrive} TEXT,"
+                    "${BoardingPass.dbPaxname} TEXT,"
+                    "${BoardingPass.dbBarcodedata} TEXT,"
+                    "${BoardingPass.dbPaxno} INTEGER,"
+                    "${BoardingPass.dbDepdate} TEXT,"
+                    "${BoardingPass.dbSeat} TEXT,"
+                    "${BoardingPass.dbGate} TEXT,"
+                    "${BoardingPass.dbBoarding} INTEGER,"
+                    "${BoardingPass.dbClassBand} TEXT,"
+                    "${BoardingPass.dbFastTrack} TEXT,"
+                    "${BoardingPass.dbLoungeAccess} TEXT,"
+                    "${BoardingPass.dbBoardingTime} TEXT"
+                    ");");*/
+          }
+          if (oldVersion < 9) {
+            logit('alter boarding pass table');
+            await db.execute(
+                'DELETE FROM $tableNameBoardingPasses ');
+            await db.execute(
+                'ALTER TABLE $tableNameBoardingPasses ADD ${BoardingPass
+                    .dbBoardingTime} TEXT');
+          }
+            //if (oldVersion < 7)
           try {
             await db.execute("CREATE TABLE IF NOT EXISTS $tableNameNotifications ("
                 "${KeyPair.dbName} TEXT,"
@@ -327,13 +364,15 @@ class AppDatabase {
         '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass
         .dbPaxname}, ${BoardingPass.dbBarcodedata}, '
         '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass
-        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand})'
+        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand},'
+        '${BoardingPass.dbFastTrack}, ${BoardingPass.dbLoungeAccess}, ${BoardingPass.dbBoardingTime})'
         ' VALUES("${boardingPass.rloc}", "${boardingPass
         .fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
         '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass
         .barcodedata}", "${boardingPass.paxno}", '
         '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass
-        .seat}", "${boardingPass.classBand}")');
+        .seat}", "${boardingPass.classBand}", "${boardingPass.fastTrack}", "${boardingPass.loungeAccess}",'
+        '"${boardingPass.boardingTime}" )');
   }
 
   Future<List<BoardingPass>> getBoardingPasses(String fltno,
@@ -356,6 +395,8 @@ class AppDatabase {
         classBand: '',
         gate: '-',
         boarding: 60,
+        fastTrack: 'false',
+        loungeAccess: '',
       ));
     for (Map<String, dynamic> map in result) {
       boardingPasses.add(new BoardingPass.fromMap(map));

@@ -54,7 +54,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         t.segNo == (widget.journeyNo + 1).toString().padLeft(2, '0') &&
         t.tktFor == '');
 
-    //load();
+    load();
 
     // .then((value) {
     //   if (value != null) {
@@ -98,7 +98,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             paxname: widget.pnr.pNR.names.pAX[widget.paxNo].firstName +
                 ' ' +
                 widget.pnr.pNR.names.pAX[widget.paxNo].surname,
-            barcodedata: getBarCodeData(),
+            barcodedata: (_boardingPass != null ) ?_boardingPass.barcodedata : '', //getBarCodeData(),
             paxno: widget.paxNo,
             seat: widget.pnr.pNR.aPFAX == null
                 ? new AFX(seat: '- ').seat
@@ -138,6 +138,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   load() {
+    logit('loading boardingpass for pax ${widget.paxNo + 1}');
     String fltno = widget.pnr.pNR.itinerary.itin[widget.journeyNo].airID +
         widget.pnr.pNR.itinerary.itin[widget.journeyNo].fltNo;
     final df = new DateFormat('ddMMMyyyy');
@@ -204,6 +205,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
   void _boardingPassLoaded() {
     setState(() {
+      logit('boardingpass loaded');
       _loadingInProgress = false;
     });
   }
@@ -478,6 +480,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   _contentWidget() {
+    logit('_content Widget barcode data=${_boardingPass.barcodedata}');
+    logit('_barCodeScanError = ${_barCodeScanError}');
+
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).viewInsets.bottom;
     return Container(
@@ -635,7 +640,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("GATE ",
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text(_boardingPass.gate,
+                    new Text((_boardingPass.gate==null) ?'':_boardingPass.gate,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
                   ],
@@ -646,11 +651,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text(
-                        DateFormat('HH:mm')
+                    new Text((_boardingPass.boardingTime == null ) ? '' : _boardingPass.boardingTime
+                        /*DateFormat('HH:mm')
                             .format(_boardingPass.depdate.subtract(
                                 new Duration(minutes: _boardingPass.boarding)))
-                            .toString(),
+                            .toString()*/,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
                   ],
@@ -661,10 +666,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("DEPARTS", //snapshot.data['passengers'][i],
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text(
-                        DateFormat('HH:mm')
+                    new Text((_boardingPass.departTime == null ) ? '' : _boardingPass.departTime
+                        /*DateFormat('HH:mm')
                             .format(_boardingPass.depdate)
-                            .toString(),
+                            .toString()*/,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
                   ],
@@ -740,14 +745,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                   child: QrImage(
                                     data: _boardingPass.barcodedata,
                                     size: 0.25 * bodyHeight,
-                                    version: 5,
-                                    // onError: (ex) {
-                                    //   print("[QR] ERROR - $ex");
-                                    //   setState(() {
-                                    //     _inputErrorText =
-                                    //         "Error! Maybe your input value is too long?";
-                                    //   });
-                                    // },
+                                    //size: 0.5 * bodyHeight,
+                                    //version: 5,
                                   ),
                                 ),
                               ),
@@ -761,15 +760,6 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                      width: _currentBarcode == 1 ? 300 : 1,
                                      height: 0.15 * bodyHeight,
                                    ),
-/*                                 BarcodeGenerator(
-                                     witdth: _currentBarcode == 1 ? 300 : 1,
-                                     height: 0.15 * bodyHeight,
-                                     //backgroundColor: Colors.red,
-                                     fromString: _boardingPass.barcodedata,
-                                     codeType: BarCodeType.kBarcodeFormatPDF417,
-                                   ),
-
- */
                                  ),
                                ),
                               /* end 2d barcode */
@@ -836,14 +826,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                             child: QrImage(
                               data: _boardingPass.barcodedata,
                               size: 0.25 * bodyHeight,
-                              version: 5,
-                              // onError: (ex) {
-                              //   print("[QR] ERROR - $ex");
-                              //   setState(() {
-                              //     _inputErrorText =
-                              //         "Error! Maybe your input value is too long?";
-                              //   });
-                              // },
+                              //size: 0.5 * bodyHeight,
+                              //version: 5,
                             ),
                           ),
                         ),
@@ -999,9 +983,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     qParams.write('&LogoText=${gblSettings.airlineName}');
     qParams.write('&Rloc=${pass.rloc}');
     qParams.write('&Gate=${pass.gate}');
-    qParams.write('&BoardingTime=${pass.boarding}');
+    qParams.write('&BoardingTime=${pass.boardingTime}');
     qParams.write('&FltNo=${pass.fltno}');
-    qParams.write('&DepDate=${pass.depdate}');
+    qParams.write('&DepDate=${pass.depdate.toString().substring(0, 11) + pass.departTime}');
     qParams.write('&Depart=$departCityName');
     qParams.write('&DepartCityCode=${pass.depart}');
     qParams.write('&Arrive=$arrivalCityName');

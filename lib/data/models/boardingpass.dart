@@ -16,8 +16,9 @@ class BoardingPass {
   static final dbClassBand = "classBand";
   static final dbLoungeAccess = "loungeAccess";
   static final dbFastTrack = "fastTrack";
-  static final dbDepartTime = "fastTrack";
-  static final dbArriveTime = "fastTrack";
+  static final dbDepartTime = "departtime";
+  static final dbArriveTime = "arrivetime";
+  static final dbBoardingTime = "boardtime";
 
   String rloc,
       fltno,
@@ -32,6 +33,7 @@ class BoardingPass {
       arriveTime;
   DateTime depdate;
   int paxno, boarding;
+  String boardingTime;
   String fastTrack, loungeAccess;
 
   BoardingPass({
@@ -44,13 +46,14 @@ class BoardingPass {
     @required this.paxno,
     @required this.classBand,
     this.depdate,
-    this.seat,
-    @required this.gate,
-    this.boarding,
-    this.fastTrack,
-    this.loungeAccess,
+    this.seat = '',
+    @required this.gate = '',
+    this.boarding = 0,
+    this.fastTrack = 'false',
+    this.loungeAccess = 'false',
     this.departTime,
     this.arriveTime,
+    this.boardingTime,
   });
 
   BoardingPass.fromMap(Map<String, dynamic> map)
@@ -59,20 +62,24 @@ class BoardingPass {
           fltno: map[dbFltno],
           depart: map[dbDepart],
           arrive: map[dbArrive],
+          departTime: map[dbDepartTime],
+          arriveTime: map[dbArriveTime],
+          boardingTime: map[dbBoardingTime],
           depdate: DateTime.parse(map[dbDepdate]),
           paxname: map[dbPaxname],
           paxno: map[dbPaxno],
           barcodedata: map[dbBarcodedata],
-          seat: map[dbSeat] != 'null' ? map[dbSeat] : '', //map[dbSeat],
-          gate: map[dbGate] != 'null' ? map[dbGate] : '',
+          seat: map[dbSeat] != null ? map[dbSeat] : '', //map[dbSeat],
+          gate: (map[dbGate] != 'null' && map[dbGate] != null) ? map[dbGate] : '',
           boarding: map[dbBoarding] != 'null'
               ? map[dbBoarding]
               : 60, // map[dbBoarding],
           classBand: map[dbClassBand],
           loungeAccess:
-              map[dbLoungeAccess] != 'null' ? map[dbLoungeAccess] : '',
-          fastTrack: map[dbFastTrack] != 'null' ? map[dbFastTrack] : '',
+              map[dbLoungeAccess] != null ? map[dbLoungeAccess] : '',
+          fastTrack: map[dbFastTrack] != null ? map[dbFastTrack] : '',
         );
+
 }
 
 class VrsBoardingPass {
@@ -105,6 +112,7 @@ class Mobileboardingpass {
   String rloc;
   String passengername;
   String departtime;
+  String arrivetime;
   String seat;
   String boardtime;
   String xclass;
@@ -130,6 +138,7 @@ class Mobileboardingpass {
     this.rloc,
     this.passengername,
     this.departtime,
+    this.arrivetime,
     this.seat,
     this.boardtime,
     this.xclass,
@@ -157,6 +166,7 @@ class Mobileboardingpass {
     rloc = json['rloc'];
     passengername = json['passengername'];
     departtime = json['departtime'];
+    arrivetime = json['arrivetime'];
     seat = json['seat'];
     boardtime = json['boardtime'];
     xclass = json['class'];
@@ -185,6 +195,7 @@ class Mobileboardingpass {
     data['rloc'] = this.rloc;
     data['passengername'] = this.passengername;
     data['departtime'] = this.departtime;
+    data['arrivetime'] = this.arrivetime;
     data['seat'] = this.seat;
     data['boardtime'] = this.boardtime;
     data['class'] = this.xclass;

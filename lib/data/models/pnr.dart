@@ -28,6 +28,14 @@ class PnrModel {
     return data;
   }
 
+  String getBookingCurrency() {
+    if( this.pNR.payments != null && this.pNR.payments.fOP != null &&
+    this.pNR.payments.fOP.length > 0  ) {
+      return this.pNR.payments.fOP[0].payCur;
+    }
+
+    return gblSettings.currency;
+  }
   bool hasPendingCodeShareOrInterlineFlights() {
     bool result = false;
     if (this.pNR != null &&

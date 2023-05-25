@@ -51,7 +51,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
           .getFareRules(_fareID)
           .then((result) {
         int seg = int.parse(_segment);
-        logit('rules for ${seg} fareID $_fareID');
+        logit('rules for $seg fareID $_fareID');
         while( seg > fareRulesPerSegment.length){
           List<String> list = [];
           fareRulesPerSegment.add(list);
