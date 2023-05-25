@@ -407,7 +407,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                   padding: EdgeInsets.all(0),
                 ),
                 new Divider(),
-                pricebuttons(item.flt),
+                pricebuttons(item,item.flt),
               ],
             ),
             decoration: BoxDecoration(
@@ -443,7 +443,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     );
   }
 
-  void goToClassScreen(int index, List<Flt> flts) async {
+  void goToClassScreen(avItin avItem,int index, List<Flt> flts) async {
     _loadingInProgress = true;
     gblActionBtnDisabled = false;
     _loading = 'Loading';
@@ -459,10 +459,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, avItem,selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(BuildContext context, List<String> flt, List<Flt> outboundflts, String className) {
+  void flightSelected(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String className) {
     /*setState(() {
 
     });*/
@@ -487,6 +487,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     builder: (context) => ReturnFlightSeletionPage(
                           newBooking: this.widget.newBooking,
                           outboundFlight: outboundflts.last,
+                          outboundAvItem: avItem,
                         )));
           } else if (this.widget.newBooking.outboundflight[0] != null) {
 
@@ -544,7 +545,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
 
-  Widget pricebuttons(List<Flt> item) {
+  Widget pricebuttons(avItin avItem, List<Flt> item) {
      if (item[0].fltav.pri.length > 3) {
       return Wrap(
           spacing: 8.0, //gap between adjacent chips
@@ -554,7 +555,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               (index) => GestureDetector(
                   onTap: () => {
                         item[0].fltav.fav[index] != '0'
-                            ? goToClassScreen(index, item)
+                            ? goToClassScreen(avItem,index, item)
                             : print('No av')
                       },
                   child: Chip(
@@ -619,7 +620,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             (index) => ElevatedButton(
                 onPressed: () {
                   item[0].fltav.fav[index] != '0'
-                      ? goToClassScreen(index, item)
+                      ? goToClassScreen(avItem,index, item)
                       : print('No av');
                 },
                 style: ElevatedButton.styleFrom(

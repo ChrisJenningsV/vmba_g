@@ -23,10 +23,11 @@ import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
 
 class ReturnFlightSeletionPage extends StatefulWidget {
-  ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight})
+  ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight, this.outboundAvItem})
       : super(key: key);
   final NewBooking newBooking;
   final Flt outboundFlight;
+  final avItin outboundAvItem;
   @override
   _ReturnFlightSeletionState createState() => new _ReturnFlightSeletionState();
 }
@@ -486,7 +487,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                   padding: EdgeInsets.all(0),
                 ),
                 new Divider(),
-                pricebuttons(item.flt),
+                pricebuttons(item, item.flt),
               ],
             ),
             decoration: BoxDecoration(
@@ -503,13 +504,35 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
 
-  validateSelection(index, item) {
+  validateSelection(avItin avItem, index, item) {
+    // get connect time
+    int minConnTime = 0;
+
+    if(widget.outboundAvItem.international == '1') {
+      if( avItem.international == '1') {
+        minConnTime = int.parse(avItem.arrmctii);
+      } else {
+        minConnTime = int.parse(avItem.arrmctid);
+      }
+    } else {
+      if( avItem.international == '1') {
+        minConnTime = int.parse(avItem.arrmctdi);
+      } else {
+        minConnTime = int.parse(avItem.arrmctdd);
+      }
+    }
+
+    DateTime arrives =getFullTimeDate(widget.outboundFlight.time.adaylcl, widget.outboundFlight.time.atimlcl).add(Duration(minutes: minConnTime));
+    DateTime departs = getFullTimeDate(item.first.time.ddaylcl, item.first.time.dtimlcl);
+
+    logit( 'out arrives (inc conn): ' + arrives.toString());
+
+    logit('ret leaves: ' + departs.toString());
+
+
     if (item[0].fltav.fav[index] == '0') {
       print('No av');
-    } else if (getFullTimeDate(widget.outboundFlight.time.adaylcl,
-            widget.outboundFlight.time.atimlcl)
-        .isAfter(getFullTimeDate(
-            item.first.time.adaylcl, item.first.time.atimlcl))) {
+    } else if (arrives.isAfter( departs) ) {
       showSnackBar(
           'This flight is before or to close to your outbound arrival time to book');
     } else if (((widget.newBooking.outboundflight[0].contains('[CB=Fly]') &&
@@ -532,7 +555,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     return DateTime.parse(date + ' ' + time.trim());
   }
 
-  Widget pricebuttons(List<Flt> item) {
+  Widget pricebuttons(avItin avItem, List<Flt> item) {
     if (item[0].fltav.pri.length > 3) {
       return Wrap(
           spacing: 8.0, // gap between adjacent chips
@@ -542,7 +565,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               (index) => GestureDetector(
                   onTap: () => {
                         item[0].fltav.fav[index] != '0'
-                            ? validateSelection(index, item)
+                            ? validateSelection(avItem,index, item)
                             : print('No av')
                       },
                   child: Chip(
@@ -618,8 +641,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                         borderRadius: BorderRadius.circular(30.0))),
                 onPressed: () {
                   item[0].fltav.fav[index] != '0'
-                      ? validateSelection(
-                          index, item) //goToClassScreen(index, item)
+                      ? validateSelection(avItem,index, item) //goToClassScreen(index, item)
                       : print('No av');
                 },
                 child: Padding(
@@ -702,10 +724,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, null,selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
-  void flightSelected(BuildContext context ,List<String> flt, List<Flt> flts, String className) {
+  void flightSelected(BuildContext context ,avItin avItem,List<String> flt, List<Flt> flts, String className) {
     print(flt);
     if (flt != null && flt.length > 0) {
       this.widget.newBooking.returningflight = flt;

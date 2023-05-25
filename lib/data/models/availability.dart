@@ -213,10 +213,14 @@ class avItin {
   String dep;
   String arr;
   String international;
-  String mctdd;
-  String mctdi;
-  String mctid;
-  String mctii;
+  String depmctdd;
+  String depmctdi;
+  String depmctid;
+  String depmctii;
+  String arrmctdd;
+  String arrmctdi;
+  String arrmctid;
+  String arrmctii;
   List<Flt> flt;
 
   avItin(
@@ -224,10 +228,14 @@ class avItin {
       this.dep,
       this.arr,
       this.international,
-      this.mctdd,
-      this.mctdi,
-      this.mctid,
-      this.mctii,
+      this.depmctdd,
+      this.depmctdi,
+      this.depmctid,
+      this.depmctii,
+        this.arrmctdd,
+        this.arrmctdi,
+        this.arrmctid,
+        this.arrmctii,
       this.flt});
 
   avItin.fromJson(Map<String, dynamic> json) {
@@ -235,10 +243,14 @@ class avItin {
     dep = json['dep'];
     arr = json['arr'];
     international = json['international'];
-    mctdd = json['mctdd'];
-    mctdi = json['mctdi'];
-    mctid = json['mctid'];
-    mctii = json['mctii'];
+    depmctdd = json['depmctdd'];
+    depmctdi = json['depmctdi'];
+    depmctid = json['depmctid'];
+    depmctii = json['depmctii'];
+    arrmctdd = json['arrmctdd'];
+    arrmctdi = json['arrmctdi'];
+    arrmctid = json['arrmctid'];
+    arrmctii = json['arrmctii'];
 
     if (json['flt'] != null) {
       flt = [];

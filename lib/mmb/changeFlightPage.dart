@@ -695,10 +695,10 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       .length)
               .toString(),
         )));
-    flightSelected(context, selectedFlt, flts, '');
+    flightSelected(context,null, selectedFlt, flts, '');
   }
 
-  void flightSelected(BuildContext context, List<String> flt, List<Flt> outboundflts, String c) {
+  void flightSelected(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String c) {
     NewBooking newFlight = NewBooking();
     newFlight.outboundflight = [];
     widget.mmbBooking.currency = this.widget.pnr.getBookingCurrency();

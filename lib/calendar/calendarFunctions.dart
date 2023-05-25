@@ -14,7 +14,7 @@ import '../utilities/helper.dart';
 import 'flightPageUtils.dart';
 
 class CalFlightItemWidget extends StatefulWidget {
-  final void Function(BuildContext context, List<String> flt, List<Flt> outboundflts, String className) flightSelected;
+  final void Function(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String className) flightSelected;
 
   CalFlightItemWidget({Key key,this.newBooking, this.objAv, this.item, this.flightSelected, this.seatCount})
       : super(key: key);
@@ -51,7 +51,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
               flts: flts, //objAv.availability.itin[0].flt,
               seats: widget.seatCount,
             )));
-    widget.flightSelected(context,  selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    widget.flightSelected(context,null,  selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
 
   Widget pricebuttons(BuildContext context, NewBooking newBooking,AvailabilityModel objAv, List<Flt> item) {

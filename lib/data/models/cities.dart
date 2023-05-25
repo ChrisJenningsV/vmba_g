@@ -36,9 +36,11 @@ class City {
   static final dbWebCheckinStart = "webCheckinStart";
   static final dbWebCheckinEnd = "webCheckinEnd";
   static final dbMobileBarcodeType = "mobileBarcodeType";
+  static final dbMinimumConnectMins = "minimumConnectMins";
 
   String code, name, shortName, mobileBarcodeType;
   int webCheckinEnabled, webCheckinStart, webCheckinEnd;
+  double minimumConnectMins;
 
   City({
     @required this.code,
@@ -48,6 +50,7 @@ class City {
     @required this.webCheckinStart,
     @required this.webCheckinEnd,
     @required this.mobileBarcodeType,
+    this.minimumConnectMins,
   });
 
   City.fromMap(Map<String, dynamic> map)
@@ -59,6 +62,7 @@ class City {
           webCheckinStart: map[dbWebCheckinStart],
           webCheckinEnd: map[dbWebCheckinEnd],
           mobileBarcodeType: map[dbMobileBarcodeType],
+      minimumConnectMins: map[dbMinimumConnectMins]
         );
 
   // Currently not used
@@ -71,6 +75,7 @@ class City {
       dbWebCheckinStart: webCheckinStart,
       dbWebCheckinEnd: webCheckinEnd,
       dbMobileBarcodeType: mobileBarcodeType,
+      dbMinimumConnectMins: minimumConnectMins,
     };
   }
 
@@ -82,6 +87,7 @@ class City {
     webCheckinStart = json['webCheckinStart'];
     webCheckinEnd = json['webCheckinEnd'];
     mobileBarcodeType = json['mobileBarcodeType'];
+    minimumConnectMins = json['minimumConnectMins'];
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +99,8 @@ class City {
     data['webCheckinStart'] = this.webCheckinStart;
     data['webCheckinEnd'] = this.webCheckinEnd;
     data['mobileBarcodeType'] = this.mobileBarcodeType;
+    data['minimumConnectMins'] = this.minimumConnectMins;
+
     return data;
   }
 }

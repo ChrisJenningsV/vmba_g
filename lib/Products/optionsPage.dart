@@ -79,8 +79,6 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
   onComplete(BuildContext context, dynamic p) {
     try {
       if( !gblActionBtnDisabled) {
-        
-        gblActionBtnDisabled;
         gblPaymentMsg = null;
         Navigator.push(
             context,
