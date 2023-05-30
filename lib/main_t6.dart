@@ -63,7 +63,7 @@ void configT6() {
     gblServerFiles: 'https://booking.air-swift.com/AppFiles',
     testServerFiles: 'https://customertest.videcom.com/airswift/AppFiles',
     faqUrl: 'https://air-swift.com/faqs/ ',
-    contactUsUrl: 'https://air-swift.com/contact-us/ ',
+ //   contactUsUrl: 'https://air-swift.com/contact-us/ ',
     termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
     privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
     prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/ ',

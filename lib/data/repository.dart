@@ -375,6 +375,12 @@ class Repository {
                   case 'latestBuildiOS':
                     gblSettings.latestBuildiOS = item['value'];
                     break;
+                  case 'lowestValidBuildAndroid':
+                    gblSettings.lowestValidBuildAndroid = item['value'];
+                    break;
+                  case 'lowestValidBuildiOS':
+                    gblSettings.lowestValidBuildiOS = item['value'];
+                    break;
                   case 'reqUpdateMsg':
                     gblSettings.reqUpdateMsg = item['value'];
                     break;

@@ -25,7 +25,7 @@ flutter build appbundle -t lib/main.dart --flavor medsky
 flutter build appbundle -t lib/main.dart --flavor Aurigny
 
 # batch file - run in terminal for \vmba
- buildRelease\airswift.bat
+buildRelease\airswift.bat
 buildRelease\fastjet.bat
 buildRelease\buraq.bat
 buildRelease\hisky.bat

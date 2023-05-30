@@ -165,6 +165,8 @@ class Settings {
   String androidAppId;
   String latestBuildiOS = '1';
   String latestBuildAndroid = '1';
+  String lowestValidBuildiOS = '1';
+  String lowestValidBuildAndroid = '1';
   String fQTVpointsName = 'airmiles';
   String reqUpdateMsg;
   String optUpdateMsg;
@@ -311,6 +313,8 @@ bool bpShowFastTrack;
     this.androidAppId,
     this.latestBuildiOS,
     this.latestBuildAndroid,
+    this.lowestValidBuildiOS,
+    this.lowestValidBuildAndroid,
     //this.payUrl,
     this.payPage,
     this.xmlUrl,
