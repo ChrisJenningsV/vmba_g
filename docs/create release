@@ -32,6 +32,7 @@ buildRelease\hisky.bat
 buildRelease\medsky.bat
 buildRelease\logan.bat
 buildRelease\blueislands.bat
+buildRelease\aurigny.bat
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 

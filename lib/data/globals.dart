@@ -13,7 +13,7 @@ import 'models/providers.dart';
 //
 String gblBuildFlavor = 'T6';
 bool gblIsLive = false;
-bool gblWantLogBuffer = true;
+bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
 int apiBuldVersion;
