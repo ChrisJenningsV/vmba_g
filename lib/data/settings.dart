@@ -139,6 +139,7 @@ class Settings {
   String payFailUrl;
   String stopUrl;
   String stopTitle;
+  String stopMessage;
   String locale = 'en-EN';
   int bookingLeadTime = 60;
   bool webCheckinNoSeatCharge;

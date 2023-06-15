@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:store_redirect/store_redirect.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
@@ -248,3 +250,48 @@ Widget buildMessage(String title, String body, {void Function() onComplete  }) {
 
   ));
 }
+
+  void updateAppDialog(BuildContext context) {
+    var txt = '';
+    if (gblSettings.optUpdateMsg != null &&
+        gblSettings.optUpdateMsg.isNotEmpty) {
+      txt = gblSettings.optUpdateMsg;
+    }
+    shownUpdate = true;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Text('Update App'),
+            content:
+            Text('A newer version of the app is available to download' + '\n' +
+                txt),
+            actions: <Widget>[
+              new TextButton(
+                child: new Text(
+                  'Close',
+                  style: TextStyle(color: Colors.black),
+                ),
+                style: TextButton.styleFrom(primary: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new TextButton(
+                child: new Text(
+                  translate('Update Now'),
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: gblSystemColors.primaryButtonColor,
+                    side: BorderSide(
+                        color: gblSystemColors.textButtonTextColor, width: 1),
+                    primary: gblSystemColors.primaryButtonTextColor),
+                onPressed: () {
+                  LaunchReview.launch();
+                },
+              ),
+            ]);
+      },
+    );
+  }

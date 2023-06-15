@@ -14,6 +14,7 @@ import 'package:vmba/components/selectLang.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
+import '../components/showDialog.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
@@ -108,7 +109,8 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       setState(() {
         _displayProcessingIndicator = false;
       });
-      if (shownUpdate == false) {
+      //if (shownUpdate == false) {
+      if (gblAction == "UPDATE") {
         checkForLatestVersion();
       }
     });
@@ -120,13 +122,13 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     // Version currentVersion;
     // Version latestVersion;
     String latestVersion;
-    if( shownUpdate == true ) {
+    if (gblAction != "UPDATE") {
       return;
     }
 
-    if (gblAction == 'UPDATEAVAILABLE') {
+    if (gblAction == 'UPDATE') {
       shownUpdate = true;
-      _updateAppDialog();
+      updateAppDialog(context);
       return;
     }
 
@@ -155,7 +157,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       }
       if (bNewBuilsAvailable == true) {
         shownUpdate = true;
-        _updateAppDialog();
+        updateAppDialog(context);
       }
     });
   }
@@ -186,8 +188,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       print(e);
     }
   }
+/*
 
-  void _updateAppDialog() {
+  void updateAppDialog() {
     var txt = '';
     if (gblSettings.optUpdateMsg != null &&
         gblSettings.optUpdateMsg.isNotEmpty) {
@@ -229,12 +232,13 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
                       androidAppId: gblSettings.androidAppId,
                       iOSAppId: gblSettings.iOSAppId);
 
-/*                  OpenAppstore.launch(
+                  OpenAppstore.launch(
                       androidAppId: gblSettings.androidAppId,
                       iOSAppId: gblSettings.iOSAppId);
 
 
- */
+
+
 
                 },
               ),
@@ -242,6 +246,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       },
     );
   }
+*/
 
   //Future<Widget> getImage() async {
   Widget getImage() {

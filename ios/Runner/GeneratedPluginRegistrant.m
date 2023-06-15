@@ -36,6 +36,12 @@
 @import flutter_local_notifications;
 #endif
 
+#if __has_include(<launch_review/LaunchReviewPlugin.h>)
+#import <launch_review/LaunchReviewPlugin.h>
+#else
+@import launch_review;
+#endif
+
 #if __has_include(<package_info_plus/FLTPackageInfoPlusPlugin.h>)
 #import <package_info_plus/FLTPackageInfoPlusPlugin.h>
 #else
@@ -86,6 +92,7 @@
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
   [FlutterLocalNotificationsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterLocalNotificationsPlugin"]];
+  [LaunchReviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"LaunchReviewPlugin"]];
   [FLTPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlusPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];

@@ -280,7 +280,7 @@ class Repository {
       if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
-            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID)); // '{VrsApiRequest: ' + + '}' ;
+            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion)); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
         print('login_uri = ${gblSettings.xmlUrl}');
 
@@ -371,15 +371,44 @@ class Repository {
                     break;
                   case 'latestBuildAndroid':
                     gblSettings.latestBuildAndroid = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.latestBuildAndroid) != int.parse(gblVersion.split('.')[3])) {
+                        if( !gblIsIos) {
+                          gblAction = "UPDATE";
+                        }
+                      }
+                    }
                     break;
                   case 'latestBuildiOS':
                     gblSettings.latestBuildiOS = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.latestBuildiOS) != int.parse(gblVersion.split('.')[3])) {
+                        if( gblIsIos) {
+                          gblAction = "UPDATE";
+                        }
+                      }
+                    }
                     break;
                   case 'lowestValidBuildAndroid':
                     gblSettings.lowestValidBuildAndroid = item['value'];
+                    // check that this build is valid
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.lowestValidBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
+                        if( !gblIsIos) {
+                          gblAction = "STOP";
+                        }
+                      }
+                    }
                     break;
                   case 'lowestValidBuildiOS':
                     gblSettings.lowestValidBuildiOS = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.lowestValidBuildiOS) != int.parse(gblVersion.split('.')[3])) {
+                        if( gblIsIos) {
+                          gblAction = "STOP";
+                        }
+                      }
+                    }
                     break;
                   case 'reqUpdateMsg':
                     gblSettings.reqUpdateMsg = item['value'];
@@ -592,8 +621,11 @@ class Repository {
                   case 'contactUsUrl':
                     gblSettings.contactUsUrl =  item['value'];
                     break;
-                  case 'stopUrl':
+                  case 'stopRedirectUrl':
                     gblSettings.stopUrl = item['value'];
+                    break;
+                  case 'stopMessage':
+                    gblSettings.stopMessage = item['value'];
                     break;
                   case 'stopTitle':
                     gblSettings.stopTitle =item['value'];

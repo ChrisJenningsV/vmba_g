@@ -16,6 +16,7 @@ class VrsApiRequest extends Session {
   String rloc;
   String data;
   String language;
+  String appVersion;
   String undoCmd;
 
   VrsApiRequest(
@@ -30,7 +31,8 @@ class VrsApiRequest extends Session {
     this.data,
     this.notifyToken,
     this.undoCmd,
-    this.language}
+    this.language,
+    this.appVersion}
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
   Map toJson() {
@@ -49,6 +51,7 @@ class VrsApiRequest extends Session {
     map['data'] = data;
     map['language'] = language;
     map['undoCmd'] = undoCmd;
+    map['appVersion'] = appVersion;
     return map;
   }
 }

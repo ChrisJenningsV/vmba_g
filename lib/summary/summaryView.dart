@@ -61,6 +61,9 @@ class SummaryView extends StatelessWidget {
             if( index == mpList.length) {
               if(gblLogProducts) logit('$index end');
               if( last.length > 0 ) {
+                if( last == element.text){
+                  lastAmt = (double.parse(lastAmt) + double.parse(element.mPSAmt)).toString();
+                }
                 list.add(tableRow('$count * ' + last,formatPrice(lastCur, double.parse(lastAmt))));
               }
               // finished
@@ -69,9 +72,14 @@ class SummaryView extends StatelessWidget {
                     formatPrice(element.mPSCur, double.parse(element.mPSAmt))));
               }
             } else {
-              last = element.text;
-              lastAmt = element.mPSAmt;
-              lastCur = element.mPSCur;
+              if( last == element.text){
+                lastAmt = (double.parse(lastAmt) + double.parse(element.mPSAmt)).toString();
+
+              } else {
+                last = element.text;
+                lastAmt = element.mPSAmt;
+                lastCur = element.mPSCur;
+              }
             }
           index +=1;
         });

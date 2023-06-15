@@ -57,6 +57,9 @@ class ProductCardState extends State<ProductCard> {
 
     widget.productCategory.products.forEach((prod) {
       if( isThisProductValid(widget.pnrModel, prod, 0)) {
+        if( prod.requiresQuantity == false ) {
+          prod.maxQuantity = 1;
+        }
         if( prod.maxQuantity == null ){
           prod.maxQuantity = 999;
         }

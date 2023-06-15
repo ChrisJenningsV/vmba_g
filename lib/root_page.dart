@@ -14,6 +14,8 @@ import 'package:vmba/menu/updatePage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/notification_service.dart';
 
+import 'components/showDialog.dart';
+
 class RootPage extends StatefulWidget {
   RootPage();
 
@@ -293,7 +295,8 @@ class RootPageState extends State<RootPage> {
         case 'LOGIN':
           break;
         case 'UPDATE':
-          return new UpdatePage();
+          //return new UpdatePage();
+          //updateAppDialog(context);
           break;
         case 'SUSSPEND':
         case 'STOP':
