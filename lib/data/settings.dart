@@ -209,6 +209,7 @@ class Settings {
   PassengerTypes passengerTypes;
 
   String fqtvName="";
+  String updateMessage='';
   String appFeedbackEmail="";
   String buttonStyle;
   String upgradeMessage;
@@ -336,6 +337,7 @@ bool bpShowFastTrack;
     this.skyFlyToken,
 
     this.fqtvName,
+    this.updateMessage,
     this.appFeedbackEmail,
     this.prohibitedItemsNoticeUrl,
     this.groupsBookingsEmail,

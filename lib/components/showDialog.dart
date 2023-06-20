@@ -264,8 +264,7 @@ Widget buildMessage(String title, String body, {void Function() onComplete  }) {
         return AlertDialog(
             title: Text('Update App'),
             content:
-            Text('A newer version of the app is available to download' + '\n' +
-                txt),
+            Text(txt == '' ? 'A newer version of the app is available to download' : txt),
             actions: <Widget>[
               new TextButton(
                 child: new Text(

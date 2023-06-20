@@ -470,7 +470,7 @@ double sepTax () {
             .where((p) => p.aFXID == 'SEAT' && p.seg == (i + 1).toString())
             .length > 0) {
           // got products this segment :)
-          widgets.add(tableTitle(translate('Seats' + ':')));
+          widgets.add(tableTitle(translate('Seats' )+ ':'));
           List<AFX> afList = [];
           gblPnrModel.pNR.aPFAX.aFX.forEach((p) {
             if( p.aFXID == 'SEAT' && p.seg == (i + 1).toString()) {
@@ -479,10 +479,17 @@ double sepTax () {
           });
 
           afList.forEach((element) {
-            MP mps = gblPnrModel.pNR.mPS.mP
-                .where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax).first;
+           // logit('pax: ' + element.pax + ' i:' + i.toString());
+            //MP mps = gblPnrModel.pNR.mPS.mP.where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax).first;
+            Iterable <MP> mpsa = gblPnrModel.pNR.mPS.mP.where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax);
+            if( mpsa != null && mpsa.length > 0 ) {
+              MP mps = mpsa.first;
 
-            widgets.add(tableRow('${element.name} ${element.seat}' , formatPrice(mps.mPSCur , double.parse(mps.mPSAmt))));
+              if (mps != null) {
+                widgets.add(tableRow('${element.name} ${element.seat}',
+                    formatPrice(mps.mPSCur, double.parse(mps.mPSAmt))));
+              }
+            }
           });
 
         }

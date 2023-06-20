@@ -369,11 +369,14 @@ class Repository {
                     gblSettings.fqtvName = item['value'];
                     logit('load FQTV name [${gblSettings.fqtvName}]');
                     break;
+                  case 'updateMessage':
+                    gblSettings.updateMessage = item['value'];
+                    break;
                   case 'latestBuildAndroid':
                     gblSettings.latestBuildAndroid = item['value'];
                     if( gblVersion.isNotEmpty && gblVersion != "" ){
-                      if( int.parse(gblSettings.latestBuildAndroid) != int.parse(gblVersion.split('.')[3])) {
-                        if( !gblIsIos) {
+                      if( int.parse(gblSettings.latestBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
+                        if( !gblIsIos && gblAction != "STOP") {
                           gblAction = "UPDATE";
                         }
                       }
@@ -382,8 +385,8 @@ class Repository {
                   case 'latestBuildiOS':
                     gblSettings.latestBuildiOS = item['value'];
                     if( gblVersion.isNotEmpty && gblVersion != "" ){
-                      if( int.parse(gblSettings.latestBuildiOS) != int.parse(gblVersion.split('.')[3])) {
-                        if( gblIsIos) {
+                      if( int.parse(gblSettings.latestBuildiOS) > int.parse(gblVersion.split('.')[3])) {
+                        if( gblIsIos && gblAction != "STOP") {
                           gblAction = "UPDATE";
                         }
                       }

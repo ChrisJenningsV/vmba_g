@@ -164,7 +164,7 @@ void configLM() {
   wantPushNoticications: true,
   wantNotificationEdit: false,
   //wantRefund: true,
-  wantNewPayment: false,
+  wantNewPayment: true,
   wantCountry: false,
 //  disableBookings: true,
 

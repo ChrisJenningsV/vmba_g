@@ -73,7 +73,21 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     getSetting('savedVersion').then((value) {
       if(value == null || value == '' ){
         // if null, old format saved bookings
-        updateMsg = 'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
+        if( gblSettings.updateMessage == null || gblSettings.updateMessage.isEmpty) {
+          updateMsg =
+          'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
+        } else {
+          updateMsg =gblSettings.updateMessage;
+        }
+      } else {
+        if( value.split('.').length == 4) {
+          if (int.parse(gblVersion.split('.')[3]) > int.parse(value.split('.')[3])) {
+            if( gblSettings.updateMessage != null && gblSettings.updateMessage.isNotEmpty) {
+              updateMsg =gblSettings.updateMessage;
+            }
+
+          }
+        }
       }
       PackageInfo.fromPlatform()
           .then((PackageInfo packageInfo) =>
@@ -390,7 +404,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
                         Padding(padding:  EdgeInsets.only(top: 10.0),),
                         SizedBox(
                           width: 250,
-                            child:Text( updateMsg),
+                            child:Text( updateMsg.replaceAll(r'\n', '\n'), maxLines: 20,),
 
                         ),
                         Padding(padding:  EdgeInsets.only(top: 20.0),),
