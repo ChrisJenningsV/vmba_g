@@ -131,6 +131,7 @@ class Settings {
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
+  String trackerUrl;
   String specialAssistanceUrl;
   String faqUrl;
   String contactUsUrl;
@@ -297,6 +298,7 @@ bool bpShowFastTrack;
     this.termsAndConditionsUrl,
     this.adsTermsUrl,
     this.privacyPolicyUrl,
+    this.trackerUrl = '',
     this.faqUrl,
     this.contactUsUrl,
     //this.payStartUrl,

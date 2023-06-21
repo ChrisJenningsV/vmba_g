@@ -62,6 +62,7 @@ void configLM() {
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',
   termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
+   trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
   prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',

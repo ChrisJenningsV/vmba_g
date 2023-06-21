@@ -134,10 +134,10 @@ class SummaryView extends StatelessWidget {
         list.add(tableRow(translate('No of ') + translate('Students') + ': ',translateNo(newBooking.passengers.students.toString())));
       }
       if (newBooking.passengers.seniors != 0) {
-        list.add(translate('No of ') + translate('Seniors') + ': ',translateNo(newBooking.passengers.seniors.toString()));
+        list.add(tableRow(translate('No of ') + translate('Seniors') + ': ',translateNo(newBooking.passengers.seniors.toString())));
       }
       if (newBooking.passengers.children != 0) {
-        list.add(translate('No of children: '),translateNo(newBooking.passengers.children.toString()));
+        list.add(tableRow(translate('No of children: '),translateNo(newBooking.passengers.children.toString())));
       }
 
       if (newBooking.passengers.infants != 0) {

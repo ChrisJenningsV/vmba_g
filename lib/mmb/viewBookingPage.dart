@@ -35,6 +35,7 @@ import '../components/vidGraphics.dart';
 import '../data/smartApi.dart';
 import '../functions/bookingFunctions.dart';
 import '../home/home_page.dart';
+import '../menu/contact_us_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/dataLoader.dart';
 
@@ -1783,6 +1784,7 @@ class CheckinBoardingPassesWidgetState
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },
               ),
+              gblSettings.trackerUrl != '' ? _trackerButton(pnr.pNR.itinerary.itin[journey]) : Container(),
               FutureBuilder(
                 future: cityCodeToName(
                   pnr.pNR.itinerary.itin[journey].arrive,
@@ -1955,6 +1957,22 @@ class CheckinBoardingPassesWidgetState
         padding: EdgeInsets.all(0),
       );
     }
+  }
+
+  Widget _trackerButton(Itin itin){
+    // itin.airID +itin.fltNo
+    String url = gblSettings.trackerUrl + itin.airID +itin.fltNo;
+
+    return TextButton(
+        child: new Text("track"),
+        style: TextButton.styleFrom(
+            backgroundColor: gblSystemColors.primaryButtonColor ,
+            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+            primary: gblSystemColors.primaryButtonTextColor),
+    onPressed: () {
+      Navigator.push(context, SlideTopRoute(page: CustomPageWeb('Flight Tracker: ' + itin.airID +itin.fltNo, url)));
+    }
+    );
   }
 
 //new collapsable items

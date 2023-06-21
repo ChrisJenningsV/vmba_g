@@ -615,6 +615,9 @@ class Repository {
                   case 'faqUrl':
                     gblSettings.faqUrl = item['value'];
                     break;
+                  case 'trackerUrl':
+                    gblSettings.trackerUrl = item['value'];
+                    break;
                   case 'privacyPolicyUrl':
                     gblSettings.privacyPolicyUrl = item['value'];
                     break;
