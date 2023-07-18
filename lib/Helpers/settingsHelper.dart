@@ -2,6 +2,8 @@
 
 
 
+import 'package:flutter/material.dart';
+
 import '../data/globals.dart';
 
 void setLiveTest() {
@@ -41,3 +43,20 @@ bool wantPageV2() {
     return false;
   }
 }
+bool wantHomePageV2() {
+  if( gblSettings.homePageStyle == 'V2') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Color v2BorderColor(){
+  return Colors.grey.withOpacity(0.5);
+  return gblSystemColors.primaryHeaderColor;
+}
+
+double v2BorderWidth() {
+  return 2;
+}
+

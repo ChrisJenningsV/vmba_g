@@ -447,12 +447,26 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     _loadingInProgress = true;
     gblActionBtnDisabled = false;
     _loading = 'Loading';
+    double pri = 0.0;
+    String currency='';
+    flts.forEach((element) {
+      if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
+          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
+        pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+      } else {
+        pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+      }
+      currency = element.fltav.cur[index];
+    });
+
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
             page: ChooseFlight(
           classband: objAv.availability.classbands.band[index],
           flts: flts, //objAv.availability.itin[0].flt,
+          price: pri,
+          currency: currency,
           seats: widget.newBooking.passengers.adults +
               widget.newBooking.passengers.youths +
               widget.newBooking.passengers.seniors +

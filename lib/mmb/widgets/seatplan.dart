@@ -6,7 +6,6 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/menu/menu.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:vmba/mmb/widgets/seatPlanPassengers.dart';
@@ -18,7 +17,6 @@ import 'package:vmba/components/trText.dart';
 
 import '../../calendar/bookingFunctions.dart';
 import '../../data/smartApi.dart';
-import '../../home/home_page.dart';
 
 enum SeatType { regular, emergency }
 

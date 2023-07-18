@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:store_redirect/store_redirect.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:vmba/components/trText.dart';
@@ -580,7 +579,7 @@ Widget _getLogo(){
     FontWeight fw = FontWeight.bold;
     double tsf = 1.0;
 
-    if( wantPageV2()) {
+    if( wantHomePageV2()) {
       b1Clr = gblSystemColors.home1ButtonColor;
       b2Clr = gblSystemColors.home2ButtonColor;
       b1TextClr = gblSystemColors.home1ButtonTextColor;

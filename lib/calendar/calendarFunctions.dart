@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
@@ -42,6 +44,17 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
   void goToClassScreen(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, int index, List<Flt> flts) async {
     gblActionBtnDisabled = false;
+    double pri = 0.0;
+    String currency='';
+    flts.forEach((element) {
+      if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
+          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
+        pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+      } else {
+        pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+      }
+      currency = element.fltav.cur[index];
+    });
 
     var selectedFlt = await Navigator.push(
         context,
@@ -49,10 +62,14 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
             page: ChooseFlight(
               classband: objAv.availability.classbands.band[index],
               flts: flts, //objAv.availability.itin[0].flt,
+              price: pri,
+              currency: currency,
               seats: widget.seatCount,
             )));
     widget.flightSelected(context,null,  selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
   }
+
+
 
   Widget pricebuttons(BuildContext context, NewBooking newBooking,AvailabilityModel objAv, List<Flt> item) {
     EdgeInsets pad = EdgeInsets.symmetric(vertical: 5,horizontal: 15);
@@ -66,7 +83,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             //color: Colors.grey,
-              border: Border(top: BorderSide(color: gblSystemColors.primaryHeaderColor, width: 2),
+              border: Border(top: BorderSide(color: v2BorderColor(), width: v2BorderWidth()),
               )),
           child: Wrap(
 
@@ -86,7 +103,8 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                         backgroundColor:
                         index.floor().isOdd ? gblSystemColors.accentColor :gblSystemColors.primaryButtonColor,
                         label: Column(
-                          children: <Widget>[
+                          children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                         /* children: <Widget>[
                             TrText(
                                 objAv.availability.classbands.band[index]
                                     .cbdisplayname ==
@@ -127,7 +145,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                                   fontSize: 12.0,
                                 )),
 
-                          ],
+                          ],*/
                         ),
                       )))
           )
@@ -145,7 +163,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             //color: Colors.grey,
-              border: Border(top: BorderSide(color: gblSystemColors.primaryHeaderColor, width: 2),
+              border: Border(top: BorderSide(color: v2BorderColor(), width: v2BorderWidth()),
               )),
 
           child: Row(
@@ -166,7 +184,8 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: new Column(
-                        children: _getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index)
+//                        children: _getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index)
+                          children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
 
                       ),
                     )),
@@ -175,6 +194,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
       );
     }
   }
+/*
 
 
   List<Widget> _getPriceButtonList(String cbName, List<Flt> flts, int index){
@@ -186,6 +206,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
 
     list.add(getClassNameRow(cbName));
+*/
 /*
       new Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -201,8 +222,10 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
       ])
     );
 */
+/*
 
-    if( flts[0].fltav.fav[index] != '0') {
+
+    if( flts[0].fltav.fav[index] == '0') {
       list.add(getNoSeatsRow());
     } else {
       list.add(new Row(
@@ -233,6 +256,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     return list;
   }
 
+*/
 
   Widget calFlightItem(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, avItin item) {
     List <Widget> topList = [];
@@ -262,7 +286,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: gblSystemColors.primaryHeaderColor, width: 2),
+          border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
           borderRadius: BorderRadius.all(
               Radius.circular(15.0)),
           color: Colors.white,
@@ -309,7 +333,7 @@ Widget flightTopRow(avItin item)
   return Container(
     padding: EdgeInsets.only(top: 2, bottom: 2, left: 10, right: 0),
     decoration: BoxDecoration(
-      border: Border(bottom: BorderSide(color: gblSystemColors.primaryHeaderColor, width: 2),
+      border: Border(bottom: BorderSide(color: v2BorderColor(), width: v2BorderWidth()),
     )
     ),
       child: Row(
@@ -318,8 +342,8 @@ Widget flightTopRow(avItin item)
         Text(translate('Flight No:') + ' ' + item.flt[0].fltdet.airid + item.flt[0].fltdet.fltno),
         Padding(padding: EdgeInsets.all(2)),
         (item.flt[0].fltdet.airid == gblSettings.aircode) ?
-        Image.asset('lib/assets/$gblAppTitle/images/logo.png', height: 30,)
-            :Container()
+        Padding(padding: EdgeInsets.only(right: 4), child: Image.asset('lib/assets/$gblAppTitle/images/logo.png', height: 30,))
+            :Container(),
         ]
     ),
   );
@@ -340,12 +364,19 @@ Widget flightRow(BuildContext context, avItin item) {
           ],
         ),
         Column(children: [
-          new RotatedBox(
+          new Stack( children:
+          [
+            FlightLine(),
+            Padding(
+              padding: EdgeInsets.only(left: 40, right: 10),
+                child: RotatedBox(
               quarterTurns: 1,
               child: new Icon(
                 Icons.airplanemode_active,
                 size: 40.0,
-              )),
+              ))
+            ),
+              ]),
           Text(item.journeyDuration()),
           getConnections(context, item),
         ]),
@@ -878,6 +909,7 @@ List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index, {bool 
   List<Widget> list = [];
   List<Widget> rlist = [];
 
+  if( cbName.length > 15) cbName = cbName.substring(0,10);
       list.add(getClassNameRow(cbName, inRow: inRow));
 /*
                       new Row(
@@ -938,3 +970,44 @@ if( inRow) {
 
 
 }
+
+class FlightLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomPaint( //                       <-- CustomPaint widget
+        size: Size(120, 40),
+        painter: LinePainter(),
+      ),
+    );
+  }
+}
+  class LinePainter extends CustomPainter {
+    //         <-- CustomPainter class
+    @override
+    void paint(Canvas canvas, Size size) {
+      //final pointMode = ui.PointMode.polygon;
+      final points = [
+        Offset(5, 20),
+        Offset(115, 20),
+      ];
+      final paint = Paint()
+        ..color = Colors.grey
+        ..strokeWidth = 2
+        ..strokeCap = StrokeCap.round;
+      canvas.drawPoints(PointMode.lines, points, paint);
+      canvas.drawCircle(
+          Offset(5,20),
+          4,
+          paint);
+      canvas.drawCircle(
+          Offset(115,20),
+          4,
+          paint);
+    }
+
+    @override
+    bool shouldRepaint(CustomPainter old) {
+      return false;
+    }
+  }

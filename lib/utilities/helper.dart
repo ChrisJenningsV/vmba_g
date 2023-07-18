@@ -484,7 +484,7 @@ Widget warningBox(String txt ) {
 
 
 InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}) {
-  var borderRadius = 10.0;
+  //var borderRadius = 10.0;
 
   //if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(

@@ -24,17 +24,21 @@ class TimelineDelivery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String code = newBooking.departure;
-    String time = newBooking.outboundflts.first.time.dtimlcl;
+    //String code = newBooking.departure;
+    //String time = newBooking.outboundflts.first.time.dtimlcl;
+/*
     String fltNo = newBooking.outboundflts.first.fltdet.airid +
         newBooking.outboundflts.first.fltdet.fltno;
+*/
     String className = newBooking.outboundClass;
 
     if (isReturn) {
+/*
       code = newBooking.arrival;
       time = newBooking.returningflts.first.time.dtimlcl;
       fltNo = newBooking.returningflts.first.fltdet.airid +
           newBooking.returningflts.first.fltdet.fltno;
+*/
       className = newBooking.returningClass;
     }
     if (!className.contains(translate('Class'))) {

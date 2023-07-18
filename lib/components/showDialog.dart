@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
-import 'package:store_redirect/store_redirect.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 

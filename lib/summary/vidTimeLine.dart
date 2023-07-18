@@ -566,11 +566,13 @@ class _TimelinePainter extends CustomPainter {
             : position.objectSpace.end,
         centerAxis,
       );
+/*
       if( isFirst) {
         Offset beginBottomLine =  Offset(
           centerAxis, position.objectSpace.end,
         ) ;
       }
+*/
 
       final endBottomLine = axis == TimelineAxis.vertical
           ? Offset(centerAxis, position.secondSpace.end)

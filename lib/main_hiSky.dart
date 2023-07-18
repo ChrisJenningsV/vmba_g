@@ -11,7 +11,7 @@ void main() {
   configH4();
 
   var configuredApp = AppConfig(
-    appTitle: 'hisky',
+    appTitle: 'HiSky',
     child: App(),
     buildFlavor: 'H4',
     systemColors: gblSystemColors,
@@ -43,7 +43,7 @@ void configH4() {
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
-  gblAppTitle = 'hisky';
+  gblAppTitle = 'HiSky';
   gblBuildFlavor = 'H4';
   gblCurrentRloc = '';
 
@@ -56,9 +56,9 @@ void configH4() {
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
- //   currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
+    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
     currency: 'MDL',
-    wantCurrencyPicker: false,
+    wantCurrencyPicker: true,
     wantPassengerPassport: true,
     wantCanFacs: false,
 
@@ -110,6 +110,7 @@ void configH4() {
 //Production setttings
 
     liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    //    liveXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.hisky.md/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.hisky.md/VARS/webApiV2/api/',
     //liveApiUrl:      'http://10.0.2.2:5000/api',

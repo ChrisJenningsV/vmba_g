@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vmba/components/vidButtons.dart';
-import 'package:vmba/data/xmlApi.dart';
 
-import '../components/pageStyleV2.dart';
 import '../components/trText.dart';
 import '../data/globals.dart';
 import '../data/repository.dart';

@@ -67,9 +67,9 @@ android {
             resValue "string", "flavored_app_name", "FastJet"
             applicationId "com.fastjet.reservations"
         }
-        hiSky {
+        HiSky {
             dimension "version"
-            resValue "string", "flavored_app_name", "hiSky"
+            resValue "string", "flavored_app_name", "HiSky"
             applicationId "aero.hisky.reservations"
         }
         medSky {

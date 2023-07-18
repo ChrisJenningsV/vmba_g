@@ -61,6 +61,8 @@ void configFN() {
     wantBuyNowPayLater: true,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
+    homePageStyle: 'V1',
+    pageStyle: 'V2',
 
     airlineName: "fastjet",
     gblServerFiles: 'https://customer3.videcom.com/FastJet/AppFiles/',

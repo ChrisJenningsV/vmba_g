@@ -38,7 +38,7 @@ class MyFqtvPage extends StatefulWidget {
 class _MyFqtvPageState extends State<MyFqtvPage> {
   TextEditingController _fqtvTextEditingController =   TextEditingController();
   TextEditingController _passwordEditingController =   TextEditingController();
-  TextEditingController _emailEditingController =   TextEditingController();
+  // TextEditingController _emailEditingController =   TextEditingController();
   TextEditingController _oldPasswordEditingController =   TextEditingController();
   TextEditingController _newPasswordEditingController =   TextEditingController();
 

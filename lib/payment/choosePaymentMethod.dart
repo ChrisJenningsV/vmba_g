@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:vmba/components/showDialog.dart';
-import 'package:vmba/components/vidButtons.dart';
 import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -31,7 +29,6 @@ import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
-import '../utilities/smartApiPage.dart';
 import 'ProviderFieldsPage.dart';
 
 bool _cancelTimer = false;
