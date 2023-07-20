@@ -83,7 +83,7 @@ class ChooseFlight extends StatelessWidget {
                   : this.classband.cbdisplayname,
               style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700)),
           Padding(padding: EdgeInsets.all(5)),
-          Text(_currencySymbol + price.toString(),
+          Text(_currencySymbol + price.toStringAsFixed(2),
               style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700)
           ),
 

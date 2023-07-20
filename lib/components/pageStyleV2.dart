@@ -52,7 +52,52 @@ Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData i
 
 }
 
+EdgeInsets ContainerMargins({String location}){
+  if( location == 'day'){
+    return wantPageV2() ? EdgeInsets.only( left: 3.0, right: 3.0, top: 5.0) : EdgeInsets.all(0);
+  }
+  if( location == 'top'){
+    return wantPageV2() ? EdgeInsets.only( left: 10.0, right: 10.0, top: 10.0) : EdgeInsets.all(0);
+  }
+  if( location == 'middle'){
+    return wantPageV2() ? EdgeInsets.only( left: 10.0, right: 10.0) : EdgeInsets.all(0);
+  }
 
+  return wantPageV2() ? EdgeInsets.all(10.0) : EdgeInsets.all(0);
+}
+
+Decoration ContainerDecoration({String location}) {
+  return wantPageV2() ? v2ContainerDecoration(location: location) : null;
+}
+
+Decoration v2ContainerDecoration({String location})
+{
+  BorderRadiusGeometry br;
+  if(location == 'top') {
+    br = BorderRadius.only(
+      topLeft: Radius.circular(10.0),
+      topRight: Radius.circular(10.0),
+    );
+  } else if(location=='middle'){
+    br = null;
+  } else {
+    br = BorderRadius.all(Radius.circular(10.0));
+  }
+  Color lineClr = v2BorderColor();
+  double lineWidth = v2BorderWidth();
+  if( location == 'selected'){
+    lineClr = Colors.black;
+    lineWidth = v2BorderWidth() * 3;
+  }
+  return BoxDecoration(
+      borderRadius: br,
+      //color: Colors.grey,
+      border: Border(top: (location=='middle')? BorderSide.none : BorderSide(color: lineClr, width: lineWidth),
+        left: BorderSide(color: lineClr, width: lineWidth,),
+        right:  BorderSide(color: lineClr, width: lineWidth),
+        bottom:  BorderSide(color: lineClr, width: lineWidth)
+      ));
+}
 InputDecoration v2Decoration() {
   return InputDecoration( enabledBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent, width: 0),

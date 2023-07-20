@@ -17,6 +17,7 @@ class SystemColors {
    Color textButtonTextColor;
    Color accentColor; // = Colors.white;
 
+  Color borderColor;
    Color primaryHeaderColor;
    Color progressBackColor;
   Color progressTextColor;
@@ -65,6 +66,7 @@ class SystemColors {
  //   this.accentBody,
 //    this.primaryLink,
 //    this.accentLink,
+    this.borderColor,
     this.seatPlanColorSelected,
     this.seatPlanColorEmergency,
     this.seatPlanColorAvailable,

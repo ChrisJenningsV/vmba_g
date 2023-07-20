@@ -31,6 +31,7 @@ void configLM() {
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
       primaryHeaderColor: Colors.red,
+      borderColor: Colors.red,
       headerTextColor: Colors.white,
       statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow

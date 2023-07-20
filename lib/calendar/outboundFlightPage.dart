@@ -451,7 +451,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     String currency='';
     flts.forEach((element) {
       if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
-          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
+          element.fltav.discprice[index] != null &&
+          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'
+
+      ){
         pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
       } else {
         pri += double.tryParse(element.fltav.pri[index] ?? 0.0);

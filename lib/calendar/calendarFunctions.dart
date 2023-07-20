@@ -9,6 +9,7 @@ import 'package:vmba/components/vidGraphics.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../chooseFlight/chooseFlightPage.dart';
+import '../components/pageStyleV2.dart';
 import '../components/trText.dart';
 import '../data/models/availability.dart';
 import '../data/models/models.dart';
@@ -349,8 +350,60 @@ Widget flightTopRow(avItin item)
   );
 } 
 
+Widget v2FlightRow(String dDay,String  dTime,String  departs,String dTerm, String aDay,String  aTime,String  arrives,String aTerm, String journeyDuration,
+    BuildContext context, avItin item) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          getDate(dDay),
+          getTime(dTime),
+          getAirport(departs),
+          getTerminal(dTerm, true),
+        ],
+      ),
+      Column(children: [
+        new Stack( children:
+        [
+          FlightLine(),
+          Container(
+              color: Colors.white,
+              margin: EdgeInsets.only(left: 40),
+              width: 40,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 40, right: 10),
+                  child: RotatedBox(
+                      quarterTurns: 1,
+                      child: new Icon(
+                        Icons.airplanemode_active,
+                        size: 40.0,
+                      ))
+              )),
+        ]),
+        Text(journeyDuration),
+        getConnections(context, item),
+      ]),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          getDate(aDay),
+          getTime(aTime),
+          getAirport(arrives),
+          getTerminal(aTerm, false),
+        ],
+      )
+    ],
+  );
+}
+
+
 Widget flightRow(BuildContext context, avItin item) {
   if( wantPageV2()){
+    return v2FlightRow(item.flt[0].time.ddaylcl, item.flt.first.time.dtimlcl, item.flt.first.dep, getTerminalString(item.flt.first, true),
+        item.flt.last.time.adaylcl, item.flt.last.time.atimlcl, item.flt.last.arr, getTerminalString(item.flt.last, false),
+        item.journeyDuration(), context, item);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -360,14 +413,18 @@ Widget flightRow(BuildContext context, avItin item) {
             getDate(item.flt[0].time.ddaylcl),
             getTime(item.flt.first.time.dtimlcl),
             getAirport(item.flt.first.dep),
-            getTerminal(item.flt.first, true),
+            getTerminal(getTerminalString(item.flt.first, true), true),
           ],
         ),
         Column(children: [
           new Stack( children:
           [
             FlightLine(),
-            Padding(
+            Container(
+              color: Colors.white,
+              margin: EdgeInsets.only(left: 40),
+              width: 40,
+            child: Padding(
               padding: EdgeInsets.only(left: 40, right: 10),
                 child: RotatedBox(
               quarterTurns: 1,
@@ -375,7 +432,7 @@ Widget flightRow(BuildContext context, avItin item) {
                 Icons.airplanemode_active,
                 size: 40.0,
               ))
-            ),
+            )),
               ]),
           Text(item.journeyDuration()),
           getConnections(context, item),
@@ -386,7 +443,7 @@ Widget flightRow(BuildContext context, avItin item) {
             getDate(item.flt.last.time.adaylcl),
             getTime(item.flt.last.time.atimlcl),
             getAirport(item.flt.last.arr),
-            getTerminal(item.flt.first, false),
+            getTerminal(getTerminalString(item.flt.first, false), false),
           ],
         )
       ],
@@ -401,7 +458,7 @@ Widget flightRow(BuildContext context, avItin item) {
             getDate(item.flt[0].time.ddaylcl),
             getTime(item.flt.first.time.dtimlcl),
             getAirport(item.flt.first.dep),
-            getTerminal(item.flt.first, true),
+            getTerminal(getTerminalString(item.flt.first, true), true),
           ],
         ),
         Column(children: [
@@ -418,7 +475,7 @@ Widget flightRow(BuildContext context, avItin item) {
             getDate(item.flt.last.time.adaylcl),
             getTime(item.flt.last.time.atimlcl),
             getAirport(item.flt.last.arr),
-            getTerminal(item.flt.first, false),
+            getTerminal(getTerminalString(item.flt.first, false), false),
           ],
         )
       ],
@@ -477,17 +534,29 @@ Widget getAirport(String code, {double fontSize, FontWeight fontWeight}) {
   );
 
 }
-Widget getTerminal(Flt flt, bool depart){
+
+String getTerminalString(Flt flt, bool depart){
+  if( gblSettings.wantTerminal == false ) return '';
+  if( depart == true &&  (flt.fltdet.depterm == null || flt.fltdet.depterm.isEmpty) ) return '';
+  if( depart == false &&  (flt.fltdet.arrterm == null || flt.fltdet.arrterm.isEmpty)) return '';
+
+  return  depart ? flt.fltdet.depterm : flt.fltdet.arrterm;
+}
+
+
+Widget getTerminal(String term, bool depart){
+/*
   if( gblSettings.wantTerminal == false ) return Container();
   if( depart == true &&  (flt.fltdet.depterm == null || flt.fltdet.depterm.isEmpty) ) return Container();
   if( depart == false &&  (flt.fltdet.arrterm == null || flt.fltdet.arrterm.isEmpty)) return Container();
+*/
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
           TrText('Terminal'),
           Padding(padding: EdgeInsets.only(left: 10)),
-          Text( depart ? flt.fltdet.depterm : flt.fltdet.arrterm, textScaleFactor: 1.5,),
+          Text( term, textScaleFactor: 1.5,),
         ]);
 }
 
@@ -526,6 +595,7 @@ Widget infoRow(BuildContext context, avItin item ) {
   );
 }
 Widget getConnections(BuildContext context, avItin item) {
+  if( item == null || context == null ) return Container();
   if (item.flt.length > 1) {
     return GestureDetector(
       onTap: () =>
@@ -649,25 +719,27 @@ Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate
       showNoFlightIcon = true;
     }
   }
-
+  Color txtColor = Colors.black;
+  if( isSearchDate(
+      DateTime.parse(item.daylcl),
+      date)){
+    txtColor = Colors.white;
+  }
+  if( wantPageV2()) txtColor = Colors.black;
 
   list.add(Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
     //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
     style: TextStyle(
         fontSize: 14,
-        color: isSearchDate(
-            DateTime.parse(item.daylcl),
-            date)
-            ? Colors.white
-            : Colors.black),
+        color: txtColor),
   ));
 
+  if( wantPageV2()) txtColor = Colors.grey;
   if( showNoFlightIcon ){
     list.add(vidNoFlights());
   } else {
     list.add(TrText('from', style: TextStyle(fontSize: 14,
-        color: isSearchDate(DateTime.parse(item.daylcl), date) ? Colors.white
-            : Colors.black),
+        color: txtColor),
     ));
 
     list.add(Text(
@@ -675,11 +747,7 @@ Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate
       //textScaleFactor: 1.0,
       style: TextStyle(
           fontSize: 14,
-          color: isSearchDate(
-              DateTime.parse(item.daylcl),
-              date)
-              ? Colors.white
-              : Colors.black),
+          color: txtColor),
     ));
   }
 
@@ -703,14 +771,28 @@ if( wantRtl()) {
                 children: list)),
       ));
 } else {
+  Decoration dec = new BoxDecoration(
+      border: new Border.all(color: Colors.black12),
+      color: !isSearchDate(DateTime.parse(item.daylcl),
+          date)
+          ? Colors.white
+          : gblSystemColors.accentButtonColor //Colors.red,
+  );
+  EdgeInsets marg = null;
+  if( wantPageV2()) {
+    if( isSearchDate(DateTime.parse(item.daylcl),
+        date)) {
+      dec = ContainerDecoration(location: 'selected');
+    } else {
+      dec = ContainerDecoration(location: 'day');
+    }
+    marg = ContainerMargins(location: 'day') ;
+  }
+
+
   return Container(
-        decoration: new BoxDecoration(
-            border: new Border.all(color: Colors.black12),
-            color: !isSearchDate(DateTime.parse(item.daylcl),
-                date)
-                ? Colors.white
-                : gblSystemColors.accentButtonColor //Colors.red,
-        ),
+        decoration: dec,
+        margin: marg,
         width: DateTime.parse(item.daylcl).isBefore(hideBeforeDate)
             ? 0
             : 120.0,

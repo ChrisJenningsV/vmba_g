@@ -52,11 +52,12 @@ bool wantHomePageV2() {
 }
 
 Color v2BorderColor(){
+  if( gblSystemColors.borderColor != null ) return gblSystemColors.borderColor;
   return Colors.grey.withOpacity(0.5);
-  return gblSystemColors.primaryHeaderColor;
+  //return gblSystemColors.primaryHeaderColor;
 }
 
 double v2BorderWidth() {
-  return 2;
+  return 1;
 }
 

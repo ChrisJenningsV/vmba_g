@@ -31,6 +31,7 @@ void configH4() {
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.black,
     primaryHeaderColor: Color.fromRGBO(0X13, 0x3E, 0x68, 1),
+    borderColor: Color.fromRGBO(0X13, 0x3E, 0x68, 1),
     headerTextColor: Colors.white,
     statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
@@ -57,7 +58,7 @@ void configH4() {
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
     currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
-    currency: 'MDL',
+    currency: 'USD',
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
     wantCanFacs: false,
