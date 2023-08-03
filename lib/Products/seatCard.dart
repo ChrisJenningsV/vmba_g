@@ -19,21 +19,21 @@ import '../mmb/widgets/seatplan.dart';
 
 class SeatCard extends StatefulWidget {
 
-  void Function(PnrModel pnrModel) onComplete;
-  void Function(String msg) onError;
+  final void Function(PnrModel pnrModel)? onComplete;
+  final void Function(String msg)? onError;
   final NewBooking newBooking;
 
 
 
   // ProductCardState appState = new ProductCardState();
-  SeatCard({ this.onComplete, this.onError, this.newBooking, });
+  SeatCard({ this.onComplete, this.onError, required this.newBooking, });
   SeatCardState createState() => SeatCardState();
 
 }
 
 class SeatCardState extends State<SeatCard> {
-  String title;
-  int journeyNo;
+  String title = '';
+  int journeyNo = 0;
 
   @override
   initState() {
@@ -48,8 +48,8 @@ class SeatCardState extends State<SeatCard> {
       if (widget.newBooking.returningflight != null) {
         noFlights += widget.newBooking.returningflight.length;
       }
-    } else if (gblPnrModel != null  && gblPnrModel.pNR != null &&  gblPnrModel.pNR.itinerary != null ){
-      noFlights += gblPnrModel.pNR.itinerary.itin.length;
+    } else if (gblPnrModel != null  && gblPnrModel!.pNR != null &&  gblPnrModel!.pNR.itinerary != null ){
+      noFlights += gblPnrModel!.pNR.itinerary.itin.length;
 /*
       gblPnrModel.pNR.itinerary.itin.forEach((flt) {
 
@@ -143,33 +143,41 @@ class SeatCardState extends State<SeatCard> {
   }
 
   onFltPressed(BuildContext context, int journeyNo) {
-    List<Pax> paxlist = getPaxlist(gblPnrModel, journeyNo);
+    if( gblPnrModel != null ) {
+      List<Pax> paxlist = getPaxlist(gblPnrModel as PnrModel, journeyNo);
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              SeatPlanWidget(
-                paxlist: paxlist,
-                isMmb: false,
-                ischeckinOpen: false,
-                seatplan:
-                'ls${gblPnrModel.pNR.itinerary.itin[journeyNo].airID +
-                    gblPnrModel.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat(
-                    'ddMMM').format(DateTime.parse(
-                    gblPnrModel.pNR.itinerary.itin[journeyNo].depDate + ' ' +
-                        gblPnrModel.pNR.itinerary.itin[journeyNo].depTime))}${gblPnrModel.pNR
-                    .itinerary.itin[journeyNo].depart +
-                    gblPnrModel.pNR.itinerary.itin[journeyNo].arrive}[CB=${gblPnrModel.pNR
-                    .itinerary.itin[journeyNo].classBand}][CUR=${gblPnrModel.pNR
-                    .fareQuote.fQItin[0].cur}][MMB=True]~x',
-                rloc: gblPnrModel.pNR.rLOC,
-                journeyNo: journeyNo.toString(),
-                selectedpaxNo: 1,
-              ),
-        )
-    ).then((_) => setState(() {}));;
-    // Navigator.of(context).pop();
-
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                SeatPlanWidget(
+                  paxlist: paxlist,
+                  isMmb: false,
+                  ischeckinOpen: false,
+                  seatplan:
+                  'ls${gblPnrModel!.pNR.itinerary.itin[journeyNo].airID +
+                      gblPnrModel!.pNR.itinerary.itin[journeyNo]
+                          .fltNo}/${new DateFormat(
+                      'ddMMM').format(DateTime.parse(
+                      gblPnrModel!.pNR.itinerary.itin[journeyNo].depDate + ' ' +
+                          gblPnrModel!.pNR.itinerary.itin[journeyNo]
+                              .depTime))}${gblPnrModel!.pNR
+                      .itinerary.itin[journeyNo].depart +
+                      gblPnrModel!.pNR.itinerary.itin[journeyNo]
+                          .arrive}[CB=${gblPnrModel!.pNR
+                      .itinerary.itin[journeyNo].classBand}][CUR=${gblPnrModel!
+                      .pNR
+                      .fareQuote.fQItin[0].cur}][MMB=True]~x',
+                  rloc: gblPnrModel!.pNR.rLOC,
+                  journeyNo: journeyNo.toString(),
+                  selectedpaxNo: 1,
+                ),
+          )
+      ).then((_) =>
+          setState(() {}
+          ));
+      ;
+      // Navigator.of(context).pop();
+    }
   }
 }

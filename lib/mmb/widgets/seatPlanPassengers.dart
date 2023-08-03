@@ -3,14 +3,15 @@ import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/pax.dart';
 
 import '../../components/trText.dart';
+import '../../data/globals.dart';
 
 class SeatPlanPassengersWidget extends StatefulWidget {
   SeatPlanPassengersWidget(
-      {Key key, this.onChanged, this.paxList, this.systemColors})
+      {Key key= const Key("seatplanpax_key"), this.onChanged, this.paxList})
       : super(key: key);
-  final List<Pax> paxList;
-  final SystemColors systemColors;
-  final ValueChanged<List<Pax>> onChanged;
+  final List<Pax>? paxList;
+  //final SystemColors systemColors;
+  final ValueChanged<List<Pax>>? onChanged;
 
   _SeatPlanPassengersWidgetState createState() =>
       _SeatPlanPassengersWidgetState();
@@ -22,23 +23,23 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
   static Color unselectedBackground = Colors.white;
   static Color unselectedText = Colors.black;
 
-  List<Pax> paxlist;
+  List<Pax>? paxlist;
 
   @override
   initState() {
     super.initState();
     paxlist = widget.paxList;
-    selectedBackground = widget.systemColors.primaryButtonColor;
-    selectedText = widget.systemColors.primaryButtonTextColor;
+    selectedBackground = gblSystemColors.primaryButtonColor;
+    selectedText = gblSystemColors.primaryButtonTextColor!;
   }
 
   void _toggleSelectedPax(int _id) {
     setState(() {
-      paxlist.forEach((element) => element.selected = false);
-      paxlist[_id - 1].selected = true;
+      paxlist!.forEach((element) => element.selected = false);
+      paxlist![_id - 1].selected = true;
     });
     if( widget.onChanged != null ) {
-      widget.onChanged(paxlist);
+      widget.onChanged!(paxlist!);
     }
   }
 
@@ -52,10 +53,10 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
   List<Widget> renderPax() {
     List<Widget> paxWidgets = [];
     // List<Widget>();
-    for (var pax = 0; pax < paxlist.length; pax++) {
+    for (var pax = 0; pax < paxlist!.length; pax++) {
       paxWidgets.add(new GestureDetector(
         child: new Container(
-          color: paxlist[pax].selected == true
+          color: paxlist![pax].selected == true
               ? selectedBackground
               : unselectedBackground,
           width: MediaQuery.of(context).size.width * 0.5,
@@ -63,28 +64,28 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Text(
-                paxlist[pax].name,
+                paxlist![pax].name,
                 style: TextStyle(
-                    color: paxlist[pax].selected == true
+                    color: paxlist![pax].selected == true
                         ? selectedText
                         : unselectedText),
               ),
               Text(
-                paxlist[pax].seat == null || paxlist[pax].seat == ''
+                paxlist![pax].seat == null || paxlist![pax].seat == ''
                     ? translate('Select Seat')
-                    : paxlist[pax].seat,
+                    : paxlist![pax].seat,
                 style: TextStyle(
-                    color: paxlist[pax].selected == true
+                    color: paxlist![pax].selected == true
                         ? selectedText
                         : unselectedText),
               ),
             ],
           ),
         ),
-        onTap: () => _toggleSelectedPax(paxlist[pax].id),
+        onTap: () => _toggleSelectedPax(paxlist![pax].id),
       ));
     }
-    if (!paxlist.length.isEven) {
+    if (!paxlist!.length.isEven) {
       //add blank pax box
       paxWidgets.add(Container(
           color: unselectedBackground,

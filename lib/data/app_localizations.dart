@@ -1,11 +1,12 @@
+
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+/*
 class AppLocalizations {
-  final Locale locale;
+  final Locale locale = Locale('');
 
   AppLocalizations(this.locale);
 
@@ -64,4 +65,4 @@ class _AppLocalizationsDelegate
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
-}
+}*/

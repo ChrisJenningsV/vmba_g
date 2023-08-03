@@ -18,10 +18,10 @@ Future<void> saveToken(String token) async {
   String deviceId ;
   if (Platform.isIOS) { // import 'dart:io'
     var iosDeviceInfo = await deviceInfo.iosInfo;
-    deviceId =  iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    deviceId =  iosDeviceInfo.identifierForVendor as String; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    deviceId = androidDeviceInfo.androidId; // unique ID on Android
+    deviceId = androidDeviceInfo.androidId as String; // unique ID on Android
   }
   logit('device id = $deviceId tok = $token');
   gblNotifyToken = token;

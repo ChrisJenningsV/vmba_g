@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
@@ -6,7 +7,7 @@ import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
 
 class DatePickerWidget extends StatefulWidget {
-  DatePickerWidget({Key key, this.departureDate}) : super(key: key);
+  DatePickerWidget({Key key= const Key("datepi_key"), required this.departureDate }) : super(key: key);
   final DateTime departureDate;
 
   @override
@@ -15,7 +16,7 @@ class DatePickerWidget extends StatefulWidget {
 
 class _DatePickerWidgetState extends State<DatePickerWidget>
     with TickerProviderStateMixin {
-  DateTime departureDate;
+  late DateTime departureDate;
   @override
   void initState() {
     super.initState();

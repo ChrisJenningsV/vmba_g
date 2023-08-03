@@ -1,3 +1,4 @@
+
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -10,13 +11,15 @@ import 'models.dart';
 
 bool logPnrErrors = false;
 class PnrModel {
-  bool success;
-  PNR pNR;
+  bool success=true;
+  PNR pNR = PNR();
 
-  PnrModel({this.pNR, this.success});
+  PnrModel();
 
   PnrModel.fromJson(Map<String, dynamic> json) {
-    pNR = json['PNR'] != null ? new PNR.fromJson(json['PNR']) : null;
+    if( json['PNR'] != null) {
+      pNR =  PNR.fromJson(json['PNR']);
+    }
     success = json['PNR'] != null ? true : false;
   }
 
@@ -125,7 +128,7 @@ class PnrModel {
     if( gblPnrModel == null ) return false;
 
     bool found = false;
-    gblPnrModel.pNR.aPFAX.aFX.forEach((element) {
+    gblPnrModel!.pNR.aPFAX.aFX.forEach((element) {
       if( element.text.contains('P${pax.id}')){
         found =  true;
       }
@@ -181,7 +184,7 @@ class PnrModel {
   int getnextFlightEpoch() {
     Itin flt = getNextFlight();
     int _millisecondsSinceEpoch = 0;
-    if (flt.depDate != null || flt.depTime != null) {
+    if (flt.depDate != null && flt.depTime != null && flt.depDate != '' && flt.depTime != '') {
       _millisecondsSinceEpoch = DateTime.parse(flt.depDate + ' ' + flt.depTime)
           .millisecondsSinceEpoch;
     }
@@ -251,8 +254,6 @@ class PnrModel {
       if( ticket.segNo.isNotEmpty && int.parse(ticket.segNo) == (journeyToChange)){
         if( ticket.tKTID == 'ETKT' && ticket.status=='O') {
           bcanRefund =  true;
-        } else {
-          return false;
         }
       }
     });
@@ -291,7 +292,8 @@ class PnrModel {
                               .toUpperCase() &&
                       t.tktFltNo == (flt.airID + flt.fltNo)
                          &&                      t.tktBClass == flt.xclass,
-                  orElse: () => null);
+                //  orElse: () => null
+                  );
               if (otkt != null) {
                 tickets.add(otkt);
               }
@@ -305,7 +307,7 @@ class PnrModel {
             (pnr.payments.fOP.where((p) => p.fOPID == 'III').length > 0)) {
           validateTickets = false;
           if( logPnrErrors) print('validateTickets = false;');
-          return validateTickets;
+ //         return validateTickets;
         }
 
         if ((tickets.length !=
@@ -314,9 +316,9 @@ class PnrModel {
                 .length)) {
           validateTickets = false;
           if( logPnrErrors) print('validateTickets = false;');
-          return validateTickets;
+//          return validateTickets;
         }
-        return validateTickets;
+//        return validateTickets;
       });
     } catch (ex) {
       if( logPnrErrors) print(ex.toString());
@@ -396,134 +398,78 @@ class PnrModel {
 }
 
 class PNR {
-  String appVersion;
-  String rLOC;
-  String aDS;
-  String pNRLocked;
-  String pNRLockedReason;
-  String secureFlight;
-  String sfpddob;
-  String sfpdgndr;
-  String showFares;
-  String needFG;
-  String needFSM;
-  bool editFlights;
-  String editProducts;
-  Names names;
-  Itinerary itinerary;
-  Disruptions disruptions;
+  String appVersion='';
+  String rLOC='';
+  String aDS='';
+  String pNRLocked='';
+  String pNRLockedReason='';
+  String secureFlight='';
+  String sfpddob='';
+  String sfpdgndr='';
+  String showFares='';
+  String needFG='';
+  String needFSM='';
+  bool editFlights=false;
+  String editProducts='';
+  Names names = Names();
+  Itinerary itinerary = Itinerary();
+  Disruptions disruptions=Disruptions();
   //Null mPS;
-  MPS mPS;
-  Contacts contacts;
-  APFAX aPFAX;
+  MPS mPS=MPS();
+  Contacts contacts=Contacts();
+  APFAX aPFAX=APFAX();
   //Null genFax;
-  GenFax genFax;
-  FareQuote fareQuote;
-  Payments payments;
+  GenFax genFax=GenFax();
+  FareQuote fareQuote=FareQuote();
+  Payments payments=Payments();
   //Null timeLimits;
-  TimeLimits timeLimits;
-  Tickets tickets;
-  Remarks remarks;
+  TimeLimits timeLimits=TimeLimits();
+  Tickets tickets=Tickets();
+  Remarks remarks=Remarks();
   //Null tourOp;
   //TourOp tourOp;
-  RLE rLE;
-  Basket basket;
+  RLE rLE=RLE();
+  Basket basket=Basket();
   //Null zpay;
-  Zpay zpay;
-  Pnrfields pnrfields;
-  Fqfields fqfields;
+  Zpay zpay=Zpay();
+  Pnrfields pnrfields=Pnrfields();
+  Fqfields fqfields=Fqfields();
 
-  PNR(
-      {
-      this.appVersion,
-      this.rLOC,
-      this.aDS,
-      this.pNRLocked,
-      this.pNRLockedReason,
-      this.secureFlight,
-      this.sfpddob,
-      this.sfpdgndr,
-      this.showFares,
-      this.needFG,
-      this.needFSM,
-      this.editFlights,
-      this.editProducts,
-      this.names,
-      this.itinerary,
-      this.disruptions,
-      this.mPS,
-      this.contacts,
-      this.aPFAX,
-      this.genFax,
-      this.fareQuote,
-      this.payments,
-      this.timeLimits,
-      this.tickets,
-      this.remarks,
-      //this.tourOp,
-      this.rLE,
-      this.basket,
-      this.zpay,
-      this.pnrfields,
-      this.fqfields});
+  PNR(      );
 
   PNR.fromJson(Map<String, dynamic> json) {
-    appVersion = json['APPVERSION'];
-    rLOC = json['RLOC'];
-    aDS = json['ADS'];
-    pNRLocked = json['PNRLocked'];
-    pNRLockedReason = json['PNRLockedReason'];
-    secureFlight = json['SecureFlight'];
-    sfpddob = json['sfpddob'];
-    sfpdgndr = json['sfpdgndr'];
-    showFares = json['showFares'];
-    needFG = json['NeedFG'];
-    needFSM = json['NeedFSM'];
-    editFlights = json['editFlights'].toString().toLowerCase() == 'true';
-    editProducts = json['editProducts'];
-    names = json['Names'] != null ? new Names.fromJson(json['Names']) : null;
-    itinerary = json['Itinerary'] != null
-        ? new Itinerary.fromJson(json['Itinerary'])
-        : null;
-    disruptions = json['Disruptions'] != null
-        ? new Disruptions.fromJson(json['Disruptions'])
-        : null;
-    mPS = json['MPS'] != null ? new MPS.fromJson(json['MPS']) : null;
-    //mPS = json['MPS']!= null ? new MPS.fromJson(json['MPS']) : null;
-    contacts = json['Contacts'] != null
-        ? new Contacts.fromJson(json['Contacts'])
-        : null;
-    aPFAX = json['APFAX'] != null ? new APFAX.fromJson(json['APFAX']) : null;
-    genFax =
-        json['GenFax'] != null ? new GenFax.fromJson(json['GenFax']) : null;
-    //genFax = json['GenFax']!= null ? new GenFax.fromJson(json['GenFax']) : null;
-    fareQuote = json['FareQuote'] != null
-        ? new FareQuote.fromJson(json['FareQuote'])
-        : null;
-    payments = json['Payments'] != null
-        ? new Payments.fromJson(json['Payments'])
-        : null;
+    if( json['APPVERSION'] != null)appVersion = json['APPVERSION'];
+    if( json['RLOC'] != null )rLOC = json['RLOC'];
+    if( json['ADS'] != null )aDS = json['ADS'];
+    if(  json['PNRLocked'] != null )pNRLocked = json['PNRLocked'];
+    if( json['PNRLockedReason'] != null )pNRLockedReason = json['PNRLockedReason'];
+    if(  json['SecureFlight'] != null )secureFlight = json['SecureFlight'];
+    if( json['sfpddob'] != null )sfpddob = json['sfpddob'];
+    if( json['sfpdgndr'] != null )sfpdgndr = json['sfpdgndr'];
+    if(  json['showFares'] != null )showFares = json['showFares'];
+    if( json['NeedFG']!= null )needFG = json['NeedFG'];
+    if( json['NeedFSM'] != null )needFSM = json['NeedFSM'];
+    if( json['editFlights'] != null )editFlights = json['editFlights'].toString().toLowerCase() == 'true';
+    if( json['editProducts'] != null )editProducts = json['editProducts'];
+    if( json['Names'] != null ) names =  Names.fromJson(json['Names']) ;
+    if(json['Itinerary'] != null) itinerary = Itinerary.fromJson(json['Itinerary']);
+    if( json['Disruptions'] != null) disruptions = Disruptions.fromJson(json['Disruptions']);
+    if(json['MPS'] != null ) mPS =MPS.fromJson(json['MPS']) ;
+    if(json['Contacts'] != null) contacts =Contacts.fromJson(json['Contacts']);
+    if(json['APFAX'] != null ) aPFAX =APFAX.fromJson(json['APFAX']) ;
+    if(json['GenFax'] != null ) genFax =GenFax.fromJson(json['GenFax']) ;
+    if(json['FareQuote'] != null) fareQuote =FareQuote.fromJson(json['FareQuote']);
+    if(json['Payments'] != null) payments =Payments.fromJson(json['Payments']);
     //timeLimits = json['TimeLimits'];
-    timeLimits = json['TimeLimits'] != null
-        ? new TimeLimits.fromJson(json['TimeLimits'])
-        : null;
-    tickets =
-        json['Tickets'] != null ? new Tickets.fromJson(json['Tickets']) : null;
-    remarks =
-        json['Remarks'] != null ? new Remarks.fromJson(json['Remarks']) : null;
-    //tourOp = json['TourOp'];
-    //tourOp = json['TourOp'] != null ? new TourOp.fromJson(json['TourOp']) : null;
-    rLE = json['RLE'] != null ? new RLE.fromJson(json['RLE']) : null;
-    basket =
-        json['Basket'] != null ? new Basket.fromJson(json['Basket']) : null;
+    if(json['TimeLimits'] != null) timeLimits =TimeLimits.fromJson(json['TimeLimits']);
+    if(json['Tickets'] != null) tickets =Tickets.fromJson(json['Tickets']) ;
+    if(json['Remarks'] != null) remarks =  Remarks.fromJson(json['Remarks']) ;
+    if(json['RLE'] != null) rLE =  RLE.fromJson(json['RLE']) ;
+    if(json['Basket'] != null ) basket = Basket.fromJson(json['Basket']) ;
     //zpay = json['zpay'];
-    zpay = json['zpay'] != null ? new Zpay.fromJson(json['zpay']) : null;
-    pnrfields = json['pnrfields'] != null
-        ? new Pnrfields.fromJson(json['pnrfields'])
-        : null;
-    fqfields = json['fqfields'] != null
-        ? new Fqfields.fromJson(json['fqfields'])
-        : null;
+    if(json['zpay'] != null) zpay = Zpay.fromJson(json['zpay']) ;
+    if(json['pnrfields'] != null) pnrfields = Pnrfields.fromJson(json['pnrfields']);
+    if(json['fqfields'] != null) fqfields =  Fqfields.fromJson(json['fqfields']);
   }
 
   int seatCount() {
@@ -555,10 +501,12 @@ class PNR {
       if( gblLogProducts ) { logit('None');}
       return ;
     }
-    mPS.mP.forEach((p) {
-      if( gblLogProducts ) { logit('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');};
+ /*   mPS.mP.forEach((p) {
+      if( gblLogProducts ) {
+        logit('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');
+      };
     }
-    );
+    );*/
   }
 
   int productCount(String productCode ){
@@ -643,7 +591,7 @@ class PNR {
 }
 
 class Names {
-  List<PAX> pAX;
+  List<PAX> pAX = List.from([PAX()]);
 
   Passengers getPassengerTypeCounts() {
     return Passengers(
@@ -657,7 +605,7 @@ class Names {
     );
   }
 
-  Names({this.pAX});
+  Names();
 
   Names.fromJson(Map<String, dynamic> json) {
     if (json['PAX'] != null) {
@@ -683,37 +631,28 @@ class Names {
 }
 
 class PAX {
-  String grpNo;
-  String grpPaxNo;
-  String paxNo;
-  String title;
-  String firstName;
-  String surname;
-  String paxType;
-  String age;
-  String awards;
+  String grpNo='';
+  String grpPaxNo='';
+  String paxNo='';
+  String title='';
+  String firstName='';
+  String surname='';
+  String paxType='';
+  String age='';
+  String awards='';
 
-  PAX(
-      {this.grpNo,
-      this.grpPaxNo,
-      this.paxNo,
-      this.title,
-      this.firstName,
-      this.surname,
-      this.paxType,
-      this.age,
-      this.awards});
+  PAX();
 
   PAX.fromJson(Map<String, dynamic> json) {
-    grpNo = json['GrpNo'];
-    grpPaxNo = json['GrpPaxNo'];
-    paxNo = json['PaxNo'];
-    title = json['Title'];
-    firstName = json['FirstName'];
-    surname = json['Surname'];
-    paxType = json['PaxType'];
-    age = json['Age'];
-    awards = json['awards'];
+    if(json['GrpNo'] != null )grpNo = json['GrpNo'];
+    if(json['GrpPaxNo'] != null )grpPaxNo = json['GrpPaxNo'];
+    if(json['PaxNo'] != null )paxNo = json['PaxNo'];
+    if(json['Title'] != null )title = json['Title'];
+    if(json['FirstName'] != null )firstName = json['FirstName'];
+    if(json['Surname'] != null )surname = json['Surname'];
+    if(json['PaxType'] != null )paxType = json['PaxType'];
+    if(json['Age'] != null )age = json['Age'];
+    if(json['awards'] != null )awards = json['awards'];
   }
 
   Map<String, dynamic> toJson() {
@@ -732,9 +671,9 @@ class PAX {
 }
 
 class Itinerary {
-  List<Itin> itin;
+  List<Itin> itin = List.from([Itin()]);
 
-  Itinerary({this.itin});
+  Itinerary();
 
   Itinerary.fromJson(Map<String, dynamic> json) {
     if (json['Itin'] != null) {
@@ -760,140 +699,99 @@ class Itinerary {
 }
 
 class Itin {
-  String line;
-  String airID;
-  String fltNo;
-  String xclass;
-  String depDate;
-  String depart;
-  String arrive;
-  String status;
-  String paxQty;
-  String depTime;
-  String arrTime;
-  String arrOfst;
-  String ddaygmt;
-  String dtimgmt;
-  String adaygmt;
-  String atimgmt;
-  String stops;
-  String cabin;
-  String gDSID;
-  String gDSRLoc;
-  String dMap;
-  String aMap;
-  String secID;
-  String secRLoc;
-  String mSL;
-  String hosted;
-  String nostop;
-  String cnx;
-  String classBand;
-  String classBandDisplayName;
-  String onlineCheckin;
-  String operatedBy;
-  String oAWebsite;
-  String selectSeat;
-  String mMBSelectSeat;
-  String openSeating;
-  String mMBCheckinAllowed;
-  String onlineCheckinTimeStartGMT;
-  String onlineCheckinTimeEndGMT;
-  String onlineCheckinTimeStartLocal;
-  String onlineCheckinTimeEndLocal;
+  String line='';
+  String airID='';
+  String fltNo='';
+  String xclass='';
+  String depDate='';
+  String depart='';
+  String arrive='';
+  String status='';
+  String paxQty='';
+  String depTime='';
+  String arrTime='';
+  String arrOfst='';
+  String ddaygmt='';
+  String dtimgmt='';
+  String adaygmt='';
+  String atimgmt='';
+  String stops='';
+  String cabin='';
+  String gDSID='';
+  String gDSRLoc='';
+  String dMap='';
+  String aMap='';
+  String secID='';
+  String secRLoc='';
+  String mSL='';
+  String hosted='';
+  String nostop='';
+  String cnx='';
+  String classBand='';
+  String classBandDisplayName='';
+  String onlineCheckin='';
+  String operatedBy='';
+  String oAWebsite='';
+  String selectSeat='';
+  String mMBSelectSeat='';
+  String openSeating='';
+  String mMBCheckinAllowed='';
+  String onlineCheckinTimeStartGMT='';
+  String onlineCheckinTimeEndGMT='';
+  String onlineCheckinTimeStartLocal='';
+  String onlineCheckinTimeEndLocal='';
 
   Itin.getJounrey(
       // this.
       );
 
-  Itin(
-      {this.line,
-      this.airID,
-      this.fltNo,
-      this.xclass,
-      this.depDate,
-      this.depart,
-      this.arrive,
-      this.status,
-      this.paxQty,
-      this.depTime,
-      this.arrTime,
-      this.arrOfst,
-      this.ddaygmt,
-      this.dtimgmt,
-      this.adaygmt,
-      this.atimgmt,
-      this.stops,
-      this.cabin,
-      this.gDSID,
-      this.gDSRLoc,
-      this.dMap,
-      this.aMap,
-      this.secID,
-      this.secRLoc,
-      this.mSL,
-      this.hosted,
-      this.nostop,
-      this.cnx,
-      this.classBand,
-      this.classBandDisplayName,
-      this.onlineCheckin,
-      this.operatedBy,
-      this.oAWebsite,
-      this.selectSeat,
-      this.mMBSelectSeat,
-      this.openSeating,
-      this.mMBCheckinAllowed,
-      this.onlineCheckinTimeEndGMT,
-      this.onlineCheckinTimeStartGMT,
-      this.onlineCheckinTimeStartLocal,
-      this.onlineCheckinTimeEndLocal});
+  Itin();
 
   Itin.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    airID = json['AirID'];
-    fltNo = json['FltNo'];
-    xclass = json['Class'];
-    depDate = json['DepDate'];
-    depart = json['Depart'];
-    arrive = json['Arrive'];
-    status = json['Status'];
-    paxQty = json['PaxQty'];
-    depTime = json['DepTime'];
-    arrTime = json['ArrTime'];
-    arrOfst = json['ArrOfst'];
-    ddaygmt = json['ddaygmt'];
-    dtimgmt = json['dtimgmt'];
-    adaygmt = json['adaygmt'];
-    atimgmt = json['atimgmt'];
-    stops = json['Stops'];
-    cabin = json['Cabin'];
-    gDSID = json['GDSID'];
-    gDSRLoc = json['GDSRLoc'];
-    dMap = json['DMap'];
-    aMap = json['AMap'];
-    secID = json['SecID'];
-    secRLoc = json['SecRLoc'];
-    mSL = json['MSL'];
-    hosted = json['Hosted'];
-    nostop = json['nostop'];
-    cnx = json['cnx'];
-    classBand = json['ClassBand'];
-    classBandDisplayName = json['ClassBandDisplayName'];
-    onlineCheckin = json['onlineCheckin'];
-    operatedBy = json['OperatedBy'];
-    oAWebsite = json['OAWebsite'];
-    selectSeat = json['SelectSeat'];
-    mMBSelectSeat = json['MMBSelectSeat'];
-    openSeating = json['OpenSeating'];
-    mMBCheckinAllowed = json['MMBCheckinAllowed'];
-    onlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
-    onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
-    onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
-    onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
+    if(json['Line'] != null )line = json['Line'];
+    if(json['AirID'] != null )airID = json['AirID'];
+    if(json['FltNo'] != null )fltNo = json['FltNo'];
+    if(json['Class'] != null )xclass = json['Class'];
+    if(json['DepDate'] != null )depDate = json['DepDate'];
+    if(json['Depart'] != null )depart = json['Depart'];
+    if(json['Arrive'] != null )arrive = json['Arrive'];
+    if(json['Status'] != null )status = json['Status'];
+    if(json['PaxQty'] != null )paxQty = json['PaxQty'];
+    if(json['DepTime'] != null )depTime = json['DepTime'];
+    if(json['ArrTime'] != null )arrTime = json['ArrTime'];
+    if(json['ArrOfst'] != null )arrOfst = json['ArrOfst'];
+    if(json['ddaygmt'] != null )ddaygmt = json['ddaygmt'];
+    if(json['dtimgmt'] != null )dtimgmt = json['dtimgmt'];
+    if(json['adaygmt'] != null )adaygmt = json['adaygmt'];
+    if(json['atimgmt'] != null )atimgmt = json['atimgmt'];
+    if(json['Stops'] != null )stops = json['Stops'];
+    if(json['Cabin'] != null )cabin = json['Cabin'];
+    if(json['GDSID'] != null )gDSID = json['GDSID'];
+    if(json['GDSRLoc'] != null )gDSRLoc = json['GDSRLoc'];
+    if(json['DMap'] != null )dMap = json['DMap'];
+    if(json['AMap'] != null )aMap = json['AMap'];
+    if(json['SecID'] != null )secID = json['SecID'];
+    if(json['SecRLoc'] != null )secRLoc = json['SecRLoc'];
+    if(json['MSL'] != null )mSL = json['MSL'];
+    if(json['Hosted'] != null )hosted = json['Hosted'];
+    if(json['nostop'] != null )nostop = json['nostop'];
+    if(json['cnx'] != null )cnx = json['cnx'];
+    if(json['ClassBand'] != null )classBand = json['ClassBand'];
+    if(json['ClassBandDisplayName'] != null )classBandDisplayName = json['ClassBandDisplayName'];
+    if(json['onlineCheckin'] != null )onlineCheckin = json['onlineCheckin'];
+    if(json['OperatedBy'] != null )operatedBy = json['OperatedBy'];
+    if(json['OAWebsite'] != null )oAWebsite = json['OAWebsite'];
+    if(json['SelectSeat'] != null )selectSeat = json['SelectSeat'];
+    if(json['MMBSelectSeat'] != null )mMBSelectSeat = json['MMBSelectSeat'];
+    if(json['OpenSeating'] != null )openSeating = json['OpenSeating'];
+    if(json['MMBCheckinAllowed'] != null )mMBCheckinAllowed = json['MMBCheckinAllowed'];
+    if(json['OnlineCheckinTimeEndGMT'] != null )onlineCheckinTimeEndGMT = json['OnlineCheckinTimeEndGMT'];
+    if(json['OnlineCheckinTimeStartGMT'] != null )onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
+    if(json['OnlineCheckinTimeEndLocal'] != null )onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
+    if(json['OnlineCheckinTimeStartLocal'] != null )onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
   }
 
-  Object get cityPair => this.depart + this.arrive;
+  String get cityPair => this.depart + this.arrive;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -954,7 +852,7 @@ class Itin {
     durationHours = hours != 0 ? hours.toString() + 'h. ' : '';
     durationMinutes = minutes != 0 ? minutes.toString() + 'min. ' : '';
     if( wantRtl()) {
-      return translateNo('${hours}') + translate('h.') + ' ' + translateNo('${minutes}') + translate('min');
+      return translateNo('$hours') + translate('h.') + ' ' + translateNo('$minutes') + translate('min');
     }
 
     return durationHours + durationMinutes;
@@ -962,9 +860,9 @@ class Itin {
 }
 
 class Disruptions {
-  List<Disruption> disruption;
+  List<Disruption> disruption = List.from([Disruption()]);
 
-  Disruptions({this.disruption});
+  Disruptions();
 
   Disruptions.fromJson(Map<String, dynamic> json) {
     if (json['Disruption'] != null) {
@@ -977,35 +875,27 @@ class Disruptions {
       } else {
         disruption.add(new Disruption.fromJson(json['Disruption']));
       }
-    } else {
-      disruption = null;
     }
   }
 }
 
 class Disruption {
-  String flight;
-  String flightDate;
-  String departCity;
-  String arriveCity;
-  String xclass;
-  String iD;
+  String flight='';
+  String flightDate='';
+  String departCity='';
+  String arriveCity='';
+  String xclass='';
+  String iD='';
 
-  Disruption(
-      {this.flight,
-      this.flightDate,
-      this.departCity,
-      this.arriveCity,
-      this.xclass,
-      this.iD});
+  Disruption();
 
   Disruption.fromJson(Map<String, dynamic> json) {
-    flight = json['Flight'];
-    flightDate = json['FlightDate'];
-    departCity = json['DepartCity'];
-    arriveCity = json['ArriveCity'];
-    xclass = json['Class'];
-    iD = json['ID'];
+    if(json['Flight'] != null )flight = json['Flight'];
+    if( json['FlightDate'] != null )flightDate = json['FlightDate'];
+    if( json['DepartCity'] != null )departCity = json['DepartCity'];
+    if( json['ArriveCity']!= null )arriveCity = json['ArriveCity'];
+    if( json['Class'] != null )xclass = json['Class'];
+    if( json['ID'] != null)iD = json['ID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1021,16 +911,9 @@ class Disruption {
 }
 
 class MPS {
-  // MP mP;
 
-  //MPS({this.mP});
-
-  // MPS.fromJson(Map<String, dynamic> json) {
-  //   mP = json['MP'] != null ? new MP.fromJson(json['MP']) : null;
-  // }
-
-  List<MP> mP;
-  MPS({this.mP});
+  List<MP> mP = List.from([MP()]);
+  MPS();
 
   MPS.fromJson(Map<String, dynamic> json) {
     if (json['MP'] != null) {
@@ -1064,34 +947,26 @@ class MPS {
 }
 
 class MP {
-  String line;
-  String mPID;
-  String pax;
-  String seg;
-  String mPSCur;
-  String mPSAmt;
-  String mPSID;
-  String text;
+  String line='';
+  String mPID='';
+  String pax='';
+  String seg='';
+  String mPSCur='';
+  String mPSAmt='';
+  String mPSID='';
+  String text='';
 
-  MP(
-      {this.line,
-      this.mPID,
-      this.pax,
-      this.seg,
-      this.mPSCur,
-      this.mPSAmt,
-      this.mPSID,
-      this.text});
+  MP();
 
   MP.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    mPID = json['MPID'];
-    pax = json['Pax'];
-    seg = json['Seg'];
-    mPSCur = json['MPSCur'];
-    mPSAmt = json['MPSAmt'];
-    mPSID = json['MPSID'];
-    text = json['#text'];
+    if( json['Line'] != null)line = json['Line'];
+    if( json['MPID'] != null )mPID = json['MPID'];
+    if( json['Pax'] != null)pax = json['Pax'];
+    if( json['Seg'] != null )seg = json['Seg'];
+    if( json['MPSCur'] != null )mPSCur = json['MPSCur'];
+    if( json['MPSAmt'] != null )mPSAmt = json['MPSAmt'];
+    if( json['MPSID'] != null )mPSID = json['MPSID'];
+    if( json['#text'] != null )text = json['#text'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1109,9 +984,9 @@ class MP {
 }
 
 class Contacts {
-  List<CTC> cTC;
+  List<CTC> cTC = List.from([CTC()]);
 
-  Contacts({this.cTC});
+  Contacts();
 
   Contacts.fromJson(Map<String, dynamic> json) {
     if (json['CTC'] != null) {
@@ -1137,18 +1012,18 @@ class Contacts {
 }
 
 class CTC {
-  String line;
-  String cTCID;
-  String pax;
-  String text;
+  String line='';
+  String cTCID='';
+  String pax='';
+  String text='';
 
-  CTC({this.line, this.cTCID, this.pax, this.text});
+  CTC();
 
   CTC.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    cTCID = json['CTCID'];
-    pax = json['Pax'];
-    text = json['#text'];
+    if( json['Line'] != null)line = json['Line'];
+    if( json['CTCID'] != null)cTCID = json['CTCID'];
+    if( json['Pax']!= null)pax = json['Pax'];
+    if( json['#text']!= null )text = json['#text'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1162,8 +1037,8 @@ class CTC {
 }
 
 class APFAX {
-  List<AFX> aFX;
-  APFAX({this.aFX});
+  List<AFX> aFX = List.from([AFX()]);
+  APFAX();
 
   APFAX.fromJson(Map<String, dynamic> json) {
     if (json['AFX'] != null) {
@@ -1189,35 +1064,26 @@ class APFAX {
 }
 
 class AFX {
-  String line;
-  String aFXID;
-  String pax;
-  String seg;
-  String seat;
-  String text;
-  String cur;
-  String amt;
-  String name;
+  String line='';
+  String aFXID='';
+  String pax='';
+  String seg='';
+  String seat='';
+  String text='';
+  String cur='';
+  String amt='';
+  String name='';
 
-  AFX(
-      {this.line,
-      this.aFXID,
-      this.pax,
-      this.seg,
-      this.seat,
-      this.text,
-      this.cur,
-      this.amt,
-      this.name});
+  AFX({this.seat=''});
 
   AFX.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    aFXID = json['AFXID'];
-    pax = json['Pax'];
-    seg = json['Seg'];
-    seat = json['seat'];
-    text = json['#text'] == null ? '' : json['#text'];
-    cur = json['cur'];
+    if(json['Line'] != null )line = json['Line'];
+    if( json['AFXID']!= null )aFXID = json['AFXID'];
+    if( json['Pax']!= null)pax = json['Pax'];
+    if( json['Seg']!= null)seg = json['Seg'];
+    if( json['seat']!= null )seat = json['seat'];
+    if(  json['#text']!= null )text = json['#text'];
+    if( json['cur']!= null)cur = json['cur'];
     amt = json['amt'] == null ? '0.0' : json['amt'];
     name = json['name'] == null ? '' : json['name'];
   }
@@ -1238,13 +1104,13 @@ class AFX {
 }
 
 class GenFax {
-  String line;
-  String genFaxID;
-  String pax;
-  String seg;
-  String text;
+  String line='';
+  String genFaxID='';
+  String pax='';
+  String seg='';
+  String text='';
 
-  GenFax({this.line, this.genFaxID, this.pax, this.seg, this.text});
+  GenFax();
 
   GenFax.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -1266,11 +1132,11 @@ class GenFax {
 }
 
 class FareQuote {
-  List<FQItin> fQItin;
-  List<FareStore> fareStore;
-  List<FareTax> fareTax;
+  List<FQItin> fQItin = List.from([FQItin()]);
+  List<FareStore> fareStore =List.from([FareStore()]);
+  List<FareTax> fareTax = List.from([FareTax()]);
 
-  FareQuote({this.fQItin, this.fareStore, this.fareTax});
+  FareQuote();
 
   FareQuote.fromJson(Map<String, dynamic> json) {
     if (json['FQItin'] != null) {
@@ -1324,43 +1190,32 @@ class FareQuote {
 }
 
 class FQItin {
-  String seg;
-  String cur;
-  String curInf;
-  String fQI;
-  String fQB;
-  String total;
-  String fare;
-  String tax1;
-  String tax2;
-  String tax3;
-  String miles;
+  String seg='';
+  String cur='';
+  String curInf='';
+  String fQI='';
+  String fQB='';
+  String total='';
+  String fare='';
+  String tax1='';
+  String tax2='';
+  String tax3='';
+  String miles='';
 
-  FQItin(
-      {this.seg,
-      this.cur,
-      this.curInf,
-      this.fQI,
-      this.fQB,
-      this.total,
-      this.fare,
-      this.tax1,
-      this.tax2,
-      this.tax3,
-      this.miles});
+  FQItin();
 
   FQItin.fromJson(Map<String, dynamic> json) {
-    seg = json['Seg'];
-    cur = json['Cur'];
-    curInf = json['CurInf'];
-    fQI = json['FQI'];
-    fQB = json['FQB'];
-    total = json['Total'];
-    fare = json['Fare'];
-    tax1 = json['Tax1'];
-    tax2 = json['Tax2'];
-    tax3 = json['Tax3'];
-    miles = json['miles'];
+    if( json['Seg']!= null)seg = json['Seg'];
+    if(json['Cur']!= null)cur = json['Cur'];
+    if( json['CurInf']!= null )curInf = json['CurInf'];
+    if(json['FQI']!= null )fQI = json['FQI'];
+    if(json['FQB']!= null)fQB = json['FQB'];
+    if(json['Total']!= null )total = json['Total'];
+    if(json['Fare']!= null)fare = json['Fare'];
+    if(json['Tax1']!= null)tax1 = json['Tax1'];
+    if(json['Tax2']!= null)tax2 = json['Tax2'];
+    if(json['Tax3']!= null)tax3 = json['Tax3'];
+    if(json['miles']!= null)miles = json['miles'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1381,22 +1236,21 @@ class FQItin {
 }
 
 class FareStore {
-  String fSID;
-  String pax;
-  String cur;
-  String curInf;
-  String total;
-  List<SegmentFS> segmentFS;
+  String fSID='';
+  String pax='';
+  String cur='';
+  String curInf='';
+  String total='';
+  List<SegmentFS> segmentFS = List.from([SegmentFS()]);
 
-  FareStore(
-      {this.fSID, this.pax, this.cur, this.curInf, this.total, this.segmentFS});
+  FareStore();
 
   FareStore.fromJson(Map<String, dynamic> json) {
-    fSID = json['FSID'];
-    pax = json['Pax'];
-    cur = json['Cur'];
-    curInf = json['CurInf'];
-    total = json['Total'];
+    if( json['FSID']!= null)fSID = json['FSID'];
+    if(json['Pax']!= null)pax = json['Pax'];
+    if(json['Cur']!= null)cur = json['Cur'];
+    if(json['CurInf']!= null)curInf = json['CurInf'];
+    if(json['Total']!= null)total = json['Total'];
     if (json['SegmentFS'] != null) {
       segmentFS = [];
       // new List<SegmentFS>();
@@ -1425,42 +1279,31 @@ class FareStore {
 }
 
 class SegmentFS {
-  String segFSID;
-  String seg;
-  String fare;
-  String tax1;
-  String tax2;
-  String tax3;
-  String miles;
-  String disc;
-  String holdPcs;
-  String holdWt;
-  String handWt;
+  String segFSID='';
+  String seg='';
+  String fare='';
+  String tax1='';
+  String tax2='';
+  String tax3='';
+  String miles='';
+  String disc='';
+  String holdPcs='';
+  String holdWt='';
+  String handWt='';
 
-  SegmentFS(
-      {this.segFSID,
-      this.seg,
-      this.fare,
-      this.tax1,
-      this.tax2,
-      this.tax3,
-      this.miles,
-      this.disc,
-      this.handWt,
-      this.holdPcs,
-      this.holdWt});
+  SegmentFS();
 
   SegmentFS.fromJson(Map<String, dynamic> json) {
-    segFSID = json['SegFSID'];
-    seg = json['Seg'];
-    fare = json['Fare'];
-    tax1 = json['Tax1'];
-    tax2 = json['Tax2'];
-    tax3 = json['Tax3'];
-    miles = json['miles'];
-    handWt = json['HandWt'];
-    holdPcs = json['HoldPcs'];
-    holdWt = json['HoldWt'];
+    if( json['SegFSID'] != null )segFSID = json['SegFSID'];
+    if( json['Seg'] != null )seg = json['Seg'];
+    if( json['Fare'] != null )fare = json['Fare'];
+    if( json['Tax1'] != null )tax1 = json['Tax1'];
+    if( json['Tax2'] != null )tax2 = json['Tax2'];
+    if( json['Tax3'] != null )tax3 = json['Tax3'];
+    if( json['iles'] != null )miles = json['miles'];
+    if( json['HandWt'] != null )handWt = json['HandWt'];
+    if( json['HoldPcs'] != null )holdPcs = json['HoldPcs'];
+    if( json['HoldWt'] != null )holdWt = json['HoldWt'];
 
   }
 
@@ -1482,9 +1325,9 @@ class SegmentFS {
 }
 
 class FareTax {
-  List<PaxTax> paxTax;
+  List<PaxTax> paxTax =List.from([PaxTax()]);
 
-  FareTax({this.paxTax});
+  FareTax();
 
   FareTax.fromJson(Map<String, dynamic> json) {
     if (json['PaxTax'] != null) {
@@ -1510,26 +1353,26 @@ class FareTax {
 }
 
 class PaxTax {
-  String seg;
-  String pax;
-  String code;
-  String cur;
-  String amnt;
-  String curInf;
-  String desc;
-  String separate;
+  String seg='';
+  String pax='';
+  String code='';
+  String cur='';
+  String amnt='';
+  String curInf='';
+  String desc='';
+  String separate='';
 
-  PaxTax({this.seg, this.pax, this.code, this.cur, this.amnt, this.curInf, this.desc, this.separate});
+  PaxTax();
 
   PaxTax.fromJson(Map<String, dynamic> json) {
-    seg = json['Seg'];
-    pax = json['Pax'];
-    code = json['Code'];
-    cur = json['Cur'];
-    amnt = json['Amnt'];
-    curInf = json['CurInf'];
-    desc = json['desc'];
-    separate = json['separate'];
+    if(json['Seg']!= null)seg = json['Seg'];
+    if(json['Pax']!= null)pax = json['Pax'];
+    if(json['Code']!= null)code = json['Code'];
+    if(json['Cur']!= null)cur = json['Cur'];
+    if(json['Amnt']!=null)amnt = json['Amnt'];
+    if(json['CurInf']!= null)curInf = json['CurInf'];
+    if(json['desc']!=null)desc = json['desc'];
+    if(json['separate']!=null)separate = json['separate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1563,9 +1406,9 @@ class Payments {
   //  return data;
   //}
 
-  List<FOP> fOP;
+  List<FOP> fOP = List.from([FOP()]);
 
-  Payments({this.fOP});
+  Payments();
 
   Payments.fromJson(Map<String, dynamic> json) {
     if (json['FOP'] != null) {
@@ -1591,34 +1434,26 @@ class Payments {
 }
 
 class FOP {
-  String line;
-  String fOPID;
-  String payCur;
-  String payAmt;
-  String pNRCur;
-  String pNRAmt;
-  String pNRExRate;
-  String payDate;
+  String line='';
+  String fOPID='';
+  String payCur='';
+  String payAmt='';
+  String pNRCur='';
+  String pNRAmt='';
+  String pNRExRate='';
+  String payDate='';
 
-  FOP(
-      {this.line,
-      this.fOPID,
-      this.payCur,
-      this.payAmt,
-      this.pNRCur,
-      this.pNRAmt,
-      this.pNRExRate,
-      this.payDate});
+  FOP();
 
   FOP.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    fOPID = json['FOPID'];
-    payCur = json['PayCur'];
-    payAmt = json['PayAmt'];
-    pNRCur = json['PNRCur'];
-    pNRAmt = json['PNRAmt'];
-    pNRExRate = json['PNRExRate'];
-    payDate = json['PayDate'];
+    if(json['Line']!=null)line = json['Line'];
+    if(json['FOPID']!= null)fOPID = json['FOPID'];
+    if(json['PayCur']!= null)payCur = json['PayCur'];
+    if(json['PayAmt']!= null)payAmt = json['PayAmt'];
+    if(json['PNRCur']!= null)pNRCur = json['PNRCur'];
+    if(json['PNRAmt']!= null)pNRAmt = json['PNRAmt'];
+    if(json['PNRExRate']!= null)pNRExRate = json['PNRExRate'];
+    if(json['PayDate']!= null)payDate = json['PayDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1636,12 +1471,12 @@ class FOP {
 }
 
 class TimeLimits {
-  TTL tTL;
+  TTL tTL = TTL();
 
-  TimeLimits({this.tTL});
+  TimeLimits();
 
   TimeLimits.fromJson(Map<String, dynamic> json) {
-    tTL = json['TTL'] != null ? new TTL.fromJson(json['TTL']) : null;
+    if( json['TTL'] != null ) tTL = TTL.fromJson(json['TTL']) ;
   }
 
   Map<String, dynamic> toJson() {
@@ -1654,37 +1489,28 @@ class TimeLimits {
 }
 
 class TTL {
-  String tTLID;
-  String tTLCity;
-  String tTLQNo;
-  String tTLTime;
-  String tTLDate;
-  String agCity;
-  String sineCode;
-  String sineType;
-  String resDate;
+  String tTLID = '';
+  String tTLCity = '';
+  String tTLQNo = '';
+  String tTLTime = '';
+  String tTLDate = '';
+  String agCity = '';
+  String sineCode = '';
+  String sineType = '';
+  String resDate = '';
 
-  TTL(
-      {this.tTLID,
-      this.tTLCity,
-      this.tTLQNo,
-      this.tTLTime,
-      this.tTLDate,
-      this.agCity,
-      this.sineCode,
-      this.sineType,
-      this.resDate});
+  TTL();
 
   TTL.fromJson(Map<String, dynamic> json) {
-    tTLID = json['TTLID'];
-    tTLCity = json['TTLCity'];
-    tTLQNo = json['TTLQNo'];
-    tTLTime = json['TTLTime'];
-    tTLDate = json['TTLDate'];
-    agCity = json['AgCity'];
-    sineCode = json['SineCode'];
-    sineType = json['SineType'];
-    resDate = json['ResDate'];
+    if(json['TTLID']!= null)tTLID = json['TTLID'];
+    if(json['TTLCity']!=null)tTLCity = json['TTLCity'];
+    if(json['TTLQNo']!=null)tTLQNo = json['TTLQNo'];
+    if(json['TTLTime']!= null)tTLTime = json['TTLTime'];
+    if(json['TTLDate']!= null)tTLDate = json['TTLDate'];
+    if(json['AgCity']!= null)agCity = json['AgCity'];
+    if(json['SineCode']!= null)sineCode = json['SineCode'];
+    if(json['SineType']!= null)sineType = json['SineType'];
+    if(json['ResDate']!= null)resDate = json['ResDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1703,9 +1529,9 @@ class TTL {
 }
 
 class Tickets {
-  List<TKT> tKT;
+  List<TKT> tKT = List.from([TKT()]);
 
-  Tickets({this.tKT});
+  Tickets();
 
   Tickets.fromJson(Map<String, dynamic> json) {
     if (json['TKT'] != null) {
@@ -1731,67 +1557,48 @@ class Tickets {
 }
 
 class TKT {
-  String pax;
-  String tKTID;
-  String tktNo;
-  String coupon;
-  String tktFltDate;
-  String tktFltNo;
-  String tktDepart;
-  String tktArrive;
-  String tktBClass;
-  String issueDate;
-  String status;
-  String segNo;
-  String title;
-  String firstname;
-  String surname;
-  String tktFor;
-  String sequenceNo;
-  String loungeAccess;
-  String fastTrack;
+  String pax = '';
+  String tKTID = '';
+  String tktNo = '';
+  String coupon = '';
+  String tktFltDate = '';
+  String tktFltNo = '';
+  String tktDepart = '';
+  String tktArrive = '';
+  String tktBClass = '';
+  String issueDate = '';
+  String status = '';
+  String segNo = '';
+  String title = '';
+  String firstname = '';
+  String surname = '';
+  String tktFor = '';
+  String sequenceNo = '';
+  String loungeAccess = '';
+  String fastTrack = '';
 
-  TKT(
-      {this.pax,
-      this.tKTID,
-      this.tktNo,
-      this.coupon,
-      this.tktFltDate,
-      this.tktFltNo,
-      this.tktDepart,
-      this.tktArrive,
-      this.tktBClass,
-      this.issueDate,
-      this.status,
-      this.segNo,
-      this.title,
-      this.firstname,
-      this.surname,
-      this.tktFor,
-      this.sequenceNo,
-      this.loungeAccess,
-      this.fastTrack});
+  TKT({this.sequenceNo=''});
 
   TKT.fromJson(Map<String, dynamic> json) {
-    pax = json['Pax'];
-    tKTID = json['TKTID'];
-    tktNo = json['TktNo'];
-    coupon = json['Coupon'];
-    tktFltDate = json['TktFltDate'];
-    tktFltNo = json['TktFltNo'];
-    tktDepart = json['TktDepart'];
-    tktArrive = json['TktArrive'];
-    tktBClass = json['TktBClass'];
-    issueDate = json['IssueDate'];
-    status = json['Status'];
-    segNo = json['SegNo'];
-    title = json['Title'];
-    firstname = json['Firstname'];
-    surname = json['Surname'];
-    tktFor = json['TktFor'];
-    sequenceNo = json['SequenceNo'];
-    loungeAccess = json['LoungeAccess'];
-    fastTrack = json['FastTrack'];
+    if( json['Pax']!= null)  pax = json['Pax'];
+    if(json['TKTID']!= null)tKTID = json['TKTID'];
+    if(json['TktNo']!= null)tktNo = json['TktNo'];
+    if(json['Coupon']!= null)coupon = json['Coupon'];
+    if(json['TktFltDate']!= null)tktFltDate = json['TktFltDate'];
+    if(json['TktFltNo']!= null)tktFltNo = json['TktFltNo'];
+    if(json['TktDepart']!= null)tktDepart = json['TktDepart'];
+    if(json['TktArrive']!= null)tktArrive = json['TktArrive'];
+    if(json['TktBClass']!= null)tktBClass = json['TktBClass'];
+    if(json['IssueDate']!= null)issueDate = json['IssueDate'];
+    if(json['Status']!= null)status = json['Status'];
+    if(json['SegNo']!= null)segNo = json['SegNo'];
+    if(json['Title']!= null)title = json['Title'];
+    if(json['Firstname']!= null)firstname = json['Firstname'];
+    if(json['Surname']!= null)surname = json['Surname'];
+    if(json['TktFor']!= null)tktFor = json['TktFor'];
+    if(json['SequenceNo']!= null)sequenceNo = json['SequenceNo'];
+    if(json['LoungeAccess']!= null)loungeAccess = json['LoungeAccess'];
+    if(json['FastTrack']!= null)fastTrack = json['FastTrack'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1820,9 +1627,9 @@ class TKT {
 }
 
 class Remarks {
-  List<RMK> rMK;
+  List<RMK> rMK = List.from([RMK()]);
 
-  Remarks({this.rMK});
+  Remarks();
 
   Remarks.fromJson(Map<String, dynamic> json) {
     if (json['RMK'] != null) {
@@ -1848,11 +1655,11 @@ class Remarks {
 }
 
 class RMK {
-  String line;
-  String rMKID;
-  String text;
+  String line = '';
+  String rMKID = '';
+  String text = '';
 
-  RMK({this.line, this.rMKID, this.text});
+  RMK();
 
   RMK.fromJson(Map<String, dynamic> json) {
     line = json['Line'];
@@ -1870,43 +1677,32 @@ class RMK {
 }
 
 class RLE {
-  String rLOC;
-  String airID;
-  String issOffCode;
-  String city;
-  String agType;
-  String cur;
-  String curInf;
-  String sineCode;
-  String rLEDate;
-  String issagtidpnr;
-  String issagtidtkt;
+  String rLOC = '';
+  String airID = '';
+  String issOffCode = '';
+  String city = '';
+  String agType = '';
+  String cur = '';
+  String curInf = '';
+  String sineCode = '';
+  String rLEDate = '';
+  String issagtidpnr = '';
+  String issagtidtkt = '';
 
-  RLE(
-      {this.rLOC,
-      this.airID,
-      this.issOffCode,
-      this.city,
-      this.agType,
-      this.cur,
-      this.curInf,
-      this.sineCode,
-      this.rLEDate,
-      this.issagtidpnr,
-      this.issagtidtkt});
+  RLE();
 
   RLE.fromJson(Map<String, dynamic> json) {
-    rLOC = json['RLOC'];
-    airID = json['AirID'];
-    issOffCode = json['IssOffCode'];
-    city = json['City'];
-    agType = json['AgType'];
-    cur = json['Cur'];
-    curInf = json['CurInf'];
-    sineCode = json['SineCode'];
-    rLEDate = json['RLEDate'];
-    issagtidpnr = json['issagtidpnr'];
-    issagtidtkt = json['issagtidtkt'];
+    if(json['RLOC']!= null)rLOC = json['RLOC'];
+    if(json['AirID']!=null)airID = json['AirID'];
+    if(json['IssOffCode']!= null)issOffCode = json['IssOffCode'];
+    if(json['City']!= null)city = json['City'];
+    if(json['AgType']!=null)agType = json['AgType'];
+    if(json['Cur']!= null)cur = json['Cur'];
+    if(json['CurInf']!= null)curInf = json['CurInf'];
+    if(json['SineCode']!= null)sineCode = json['SineCode'];
+    if(json['RLEDate']!= null)rLEDate = json['RLEDate'];
+    if(json['issagtidpnr']!= null)issagtidpnr = json['issagtidpnr'];
+    if(json['issagtidtkt']!= null)issagtidtkt = json['issagtidtkt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1927,18 +1723,14 @@ class RLE {
 }
 
 class Basket {
-  Outstanding outstanding;
-  Outstandingairmiles outstandingairmiles;
+  Outstanding outstanding =Outstanding();
+  Outstandingairmiles outstandingairmiles=Outstandingairmiles();
 
-  Basket({this.outstanding, this.outstandingairmiles});
+  Basket();
 
   Basket.fromJson(Map<String, dynamic> json) {
-    outstanding = json['Outstanding'] != null
-        ? new Outstanding.fromJson(json['Outstanding'])
-        : null;
-    outstandingairmiles = json['Outstandingairmiles'] != null
-        ? new Outstandingairmiles.fromJson(json['Outstandingairmiles'])
-        : null;
+    if(json['Outstanding'] != null)outstanding =  Outstanding.fromJson(json['Outstanding']);
+    if(json['Outstandingairmiles'] != null)outstandingairmiles = Outstandingairmiles.fromJson(json['Outstandingairmiles']);
   }
 
   Map<String, dynamic> toJson() {
@@ -1954,18 +1746,18 @@ class Basket {
 }
 
 class Outstanding {
-  String cur;
-  String curInf;
-  String amount;
-  String info;
+  String cur = '';
+  String curInf = '';
+  String amount = '';
+  String info = '';
 
-  Outstanding({this.cur, this.curInf, this.amount, this.info});
+  Outstanding();
 
   Outstanding.fromJson(Map<String, dynamic> json) {
-    cur = json['cur'];
-    curInf = json['CurInf'];
-    amount = json['amount'];
-    info = json['info'];
+    if(json['cur']!= null)cur = json['cur'];
+    if(json['CurInf']!= null)curInf = json['CurInf'];
+    if(json['amount']!= null)amount = json['amount'];
+    if(json['info']!= null)info = json['info'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1979,21 +1771,20 @@ class Outstanding {
 }
 
 class Outstandingairmiles {
-  String cur;
-  String curInf;
-  String amount;
-  String info;
-  String airmiles;
+  String cur = '';
+  String curInf = '';
+  String amount = '';
+  String info = '';
+  String airmiles = '';
 
-  Outstandingairmiles(
-      {this.cur, this.curInf, this.amount, this.info, this.airmiles});
+  Outstandingairmiles();
 
   Outstandingairmiles.fromJson(Map<String, dynamic> json) {
-    cur = json['cur'];
-    curInf = json['CurInf'];
-    amount = json['amount'];
-    info = json['info'];
-    airmiles = json['airmiles'];
+    if(json['cur']!= null)cur = json['cur'];
+    if(json['CurInf']!= null)curInf = json['CurInf'];
+    if(json['amount']!= null)amount = json['amount'];
+    if(json['info']!= null)info = json['info'];
+    if(json['airmiles']!=null)airmiles = json['airmiles'];
   }
 
   Map<String, dynamic> toJson() {
@@ -2008,34 +1799,26 @@ class Outstandingairmiles {
 }
 
 class Zpay {
-  String scheme;
-  String reference;
-  String info;
-  String mbamount;
-  String mbcurrency;
-  String mbtotalfare;
-  String mbtotaltax;
-  String ttl;
+  String scheme = '';
+  String reference = '';
+  String info = '';
+  String mbamount = '';
+  String mbcurrency = '';
+  String mbtotalfare = '';
+  String mbtotaltax = '';
+  String ttl = '';
 
-  Zpay(
-      {this.scheme,
-      this.reference,
-      this.info,
-      this.mbamount,
-      this.mbcurrency,
-      this.mbtotalfare,
-      this.mbtotaltax,
-      this.ttl});
+  Zpay();
 
   Zpay.fromJson(Map<String, dynamic> json) {
-    scheme = json['scheme'];
-    reference = json['reference'];
-    info = json['info'];
-    mbamount = json['mbamount'];
-    mbcurrency = json['mbcurrency'];
-    mbtotalfare = json['mbtotalfare'];
-    mbtotaltax = json['mbtotaltax'];
-    ttl = json['ttl'];
+    if(json['scheme']!= null)scheme = json['scheme'];
+    if(json['reference']!= null)reference = json['reference'];
+    if(json['info']!= null)info = json['info'];
+    if(json['mbamount']!=null)mbamount = json['mbamount'];
+    if(json['mbcurrency']!= null)mbcurrency = json['mbcurrency'];
+    if(json['mbtotalfare']!= null)mbtotalfare = json['mbtotalfare'];
+    if(json['mbtotaltax']!=null)mbtotaltax = json['mbtotaltax'];
+    if(json['ttl']!= null)ttl = json['ttl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -2053,12 +1836,12 @@ class Zpay {
 }
 
 class Pnrfields {
-  String originissoffcode;
+  String originissoffcode = '';
 
-  Pnrfields({this.originissoffcode});
+  Pnrfields();
 
   Pnrfields.fromJson(Map<String, dynamic> json) {
-    originissoffcode = json['originissoffcode'];
+    if(json['originissoffcode']!= null)originissoffcode = json['originissoffcode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -2069,9 +1852,9 @@ class Pnrfields {
 }
 
 class Fqfields {
-  List<Fqfield> fqfield;
+  List<Fqfield> fqfield = List.from([Fqfield()]);
 
-  Fqfields({this.fqfield});
+  Fqfields();
 
   Fqfields.fromJson(Map<String, dynamic> json) {
     if (json['fqfield'] != null) {
@@ -2097,16 +1880,16 @@ class Fqfields {
 }
 
 class Fqfield {
-  String line;
-  String fareid;
-  String finf;
+  String line = '';
+  String fareid = '';
+  String finf = '';
 
-  Fqfield({this.line, this.fareid, this.finf});
+  Fqfield();
 
   Fqfield.fromJson(Map<String, dynamic> json) {
-    line = json['line'];
-    fareid = json['fareid'];
-    finf = json['finf'];
+    if(json['line']!= null)line = json['line'];
+    if(json['fareid']!= null)fareid = json['fareid'];
+    if(json['finf']!= null)finf = json['finf'];
   }
 
   Map<String, dynamic> toJson() {

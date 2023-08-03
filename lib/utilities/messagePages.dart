@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,39 +8,40 @@ import '../components/trText.dart';
 import '../data/globals.dart';
 import '../home/home_page.dart';
 
+
 class MessagePage extends StatefulWidget {
   MessagePage({
-    Key key,
-    this.action,
+    Key key= const Key("msgpage_key"),
+    this.action='',
     this.actions,
-    this.msg,
-    this.title,
+    this.msg='',
+    this.title='',
     this.borderClr,
     this.iconClr,
     this.backClr,
     this.titleBackClr,
     this.titleTextClr,
     this.icon,
-    this.isHtml,
-    this.displayFormat,
+    this.isHtml=false,
+    this.displayFormat='',
     this.onOk,
   }) : super(key: key);
 
   final String action;
-  List<Widget> actions;
+  List<Widget>? actions;
   String msg;
   String title;
-  Color borderClr;
-  Color backClr;
-  Color iconClr;
-  Color titleBackClr;
-  Color titleTextClr;
-  IconData icon;
-  bool isHtml;
-  String displayFormat;
-  void Function(dynamic p) onComplete;
-  String Function(dynamic p, String user, String pw) onOk;
-  String _errorMsg;
+  Color? borderClr;
+  Color? backClr;
+  Color? iconClr;
+  Color? titleBackClr;
+  Color? titleTextClr;
+  IconData? icon;
+  bool isHtml=false;
+  String displayFormat ='';
+  void Function(dynamic p)? onComplete;
+  String Function(dynamic p, String user, String pw)? onOk;
+  String _errorMsg='';
 
   @override
   MessagePageState createState() => MessagePageState();
@@ -47,7 +49,7 @@ class MessagePage extends StatefulWidget {
 
 class MessagePageState extends State<MessagePage> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  String _msg;
+  String _msg ='';
   TextEditingController _sineController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 //  final formKey = new GlobalKey<FormState>();
@@ -85,7 +87,7 @@ class MessagePageState extends State<MessagePage> {
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
                   if( widget.onComplete != null ){
-                    widget.onComplete(false);
+                    widget.onComplete!(false);
                   }
                   Navigator.of(context).pop();
                 },
@@ -107,7 +109,7 @@ class MessagePageState extends State<MessagePage> {
                     gblSystemColors.headerTextColor)),
           ),
           //endDrawer: DrawerMenu(),
-          body: messageBodyWidget(widget.title, widget.msg, widget.icon, widget.titleBackClr, widget.backClr,widget.borderClr, widget.iconClr,actions: widget.actions, isHtml: widget.isHtml )
+          body: messageBodyWidget(widget.title, widget.msg, widget.icon!, widget.titleBackClr!, widget.backClr!,widget.borderClr, widget.iconClr,actions: widget.actions, isHtml: widget.isHtml )
       );
     }
     else if( widget.displayFormat == '2') {
@@ -131,7 +133,7 @@ class MessagePageState extends State<MessagePage> {
             shape: alertShape(),
             titlePadding: const EdgeInsets.all(0),
             title: alertTitle(
-                translate(widget.title), widget.titleTextClr, widget.titleBackClr),
+                translate(widget.title), widget.titleTextClr!, widget.titleBackClr!),
 
             content: dialogBody(),
 
@@ -157,7 +159,7 @@ class MessagePageState extends State<MessagePage> {
             shape: alertShape(),
             titlePadding: const EdgeInsets.all(0),
             title: alertTitle(
-                translate('LOGIN'), widget.titleTextClr, widget.titleBackClr),
+                translate('LOGIN'), widget.titleTextClr!, widget.titleBackClr!),
     content: contentBox(context),
     actions: <Widget>[
     ElevatedButton(
@@ -172,7 +174,7 @@ class MessagePageState extends State<MessagePage> {
       style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryHeaderColor) ,
     child: TrText("CONTINUE"),
     onPressed: () {
-      String result = widget.onOk(context, _sineController.text, _passwordController.text);
+      String result = widget.onOk!(context, _sineController.text, _passwordController.text);
       widget._errorMsg = '';
       if( result == 'OK') {
         // close dialog
@@ -322,7 +324,7 @@ class MessagePageState extends State<MessagePage> {
 Widget messageWidget() {
 
 }*/
-Widget criticalErrorPageWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
+Widget criticalErrorPageWidget(BuildContext context, String msg, {String title='', bool wantButtons=false, void Function(dynamic p)? onComplete}) {
   return Scaffold(
       //key: _key,
       appBar: new AppBar(
@@ -343,7 +345,7 @@ Widget criticalErrorPageWidget(BuildContext context, String msg, {String title, 
 }
 
 
-Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool wantButtons, void Function(dynamic p) onComplete}) {
+Widget criticalErrorWidget(BuildContext context, String msg, {String title='', bool wantButtons=false, void Function(dynamic p)? onComplete}) {
   List<Widget> actionList ;
   if( wantButtons != null && wantButtons == false) {
     actionList = [];
@@ -373,8 +375,8 @@ Widget criticalErrorWidget(BuildContext context, String msg, {String title, bool
       actions: actionList );
 }
 
-void criticalErrorPage(BuildContext context, String msg, {String title, bool wantButtons}){
-  List<Widget> actionList ;
+void criticalErrorPage(BuildContext context, String msg, {String title='', bool wantButtons=false}){
+  List<Widget>? actionList ;
   if( wantButtons != null && wantButtons == false) {
     actionList = [];
     actionList.add(Container());
@@ -393,8 +395,8 @@ void criticalErrorPage(BuildContext context, String msg, {String title, bool wan
   );
 }
 
-void loginPage(BuildContext context, String msg, {String title, bool wantButtons,String Function(dynamic p, String user, String pw) onOk }){
-  List<Widget> actionList ;
+void loginPage(BuildContext context, String msg, {String title='', bool wantButtons=false,String Function(dynamic p, String user, String pw)? onOk }){
+  List<Widget>? actionList ;
   if( wantButtons != null && wantButtons == false) {
     actionList = [];
     actionList.add(Container());
@@ -415,7 +417,7 @@ void loginPage(BuildContext context, String msg, {String title, bool wantButtons
   );
 }
 
-void successMessagePage(BuildContext context, String msg, {String title, bool isHtml, List<Widget> actions}){
+void successMessagePage(BuildContext context, String msg, {String title='', bool isHtml=true, List<Widget>? actions}){
   Navigator.push(
       context, MaterialPageRoute(builder: (context) =>
       MessagePage( msg: msg,
@@ -432,7 +434,7 @@ void successMessagePage(BuildContext context, String msg, {String title, bool is
   );
 }
 
-void progressMessagePage(BuildContext context, String msg, {String title}){
+void progressMessagePage(BuildContext context, String msg, {String title=''}){
 
   Timer(Duration(milliseconds: 50), ()
   {
@@ -456,7 +458,7 @@ void progressMessagePage(BuildContext context, String msg, {String title}){
 void setProgressMessage(String msg) {
   try {
     if( messageGlobalKeyProgress != null && messageGlobalKeyProgress.currentState != null ) {
-      messageGlobalKeyProgress.currentState.setMsg(msg);
+      messageGlobalKeyProgress.currentState!.setMsg(msg);
     }
   } catch (e) {
 
@@ -470,13 +472,13 @@ void endProgressMessage() {
   }
   try {
     if( messageGlobalKeyProgress != null && messageGlobalKeyProgress.currentState != null ) {
-      messageGlobalKeyProgress.currentState.hide();
+      messageGlobalKeyProgress.currentState!.hide();
     }
   } catch (e) {
 
   }
 }
-Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBackClr, Color backClr, Color borderClr, Color iconClr, {List<Widget> actions, bool isHtml }  )  {
+Widget messageBodyWidget( String title, String msg, IconData? icon, Color? titleBackClr, Color? backClr, Color? borderClr, Color? iconClr, {List<Widget>? actions, bool isHtml=false }  )  {
   Widget msgWidget;
   final Completer<WebViewController> _controller =  Completer<WebViewController>();
 
@@ -517,7 +519,7 @@ Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBa
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: backClr,
-                border: Border.all(color: borderClr, width: 3)
+                border: Border.all(color: borderClr!, width: 3)
             ),
             child: Icon(icon, color: iconClr ,size: 100,),
           ),
@@ -528,7 +530,7 @@ Widget messageBodyWidget( String title, String msg, IconData icon, Color titleBa
   );
 }
 
-Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widget> actions, EdgeInsets ipad = null, bool wide = false }) {
+Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widget>? actions, EdgeInsets? ipad, bool wide = false }) {
   Color titleBackClr = gblSystemColors.primaryHeaderColor;
   Color borderClr = Colors.green;
   Color backClr = Colors.green;
@@ -555,8 +557,8 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
 
   return AlertDialog(
     shape: alertShape(),
-    insetPadding: ipad,
-    contentPadding: (wide) ? EdgeInsets.all(5): null ,
+    insetPadding: ipad!,
+    contentPadding: (wide) ? EdgeInsets.all(5): EdgeInsets.all(0) ,
     titlePadding: alertTitlePadding(),
     title: Container(
         alignment: Alignment.center,

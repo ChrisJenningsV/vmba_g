@@ -17,7 +17,7 @@ import '../../components/pageStyleV2.dart';
 
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger, this.destination, this.newBooking})
+      {Key key= const Key("editpaxxp_key"), required this.passengerDetail, required this.isAdsBooking, required this.isLeadPassenger, required this.destination, required this.newBooking})
       : super(key: key);
   final PassengerDetail passengerDetail;
   final bool isAdsBooking;
@@ -34,8 +34,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   var borderRadius = 10.0;
  // bool _loadingInProgress = false;
   final formKey = new GlobalKey<FormState>();
-  String _error;
-  Image bgImage;
+  String _error='';
+  Image? bgImage;
   //var _title = new TextEditingController();
   TextEditingController _titleTextEditingController = TextEditingController();
 
@@ -54,12 +54,12 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
 
-  String phoneNumber;
-  String phoneIsoCode;
+  String phoneNumber ='';
+  String phoneIsoCode ='';
 
 
-  List<UserProfileRecord> userProfileRecordList;
-  int _curGenderIndex ;
+  //List<UserProfileRecord> userProfileRecordList;
+  int _curGenderIndex =0;
   List <String> genderList = ['Male', 'Female', 'Undisclosed'];
   //Countrylist _countryList;
 
@@ -82,7 +82,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     _dateOfBirthTextEditingController.text =
     widget.passengerDetail.dateOfBirth != null
         ? DateFormat('dd-MMM-yyyy')
-        .format(widget.passengerDetail.dateOfBirth)
+        .format(widget.passengerDetail.dateOfBirth as DateTime)
         : '';
     if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
       _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
@@ -119,7 +119,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
       appBar: appBar(context, 'Passenger Detail',
         newBooking: widget.newBooking,
         curStep: 4,
-        imageName: gblSettings.wantPageImages ? 'editPax' : null,
+        imageName: gblSettings.wantPageImages ? 'editPax' : '',
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -199,7 +199,7 @@ Widget _getTitle(){
 
   controller: _titleTextEditingController,
   validator: (value) =>
-  value.isEmpty ? translate('Title cannot be empty') : null,
+  value!.isEmpty ? translate('Title cannot be empty') : null,
   onSaved: (value) {
   if (value != null) {
   }
@@ -214,7 +214,7 @@ Widget _getTitle(){
 
   controller: _titleTextEditingController,
   validator: (value) =>
-  value.isEmpty ? translate('Title cannot be empty') : null,
+  value!.isEmpty ? translate('Title cannot be empty') : null,
   onSaved: (value) {
   if (value != null) {
   //widget.passengerDetail.title = value.trim();
@@ -284,7 +284,7 @@ Widget getFirstname() {
         FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
       ],
       validator: (value) =>
-      value.isEmpty ? translate('First name cannot be empty') : null,
+      value!.isEmpty ? translate('First name cannot be empty') : null,
       onSaved: (value) {
         if (value != null) {
           widget.passengerDetail.firstName = value.trim();
@@ -326,7 +326,7 @@ Widget getFirstname() {
         widget.passengerDetail.lastName = value;
       },
       validator: (value) =>
-      value.isEmpty ? translate('Last name cannot be empty') : null,
+      value!.isEmpty ? translate('Last name cannot be empty') : null,
       onSaved: (value) {
         if (value != null) {
           widget.passengerDetail.lastName = value.trim();
@@ -372,7 +372,7 @@ Widget getFirstname() {
           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
         ],
         validator: (value) =>
-        value.isEmpty ? translate(
+        value!.isEmpty ? translate(
             'Middle name cannot be empty - type NONE if none') : null,
         onSaved: (value) {
           if (value != null) {
@@ -453,7 +453,7 @@ Widget getFirstname() {
         controller: _phoneTextEditingController,
         keyboardType: TextInputType.number,
         validator: (value) =>
-        value.isEmpty ? translate('Phone Number cannot be empty') : null,
+        value!.isEmpty ? translate('Phone Number cannot be empty') : null,
         onFieldSubmitted: (value) {
           widget.passengerDetail.phonenumber = value;
         },
@@ -578,10 +578,10 @@ Widget getFirstname() {
               //initialValue: field.value,
               controller: _dateOfBirthTextEditingController,
               validator: (value) =>
-              value.isEmpty ? translate('Date of Birth is required') : null,
+              value!.isEmpty ? translate('Date of Birth is required') : null,
               onSaved: (value) {
                 if (value != '') {
-                  var date = value.split('-')[2] +
+                  var date = value!.split('-')[2] +
                       ' ' +
                       value.split('-')[1] +
                       ' ' +
@@ -625,7 +625,7 @@ Widget getFirstname() {
             widget.passengerDetail.adsNumber = value;
           },
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'An ADS number is required';
             } else if (!value.toUpperCase().startsWith('ADS') ||
                 value.length != 16 ||
@@ -660,7 +660,7 @@ Widget getFirstname() {
             widget.passengerDetail.adsPin = value;
           },
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'ADS Pin is required';
             } else {
               return null;
@@ -693,7 +693,7 @@ Widget getFirstname() {
             widget.passengerDetail.adsNumber = value;
           },
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'An ADS number is required';
             } else if (!value.toUpperCase().startsWith('ADS') ||
                 value.length != 16 ||
@@ -760,7 +760,12 @@ Widget getFirstname() {
             decoration: getDecoration('Email'),
             controller: _emailTextEditingController,
             keyboardType: TextInputType.emailAddress,
-            validator: (value) => validateEmail(value.trim()),
+            validator: (value) {
+                String er = validateEmail(value!.trim());
+                if(er != '' ) return er;
+                return null;
+
+            },
             onFieldSubmitted: (value) {
               widget.passengerDetail.email = value;
             },
@@ -843,7 +848,7 @@ Widget getFirstname() {
        padding: _padding,
        child: new Theme(
          data: theme,
-         child: countryPicker(_padding, theme),
+         child: countryPicker(_padding, theme) as Widget,
        ),
      ));
    }
@@ -966,7 +971,7 @@ Widget getFirstname() {
         value: gblRememberMe,
         onChanged: (newValue) {
           setState(() {
-            gblRememberMe = newValue;
+            gblRememberMe = newValue!;
           });
         },
         controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
@@ -1001,7 +1006,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
             onChanged: (value) {
               setState(() {
                 logit('Value = ' + value.toString());
-                widget.passengerDetail.gender = genderList[ value];
+                widget.passengerDetail.gender = genderList[ value!];
 
               });
             },
@@ -1011,7 +1016,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 }
 
 
-  Widget countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
+  Widget? countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
     // get current country index
 
     return FutureBuilder(
@@ -1024,7 +1029,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
               var curIndex ;
               var index = 0;
               if(widget.passengerDetail.country == null ) {
-                countrylist.countries.map((country) {
+                countrylist.countries!.map((country) {
                   if (widget.passengerDetail.country.toUpperCase() ==
                       country.enShortName.toUpperCase()) {
                     curIndex = index;
@@ -1039,7 +1044,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
                   child: DropdownButtonFormField<int>(
                     decoration: getDecoration('Country'),
                       value: curIndex,
-                      items: countrylist.countries.map((country )
+                      items: countrylist.countries!.map((country )
                          => DropdownMenuItem(
                            child: addCountry(country), //ext(trimCountry(country.enShortName)),
                            value: index++,
@@ -1050,7 +1055,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
                       onChanged: (value) {
                         setState(() {
                           logit('Value = ' + value.toString());
-                          widget.passengerDetail.country = countrylist.countries[value].enShortName;
+                          widget.passengerDetail.country = countrylist.countries![value!].enShortName;
                           logit('sel country = ' + widget.passengerDetail.country);
                          // _ratingController = value;
                         });
@@ -1061,7 +1066,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
           } else {
             return new CircularProgressIndicator();
           }
-          return null;
+          return Container();
         });
   }
 
@@ -1174,7 +1179,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   }
 
   _showCalenderDialog(PaxType paxType) {
-    DateTime dateTime;
+    DateTime dateTime = DateTime.now();
     DateTime _maximumDate;
     DateTime _minimumDate;
     DateTime _initialDateTime;
@@ -1307,7 +1312,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
               ),
               onPressed: () {
                 Navigator.pop(context, dateTime);
-                _updateDateOfBirth(dateTime);
+                _updateDateOfBirth(dateTime );
               },
             ),
           ],
@@ -1326,7 +1331,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -1336,7 +1341,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 
   void formSave() {
     final form = formKey.currentState;
-    form.save();
+    form!.save();
   }
 
   void validateAndSubmit() async {

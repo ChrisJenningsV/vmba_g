@@ -1,6 +1,6 @@
 class FlightDates {
   DateTime departureDate;
-  DateTime returnDate;
+  DateTime? returnDate;
 
   FlightDates(this.departureDate, this.returnDate);
 }

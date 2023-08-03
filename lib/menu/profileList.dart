@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:vmba/data/repository.dart';
@@ -9,19 +10,19 @@ import 'package:vmba/components/trText.dart';
 
 class ProfileListPage extends StatefulWidget {
   ProfileListPage(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})
+      {Key key= const Key("proflist_key"), this.passengerDetail, this.isAdsBooking=false, this.isLeadPassenger=false})
       : super(key: key);
 
   _ProfileListPageState createState() => _ProfileListPageState();
 
-  final PassengerDetail passengerDetail;
+  final PassengerDetail? passengerDetail;
   final bool isAdsBooking;
   final bool isLeadPassenger;
 }
 
 
 class _ProfileListPageState extends State<ProfileListPage> {
-  List<UserProfileRecord> _profileList;
+  List<UserProfileRecord>? _profileList;
 String _displayProcessingText = 'Loading...';
 
   @override
@@ -101,7 +102,7 @@ String _displayProcessingText = 'Loading...';
     List<Widget> widgets = [];
     //new List<Widget>();
 
-    _profileList.forEach((profile) =>
+    _profileList!.forEach((profile) =>
         widgets.add(ListTile(
             title: Text(profile.name ),
             trailing: _getButton(profile.name),

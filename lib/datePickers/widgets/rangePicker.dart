@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +10,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 
 class RangePickerPage extends StatefulWidget {
   RangePickerPage(
-      {Key key, this.departureDate, this.returnDate, this.onChanged})
+      {Key key= const Key("rangepi_key"), required this.departureDate, required this.returnDate, required this.onChanged})
       : super(key: key);
 
   final DateTime departureDate;
@@ -21,13 +22,13 @@ class RangePickerPage extends StatefulWidget {
 }
 
 class _RangePickerPageState extends State<RangePickerPage> {
-  DateTime _firstDate;
-  DateTime _lastDate;
-  DatePeriod _selectedPeriod;
+  DateTime _firstDate = DateTime.now();
+  DateTime _lastDate = DateTime.now();
+  late DatePeriod _selectedPeriod ;
 
-  Color selectedPeriodStartColor;
-  Color selectedPeriodLastColor;
-  Color selectedPeriodMiddleColor;
+  late Color selectedPeriodStartColor ;
+  late Color selectedPeriodLastColor;
+  late Color selectedPeriodMiddleColor;
 
   @override
   void initState() {

@@ -34,10 +34,8 @@ class FAQsPage extends StatelessWidget {
           switch (gblSettings.aircode) {
             case 'LM':
               return SingleChildScrollView( child: LM.Faqs());
-              break;
             case 'SI':
               return SingleChildScrollView( child: SI.Faqs());
-              break;
 /*            case 'T6':
               return T6.Faqs();
               break;

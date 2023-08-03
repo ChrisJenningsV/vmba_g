@@ -1,4 +1,3 @@
-
 class Country {
   final String name;
 
@@ -8,6 +7,6 @@ class Country {
 
   final String dialCode;
 
-  Country({this.name, this.code, this.flagUri, this.dialCode});
+  Country({this.name='', this.code='', this.flagUri='', this.dialCode=''});
 }
 

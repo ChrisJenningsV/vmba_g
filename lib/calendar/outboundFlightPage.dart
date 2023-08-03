@@ -23,18 +23,18 @@ import '../utilities/messagePages.dart';
 import 'bookingFunctions.dart';
 
 class FlightSeletionPage extends StatefulWidget {
-  FlightSeletionPage({Key key, this.newBooking}) : super(key: key);
+  FlightSeletionPage({Key key= const Key("fltsel_key"), required this.newBooking}) : super(key: key);
   final NewBooking newBooking;
   @override
   _FlightSeletionState createState() => new _FlightSeletionState();
 }
 
 class _FlightSeletionState extends State<FlightSeletionPage> {
-  bool _loadingInProgress;
-  AvailabilityModel objAv;
-  ScrollController _scrollController;
+  bool _loadingInProgress = false;
+  AvailabilityModel objAv = AvailabilityModel();
+  ScrollController _scrollController = ScrollController();
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _noInternet;
+  bool _noInternet = false;
   String avErrorMsg = 'Please check your internet connection';
   String _loading = '';
 
@@ -103,7 +103,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       buffer.write(',SingleSeg=r');
 
       // add return details
-      String retDate = DateFormat('ddMMMyyyy').format(this.widget.newBooking.returnDate).toString().toUpperCase();
+      String retDate = '';
+      if(this.widget.newBooking.returnDate != null)  DateFormat('ddMMMyyyy').format(this.widget.newBooking.returnDate!).toString().toUpperCase();
       buffer.write(',RFDD=$retDate,RETURN=$retDate');
 
     } else {
@@ -157,18 +158,18 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   Future _loadData() async {
     // clear out any current booking
-    String rsI = await runVrsCommand('I');
+    await runVrsCommand('I');
 
 
       Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
       if (rs.isOk()) {
-        objAv = rs.body;
+        objAv = rs.body!;
         removeDepartedFlights();
         _dataLoaded();
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});
         Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
-          objAv = rs.body;
+          objAv = rs.body!;
           removeDepartedFlights();
           _dataLoaded();
         });
@@ -183,17 +184,18 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   void removeDepartedFlights() {
-    if (objAv.availability.itin != null) {
-      int length = objAv.availability.itin.length - 1;
+    final itin = objAv.availability.itin;
+    if (itin != null) {
+      int length = itin.length - 1;
       for (int i = length; i >= 0; i--) {
         DateTime fltDate = DateTime.parse(
-            objAv.availability.itin[i].flt.first.time.ddaygmt +
+            itin[i].flt.first.time.ddaygmt +
                 ' ' +
-                objAv.availability.itin[i].flt.first.time.dtimgmt);
+                itin[i].flt.first.time.dtimgmt);
         //DateTime utcNow = DateTime.now().toUtc().subtract(Duration(minutes: gblSettings.bookingLeadTime));
         DateTime utcNow = DateTime.now().toUtc().add(Duration(minutes: gblSettings.bookingLeadTime));
         if (fltDate.isBefore(utcNow)) {
-          objAv.availability.itin.removeAt(i);
+          itin.removeAt(i);
         }
       }
     }
@@ -214,8 +216,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc()));
 
     calenderWidgetSelectedItem = 0;
-    if(objAv.availability.cal != null && objAv.availability.cal.day != null  ) {
-      for (var f in objAv.availability.cal.day) {
+    if(objAv.availability.cal != null && objAv.availability.cal?.day != null  ) {
+      for (var f in objAv.availability.cal!.day) {
         if (DateTime.parse(f.daylcl).isAfter(_currentDate) ||
             isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
           calenderWidgetSelectedItem += 1;
@@ -288,7 +290,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //return _buildBody();
   }
   void onComplete (dynamic p) {
-    gblError = null;
+    gblError = '';
     setState(() {});
   }
 
@@ -340,12 +342,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget getCalenderWidget() {
-    if (objAv != null && objAv.availability.cal != null && objAv.availability.cal.day != null) {
+    if (objAv != null && objAv.availability.cal != null && objAv.availability.cal!.day != null) {
       return new ListView(
           shrinkWrap: true,
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
-          children: objAv.availability.cal.day
+          children: objAv.availability.cal!.day
               .map(
                 (item) =>
                     getCalDay(item, 'out', widget.newBooking.departureDate, DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())),
@@ -368,10 +370,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget flightAvailability() {
-    if (objAv != null && objAv.availability.itin != null && objAv.availability.itin.length > 0) {
+    if (objAv != null && objAv.availability.itin != null && objAv.availability.itin!.length > 0) {
       return new ListView(
           scrollDirection: Axis.vertical,
-          children: (objAv.availability.itin
+          children: (objAv.availability.itin!
               .map(
                 (item) => flightItem( item),
 
@@ -382,7 +384,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
   }
 
-  Widget flightItem(avItin item){
+  Widget flightItem(AvItin item){
       if( wantPageV2() ) {
         int seatCount = widget.newBooking.passengers.adults +
             widget.newBooking.passengers.youths +
@@ -431,7 +433,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           margin: EdgeInsets.symmetric(vertical: 1.0),
           //height: 70.0,
           constraints: new BoxConstraints(
-            minHeight: 60.0,
+            minHeight: 65.0,
             maxHeight: 80.0,
           ),
           child: getCalenderWidget(),
@@ -443,30 +445,30 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     );
   }
 
-  void goToClassScreen(avItin avItem,int index, List<Flt> flts) async {
+  void goToClassScreen(AvItin avItem,int index, List<Flt> flts) async {
     _loadingInProgress = true;
     gblActionBtnDisabled = false;
     _loading = 'Loading';
     double pri = 0.0;
     String currency='';
     flts.forEach((element) {
-      if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
-          element.fltav.discprice[index] != null &&
-          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'
+      if(element.fltav.discprice != null  && element.fltav.discprice!.length > index &&
+          element.fltav.discprice![index] != null &&
+          element.fltav.discprice![index].isNotEmpty && element.fltav.discprice![index] != '0'
 
       ){
-        pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+        pri += double.tryParse(element.fltav.discprice![index]) as double;
       } else {
-        pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+        pri += double.tryParse(element.fltav.pri![index] ) as double;
       }
-      currency = element.fltav.cur[index];
+      currency = element.fltav.cur![index];
     });
 
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
             page: ChooseFlight(
-          classband: objAv.availability.classbands.band[index],
+          classband: objAv.availability.classbands!.band![index],
           flts: flts, //objAv.availability.itin[0].flt,
           price: pri,
           currency: currency,
@@ -476,10 +478,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, avItem,selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, avItem,selectedFlt, flts, objAv.availability.classbands!.band![index].cbname);
   }
 
-  void flightSelected(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String className) {
+  void flightSelected(BuildContext context,AvItin? avItem, List<String> flt, List<Flt> outboundflts, String className) {
     /*setState(() {
 
     });*/
@@ -504,7 +506,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     builder: (context) => ReturnFlightSeletionPage(
                           newBooking: this.widget.newBooking,
                           outboundFlight: outboundflts.last,
-                          outboundAvItem: avItem,
+                          outboundAvItem: avItem as AvItin,
                         )));
           } else if (this.widget.newBooking.outboundflight[0] != null) {
 
@@ -562,16 +564,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
 
-  Widget pricebuttons(avItin avItem, List<Flt> item) {
-     if (item[0].fltav.pri.length > 3) {
+  Widget pricebuttons(AvItin avItem, List<Flt> item) {
+     if (item[0].fltav.pri!.length > 3) {
       return Wrap(
           spacing: 8.0, //gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: new List.generate(
-              item[0].fltav.pri.length,
+              item[0].fltav.pri!.length,
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav[index] != '0'
+                        item[0].fltav.fav![index] != '0'
                             ? goToClassScreen(avItem,index, item)
                             : print('No av')
                       },
@@ -579,7 +581,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                      children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
                       /*<Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
@@ -625,18 +627,18 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                   ))));
     } else {
       MainAxisAlignment _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      if (item[0].fltav.pri.length == 2) {
+      if (item[0].fltav.pri!.length == 2) {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      } else if (item[0].fltav.pri.length == 3) {
+      } else if (item[0].fltav.pri!.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
       }
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,
           children: new List.generate(
-            item[0].fltav.pri.length,
+            item[0].fltav.pri!.length,
             (index) => ElevatedButton(
                 onPressed: () {
-                  item[0].fltav.fav[index] != '0'
+                  item[0].fltav.fav![index] != '0'
                       ? goToClassScreen(avItem,index, item)
                       : print('No av');
                 },
@@ -649,7 +651,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: new Column(
-                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+                    children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index),
                   ),
                 )),
           ));

@@ -1,72 +1,73 @@
+
 import 'package:flutter/material.dart';
 
 class SystemColors {
   final Color primaryButtonColor;
-  Color progressColor;
-  final Color primaryButtonTextColor;
-  final Color otherButtonTextColor;
-  final Color accentButtonColor;
-  final Color home1ButtonColor;
-  final Color home2ButtonColor;
-  final Color home1ButtonTextColor;
-  final Color home2ButtonTextColor;
+  Color? progressColor ;
+  final Color? primaryButtonTextColor;
+  final Color? otherButtonTextColor;
+  Color accentButtonColor = Colors.cyan;
+  final Color? home1ButtonColor;
+  final Color? home2ButtonColor;
+  final Color? home1ButtonTextColor;
+  final Color? home2ButtonTextColor;
 
   //final Color buttonColor; // = Color.fromRGBO(243, 135, 57, 1);
   final Color primaryColor; // = Colors.white;
-   Color otherButtonColor;
+   Color? otherButtonColor;
    Color textButtonTextColor;
    Color accentColor; // = Colors.white;
 
   Color borderColor;
-   Color primaryHeaderColor;
-   Color progressBackColor;
-  Color progressTextColor;
-   Color headerTextColor;
-   Color promoBackColor;
-   Color oldPriceColor;
-   Color textEditBorderColor;
-   Color textEditIconColor;
+   Color primaryHeaderColor ;
+   Color? progressBackColor;
+   Color? progressTextColor;
+   Color? headerTextColor;
+   Color? promoBackColor;
+   Color? oldPriceColor;
+   Color textEditBorderColor =  Colors.grey.shade300;
+   Color? textEditIconColor;
 
-  final Brightness statusBar;
+   Brightness statusBar = Brightness.light;
 
 //  final Color primaryTitle;
   //final Color accentTitle;
 //  final Color accentBody;
  // final Color primaryLink;
   //final Color accentLink;
-   Color seatPlanColorSelected;
-   Color seatPlanColorEmergency;
-   Color seatPlanColorAvailable;
-   Color seatPlanColorUnavailable;
-   Color seatPlanColorRestricted;
+   Color? seatPlanColorSelected;
+   Color? seatPlanColorEmergency;
+   Color? seatPlanColorAvailable;
+   Color? seatPlanColorUnavailable;
+   Color? seatPlanColorRestricted;
 
   SystemColors({
-    @required this.primaryButtonColor,
-    @required this.accentButtonColor,
-    @required this.primaryColor,
-    @required this.accentColor,
+    required this.primaryButtonColor,
+    required this.accentButtonColor,
+    required this.primaryColor,
+    required this.accentColor,
     this.progressColor,
     this.otherButtonColor,
     this.otherButtonTextColor,
     this.primaryButtonTextColor,
-    this.textButtonTextColor,
+    this.textButtonTextColor = Colors.black,
     this.home1ButtonColor,
     this.home2ButtonColor,
     this.home1ButtonTextColor,
     this.home2ButtonTextColor,
     this.progressBackColor,
     this.progressTextColor,
-    this.primaryHeaderColor,
+    required this.primaryHeaderColor,
     this.headerTextColor,
-    this.statusBar,
-    this.textEditBorderColor,
+    this.statusBar =Brightness.light,
+    this.textEditBorderColor = Colors.grey,
     this.textEditIconColor,
 //    this.primaryTitle,
  //   this.accentTitle,
  //   this.accentBody,
 //    this.primaryLink,
 //    this.accentLink,
-    this.borderColor,
+    this.borderColor = Colors.grey,
     this.seatPlanColorSelected,
     this.seatPlanColorEmergency,
     this.seatPlanColorAvailable,

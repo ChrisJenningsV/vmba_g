@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../components/trText.dart';
 import '../components/vidGraphics.dart';
@@ -10,14 +11,14 @@ import '../utilities/widgets/bullet_widget.dart';
 class FareRulesView extends StatefulWidget {
   final List<FQItin> fQItin;
   final List<Itin> itin;
-  FareRulesView({this.fQItin, this.itin});
+  FareRulesView({required this.fQItin,required  this.itin});
 
-  String currencyCode;
+  final String currencyCode = '';
   _FareRulesState createState() => _FareRulesState();
 }
 
 class _FareRulesState extends State<FareRulesView> {
-  String fareIDs;
+  String fareIDs = '';
   bool _displayProcessingIndicator = true;
   List<List> fareRulesPerSegment = [];
   //List<List> fareRules = [];
@@ -98,7 +99,7 @@ class _FareRulesState extends State<FareRulesView> {
               List<String> list = [];
               fareRulesPerSegment.add(list);
             }
-            fareRulesPerSegment[seg -1].addAll(result.body);
+            fareRulesPerSegment[seg -1].addAll(result.body!);
       });
 
          /* .then((_) {

@@ -5,6 +5,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import '../../Products/productFunctions.dart';
 import '../../calendar/bookingFunctions.dart';
+import '../../data/models/pnr.dart';
 import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';
 import '../../summary/vidFlightTimeline.dart';
@@ -14,12 +15,18 @@ import 'package:vmba/components/showDialog.dart';
 
 
 //class CustomWidget {
-Widget appBar(BuildContext context, String title,
-    {Widget leading, bool automaticallyImplyLeading, List<Widget> actions, Color backgroundColor,
-        NewBooking newBooking,
-        String imageName,  double elevalion, NetworkImage backgroundImage,
-        Widget bottom, double toolbarHeight,
-        int curStep, bool statusBarOn}) {
+PreferredSizeWidget appBar(BuildContext context, String title,
+    {Widget? leading,
+      bool automaticallyImplyLeading=false, List<Widget>? actions,
+        Color? backgroundColor,
+        NewBooking? newBooking,
+        String imageName = '',
+        double? elevalion,
+        NetworkImage? backgroundImage,
+        PreferredSizeWidget? bottom,
+        double? toolbarHeight ,
+        int curStep = 0,
+        bool statusBarOn= false}) {
   if( automaticallyImplyLeading == null ) {automaticallyImplyLeading=true;}
   if( bottom != null ){
 //    logit( 'bottom on page $title');
@@ -36,7 +43,7 @@ Widget appBar(BuildContext context, String title,
   }
 
 
-  Widget flexibleSpace ;
+  Widget? flexibleSpace ;
 
   if( backgroundImage != null ) {
     flexibleSpace = Image(
@@ -100,7 +107,7 @@ Widget appBar(BuildContext context, String title,
     wantOutline = true;
   }
 
-  if( gblSettings.wantLeftLogo && leading == null ) {
+  if( gblSettings.wantLeftLogo && (leading == null || leading == false)) {
 
     return AppBar(
       flexibleSpace: flexibleSpace,
@@ -120,7 +127,7 @@ Widget appBar(BuildContext context, String title,
     );
 
   } else {
-    Widget ab = AppBar(
+    PreferredSizeWidget ab = AppBar(
       leading: leading,
       bottom: bottom,
       toolbarHeight: toolbarHeight,
@@ -159,7 +166,7 @@ class StatusBar extends StatefulWidget {
   final NewBooking newBooking;
   final Widget Function(NewBooking newBooking) body;
 
-  StatusBar({Key key, this.newBooking, this.body}) : super(key: key);
+  StatusBar({Key key = const Key("statbar_key"), required this.newBooking, required this.body}) : super(key: key);
 
   StatusBarState createState() => StatusBarState();
 }
@@ -169,10 +176,10 @@ class StatusBarState extends State<StatusBar> {
 
   @override
   Widget build(BuildContext context) {
-    setAmountPayable(gblPnrModel);
+    setAmountPayable(gblPnrModel as PnrModel);
 
-    Color iconClr = gblSystemColors.headerTextColor;
-    if( gblPnrModel == null || gblPnrModel.pNR == null ){
+    Color? iconClr = gblSystemColors.headerTextColor;
+    if( gblPnrModel == null || gblPnrModel!.pNR == null ){
       return Container();
     }
 
@@ -234,9 +241,10 @@ List<Widget> getTabs(BuildContext context, NewBooking newBooking, bool isExpande
       children: getBookingSummaryBar(context, newBooking,isExpanded)));
 
   tabViews.add(SummaryView(newBooking: newBooking,));
-  tabViews.add(FareRulesView(fQItin: gblPnrModel.pNR.fareQuote.fQItin,
-    itin: gblPnrModel.pNR.itinerary.itin,));
-
+  if( gblPnrModel != null ) {
+    tabViews.add(FareRulesView(fQItin: gblPnrModel!.pNR.fareQuote.fQItin,
+      itin: gblPnrModel!.pNR.itinerary.itin,));
+  }
   List<Widget> list=[];
   list.add(
     DefaultTabController(
@@ -269,27 +277,30 @@ List<Widget> getTabs(BuildContext context, NewBooking newBooking, bool isExpande
 }
 
 Widget _getTitle(NewBooking newBooking,bool expanded) {
-  setAmountPayable(gblPnrModel);
-  Color txtCol = gblSystemColors.headerTextColor;
+  if( gblPnrModel!= null ) setAmountPayable(gblPnrModel as PnrModel);
+  Color? txtCol = gblSystemColors.headerTextColor;
   if( expanded){
     txtCol = Colors.black;
   }
   TextStyle tStyle = TextStyle( color:  txtCol,fontSize: 20);
  return Padding(padding: EdgeInsets.only(left: 10, top: 0),
       child:  Row(children: [
+        Text(cityCodetoAirport(newBooking.departure),
+            textScaleFactor: 0.75,
+            style:  tStyle),
 
-        FutureBuilder(
+   /*     FutureBuilder(
           future: cityCodeToName(
             newBooking.departure,
           ),
           initialData: newBooking.departure.toString(),
           builder: (BuildContext context, AsyncSnapshot<String> text) {
-            return new Text(text.data,
+            return new Text(text.data as String,
                 textScaleFactor: 0.75,
                 style:  tStyle);
           },
         ),
-
+*/
         newBooking.isReturn ?
         new RotatedBox(
             quarterTurns: 1,
@@ -305,19 +316,23 @@ Widget _getTitle(NewBooking newBooking,bool expanded) {
           color: txtCol,
         ),
 
-        FutureBuilder(
+  /*      FutureBuilder(
           future: cityCodeToName(
             newBooking.arrival,
           ),
           initialData: newBooking.arrival.toString(),
           builder: (BuildContext context, AsyncSnapshot<String> text) {
             return new Text(
-              text.data,
+              text.data as String,
               textScaleFactor: 0.75,
               style: tStyle,
             );
           },
-        ),
+        ),*/
+        Text(cityCodetoAirport(newBooking.arrival),
+            textScaleFactor: 0.75,
+            style:  tStyle),
+
         Spacer(),
         Text( gblPayable, style: TextStyle(color: txtCol), textScaleFactor: 1.0,),
 
@@ -451,59 +466,4 @@ return Stack(
 );
 
 }
-/*
-
-Widget _getStatus(BuildContext context, int curStep ) {
-  List <String> _steps= ['Search', 'Flights', 'Summary', 'Pax', 'Pay'];
-  //List <IconData> _icons = [Icons.input, Icons.airplanemode_active, Icons.sim_card_outlined, Icons.person_outline, Icons.credit_card];
-Color textClr = gblSystemColors.progressTextColor;
-
-  return Container(
-    color: gblSystemColors.progressBackColor,
-   child:   StepProgressIndicator(
-      totalSteps: 6,
-      currentStep: curStep,
-      size: 35,
-      selectedColor: gblSystemColors.primaryHeaderColor.withOpacity(0.3),
-      unselectedColor: Colors.grey.shade100.withOpacity(0.3),
-      customStep: (index, color, _) {
-        if (index <= curStep) {
-          if( index == curStep) {
-            return Container(
-                color: gblSystemColors.progressBackColor,
-                child: RotatedBox(
-                    quarterTurns: 1,
-                    child: new Icon(
-                      Icons.airplanemode_active,
-                      size: 30,
-                      color: gblSystemColors.progressTextColor,
-                    )));
-          }
-          return Container(
-              color: gblSystemColors.progressBackColor,
-            child: Column( children: [
-            Text(translate(_steps[index]), textScaleFactor: 0.75, style: TextStyle(color: textClr),),
-              Padding(padding: EdgeInsets.only(top: 5),),
-              Container(height: 4,
-                color: gblSystemColors.progressTextColor,),
-              //Divider(color: Colors.grey, height: 4,),
-              Spacer(),
-
-          ]));
-        } else {
-          return Container(
-            color: gblSystemColors.progressBackColor,
-            child: Icon(
-              Icons.cloud_outlined,
-              color: gblSystemColors.progressTextColor,
-              size: 15,
-            ),
-          );
-        }
-      }
-
-  )    );
-
-}
-*/
 

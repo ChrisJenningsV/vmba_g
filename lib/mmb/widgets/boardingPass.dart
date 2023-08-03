@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
-import 'package:simpleprogressdialog/builders/cupertino_dialog_builder.dart';
+//import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
+//import 'package:simpleprogressdialog/builders/cupertino_dialog_builder.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'dart:async';
 import 'dart:io';
@@ -18,14 +18,13 @@ import 'package:barcode_widget/barcode_widget.dart';
 import 'package:vmba/mmb/iosAddBoardingPassToWallet.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:simpleprogressdialog/simpleprogressdialog.dart';
 
 import '../../Helpers/networkHelper.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
 //lsLM0032/18MARABZKOI[CB=FLY][CUR=GBP]~x
 class BoardingPassWidget extends StatefulWidget {
-  BoardingPassWidget({Key key, this.pnr, this.journeyNo, this.paxNo})
+  BoardingPassWidget({Key key= const Key("bpasswid_key"), required this.pnr, this.journeyNo=1, this.paxNo=1})
       : super(key: key);
   final int journeyNo;
   final int paxNo;
@@ -35,15 +34,15 @@ class BoardingPassWidget extends StatefulWidget {
 }
 
 class BoardingPassWidgetState extends State<BoardingPassWidget> {
-  bool _loadingInProgress;
+  bool _loadingInProgress=false;
   int _currentBarcode = 1;
   bool _barCodeScanError = false;
   GlobalKey globalKey = new GlobalKey();
 
-  String barCodeData;
+  String barCodeData='';
   //String cmd = "BPPLM0037:10Apr2019:KOI:ABZ:AATPCR1";
 
-  BoardingPass _boardingPass;
+  BoardingPass? _boardingPass;
   @override
   void initState() {
     super.initState();
@@ -98,7 +97,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             paxname: widget.pnr.pNR.names.pAX[widget.paxNo].firstName +
                 ' ' +
                 widget.pnr.pNR.names.pAX[widget.paxNo].surname,
-            barcodedata: (_boardingPass != null ) ?_boardingPass.barcodedata : '', //getBarCodeData(),
+            barcodedata: (_boardingPass != null ) ?_boardingPass!.barcodedata : '', //getBarCodeData(),
             paxno: widget.paxNo,
             seat: widget.pnr.pNR.aPFAX == null
                 ? new AFX(seat: '- ').seat
@@ -213,14 +212,14 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   void getVRSMobileBP(String cmd) {
     Repository.get().getVRSMobileBP(cmd).then((value) => setState(() {
           _boardingPass = value;
-          //_boardingPass.gate = gateNo.isNotEmpty ? gateNo : '-';
-          //_boardingPass.boarding = boardingTime != null ? boardingTime : 60;
+          //_boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
+          //_boardingPass!.boarding = boardingTime != null ? boardingTime : 60;
           // Repository.get().updateBoardingPass(_boardingPass);
         }));
     // setState(() {
     //   _boardingPass
-    //   //_boardingPass.gate = gateNo.isNotEmpty ? gateNo : '-';
-    //   //_boardingPass.boarding = boardingTime != null ? boardingTime : 60;
+    //   //_boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
+    //   //_boardingPass!.boarding = boardingTime != null ? boardingTime : 60;
     //   Repository.get().updateBoardingPass(_boardingPass);
     // });
   }
@@ -233,11 +232,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         widget.pnr.pNR.itinerary.itin[widget.journeyNo].depDate));
 
     String _depart = widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart;
-    String data;
+    String data = '';
 
     if( gblSettings.useWebApiforVrs) {
       String cmd = 'DF/$_fltNo/$_date/$_depart';
-      String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+      String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
           gblSettings.xmlToken.replaceFirst('token=', ''),
           vrsGuid: gblSettings.vrsGuid,
           notifyToken: gblNotifyToken,
@@ -247,7 +246,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       )); // '{VrsApiRequest: ' + + '}' ;
       http.Response response = await http
           .get(Uri.parse(
-          "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+          "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"),
           headers: getXmlHeaders())
           .catchError((resp) {
             logit(resp);
@@ -263,7 +262,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         return null;
       }
 */
-      Map map = jsonDecode(response.body
+      Map<String, dynamic> map = jsonDecode(response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
@@ -281,7 +280,6 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
           gblSettings.xmlToken +
           cmd;
       print(message);
-      String data;
 
       Uri apiUrl = Uri.parse(message);
 
@@ -313,9 +311,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //DF/LM0038/10may/ABZ
 
     setState(() {
-      _boardingPass.gate = gateNo.isNotEmpty ? gateNo : '-';
-      _boardingPass.boarding = boardingTime != null ? boardingTime : 60;
-      Repository.get().updateBoardingPass(_boardingPass);
+      _boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
+      _boardingPass!.boarding = boardingTime != null ? boardingTime : 60;
+      Repository.get().updateBoardingPass(_boardingPass!);
     });
   }
 
@@ -480,8 +478,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   _contentWidget() {
-    logit('_content Widget barcode data=${_boardingPass.barcodedata}');
-    logit('_barCodeScanError = ${_barCodeScanError}');
+    logit('_content Widget barcode data=${_boardingPass!.barcodedata}');
+    logit('_barCodeScanError = $_barCodeScanError');
 
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).viewInsets.bottom;
@@ -515,7 +513,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                       style: new TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w200)),
-                                  Text(_boardingPass.fltno,
+                                  Text(_boardingPass!.fltno,
                                       style: new TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w700))
@@ -531,7 +529,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                         fontWeight: FontWeight.w200)),
                                 Text(
                                     DateFormat('dd MMM')
-                                        .format(_boardingPass.depdate)
+                                        .format(_boardingPass!.depdate!)
                                         .toString(),
                                     //"18 Feb", //snapshot.data['passengers'][i],
                                     style: new TextStyle(
@@ -547,7 +545,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text(_boardingPass.depart,
+                new Text(_boardingPass!.depart,
                     style: new TextStyle(
                         fontSize: 32.0, fontWeight: FontWeight.w700)),
                 new RotatedBox(
@@ -556,7 +554,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                       Icons.airplanemode_active,
                       size: 32.0,
                     )),
-                new Text(_boardingPass.arrive,
+                new Text(_boardingPass!.arrive,
                     style: new TextStyle(
                         fontSize: 32.0, fontWeight: FontWeight.w700))
               ],
@@ -564,28 +562,37 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                FutureBuilder(
+                Text(cityCodetoAirport(_boardingPass!.depart),
+                    style:TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w300)),
+                /*FutureBuilder(
                   future: cityCodeToName(
-                    _boardingPass.depart,
+                    _boardingPass!.depart,
                   ),
-                  initialData: _boardingPass.depart,
+                  initialData: _boardingPass!.depart,
                   builder: (BuildContext context, AsyncSnapshot<String> text) {
-                    return new Text(text.data,
+                    return new Text(text.data!,
                         style: new TextStyle(
                             fontSize: 14.0, fontWeight: FontWeight.w300));
                   },
-                ),
-                FutureBuilder(
+                ),*/
+   /*             FutureBuilder(
                   future: cityCodeToName(
-                    _boardingPass.arrive,
+                    _boardingPass!.arrive,
                   ),
-                  initialData: _boardingPass.arrive,
+                  initialData: _boardingPass!.arrive,
                   builder: (BuildContext context, AsyncSnapshot<String> text) {
-                    return new Text(text.data,
+                    return new Text(text.data!,
                         style: new TextStyle(
                             fontSize: 14.0, fontWeight: FontWeight.w300));
                   },
-                ),
+                ),*/
+                Text(cityCodetoAirport(_boardingPass!.arrive),
+                    style:TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w300)),
+
               ],
             ),
             Divider(),
@@ -605,14 +612,14 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                  child: new Text(_boardingPass.paxname,
+                  child: new Text(_boardingPass!.paxname,
                       style: new TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.w700)),
                 ),
                 new Text(
-                    _boardingPass.classBand.toUpperCase() == 'BLUE FLEX'
+                    _boardingPass!.classBand.toUpperCase() == 'BLUE FLEX'
                         ? 'BLUE PLUS'
-                        : _boardingPass.classBand.toUpperCase(),
+                        : _boardingPass!.classBand.toUpperCase(),
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w700))
               ],
@@ -629,7 +636,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText('SEAT',
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text(_boardingPass.seat,
+                    new Text(_boardingPass!.seat,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700))
                   ],
@@ -640,7 +647,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("GATE ",
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text((_boardingPass.gate==null) ?'':_boardingPass.gate,
+                    new Text((_boardingPass!.gate==null) ?'':_boardingPass!.gate,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
                   ],
@@ -651,10 +658,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text((_boardingPass.boardingTime == null ) ? '' : _boardingPass.boardingTime
+                    new Text((_boardingPass!.boardingTime == null ) ? '' : _boardingPass!.boardingTime
                         /*DateFormat('HH:mm')
-                            .format(_boardingPass.depdate.subtract(
-                                new Duration(minutes: _boardingPass.boarding)))
+                            .format(_boardingPass!.depdate.subtract(
+                                new Duration(minutes: _boardingPass!.boarding)))
                             .toString()*/,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
@@ -666,9 +673,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                     new TrText("DEPARTS", //snapshot.data['passengers'][i],
                         style: new TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w200)),
-                    new Text((_boardingPass.departTime == null ) ? '' : _boardingPass.departTime
+                    new Text((_boardingPass!.departTime == null ) ? '' : _boardingPass!.departTime
                         /*DateFormat('HH:mm')
-                            .format(_boardingPass.depdate)
+                            .format(_boardingPass!.depdate)
                             .toString()*/,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
@@ -689,7 +696,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 style: new TextStyle(
                                     fontSize: 12.0, fontWeight: FontWeight.w200)),
                             new Text(
-                                _boardingPass.fastTrack.toLowerCase() == 'true'
+                                _boardingPass!.fastTrack.toLowerCase() == 'true'
                                     ? translate("YES")
                                     : translate("NO"),
                                 style: new TextStyle(
@@ -706,7 +713,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                 //                 style: new TextStyle(
                 //                     fontSize: 12.0, fontWeight: FontWeight.w200)),
                 //             new Text(
-                //                 _boardingPass.loungeAccess.toLowerCase() == 'true'
+                //                 _boardingPass!.loungeAccess.toLowerCase() == 'true'
                 //                     ? translate("YES")
                 //                     : translate("NO"),
                 //                 style: new TextStyle(
@@ -743,7 +750,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 child: RepaintBoundary(
                                   key: globalKey,
                                   child: QrImage(
-                                    data: _boardingPass.barcodedata,
+                                    data: _boardingPass!.barcodedata,
                                     size: 0.25 * bodyHeight,
                                     //size: 0.5 * bodyHeight,
                                     //version: 5,
@@ -756,7 +763,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                    child:
                                    BarcodeWidget(
                                      barcode: Barcode.pdf417(), // Barcode type and settings
-                                     data: _boardingPass.barcodedata, // Content
+                                     data: _boardingPass!.barcodedata, // Content
                                      width: _currentBarcode == 1 ? 300 : 1,
                                      height: 0.15 * bodyHeight,
                                    ),
@@ -795,7 +802,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                       ),
                                     )
                                   ]),
-                              drawAddPassToWalletButton(_boardingPass),
+                              drawAddPassToWalletButton(_boardingPass!),
                               const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -824,7 +831,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                           child: RepaintBoundary(
                             key: globalKey,
                             child: QrImage(
-                              data: _boardingPass.barcodedata,
+                              data: _boardingPass!.barcodedata,
                               size: 0.25 * bodyHeight,
                               //size: 0.5 * bodyHeight,
                               //version: 5,
@@ -853,7 +860,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 : Text('')
                           ],
                         ),
-                        drawAddPassToWalletButton(_boardingPass),
+                        drawAddPassToWalletButton(_boardingPass!),
                       ],
                     ),
                   ),
@@ -927,19 +934,19 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //NOTE: Loading the JWT url which should invoke a Save to Wallet on an Android device.
     //      On an iOS device the native Wallet App for the application/vnd.apple.pkpass mime type will load.
     String url = "";
-    ProgressDialog progressDialog = ProgressDialog(context: context, barrierDismissible: true);
+  //  ProgressDialog progressDialog = ProgressDialog(context: context, barrierDismissible: true);
     try {
       if (Platform.isAndroid) {
-        progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
+ //       progressDialog.showMaterial(message:"Fetching pass..", layout: MaterialProgressDialogLayout.columnWithCircularProgressIndicator);
         String queryStringParams = await getQueryStringParameters(pass) ;
         url = await getUrlForGooglePass(queryStringParams);
       }
       else {
-        progressDialog.showCupertino(message:"Fetching pass..", layout: CupertinoProgressDialogLayout.columnWithCircularActivityIndicator);
+  //      progressDialog.showCupertino(message:"Fetching pass..", layout: CupertinoProgressDialogLayout.columnWithCircularActivityIndicator);
         String queryStringParams = await getQueryStringParameters(pass);
         url = await getUrlForApplePass(queryStringParams);
       }
-      if (!url?.isEmpty ?? true) {
+      if ( url != null && url.isNotEmpty) {  // ?? true
         AppleBoardingPassHandler passHandler = new AppleBoardingPassHandler();
         passHandler.launchPass(url, gblSettings.apiKey);
       }
@@ -947,7 +954,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     catch(e) {
       print(e);
     }
-    progressDialog.dismiss();
+ //   progressDialog.dismiss();
   }
 
   Future<String> getUrlForApplePass(String queryStringParams) async {
@@ -976,8 +983,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   Future<String> getQueryStringParameters(BoardingPass pass) async {
-    String departCityName = await cityCodeToName(pass.depart);
-    String arrivalCityName = await cityCodeToName(pass.arrive);
+    String departCityName = cityCodetoAirport(pass.depart);
+    String arrivalCityName = cityCodetoAirport(pass.arrive);
     var qParams = new StringBuffer();
     qParams.write('?AirCode=${gblSettings.aircode}');
     qParams.write('&LogoText=${gblSettings.airlineName}');

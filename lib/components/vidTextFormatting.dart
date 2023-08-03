@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget getH2Text(String stext, {String right}) {
+Widget getH2Text(String stext, {String right=''}) {
   if (right != null ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -17,7 +17,7 @@ Widget getH2Text(String stext, {String right}) {
         ]);
 }
 
-Widget tableRow(String label , String value ){
+Row tableRow(String label , String value ){
   return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -27,6 +27,6 @@ Widget tableRow(String label , String value ){
   );
 }
 
-Widget tableTitle(String title,{String right}) {
+Widget tableTitle(String title,{String right=''}) {
   return getH2Text(title, right: right);
 }

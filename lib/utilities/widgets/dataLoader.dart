@@ -16,12 +16,12 @@ import 'package:vmba/utilities/messagePages.dart';
 
 
 class DataLoaderWidget extends StatefulWidget {
-  final NewBooking newBooking;
+  NewBooking? newBooking;
   final PnrModel pnrModel;
   final Function(PnrModel pnrModel) onComplete;
 
   DataLoaderWidget(
-  { Key key, this.dataType, this.newBooking, this.pnrModel, this.onComplete  }) : super( key: key);
+  { Key key= const Key("dload_key"), required this.dataType, this.newBooking, required this.pnrModel, required this.onComplete  }) : super( key: key);
 
   final LoadDataType dataType;
 
@@ -30,14 +30,14 @@ class DataLoaderWidget extends StatefulWidget {
   }
 
 class DataLoaderWidgetState extends State<DataLoaderWidget> {
-  bool _displayProcessingIndicator;
-  bool _displayFinalError;
-  String _displayProcessingText;
-  String _dataName;
-  String _msg;
-  String _url;
-  String _error;
-  bool _fullLogging;
+  bool _displayProcessingIndicator = false;
+  bool _displayFinalError = false;
+  String _displayProcessingText ='';
+  String _dataName ='';
+  String _msg = '';
+  String _url = '';
+  String _error = '';
+  bool _fullLogging = false;
 
   @override void initState() {
     // TODO: implement initState
@@ -93,7 +93,8 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.cities:
           break;
         case LoadDataType.products:
-          return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete, wantTitle: true,isMMB: true, );
+          if( widget.newBooking == null ) widget.newBooking = NewBooking();
+          return ProductsWidget(newBooking: widget.newBooking!, pnrModel: widget.pnrModel, onComplete: widget.onComplete, wantTitle: true,isMMB: true, );
           break;
         case LoadDataType.providers:
           //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
@@ -230,6 +231,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     }
 
   void saveData(String data) {
+    logit('save data type ${widget.dataType.toString()}');
     switch(widget.dataType){
       case LoadDataType.cities:
         break;

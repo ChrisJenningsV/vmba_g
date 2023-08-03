@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:vmba/data/models/models.dart';
@@ -25,7 +26,7 @@ class TrTitleControl extends IgnorePointer {
         ),
         controller: _titleTextEditingController,
         validator: (value) =>
-        value.isEmpty ? 'Title can\'t be empty' : null,
+        value!.isEmpty ? 'Title can\'t be empty' : null,
         onSaved: (value) {
           if (value != null) {
             passengerDetail.title = value.trim();

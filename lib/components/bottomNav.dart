@@ -1,5 +1,4 @@
 
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +12,9 @@ import '../utilities/blueScreen.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import 'trText.dart';
-void Function() _custom;
+void Function()? _custom;
 
-Widget getBottomNav(BuildContext context, {Widget popButton, String helpText, void Function() custom } ) {
+Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
   if( gblDebugMode == true ){
     return DebugBottomNav(custom: custom,);
@@ -85,8 +84,8 @@ Widget getBottomNav(BuildContext context, {Widget popButton, String helpText, vo
     int newNotifications = 0;
     int promos = 0;
 
-    gblNotifications.forEach((element) {
-      if(element.data['actions'] != null && element.data['actions'] == 'promo') {
+    gblNotifications!.forEach((element) {
+      if(element.data!['actions'] != null && element.data!['actions'] == 'promo') {
         promos +=1;
       } else if( element.background == 'true') {
         newNotifications +=1;
@@ -166,12 +165,12 @@ Widget getNotification(int counter, IconData icon){
             '/MyNotificationsPage', (Route<dynamic> route) => false, arguments: args);
      }
    }
-   if( value == 1) {
+   if( value == 1 && gblNotifications != null) {
      if( newNotifications == 1){
-       gblNotifications.forEach((element) {
+       gblNotifications!.forEach((element) {
          if( element.background == 'true') {
-           RemoteNotification n = RemoteNotification(title: element.notification.title, body: element.notification.body);
-           showNotification( context, n, element.data);
+           RemoteNotification n = RemoteNotification(title: element.notification!.title, body: element.notification!.body);
+           showNotification( context, n, element.data as Map);
            return;
          }
        });
@@ -184,7 +183,7 @@ Widget getNotification(int counter, IconData icon){
      }
    }
 }
-void demoDialog(BuildContext context, {String helpText} ) {
+void demoDialog(BuildContext context, {String? helpText} ) {
   if( helpText == null || helpText.isEmpty){
     helpText = 'You are now in Demo mode, connected to our test system. This system is also used for training and Beta testing, some may not always be available. ' +
         '\n\nThe test system doe not have as many fares and route configures as LIVE. \n\nIf the demo button is flashing more information for the current page is available.';
@@ -194,15 +193,15 @@ void demoDialog(BuildContext context, {String helpText} ) {
       builder: (BuildContext context)
   {
     return msgDialog(context, translate('Demo mode'),
-        Text(helpText));
+        Text(helpText as String));
   }
   );
 }
 
 
 class DebugBottomNav extends StatefulWidget {
-  void Function() custom;
-  DebugBottomNav({ Key key, void Function() custom });
+   void Function()? custom;
+  DebugBottomNav({ Key key= const Key("bottomnav_key"), void Function()? custom  });
 
   @override
   DebugBottomNavState createState() => DebugBottomNavState();
@@ -243,7 +242,7 @@ class DebugBottomNavState extends State<DebugBottomNav> {
       label: gblIsLive ?  'Live' : 'Test',
     ));
 
-    logit( 'cc=${gblSettings.creditCardProvider} page=${gblCurPage}');
+    logit( 'cc=${gblSettings.creditCardProvider} page=$gblCurPage');
     if( gblCurPage == 'CREDITCARDPAGE' && gblSettings.creditCardProvider.toLowerCase() == 'videcard' ) {
       logit('add');
       _custom = widget.custom;
@@ -258,7 +257,7 @@ class DebugBottomNavState extends State<DebugBottomNav> {
 
     return BottomNavigationBar(
         onTap:(index) {
-          _selectPage(context, index, _custom);
+          _selectPage(context, index, _custom );
         },
         currentIndex: _selectedPageIndex,
         type: BottomNavigationBarType.fixed,
@@ -266,7 +265,7 @@ class DebugBottomNavState extends State<DebugBottomNav> {
     );
 
   }
-  void _selectPage(BuildContext context, int index, void Function() custom) {
+  void _selectPage(BuildContext context, int index, void Function()? custom) {
     switch (index) {
       case 0:
       // logout

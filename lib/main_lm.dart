@@ -54,7 +54,7 @@ void configLM() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    pageStyle: 'V2',
+    //pageStyle: 'V2',
 
     airlineName: "Loganair",
   gblServerFiles: 'https://booking.loganair.co.uk/AppFiles/',

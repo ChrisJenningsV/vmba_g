@@ -7,10 +7,10 @@ import 'package:vmba/utilities/helper.dart';
 
 
 class VInputField extends StatefulWidget {
-  final FieldParams  fieldParams;
+  final FieldParams?  fieldParams;
 
   const VInputField({
-    Key key,
+    Key key= const Key("vinput_key"),
     this.fieldParams}) : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class VInputField extends StatefulWidget {
 
 class VInputFieldState extends State<VInputField> {
 
-  TextEditingController _textEditingController;
+  late TextEditingController _textEditingController;
 
 
   @override
@@ -37,12 +37,12 @@ class VInputFieldState extends State<VInputField> {
         );
 
 
-    if ( widget.fieldParams.ftype == FieldType.country) {
+    if ( widget.fieldParams!.ftype == FieldType.country) {
       return Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
           data: theme,
-          child: countryPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), theme),
+          child: countryPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), theme)!,
         ),
       );
     }
@@ -51,8 +51,8 @@ class VInputFieldState extends State<VInputField> {
       child: new Theme(
         data: theme ,
         child: TextFormField(
-          maxLength: widget.fieldParams.maxLength,
-          decoration:getDecoration(widget.fieldParams.label),
+          maxLength: widget.fieldParams!.maxLength,
+          decoration:getDecoration(widget.fieldParams!.label),
 
           controller: _textEditingController,
           onFieldSubmitted: (value) {
@@ -61,21 +61,21 @@ class VInputFieldState extends State<VInputField> {
               gblPayFormVals = new Map();
             }
 //            if( gblPayFormVals.containsKey(widget.fieldParams.id)){
-              gblPayFormVals[widget.fieldParams.id] = value;
+              gblPayFormVals![widget.fieldParams!.id] = value;
           },
 
           textInputAction: TextInputAction.done,
           // keyboardType: TextInputType.text,
-          inputFormatters: widget.fieldParams.inputFormatters,
+          inputFormatters: widget.fieldParams!.inputFormatters,
           validator: (value) =>
-          value.isEmpty ? translate('${widget.fieldParams.label}') + ' ' + translate('cannot be empty') : null,
+          value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
           onSaved: (value) {
             if (value != null) {
               if( gblPayFormVals == null ) {
                 gblPayFormVals = new Map();
               }
 //            if( gblPayFormVals.containsKey(widget.fieldParams.id)){
-              gblPayFormVals[widget.fieldParams.id] = value;
+              gblPayFormVals![widget.fieldParams!.id] = value;
             }
           },
         ),
@@ -84,7 +84,7 @@ class VInputFieldState extends State<VInputField> {
   }
 
 
-  Widget countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
+  Widget? countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
     // get current country index
 
     return FutureBuilder(
@@ -96,9 +96,9 @@ class VInputFieldState extends State<VInputField> {
               // String val = countrylist.countries[0].enShortName;
               var curIndex ;
               var index = 0;
-              if(widget.fieldParams.defaultVal == null ) {
-                countrylist.countries.map((country) {
-                  if (widget.fieldParams.defaultVal.toUpperCase() ==
+              if(widget.fieldParams!.defaultVal == null ) {
+                countrylist.countries!.map((country) {
+                  if (widget.fieldParams!.defaultVal.toUpperCase() ==
                       country.enShortName.toUpperCase()) {
                     curIndex = index;
                   }
@@ -113,7 +113,7 @@ class VInputFieldState extends State<VInputField> {
                       child: DropdownButtonFormField<int>(
                         decoration: getDecoration('Country'),
                         value: curIndex,
-                        items: countrylist.countries.map((country )
+                        items: countrylist.countries!.map((country )
                         => DropdownMenuItem(
 
                           child: addCountry(country), //ext(trimCountry(country.enShortName)),
@@ -121,7 +121,7 @@ class VInputFieldState extends State<VInputField> {
                         )
                         ).toList(),
                         validator: (value) =>
-                        (value == null) ? translate('${widget.fieldParams.label}') + ' ' + translate('cannot be empty') : null,
+                        (value == null) ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
                         // DbCountryext('Country'),
                         onChanged: (value) {
                           setState(() {
@@ -130,7 +130,7 @@ class VInputFieldState extends State<VInputField> {
                               gblPayFormVals = new Map();
                             }
 //            if( gblPayFormVals.containsKey(widget.fieldParams.id)){
-                            gblPayFormVals[widget.fieldParams.id] = countrylist.countries[value].alpha2code;
+                            gblPayFormVals![widget.fieldParams!.id] = countrylist.countries![value!].alpha2code;
                             //'widget.passengerDetail.country = countrylist.countries[value].enShortName;
 
                           });
@@ -141,7 +141,7 @@ class VInputFieldState extends State<VInputField> {
           } else {
             return new CircularProgressIndicator();
           }
-          return null;
+          return Container();
         });
   }
 
@@ -205,22 +205,22 @@ enum FieldType { text, country, checkbox}
 
 class FieldParams {
   String label;
-  String defaultVal;
+  String defaultVal ='';
   int maxLength;
   int minLength;
   bool required;
   String id;
   FieldType ftype;
 
-  List<TextInputFormatter> inputFormatters;
+  List<TextInputFormatter>? inputFormatters;
 
   FieldParams({
-    this.label,
-    this.maxLength,
-    this.minLength,
+    this.label ='',
+    this.maxLength =0,
+    this.minLength =0,
     this.inputFormatters,
-    this.required,
-    this.id,
+    this.required = false,
+    this.id = '',
     this.ftype = FieldType.text,
   });
 

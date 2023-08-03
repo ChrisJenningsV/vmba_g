@@ -17,15 +17,15 @@ import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 
 class FlightSearchPage extends StatefulWidget {
-  FlightSearchPage({this.ads});
+  FlightSearchPage({this.ads = false});
   final bool ads;
   @override
   _FlightSearchPageState createState() => _FlightSearchPageState();
 }
 
 class _FlightSearchPageState extends State<FlightSearchPage> {
-  NewBooking booking;
-  bool adsTermsAccepted;
+  NewBooking booking = NewBooking();
+  bool adsTermsAccepted = false;
   bool firstBuild = true;
 
   @override
@@ -37,14 +37,14 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     booking.currency = gblSettings.currency;
     gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
-    gblCurrentRloc = null;
+    gblCurrentRloc = '';
     gblActionBtnDisabled = false;
 
     if (widget.ads) {
-      if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null && gblPassengerDetail.adsNumber.isNotEmpty &&
-          gblPassengerDetail.adsPin != null && gblPassengerDetail.adsPin.isNotEmpty
+      if(gblPassengerDetail != null && gblPassengerDetail!.adsNumber != null && gblPassengerDetail!.adsNumber.isNotEmpty &&
+          gblPassengerDetail!.adsPin != null && gblPassengerDetail!.adsPin.isNotEmpty
       ) {
-        booking.ads = new ADS(gblPassengerDetail.adsPin,gblPassengerDetail.adsNumber);
+        booking.ads = new ADS(gblPassengerDetail!.adsPin,gblPassengerDetail!.adsNumber);
       } else {
         Repository.get().getADSDetails().then((v) {
           booking.ads = v;
@@ -91,7 +91,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> args = ModalRoute.of(context).settings.arguments;
+    final List<String>? args = ModalRoute.of(context)?.settings.arguments as List<String>?;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     String helpText ='';
     EdgeInsets pad = EdgeInsets.all(16.0);
@@ -112,7 +112,6 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(
-          systemColors: gblSystemColors,
           newBooking: booking,
           onChanged: _reloadSearch,
         )
@@ -125,7 +124,6 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               JourneyTypeWidget(
-                  systemColors: gblSystemColors,
                   isReturn: _isReturn,
                   onChanged: _handleReturnToggleChanged),
               new Padding(
@@ -180,7 +178,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                 value: gblRedeemingAirmiles,
                 onChanged: (newValue) {
                   setState(() {
-                    gblRedeemingAirmiles = newValue;
+                    gblRedeemingAirmiles = newValue as bool;
                   });
                 },
                 controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
@@ -223,8 +221,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               value: booking.currency,
               onChanged: (newValue) {
                 setState(() {
-                  gblSelectedCurrency = newValue;
-                  booking.currency = newValue;
+                  gblSelectedCurrency = newValue as String ;
+                  booking.currency = newValue as String;
                 });
               },
               items: _currencies.map((currency) {
@@ -247,7 +245,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
       return false;
     }
 
-    if( gblPassengerDetail.fqtv == null || gblPassengerDetail.fqtv.isEmpty) {
+    if( gblPassengerDetail!.fqtv == null || gblPassengerDetail!.fqtv.isEmpty) {
       gblRedeemingAirmiles = false;
       gblShowRedeemingAirmiles = false;
       return false;

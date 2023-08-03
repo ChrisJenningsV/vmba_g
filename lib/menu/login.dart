@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
@@ -14,7 +15,7 @@ class Constants{
 
 class LoginPage extends StatefulWidget {
   LoginPage(
-      {Key key})
+      {Key key= const Key("loginpa_key")})
       : super(key: key);
 
   _LoginPageState createState() => _LoginPageState();
@@ -24,8 +25,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String title = 'Login';
-  String _error;
-  bool _btnDisabled;
+  String _error='';
+  bool _btnDisabled=false;
   String descriptions = 'descriptions';
   TextEditingController _adsNumberTextEditingController = TextEditingController();
   TextEditingController _adsPinTextEditingController = TextEditingController();
@@ -202,8 +203,8 @@ class _LoginPageState extends State<LoginPage> {
         if( gblPassengerDetail == null ) {
           gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
         }
-        gblPassengerDetail.adsNumber = _adsNumberTextEditingController.text;
-        gblPassengerDetail.adsPin = _adsPinTextEditingController.text;
+        gblPassengerDetail!.adsNumber = _adsNumberTextEditingController.text;
+        gblPassengerDetail!.adsPin = _adsPinTextEditingController.text;
       } else {
         _btnDisabled = false;
         setState(() {

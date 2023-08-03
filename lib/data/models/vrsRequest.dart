@@ -1,38 +1,29 @@
-
-
-
 import 'package:vmba/data/models/pax.dart';
 
 import 'models.dart';
 
 class VrsApiRequest extends Session {
-  String cmd;
-  String brandId;
-  String appFile;
-  String token;
-  String vrsGuid;
-  String phoneId;
-  String notifyToken;
-  String rloc;
-  String data;
-  String language;
-  String appVersion;
-  String undoCmd;
+  String cmd ='';
+  String brandId ='';
+  String appFile ='';
+  String token ='';
+  String vrsGuid ='';
+  String phoneId ='';
+  String notifyToken ='';
+  String rloc ='';
+  String data ='';
+  String language ='';
+  String appVersion ='';
+  String undoCmd ='';
 
   VrsApiRequest(
       Session session,
       this.cmd,
       this.token,
-  {this.brandId,
-    this.appFile,
-    this.vrsGuid,
-    this.phoneId,
-    this.rloc,
-    this.data,
-    this.notifyToken,
-    this.undoCmd,
-    this.language,
-    this.appVersion}
+  {this.appFile='',this.vrsGuid='', this.appVersion='', this.brandId='',
+    this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='', this.data=''
+
+  }
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
   Map toJson() {
@@ -57,34 +48,34 @@ class VrsApiRequest extends Session {
 }
 
 class VrsApiResponse  {
-  String data;
-  String errorMsg;
-  String sessionId;
-  String varsSessionId;
-  String vrsServerNo;
-  String serverIP;
-  bool isSuccessful;
+  String data ='';
+  String errorMsg ='';
+  String sessionId ='';
+  String varsSessionId ='';
+  String vrsServerNo ='';
+  String serverIP ='';
+  bool isSuccessful = true;
 
   VrsApiResponse( this.data, this.varsSessionId, this.sessionId, this.vrsServerNo, this.errorMsg, this.isSuccessful) ;
 
   VrsApiResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'];
-    errorMsg = json['errorMsg'];
-    sessionId = json['sessionID'];
-    varsSessionId = json['VARSSessionID'];
-    vrsServerNo = json['vrsServerNo'];
-    isSuccessful = json['isSuccessful'];
-    serverIP = json['serverIP'];
+    if( json['data'] != null )data = json['data'];
+    if(json['errorMsg']!= null )errorMsg = json['errorMsg'];
+    if(json['sessionID'] != null )sessionId = json['sessionID'];
+    if(json['VARSSessionID'] != null )varsSessionId = json['VARSSessionID'];
+    if( json['vrsServerNo'] != null )vrsServerNo = json['vrsServerNo'];
+    if( json['isSuccessful'] != null )isSuccessful = json['isSuccessful'];
+    if( json['serverIP'] != null )serverIP = json['serverIP'];
   }
 }
 
 class SeatRequest{
-  bool webCheckinNoSeatCharge;
-  String rloc;
-  int journeyNo;
-  List<Pax> paxlist;
+  bool webCheckinNoSeatCharge=false;
+  String rloc ='';
+  int journeyNo=1;
+  List<Pax>? paxlist; // = List.from([Pax]);
 
-  SeatRequest({this.webCheckinNoSeatCharge, this.paxlist, this.rloc, this.journeyNo});
+  SeatRequest();
 
 Map  toJson() {
     Map map = new Map();
@@ -93,34 +84,34 @@ Map  toJson() {
     map['journeyNo'] = journeyNo;
 
     if (this.paxlist != null) {
-      map['paxlist'] = this.paxlist.map((v) => v.toJson()).toList();
+      map['paxlist'] = this.paxlist!.map((v) => v.toJson()).toList();
     }
     return map;
   }
 }
 
 class SeatReply {
-  String reply;
-  String seats;
-  String outstandingAmount;
+  String reply ='';
+  String seats ='';
+  String outstandingAmount ='';
 
   SeatReply(this.reply, this.seats, this.outstandingAmount);
 
 
   SeatReply.fromJson(Map<String, dynamic> json) {
-    reply = json['reply'];
-    seats = json["seats"];
-    outstandingAmount = json["outstandingAmount"];
+    if( json['reply'] != null )reply = json['reply'];
+    if( json["seats"] != null )seats = json["seats"];
+    if( json["outstandingAmount"] != null )outstandingAmount = json["outstandingAmount"];
   }
 }
 
 
 class AddProductRequest{
-  String rloc;
-  int journeyNo;
-  List<Pax> paxlist;
+  String rloc ='';
+  int journeyNo=1;
+  List<Pax> paxlist =List.from([Pax]);
 
-  AddProductRequest({ this.paxlist, this.rloc, this.journeyNo});
+  AddProductRequest();
 
   Map  toJson() {
     Map map = new Map();
@@ -134,11 +125,11 @@ class AddProductRequest{
   }
 }
 class DeleteProductRequest{
-  String rloc;
-  int journeyNo;
-  List<Pax> paxlist;
+  String rloc ='';
+  int journeyNo = 1;
+  List<Pax> paxlist = List.from([Pax]);
 
-  DeleteProductRequest({ this.paxlist, this.rloc, this.journeyNo});
+  DeleteProductRequest();
 
   Map  toJson() {
     Map map = new Map();
@@ -154,8 +145,8 @@ class DeleteProductRequest{
 
 
 class ProductReply {
-  String reply;
-  bool success;
+  String reply ='';
+  bool success=true;
 
   ProductReply(this.reply, this.success);
 
@@ -167,10 +158,10 @@ class ProductReply {
 }
 
 class RefundRequest{
-  String rloc;
-  int journeyNo;
+  String rloc ='';
+  int journeyNo =1;
 
-  RefundRequest({ this.rloc, this.journeyNo});
+  RefundRequest({ this.rloc='', this.journeyNo=1});
 
   Map  toJson() {
     Map map = new Map();
@@ -182,8 +173,8 @@ class RefundRequest{
 }
 
 class RefundReply {
-  String reply;
-  bool success;
+  String reply ='';
+  bool success = true;
 
   RefundReply(this.reply, this.success);
 
@@ -196,15 +187,15 @@ class RefundReply {
 
 
 class PaymentRequest{
-  String rloc;
-  String paymentType;
-  String paymentName;
-  String amount;
-  String currency;
-  String confirmation;
-  String cmd;
+  String rloc ='';
+  String paymentType ='';
+  String paymentName ='';
+  String amount ='';
+  String currency ='';
+  String confirmation ='';
+  String cmd ='';
 
-  PaymentRequest({ this.rloc, this.paymentType});
+  PaymentRequest({ this.rloc='', this.paymentType=''});
 
   Map  toJson() {
     Map map = new Map();
@@ -219,7 +210,7 @@ class PaymentRequest{
 }
 
 class PaymentReply {
-  String reply;
+  String reply ='';
 
   PaymentReply(this.reply);
 
@@ -230,10 +221,10 @@ class PaymentReply {
 }
 
 class FqtvLoginRequest{
-  String user;
-  String password;
+  String user ='';
+  String password ='';
 
-  FqtvLoginRequest({ this.user, this.password});
+  FqtvLoginRequest({ this.user='', this.password=''});
 
   Map  toJson() {
     Map map = new Map();
@@ -245,28 +236,28 @@ class FqtvLoginRequest{
 
 
 class FqtvLoginReply {
-  String reply;
-  String title;
-  String firstname;
-  String surname;
-  String phoneMobile;
-  String phoneHome;
-  String email;
-  String balance;
-  String joiningDate;
+  String reply ='';
+  String title ='';
+  String firstname ='';
+  String surname ='';
+  String phoneMobile ='';
+  String phoneHome ='';
+  String email ='';
+  String balance ='';
+  String joiningDate ='';
 
   FqtvLoginReply(this.reply);
 
   FqtvLoginReply.fromJson(Map<String, dynamic> json) {
     //reply = json['reply'];
-     title = json['title'];
-     firstname = json['firstname'];
-     surname = json['surname'];
-     phoneMobile = json['phoneMobile'];
-     phoneHome = json['phoneHome'];
-     email = json['email'];
-     balance = json['balance'];
-     joiningDate = json['joiningDate'];
+     if( json['title'] != null )title = json['title'];
+     if( json['firstname'] != null )firstname = json['firstname'];
+     if( json['surname'] != null )surname = json['surname'];
+     if(json['phoneMobile'] != null )phoneMobile = json['phoneMobile'];
+     if( json['phoneHome'] != null )phoneHome = json['phoneHome'];
+     if( json['email']!= null )email = json['email'];
+     if( json['balance'] != null )balance = json['balance'];
+     if( json['joiningDate'] != null )joiningDate = json['joiningDate'];
   }
 }
 

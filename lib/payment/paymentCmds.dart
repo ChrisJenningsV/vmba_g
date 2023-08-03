@@ -127,7 +127,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
     showSnackBar(_error, context);
     return null;
   } else {
-    Map map = json.decode(_response);
+    Map<String, dynamic> map = json.decode(_response);
     pnrModel = new PnrModel.fromJson(map);
     print(pnrModel.pNR.rLOC);
     if (pnrModel.hasNonHostedFlights() &&
@@ -176,7 +176,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
-          Map map = json.decode(pnrJson);
+          Map<String, dynamic> map = json.decode(pnrJson);
 
           pnrModel = new PnrModel.fromJson(map);
         }

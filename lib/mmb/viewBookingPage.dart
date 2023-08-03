@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/mmb/widgets/apis.dart';
@@ -43,7 +44,7 @@ enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
 //int _journeyToChange;
 MmbBooking _mmbBooking = MmbBooking();
-PnrModel pnr;
+//PnrModel pnr;
 
 bool wantChangeAnyFlight = true;
 
@@ -59,7 +60,7 @@ class PnrChangeNotifier with ChangeNotifier {
 }
 
 class ViewBookingPage extends StatefulWidget {
-  ViewBookingPage({Key key, this.rloc}) : super(key: key);
+  ViewBookingPage({Key key= const Key("viewbpag_key"), this.rloc=''}) : super(key: key);
   String rloc;
 
 
@@ -78,7 +79,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   @override
   initState() {
     gblCurPage = 'VIEWBOOKING';
-    gblError = null;
+    gblError = '';
     gblPaymentMsg = '';
     if(widget.rloc == null || widget.rloc == ''){
       widget.rloc = gblCurrentRloc;
@@ -98,11 +99,11 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
     Color menuColor = Colors.white;
     if (gblPnrModel != null &&
-        double.parse(gblPnrModel.pNR.basket.outstanding.amount) > 0) {
+        double.parse(gblPnrModel!.pNR.basket.outstanding.amount) > 0) {
       menuColor = Colors.red;
     }
 
-  //  int noSeats = gblPnrModel.pNR.seatCount();
+  //  int noSeats = gblPnrModel!.pNR.seatCount();
 
     return ChangeNotifierProvider(
       //builder: (context) => PnrChangeNotifier(),
@@ -124,9 +125,9 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                           color: menuColor,
                           onPressed: () {
                             if (gblPnrModel != null &&
-                                gblPnrModel.isFundTransferPayment() == false &&
+                                gblPnrModel!.isFundTransferPayment() == false &&
                                 double.parse(
-                                gblPnrModel.pNR.basket.outstanding.amount) >
+                                gblPnrModel!.pNR.basket.outstanding.amount) >
                                 0) {
                               _getDialog();
                             } else {
@@ -161,7 +162,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
         ));
   }
 
- void _onLoad(BuildContext context) {
+ void _onLoad(BuildContext? context) {
     setState(() {
 
     });
@@ -169,13 +170,13 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
 
 
-  Widget _getDialog() {
+  void _getDialog() {
     showDialog(
       context: context,
       builder: (context) =>
       new AlertDialog(
         title: new TrText('Payment outstanding'),
-        content: new Text(translate('Do you want to pay ') + ' ${formatPrice( gblPnrModel.pNR.basket.outstanding.cur,double.parse(gblPnrModel.pNR.basket.outstanding.amount))} ' + translate('now')),
+        content: new Text(translate('Do you want to pay ') + ' ${formatPrice( gblPnrModel!.pNR.basket.outstanding.cur,double.parse(gblPnrModel!.pNR.basket.outstanding.amount))} ' + translate('now')),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -199,7 +200,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                       builder: (context) =>
                           ChoosePaymenMethodWidget(
                             mmbBooking: _mmbBooking,
-                            pnrModel: gblPnrModel,
+                            pnrModel: gblPnrModel!,
                             isMmb: true,
                             mmbAction: 'PAYOUTSTANDING',
                             mmbCmd: '',
@@ -214,16 +215,6 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
 
 
- /* Future<void> _refreshBooking() async {
-    logit('_refreshBooking');
-    await Repository.get().fetchPnr(widget.rloc);
-    if( gblSettings.wantApis) {
-      await Repository.get().fetchApisStatus(widget.rloc);
-    }
-
-    Repository.get().fetchApisStatus(widget.rloc);
-    Repository.get().fetchPnr(widget.rloc);
-  }*/
 
   showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(snackbar(message));
@@ -233,7 +224,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
 
   Future<bool> _onWillPop() async {
-    if (double.parse(gblPnrModel.pNR.basket.outstanding.amount) == 0) {
+    if (double.parse(gblPnrModel!.pNR.basket.outstanding.amount) == 0) {
       return true;
     } else {
       return (await showDialog(
@@ -264,11 +255,11 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 }
 
 class CheckinBoardingPassesWidget extends StatefulWidget {
-  CheckinBoardingPassesWidget({Key key, this.rloc, this.showSnackBar, this.onLoad})
+  CheckinBoardingPassesWidget({Key key= const Key("checkboardpa_key"), this.rloc='',required this.showSnackBar,required this.onLoad})
       : super(key: key);
   String rloc;
   final ValueChanged<String> showSnackBar;
-  void Function(BuildContext context) onLoad;
+  void Function(BuildContext? context) onLoad;
   final formKey = new GlobalKey<FormState>();
 
   @override
@@ -280,18 +271,18 @@ class CheckinBoardingPassesWidgetState
     extends State<CheckinBoardingPassesWidget> {
   //AsyncSnapshot snapshot;
   //GlobalKey<ScaffoldState> _key = GlobalKey();
-  PnrModel objPNR;
-  ApisPnrStatusModel apisPnrStatus;
-  bool apisOK;
-  bool _loadingInProgress;
+  PnrModel? objPNR;
+  ApisPnrStatusModel? apisPnrStatus;
+  bool apisOK = false;
+  bool _loadingInProgress = false;
 //  String _error = '';
   String _displayProcessingText = '';
   //Journeys journeys = Journeys(List<Journey>());
 //  MmbBooking mmbBooking = MmbBooking();
   List<City> cities = [];
   // new List<City>();
-  int currentPaxNo;
-  int currentJourneyNo;
+  int currentPaxNo = 1;
+  int currentJourneyNo = 1;
 
 
   @override
@@ -320,7 +311,7 @@ class CheckinBoardingPassesWidgetState
 
           Map<String, dynamic> map = jsonDecode(pnrDb.data);
           // PnrModel
-          pnr = new PnrModel.fromJson(map);
+          PnrModel pnr = new PnrModel.fromJson(map);
           loadJourneys(pnr);
           gblSelectedCurrency = _mmbBooking.currency;
 
@@ -348,7 +339,7 @@ class CheckinBoardingPassesWidgetState
           //   objPNR = pnr;
           // });
         })
-        .then((onValue) => pnr.pNR.itinerary.itin.forEach((itin) {
+        .then((onValue) => gblPnrModel!.pNR.itinerary.itin.forEach((itin) {
               Repository.get().getCityByCode(itin.depart).then((city) {
                 if (city != null) {
                   cities.add(city);
@@ -372,11 +363,11 @@ class CheckinBoardingPassesWidgetState
                 apisPnrStatus = _apisPnrStatus;
               });
             }))
-        .then((onValue) => (pnr.validate()=='') ? null : pnr = null)
+        .then((onValue) => (gblPnrModel!.validate()=='') ? null : gblPnrModel = null)
         .then((onValue) => setState(() {
-              objPNR = pnr;
-              if( pnr.isFundTransferPayment()) {
-                gblError = null;
+              objPNR = gblPnrModel!;
+              if( gblPnrModel!.isFundTransferPayment()) {
+                gblError = '';
               }
               _loadingInProgress = false;
               _displayProcessingText = '';
@@ -436,7 +427,7 @@ class CheckinBoardingPassesWidgetState
           ],
         ),
       );
-    if ((objPNR == null || (gblError != null && gblError.isNotEmpty)) && ! objPNR.isFundTransferPayment()) {
+    if ((objPNR == null || (gblError != null && gblError.isNotEmpty)) && ! objPNR!.isFundTransferPayment()) {
       String er = 'Sorry your booking can\'t be loaded';
       if( gblError.isNotEmpty){
         er = gblError;
@@ -489,7 +480,7 @@ class CheckinBoardingPassesWidgetState
         ),
       );
     }
-    return ListView(children: getBookingViewWidgets(objPNR));
+    return ListView(children: getBookingViewWidgets(objPNR!));
   }
 
   _refreshBooking() {
@@ -509,11 +500,11 @@ class CheckinBoardingPassesWidgetState
 
           if (pnrDb.success) {
             Map<String, dynamic> map = jsonDecode(pnrDb.data);
-            pnr = new PnrModel.fromJson(map);
+            PnrModel pnr = new PnrModel.fromJson(map);
             setState(() {
               objPNR = pnr;
               _mmbBooking.journeys.journey = [];
-              loadJourneys(objPNR);
+              loadJourneys(objPNR!);
             });
           } else {
 
@@ -536,16 +527,16 @@ class CheckinBoardingPassesWidgetState
             setState(() {});
           })
               .then((onValue){
-                String val = pnr.validate();
+                String val = gblPnrModel!.validate();
 
               setState(() {
                 _loadingInProgress = false;
                 _displayProcessingText = '';
                 if( val == '') {
-                if( pnr.isFundTransferPayment()) {
-                  gblError = null;
+                if( gblPnrModel!.isFundTransferPayment()) {
+                  gblError = '';
                 }
-                objPNR = pnr;
+                objPNR = gblPnrModel!;
 
               } else {
                   if( val == 'No Flights'){
@@ -634,6 +625,8 @@ class CheckinBoardingPassesWidgetState
         && pnr.isFundTransferPayment() == false
         && pnr.hasFutureFlightsAddDayOffset(0) ){
       // only add products if has furture flights
+
+
       list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: null,
         pnrModel: pnr,
         onComplete: (PnrModel pnrModel) {
@@ -673,11 +666,21 @@ class CheckinBoardingPassesWidgetState
   List<Widget> getPassengerViewWidgets(PnrModel pnr, int journey) {
     List<Widget> list = [];
     // new List<Widget>();
+
     if (pnr.pNR.aPFAX != null) {
+      bool found = false;
+      pnr.pNR.aPFAX.aFX.forEach((element) {
+        if( found == false && element.aFXID =='DISC'){
+          _mmbBooking.eVoucher = element;
+          found=true;
+        }
+      });
+/*
       _mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
-          .firstWhere((f) => f.aFXID == 'DISC', orElse: () => null);
+          .firstWhere((f) => f.aFXID == 'DISC', );
+*/
     } else {
-      _mmbBooking.eVoucher = null;
+     // _mmbBooking.eVoucher = null;
     }
 
     //TODO:
@@ -719,13 +722,23 @@ class CheckinBoardingPassesWidgetState
     for (var i = 0; i <= pnr.pNR.names.pAX.length - 1; i++) {
       String seatNo = '';
       if( pnr.pNR.aPFAX != null && pnr.pNR.aPFAX.aFX != null) {
-        AFX seatAfx = pnr.pNR.aPFAX.aFX
+        AFX? seatAfx ;
+        bool found = false;
+        pnr.pNR.aPFAX.aFX.forEach((f) {
+          if(found=false &&  f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
+              f.seg == (journey + 1).toString()){
+            seatAfx = f;
+            found = true;
+          }
+        });
+/*
             .firstWhere((f) =>
         f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
-            f.seg == (journey + 1).toString(), orElse: () => null);
+            f.seg == (journey + 1).toString(), );
+*/
 
         if (seatAfx != null) {
-          seatNo = seatAfx.seat;
+          seatNo = seatAfx!.seat;
         }
       }
 
@@ -786,7 +799,7 @@ class CheckinBoardingPassesWidgetState
                 initialData: 'Check-in not open',
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
                   if (text.data != null) {
-                    return new Text(text.data);
+                    return new Text(text.data!);
                   } else {
                     return Text('');
                   }
@@ -816,11 +829,11 @@ class CheckinBoardingPassesWidgetState
         //&&             pnr.pNR.itinerary.itin[journey].status != 'QQ') {
         list.add(Divider());
         if (gblSettings.displayErrorPnr &&
-            double.parse(objPNR.pNR.basket.outstanding.amount) > 0) {
+            double.parse(objPNR!.pNR.basket.outstanding.amount) > 0) {
           list.add(Row(
               children: <Widget>[
                 Expanded(child: payOutstandingButton(
-                    pnr, objPNR.pNR.basket.outstanding.amount))
+                    pnr, objPNR!.pNR.basket.outstanding.amount))
               ]));
 
 
@@ -853,7 +866,7 @@ class CheckinBoardingPassesWidgetState
               //Padding(padding: EdgeInsets.all(2)),
               TrText('Payment Pending'),
               payOutstandingButton(
-                        pnr, objPNR.pNR.basket.outstanding.amount),
+                        pnr, objPNR!.pNR.basket.outstanding.amount),
 
            //   Padding(padding: EdgeInsets.all(4)),
            //   Text(formatPrice(pnr.pNR.basket.outstanding.cur, double.parse(pnr.pNR.basket.outstanding.amount)))
@@ -906,7 +919,7 @@ class CheckinBoardingPassesWidgetState
   Widget _flightButtons( pnr ,journeyToChange ) {
     //_journeyToChange = journeyToChange;
     if( gblSettings.wantRefund &&
-        objPNR.canRefund(journeyToChange)
+        objPNR!.canRefund(journeyToChange)
     ){
         if( gblSettings.wantAllColorButtons ) {
           return Expanded(child: Row(
@@ -956,16 +969,16 @@ class CheckinBoardingPassesWidgetState
     }
   }
 
-  void _onPressedRefund({int p1}) async {
+  void _onPressedRefund({int? p1}) async {
     RefundRequest rfund = new RefundRequest();
     rfund.rloc = widget.rloc;
-    rfund.journeyNo = p1;
+    rfund.journeyNo = p1!;
 
     String data =  json.encode(rfund);
 
     try {
       String reply = await callSmartApi('REFUND', data);
-      Map map = json.decode(reply);
+      Map<String, dynamic> map = json.decode(reply);
       RefundReply refundRs = new RefundReply.fromJson(map);
       if( refundRs.success == true ) {
         showAlertDialog(context, 'Refund', 'Refund successful');
@@ -977,11 +990,11 @@ class CheckinBoardingPassesWidgetState
     }
   }
 
-  void _onPressedChangeFlt({int p1}) {
-    if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
-      if( objPNR.pNR.payments != null && objPNR.pNR.payments.fOP != null && objPNR.pNR.payments.fOP.length > 0) {
+  void _onPressedChangeFlt({int? p1}) {
+    if( objPNR!.pNR.fareQuote != null && objPNR!.pNR.fareQuote.fQItin != null && objPNR!.pNR.fareQuote.fQItin.length >0 ){
+      if( objPNR!.pNR.payments != null && objPNR!.pNR.payments.fOP != null && objPNR!.pNR.payments.fOP.length > 0) {
         // should not change currency
-//        gblSettings.currency = objPNR.pNR.payments.fOP[0].payCur;
+//        gblSettings.currency = objPNR!.pNR.payments.fOP[0].payCur;
       }
     }
 
@@ -989,25 +1002,25 @@ class CheckinBoardingPassesWidgetState
         context,
         MaterialPageRoute(
           builder: (context) => MmbDatePickerWidget(
-            pnr: objPNR,
+            pnr: objPNR!,
             mmbBooking: _mmbBooking,
-            journeyToChange: p1,
+            journeyToChange: p1!,
           ),
         ));
   }
   void _onPressedChangeFlt2(BuildContext context, dynamic p1) {
-    if( objPNR.pNR.fareQuote != null && objPNR.pNR.fareQuote.fQItin != null && objPNR.pNR.fareQuote.fQItin.length >0 ){
-      //gblSettings.currency = objPNR.pNR.fareQuote.fQItin[0].cur;
-      if( objPNR.pNR.payments != null && objPNR.pNR.payments.fOP != null && objPNR.pNR.payments.fOP.length > 0) {
+    if( objPNR!.pNR.fareQuote != null && objPNR!.pNR.fareQuote.fQItin != null && objPNR!.pNR.fareQuote.fQItin.length >0 ){
+      //gblSettings.currency = objPNR!.pNR.fareQuote.fQItin[0].cur;
+      if( objPNR!.pNR.payments != null && objPNR!.pNR.payments.fOP != null && objPNR!.pNR.payments.fOP.length > 0) {
         // should not change currency
-        //gblSettings.currency = objPNR.pNR.payments.fOP[0].payCur;
+        //gblSettings.currency = objPNR!.pNR.payments.fOP[0].payCur;
       }
     }
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => MmbDatePickerWidget(
-            pnr: objPNR,
+            pnr: objPNR!,
             mmbBooking: _mmbBooking,
             journeyToChange: p1,
           ),
@@ -1027,7 +1040,7 @@ class CheckinBoardingPassesWidgetState
 
   bool hasSeatSelected(APFAX aPFAX, String paxNo, int journeyNo, Names names) {
     if (aPFAX != null &&
-            aPFAX.aFX
+        (aPFAX.aFX
                     .firstWhere(
                         (aFX) =>
                             aFX.pax == paxNo &&
@@ -1035,7 +1048,15 @@ class CheckinBoardingPassesWidgetState
                             aFX.aFXID == 'SEAT',
                         orElse: () => new AFX())
                     .seat !=
-                null ||
+                null && aPFAX.aFX
+            .firstWhere(
+                (aFX) =>
+            aFX.pax == paxNo &&
+                aFX.seg == (journeyNo).toString() &&
+                aFX.aFXID == 'SEAT',
+            orElse: () => new AFX())
+            .seat !='')
+        ||
         names.pAX[int.parse(paxNo) - 1].paxType == 'IN') {
       return true;
     } else {
@@ -1057,7 +1078,7 @@ class CheckinBoardingPassesWidgetState
       if (gblSession == null) gblSession = new Session('0', '', '0');
        msg = json.encode(
               VrsApiRequest(
-                gblSession, cmd,
+                gblSession!, cmd,
                 gblSettings.xmlToken.replaceFirst('token=', ''),
                 vrsGuid: gblSettings.vrsGuid,
                 notifyToken: gblNotifyToken,
@@ -1066,7 +1087,7 @@ class CheckinBoardingPassesWidgetState
                 language: gblLanguage
               )
           );
-      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
     }
     else {
        msg = gblSettings.xmlUrl +
@@ -1089,7 +1110,7 @@ class CheckinBoardingPassesWidgetState
 
         if (!msg.contains('Error')) {
           Repository.get().fetchPnr(widget.rloc).then((v) {
-            _checkinCompleted(v);
+            _checkinCompleted(v!);
           });
         } else {
           _showError(msg.replaceFirst('Error - ', ''));
@@ -1106,7 +1127,7 @@ class CheckinBoardingPassesWidgetState
   }
 
   _checkinCompleted(PnrDBCopy pnrDBCopy) {
-    Map map = json.decode(pnrDBCopy.data);
+    Map<String, dynamic> map = json.decode(pnrDBCopy.data);
     PnrModel _objPNR = new PnrModel.fromJson(map);
     setState(() {
       objPNR = _objPNR;
@@ -1116,7 +1137,7 @@ class CheckinBoardingPassesWidgetState
   }
 
   _autoSeatCompleted(PnrDBCopy pnrDBCopy) {
-    Map map = json.decode(pnrDBCopy.data);
+    Map<String, dynamic> map = json.decode(pnrDBCopy.data);
     PnrModel _objPNR = new PnrModel.fromJson(map);
 
     setState(() {
@@ -1132,8 +1153,8 @@ class CheckinBoardingPassesWidgetState
     // }
 
     if (apisPnrStatus != null &&
-      apisPnrStatus.apisRequired(currentJourneyNo) &&
-        !apisPnrStatus.apisInfoEnteredAll(currentJourneyNo)) {
+      apisPnrStatus!.apisRequired(currentJourneyNo) &&
+        !apisPnrStatus!.apisInfoEnteredAll(currentJourneyNo)) {
       widget.showSnackBar(
           'Can\'t check in all passengers as APIS information not complete');
     } else {
@@ -1179,7 +1200,7 @@ class CheckinBoardingPassesWidgetState
   Widget apisButtonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
     //Apis
     if (apisPnrStatus != null &&
-        (apisPnrStatus.apisRequired(journeyNo)
+        (apisPnrStatus!.apisRequired(journeyNo)
 /*
             &&
             !apisPnrStatus.apisInfoEntered(journeyNo, paxNo + 1)
@@ -1646,7 +1667,7 @@ class CheckinBoardingPassesWidgetState
     DateTime checkinClosed;
     DateTime departureDateTime;
     DateTime now;
-    City city;
+    City? city;
 
     city = await Repository.get().getCityByCode(itin.depart);
 
@@ -1771,7 +1792,9 @@ class CheckinBoardingPassesWidgetState
         list.add( Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              FutureBuilder(
+              Text(cityCodetoAirport(pnr.pNR.itinerary.itin[journey].depart),
+                  style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)),
+      /*        FutureBuilder(
                 future: cityCodeToName(
                   pnr.pNR.itinerary.itin[journey].depart,
                 ),
@@ -1779,13 +1802,16 @@ class CheckinBoardingPassesWidgetState
                 pnr.pNR.itinerary.itin[journey].depart.toString(),
                 builder:
                     (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate(text.data),
+                  return new Text(translate(text.data!),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },
-              ),
+              ),*/
               gblSettings.trackerUrl != '' ? _trackerButton(pnr.pNR.itinerary.itin[journey]) : Container(),
-              FutureBuilder(
+              Text(cityCodetoAirport(pnr.pNR.itinerary.itin[journey].arrive),
+                  style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)),
+
+              /*            FutureBuilder(
                 future: cityCodeToName(
                   pnr.pNR.itinerary.itin[journey].arrive,
                 ),
@@ -1793,11 +1819,11 @@ class CheckinBoardingPassesWidgetState
                 pnr.pNR.itinerary.itin[journey].arrive.toString(),
                 builder:
                     (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate(text.data),
+                  return new Text(translate(text.data!),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },
-              ),
+              ),*/
             ],
           ));
         list.add( Divider());
@@ -1917,7 +1943,7 @@ class CheckinBoardingPassesWidgetState
             list.add(Row(
                 children: <Widget>[
                   Expanded(child: payOutstandingButton(
-                      pnr, objPNR.pNR.basket.outstanding.amount))
+                      pnr, objPNR!.pNR.basket.outstanding.amount))
                 ]));
         }
 
@@ -2065,7 +2091,12 @@ class CheckinBoardingPassesWidgetState
                         child: new Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            FutureBuilder(
+                            Text(cityCodetoAirport(pnr.pNR.itinerary.itin[journey].depart),
+                                style:TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w300)),
+
+                            /*                         FutureBuilder(
                               future: cityCodeToName(
                                 pnr.pNR.itinerary.itin[journey].depart,
                               ),
@@ -2074,13 +2105,13 @@ class CheckinBoardingPassesWidgetState
                                   .toString(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<String> text) {
-                                return new Text(text.data,
+                                return new Text(text.data!,
                                     style: new TextStyle(
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w300));
                               },
-                            ),
-                            FutureBuilder(
+                            ),*/
+                            /*FutureBuilder(
                               future: cityCodeToName(
                                 pnr.pNR.itinerary.itin[journey].arrive,
                               ),
@@ -2089,12 +2120,16 @@ class CheckinBoardingPassesWidgetState
                                   .toString(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<String> text) {
-                                return new Text(text.data,
+                                return new Text(text.data!,
                                     style: new TextStyle(
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w300));
                               },
-                            ),
+                            ),*/
+                            Text(cityCodetoAirport(pnr.pNR.itinerary.itin[journey].arrive),
+                                style:TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w300)),
                           ],
                         ),
                       ),
@@ -2229,13 +2264,15 @@ class CheckinBoardingPassesWidgetState
     if( gblSettings.wantAllColorButtons) {
       if( paxlist
           .firstWhere((p) => p.id == paxNo + 1)
-          .seat != null
+          .seat != null && paxlist
+          .firstWhere((p) => p.id == paxNo + 1)
+          .seat != ''
           ) {
         btnText += '  ' +  (paxlist.firstWhere((p) => p.id == paxNo + 1).seat);
       }
       return vidActionButton(context, btnText, (p0){
 
-        if( gblPnrModel.hasContactDetails()) {
+        if( gblPnrModel!.hasContactDetails()) {
 
         }
 
@@ -2252,13 +2289,13 @@ class CheckinBoardingPassesWidgetState
         } else {
           preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
         }
-      } , isRectangular: true );
+      } , isRectangular: true, icon: Icons.event_seat );
 
     } else {
       return new TextButton(
 
         onPressed: () {
-          if( ! gblPnrModel.hasContactDetails()) {
+          if( ! gblPnrModel!.hasContactDetails()) {
             return addContactDetails();
           }
 
@@ -2335,8 +2372,8 @@ class CheckinBoardingPassesWidgetState
     TextEditingController _emailController = TextEditingController();
     TextEditingController _phoneController = TextEditingController();
 
-    if( gblPnrModel.pNR.contacts != null && gblPnrModel.pNR.contacts.cTC.length > 0) {
-      gblPnrModel.pNR.contacts.cTC.forEach((element) {
+    if( gblPnrModel!.pNR.contacts != null && gblPnrModel!.pNR.contacts.cTC.length > 0) {
+      gblPnrModel!.pNR.contacts.cTC.forEach((element) {
         if( element.cTCID == 'E') {
           _emailController.text = element.text;
         } else  if( element.cTCID == 'M') {
@@ -2354,7 +2391,7 @@ class CheckinBoardingPassesWidgetState
           shape: alertShape(),
           titlePadding: const EdgeInsets.all(0),
           title: alertTitle(
-              translate('Add Contact details'), gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
+              translate('Add Contact details'), gblSystemColors.headerTextColor!, gblSystemColors.primaryHeaderColor),
           content: Form(
           key: widget.formKey,
           child: Column(
@@ -2366,7 +2403,7 @@ class CheckinBoardingPassesWidgetState
             controller: _phoneController,
             keyboardType: TextInputType.number,
             validator: (value) =>
-            value.isEmpty ? translate('Phone Number cannot be empty') : null,
+            value!.isEmpty ? translate('Phone Number cannot be empty') : null,
             onFieldSubmitted: (value) {
               //widget.passengerDetail.phonenumber = value;
             },
@@ -2384,26 +2421,30 @@ class CheckinBoardingPassesWidgetState
                 decoration: getDecoration('Email'),
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) => validateEmail(value.trim()),
-                onFieldSubmitted: (value) {
-                //  widget.passengerDetail.email = value;
-                },
-                onSaved: (value) {
+                validator: (value) {
+                    String er = validateEmail(value!.trim());
+                    if( er != '') return er;
+                    return null;
+                  },
+                  onFieldSubmitted: (value) {
+                  //  widget.passengerDetail.email = value;
+                  },
+                  onSaved: (value) {
                   if (value != null) {
-                    //widget.passengerDetail.email = value.trim();
+                  //widget.passengerDetail.email = value.trim();
                   }
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.all(4),
-              ),
+                  },
+                  ),
+                  Padding(
+                  padding: EdgeInsets.all(4),
+                  ),
 
-            ],
-          )),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new TextButton(
-              child: new TrText("Cancel",
+                  ],
+                  )),
+                  actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new TextButton(
+                  child: new TrText("Cancel",
                   style: new TextStyle(color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -2423,7 +2464,7 @@ class CheckinBoardingPassesWidgetState
               ),
               onPressed: () {
                 final form = widget.formKey.currentState;
-                if (form.validate()) {
+                if (form!.validate()) {
                   form.save();
 // add ctc to PNR
                   saveContactDetails(_emailController.text, _phoneController.text);
@@ -2431,9 +2472,9 @@ class CheckinBoardingPassesWidgetState
 
                   // back
                   Navigator.of(context).pop();
-                  return true;
+                  //return true;
                 } else {
-                  return false;
+                  //return false;
                 }
 
               },
@@ -2450,9 +2491,9 @@ class CheckinBoardingPassesWidgetState
     sb.write('9X1^9X1^');
     sb.write('9M*$phone^');
     sb.write('9E*$email^E*R');
-    String data = await runVrsCommand(sb.toString());
+    await runVrsCommand(sb.toString());
 
-    Repository.get().fetchPnr(gblPnrModel.pNR.rLOC).then((pnrDb) {
+    Repository.get().fetchPnr(gblPnrModel!.pNR.rLOC).then((pnrDb) {
       if (pnrDb != null) {
         if (pnrDb.success == false) {
           gblError = pnrDb.data;
@@ -2637,7 +2678,7 @@ class CheckinBoardingPassesWidgetState
       if (gblSession == null) gblSession = new Session('0', '', '0');
       msg = json.encode(
           VrsApiRequest(
-              gblSession, cmd,
+              gblSession!, cmd,
               gblSettings.xmlToken.replaceFirst('token=', ''),
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
@@ -2646,7 +2687,7 @@ class CheckinBoardingPassesWidgetState
               language: gblLanguage
           )
       );
-      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
     }
     else {
       msg = gblSettings.xmlUrl +
@@ -2671,7 +2712,7 @@ class CheckinBoardingPassesWidgetState
 
           if (!vrsResponse.contains('ERROR')) {
             Repository.get().fetchPnr(widget.rloc).then((v) {
-              _autoSeatCompleted(v);
+              _autoSeatCompleted(v!);
 
               //Map map = json.decode(v.data);
               //PnrModel pnr = new PnrModel.fromJson(map);
@@ -2716,7 +2757,7 @@ class CheckinBoardingPassesWidgetState
         paxList = pnr.pNR.names.pAX.where((p) => p.paxType != 'IN').toList();
       });
     } else {
-      pnr.pNR.names.pAX.forEach((p) {
+      pnr.pNR.names.pAX.forEach((p ) {
         if (p.paxType != 'IN' &&
             pnr.pNR.aPFAX.aFX.firstWhere(
                     (ap) =>
@@ -2724,7 +2765,7 @@ class CheckinBoardingPassesWidgetState
                         ap.seat != "" &&
                         ap.text
                             .contains(pnr.pNR.itinerary.itin[journey].cityPair),
-                    orElse: () => null) ==
+                    ) ==
                 null) {
           paxList.add(p);
         }
@@ -2771,6 +2812,7 @@ class CheckinBoardingPassesWidgetState
 
   preferredSeating(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist, bool checkinOpen) {
     gblPnrModel = pnr;
+    logit('seatplan cmd ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x}');
 
     Navigator.push(
         context,

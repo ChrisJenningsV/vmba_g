@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/SystemColors.dart';
@@ -62,7 +63,7 @@ void configFN() {
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',
-    pageStyle: 'V2',
+    pageStyle: 'V1',
 
     airlineName: "fastjet",
     gblServerFiles: 'https://customer3.videcom.com/FastJet/AppFiles/',

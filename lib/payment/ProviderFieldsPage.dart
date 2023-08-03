@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/components/trText.dart';
@@ -17,16 +18,16 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 
 
 class ProviderFieldsPage extends StatefulWidget {
-  ProviderFieldsPage({    Key key,
-    this.newBooking,
-    this.pnrModel,
+  ProviderFieldsPage({    Key key= const Key("provfipa_key"),
+     this.newBooking,
+    required this.pnrModel,
     this.isMmb=false,
-    this.mmbBooking,
+    required this.mmbBooking,
     this.mmbAction,
-    this.provider
+    required this.provider
   }) : super(key: key);
 
-  final NewBooking newBooking;
+  NewBooking? newBooking;
   final PnrModel pnrModel;
   final bool isMmb;
   final MmbBooking mmbBooking;
@@ -44,15 +45,15 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
   // bool _displayProcessingIndicator;
   //String _displayProcessingText = 'Making your Booking...';
   PaymentDetails paymentDetails = new PaymentDetails();
-  String _displayProcessingText;
-  bool _displayProcessingIndicator;
+  String _displayProcessingText ='';
+  bool _displayProcessingIndicator = false;
   String nostop = '';
 
   //bool _displayProcessingIndicator;
   // String _displayProcessingText;
-  PnrModel pnrModel;
+  PnrModel? pnrModel;
   String rLOC = '';
-  Session session;
+  Session? session;
 
   @override
   initState() {
@@ -75,7 +76,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
         appBar: appBar(context, 'Payment',
           newBooking: widget.newBooking,
           curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
         endDrawer: DrawerMenu(),
         body: new Center(
           child: Column(
@@ -130,7 +131,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
         appBar: appBar(context, 'Payment',
           newBooking: widget.newBooking,
           curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,) ,
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : '',) ,
         endDrawer: DrawerMenu(),
         body:Form(
           key: formKey,
@@ -232,7 +233,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           break;
      }
      if( bShow) {
-       list.add(VInputField(fieldParams: params,));
+       list.add(VInputField(fieldParams: params, key: Key((element.paymentFieldName as String) + '_key'),));
      }
     });
 
@@ -284,7 +285,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
 
   bool validate() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -298,10 +299,10 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           if(widget.mmbAction == 'CHANGEFLT') {
             await changeFlt(widget.pnrModel, widget.mmbBooking, context);
           }
-
+          if( widget.newBooking == null ) widget.newBooking = NewBooking();
           await Navigator.push(
               context, SlideTopRoute(page: WebPayPage(
-            widget.provider.paymentSchemeName, newBooking: widget.newBooking,
+            widget.provider.paymentSchemeName, newBooking: widget.newBooking!,
             pnrModel: widget.pnrModel,
             isMmb: widget.isMmb,)));
           setState(() { });

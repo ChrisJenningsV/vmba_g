@@ -17,19 +17,19 @@ class SelectedRoute {
 }
 
 class SelectJourneyWidget extends StatefulWidget {
-  SelectJourneyWidget({Key key, this.onChanged}) : super(key: key);
+  SelectJourneyWidget({Key key= const Key("selj_key"), this.onChanged}) : super(key: key);
 
-  final ValueChanged<SelectedRoute> onChanged;
+  final ValueChanged<SelectedRoute>? onChanged;
 
   _SelectJourneyWidgetState createState() => _SelectJourneyWidgetState();
 }
 
 class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
-  String departureAirport;
+  String departureAirport = '';
   String departureCode = '';
-  String arrivalAirport;
+  String arrivalAirport = '';
   String arrivalCode = '';
-  SelectedRoute route;
+  late SelectedRoute route;
 
   @override
   initState() {
@@ -47,7 +47,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         arrivalAirport = translate('Select arrival airport');
         route.departure = departureCode;
         route.arrival = arrivalCode;
-        widget.onChanged(route);
+        widget.onChanged!(route);
       });
     }
   }
@@ -59,7 +59,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         arrivalAirport = newValue.split('|')[1];
         route.departure = departureCode;
         route.arrival = arrivalCode;
-        widget.onChanged(route);
+        widget.onChanged!(route);
       });
     }
   }

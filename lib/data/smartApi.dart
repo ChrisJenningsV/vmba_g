@@ -1,11 +1,13 @@
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../utilities/helper.dart';
 import 'globals.dart';
+import 'models/models.dart';
 import 'models/vrsRequest.dart';
 
 Future<String> callSmartApi(String action, String data) async {
-  String msg =  json.encode(VrsApiRequest(gblSession, action,
+  String msg =  json.encode(VrsApiRequest(gblSession as Session, action,
       gblSettings.xmlToken.replaceFirst('token=', ''),
       vrsGuid: gblSettings.vrsGuid,
       undoCmd: gblUndoCommand,
@@ -16,11 +18,11 @@ Future<String> callSmartApi(String action, String data) async {
       phoneId: gblDeviceId
   )); // '{VrsApiRequest: ' + + '}' ;
 
-  print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg');
+  print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg');
 
   http.Response response = await http
       .get(Uri.parse(
-      "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"))
+      "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"))
       .catchError((resp) {
     logit(resp);
   });
@@ -31,8 +33,8 @@ Future<String> callSmartApi(String action, String data) async {
 
   //If there was an error return null
   if (response.statusCode < 200 || response.statusCode >= 300) {
-    logit('callSmartApi (): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-    throw 'callSmartApi: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+    logit('callSmartApi (): ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String));
+    throw 'callSmartApi: ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String);
     //return new ParsedResponse(response.statusCode, null);
   }
 
@@ -50,7 +52,7 @@ Future<String> callSmartApi(String action, String data) async {
       .replaceAll('<string xmlns="http://videcom.com/" />', '')
       .replaceAll('</string>', '');
 
-  Map map = jsonDecode(responseData);
+  Map<String, dynamic> map = jsonDecode(responseData);
 
   // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
   if (response.body.contains('ERROR')) {

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/globals.dart';
@@ -6,7 +7,7 @@ import 'package:vmba/components/trText.dart';
 class CompletedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<String> args = ModalRoute.of(context).settings.arguments;
+    final List<String>? args = ModalRoute.of(context)!.settings.arguments as List<String>?;;
     return Scaffold(
         appBar: AppBar(
           //brightness: gblSystemColors.statusBar,
@@ -30,7 +31,7 @@ class CompletedPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               new Text(
-                translate("Your reference is ") + args[0],
+                translate("Your reference is ") + args![0],
                 style: TextStyle(fontSize: 18),
               ),
               // args[1] == 'true'

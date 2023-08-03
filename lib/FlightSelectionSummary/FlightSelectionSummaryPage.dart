@@ -21,7 +21,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/messagePages.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
-  FlightSelectionSummaryWidget({Key key, this.newBooking}) : super(key: key);
+//  FlightSelectionSummaryWidget({Key key = GlobalKey(), this.newBooking }) : super(key: key);
+  FlightSelectionSummaryWidget({Key key = const Key("flt_key"), required this.newBooking  }) : super(key: key);
 
   final NewBooking newBooking;
 
@@ -32,13 +33,13 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   final formKey = new GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _key = GlobalKey();
   PnrModel pnrModel = PnrModel();
-  bool _loadingInProgress;
-  String currencyCode;
-  bool _noInternet;
-  bool _eVoucherNotValid;
-  bool _tooManyUmnr;
-  bool _hasError;
-  String _error ;
+  bool _loadingInProgress = false;
+  String currencyCode = '';
+  bool _noInternet = false;
+  bool _eVoucherNotValid = false;
+  bool _tooManyUmnr = false;
+  bool _hasError = false;
+  String _error = '';
   var miles = 0;
 
   @override
@@ -50,8 +51,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     _tooManyUmnr = false;
     _hasError = false;
     gblActionBtnDisabled = false;
-    _error = null;
-    gblError = null;
+    _error = '';
+    gblError = '';
     gblCurPage = 'FLIGHTSEARCH';
     // _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
@@ -226,7 +227,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     Repository.get().getFareQuote(buildCmd()).then((rs) {
       if (rs.isOk()) {
-        pnrModel = rs.body;
+        pnrModel = rs.body!;
         setCurrencyCode();
         if (gblRedeemingAirmiles == true) {
           miles =
@@ -448,15 +449,21 @@ Row airMiles() {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          total += double.tryParse(d.fare ?? 0.0);
-          total += double.tryParse(d.tax1 ?? 0.0);
-          total += double.tryParse(d.tax2 ?? 0.0);
-          total += double.tryParse(d.tax3 ?? 0.0);
-          if (d.disc != null ) {
-            if( d.disc != null ) {
+          total += double.tryParse(d.fare) as double;
+          total += double.tryParse(d.tax1) as double;
+          total += double.tryParse(d.tax2) as double;
+          total += double.tryParse(d.tax3) as double;
+          if (d.disc != null && d.disc != '') {
+            if( d.disc != null && d.disc != '' ) {
               d.disc
                   .split(',')
-                  .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                  .forEach((disc) {
+                    if( disc != null ) {
+                      total += double.tryParse(disc) as double;
+                    }
+                  }
+              );
+
               // total += double.tryParse(d.disc ?? 0.0);
             }
           }
@@ -488,10 +495,10 @@ Row airMiles() {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          if( d.disc != null ) {
+          if( d.disc != null && d.disc != '') {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc) as double);
             //total += double.tryParse(d.disc ?? 0.0);
           }
         });
@@ -555,36 +562,46 @@ Row airMiles() {
     List<Widget> widgets = [];
     // new List<Widget>();
     for (var i = 0; i <= pnrModel.pNR.itinerary.itin.length - 1; i++) {
+      String arCode = pnrModel.pNR.itinerary.itin[i].arrive;
+      String deCode = pnrModel.pNR.itinerary.itin[i].depart;
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            FutureBuilder(
+            Text(cityCodetoAirport(deCode),style: TextStyle(fontWeight: FontWeight.w700) ),
+            /*FutureBuilder(
               future: cityCodeToName(
-                pnrModel.pNR.itinerary.itin[i].depart,
+                deCode,
               ),
-              initialData: pnrModel.pNR.itinerary.itin[i].depart.toString(),
+              initialData: deCode.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(translate(text.data),
+                String lName = deCode;
+                if( text.data != null ) lName = text.data as String;
+                return new Text(translate(lName ),
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
-            ),
+            ),*/
             Text(
               ' ' + translate('to') + ' ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
+            Text(cityCodetoAirport(arCode),style: TextStyle(fontWeight: FontWeight.w700) ),
+/*
             FutureBuilder(
               future: cityCodeToName(
-                pnrModel.pNR.itinerary.itin[i].arrive,
+                arCode,
               ),
-              initialData: pnrModel.pNR.itinerary.itin[i].arrive.toString(),
+              initialData: arCode.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
+                String lName = arCode;
+                if( text.data != null ) lName = text.data  as String;
                 return new Text(
-                  translate(text.data),
+                  translate(lName),
                   style: TextStyle(fontWeight: FontWeight.w700),
                 );
               },
             ),
+*/
           ],
         ),
       );
@@ -682,8 +699,8 @@ Row airMiles() {
       widgets.add(Divider());
     }
     return Container(
-        decoration: ContainerDecoration( location: 'middle') ,
-        margin: ContainerMargins(location: 'middle') ,
+        decoration: containerDecoration( location: 'middle') ,
+        margin: containerMargins(location: 'middle') ,
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
         child: Column(
       children: widgets,
@@ -703,7 +720,7 @@ Row airMiles() {
           appBar: appBar(context, 'Summary',
             newBooking: widget.newBooking,
             curStep: 3,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,),
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: new Center(
@@ -726,7 +743,7 @@ Row airMiles() {
           appBar: appBar(context, 'Summary',
             curStep: 3,
             newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',) ,
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: Center(
@@ -757,7 +774,7 @@ Row airMiles() {
           appBar: appBar(context, 'Summary',
             curStep: 3,
             newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,),
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
           extendBodyBehindAppBar: gblSettings.wantPageImages,
           endDrawer: DrawerMenu(),
           body: Center(
@@ -812,7 +829,7 @@ Row airMiles() {
           appBar: appBar(context, 'Summary',
             curStep: 3,
             newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : null,) ,
+            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',) ,
           //extendBodyBehindAppBar: gblSettings.wantCityImages,
           endDrawer: DrawerMenu(),
           bottomNavigationBar: getBottomNav(context),
@@ -855,8 +872,8 @@ Row airMiles() {
         Widget peopleList ;
         peopleList =
             Container(
-                decoration: ContainerDecoration( location: 'top') ,
-                margin: ContainerMargins(location: 'top') ,
+                decoration: containerDecoration( location: 'top') ,
+                margin: containerMargins(location: 'top') ,
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                     children: [
@@ -950,8 +967,8 @@ Row airMiles() {
 
 
     return new Container(
-        decoration: ContainerDecoration() ,
-        margin: ContainerMargins() ,
+        decoration: containerDecoration() ,
+        margin: containerMargins() ,
         padding: EdgeInsets.all(16.0),
         child: new ListView(children: [
           widget.newBooking.passengers.adults != 0
@@ -1104,8 +1121,8 @@ Row airMiles() {
 
 Widget bookingSummary() {
     return Container(
-        decoration: ContainerDecoration( location: 'middle') ,
-        margin: ContainerMargins(location: 'middle') ,
+        decoration: containerDecoration( location: 'middle') ,
+        margin: containerMargins(location: 'middle') ,
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
         child: Column(
       children: [
@@ -1165,7 +1182,7 @@ Widget bookingSummary() {
 }
 
   void onComplete (dynamic p) {
-      _error = null;
+      _error = '';
       setState(() {});
       Navigator.of(context).pop();
   }

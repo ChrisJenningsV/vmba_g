@@ -21,14 +21,14 @@ import '../utilities/widgets/appBarWidget.dart';
 //ignore: must_be_immutable
 class MyFqtvPage extends StatefulWidget {
   MyFqtvPage(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})
+      {Key key= const Key("fqtv_key"), this.passengerDetail, this.isAdsBooking= false, this.isLeadPassenger= false})
       : super(key: key);
 
   _MyFqtvPageState createState() => _MyFqtvPageState();
 
-  PassengerDetail passengerDetail;
-  String joiningDate;
-  final bool isAdsBooking;
+  PassengerDetail? passengerDetail;
+  String joiningDate='';
+  final bool isAdsBooking ;
   final bool isLeadPassenger;
 
 
@@ -59,18 +59,18 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
-  bool _isButtonDisabled;
+  bool _isButtonDisabled= false;
   bool isPending = false;
-  ApiFqtvMemberDetailsResponse memberDetails;
-  List<ApiFQTVMemberTransaction> transactions;
+  ApiFqtvMemberDetailsResponse? memberDetails;
+  List<ApiFQTVMemberTransaction>? transactions;
 
-  List<UserProfileRecord> userProfileRecordList;
+  List<UserProfileRecord>? userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
 //  bool _loadingInProgress = false;
-  String _error;
+  String _error= '';
   bool _isHidden = true;
   bool _loadingInProgress = false;
-  String title;
+  String title ='';
 
 
   @override
@@ -84,18 +84,18 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     title = 'transactions';
     widget.passengerDetail = new PassengerDetail( email:  '', phonenumber: '');
     if( gblPassengerDetail != null &&
-        gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
-        gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty) {
+        gblPassengerDetail!.fqtv != null && gblPassengerDetail!.fqtv.isNotEmpty &&
+        gblPassengerDetail!.fqtvPassword != null && gblPassengerDetail!.fqtvPassword.isNotEmpty) {
       widget.passengerDetail = gblPassengerDetail;
-      fqtvNo = gblPassengerDetail.fqtv;
-      fqtvPass = gblPassengerDetail.fqtvPassword;
+      fqtvNo = gblPassengerDetail!.fqtv;
+      fqtvPass = gblPassengerDetail!.fqtvPassword;
     } else {
       Repository.get()
           .getNamedUserProfile('PAX1').then((profile) {
         if (profile != null) {
-          widget.passengerDetail.firstName = profile.name.toString();
+          widget.passengerDetail!.firstName = profile.name.toString();
           try {
-            Map map = json.decode(
+            Map<String, dynamic> map = json.decode(
                 profile.value.toString().replaceAll(
                     "'", '"')); // .replaceAll(',}', '}')
             widget.passengerDetail = PassengerDetail.fromJson(map);
@@ -103,35 +103,35 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           } catch (e) {
             print(e);
           }
-          _titleTextEditingController.text = widget.passengerDetail.title;
+          _titleTextEditingController.text = widget.passengerDetail!.title;
           _firstNameTextEditingController.text =
-              widget.passengerDetail.firstName;
-          _lastNameTextEditingController.text = widget.passengerDetail.lastName;
-          _emailTextEditingController.text = widget.passengerDetail.email;
+              widget.passengerDetail!.firstName;
+          _lastNameTextEditingController.text = widget.passengerDetail!.lastName;
+          _emailTextEditingController.text = widget.passengerDetail!.email;
           _phoneNumberTextEditingController.text =
-              widget.passengerDetail.phonenumber;
+              widget.passengerDetail!.phonenumber;
           _dateOfBirthTextEditingController.text =
-              widget.passengerDetail.dateOfBirth.toString();
+              widget.passengerDetail!.dateOfBirth.toString();
 
           _adsNumberTextEditingController.text =
-              widget.passengerDetail.adsNumber;
-          _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
+              widget.passengerDetail!.adsNumber;
+          _adsPinTextEditingController.text = widget.passengerDetail!.adsPin;
 
-          if (widget.passengerDetail.paxType == null) {
-            widget.passengerDetail.paxType = PaxType.adult;
+          if (widget.passengerDetail!.paxType == null) {
+            widget.passengerDetail!.paxType = PaxType.adult;
           }
         }
       });
     }
     // _displayProcessingIndicator = false;
 
-    if( gblPassengerDetail != null && gblPassengerDetail.fqtv != null &&
-        gblPassengerDetail.fqtv.isNotEmpty &&
-        gblPassengerDetail.fqtvPassword != null &&
-        gblPassengerDetail.fqtvPassword.isNotEmpty) {
+    if( gblPassengerDetail != null && gblPassengerDetail!.fqtv != null &&
+        gblPassengerDetail!.fqtv.isNotEmpty &&
+        gblPassengerDetail!.fqtvPassword != null &&
+        gblPassengerDetail!.fqtvPassword.isNotEmpty) {
       // set up for login
-      _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
-      _passwordEditingController.text = gblPassengerDetail.fqtvPassword;
+      _fqtvTextEditingController.text = gblPassengerDetail!.fqtv;
+      _passwordEditingController.text = gblPassengerDetail!.fqtvPassword;
 
       //_fqtvLogin();
 
@@ -157,9 +157,9 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           ),
         ),
       );
-    } else if( gblFqtvLoggedIn == false || widget.passengerDetail == null || widget.passengerDetail.fqtv == null ||
-        widget.passengerDetail.fqtv.isEmpty || widget.passengerDetail.fqtvPassword == null ||
-        widget.passengerDetail.fqtvPassword.isEmpty  ) {
+    } else if( gblFqtvLoggedIn == false || widget.passengerDetail == null || widget.passengerDetail!.fqtv == null ||
+        widget.passengerDetail!.fqtv.isEmpty || widget.passengerDetail!.fqtvPassword == null ||
+        widget.passengerDetail!.fqtvPassword.isEmpty  ) {
       Color titleBackClr = gblSystemColors.primaryHeaderColor;
       if( titleBackClr == Colors.white) {
         titleBackClr = gblSystemColors.primaryButtonColor;
@@ -383,22 +383,22 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     if( joining.length > 11) joining = joining.substring(0,11);
 
 if (widget.passengerDetail != null) {
-  if( widget.passengerDetail.firstName != null &&
-    widget.passengerDetail.firstName.isNotEmpty && widget.passengerDetail.lastName != null &&
-    widget.passengerDetail.lastName.isNotEmpty) {
+  if( widget.passengerDetail!.firstName != null &&
+    widget.passengerDetail!.firstName.isNotEmpty && widget.passengerDetail!.lastName != null &&
+    widget.passengerDetail!.lastName.isNotEmpty) {
 
-    name = widget.passengerDetail.firstName + ' ' +widget.passengerDetail.lastName;
+    name = widget.passengerDetail!.firstName + ' ' +widget.passengerDetail!.lastName;
   }
-  if ( widget.passengerDetail.email != null ) {
-    email = widget.passengerDetail.email;
+  if ( widget.passengerDetail!.email != null ) {
+    email = widget.passengerDetail!.email;
   }
-  if ( widget.passengerDetail.fqtv != null ) {
-    fqtv = widget.passengerDetail.fqtv;
+  if ( widget.passengerDetail!.fqtv != null ) {
+    fqtv = widget.passengerDetail!.fqtv;
   }
 }
 if ( memberDetails != null ) {
-  name = memberDetails.member.title + ' ' + memberDetails.member.firstname + ' ' + memberDetails.member.surname ;
-  email = memberDetails.member.email;
+  name = memberDetails!.member!.title + ' ' + memberDetails!.member!.firstname + ' ' + memberDetails!.member!.surname ;
+  email = memberDetails!.member!.email;
 
 }
 if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
@@ -619,12 +619,12 @@ if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
     gblFqtvNumber = "";
     gblFqtvLoggedIn = false;
     gblRedeemingAirmiles = false;
-    widget.passengerDetail.fqtv = '';
+    widget.passengerDetail!.fqtv = '';
     fqtvNo = '';
     fqtvEmail = '';
     fqtvPass = '';
-    gblPassengerDetail.fqtv = '';
-    gblPassengerDetail.fqtvPassword = '';
+    gblPassengerDetail!.fqtv = '';
+    gblPassengerDetail!.fqtvPassword = '';
     gblFqtvBalance = 0;
     Navigator.of(context).pushNamedAndRemoveUntil(
         '/HomePage', (Route<dynamic> route) => false);
@@ -642,7 +642,7 @@ Widget _getTrans() {
 
   tranWidgets.add( TrText(title, textScaleFactor: 1.5, style: TextStyle(fontWeight: FontWeight.bold),) );
 
-  for(var tran in  transactions) {
+  for(var tran in  transactions!) {
     if(( tran.airMiles != '0' && tran.airMiles != '0.0' ) || isPending) {
 
       List<Widget> list = [];
@@ -737,17 +737,17 @@ Widget _getTrans() {
 
   void formSave() {
     final form = formKey.currentState;
-    form.save();
+    form!.save();
   }
 
   String validateEmail(String value) {
-    Pattern pattern =
+    String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'Enter Valid Email';
     else
-      return null;
+      return '';
   }
   void _actionCompleted() {
     setState(() {
@@ -768,7 +768,7 @@ Widget _getTrans() {
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
-      Map map = json.decode(result);
+      Map<String, dynamic> map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       _isButtonDisabled = false;
       if( resp.statusCode != 'OK') {
@@ -796,7 +796,7 @@ Widget _getTrans() {
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
-      Map map = json.decode(result);
+      Map<String, dynamic> map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       if( resp.statusCode != 'OK') {
         _error = resp.message;
@@ -806,12 +806,12 @@ Widget _getTrans() {
       } else {
         _error = resp.message;
         _actionCompleted();
-        gblPassengerDetail.fqtvPassword = _newPasswordEditingController.text;
+        gblPassengerDetail!.fqtvPassword = _newPasswordEditingController.text;
         fqtvPass = _newPasswordEditingController.text;
         // save new password in profile
         Repository.get().getNamedUserProfile('PAX1').then((profile) {
           if (profile != null) {
-            Map map = json.decode(
+            Map<String, dynamic> map = json.decode(
                 profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
             var passengerDetail = PassengerDetail.fromJson(map);
             passengerDetail.fqtvPassword = _newPasswordEditingController.text;
@@ -843,33 +843,33 @@ Widget _getTrans() {
       String data = json.encode(rq);
       try {
         String reply = await callSmartApi('FQTVLOGIN', data);
-        Map map = json.decode(reply);
+        Map<String, dynamic> map = json.decode(reply);
         FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
 
         if( gblPassengerDetail == null ) {
           gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
         }
         gblFqtvLoggedIn = true;
-        gblPassengerDetail.fqtv = fqtvNo;
-        gblPassengerDetail.fqtvPassword = fqtvPass;
-        widget.passengerDetail.fqtv = fqtvNo;
-        widget.passengerDetail.fqtvPassword = fqtvPass;
+        gblPassengerDetail!.fqtv = fqtvNo;
+        gblPassengerDetail!.fqtvPassword = fqtvPass;
+        widget.passengerDetail!.fqtv = fqtvNo;
+        widget.passengerDetail!.fqtvPassword = fqtvPass;
 
-        gblPassengerDetail.title = fqtvLoginReply.title;
-        gblPassengerDetail.firstName = fqtvLoginReply.firstname;
-        gblPassengerDetail.lastName = fqtvLoginReply.surname;
-        widget.passengerDetail.firstName = fqtvLoginReply.firstname;
-        widget.passengerDetail.lastName = fqtvLoginReply.surname;
+        gblPassengerDetail!.title = fqtvLoginReply.title;
+        gblPassengerDetail!.firstName = fqtvLoginReply.firstname;
+        gblPassengerDetail!.lastName = fqtvLoginReply.surname;
+        widget.passengerDetail!.firstName = fqtvLoginReply.firstname;
+        widget.passengerDetail!.lastName = fqtvLoginReply.surname;
 
-        gblPassengerDetail.phonenumber = fqtvLoginReply.phoneMobile;
-        if (gblPassengerDetail.phonenumber == null ||
-            gblPassengerDetail.phonenumber.isEmpty) {
-          gblPassengerDetail.phonenumber =              fqtvLoginReply.phoneHome;
+        gblPassengerDetail!.phonenumber = fqtvLoginReply.phoneMobile;
+        if (gblPassengerDetail!.phonenumber == null ||
+            gblPassengerDetail!.phonenumber.isEmpty) {
+          gblPassengerDetail!.phonenumber =              fqtvLoginReply.phoneHome;
         }
         gblFqtvBalance = int.parse(fqtvLoginReply.balance);
 
-        gblPassengerDetail.email =fqtvLoginReply.email;
-        widget.passengerDetail.email = fqtvLoginReply.email;
+        gblPassengerDetail!.email =fqtvLoginReply.email;
+        widget.passengerDetail!.email = fqtvLoginReply.email;
         widget.joiningDate = fqtvLoginReply.joiningDate;
         //DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate))
         gblError ='';
@@ -944,7 +944,7 @@ Widget _getTrans() {
 
    print(msg);
    _sendVRSCommand(msg, method).then((result){
-     Map map = json.decode(result);
+     Map<String, dynamic> map = json.decode(result);
      ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
      if( resp.statusCode != 'OK') {
        _error = resp.message;
@@ -977,7 +977,7 @@ Widget _getTrans() {
 
         return;
       }
-      Map map = json.decode(result);
+      Map<String, dynamic> map = json.decode(result);
       ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp.fromJson(map);
       if( resp.statusCode != 'OK') {
         _error = resp.message;
@@ -1128,7 +1128,7 @@ Widget _getTrans() {
                child: TrText("CONTINUE"),
                onPressed: () {
                  var str = validateEmail(_oldPasswordEditingController.text);
-                 if( str == null ) {
+                 if( str == null || str == '' ) {
                    _fqtvResetPassword();
                  } else {
                    _error = str;

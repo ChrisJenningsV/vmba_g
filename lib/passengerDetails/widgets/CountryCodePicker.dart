@@ -11,42 +11,42 @@ import 'package:vmba/utilities/helper.dart';
 
 //ignore: must_be_immutable
 class InternationalPhoneInput extends StatefulWidget {
-  final void Function(String phoneNumber, String internationalizedPhoneNumber,      String isoCode) onPhoneNumberChange;
+  final void Function(String phoneNumber, String internationalizedPhoneNumber,      String isoCode)? onPhoneNumberChange;
   final String initialPhoneNumber;
   final String initialSelection;
   final String errorText;
   final String hintText;
   final String labelText;
-  final TextStyle errorStyle;
-  final TextStyle hintStyle;
-  final TextStyle labelStyle;
+  final TextStyle? errorStyle;
+  final TextStyle? hintStyle;
+  final TextStyle? labelStyle;
   final int errorMaxLines;
-  final List<String> enabledCountries;
-  final InputDecoration decoration;
-  final Widget dropdownIcon;
-  final InputBorder border;
-  final EdgeInsetsGeometry padding;
+  final List<String>? enabledCountries;
+  final InputDecoration? decoration;
+  final Widget? dropdownIcon;
+  final InputBorder? border;
+  final EdgeInsetsGeometry? padding;
   final String popupTitle;
-  final TextEditingController controller;
-  final TextEditingController codeController;
-  final ValueChanged<String > onSaved;
+  final TextEditingController? controller;
+  final TextEditingController? codeController;
+  final ValueChanged<String >? onSaved;
 
   InternationalPhoneInput(
       {this.onPhoneNumberChange,
-        this.initialPhoneNumber,
-        this.initialSelection,
-        this.errorText,
-        this.hintText,
-        this.labelText,
+        this.initialPhoneNumber='',
+        this.initialSelection='',
+        this.errorText='',
+        this.hintText='',
+        this.labelText='',
         this.errorStyle,
         this.hintStyle,
         this.labelStyle,
         this.enabledCountries = const [],
-        this.errorMaxLines,
+        this.errorMaxLines=10,
         this.decoration,
         this.dropdownIcon,
         this.border, this.padding,
-        this.popupTitle,
+        this.popupTitle='',
         this.controller,
         this.codeController,
         this.onSaved,
@@ -64,26 +64,26 @@ class InternationalPhoneInput extends StatefulWidget {
 }
 
 class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
-  Country selectedItem;
+  Country? selectedItem;
   List<Country> itemList = [];
 
 
-  String errorText;
-  String hintText;
-  String labelText;
+  String errorText ='Please enter a valid phone number';
+  String hintText ='Code';
+  String labelText ='';
 
-  TextStyle errorStyle;
-  TextStyle hintStyle;
-  TextStyle labelStyle;
+  TextStyle? errorStyle;
+  TextStyle? hintStyle;
+  TextStyle? labelStyle;
 
-  int errorMaxLines;
+  int errorMaxLines =10;
 
   bool hasError = false;
-  String searchString;
+  String searchString ='';
 
-  InputDecoration decoration;
-  Widget dropdownIcon;
-  InputBorder border;
+  InputDecoration? decoration;
+  Widget? dropdownIcon;
+  InputBorder? border;
 
   _InternationalPhoneInputState();
 
@@ -91,8 +91,8 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
 
   @override
   void initState() {
-    errorText = widget.errorText ?? 'Please enter a valid phone number';
-    hintText = widget.hintText ?? 'Code';
+    errorText = widget.errorText;
+    hintText = widget.hintText ;
     labelText = widget.labelText;
     errorStyle = widget.errorStyle;
     hintStyle = widget.hintStyle;
@@ -122,12 +122,12 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                 (e) =>
             (widget.initialPhoneNumber.toUpperCase().startsWith(e.dialCode)),
             orElse: () => list[0]);
-      } else if (widget.codeController != null &&  widget.codeController.text != null && widget.codeController.text.isNotEmpty) {
+      } else if (widget.codeController != null &&  widget.codeController!.text != null && widget.codeController!.text.isNotEmpty) {
         preSelectedItem = list.firstWhere(
                 (e) =>
             (e.code.toUpperCase() ==
-                widget.codeController.text.toUpperCase()) ||
-                (e.dialCode == widget.codeController.text.toString()),
+                widget.codeController!.text.toUpperCase()) ||
+                (e.dialCode == widget.codeController!.text.toString()),
             orElse: () => list[0]);
       } else if (gblSettings.defaultCountryCode != null && gblSettings.defaultCountryCode.isNotEmpty) {
         preSelectedItem = list.firstWhere(
@@ -139,11 +139,11 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
         preSelectedItem = list[0];
       }
       if(preSelectedItem != null && widget.codeController != null)  {
-        widget.codeController.text = preSelectedItem.dialCode ;
+        widget.codeController!.text = preSelectedItem.dialCode ;
         // strip off code
         //phoneTextController.text = widget.initialPhoneNumber.substring(preSelectedItem.dialCode.length);
         if( widget.initialPhoneNumber.length >= preSelectedItem.dialCode.length) {
-          widget.controller.text = widget.initialPhoneNumber.substring(
+          widget.controller!.text = widget.initialPhoneNumber.substring(
               preSelectedItem.dialCode.length);
         }
       }
@@ -190,21 +190,21 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
 
     List<Country> countries = List<Country>.generate(jsonList.length, (index) {
       Map<String, String> elem = Map<String, String>.from(jsonList[index]);
-      if (widget.enabledCountries.isEmpty) {
+      if (widget.enabledCountries!.isEmpty) {
         return Country(
-            name: elem['en_short_name'],
-            code: elem['alpha_2_code'],
-            dialCode: elem['dial_code'],
-            flagUri: 'assets/flags/${elem['alpha_2_code'].toLowerCase()}.png');
-      } else if (widget.enabledCountries.contains(elem['alpha_2_code']) ||
-          widget.enabledCountries.contains(elem['dial_code'])) {
+            name: elem['en_short_name'] as String ,
+            code: elem['alpha_2_code'] as String,
+            dialCode: elem['dial_code'] as String,
+            flagUri: 'assets/flags/${elem['alpha_2_code']!.toLowerCase()}.png');
+      } else if (widget.enabledCountries!.contains(elem['alpha_2_code']) ||
+          widget.enabledCountries!.contains(elem['dial_code'])) {
         return Country(
-            name: elem['en_short_name'],
-            code: elem['alpha_2_code'],
-            dialCode: elem['dial_code'],
-            flagUri: 'assets/flags/${elem['alpha_2_code'].toLowerCase()}.png');
+            name: elem['en_short_name'] as String,
+            code: elem['alpha_2_code'] as String,
+            dialCode: elem['dial_code'] as String,
+            flagUri: 'assets/flags/${elem['alpha_2_code']!.toLowerCase()}.png');
       } else {
-        return null;
+        return Country();
       }
     });
 
@@ -216,7 +216,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.padding,
+      padding: widget.padding!,
       child: Row( children: [
       SizedBox(
         width: 80,
@@ -233,7 +233,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                   setState(() {
                     selectedItem = country;
                     if( widget.codeController != null ) {
-                      widget.codeController.text = country.dialCode;
+                      widget.codeController!.text = country.dialCode;
                     }
 
                   });
@@ -263,7 +263,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
             //validator: (value) => value.isEmpty ? translate('Cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.onSaved(value); // + widget.controller.text);
+                widget.onSaved!(value); // + widget.controller.text);
                 //widget.passengerDetail.title = value.trim();
               }
             },
@@ -276,7 +276,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
        decoration: getDecoration('Phone number'),
        keyboardType: TextInputType.phone,
       controller: widget.controller,
-      validator: (value) =>      value.isEmpty ? translate('Phone number cannot be empty') : null,
+      validator: (value) =>      value!.isEmpty ? translate('Phone number cannot be empty') : null,
       onSaved: (value) {
         if (value != null) {
           //widget.passengerDetail.title = value.trim();
@@ -294,13 +294,13 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
 class CodeDialog extends StatefulWidget {
   final String popupTitle;
   String searchString;
-  Country selectedItem;
-  final List<Country> itemList ;
-  final ValueChanged<Country> onChanged;
+  Country? selectedItem;
+  final List<Country>? itemList ;
+  final ValueChanged<Country>? onChanged;
 
   CodeDialog({
-    this.searchString,
-    this.popupTitle,
+    this.searchString='',
+    this.popupTitle='',
     this.itemList,
     this.onChanged,
     this.selectedItem,
@@ -359,7 +359,7 @@ class CodeDialogState extends State<CodeDialog> {
       },
     ));
     //new List<Widget>();
-    widget.itemList.forEach((country) {
+    widget.itemList!.forEach((country) {
       String match = country.name.toUpperCase();
       if( widget.searchString.isEmpty || match.startsWith(widget.searchString)) {
         widgets.add(ListTile(
@@ -375,7 +375,7 @@ class CodeDialogState extends State<CodeDialog> {
 
                 ]),
             onTap: () {
-              widget.onChanged(country);
+              widget.onChanged!(country);
               Navigator.pop(context, country.dialCode);
               _updateTitle(country);
             }));

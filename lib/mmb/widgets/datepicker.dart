@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
@@ -11,7 +12,7 @@ import 'package:vmba/components/trText.dart';
 
 class MmbDatePickerWidget extends StatefulWidget {
   MmbDatePickerWidget(
-      {Key key, this.pnr, this.journeyToChange, this.mmbBooking})
+      {Key key= const Key("mmbdate_key"), required this.pnr,required  this.journeyToChange,required  this.mmbBooking})
       : super(key: key);
 
   final PnrModel pnr;
@@ -24,10 +25,10 @@ class MmbDatePickerWidget extends StatefulWidget {
 
 class _DatePickerWidgetState extends State<MmbDatePickerWidget>
     with TickerProviderStateMixin {
-  DateTime departureDate;
-  DateTime lastDate;
-  DateTime firstDate;
-  MmbBooking mmbBooking;
+  DateTime? departureDate ;
+  DateTime? lastDate;
+  DateTime? firstDate;
+  late MmbBooking mmbBooking;
   @override
   void initState() {
     super.initState();
@@ -40,7 +41,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
     departureDate = DateTime.parse(mmbBooking
             .journeys.journey[widget.journeyToChange - 1].itin.first.depDate +
         ' 00:00:00');
-    if (DateTime.now().isAfter(departureDate)) {
+    if (DateTime.now().isAfter(departureDate!)) {
       departureDate = DateTime.now();
     }
 
@@ -69,7 +70,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
               ' ' +
               mmbBooking.journeys.journey.first.itin.last.arrTime);
 
-      if (DateTime.now().isAfter(firstDate)) {
+      if (DateTime.now().isAfter(firstDate!)) {
         firstDate = DateTime.now();
       }
     }
@@ -92,9 +93,9 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
         endDrawer: DrawerMenu(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           DayPickerPage(
-              firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate) + ' 00:00:00'),
-              departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate) + ' 00:00:00'),
-              lastDate: DateTime.parse(DateFormat('y-MM-dd').format(lastDate) + ' 00:00:00'),
+              firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
+              departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
+              lastDate: DateTime.parse(DateFormat('y-MM-dd').format(lastDate!) + ' 00:00:00'),
               //firstDate: firstDate,
               // departureDate: departureDate,
               //lastDate: lastDate,
@@ -119,7 +120,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                               builder: (context) => ChangeFlightPage(
                                     pnr: widget.pnr, //journey: widget.journey,
                                     departureDate:
-                                        departureDate, // journeys: widget.journeys,
+                                        departureDate!, // journeys: widget.journeys,
                                     mmbBooking: mmbBooking,
                                   )));
                     }),

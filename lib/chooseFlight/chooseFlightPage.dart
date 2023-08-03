@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:intl/intl.dart';
@@ -11,13 +12,13 @@ import '../utilities/messagePages.dart';
 
 class ChooseFlight extends StatelessWidget {
   ChooseFlight(
-      {Key key, this.classband, this.flts, this.cabin, this.cb, this.seats, this.price, this.currency})
+      {Key key = const Key("chflt_key"), this.classband, this.flts, this.cabin, this.cb, this.seats, this.price = 0.0, this.currency})
       : super(key: key);
-  final Band classband;
-  final List<Flt> flts;
-  final String cabin;
-  final String currency;
-  final int cb;
+  final Band? classband;
+  final List<Flt>? flts;
+  final String? cabin;
+  final String? currency;
+  final int? cb;
   final double price;
   final seats;
 
@@ -57,10 +58,10 @@ class ChooseFlight extends StatelessWidget {
     if( !gblActionBtnDisabled) {
       gblActionBtnDisabled = true;
       Navigator.of(context).pop(buildfltRequestMsg(
-          flts,
-          classband.cbname,
-          classband.cabin,
-          int.parse(classband.cb)));
+          flts as List<Flt>,
+          classband?.cbname,
+          classband?.cabin,
+          int.parse(classband?.cb as String)));
     }
   }
 
@@ -70,7 +71,7 @@ class ChooseFlight extends StatelessWidget {
     if( wantPageV2()) {
       String _currencySymbol = '';
       if( gblSettings.wantCurrencySymbols == true ) {
-        _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
+        _currencySymbol = (simpleCurrencySymbols[currency] ?? currency as String);
       }
 
       list.add(new Row(
@@ -78,9 +79,9 @@ class ChooseFlight extends StatelessWidget {
         children: <Widget>[
           TrText(
             //this.classband.cbdisplayname.toUpperCase()
-              this.classband.cbdisplayname == 'Fly Flex Plus'
+              this.classband?.cbdisplayname == 'Fly Flex Plus'
                   ? 'Fly Flex +'
-                  : this.classband.cbdisplayname,
+                  : (this.classband?.cbdisplayname as String),
               style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700)),
           Padding(padding: EdgeInsets.all(5)),
           Text(_currencySymbol + price.toStringAsFixed(2),
@@ -96,9 +97,9 @@ class ChooseFlight extends StatelessWidget {
         children: <Widget>[
           TrText(
             //this.classband.cbdisplayname.toUpperCase()
-              this.classband.cbdisplayname == 'Fly Flex Plus'
+              (this.classband?.cbdisplayname == 'Fly Flex Plus'
                   ? 'Fly Flex +'
-                  : this.classband.cbdisplayname,
+                  : this.classband?.cbdisplayname as String),
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.black,
@@ -107,7 +108,7 @@ class ChooseFlight extends StatelessWidget {
       ),);
     }
     if( gblSettings.wantClassBandImages) {
-      list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband.cbdisplayname}.png')));
+      list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png')));
     }
 
     list.add( new Padding(padding: EdgeInsets.only(bottom: 15.0),    ));
@@ -150,7 +151,7 @@ class ChooseFlight extends StatelessWidget {
   }
 
   List<String> buildfltRequestMsg(
-      List<Flt> flts, String classBandName, String cabin, int cb) {
+      List<Flt> flts, String? classBandName, String? cabin, int cb ) {
     List<String> msg = []; // List<String>();
 
 //0LM0571Q18DEC18NWIMANQQ1/06550800(CAB=Y)[CB=FLY]^
@@ -165,15 +166,17 @@ class ChooseFlight extends StatelessWidget {
       String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
       String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
       msg.add(
-          '0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id[cb - 1] + _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=$cabin)[CB=$classBandName]');
+          '0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![cb - 1] + _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=$cabin)[CB=$classBandName]');
     }
     return msg;
   }
 
   Widget classbandText() {
-    if (classband.cbtextrecords != null) {
+    if (classband?.cbtextrecords != null) {
+      Cbtextrecords cbt = classband?.cbtextrecords as Cbtextrecords;
+
       return Column(
-          children: classband.cbtextrecords.cbtext
+          children: cbt.cbtext
               .map((item) => Column(
                     children: [
                       Row(

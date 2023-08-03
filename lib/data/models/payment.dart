@@ -1,18 +1,19 @@
+
 import 'dart:core';
 import 'package:meta/meta.dart';
 import 'package:vmba/data/models/models.dart';
 
 class InitPaymentRequest {
-  String paymentProviderName;
-  String rloc;
-  Transaction transaction;
-  Payee payee;
-  Session session;
+  String paymentProviderName = '';
+  String rloc ='';
+  Transaction transaction=Transaction();
+  Payee? payee;
+  Session session = Session('','','');
 
   InitPaymentRequest({
-    @required this.rloc,
-    @required this.session,
-    @required this.paymentProviderName,
+    required this.rloc,
+    required this.session,
+    required this.paymentProviderName,
   });
 
   Map<String, dynamic> toJson() {
@@ -34,8 +35,8 @@ class PaymentStatusRequest {
   Session session;
 
   PaymentStatusRequest({
-    @required this.session,
-    @required this.transactionReference,
+    required this.session,
+    required this.transactionReference,
   });
 
   Map<String, dynamic> toJson() {
@@ -52,10 +53,10 @@ class PaymentStatusRequest {
 class Payee {}
 
 class Transaction {
-  double amount;
-  String currency;
+  double amount=0;
+  String currency='';
 
-  Transaction({this.amount, this.currency});
+  Transaction();
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -67,17 +68,17 @@ class Transaction {
 }
 
 class InitPaymentResponse {
-  String transactionReference;
-  List<DataPairs> dataPairs;
+  String transactionReference='';
+  List<DataPairs>? dataPairs;
   Null externalPaymentProviderURL;
-  String httpMethod;
-  Status status;
+  String httpMethod='';
+  Status? status;
 
   InitPaymentResponse(
-      {this.transactionReference,
+      {this.transactionReference='',
       this.dataPairs,
       this.externalPaymentProviderURL,
-      this.httpMethod,
+      this.httpMethod='',
       this.status});
 
   InitPaymentResponse.fromJson(Map<String, dynamic> json) {
@@ -86,7 +87,7 @@ class InitPaymentResponse {
       dataPairs = [];
       //new List<DataPairs>();
       json['dataPairs'].forEach((v) {
-        dataPairs.add(new DataPairs.fromJson(v));
+        dataPairs!.add(new DataPairs.fromJson(v));
       });
     }
     //externalPaymentProviderURL = json['externalPaymentProviderURL'];
@@ -99,22 +100,22 @@ class InitPaymentResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['transactionReference'] = this.transactionReference;
     if (this.dataPairs != null) {
-      data['dataPairs'] = this.dataPairs.map((v) => v.toJson()).toList();
+      data['dataPairs'] = this.dataPairs!.map((v) => v.toJson()).toList();
     }
     data['externalPaymentProviderURL'] = this.externalPaymentProviderURL;
     data['httpMethod'] = this.httpMethod;
     if (this.status != null) {
-      data['status'] = this.status.toJson();
+      data['status'] = this.status!.toJson();
     }
     return data;
   }
 }
 
 class PaymentStatusResponse {
-  String transactionStatus;
-  Status status;
+  String transactionStatus ='';
+  Status? status;
 
-  PaymentStatusResponse({this.transactionStatus, this.status});
+  PaymentStatusResponse({required this.transactionStatus, this.status});
 
   PaymentStatusResponse.fromJson(Map<String, dynamic> json) {
     transactionStatus = json['transactionStatus'];
@@ -126,17 +127,17 @@ class PaymentStatusResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['transactionStatus'] = this.transactionStatus;
     if (this.status != null) {
-      data['status'] = this.status.toJson();
+      data['status'] = this.status!.toJson();
     }
     return data;
   }
 }
 
 class DataPairs {
-  String key;
-  String value;
+  String key='';
+  String value='';
 
-  DataPairs({this.key, this.value});
+  DataPairs({this.key='', this.value=''});
 
   DataPairs.fromJson(Map<String, dynamic> json) {
     key = json['key'];
@@ -152,10 +153,10 @@ class DataPairs {
 }
 
 class Status {
-  String statusCode;
-  String message;
+  String statusCode='';
+  String message='';
 
-  Status({this.statusCode, this.message});
+  Status({this.statusCode='', this.message=''});
 
   Status.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];

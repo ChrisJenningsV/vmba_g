@@ -66,7 +66,7 @@ sendEmailConfirmation(PnrModel pnrModel) async {
 
 
 void refreshBooking(String rloc) {
-  PnrModel objPNR;
+  PnrModel? objPNR;
   gblCurrentRloc = rloc;
   try {
     logit('fetchpnr $rloc');

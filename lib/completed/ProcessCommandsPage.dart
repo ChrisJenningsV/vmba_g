@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
@@ -10,7 +11,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 class ProcessCommandsPage extends StatefulWidget {
-  ProcessCommandsPage({Key key, this.runVRSCommandArgs}) : super(key: key);
+  ProcessCommandsPage({Key key= const Key("proccmd_key"), required this.runVRSCommandArgs}) : super(key: key);
   final RunVRSCommand runVRSCommandArgs;
   @override
   _ProcessCommandsWidgetState createState() => _ProcessCommandsWidgetState();
@@ -18,11 +19,11 @@ class ProcessCommandsPage extends StatefulWidget {
 
 class _ProcessCommandsWidgetState extends State<ProcessCommandsPage> {
   //GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _loadingInProgress;
-  String _displayProcessingText;
+  bool _loadingInProgress = false;
+  String _displayProcessingText = '';
   //bool _noInternet;
   //bool _hasError;
-  PnrModel pnrModel;
+  PnrModel pnrModel = PnrModel();
 
   @override
   initState() {
@@ -114,7 +115,7 @@ class _ProcessCommandsWidgetState extends State<ProcessCommandsPage> {
   void processCommands() {
     sendVRSCommand(json.encode(widget.runVRSCommandArgs.toJson()))
         .then((onValue) {
-      Map map = json.decode(onValue);
+      Map<String, dynamic> map = json.decode(onValue);
       pnrModel = new PnrModel.fromJson(map);
       PnrDBCopy pnrDBCopy = new PnrDBCopy(
           rloc: pnrModel.pNR.rLOC, //_rloc,

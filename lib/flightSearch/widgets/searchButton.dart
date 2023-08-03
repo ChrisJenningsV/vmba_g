@@ -13,7 +13,7 @@ import '../../components/vidButtons.dart';
 // ignore: must_be_immutable
 class SearchButtonWidget extends StatelessWidget {
   SearchButtonWidget(
-      {Key key, this.systemColors, this.newBooking, this.onChanged})
+      {Key key= const Key("searchbtn_key"), required this.newBooking, required this.onChanged})
       : super(key: key);
 
   final ValueChanged<NewBooking> onChanged;
@@ -89,7 +89,6 @@ class SearchButtonWidget extends StatelessWidget {
   }
 
   final NewBooking newBooking;
-  final SystemColors systemColors;
   //final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {

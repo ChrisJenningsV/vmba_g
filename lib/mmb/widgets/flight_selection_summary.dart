@@ -15,9 +15,9 @@ import 'package:vmba/controllers/vrsCommands.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget(
-      {Key key,
+      {Key key= const Key("fltselsum_key"),
       //   this.newBooking,
-      this.mmbBooking})
+      required this.mmbBooking})
       : super(key: key);
   final MmbBooking mmbBooking;
   //final NewBooking newBooking;
@@ -29,11 +29,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   final formKey = new GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _key = GlobalKey();
   PnrModel pnrModel = PnrModel();
-  bool _loadingInProgress;
-  String currencyCode;
-  bool _noInternet;
-  String _userErrorMessage;
-  bool _hasError;
+  bool _loadingInProgress = false;
+  String currencyCode = '';
+  bool _noInternet = false;
+  String _userErrorMessage ='';
+  bool _hasError = false;
 
   @override
   initState() {
@@ -212,7 +212,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     Repository.get().getFareQuote(buildCmd()).then((rs) {
 
       if (rs.isOk()) {
-        pnrModel = rs.body;
+        pnrModel = rs.body!;
         setCurrencyCode();
         _dataLoaded();
       } else {
@@ -332,15 +332,15 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          total += double.tryParse(d.fare ?? 0.0);
-          total += double.tryParse(d.tax1 ?? 0.0);
-          total += double.tryParse(d.tax2 ?? 0.0);
-          total += double.tryParse(d.tax3 ?? 0.0);
+          if( d.fare !='') total += double.tryParse(d.fare)!;
+          if(d.tax1 != '') total += double.tryParse(d.tax1 )!;
+          if(d.tax2 != '') total += double.tryParse(d.tax2 )!;
+          if(d.tax3 != '') total += double.tryParse(d.tax3 )!;
           //total += double.tryParse(d.disc ?? 0.0);
-          if( d.disc != null ) {
+          if( d.disc != null && d.disc != '') {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc)!);
           }
         });
       }
@@ -363,10 +363,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
           //total += double.tryParse(d.disc ?? 0.0);
-          if( d.disc != null ) {
+          if( d.disc != null && d.disc != '' ) {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc )!);
           }
         });
       }
@@ -412,32 +412,37 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            FutureBuilder(
+            Text(cityCodetoAirport(pnrModel.pNR.itinerary.itin[i].depart),
+                style: new TextStyle(fontWeight: FontWeight.w700)),
+       /*     FutureBuilder(
               future: cityCodeToName(
                 pnrModel.pNR.itinerary.itin[i].depart,
               ),
               initialData: pnrModel.pNR.itinerary.itin[i].depart.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(text.data,
+                return new Text(text.data!,
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
-            ),
+            ),*/
             TrText(
               ' to ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-            FutureBuilder(
+            Text(cityCodetoAirport(pnrModel.pNR.itinerary.itin[i].arrive),
+                style: new TextStyle(fontWeight: FontWeight.w700)),
+
+            /*         FutureBuilder(
               future: cityCodeToName(
                 pnrModel.pNR.itinerary.itin[i].arrive,
               ),
               initialData: pnrModel.pNR.itinerary.itin[i].arrive.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
                 return new Text(
-                  text.data,
+                  text.data!,
                   style: TextStyle(fontWeight: FontWeight.w700),
                 );
               },
-            ),
+            ),*/
           ],
         ),
       );

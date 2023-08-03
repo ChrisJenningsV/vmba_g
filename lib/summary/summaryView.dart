@@ -10,11 +10,11 @@ import 'package:vmba/components/trText.dart';
 
 
 class SummaryView extends StatelessWidget {
-  SummaryView({Key key, this.newBooking}) : super(key: key);
+  SummaryView({Key key= const Key("sumview_key"), required this.newBooking}) : super(key: key);
   final NewBooking newBooking;
   //final PnrModel pnrModel;
 
-  String currencyCode;
+  String currencyCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class SummaryView extends StatelessWidget {
     list.add(Divider(),);
     list.add(flightSegementSummary());
 
-    if(gblPnrModel.pNR.mPS != null && gblPnrModel.pNR.mPS.mP != null ){
-      if( gblPnrModel.pNR.mPS.mP.where((p) =>  p.mPID != 'SSSS').length > 0 ){
+    if(gblPnrModel!.pNR.mPS != null && gblPnrModel!.pNR.mPS.mP != null ){
+      if( gblPnrModel!.pNR.mPS.mP.where((p) =>  p.mPID != 'SSSS').length > 0 ){
         // got products this segment :)
         list.add(tableTitle(translate('Additional Items' + ':')));
         List<MP> mpList = [];
-        gblPnrModel.pNR.mPS.mP.forEach((p) {
+        gblPnrModel!.pNR.mPS.mP.forEach((p) {
           if( p.mPID != 'SSSS') {
             mpList.add(p);
           }
@@ -180,8 +180,8 @@ class SummaryView extends StatelessWidget {
   }
   double incTax() {
     double tax =0.0;
-    if (gblPnrModel.pNR.fareQuote.fareTax != null) {
-      gblPnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+    if (gblPnrModel!.pNR.fareQuote.fareTax != null) {
+      gblPnrModel!.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         if (paxTax.separate == 'true') {
 //          sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
         } else {
@@ -194,8 +194,8 @@ class SummaryView extends StatelessWidget {
 
 double sepTax () {
     double sepTax1 = 0.0;
-  if (gblPnrModel.pNR.fareQuote.fareTax != null) {
-    gblPnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+  if (gblPnrModel!.pNR.fareQuote.fareTax != null) {
+    gblPnrModel!.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
       if (paxTax.separate == 'true') {
         sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
       } else {
@@ -211,7 +211,7 @@ double sepTax () {
     int miles;
     miles =
         int.tryParse(
-            gblPnrModel.pNR.basket.outstandingairmiles.airmiles) ??
+            gblPnrModel!.pNR.basket.outstandingairmiles.airmiles) ??
             0;
 
 
@@ -220,7 +220,7 @@ double sepTax () {
 
   Row netFareTotal() {
     double total = 0.0;
-    total = (double.tryParse(gblPnrModel
+    total = (double.tryParse(gblPnrModel!
         .pNR
         .fareQuote
         .fareStore
@@ -230,8 +230,8 @@ double sepTax () {
         0.0);
     double tax = 0.0;
 
-    if (gblPnrModel.pNR.fareQuote.fareTax != null) {
-      gblPnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+    if (gblPnrModel!.pNR.fareQuote.fareTax != null) {
+      gblPnrModel!.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         tax += (double.tryParse(paxTax.amnt) ?? 0.0);
       });
     }
@@ -244,18 +244,18 @@ double sepTax () {
   Row grandTotal() {
     double total = 0.0;
 
-    gblPnrModel.pNR.fareQuote.fareStore.forEach((f) {
+    gblPnrModel!.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          total += double.tryParse(d.fare ?? 0.0);
-          total += double.tryParse(d.tax1 ?? 0.0);
-          total += double.tryParse(d.tax2 ?? 0.0);
-          total += double.tryParse(d.tax3 ?? 0.0);
+          if( d.fare != null && d.fare != '')total += double.tryParse(d.fare ) as double;
+          if( d.tax1 != null && d.tax1 != '')total += double.tryParse(d.tax1 ) as double;
+          if( d.tax2 != null && d.tax2 != '')total +=  double.tryParse(d.tax2) as double;
+          if( d.tax3 != null && d.tax3 != '')total +=  double.tryParse(d.tax2) as double;
           if (d.disc != null) {
-            if (d.disc != null) {
+            if (d.disc != '') {
               d.disc
                   .split(',')
-                  .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                  .forEach((disc) => total += double.tryParse(disc) as double);
               // total += double.tryParse(d.disc ?? 0.0);
             }
           }
@@ -272,13 +272,13 @@ double sepTax () {
   Row discountTotal() {
     double total = 0.0;
 
-    gblPnrModel.pNR.fareQuote.fareStore.forEach((f) {
+    gblPnrModel!.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          if (d.disc != null) {
+          if (d.disc != null && d.disc != '') {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc) as double);
             //total += double.tryParse(d.disc ?? 0.0);
           }
         });
@@ -295,7 +295,7 @@ double sepTax () {
   }
 
   String amountPayable() {
-    FareStore fareStore = gblPnrModel
+    FareStore fareStore = gblPnrModel!
         .pNR
         .fareQuote
         .fareStore
@@ -321,84 +321,92 @@ double sepTax () {
     if (gblLogSummary) logit('flightSegementSummary');
     List<Widget> widgets = [];
     // new List<Widget>();
-    for (var i = 0; i <= gblPnrModel.pNR.itinerary.itin.length - 1; i++) {
+    for (var i = 0; i <= gblPnrModel!.pNR.itinerary.itin.length - 1; i++) {
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            FutureBuilder(
+            Text(cityCodetoAirport(gblPnrModel!.pNR.itinerary.itin[i].depart),
+                textScaleFactor: 1.25,
+                style:  TextStyle(fontWeight: FontWeight.bold)),
+
+            /*         FutureBuilder(
               future: cityCodeToName(
-                gblPnrModel.pNR.itinerary.itin[i].depart,
+                gblPnrModel!.pNR.itinerary.itin[i].depart,
               ),
-              initialData: gblPnrModel.pNR.itinerary.itin[i].depart.toString(),
+              initialData: gblPnrModel!.pNR.itinerary.itin[i].depart.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(text.data,
+                return new Text(text.data as String,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   textScaleFactor: 1.25,
                 );
               },
-            ),
+            ),*/
             Text(
               ' to ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-            FutureBuilder(
+            Text(cityCodetoAirport(gblPnrModel!.pNR.itinerary.itin[i].arrive),
+                textScaleFactor: 1.25,
+                style:  TextStyle(fontWeight: FontWeight.bold)),
+
+            /*          FutureBuilder(
               future: cityCodeToName(
-                gblPnrModel.pNR.itinerary.itin[i].arrive,
+                gblPnrModel!.pNR.itinerary.itin[i].arrive,
               ),
-              initialData: gblPnrModel.pNR.itinerary.itin[i].arrive.toString(),
+              initialData: gblPnrModel!.pNR.itinerary.itin[i].arrive.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return tableTitle(text.data,);
+                return tableTitle(text.data as String);
               },
-            ),
+            ),*/
           ],
         ),
       );
       widgets.add(
-          tableRow(translate('Flight No:'),'${gblPnrModel.pNR.itinerary.itin[i].airID}${gblPnrModel.pNR.itinerary.itin[i].fltNo}'));
+          tableRow(translate('Flight No:'),'${gblPnrModel!.pNR.itinerary.itin[i].airID}${gblPnrModel!.pNR.itinerary.itin[i].fltNo}'));
 
-      widgets.add(tableRow(translate('Departure Time:'),DateFormat('dd MMM kk:mm').format(gblPnrModel.pNR.itinerary.itin[i].getDepartureDateTime())));
-      String arrDate = gblPnrModel.pNR.itinerary.itin[i].depDate;
-      if(gblPnrModel.pNR.itinerary.itin[i].arrOfst != null &&  gblPnrModel.pNR.itinerary.itin[i].arrOfst != '0'
-        && gblPnrModel.pNR.itinerary.itin[i].arrOfst.trim() != ''
+      widgets.add(tableRow(translate('Departure Time:'),DateFormat('dd MMM kk:mm').format(gblPnrModel!.pNR.itinerary.itin[i].getDepartureDateTime())));
+      String arrDate = gblPnrModel!.pNR.itinerary.itin[i].depDate;
+      if(gblPnrModel!.pNR.itinerary.itin[i].arrOfst != null &&  gblPnrModel!.pNR.itinerary.itin[i].arrOfst != '0'
+        && gblPnrModel!.pNR.itinerary.itin[i].arrOfst.trim() != ''
       ) {
-        DateTime dt = DateTime.parse(gblPnrModel.pNR.itinerary.itin[i].depDate);
-        dt = dt.add(Duration(days: int.parse(gblPnrModel.pNR.itinerary.itin[i].arrOfst)));
+        DateTime dt = DateTime.parse(gblPnrModel!.pNR.itinerary.itin[i].depDate);
+        dt = dt.add(Duration(days: int.parse(gblPnrModel!.pNR.itinerary.itin[i].arrOfst)));
         arrDate = DateFormat('yyyy-MM-dd').format(dt);
       }
-      if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9) {
+      if( gblPnrModel!.pNR.itinerary.itin[i].arrTime.length > 9) {
         // time includes date
         widgets.add(tableRow(translate('Arrival Time') + ':',
             DateFormat('dd MMM kk:mm').format(DateTime.parse(
-                 gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+                 gblPnrModel!.pNR.itinerary.itin[i].arrTime))));
       } else {
-        if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9 ){
+        if( gblPnrModel!.pNR.itinerary.itin[i].arrTime.length > 9 ){
           widgets.add(tableRow(translate('Arrival Time') + ':',
               DateFormat('dd MMM kk:mm').format(DateTime.parse(
-                   gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+                   gblPnrModel!.pNR.itinerary.itin[i].arrTime))));
 
         } else {
-          if( gblPnrModel.pNR.itinerary.itin[i].arrTime.length > 9 ) {
+          if( gblPnrModel!.pNR.itinerary.itin[i].arrTime.length > 9 ) {
             widgets.add(tableRow(translate('Arrival Time') + ':',
                 DateFormat('dd MMM kk:mm').format(DateTime.parse(
-                        gblPnrModel.pNR.itinerary.itin[i].arrTime))));
+                        gblPnrModel!.pNR.itinerary.itin[i].arrTime))));
           } else {
-            DateTime adt = DateTime.parse(arrDate + ' ' +gblPnrModel.pNR.itinerary.itin[i].arrTime);
+            DateTime adt = DateTime.parse(arrDate + ' ' +gblPnrModel!.pNR.itinerary.itin[i].arrTime);
             widgets.add(tableRow(translate('Arrival Time') + ':',
                 DateFormat('dd MMM kk:mm').format(adt)));
           }
         }
       }
 
-      widgets.add(tableRow(translate('Fare Type:'),gblPnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
+      widgets.add(tableRow(translate('Fare Type:'),gblPnrModel!.pNR.itinerary.itin[i].classBandDisplayName ==
                 'Fly Flex Plus'
                 ? 'Fly Flex +'
-                : gblPnrModel.pNR.itinerary.itin[i].classBandDisplayName));
+                : gblPnrModel!.pNR.itinerary.itin[i].classBandDisplayName));
 
       double seatTotal = 0.0;
       int count = 0;
-      if (gblPnrModel.pNR.aPFAX != null) {
-        gblPnrModel
+      if (gblPnrModel!.pNR.aPFAX != null) {
+        gblPnrModel!
             .pNR.aPFAX.aFX
             .where((apFax) => apFax.seg == (i + 1).toString())
             .forEach((apFax) {
@@ -413,8 +421,8 @@ double sepTax () {
       }
 
       double taxTotal = 0.0;
-      if (gblPnrModel.pNR.fareQuote.fareTax != null) {
-        gblPnrModel
+      if (gblPnrModel!.pNR.fareQuote.fareTax != null) {
+        gblPnrModel!
             .pNR
             .fareQuote
             .fareTax[0]
@@ -436,8 +444,8 @@ double sepTax () {
       List<double> taxAmounts = [];
 
 
-      if (gblPnrModel.pNR.fareQuote.fareTax != null) {
-        gblPnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+      if (gblPnrModel!.pNR.fareQuote.fareTax != null) {
+        gblPnrModel!.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
           if (paxTax.separate == 'true' &&
               paxTax.seg == (i + 1).toString()) { //
             bool found = false;
@@ -465,14 +473,14 @@ double sepTax () {
       }
 
       // add seats
-      if(gblPnrModel.pNR.aPFAX != null && gblPnrModel.pNR.aPFAX.aFX != null ) {
-        if (gblPnrModel.pNR.aPFAX.aFX
+      if(gblPnrModel!.pNR.aPFAX != null && gblPnrModel!.pNR.aPFAX.aFX != null ) {
+        if (gblPnrModel!.pNR.aPFAX.aFX
             .where((p) => p.aFXID == 'SEAT' && p.seg == (i + 1).toString())
             .length > 0) {
           // got products this segment :)
           widgets.add(tableTitle(translate('Seats' )+ ':'));
           List<AFX> afList = [];
-          gblPnrModel.pNR.aPFAX.aFX.forEach((p) {
+          gblPnrModel!.pNR.aPFAX.aFX.forEach((p) {
             if( p.aFXID == 'SEAT' && p.seg == (i + 1).toString()) {
               afList.add(p);
             }
@@ -481,7 +489,7 @@ double sepTax () {
           afList.forEach((element) {
            // logit('pax: ' + element.pax + ' i:' + i.toString());
             //MP mps = gblPnrModel.pNR.mPS.mP.where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax).first;
-            Iterable <MP> mpsa = gblPnrModel.pNR.mPS.mP.where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax);
+            Iterable <MP> mpsa = gblPnrModel!.pNR.mPS.mP.where((p) => p.mPID == 'SSSS' && p.seg == (i + 1).toString() && p.pax == element.pax);
             if( mpsa != null && mpsa.length > 0 ) {
               MP mps = mpsa.first;
 
@@ -506,7 +514,7 @@ double sepTax () {
 
   void setCurrencyCode() {
     try {
-      currencyCode = gblPnrModel
+      currencyCode = gblPnrModel!
           .pNR
           .fareQuote
           .fareStore

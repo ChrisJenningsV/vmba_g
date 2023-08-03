@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 
@@ -5,7 +6,7 @@ import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
 
 class EVoucherWidget extends StatefulWidget {
-  EVoucherWidget({Key key, this.evoucherNo, this.onChanged}) : super(key: key);
+  EVoucherWidget({Key key= const Key("evoucher_key"), required this.evoucherNo, required this.onChanged}) : super(key: key);
 
   final ValueChanged<String> onChanged;
   final String evoucherNo;

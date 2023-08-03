@@ -1,3 +1,4 @@
+
 import 'package:meta/meta.dart';
 
 class DatabaseRecord {
@@ -9,9 +10,9 @@ class DatabaseRecord {
   int delete;
 
   DatabaseRecord({
-    @required this.rloc,
-    @required this.data,
-    @required this.delete,
+    required this.rloc,
+    required this.data,
+    required this.delete,
   });
 
   DatabaseRecord.fromMap(Map<String, dynamic> map)
@@ -32,7 +33,7 @@ class DatabaseRecord {
 }
 
 class ApisPnrStatusModel {
-  Xml xml;
+  Xml? xml;
 
   ApisPnrStatusModel({this.xml});
 
@@ -43,14 +44,14 @@ class ApisPnrStatusModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.xml != null) {
-      data['xml'] = this.xml.toJson();
+      data['xml'] = this.xml?.toJson();
     }
     return data;
   }
 
   bool apisRequired(int journey) {
     //print(apisPnrStatus);
-    if (xml.pnrApis.flights.flight[journey].apisrequired == 'True') {
+    if (xml!.pnrApis.flights!.flight[journey].apisrequired == 'True') {
       return true;
     } else {
       return false;
@@ -59,7 +60,7 @@ class ApisPnrStatusModel {
 
   bool apisInfoEntered(int journey, int passenger) {
     bool apisentered;
-    apisentered = xml.pnrApis.flights.flight[journey].passengers.passenger
+    apisentered = xml!.pnrApis.flights!.flight[journey].passengers!.passenger
             .firstWhere((pax) => pax.paxno == passenger.toString())
             .apisentered
             .toLowerCase() ==
@@ -72,7 +73,7 @@ class ApisPnrStatusModel {
   }
 
   bool apisInfoEnteredAll(int journey) {
-    if (xml.pnrApis.flights.flight[journey].passengers.passenger
+    if (xml!.pnrApis.flights!.flight[journey].passengers!.passenger
             .where((pax) => pax.apisentered.toLowerCase() == 'false')
             .length ==
         0) {
@@ -84,14 +85,14 @@ class ApisPnrStatusModel {
 }
 
 class Xml {
-  PnrApis pnrApis;
+  PnrApis pnrApis = PnrApis(pnr: '');
 
-  Xml({this.pnrApis});
+  Xml({required this.pnrApis});
 
   Xml.fromJson(Map<String, dynamic> json) {
-    pnrApis = json['pnr_apis'] != null
-        ? new PnrApis.fromJson(json['pnr_apis'])
-        : null;
+    if( json['pnr_apis'] != null) {
+      pnrApis = PnrApis.fromJson(json['pnr_apis']    );
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -104,10 +105,10 @@ class Xml {
 }
 
 class PnrApis {
-  String pnr;
-  Flights flights;
+  String pnr='';
+  Flights? flights;
 
-  PnrApis({this.pnr, this.flights});
+  PnrApis({required this.pnr, this.flights});
 
   PnrApis.fromJson(Map<String, dynamic> json) {
     pnr = json['pnr'];
@@ -119,16 +120,16 @@ class PnrApis {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['pnr'] = this.pnr;
     if (this.flights != null) {
-      data['flights'] = this.flights.toJson();
+      data['flights'] = this.flights!.toJson();
     }
     return data;
   }
 }
 
 class Flights {
-  List<Flight> flight;
+  List<Flight> flight = [];
 
-  Flights({this.flight});
+  Flights({this.flight= const[]});
 
   Flights.fromJson(Map<String, dynamic> json) {
     if (json['flight'] != null) {
@@ -154,24 +155,24 @@ class Flights {
 }
 
 class Flight {
-  String line;
-  String fltno;
-  String fltdate;
-  String depart;
-  String arrive;
-  String apisrequired;
-  String apiscountries;
-  Passengers passengers;
+  String line = '';
+  String fltno = '';
+  String fltdate = '';
+  String depart ='';
+  String arrive = '';
+  String apisrequired = '';
+  String apiscountries = '';
+  Passengers? passengers;
 
   Flight(
-      {this.line,
-      this.fltno,
-      this.fltdate,
-      this.depart,
-      this.arrive,
-      this.apisrequired,
-      this.apiscountries,
-      this.passengers});
+      {this.line ='',
+      this.fltno ='',
+      this.fltdate ='',
+      this.depart ='',
+      this.arrive ='',
+      this.apisrequired ='',
+      this.apiscountries ='',
+      this.passengers });
 
   Flight.fromJson(Map<String, dynamic> json) {
     line = json['line'];
@@ -195,21 +196,22 @@ class Flight {
     data['arrive'] = this.arrive;
     data['apisrequired'] = this.apisrequired;
     data['apiscountries'] = this.apiscountries;
-    if (this.passengers != null) {
-      data['passengers'] = this.passengers.toJson();
+    final passengers = this.passengers;
+    if (passengers != null) {
+      data['passengers'] = passengers.toJson();
     }
     return data;
   }
 }
 
 class Passengers {
-  List<Passenger> passenger;
+   List<Passenger> passenger = [];
 
-  Passengers({this.passenger});
+   Passengers({this.passenger = const []});
 
   Passengers.fromJson(Map<String, dynamic> json) {
     if (json['passenger'] != null) {
-      passenger = [];
+      //passenger = [];
       //new List<Passenger>();
 
       if (json['passenger'] is List) {
@@ -232,10 +234,10 @@ class Passengers {
 }
 
 class Passenger {
-  String paxno;
-  String apisentered;
+  String paxno = '';
+  String apisentered = '';
 
-  Passenger({this.paxno, this.apisentered});
+  Passenger({this.paxno = '', this.apisentered = ''});
 
   Passenger.fromJson(Map<String, dynamic> json) {
     paxno = json['paxno'];

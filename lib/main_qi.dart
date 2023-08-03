@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/SystemColors.dart';
@@ -91,7 +92,7 @@ void configQI() {
     ),
     fqtvName: "",
     appFeedbackEmail: "",
-    prohibitedItemsNoticeUrl: null,
+    prohibitedItemsNoticeUrl: '',
     groupsBookingsEmail: "",
     maxNumberOfPax: 8,
     hideFareRules: true,

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
@@ -19,7 +20,7 @@ import '../utilities/messagePages.dart';
 
 class DrawerMenu extends StatefulWidget {
   DrawerMenu({
-    Key key,
+    Key key= const Key("menu_key"),
   }) : super(key: key);
 
 
@@ -254,7 +255,7 @@ class DrawerMenu extends StatefulWidget {
         );
       }
           } catch(e) {
-        logit(e);
+        logit(e.toString());
     }
     }
 
@@ -273,7 +274,7 @@ class DrawerMenu extends StatefulWidget {
               }));
         }
       } catch(e) {
-        logit(e);
+        logit(e.toString());
       }
     }
     // custom3
@@ -291,7 +292,7 @@ class DrawerMenu extends StatefulWidget {
               }));
         }
       } catch(e) {
-        logit(e);
+        logit(e.toString());
       }
     }
 
@@ -300,7 +301,6 @@ class DrawerMenu extends StatefulWidget {
           dense: dense,
           title: _getMenuItem(Icons.web, 'Log Buffer'),
           onTap: () {
-            String logText = 'Log Buffer';
             List<Widget> list = [];
             gblLogBuffer.forEach((element) {
               if(element.length > 40){
@@ -393,7 +393,7 @@ class DrawerMenu extends StatefulWidget {
             }
           }
       } catch(e) {
-        logit(e);
+        logit(e.toString());
       }
 
     }

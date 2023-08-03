@@ -1,15 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../data/globals.dart';
+
 class JourneyTypeWidget extends StatefulWidget {
-  JourneyTypeWidget({Key key,this.systemColors, this.isReturn: false, this.onChanged})
+  JourneyTypeWidget({Key key= const Key("jtype_key"), this.isReturn: false, this.onChanged})
       : super(key: key);
 
-  final SystemColors systemColors;
+  //final SystemColors systemColors;
   final bool isReturn;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   _JourneyTypeWidgetState createState() => _JourneyTypeWidgetState();
 }
@@ -22,12 +25,12 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
   static Color unselectedText = Colors.black;
 
   void _toggleJourneyType(bool _isReturn) {
-    widget.onChanged(_isReturn);
+    widget.onChanged!(_isReturn);
   }
   @override
   void initState() {
     super.initState();
-    selectedBackground = widget.systemColors.accentButtonColor;
+    selectedBackground = gblSystemColors.accentButtonColor;
   }
 
   @override
@@ -60,7 +63,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
         child: new Container(
 
         decoration: new BoxDecoration(
-        border: new Border.all(color:  widget.systemColors.accentButtonColor),
+        border: new Border.all(color:  gblSystemColors.accentButtonColor),
     color: widget.isReturn
     ? selectedBackground
         : unselectedBackground, //_returnBackground,
@@ -77,7 +80,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
     child: new Container(
 
     decoration: new BoxDecoration(
-    border: new Border.all(color: widget.systemColors.accentButtonColor),
+    border: new Border.all(color: gblSystemColors.accentButtonColor),
     color: !widget.isReturn
     ? selectedBackground
         : unselectedBackground,

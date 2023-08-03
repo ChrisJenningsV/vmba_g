@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 
 class CountDownTimer extends ChangeNotifier {
-  Timer timer;
+  Timer? timer;
 
-  Stopwatch _stopwatch = new Stopwatch();
+  Stopwatch? _stopwatch = new Stopwatch();
   final double _timerStart = 600000;
   var _timeRemainingMinutes;
   var _timeRemainingSeconds;
-  double _timeRemaining;
+  double _timeRemaining =0;
   String formattedTime = '';
 
   void start() {
-    _stopwatch.start();
+    _stopwatch!.start();
     gblTimerExpired = false;
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
 
   void stop() {
     gblTimerExpired = true;
-    _stopwatch.stop();
+    _stopwatch!.stop();
     _stopwatch = null;
-    timer.cancel();
+    timer!.cancel();
     timer = null;
     gblTimerExpired = true;
   }
@@ -34,7 +34,7 @@ class CountDownTimer extends ChangeNotifier {
       return;
     }
       if( _stopwatch != null ) {
-      _timeRemaining = _timerStart - _stopwatch.elapsedMilliseconds;
+      _timeRemaining = _timerStart - _stopwatch!.elapsedMilliseconds;
       _timeRemainingMinutes = (_timeRemaining / (1000 * 60)) % 60;
       _timeRemainingSeconds = (_timeRemaining / (1000)) % 60;
       if (0 >= _timeRemaining) {
@@ -57,11 +57,11 @@ class CountDownTimer extends ChangeNotifier {
       notifyListeners();
     } else {
       if( _stopwatch != null ) {
-        _stopwatch.stop();
+        _stopwatch!.stop();
         _stopwatch = null;
       }
       if( timer != null ) {
-        timer.cancel();
+        timer!.cancel();
         timer = null;
       }
 

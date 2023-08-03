@@ -21,10 +21,10 @@ class ProductsWidget extends StatefulWidget {
   bool wantTitle;
   bool wantButton;
   bool isMMB;
-  final Function(PnrModel pnrModel) onComplete;
+  final Function(PnrModel pnrModel)? onComplete;
 
   ProductsWidget(
-      { Key key, this.newBooking, this.pnrModel, this.onComplete, this.wantTitle,this.wantButton = false , this.isMMB = false }) : super( key: key);
+      { Key key = const Key("prodw_key"), required this.newBooking, required this.pnrModel, this.onComplete, this.wantTitle=false,this.wantButton = false , this.isMMB = false }) : super( key: key);
 
   //final LoadDataType dataType;
 
@@ -33,18 +33,22 @@ class ProductsWidget extends StatefulWidget {
 }
 
 class ProductsWidgetState extends State<ProductsWidget> {
+/*
   NetworkImage smallBag;
   NetworkImage cabinBag;
   NetworkImage holdBag;
-  PnrModel savedPnr;
-  String errorMsg;
+*/
+  PnrModel savedPnr = PnrModel();
+  String errorMsg = '';
 
   @override
   void initState() {
     // TODO: implement initState
+/*
     smallBag = bagImage('smallBag');
     cabinBag = bagImage('cabinBag');
     holdBag = bagImage('holdBag');
+*/
 
     savedPnr = widget.pnrModel;
     errorMsg = '';
@@ -97,8 +101,9 @@ class ProductsWidgetState extends State<ProductsWidget> {
       //if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
 
       if (response.statusCode == 200) {
+        //logit('nearly loaded' );
         gblProducts = ProductCategorys.fromJson(response.body.trim());
-        logit('loaded' );
+        //logit('loaded' );
         setState(() {
 
         });
@@ -188,7 +193,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
   }*/
     // add  bag products
     if(gblProducts != null ) {
-      gblProducts.productCategorys.forEach((pc) {
+      gblProducts!.productCategorys.forEach((pc) {
         if( gblLogProducts ) {logit('products: add category ${pc.productCategoryName} ${pc.products.length} items');}
 
         list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, savedPnr: savedPnr, isMmb: widget.isMMB, onComplete: widget.onComplete,
@@ -218,7 +223,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
           context,
           MaterialPageRoute(
               builder: (context) => ChoosePaymenMethodWidget(
-                newBooking: widget.newBooking, pnrModel: gblPnrModel, isMmb: false,)
+                newBooking: widget.newBooking, pnrModel: gblPnrModel!, isMmb: false,)
             //CreditCardExample()
           ));
     } catch (e) {
@@ -277,7 +282,7 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
 
 //ignore: must_be_immutable
 
-NetworkImage bagImage(String name){
+NetworkImage? bagImage(String name){
   try {
     Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
     String pageImage = pageMap[name.toUpperCase()];
@@ -290,7 +295,7 @@ NetworkImage bagImage(String name){
 
     return NetworkImage( '${gblSettings.gblServerFiles}/productImages/$pageImage.png');
   } catch(e) {
-    logit(e);
+    logit(e.toString());
   }
   return null;
 }

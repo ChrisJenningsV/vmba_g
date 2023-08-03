@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -17,14 +16,14 @@ import '../utilities/helper.dart';
 import 'flightPageUtils.dart';
 
 class CalFlightItemWidget extends StatefulWidget {
-  final void Function(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String className) flightSelected;
+  final void Function(BuildContext context,AvItin? avItem, List<String> flt, List<Flt> outboundflts, String className)? flightSelected;
 
-  CalFlightItemWidget({Key key,this.newBooking, this.objAv, this.item, this.flightSelected, this.seatCount})
+  CalFlightItemWidget({Key key= const Key("cal_key"),this.newBooking, this.objAv, this.item, this.flightSelected, this.seatCount = 0})
       : super(key: key);
-  NewBooking newBooking;
-  AvailabilityModel objAv;
-  avItin item;
-  int seatCount;
+  final NewBooking? newBooking;
+  final AvailabilityModel? objAv;
+  final AvItin? item;
+  final int seatCount;
   //void flightSelected(List<String> list, List<Flt> flts, String class);
 
 
@@ -48,26 +47,36 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     double pri = 0.0;
     String currency='';
     flts.forEach((element) {
-      if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
-          element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
-        pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+      if(element.fltav.discprice != null  && element.fltav.discprice!.length > index &&
+          element.fltav.discprice![index].isNotEmpty && element.fltav.discprice![index] != '0'){
+        pri += double.tryParse(element.fltav.discprice![index]) as double;
       } else {
-        pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+        pri += double.tryParse(element.fltav.pri![index] ) as double;
       }
-      currency = element.fltav.cur[index];
+      currency = element.fltav.cur![index];
     });
 
+    Band? b;
+    String cbName ='';
+    if( objAv.availability.classbands != null ){
+      Classbands cb = objAv.availability.classbands as Classbands;
+      if( cb.band != null ){
+        b = cb.band![index];
+        cbName = b.cbname;
+      }
+
+    }
     var selectedFlt = await Navigator.push(
         context,
         SlideTopRoute(
             page: ChooseFlight(
-              classband: objAv.availability.classbands.band[index],
+              classband: b,
               flts: flts, //objAv.availability.itin[0].flt,
               price: pri,
               currency: currency,
               seats: widget.seatCount,
             )));
-    widget.flightSelected(context,null,  selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    widget.flightSelected!(context,null,  selectedFlt, flts, cbName);
   }
 
 
@@ -77,7 +86,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     if( wantRtl()){
       pad = EdgeInsets.symmetric(vertical: 5,horizontal: 10);
     }
-    if (item[0].fltav.pri.length > 3) {
+    if (item[0].fltav.pri!.length > 3) {
 
       return Container(
           width: double.infinity,
@@ -91,10 +100,10 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
               spacing: 8.0, //gap between adjacent chips
               runSpacing: 4.0, // gap between lines
               children: new List.generate(
-                  item[0].fltav.pri.length,
+                  item[0].fltav.pri!.length,
                       (index) => GestureDetector(
                       onTap: () => {
-                        item[0].fltav.fav[index] != '0'
+                        item[0].fltav.fav![index] != '0'
                             ? goToClassScreen(context, newBooking, objAv, index, item)
                             : print('No av')
                       },
@@ -104,58 +113,17 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                         backgroundColor:
                         index.floor().isOdd ? gblSystemColors.accentColor :gblSystemColors.primaryButtonColor,
                         label: Column(
-                          children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
-                         /* children: <Widget>[
-                            TrText(
-                                objAv.availability.classbands.band[index]
-                                    .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                    ? 'Fly Flex +'
-                                    : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                                style: TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor)),
-                            item[0].fltav.fav[index] != '0'
-                                ? new Text(
-                              calenderPrice(
-                                  item[0].fltav.cur[index],
-                                  item
-                                      .fold(
-                                      0.0,
-                                          (previous, current) =>
-                                      previous +
-                                          (double.tryParse(current
-                                              .fltav.pri[index]) ??
-                                              0.0) +
-                                          (double.tryParse(current
-                                              .fltav.tax[index]) ??
-                                              0.0))
-                                      .toStringAsFixed(2),
-                                  item[0].fltav.miles[index]),
-                              style: new TextStyle(
-                                color: gblSystemColors
-                                    .primaryButtonTextColor,
-                                fontSize: 12.0,
-                              ),
-                            )
-                                : new TrText('No Seats',
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 12.0,
-                                )),
+                          children: getPriceButtonList(objAv.availability.classbands?.band![index].cbdisplayname, item, index, inRow: false),
 
-                          ],*/
                         ),
                       )))
           )
       );
     } else {
       MainAxisAlignment _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      if (item[0].fltav.pri.length == 2) {
+      if (item[0].fltav.pri?.length == 2) {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      } else if (item[0].fltav.pri.length == 3) {
+      } else if (item[0].fltav.pri?.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
       }
       return Container(
@@ -170,10 +138,10 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
           child: Row(
               mainAxisAlignment: _mainAxisAlignment,
               children: new List.generate(
-                item[0].fltav.pri.length,
+                item[0].fltav.pri!.length,
                     (index) => ElevatedButton(
                     onPressed: () {
-                      item[0].fltav.fav[index] != '0'
+                      item[0].fltav.fav![index] != '0'
                           ? goToClassScreen(context,newBooking,objAv, index, item)
                           : print('No av');
                     },
@@ -186,7 +154,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: new Column(
 //                        children: _getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index)
-                          children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                          children: getPriceButtonList(objAv.availability.classbands?.band![index].cbdisplayname, item, index, inRow: false),
 
                       ),
                     )),
@@ -259,21 +227,21 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
 */
 
-  Widget calFlightItem(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, avItin item) {
+  Widget calFlightItem(BuildContext context,NewBooking? newBooking, AvailabilityModel? objAv, AvItin? item) {
     List <Widget> topList = [];
     List <Widget> innerList = [];
 
     innerList.add(flightRow(context, item));
 
-    if(gblSettings.wantCanFacs && item.flt.first.fltdet.canfac.fac.isNotEmpty) {
+    if(gblSettings.wantCanFacs && item!.flt.first.fltdet.canfac?.fac.isNotEmpty != null) {
       innerList.add(Divider());
       innerList.add(CannedFactWidget(flt: item.flt));
     }
     if(! wantPageV2()){
-      innerList.add(infoRow(context, item));
+      innerList.add(infoRow(context, item!));
     }
 
-    topList.add(flightTopRow(item));
+    topList.add(flightTopRow(item!));
     topList.add(Container(
       // margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 5, right: 5),
         padding: EdgeInsets.all(10),
@@ -283,7 +251,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     ));
     //new Divider(),
 
-    topList.add(pricebuttons(context, newBooking,objAv, item.flt));
+    topList.add(pricebuttons(context, newBooking as NewBooking,objAv as AvailabilityModel, item.flt));
 
     return Container(
       decoration: BoxDecoration(
@@ -329,7 +297,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
 
 
-Widget flightTopRow(avItin item)
+Widget flightTopRow(AvItin item)
 {
   return Container(
     padding: EdgeInsets.only(top: 2, bottom: 2, left: 10, right: 0),
@@ -351,7 +319,7 @@ Widget flightTopRow(avItin item)
 } 
 
 Widget v2FlightRow(String dDay,String  dTime,String  departs,String dTerm, String aDay,String  aTime,String  arrives,String aTerm, String journeyDuration,
-    BuildContext context, avItin item) {
+    BuildContext context, AvItin item) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -399,55 +367,12 @@ Widget v2FlightRow(String dDay,String  dTime,String  departs,String dTerm, Strin
 }
 
 
-Widget flightRow(BuildContext context, avItin item) {
+Widget flightRow(BuildContext context, AvItin? item) {
   if( wantPageV2()){
-    return v2FlightRow(item.flt[0].time.ddaylcl, item.flt.first.time.dtimlcl, item.flt.first.dep, getTerminalString(item.flt.first, true),
+    return v2FlightRow(item!.flt[0].time.ddaylcl, item.flt.first.time.dtimlcl, item.flt.first.dep, getTerminalString(item.flt.first, true),
         item.flt.last.time.adaylcl, item.flt.last.time.atimlcl, item.flt.last.arr, getTerminalString(item.flt.last, false),
         item.journeyDuration(), context, item);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            getDate(item.flt[0].time.ddaylcl),
-            getTime(item.flt.first.time.dtimlcl),
-            getAirport(item.flt.first.dep),
-            getTerminal(getTerminalString(item.flt.first, true), true),
-          ],
-        ),
-        Column(children: [
-          new Stack( children:
-          [
-            FlightLine(),
-            Container(
-              color: Colors.white,
-              margin: EdgeInsets.only(left: 40),
-              width: 40,
-            child: Padding(
-              padding: EdgeInsets.only(left: 40, right: 10),
-                child: RotatedBox(
-              quarterTurns: 1,
-              child: new Icon(
-                Icons.airplanemode_active,
-                size: 40.0,
-              ))
-            )),
-              ]),
-          Text(item.journeyDuration()),
-          getConnections(context, item),
-        ]),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            getDate(item.flt.last.time.adaylcl),
-            getTime(item.flt.last.time.atimlcl),
-            getAirport(item.flt.last.arr),
-            getTerminal(getTerminalString(item.flt.first, false), false),
-          ],
-        )
-      ],
-    );
+
   } else {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -455,10 +380,10 @@ Widget flightRow(BuildContext context, avItin item) {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            getDate(item.flt[0].time.ddaylcl),
-            getTime(item.flt.first.time.dtimlcl),
-            getAirport(item.flt.first.dep),
-            getTerminal(getTerminalString(item.flt.first, true), true),
+            getDate(item?.flt[0].time.ddaylcl as String),
+            getTime(item?.flt.first.time.dtimlcl as String),
+            getAirport(item?.flt.first.dep as String),
+            getTerminal(getTerminalString(item?.flt.first  as Flt, true), true),
           ],
         ),
         Column(children: [
@@ -472,10 +397,10 @@ Widget flightRow(BuildContext context, avItin item) {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            getDate(item.flt.last.time.adaylcl),
-            getTime(item.flt.last.time.atimlcl),
-            getAirport(item.flt.last.arr),
-            getTerminal(getTerminalString(item.flt.first, false), false),
+            getDate(item?.flt.last.time.adaylcl  as String),
+            getTime(item?.flt.last.time.atimlcl as String),
+            getAirport(item?.flt.last.arr as String),
+            getTerminal(getTerminalString(item?.flt.first as Flt, false), false),
           ],
         )
       ],
@@ -515,9 +440,16 @@ Widget getTime(String tm) {
   }
 }
 
-Widget getAirport(String code, {double fontSize, FontWeight fontWeight}) {
+Widget getAirport(String code, {double fontSize=16, FontWeight fontWeight=FontWeight.normal}) {
   if( fontSize == null ) fontSize = 16;
   if( fontWeight == null ) fontWeight =  FontWeight.w300;
+
+  return Text(cityCodetoAirport(code),
+      style: new TextStyle(fontSize: fontSize,fontWeight: fontWeight)
+  );
+
+/*
+
   return FutureBuilder(
     future: cityCodeToName(
       code,
@@ -525,13 +457,21 @@ Widget getAirport(String code, {double fontSize, FontWeight fontWeight}) {
     initialData: code.toString(),
     builder: (BuildContext context,
         AsyncSnapshot<String> text) {
-      return TrText(translate(text.data),
-          style: new TextStyle(
-              fontSize: fontSize,
-              fontWeight: fontWeight),
-          variety: 'airport', noTrans: true);
-    },
+      logit('getairport $code');
+      String acode = code;
+      if( text.data != null ) {
+        logit('getairport text ${text.data}');
+        acode = text.data!;
+        }
+      logit('getairport T ${translate(acode )}');
+        return TrText(translate(acode ),
+            style: new TextStyle(
+                fontSize: fontSize,
+                fontWeight: fontWeight),
+            variety: 'airport', noTrans: true);
+      }
   );
+*/
 
 }
 
@@ -550,6 +490,9 @@ Widget getTerminal(String term, bool depart){
   if( depart == true &&  (flt.fltdet.depterm == null || flt.fltdet.depterm.isEmpty) ) return Container();
   if( depart == false &&  (flt.fltdet.arrterm == null || flt.fltdet.arrterm.isEmpty)) return Container();
 */
+  if( term == ''){
+    return Container();
+  }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -561,7 +504,7 @@ Widget getTerminal(String term, bool depart){
 }
 
 
-Widget infoRow(BuildContext context, avItin item ) {
+Widget infoRow(BuildContext context, AvItin item ) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -594,7 +537,7 @@ Widget infoRow(BuildContext context, avItin item ) {
     ],
   );
 }
-Widget getConnections(BuildContext context, avItin item) {
+Widget getConnections(BuildContext context, AvItin item) {
   if( item == null || context == null ) return Container();
   if (item.flt.length > 1) {
     return GestureDetector(
@@ -711,7 +654,7 @@ Widget noFlightsFound(){
         ],
       ));
 }
-Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate, {void Function() onPressed} ) {
+Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate, {void Function()? onPressed} ) {
   List <Widget> list = [];
   bool showNoFlightIcon = false;
   if( gblRedeemingAirmiles== false && item.amt.length == 0 ){
@@ -778,15 +721,15 @@ if( wantRtl()) {
           ? Colors.white
           : gblSystemColors.accentButtonColor //Colors.red,
   );
-  EdgeInsets marg = null;
+  EdgeInsets marg = EdgeInsets.all(0);
   if( wantPageV2()) {
     if( isSearchDate(DateTime.parse(item.daylcl),
         date)) {
-      dec = ContainerDecoration(location: 'selected');
+      dec = containerDecoration(location: 'selected') as Decoration;
     } else {
-      dec = ContainerDecoration(location: 'day');
+      dec = containerDecoration(location: 'day') as Decoration;
     }
-    marg = ContainerMargins(location: 'day') ;
+    marg = containerMargins(location: 'day') ;
   }
 
 
@@ -905,20 +848,37 @@ Widget getNoSeatsRow() {
       ));
 }
 Widget getPriceRow(List<Flt> item, int index){
-  return  new Text(
+  double val = 0.0;
+
+  item.forEach((element) {
+    String newStr = element.fltav.pri![index];
+    double? newVal = double.tryParse(newStr)  ;
+    if( newVal != null )    val +=  newVal as double;
+    newVal = double.tryParse(element.fltav.tax![index]);
+    if( newVal != null )    val +=  newVal as double;
+  });
+
+  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(2), item[0].fltav.miles![index]),
+    style: new TextStyle(
+      color: gblSystemColors
+          .primaryButtonTextColor,
+      fontSize: 12.0,
+    ),);
+
+ /* return  new Text(
     calenderPrice(
         item[0].fltav.cur[index],
         item
             .fold(
             0.0,
-                (previous, current) =>
-            previous +
+                (previous , current) =>
+            previous  +
                 (double.tryParse(current
                     .fltav.pri[index]) ??
-                    0.0) +
+                    '0.0')  +
                 (double.tryParse(current
                     .fltav.tax[index]) ??
-                    0.0))
+                    '0.0')  )
             .toStringAsFixed(2),
         item[0].fltav.miles[index]),
     style: new TextStyle(
@@ -926,23 +886,34 @@ Widget getPriceRow(List<Flt> item, int index){
           .primaryButtonTextColor,
       fontSize: 12.0,
     ),
-  );
+  );*/
 }
 
 Widget getPromoPriceRow(List<Flt> item, int index){
   double pri = 0.0;
   item.forEach((element) {
-    if(element.fltav.discprice != null  && element.fltav.discprice.length > index &&
-        element.fltav.discprice[index].isNotEmpty && element.fltav.discprice[index] != '0'){
-      pri += double.tryParse(element.fltav.discprice[index] ?? 0.0);
+    if(element.fltav.discprice != null  && (element.fltav.discprice?.length as int) > index &&
+        (element.fltav.discprice?[index].isNotEmpty != null) && element.fltav.discprice![index] != '0'){
+      pri += double.tryParse(element.fltav.discprice![index]) as double;
     } else {
-      pri += double.tryParse(element.fltav.pri[index] ?? 0.0);
+      pri += double.tryParse(element.fltav.pri![index] ) as double;
     }
   });
 
   logit('promo pri = $pri');
-
   return  new Text(
+    calenderPrice(
+        item[0].fltav.cur![index],
+        pri.toStringAsFixed(2),
+        item[0].fltav.miles![index]),
+    style: new TextStyle(
+      color: gblSystemColors
+          .primaryButtonTextColor,
+      fontSize: 12.0,
+    ),
+  );
+
+ /* return  new Text(
     calenderPrice(
         item[0].fltav.cur[index],
         item
@@ -960,17 +931,35 @@ Widget getPromoPriceRow(List<Flt> item, int index){
           .primaryButtonTextColor,
       fontSize: 12.0,
     ),
-  );
+  );*/
 }
 Widget getWasPriceRow(List<Flt> item, int index){
-  return  new Text(
+
+  double val = 0.0;
+
+  item.forEach((element) {
+    String newStr = element.fltav.pri![index];
+    double? newVal = double.tryParse(newStr)  ;
+    if( newVal != null )    val +=  newVal as double;
+    newVal = double.tryParse(element.fltav.tax![index]);
+    if( newVal != null )    val +=  newVal as double;
+  });
+
+  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(2), item[0].fltav.miles![index]),
+    style: new TextStyle(
+      color: gblSystemColors.oldPriceColor,
+      decoration: TextDecoration.lineThrough,
+      fontSize: 12.0,
+    ),);
+
+ /* return  new Text(
     calenderPrice(
         item[0].fltav.cur[index],
         item
             .fold(
             0.0,
                 (previous, current) =>
-            previous +
+            previous! +
                 (double.tryParse(current
                     .fltav.pri[index]) ??
                     0.0) +
@@ -984,12 +973,14 @@ Widget getWasPriceRow(List<Flt> item, int index){
       decoration: TextDecoration.lineThrough,
       fontSize: 12.0,
     ),
-  );
+  );*/
 }
-List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index, {bool inRow = true}) {
+List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bool inRow = true}) {
 
   List<Widget> list = [];
   List<Widget> rlist = [];
+  String cbName = cbNameIn as String;
+
 
   if( cbName.length > 15) cbName = cbName.substring(0,10);
       list.add(getClassNameRow(cbName, inRow: inRow));
@@ -1015,9 +1006,9 @@ List<Widget> getPriceButtonList(String cbName, List<Flt> item, int index, {bool 
 */
 
 
-  if(item[0].fltav.fav[index] != '0') {
-    if( item[0].fltav.discprice.length > index &&
-        item[0].fltav.discprice[index] != null &&  item[0].fltav.discprice[index] != '')
+  if(item[0].fltav.fav![index] != '0') {
+    if( item[0].fltav.discprice!.length > index &&
+        item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')
     {
       list.add(getWasPriceRow(item, index));
       if( inRow) {

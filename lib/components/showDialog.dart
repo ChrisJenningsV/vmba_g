@@ -93,7 +93,7 @@ child: Text(msg),
 
 
 
-void showAlertDialog(BuildContext context, String title, String msg, {void Function() onComplete  }) {
+void showAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete  }) {
   // flutter defined function
   showDialog(
     context: context,
@@ -104,7 +104,7 @@ void showAlertDialog(BuildContext context, String title, String msg, {void Funct
   );
 }
 
-AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function() onComplete}) {
+AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete}) {
   logit('getAlertDialog');
 
   return AlertDialog(
@@ -194,7 +194,7 @@ child: TrText
 
 }
 
-Widget buildMessage(String title, String body, {void Function() onComplete  }) {
+Widget buildMessage(String title, String body, {void Function()? onComplete  }) {
   return Center( child: Container(
 
     //alignment: Alignment.topCenter,

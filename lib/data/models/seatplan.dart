@@ -1,10 +1,11 @@
-class Seatplan {
-  Seats seats;
 
-  Seatplan({this.seats});
+class Seatplan {
+  Seats seats = Seats();
+
+  Seatplan();
 
   Seatplan.fromJson(Map<String, dynamic> json) {
-    seats = json['Seats'] != null ? new Seats.fromJson(json['Seats']) : null;
+    if(json['Seats'] != null ) seats = Seats.fromJson(json['Seats']) ;
   }
 
   Map<String, dynamic> toJson() {
@@ -54,19 +55,15 @@ class Seatplan {
 }
 
 class Seats {
-  SeatsFlt seatsFlt;
-  CabinCount cabinCount;
-  List<Seat> seat;
+  SeatsFlt seatsFlt = SeatsFlt();
+  CabinCount cabinCount = CabinCount();
+  List<Seat> seat = List.from([Seat()]);
 
-  Seats({this.seatsFlt, this.cabinCount, this.seat});
+  Seats();
 
   Seats.fromJson(Map<String, dynamic> json) {
-    seatsFlt = json['SeatsFlt'] != null
-        ? new SeatsFlt.fromJson(json['SeatsFlt'])
-        : null;
-    cabinCount = json['CabinCount'] != null
-        ? new CabinCount.fromJson(json['CabinCount'])
-        : null;
+    if(json['SeatsFlt'] != null) seatsFlt =SeatsFlt.fromJson(json['SeatsFlt']);
+    if(json['CabinCount'] != null) cabinCount =CabinCount.fromJson(json['CabinCount']);
     if (json['Seat'] != null) {
       seat = [];
       // new List<Seat>();
@@ -92,20 +89,14 @@ class Seats {
 }
 
 class SeatsFlt {
-  String sFltNo;
-  String sFltDate;
-  String sDepart;
-  String sDestin;
-  String sFltID;
-  String sRef;
+  String sFltNo='';
+  String sFltDate='';
+  String sDepart='';
+  String sDestin='';
+  String sFltID='';
+  String sRef='';
 
-  SeatsFlt(
-      {this.sFltNo,
-      this.sFltDate,
-      this.sDepart,
-      this.sDestin,
-      this.sFltID,
-      this.sRef});
+  SeatsFlt();
 
   SeatsFlt.fromJson(Map<String, dynamic> json) {
     sFltNo = json['FltNo'];
@@ -131,7 +122,7 @@ class SeatsFlt {
 class CabinCount {
   List<Cabin> cabins = [];
 
-  CabinCount({this.cabins});
+  CabinCount();
 
   CabinCount.fromJson(Map<String, dynamic> json) {
     print('${json['Cabin'].runtimeType}');
@@ -159,10 +150,10 @@ class CabinCount {
 }
 
 class Cabin {
-  String sCabinClass;
-  String sSeats;
+  String sCabinClass ='';
+  String sSeats ='';
 
-  Cabin({this.sCabinClass, this.sSeats});
+  Cabin();
 
   Cabin.fromJson(Map<String, dynamic> json) {
     sCabinClass = json['CabinClass'];
@@ -178,80 +169,58 @@ class Cabin {
 }
 
 class Seat {
-  String sSeatID;
-  int sRow;
-  int sCol;
-  String sCode;
-  String sCabinClass;
-  String sCellDescription;
-  String sSccode;
-  String sScinfo;
-  String sCur;
-  String sScprice;
-  String sSeatdescription;
-  String sFirstName;
-  String sLastName;
-  String sMFCI;
-  String sStatus;
-  String sRLOC;
-  String sPAXNumber;
-  String sTktStatus;
-  String sDCSStatus;
-  String sSequence;
-  bool noInfantSeat;
-  bool pRMSeat;
+  String sSeatID ='';
+  int sRow =1;
+  int sCol =1;
+  String sCode ='';
+  String sCabinClass ='';
+  String sCellDescription ='';
+  String sSccode ='';
+  String sScinfo ='';
+  String sCur ='';
+  String sScprice ='';
+  String sSeatdescription ='';
+  String sFirstName ='';
+  String sLastName ='';
+  String sMFCI ='';
+  String sStatus ='';
+  String sRLOC ='';
+  String sPAXNumber ='';
+  String sTktStatus ='';
+  String sDCSStatus ='';
+  String sSequence ='';
+  bool noInfantSeat=false;
+  bool pRMSeat=false;
 
-  Seat(
-      {this.sSeatID,
-      this.sRow,
-      this.sCol,
-      this.sCode,
-      this.sCabinClass,
-      this.sCellDescription,
-      this.sSccode,
-      this.sScinfo,
-      this.sCur,
-      this.sScprice,
-      this.sSeatdescription,
-      this.sFirstName,
-      this.sLastName,
-      this.sMFCI,
-      this.sStatus,
-      this.sRLOC,
-      this.sPAXNumber,
-      this.sTktStatus,
-      this.sDCSStatus,
-      this.sSequence,
-      this.noInfantSeat,
-      this.pRMSeat});
+  Seat();
 
   Seat.fromJson(Map<String, dynamic> json) {
-    sSeatID = json['SeatID'];
-    sRow = int.parse(json['Row']);
-    sCol = int.parse(json['Col']);
-    sCode = json['Code'];
-    sCabinClass = json['CabinClass'];
-    sCellDescription = json['CellDescription'];
-    sSccode = json['sccode'];
-    sScinfo = json['scinfo'];
-    sCur = json['cur'];
-    sScprice = json['scprice'];
-    sSeatdescription = json['seatdescription'];
-    sFirstName = json['FirstName'];
-    sLastName = json['LastName'];
-    sMFCI = json['MFCI'];
-    sStatus = json['Status'];
-    sRLOC = json['RLOC'];
-    sPAXNumber = json['PAXNumber'];
-    sTktStatus = json['TktStatus'];
-    sDCSStatus = json['DCSStatus'];
-    sSequence = json['Sequence'];
-    if(json['NoInfantSeat'] == '1' || json['NoInfantSeat'] == 'True' ) {
+    if(json['SeatID'] != null )sSeatID = json['SeatID'];
+    if(json['Row'] != null )sRow = int.parse(json['Row']);
+    if(json['Col'] != null )sCol = int.parse(json['Col']);
+    if(json['Code'] != null )sCode = json['Code'];
+    if(json['CabinClass'] != null )sCabinClass = json['CabinClass'];
+    if(json['CellDescription'] != null )sCellDescription = json['CellDescription'];
+    if(json['sccode']!= null )sSccode = json['sccode'];
+    if(json['scinfo'] != null )sScinfo = json['scinfo'];
+    if(json['cur'] != null )sCur = json['cur'];
+    if(json['scprice'] != null )sScprice = json['scprice'];
+    if(json['seatdescription'] != null )sSeatdescription = json['seatdescription'];
+    if(json['FirstName'] != null )sFirstName = json['FirstName'];
+    if(json['LastName'] != null )sLastName = json['LastName'];
+    if( json['MFCI'] != null )sMFCI = json['MFCI'];
+    if(json['Status'] != null )sStatus = json['Status'];
+    if(json['RLOC'] != null )sRLOC = json['RLOC'];
+    if( json['PAXNumber'] != null )sPAXNumber = json['PAXNumber'];
+    if(json['TktStatus'] != null )sTktStatus = json['TktStatus'];
+    if( json['DCSStatus'] != null )sDCSStatus = json['DCSStatus'];
+    if(json['Sequence'] != null )sSequence = json['Sequence'];
+    if(json['NoInfantSeat'] != null && (json['NoInfantSeat'] == '1' || json['NoInfantSeat'] == 'True' )) {
       noInfantSeat = true;
     } else {
       noInfantSeat = false;
     }
-    if(json['PRMSeat'] == '1' || json['PRMSeat'] == 'True' ) {
+    if(json['PRMSeat']!= null && (json['PRMSeat'] == '1' || json['PRMSeat'] == 'True' )) {
       pRMSeat = true;
     } else {
       pRMSeat = false;

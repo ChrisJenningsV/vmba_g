@@ -20,10 +20,11 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/components/trText.dart';
+/*
 
 class PaymentWidget extends StatefulWidget {
   PaymentWidget({
-    Key key,
+    Key key= const Key("paywid_key"),
     this.newBooking,
     this.pnrModel,
     this.stopwatch,
@@ -619,7 +620,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     return args;
   }
 
-  /*
+  */
+/*
   sendEmailConfirmation() async {
     try {
       String msg = '*${pnrModel.pNR.rLOC}^EZRE';
@@ -644,16 +646,19 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       print(e.toString());
     }
   }
-   */
+   *//*
+
 
   String getPaymentCmd(bool makeHtmlSafe) {
     var buffer = new StringBuffer();
-  /*  if (isLive) {
+  */
+/*  if (isLive) {
       buffer.write('MK($creditCardProviderProduction)');
     } else {
       buffer.write('MK($creditCardProviderStaging)');
     }
-   */
+   *//*
+
     if( gblRedeemingAirmiles && gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
       buffer.write('MF-$gblFqtvNumber^');
     }
@@ -850,7 +855,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   smallButton( text: 'PAY NOW', icon: Icons.check, onPressed: () {
                     validateAndSubmit();
                   }),
-                  /*
+                  */
+/*
                   new FloatingActionButton.extended(
                       elevation: 0.0,
                       isExtended: true,
@@ -869,7 +875,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                         validateAndSubmit();
                       }),
 
-                   */
+                   *//*
+
                 ],
               )),
           appBar: new AppBar(
@@ -1276,3 +1283,4 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     }
   }
 }
+*/

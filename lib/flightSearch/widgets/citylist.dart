@@ -12,12 +12,12 @@ import '../../utilities/helper.dart';
 
 TextEditingController _searchEditingController =   TextEditingController();
 
-Future<List<Routes>> fetchCitylistData(http.Client client) async {
+Future<List<Routes>?> fetchCitylistData(http.Client client) async {
   try {
     final response = await rootBundle.loadString('lib/assets/data/cities.json');
     return compute(parseRouteData, response);
   } catch (e) {
-    print(e);
+    print(e.toString());
     return null;
   }
 }
@@ -29,21 +29,10 @@ List<Routes> parseRouteData(String responseBody) {
   return parsed.map<Routes>((json) => Routes.fromJson(json)).toList();
 }
 
-Future<List<String>> fetchDepartureCities() async {
-  try {
-    List<String> list;
-    // ignore: await_only_futures
-    list = await Repository.get().getAllDepartures();
 
 
-    return list;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
 
-Future<List<String>> fetchDestinationCities(String departure) async {
+Future<List<String>?> fetchDestinationCities(String departure) async {
   try {
     // ignore: await_only_futures
     List<String> list = await Repository.get().getDestinations(departure);
@@ -61,8 +50,8 @@ class Routes {
   final List<String> dest;
 
   Routes({
-    this.org,
-    this.dest,
+    required this.org,
+    required this.dest,
   });
 
   Routes.fromMap(Map<String, dynamic> map)
@@ -85,7 +74,7 @@ class Routes {
 class Departures extends StatefulWidget {
   final String title;
 
-  Departures({Key key, this.title}) : super(key: key);
+  Departures({Key key= const Key("deps_key"), this.title=''}) : super(key: key);
   @override
   _DeparturesState createState() => new _DeparturesState();
 }
@@ -93,24 +82,46 @@ class Departures extends StatefulWidget {
 class _DeparturesState extends State<Departures> {
 //  bool _loadingInProgress;
 //  String _loadingMsg = 'Loading cities...';
-  List<String> _cityData;
+  List<String>? _cityData;
 
   @override
   void initState() {
     super.initState();
 //    _loadingInProgress = true;
-     _loadData();
+     _loadData(onComplete);
   }
-  Future _loadData() async {
+  void  onComplete() {
+    Timer(const Duration(milliseconds: 400), ()
+    {
+      setState(() {
+        // _displayProcessingIndicator = false;
+      });
+    });
+
+  }
+  Future<List<String>?> fetchDepartureCities(void Function() onComplete) async {
+    try {
+      List<String>? list;
+      // ignore: await_only_futures
+      list = await Repository.get().getAllDepartures(onComplete);
+
+
+      return list;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+  Future _loadData(void Function() onComplete) async {
     //Repository.get().getAllDepartures().then((cityData) {
     if( _cityData == null ) {
-      _cityData = await Repository.get().getAllDepartures();
+      _cityData = await Repository.get().getAllDepartures(onComplete);
     }
 
-    if (_cityData == null || _cityData.length==0) {
+    if (_cityData == null || _cityData!.length==0) {
       // delay
       Future.delayed(Duration(milliseconds: 100), () {
-        if (_cityData == null || _cityData.length == 0) {
+        if (_cityData == null || _cityData!.length == 0) {
           if( gblVerbose) print(" This line is execute after 100 ms - no cities");
           setState(() {          });
         } else {
@@ -125,9 +136,9 @@ class _DeparturesState extends State<Departures> {
   }
   @override
   Widget build(BuildContext context) {
+  //logit('build departures');
 
-
-    if (_cityData == null || _cityData.length==0) {
+    if (_cityData == null || _cityData!.length==0) {
       return new Center( child: TrText("Loading...")
          /* child: new ElevatedButton(onPressed: () => _loadData(),
             child: TrText("Load cities Failed, RETRY"),
@@ -152,7 +163,7 @@ class DepartureList extends StatefulWidget {
 
   DepartureList({ this.routes});
 
-  final List<String> routes;
+  final List<String>? routes;
 
   DepartureListState createState() =>
       DepartureListState();
@@ -162,7 +173,7 @@ class DepartureList extends StatefulWidget {
 class DepartureListState extends State<DepartureList> {
 
 //  DepartureList({Key key, this.routes}) : super(key: key);
-  List<String> routes;
+  List<String>? routes;
 
   @override
   void initState() {
@@ -173,19 +184,19 @@ class DepartureListState extends State<DepartureList> {
 
   void filterCities(String filter){
     routes = [];
-    widget.routes.forEach((route) {
+    widget.routes!.forEach((route) {
       String code = route.split('|')[0].toUpperCase();
       String name = route.split('|')[1].toUpperCase();
 
       if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
-        routes.add(route);
+        routes!.add(route);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(gblLogCities ) {logit('build DepartureList len=${routes.length}');}
+    if(gblLogCities ) {logit('build DepartureList len=${routes!.length}');}
 //    if( _searchEditingController.text.isNotEmpty) {
       filterCities(_searchEditingController.text);
   //  }
@@ -201,17 +212,17 @@ class DepartureListState extends State<DepartureList> {
           new ListView.builder(
               //physics:AlwaysScrollableScrollPhysics(),
             shrinkWrap: true,
-          itemCount: routes == null ? 0 : routes.length ,
+          itemCount: routes == null ? 0 : routes!.length ,
           itemBuilder: (BuildContext context, i) {
             //return new ListTile(title: Text('${routes[i].org}'.split('|')[1],),
             return new ListTile(
               //dense: true,
                 title: Text(
-                translate('${routes[i]}'.split('|')[1]),
+                translate('${routes![i]}'.split('|')[1]),
                 ),
                 onTap: () {
                   //Navigator.pop(context, '${routes[i].org}');
-                  Navigator.pop(context, '${routes[i]}');
+                  Navigator.pop(context, '${routes![i]}');
                 });
           }
 /*        })],
@@ -227,15 +238,15 @@ class Arrivals extends StatefulWidget {
   final String title;
   final String departCityCode;
 
-  Arrivals({Key key, this.title,this.departCityCode}) : super(key: key);
+  Arrivals({Key key= const Key("arrvs_key"), this.title='',this.departCityCode=''}) : super(key: key);
   @override
   _ArrivalsState createState() => new _ArrivalsState();
 }
 class _ArrivalsState extends State<Arrivals> {
 //  bool _loadingInProgress;
-  String departCityCode;
+  String departCityCode='';
 //  String _loadingMsg = 'Loading arrivals...';
-  List<String> _departCityData;
+  List<String>? _departCityData;
 
   @override
   void initState() {
@@ -247,13 +258,13 @@ class _ArrivalsState extends State<Arrivals> {
 
   Future _loadData() async {
     //Repository.get().getAllDepartures().then((cityData) {
-    if ( _departCityData == null ) {
+    if ( _departCityData == null || _departCityData == '') {
       _departCityData = await Repository.get().getDestinations(departCityCode);
     }
-    if (_departCityData == null || _departCityData.length==0) {
+    if (_departCityData == null || _departCityData!.length==0) {
       // delay
       Future.delayed(Duration(milliseconds: 100), () {
-        if (_departCityData == null || _departCityData.length == 0) {
+        if (_departCityData == null || _departCityData!.length == 0) {
           if( gblVerbose) print(" This line is execute after 100 ms - no cities");
           setState(() {          });
         } else {
@@ -266,7 +277,8 @@ class _ArrivalsState extends State<Arrivals> {
 
   @override
   Widget build(BuildContext context) {
-    if (_departCityData == null || _departCityData.length == 0) {
+    //logit('build arr');
+    if (_departCityData == null || _departCityData!.length == 0) {
       return new Center( child: TrText("Loading...")
     /* child: new ElevatedButton(onPressed: () => _loadData(),
             child: TrText("Load cities Failed, RETRY"),
@@ -281,10 +293,10 @@ class _ArrivalsState extends State<Arrivals> {
 
 
  class ArrivalList extends StatefulWidget {
-   final List<String> routes;
-   final String departureCityCode;
+   final List<String>? routes;
+   final String? departureCityCode;
 
-   ArrivalList({Key key, this.routes, this.departureCityCode})
+   ArrivalList({Key key= const Key("arrlist_key"), this.routes, this.departureCityCode = null})
        : super(key: key);
 
    ArrivalListState createState() =>
@@ -296,7 +308,7 @@ class _ArrivalsState extends State<Arrivals> {
  // TextEditingController _fqtvTextEditingController =   TextEditingController();
 
   //  DepartureList({Key key, this.routes}) : super(key: key);
-  List<String> routes;
+  List<String>? routes;
 
   @override
   void initState() {
@@ -308,12 +320,12 @@ class _ArrivalsState extends State<Arrivals> {
 
   void filterCities(String filter){
     routes = [];
-    widget.routes.forEach((route) {
+    widget.routes!.forEach((route) {
       String code = route.split('|')[0].toUpperCase();
       String name = route.split('|')[1].toUpperCase();
 
       if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
-        routes.add(route);
+        routes!.add(route);
       }
     });
   }
@@ -321,7 +333,7 @@ class _ArrivalsState extends State<Arrivals> {
 
   @override
   Widget build(BuildContext context) {
-    if(gblLogCities ) {logit('build ArrivalList len=${routes.length}');}
+    if(gblLogCities ) {logit('build ArrivalList len=${routes!.length}');}
 
 //      if( _searchEditingController.text.isNotEmpty) {
         filterCities(_searchEditingController.text);
@@ -330,14 +342,14 @@ class _ArrivalsState extends State<Arrivals> {
     return
       new ListView.builder(
           shrinkWrap: true,
-          itemCount: routes == null ? 0 : routes.length ,
+          itemCount: routes == null ? 0 : routes!.length ,
           itemBuilder: (BuildContext context, i) {
             return new ListTile(
                 title: Text(
-                  translate('${routes[i]}'.split('|')[1]),
+                  translate('${routes![i]}'.split('|')[1]),
                 ),
                 onTap: () {
-                  Navigator.pop(context, '${routes[i]}');
+                  Navigator.pop(context, '${routes![i]}');
                 });
           }
       );
@@ -348,15 +360,15 @@ class _ArrivalsState extends State<Arrivals> {
 class CitiesScreen extends StatefulWidget {
   final String filterByCitiesCode;
 
-  CitiesScreen({Key key, this.filterByCitiesCode}) : super(key: key);
+  CitiesScreen({Key key= const Key("citysc_key"), this.filterByCitiesCode=''}) : super(key: key);
 
   CitiesScreenState createState() => CitiesScreenState();
 }
 
 class CitiesScreenState  extends State<CitiesScreen> {
 
-  List<String> _cityData;
-  List<String> routes;
+  List<String>? _cityData ;
+  List<String>? routes;
 
   @override
   void initState() {
@@ -365,17 +377,25 @@ class CitiesScreenState  extends State<CitiesScreen> {
     _loadData();
     _searchEditingController.text = '';
   }
+  void onComplete() {
+    Timer(const Duration(milliseconds: 400), ()
+    {
+      setState(() {
+       // _displayProcessingIndicator = false;
+      });
+    });
+  }
   Future _loadData() async {
     //Repository.get().getAllDepartures().then((cityData) {
-    if (_cityData == null) {
-      _cityData = await Repository.get().getAllDepartures();
+    if (_cityData == null || _cityData!.length == 0) {
+      _cityData = await Repository.get().getAllDepartures(onComplete);
     }
 
-    if (_cityData == null || _cityData.length == 0) {
+    if (_cityData == null || _cityData!.length == 0) {
       // delay
       for( var i  = 0; i< 10 ; i++ ) {
         Future.delayed(Duration(milliseconds: 200), () {
-          if (_cityData == null || _cityData.length == 0) {
+          if (_cityData == null || _cityData!.length == 0) {
             if (gblVerbose) print(
                 " This line is execute after 100 ms - no cities");
             //setState(() {});
@@ -427,7 +447,7 @@ class CitiesScreenState  extends State<CitiesScreen> {
 
       ),
       body: new Container(
-          child: widget.filterByCitiesCode != null
+          child: (widget.filterByCitiesCode != null && widget.filterByCitiesCode != '')
               ? Arrivals(departCityCode: widget.filterByCitiesCode,
           )
               : Departures()),

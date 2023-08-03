@@ -3,7 +3,7 @@ import 'package:vmba/components/trText.dart';
 
 
 class TabPage extends StatefulWidget {
-  TabPage({Key key})
+  TabPage({Key key = const Key("tab_key")})
       : super(key: key);
 
   @override
@@ -13,7 +13,7 @@ class TabPage extends StatefulWidget {
 class TabPageState extends State<TabPage>  with TickerProviderStateMixin {
 
 
-  TabController _controller;
+  late TabController _controller;
  // int _selectedIndex = 0;
 
   @override

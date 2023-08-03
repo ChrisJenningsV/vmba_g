@@ -8,14 +8,14 @@ import '../Helpers/settingsHelper.dart';
 
 class TrText extends StatelessWidget {
   final String labelText;
-  final TextStyle style;
+  final TextStyle? style;
   final String variety;
   final bool noTrans;
   final TextAlign textAlign;
   final double textScaleFactor;
   final int maxLines;
 
-  TrText(this.labelText,  {this.style, this.variety, this.noTrans, this.textAlign, this.textScaleFactor, this.maxLines});
+  TrText(this.labelText,  {this.style, this.variety='', this.noTrans=false, this.textAlign = TextAlign.start , this.textScaleFactor = 1.0, this.maxLines = 1});
 
   build(BuildContext context) {
     var txt = labelText;
@@ -32,7 +32,7 @@ class TrText extends StatelessWidget {
         }
 
 
-        var txt2 = gblLangMap[labelText];
+        var txt2 = gblLangMap![labelText];
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {
           txt = testTxt + txt2;
@@ -47,8 +47,14 @@ class TrText extends StatelessWidget {
 
     if( variety != null &&  variety.isNotEmpty) {
       double width = MediaQuery.of(context).size.width;
-      Color clr = style.color;
-      double fSize = style.fontSize ;
+      Color? clr;
+
+      double? fSize;
+      final style = this.style;
+      if( style != null ){
+          clr = style.color;
+        fSize = style.fontSize ;
+      }
 
       switch (variety) {
         case 'airport':
@@ -85,8 +91,8 @@ String translate( String str ) {
   if (gblLanguage == 'en' && !gblSettings.wantEnglishTranslation ) {
     return str;
   }
-  if( gblLangMap != null && gblLangMap[str] != null && gblLangMap[str].isNotEmpty ) {
-    return gblLangMap[str];
+  if( gblLangMap != null && gblLangMap![str] != null && gblLangMap![str].isNotEmpty ) {
+    return gblLangMap![str];
   }
   var msg = ' "$str": ""';
   //print(msg);

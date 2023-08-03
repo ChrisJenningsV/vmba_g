@@ -1,3 +1,4 @@
+
 import 'package:meta/meta.dart';
 
 class RoutesDB {
@@ -8,8 +9,8 @@ class RoutesDB {
   //int id;
 
   RoutesDB({
-    @required this.org,
-    @required this.dest,
+    required this.org,
+    required this.dest,
   });
 
   RoutesDB.fromMap(Map<String, dynamic> map)
@@ -28,9 +29,9 @@ class RoutesDB {
 }
 
 class RoutesModel {
-  List<Routes> routes;
+  List<Routes> routes = List.from([Routes()]);
 
-  RoutesModel({this.routes});
+  RoutesModel();
 
   RoutesModel.fromJson(Map<String, dynamic> json) {
     if (json['Routes'] != null) {
@@ -52,15 +53,13 @@ class RoutesModel {
 }
 
 class Routes {
-  Airport departure;
-  List<Airport> destinations;
+  Airport departure = Airport();
+  List<Airport> destinations = List.from([Airport()]);
 
-  Routes({this.departure, this.destinations});
+  Routes();
 
   Routes.fromJson(Map<String, dynamic> json) {
-    departure = json['departure'] != null
-        ? new Airport.fromJson(json['departure'])
-        : null;
+    if( json['departure'] != null)departure = Airport.fromJson(json['departure']);
     if (json['destinations'] != null) {
       destinations = [];
       // new List<Airport>();
@@ -83,18 +82,13 @@ class Routes {
 }
 
 class Airport {
-  String airportCode;
-  String airportName;
-  double latitude;
-  double longitude;
-  bool direct;
+  String airportCode='';
+  String airportName='';
+  double latitude =0;
+  double longitude=0;
+  bool direct=true;
 
-  Airport(
-      {this.airportCode,
-      this.airportName,
-      this.latitude,
-      this.longitude,
-      this.direct});
+  Airport();
 
   Airport.fromJson(Map<String, dynamic> json) {
     airportCode = json['airportCode'];

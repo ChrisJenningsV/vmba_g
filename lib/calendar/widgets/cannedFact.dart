@@ -6,12 +6,12 @@ import 'package:vmba/components/trText.dart';
 import '../../utilities/messagePages.dart';
 
 class CannedFactWidget extends StatelessWidget {
-  final List<Flt> flt;
+   List<Flt>? flt;
   CannedFactWidget({this.flt});
 
   @override
   Widget build(BuildContext context) {
-    if (flt.first.fltdet.canfac != null && flt.first.fltdet.canfac.fac != '') {
+    if (flt?.first.fltdet.canfac != null && flt?.first.fltdet.canfac?.fac != '') {
       return Column(
         children: <Widget>[
           Row(
@@ -24,7 +24,7 @@ class CannedFactWidget extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return msgDialog(context, translate('Additional Info'),
-                        additionalInfoWidget(flt.first.fltdet.canfac.fac.trim()) );
+                        additionalInfoWidget(flt?.first.fltdet.canfac?.fac.trim()) );
 
 /*
                       return AlertDialog(
@@ -72,7 +72,10 @@ class CannedFactWidget extends StatelessWidget {
     }
   }
 
-  Widget additionalInfoWidget(String text) {
+  Widget additionalInfoWidget(String? textIn) {
+    String text = '';
+    if (textIn != null ) text = textIn as String;
+
     if (text.contains('<')) {
         Widget w = Container(
           height: 200,
@@ -154,6 +157,7 @@ class CannedFactWidget extends StatelessWidget {
               messages.forEach((element) {
                 print(element);
               });
+              return '';
             },
           ),
         ));

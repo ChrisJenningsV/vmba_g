@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:vmba/utilities/helper.dart';
 
 class Providers {
-  List<Provider> providers;
+  List<Provider> providers = List.from([Provider()]);
 
-  Providers({this.providers});
+  Providers();
 
   Providers.fromJson(String str) {
     try {
@@ -23,24 +23,25 @@ class Providers {
 
 
 class Provider {
-  bool pUserSessionLogging;
-  String paymentType;
-  String paymentSchemeName;
-  String paymentSchemeDisplayName;
-  String paymentSchemeID;
-  String displayOrder;
-  PaymentFields fields;
+  bool pUserSessionLogging=false;
+  String paymentType='';
+  String paymentSchemeName='';
+  String paymentSchemeDisplayName='';
+  String paymentSchemeID='';
+  String displayOrder='';
+  PaymentFields fields = PaymentFields();
 
+  Provider();
 
   Provider.fromJson(Map<String, dynamic> json) {
     try {
-      pUserSessionLogging = json['pUserSessionLogging'];
-      paymentType = json['PaymentType'];
-      paymentSchemeName = json['PaymentSchemeName'];
-      paymentSchemeDisplayName = json['PaymentSchemeDisplayName'];
-      paymentSchemeID = json['PaymentSchemeID'];
-      displayOrder = json['DisplayOrder'];
-      fields = PaymentFields.fromJson(json['Fields']);
+      if( json['pUserSessionLogging'] != null )pUserSessionLogging = json['pUserSessionLogging'];
+      if( json['PaymentType'] != null )paymentType = json['PaymentType'];
+      if( json['PaymentSchemeName'] != null )paymentSchemeName = json['PaymentSchemeName'];
+      if( json['PaymentSchemeDisplayName'] != null )paymentSchemeDisplayName = json['PaymentSchemeDisplayName'];
+      if( json['PaymentSchemeID'] != null )paymentSchemeID = json['PaymentSchemeID'];
+      if( json['DisplayOrder'] != null )displayOrder = json['DisplayOrder'];
+      if( json['Fields'] != null ) fields = PaymentFields.fromJson(json['Fields']);
     } catch(e) {
       logit(e.toString());
     }
@@ -49,9 +50,9 @@ class Provider {
 
 
 class PaymentFields {
-  List<PaymentField> paymentFields;
+  List<PaymentField> paymentFields = List.from([PaymentField()]);
 
-  PaymentFields({this.paymentFields});
+  PaymentFields();
 
   PaymentFields.fromJson(List<dynamic> json) {
     try {
@@ -75,36 +76,37 @@ class PaymentFields {
 
 
 class PaymentField {
-  String paymentFieldName;
-  String paymentFieldGroup;
-  String defaultLabel;
-  String defaultValue;
-  String fieldOptions;
-  String helpText;
-  String helpIcon;
-  String fieldIcon;
-  int minLen;
-  int maxLen;
-  String validationType;
-  String regEx;
-  bool requiredField;
+  String paymentFieldName='';
+  String paymentFieldGroup='';
+  String defaultLabel='';
+  String defaultValue='';
+  String fieldOptions='';
+  String helpText='';
+  String helpIcon='';
+  String fieldIcon='';
+  int minLen=0;
+  int maxLen=0;
+  String validationType='';
+  String regEx='';
+  bool requiredField=false;
 
+  PaymentField();
 
   PaymentField.fromJson(Map<String, dynamic> json) {
     try {
-      paymentFieldName = json['PaymentField'];
-      paymentFieldGroup = json['PaymentFieldGroup'];
-      defaultLabel = json['DefaultLabel'];
-      defaultValue = json['DefaultValue'];
-      fieldOptions = json['FieldOptions'];
-      helpText = json['HelpText'];
-      helpIcon  = json['HelpIcon'];
-      fieldIcon = json['FieldIcon'];
-      minLen = json['MinLen'];
-      maxLen = json['MaxLen'];
-      validationType = json['ValidationType'];
-      regEx = json['RegEx'];
-      requiredField = json['RequiredField'];
+      if( json['PaymentField'] != null ) paymentFieldName = json['PaymentField'];
+      if(json['PaymentFieldGroup']  != null ) paymentFieldGroup = json['PaymentFieldGroup'];
+      if(json['DefaultLabel']  != null ) defaultLabel = json['DefaultLabel'];
+      if(json['DefaultValue']  != null ) defaultValue = json['DefaultValue'];
+      if(json['FieldOptions']  != null ) fieldOptions = json['FieldOptions'];
+      if(json['HelpText']  != null ) helpText = json['HelpText'];
+      if(json['HelpIcon']  != null ) helpIcon  = json['HelpIcon'];
+      if(json['FieldIcon']  != null ) fieldIcon = json['FieldIcon'];
+      if(json['MinLen']  != null ) minLen = json['MinLen'];
+      if(json['MaxLen']  != null ) maxLen = json['MaxLen'];
+      if( json['ValidationType'] != null ) validationType = json['ValidationType'];
+      if(json['RegEx']  != null ) regEx = json['RegEx'];
+      if(json['RequiredField']  != null ) requiredField = json['RequiredField'];
     } catch (e) {
       logit(e.toString());
     }

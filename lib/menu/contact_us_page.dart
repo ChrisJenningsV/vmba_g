@@ -36,14 +36,11 @@ class ContactUsPage extends StatelessWidget {
             switch (gblSettings.aircode) {
               case 'LM':
                 return LM.ContactUs();
-                break;
 
               case 'SI':
                 return SI.ContactUs();
-                break;
               case 'T6':
                 return T6.ContactUs();
-                break;
               default:
                 return Default.ContactUs();
             }

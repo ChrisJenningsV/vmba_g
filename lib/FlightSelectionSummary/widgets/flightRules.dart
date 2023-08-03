@@ -10,13 +10,13 @@ import '../../utilities/widgets/bullet_widget.dart';
 class FlightRulesWidget extends StatefulWidget {
   final List<FQItin> fQItin;
   final List<Itin> itin;
-  FlightRulesWidget({this.fQItin, this.itin});
+  FlightRulesWidget({this.fQItin = const [], this.itin = const []});
 
   _FlightRulesState createState() => _FlightRulesState();
 }
 
 class _FlightRulesState extends State<FlightRulesWidget> {
-  String fareIDs;
+  String fareIDs = '';
   bool _displayProcessingIndicator = true;
  // List<String> fareRulesPerSegment = [];
   List<List> fareRulesPerSegment = [];
@@ -60,7 +60,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
         if( result.body == null ) {
           fareRulesPerSegment[seg -1].add('no fare rules for segment $seg');
         } else {
-          fareRulesPerSegment[seg -1].addAll(result.body);
+          fareRulesPerSegment[seg -1].addAll(result.body as List<String>);
         }
       });
 

@@ -22,11 +22,11 @@ import '../utilities/messagePages.dart';
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
   ChangeFlightPage(
-      {Key key,
-      this.pnr,
+      {Key key= const Key("changflt_key"),
+      required this.pnr,
       // this.journey,
-      this.departureDate, //this.journeys,
-      this.mmbBooking})
+      required this.departureDate, //this.journeys,
+      required this.mmbBooking})
       : super(key: key);
   final PnrModel pnr;
   DateTime departureDate;
@@ -36,12 +36,12 @@ class ChangeFlightPage extends StatefulWidget {
 }
 
 class _ChangeFlightState extends State<ChangeFlightPage> {
-  bool _loadingInProgress;
-  AvailabilityModel objAv;
-  ScrollController _scrollController;
+  bool _loadingInProgress= false;
+  AvailabilityModel objAv = AvailabilityModel();
+  ScrollController _scrollController = ScrollController();
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _noInternet;
-  bool _isReturn;
+  bool _noInternet = false;
+  bool _isReturn = false;
   @override
   void initState() {
     super.initState();
@@ -225,7 +225,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
     Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
       if (rs.isOk()) {
-        objAv = rs.body;
+        objAv = rs.body!;
         removeDepartedFlights();
         _dataLoaded();
       } else {
@@ -239,15 +239,15 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   void removeDepartedFlights() {
     if (objAv.availability.itin != null) {
-      int length = objAv.availability.itin.length - 1;
+      int length = objAv.availability.itin!.length - 1;
       for (int i = length; i >= 0; i--) {
         DateTime fltDate = DateTime.parse(
-            objAv.availability.itin[i].flt.first.time.ddaygmt +
+            objAv.availability.itin![i].flt.first.time.ddaygmt +
                 ' ' +
-                objAv.availability.itin[i].flt.first.time.dtimgmt);
+                objAv.availability.itin![i].flt.first.time.dtimgmt);
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
             minutes: gblSettings.bookingLeadTime)))) {
-          objAv.availability.itin.removeAt(i);
+          objAv.availability.itin!.removeAt(i);
         }
       }
     }
@@ -268,7 +268,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc()));
 
     calenderWidgetSelectedItem = 0;
-    for (var f in objAv.availability.cal.day) {
+    for (var f in objAv.availability.cal!.day) {
       if (DateTime.parse(f.daylcl).isAfter(_currentDate) ||
           isSearchDate(DateTime.parse(f.daylcl), _departureDate)) {
         calenderWidgetSelectedItem += 1;
@@ -309,13 +309,13 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     .first.classBand
                     .toUpperCase() ==
                 'BLUE FLEX' &&
-            objAv.availability.classbands.band[index].cbname.toUpperCase() ==
+            objAv.availability.classbands!.band![index].cbname.toUpperCase() ==
                 'BLUE FLY') ||
         (widget.mmbBooking.journeys.journey[noneChangingJourney].itin.first
                     .classBand
                     .toUpperCase() ==
                 'BLUE FLY' &&
-            objAv.availability.classbands.band[index].cbname.toUpperCase() ==
+            objAv.availability.classbands!.band![index].cbname.toUpperCase() ==
                 'BLUE FLEX')) {
       showSnackBar(
           'You can only change to another ${widget.mmbBooking.journeys.journey[noneChangingJourney].itin.first.classBand} flight');
@@ -324,28 +324,28 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                 .classBand
                 .toUpperCase() ==
             'FLY FLEX' &&
-        objAv.availability.classbands.band[index].cbname == 'Fly') {
+        objAv.availability.classbands!.band![index].cbname == 'Fly') {
       showSnackBar('Fly and Fly Flex can\'t be mixed within a booking');
     } else if (widget.mmbBooking.journeys.journey.length > 1 &&
         widget.mmbBooking.journeys.journey[noneChangingJourney].itin.first
                 .classBand
                 .toUpperCase() ==
             'FLY' &&
-        objAv.availability.classbands.band[index].cbname == 'Fly Flex') {
+        objAv.availability.classbands!.band![index].cbname == 'Fly Flex') {
       showSnackBar('Fly and Fly Flex can\'t be mixed within a booking');
     } else if (widget.mmbBooking.journeys.journey.length > 1 &&
         widget.mmbBooking.journeys.journey[noneChangingJourney].itin.first
                 .classBand
                 .toUpperCase() ==
             'BLUE FLEX' &&
-        objAv.availability.classbands.band[index].cbname == 'Blue Fly') {
+        objAv.availability.classbands!.band![index].cbname == 'Blue Fly') {
       showSnackBar('Blue Fly and Blue Flex can\'t be mixed within a booking');
     } else if (widget.mmbBooking.journeys.journey.length > 1 &&
         widget.mmbBooking.journeys.journey[noneChangingJourney].itin.first
                 .classBand
                 .toUpperCase() ==
             'BLUE FLY' &&
-        objAv.availability.classbands.band[index].cbname == 'Blue Flex') {
+        objAv.availability.classbands!.band![index].cbname == 'Blue Flex') {
       showSnackBar('Blue Fly and Blue Flex can\'t be mixed within a booking');
     } else if (widget.mmbBooking.journeys.journey.length > 1 &&
         widget.mmbBooking.journeyToChange == 2 &&
@@ -478,7 +478,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       return new ListView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
-          children: objAv.availability.cal.day
+          children: objAv.availability.cal!.day
               .map(
                 (item) => Container(
                   decoration: new BoxDecoration(
@@ -547,7 +547,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     if (objAv != null && objAv.availability.itin != null) {
       return new ListView(
           scrollDirection: Axis.vertical,
-          children: (objAv.availability.itin
+          children: (objAv.availability.itin!
               .map(
                 (item) => flightItem(item),
 
@@ -593,7 +593,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     );
   }
 
-  Widget flightItem(avItin item) {
+  Widget flightItem(AvItin item) {
     if( wantPageV2() ) {
       int seatCount =
         this.widget.pnr.pNR.names.pAX.where((pax) => pax.paxType == 'AD').length +
@@ -643,7 +643,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         context,
         SlideTopRoute(
             page: ChooseFlight(
-          classband: objAv.availability.classbands.band[index],
+          classband: objAv.availability.classbands!.band![index],
           flts: flts, //objAv.availability.itin[0].flt,
           seats: (this
                       .widget
@@ -698,7 +698,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     flightSelected(context,null, selectedFlt, flts, '');
   }
 
-  void flightSelected(BuildContext context,avItin avItem, List<String> flt, List<Flt> outboundflts, String c) {
+  void flightSelected(BuildContext context,AvItin? avItem, List<String> flt, List<Flt> outboundflts, String c) {
     NewBooking newFlight = NewBooking();
     newFlight.outboundflight = [];
     widget.mmbBooking.currency = this.widget.pnr.getBookingCurrency();
@@ -731,15 +731,15 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Widget pricebuttons(List<Flt> item) {
-    if (item[0].fltav.pri.length > 3) {
+    if (item[0].fltav.pri!.length > 3) {
       return Wrap(
           spacing: 8.0, // gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: new List.generate(
-              item[0].fltav.pri.length,
+              item[0].fltav.pri!.length,
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav[index] != '0'
+                        item[0].fltav.fav![index] != '0'
                             ? goToClassScreen(index, item)
                             : print('No av')
                       },
@@ -747,7 +747,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                      children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
 /*
                       <Widget>[
                         TrText(
@@ -796,9 +796,9 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                   ))));
     } else {
       MainAxisAlignment _mainAxisAlignment;
-      if (item[0].fltav.pri.length == 2) {
+      if (item[0].fltav.pri!.length == 2) {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      } else if (item[0].fltav.pri.length == 3) {
+      } else if (item[0].fltav.pri!.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
       } else {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
@@ -806,7 +806,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,
           children: new List.generate(
-            item[0].fltav.pri.length,
+            item[0].fltav.pri!.length,
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary:
@@ -815,7 +815,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
                 onPressed: () {
-                  item[0].fltav.fav[index] != '0'
+                  item[0].fltav.fav![index] != '0'
                       ? validateSelection(
                           index, item) //goToClassScreen(index, item)
                       : print('No av');
@@ -823,7 +823,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: new Column(
-                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+                    children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index),
         /*            <Widget>[
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,

@@ -14,14 +14,14 @@ import '../../utilities/widgets/appBarWidget.dart';
 import '../productFunctions.dart';
 
 class ComplextProductWidget extends StatefulWidget {
-  final Product product;
-  final Product savedProduct;
+  final Product? product;
+  final Product? savedProduct;
   final PnrModel pnrModel;
   final bool isMmb;
-  final void Function(Product product) onSaved;
-  final void Function(String msg) onError;
+  final void Function(Product product)? onSaved;
+  final void Function(String msg)? onError;
 
-  ComplextProductWidget({Key key, this.product,this.savedProduct, this.pnrModel, this.onSaved, this.onError, this.isMmb})
+  ComplextProductWidget({Key key= const Key("prod_key"), required this.product,required this.savedProduct, required this.pnrModel , this.onSaved, this.onError, this.isMmb = false})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -31,7 +31,7 @@ class ComplextProductWidget extends StatefulWidget {
 
 class ComplextProductWidgetState extends State<ComplextProductWidget> {
 
-  int minCount;
+  int minCount = 0;
 
   @override
   void initState() {
@@ -45,13 +45,13 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
         }
       });
     }*/
-    widget.product.resetProducts(widget.pnrModel);
+    widget.product?.resetProducts(widget.pnrModel);
 
     if( widget.isMmb) {
-        if(widget.product.segmentRelate || widget.product.paxRelate){
+        if(widget.product!.segmentRelate || widget.product!.paxRelate){
 
         } else {
-          minCount = widget.product.count(0);
+          minCount = widget.product!.count(0);
         }
     } else {
       minCount = 0;
@@ -67,7 +67,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     return new Scaffold(
       appBar: appBar(
         context,
-        widget.product.productName,
+        widget.product!.productName,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -87,21 +87,24 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     String units = '';
 
 
-    if( widget.product.unitOfMeasure == null || widget.product.unitOfMeasure.isEmpty) {
+    if( widget.product!.unitOfMeasure == null || widget.product!.unitOfMeasure.isEmpty) {
       units += ' ' + translate('Per Unit');
     } else {
-      units = ' ' + translate('Per') + ' ' + widget.product.unitOfMeasure;
+      units = ' ' + translate('Per') + ' ' + widget.product!.unitOfMeasure;
     }
     if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
-      rowList.add(Image(image: getProductImage(widget.product),
-        fit: BoxFit.fill,
-        height: 40,
-        width: 40,));
+      NetworkImage? img = getProductImage(widget.product!);
+      if (img != null) {
+        rowList.add(Image(image: img,
+          fit: BoxFit.fill,
+          height: 40,
+          width: 40,));
+      }
     }
 
     rowList.add(Padding( padding: EdgeInsets.only(right: 15,)));
     rowList.add(Column( children: [
-      Text(formatPrice(widget.product.currencyCode, widget.product.getPrice()) ),
+      Text(formatPrice(widget.product!.currencyCode, widget.product!.getPrice()) ),
       Text(units)
     ]));
     rowList.add(Spacer(),);
@@ -114,11 +117,11 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     headList.add(new Row(    children: rowList,));
 
     // product details
-    if( widget.product.productDescription != null && widget.product.productDescription.isNotEmpty ) {
+    if( widget.product!.productDescription != null && widget.product!.productDescription.isNotEmpty ) {
       headList.add(new Row(
         children: [
           // get text (strip and HTML)
-          Expanded( child:  getHtmlDoc(widget.product.productDescription))
+          Expanded( child:  getHtmlDoc(widget.product!.productDescription))
         ],
       ));
     }
@@ -132,16 +135,16 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
 
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
     int segNo = 0;
-    if (widget.product.segmentRelate) {
+    if (widget.product!.segmentRelate) {
       widget.pnrModel.pNR.itinerary.itin.forEach((itin) {
-        if( widget.product.applyToClasses == null ||
-            widget.product.applyToClasses.isEmpty ||
-            widget.product.applyToClasses.contains( itin.xclass)) {
-          if (isThisProductValid(widget.pnrModel, widget.product, segNo)) {
+        if( widget.product!.applyToClasses == null ||
+            widget.product!.applyToClasses.isEmpty ||
+            widget.product!.applyToClasses.contains( itin.xclass)) {
+          if (isThisProductValid(widget.pnrModel, widget.product!, segNo)) {
             list.add(ProductFlightCard(
               pnrModel: widget.pnrModel,
-              product: widget.product,
-              savedProduct: widget.savedProduct,
+              product: widget.product!,
+              savedProduct: widget.savedProduct!,
               isMmb: widget.isMmb,
               itin: itin,
               stateChange: () {
@@ -159,25 +162,25 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       widget.pnrModel.pNR.names.pAX.forEach((pax){
         if( pax.paxType != 'IN') {
           //list.add(Text(pax.firstName + ' ' + pax.surname), );
-          bool disable = widget.product.getCount(int.parse(pax.paxNo), 0) == 0;
+          bool disable = widget.product!.getCount(int.parse(pax.paxNo), 0) == 0;
           if (widget.isMmb) {
-            disable = widget.product.getCount(int.parse(pax.paxNo), 0) <=
-                widget.savedProduct.getCount(int.parse(pax.paxNo), 0);
+            disable = widget.product!.getCount(int.parse(pax.paxNo), 0) <=
+                widget.savedProduct!.getCount(int.parse(pax.paxNo), 0);
           }
 
-          list.add(getProductPaxRow(widget.product, pax, 0, 0, disable,
+          list.add(getProductPaxRow(widget.product!, pax, 0, 0, disable,
             onDelete: (int paxNo, int segNo) {
-              if (widget.product.getCount(paxNo, segNo) > 0) {
+              if (widget.product!.getCount(paxNo, segNo) > 0) {
                 setState(() {
-                  widget.product.removeProduct(paxNo, segNo);
+                  widget.product!.removeProduct(paxNo, segNo);
                 });
               }
             },
             onAdd: (int paxNo, int segNo) {
-              int max = widget.product.maxQuantity ?? 1;
-              if (widget.product.getCount(paxNo, segNo) < max) {
+              int max = widget.product!.maxQuantity ;
+              if (widget.product!.getCount(paxNo, segNo) < max) {
                 setState(() {
-                  widget.product.addProduct(paxNo, segNo);
+                  widget.product!.addProduct(paxNo, segNo);
                 });
               }
             },
@@ -199,17 +202,17 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     ));
   }
   void validateAndSave() {
-     saveProduct(widget.product, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
+     saveProduct(widget.product!, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
   }
 
   void onError(String msg){
-    widget.onError(msg);
+    widget.onError!(msg);
     showAlertDialog(context, 'Error', msg);
 
   }
 
     void onComplete(PnrModel pnrModel, dynamic p){
-    widget.onSaved(widget.product);
+    widget.onSaved!(widget.product!);
     try {
       Navigator.pop(context, pnrModel);
     } catch (e) {
@@ -227,9 +230,9 @@ class ProductFlightCard extends StatefulWidget {
   final PnrModel pnrModel;
   final Itin itin;
   final bool isMmb;
-  final void Function() stateChange;
+  final void Function()? stateChange;
 
-  ProductFlightCard({Key key, this.product, this.savedProduct, this.pnrModel, this.itin, this.stateChange, this.isMmb})
+  ProductFlightCard({Key key= const Key("fltcard_key"), required this.product, required this.savedProduct, required this.pnrModel, required this.itin , this.stateChange, this.isMmb = false})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -250,26 +253,32 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   Widget build(BuildContext context) {
     return vidExpanderCardExt(context,
         Row(children: [
+          Text(cityCodetoAirport(widget.itin.depart)),
+
+/*
           FutureBuilder(
             future: cityCodeToName(widget.itin.depart),
             initialData: widget.itin.depart.toString(),
             builder:
                 (BuildContext context, AsyncSnapshot<String> text) {
-              return new Text(text.data);
+              return new Text(text.data as String);
             },
           ),
+*/
           new Icon(
             Icons.arrow_right,
             size: 20.0,
           ),
-          FutureBuilder(
+          Text(cityCodetoAirport(widget.itin.arrive)),
+
+          /*         FutureBuilder(
             future: cityCodeToName(widget.itin.arrive),
             initialData: widget.itin.arrive.toString(),
             builder:
                 (BuildContext context, AsyncSnapshot<String> text) {
-              return new Text(text.data);
+              return new Text(text.data as String);
             },
-          ),
+          ),*/
         ]), true,
         _getBody(int.parse(widget.itin.line)));
 
@@ -293,15 +302,15 @@ class ProductFlightCardState extends State<ProductFlightCard> {
                   if (widget.product.getCount(paxNo, segNo) > 0) {
                     setState(() {
                       widget.product.removeProduct(paxNo, segNo);
-                      widget.stateChange();
+                      widget.stateChange!();
                     });
                   }
                 },
                 onAdd: (int paxNo, int segNo) {
-                  int max = widget.product.maxQuantity ?? 1;
+                  int max = widget.product.maxQuantity ;
                   if (widget.product.getCount(paxNo, segNo) < max) {
                     widget.product.addProduct(paxNo, segNo);
-                    widget.stateChange();
+                    widget.stateChange!();
                   };
                   setState(() {});
                 },
@@ -315,14 +324,14 @@ class ProductFlightCardState extends State<ProductFlightCard> {
         if( widget.product.getCount(paxNo, segNo) > 0) {
           setState(() {
             widget.product.removeProduct(paxNo, segNo);
-            widget.stateChange();
+            widget.stateChange!();
           });
         }},
         onAdd: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) < widget.product.maxQuantity) {
             setState(() {
               widget.product.addProduct(paxNo, segNo);
-              widget.stateChange();
+              widget.stateChange!();
             });
           }},
       )
@@ -333,7 +342,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   }
 }
 
-Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo) onDelete, void Function(int paxNo, int segNo) onAdd}) {
+Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
   List<Widget> widgets = [];
 
   widgets.add(Align(alignment: Alignment.centerLeft,
@@ -348,7 +357,7 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disab
               disabled: disable,
               onPressed: (context, paxNo, segNo) {
             if(gblLogProducts) logit('onDelete p=${pax.paxNo} s=$segNo');
-              onDelete(paxNo, segNo);
+              onDelete!(paxNo, segNo);
           }),
 
           new Text(prod.getCount(int.parse(pax.paxNo), lineNo).toString(),
@@ -357,7 +366,7 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disab
         vidAddButton(null,
             disabled: prod.getCount(int.parse(pax.paxNo), segNo) >= prod.maxQuantity,
             onPressed: (context) {
-          onAdd(int.parse(pax.paxNo), lineNo);
+          onAdd!(int.parse(pax.paxNo), lineNo);
         }),
 
         ],)
@@ -366,13 +375,15 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disab
   return Padding(padding: EdgeInsets.only(left: 10),
             child: Row(children: widgets));
 }
-Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo) onDelete, void Function(int paxNo, int segNo) onAdd}) {
+Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
     List<Widget> widgets = [];
-
-      widgets.add(Image(image: getProductImage(prod),
-        fit: BoxFit.fill,
-        height: 40,
-        width: 40,),);
+      NetworkImage? img = getProductImage(prod);
+      if( img != null ) {
+        widgets.add(Image(image: img as NetworkImage,
+          fit: BoxFit.fill,
+          height: 40,
+          width: 40,),);
+      }
 
     widgets.add(Align(alignment: Alignment.centerLeft,
         child: TrText(prod.productName)),);
@@ -385,7 +396,7 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
             icon: Icon(Icons.remove_circle_outline,
               color: (prod.count(segNo) > 0) ? Colors.black : Colors.grey.shade300,),
             onPressed: () {
-              onDelete(0, segNo);
+              onDelete!(0, segNo);
             },
           ),
             new Text(prod.count(segNo).toString(),
@@ -394,7 +405,7 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
                 color: (prod.count(segNo) < prod.maxQuantity) ? Colors.black : Colors
                     .grey.shade300),
               onPressed: () {
-                onAdd(0, segNo);
+                onAdd!(0, segNo);
               },
             ),
           ],)

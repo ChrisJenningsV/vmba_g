@@ -6,15 +6,15 @@ class PnrDBCopy {
   static final dbDelete = "deleteRecord";
 
   String rloc, data;
-  int delete, nextFlightSinceEpoch;
-  bool success;
+  int delete=0, nextFlightSinceEpoch=0;
+  bool success=true;
 
   PnrDBCopy({
-    @required this.rloc,
-    @required this.data,
-    @required this.delete,
-    this.nextFlightSinceEpoch,
-    this.success
+    required this.rloc,
+    required this.data,
+    required this.delete,
+    this.nextFlightSinceEpoch=0,
+    this.success=true
   });
 
   PnrDBCopy.fromMap(Map<String, dynamic> map)

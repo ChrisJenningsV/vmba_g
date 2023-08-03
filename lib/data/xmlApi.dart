@@ -1,3 +1,4 @@
+
 import 'dart:async' show Future;
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +36,7 @@ Future<XmlResponse> sendXmlMsg(XmlRequest xmlRequest) async {
       logit('sendXmlMsg: error statue ${response.statusCode}');
       xmlResponse.statusCode = response.statusCode;
       xmlResponse.success = false;
-      xmlResponse.error = response.reasonPhrase;
+      xmlResponse.error = response.reasonPhrase as String ;
       return xmlResponse;
     }
 
@@ -78,14 +79,14 @@ Future<XmlResponse> sendXmlMsg(XmlRequest xmlRequest) async {
 
 
 class XmlRequest {
-  String command;
-  int retries;
-  BuildContext context;
+  String command ='';
+  int retries =0;
+  BuildContext? context;
 
   XmlRequest (
   {
-    this.command,
-    this.retries,
+    this.command ='',
+    this.retries =0,
     this.context,
   }
       );
@@ -95,17 +96,17 @@ class XmlRequest {
 class XmlResponse {
   String data;
   String error;
-  Map map;
+  Map? map;
   bool success;
   int statusCode;
 
   XmlResponse(
   {
-    this.data,
-    this.error,
+    this.data='',
+    this.error='',
     this.map,
-    this.success,
-    this.statusCode,
+    this.success=true,
+    this.statusCode=0,
   }
       );
 }

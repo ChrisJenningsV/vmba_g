@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/models.dart';
@@ -27,17 +28,17 @@ double aisleCellSize = 20.0;
 
 class SeatPlanWidget extends StatefulWidget {
   SeatPlanWidget(
-      {Key key,
+      {Key key= const Key("seatplanwi_key"),
       this.paxlist,
-      this.seatplan,
-      this.rloc,
-      this.journeyNo,
-      this.selectedpaxNo,
-      this.isMmb,
-      this.ischeckinOpen})
+      this.seatplan ='',
+      this.rloc ='',
+      this.journeyNo = '',
+      this.selectedpaxNo = 1,
+      this.isMmb = false,
+      this.ischeckinOpen = false})
       : super(key: key);
 
-  final List<Pax> paxlist;
+  final List<Pax>? paxlist;
   final String seatplan;
   final String rloc;
   final String journeyNo;
@@ -49,15 +50,15 @@ class SeatPlanWidget extends StatefulWidget {
 
 class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _loadingInProgress;
-  String _displayProcessingText;
-  Seatplan objSeatplan;
-  List<Pax> paxlist;
-  bool showkey;
-  String seatplan;
-  bool _noInternet;
-  bool _noSeats;
-  Session session;
+  bool _loadingInProgress=false;
+  String _displayProcessingText = '';
+  Seatplan? objSeatplan;
+  List<Pax>? paxlist;
+  bool showkey = true;
+  String seatplan = '';
+  bool _noInternet = false;
+  bool _noSeats = false;
+  Session? session;
 
   @override
   void initState() {
@@ -73,11 +74,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     paxlist = widget.paxlist;
     session = Session('', '', '');
 
-    paxlist.forEach((p) => p.selected = false);
+    paxlist!.forEach((p) => p.selected = false);
     if (widget.selectedpaxNo == null) {
-      paxlist.firstWhere((p) => p.id == 1).selected = true;
+      paxlist!.firstWhere((p) => p.id == 1).selected = true;
     } else {
-      paxlist.firstWhere((p) => p.id == widget.selectedpaxNo).selected = true;
+      paxlist!.firstWhere((p) => p.id == widget.selectedpaxNo).selected = true;
     }
 
     showkey = true;
@@ -160,7 +161,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
       if (rs.isOk()) {
         objSeatplan = rs.body;
-        if (!objSeatplan.hasSeatsAvailable() && objSeatplan.hasBlockedSeats()) {
+        if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
           setState(() {
             _loadingInProgress = false;
             _noSeats = true;
@@ -203,7 +204,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   smartBookSeats() async {
     SeatRequest seat = new SeatRequest();
-    seat.paxlist = paxlist;
+    seat.paxlist = paxlist!;
     seat.rloc = widget.rloc;
     seat.journeyNo = int.parse(widget.journeyNo);
     if( widget.isMmb && widget.ischeckinOpen) {
@@ -216,16 +217,16 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
     try{
       String reply = await callSmartApi('BOOKSEAT', data);
-      Map map = json.decode(reply);
+      Map<String, dynamic> map = json.decode(reply);
       SeatReply seatRs = new SeatReply.fromJson(map);
       double outstanding = double.parse(seatRs.outstandingAmount);
 
       if( !widget.isMmb) {
-        String msg = json.encode(RunVRSCommand(session, "*R~X"));
+        String msg = json.encode(RunVRSCommand(session!, "*R~X"));
         _sendVRSCommand(msg).then(
                 (onValue) {
                   //Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                  Map map = json.decode(onValue);
+                  Map<String, dynamic> map = json.decode(onValue);
                   PnrModel pnrModel = new PnrModel.fromJson(map);
                   gblPnrModel = pnrModel;
                   refreshStatusBar();
@@ -236,11 +237,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             );
       } else {
         if (outstanding == 0) { // zero outstanding
-          String msg = json.encode(RunVRSCommand(session, "E"));
+          String msg = json.encode(RunVRSCommand(session!, "E"));
           _sendVRSCommand(msg).then(
                   (onValue) =>
                   Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                    Map map = json.decode(pnr.data);
+                    Map<String, dynamic> map = json.decode(pnr!.data);
                     PnrModel pnrModel = new PnrModel.fromJson(map);
                     gblPnrModel = pnrModel;
                     refreshStatusBar();
@@ -248,11 +249,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                     Navigator.pop(context, pnrModel);
                   }));
         } else if (outstanding < 0) { // Minus outstanding
-          String msg = json.encode(RunVRSCommand(session, "EMT*R"));
+          String msg = json.encode(RunVRSCommand(session!, "EMT*R"));
           _sendVRSCommand(msg).then(
                   (onValue) =>
                   Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                    Map map = json.decode(pnr.data);
+                    Map<String, dynamic> map = json.decode(pnr!.data);
                     PnrModel pnrModel = new PnrModel.fromJson(map);
                     gblPnrModel = pnrModel;
                     showSnackBar(translate("Seat(s) allocated"));
@@ -263,11 +264,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           int noSeats = 0;
           if (gblSettings.wantNewPayment) {
             // build undo
-            noSeats = gblPnrModel.pNR.seatCount();
+            noSeats = gblPnrModel!.pNR.seatCount();
 
-            msg = json.encode(RunVRSCommand(session, "E*R~x"));
+            msg = json.encode(RunVRSCommand(session!, "E*R~x"));
           } else {
-            msg = json.encode(RunVRSCommand(session, "*${widget.rloc}~x"));
+            msg = json.encode(RunVRSCommand(session!, "*${widget.rloc}~x"));
           }
           _sendVRSCommand(msg).then((pnrJson) {
             pnrJson =
@@ -275,23 +276,23 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                     .replaceAll('<string xmlns="http://videcom.com/">', '')
                     .replaceAll('</string>', '');
 
-            Map map = json.decode(pnrJson);
+            Map<String, dynamic> map = json.decode(pnrJson);
 
             PnrModel pnrModel = new PnrModel.fromJson(map);
             gblPnrModel = pnrModel;
-            int newSeatCount = gblPnrModel.pNR.seatCount();
+            int newSeatCount = gblPnrModel!.pNR.seatCount();
             gblUndoCommand ='';
             for( int i = newSeatCount; i > noSeats; i--){
               if(gblUndoCommand.length > 0 ){
                 gblUndoCommand += '^';
               }
-              gblUndoCommand += '4X${i}';
+              gblUndoCommand += '4X$i';
             }
             if(gblUndoCommand.length > 0 ){
               gblUndoCommand += '^E*R';
             }
             refreshStatusBar();
-            _navigate(context, pnrModel, session);
+            _navigate(context, pnrModel, session!);
 
             _resetloadingProgress();
           });
@@ -311,7 +312,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     cmd.write('*${widget.rloc}^');
     gblBookingState = BookingState.bookSeat;
     if (!gblSettings.webCheckinNoSeatCharge) {
-      paxlist.forEach((f) {
+      paxlist!.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat) {
           if(f.savedSeat != null && f.savedSeat != '') {
             gblBookingState = BookingState.changeSeat;
@@ -325,7 +326,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       });
       cmd.write('FSM^');
     } else {
-      paxlist.forEach((f) {
+      paxlist!.forEach((f) {
         if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
           if(f.savedSeat != null && f.savedSeat != '') {
             gblBookingState = BookingState.changeSeat;
@@ -428,7 +429,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   }
 
   _cancelSeatSelection() {
-    String msg = json.encode(RunVRSCommand(session, "I"));
+    String msg = json.encode(RunVRSCommand(session!, "I"));
     _sendVRSCommand(msg).then((_) {
       _resetloadingProgress();
     });
@@ -503,7 +504,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         backgroundColor: gblSystemColors
                             .primaryButtonColor,
                         onPressed: () {
-                          _handleBookSeats(paxlist);
+                          _handleBookSeats(paxlist!);
                         }),
                   ],
                 )));
@@ -595,7 +596,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   // selected
                   Column(
                     children: <Widget>[
-                      getSeat(null, gblSystemColors.seatPlanColorSelected),
+                      getSeat(null, gblSystemColors.seatPlanColorSelected!),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: TrText("Selected",
@@ -608,7 +609,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   // end selected
                   Column(
                     children: <Widget>[
-                      getSeat(null, gblSystemColors.seatPlanColorAvailable),
+                      getSeat(null, gblSystemColors.seatPlanColorAvailable!),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: TrText("Available",
@@ -620,7 +621,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   ),
                   Column(
                     children: <Widget>[
-                    getSeat(null,gblSystemColors.seatPlanColorEmergency),
+                    getSeat(null,gblSystemColors.seatPlanColorEmergency!),
                     Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: TrText("Emergency",
@@ -632,7 +633,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   ),
                   Column(
                     children: <Widget>[
-                      getSeat(null,gblSystemColors.seatPlanColorRestricted),
+                      getSeat(null,gblSystemColors.seatPlanColorRestricted!),
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: TrText("Restricted",
@@ -673,14 +674,13 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             ),
           ),
           SeatPlanPassengersWidget(
-              paxList: paxlist,
-              systemColors: gblSystemColors),
+              paxList: paxlist),
           Padding(
             padding: EdgeInsets.only(top: 10.0),
           ),
           RenderSeatPlan(
-            seatplan: objSeatplan,
-            pax: paxlist,
+            seatplan: objSeatplan!,
+            pax: paxlist!,
             rloc: widget.rloc,
             onChanged: _handleSeatChanged,
             onScrollCallbackShowKey: _handleScrollChanged,
@@ -694,13 +694,13 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
 class RenderSeatPlan extends StatefulWidget {
   const RenderSeatPlan(
-      {Key key,
-      this.seatplan,
-      this.pax,
-      this.rloc,
-      this.displaySeatPrices,
-      this.onChanged,
-      this.onScrollCallbackShowKey})
+      {Key key= const Key("renderpeatp_key"),
+      required this.seatplan,
+        required this.pax,
+        required this.rloc,
+        required this.displaySeatPrices,
+        required this.onChanged,
+        required this.onScrollCallbackShowKey})
       : super(key: key);
 
   final Seatplan seatplan;
@@ -714,26 +714,26 @@ class RenderSeatPlan extends StatefulWidget {
 }
 
 class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
-  List<Pax> paxlist;
+  List<Pax>? paxlist;
   List<String> selectedSeats = [];
   // List<String>();
-  ScrollController _controller;
-  bool showkey;
+  ScrollController? _controller;
+  bool showkey = false;
 
   _scrollListener() {
     if (!showkey &&
-        _controller.position.userScrollDirection.toString() ==
+        _controller!.position.userScrollDirection.toString() ==
             "ScrollDirection.forward") {
       print('ScrollDirection.up');
-      print(_controller.offset);
+      print(_controller!.offset);
       showkey = true;
       widget.onScrollCallbackShowKey(showkey);
     } else if (showkey &&
-        _controller.offset >= 40 &&
-        _controller.position.userScrollDirection.toString() ==
+        _controller!.offset >= 40 &&
+        _controller!.position.userScrollDirection.toString() ==
             "ScrollDirection.reverse") {
       print('ScrollDirection.down');
-      print(_controller.offset);
+      print(_controller!.offset);
       showkey = false;
       widget.onScrollCallbackShowKey(showkey);
     }
@@ -743,10 +743,10 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
   initState() {
     super.initState();
     _controller = new ScrollController();
-    _controller.addListener(_scrollListener);
+    _controller!.addListener(_scrollListener);
     showkey = true;
     paxlist = widget.pax;
-    paxlist.forEach((f) => selectedSeats.add(f.seat));
+    paxlist!.forEach((f) => selectedSeats.add(f.seat));
   }
 
   emergencySeatSelection(BuildContext context, String selectedSeat) {
@@ -756,7 +756,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         'To select this seat you must be over 16 years old';
 
     var paxTypesNotAllowed = ['CH', 'IN'];
-    Pax selectPax = this.paxlist.firstWhere((p) => p.selected == true);
+    Pax selectPax = this.paxlist!.firstWhere((p) => p.selected == true);
 
     bool isAllowEmergencySeating =
         !paxTypesNotAllowed.contains(selectPax.paxType);
@@ -807,7 +807,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     String notAllowEmergencySeatingText =
         'Infants con not select this seat';
     bool isAllowEmergencySeating = true;
-    Pax selectPax = this.paxlist.firstWhere((p) => p.selected == true);
+    Pax selectPax = this.paxlist!.firstWhere((p) => p.selected == true);
 
     if( selectedSeat.noInfantSeat) {
        var paxTypesNotAllowed = ['IN'];
@@ -816,8 +816,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
            isAllowEmergencySeating = false;
          }
     }
-    if( gblPnrModel.paxHasInfant(selectPax) ) {
-      notAllowEmergencySeatingText = 'You are trying to allocate a restricted seat to a passenger who is accompanying an infant. Please select another seat.';
+    if( gblPnrModel!.paxHasInfant(selectPax) ) {
+      notAllowEmergencySeatingText = 'You are trying to allocate a restricted seat to a passenger who is accompanying an infant. Please select another seat!.';
       isAllowEmergencySeating = false;
     }
 
@@ -863,15 +863,15 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
 
   void _seatSelected(String _seatNumber) {
     setState(() {
-      paxlist.forEach((element) {
+      paxlist!.forEach((element) {
         if (element.selected == true) {
           element.seat = _seatNumber;
         }
       });
       selectedSeats.clear();
-      paxlist.forEach((f) => selectedSeats.add(f.seat));
+      paxlist!.forEach((f) => selectedSeats.add(f.seat));
     });
-    widget.onChanged(paxlist);
+    widget.onChanged(paxlist!);
   }
 
   @override
@@ -914,7 +914,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
 
     if( rows <= 0 || minCol == -1 || maxCol <2 ){
       return Container( child: buildMessage('SeatPlan error', 'No Columns', onComplete: () {
-        gblPaymentMsg = null;
+        gblPaymentMsg = '';
         setState(() {});
       }));
     }
@@ -935,10 +935,10 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     List<Widget> row = [];
     // new List<Widget>();
 
-    String currentSeatPrice;
-    String currentSeatPriceLabel;
-    String currencyCode;
-    String previousSeatPrice;
+    String currentSeatPrice = '';
+    String currentSeatPriceLabel = '';
+    String currencyCode = '';
+    String previousSeatPrice = '';
     bool selectableSeat = true;
 
     // get max no cols
@@ -979,11 +979,28 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
       for (var indexColumn = minCol;
           indexColumn <= maxCol;
           indexColumn++) {
+/*
         if( indexRow == 14) {
           var test = 1;
         }
+*/
+
+    Seat? seat ;
+    bool found = false;
+    seats.forEach((element) {
+      if( element.sCol == indexColumn){
+        seat = element;
+        found = true;
+      }
+    });
+/*
         var seat =
-            seats.firstWhere((f) => f.sCol == indexColumn, orElse: () => null);
+            seats.firstWhere((f) => f.sCol == indexColumn, */
+/*orElse: () => null*//*
+);
+*/
+
+
         selectableSeat = true;
 
         // get price for row
@@ -998,8 +1015,8 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           }
         });
         /*if( seat != null ) {
-          currentSeatPrice = seat.sScprice;
-          currencyCode = seat.sCur;
+          currentSeatPrice = seat!.sScprice;
+          currencyCode = seat!.sCur;
         }*/
         //Color color = Colors.grey.shade300;
         if (seat == null && indexRow != 1) {
@@ -1012,7 +1029,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           ));
           //logit('r${indexRow} c${indexColumn} null w${cellSize + cellPadding}');
         } else if (seat == null && indexRow == 1 ||
-            seat.sCellDescription == 'Aisle') {
+            seat!.sCellDescription == 'Aisle') {
           row.add(
             Container(
               child: Text(''),
@@ -1021,25 +1038,25 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           );
           //logit('r${indexRow} c${indexColumn} aisle w${aisleCellSize}');
 
-        } else if (seat.sCellDescription.length == 1) {
+        } else if (seat!.sCellDescription.length == 1) {
           row.add(
             Padding(
                 padding: EdgeInsets.all(cellPadding),
                 child: Container(
                   width: cellSize,
                   child: Center(
-                      child: Text(seat.sCellDescription != null
-                          ? seat.sCellDescription
+                      child: Text(seat!.sCellDescription != null
+                          ? seat!.sCellDescription
                           : '')),
                 )),
           );
           //logit('r${indexRow} c${indexColumn} desc==1 w${cellPadding + cellSize}');
 
-        } else if (seat.sCellDescription == 'SeatPlanWidthMarker' ||
-            seat.sCellDescription == 'Wing Start' ||
-            seat.sCellDescription == 'Wing Middle' ||
-            seat.sCellDescription == 'Wing End' ||
-            seat.sCellDescription == 'DoorDown') {
+        } else if (seat!.sCellDescription == 'SeatPlanWidthMarker' ||
+            seat!.sCellDescription == 'Wing Start' ||
+            seat!.sCellDescription == 'Wing Middle' ||
+            seat!.sCellDescription == 'Wing End' ||
+            seat!.sCellDescription == 'DoorDown') {
           row.add(Padding(
             padding: EdgeInsets.all(cellPadding),
             child: Container(
@@ -1051,9 +1068,9 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           ));
           //logit('r${indexRow} c${indexColumn} marker w${cellPadding + cellSize}');
 
-        } else if ((seat.sRLOC != null && seat.sRLOC != rloc) ||
-            (seat.sSeatID != '0' && seat.sRLOC == null) ||
-            (seat.sCellDescription == 'Block Seat')) {
+        } else if ((seat!.sRLOC != null && seat!.sRLOC != '' && seat!.sRLOC != rloc) ||
+            (seat!.sSeatID != '0' && (seat!.sRLOC == null || seat!.sRLOC == '')) ||
+            (seat!.sCellDescription == 'Block Seat')) {
           row.add(
             Padding(
                 padding: EdgeInsets.all(cellPadding),
@@ -1076,15 +1093,15 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           //logit('r${indexRow} c${indexColumn} block w${cellSize}');
 
         } else {
-          //logit( ' seat r${seat.sRow} c${seat.sCol} ${seat.sCellDescription} s${seat.sStatus} i${seat.sSeatID} n${seat.noInfantSeat}');
+          //logit( ' seat r${seat!.sRow} c${seat!.sCol} ${seat!.sCellDescription} s${seat!.sStatus} i${seat!.sSeatID} n${seat!.noInfantSeat}');
 
           var color;
-          switch (seat.sCellDescription) {
+          switch (seat!.sCellDescription) {
             case 'EmergencySeat':
               color = gblSystemColors.seatPlanColorEmergency;
               break;
             case 'Seat':
-              if( seat.noInfantSeat) {
+              if( seat!.noInfantSeat) {
                 color = gblSystemColors.seatPlanColorRestricted;
 
               } else {
@@ -1092,7 +1109,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               }
               break;
             default:
-              if( seat.noInfantSeat) {
+              if( seat!.noInfantSeat) {
                 color = gblSystemColors.seatPlanColorRestricted;
 
               } else {
@@ -1102,7 +1119,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
           }
 
           //Is the seat already selected by one of the pax
-          if (selectedSeats.contains(seat.sCode)) {
+          if (selectedSeats.contains(seat!.sCode)) {
             color = gblSystemColors.seatPlanColorSelected;
             selectableSeat = false;
           }
@@ -1112,13 +1129,13 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
               child: GestureDetector(
                 child: getSeat(seat,color),
                 onTap: () {
-                  if( selectableSeat && !selectedSeats.contains(seat.sCode)) {
-                      if( seat.sCellDescription == 'EmergencySeat' ) {
-                        emergencySeatSelection(context, seat.sCode);
-                      } else if( seat.pRMSeat == true ) {
-                        prmSeatSelection(context, seat);
+                  if( selectableSeat && !selectedSeats.contains(seat!.sCode)) {
+                      if( seat!.sCellDescription == 'EmergencySeat' ) {
+                        emergencySeatSelection(context, seat!.sCode);
+                      } else if( seat!.pRMSeat == true ) {
+                        prmSeatSelection(context, seat!);
                       } else {
-                        _seatSelected(seat.sCode);
+                        _seatSelected(seat!.sCode);
                       }
                 }},
               )));
@@ -1166,7 +1183,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     return obj;
   }
 }
-Widget getSeat(Seat seat, Color color) {
+Widget getSeat(Seat? seat, Color color) {
   return Column(
   children: [
     Row(children: [

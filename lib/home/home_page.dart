@@ -27,7 +27,7 @@ GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePage
 //GlobalKey<HomeState> homePageKeyProgress = new GlobalKey<HomeState>();
 
 class HomePage extends StatefulWidget {
-  HomePage({this.ads, Key key}): super(key: key);
+  HomePage({this.ads=false, Key key= const Key("home_key")}): super(key: key);
 
   final bool ads;
 
@@ -36,12 +36,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage>  with WidgetsBindingObserver {
-  AssetImage appBarImage;
-  Image appBarImageLeft;
-  AssetImage mainBackGroundImage;
-  AssetImage logoImage;
-  bool _displayProcessingIndicator;
-  Image alternativeBackgroundImage;
+  late AssetImage appBarImage;
+  Image? appBarImageLeft;
+  late AssetImage mainBackGroundImage;
+  late AssetImage logoImage;
+  bool _displayProcessingIndicator = false;
+  Image? alternativeBackgroundImage;
   bool gotBG = false;
   String buildNo = '';
   String updateMsg = '';
@@ -101,7 +101,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
 
     _displayProcessingIndicator = true;
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     waitAndThenHideProcessingIndicator();
   }
 
@@ -113,7 +113,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -288,7 +288,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     var buttonShape;
     double buttonHeight;
-    double elevation = null;
+    double? elevation = null;
 
     Color headerClr = gblSystemColors.primaryHeaderColor;
        bool extendBodyBehindAppBar =  false;
@@ -505,7 +505,7 @@ Widget _getLogo(){
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
   }
   if( gblIsLive == false) {
-    TextStyle st = new TextStyle( color: gblTitleStyle.color  );
+    TextStyle st = new TextStyle( color: gblTitleStyle!.color  );
     list.add(Text(txt, style: st, textScaleFactor: 0.75,));
   }
   if( gblSettings.wantCentreTitle) {
@@ -580,10 +580,10 @@ Widget _getLogo(){
     double tsf = 1.0;
 
     if( wantHomePageV2()) {
-      b1Clr = gblSystemColors.home1ButtonColor;
-      b2Clr = gblSystemColors.home2ButtonColor;
-      b1TextClr = gblSystemColors.home1ButtonTextColor;
-      b2TextClr = gblSystemColors.home2ButtonTextColor;
+      b1Clr = gblSystemColors.home1ButtonColor!;
+      b2Clr = gblSystemColors.home2ButtonColor!;
+      b1TextClr = gblSystemColors.home1ButtonTextColor!;
+      b2TextClr = gblSystemColors.home2ButtonTextColor!;
       fw = FontWeight.normal;
       tsf = 1.25;
     }

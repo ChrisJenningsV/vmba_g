@@ -98,10 +98,10 @@ void main() async {
         break;
       default:
         gblAppTitle='Test Title';
-        gblSystemColors = new SystemColors(primaryButtonColor: Colors.red,
+/*        gblSystemColors = new SystemColors(primaryButtonColor: Colors.red,
             accentButtonColor: Colors.green,
             primaryColor: Colors.black,
-            accentColor: Colors.blue);
+            accentColor: Colors.blue);*/
         break;
     }
   }
@@ -226,8 +226,8 @@ bool bFirstTime = true;
         '/ErrorPage': (BuildContext context) => new ErrorPage(),
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/ViewBookingPage': (BuildContext context) => new ViewBookingPage(),
-        '/ProcessCommandsPage': (BuildContext context) =>
-            new ProcessCommandsPage(),
+/*        '/ProcessCommandsPage': (BuildContext context) =>
+            new ProcessCommandsPage(),*/
       },
        )
       ));
@@ -240,7 +240,7 @@ bool bFirstTime = true;
       //String l =  Intl.getCurrentLocale();
       String localeStr = Platform.localeName;
      // var prefs = await SharedPreferences.getInstance();
-      if (prefs.getString('language_code') == null || prefs.getString('language_code').isEmpty) {
+      if (prefs.getString('language_code') == null || prefs.getString('language_code')!.isEmpty) {
         if( localeStr != null && localeStr.isNotEmpty && _localeSupported(localeStr)) {
           gblLanguage = localeStr.split('_')[0];
           setState(() {
@@ -250,7 +250,7 @@ bool bFirstTime = true;
         }
         return ;
       }
-      gblLanguage= prefs.getString('language_code');
+      gblLanguage= prefs.getString('language_code') as String;
       setState(() {
         //gblLanguage= prefs.getString('language_code');
       });

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/Helpers/bookingHelper.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
@@ -25,9 +26,9 @@ import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
-  PassengerDetailsWidget({Key key, this.newBooking, this.pnrModel}) : super(key: key);
+  PassengerDetailsWidget({Key key= const Key("paxdetailswid_key"), required this.newBooking, this.pnrModel}) : super(key: key);
   final NewBooking newBooking;
-  final PnrModel pnrModel;
+  final PnrModel? pnrModel;
 
   _PassengerDetailsWidgetState createState() => _PassengerDetailsWidgetState();
 }
@@ -42,7 +43,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   bool backPressed = false;
 
   //UserProfileRecord userProfileRecord;
-  PassengerDetail passengerDetailRecord;
+  PassengerDetail? passengerDetailRecord;
 
   @override
   initState() {
@@ -60,11 +61,11 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         i++) {
       var pax = new PassengerDetail();
       if(i==0) {
-        if(gblPassengerDetail != null && gblPassengerDetail.adsNumber != null &&
-            gblPassengerDetail.adsNumber.isNotEmpty && gblPassengerDetail.adsPin != null &&
-            gblPassengerDetail.adsPin.isNotEmpty ) {
-          pax.adsNumber = gblPassengerDetail.adsNumber;
-          pax.adsPin = gblPassengerDetail.adsPin;
+        if(gblPassengerDetail != null && gblPassengerDetail!.adsNumber != null &&
+            gblPassengerDetail!.adsNumber.isNotEmpty && gblPassengerDetail!.adsPin != null &&
+            gblPassengerDetail!.adsPin.isNotEmpty ) {
+          pax.adsNumber = gblPassengerDetail!.adsNumber;
+          pax.adsPin = gblPassengerDetail!.adsPin;
         }
       }
       _passengerDetails.add(pax);
@@ -85,21 +86,21 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
             print('profile null ');
             return;
           }
-          Map map = json.decode(
+          Map<String, dynamic> map = json.decode(
               profile.value.toString().replaceAll(
                   "'", '"')); // .replaceAll(',}', '}')
           passengerDetailRecord = PassengerDetail.fromJson(map);
-          if(  passengerDetailRecord.fqtv != null &&  passengerDetailRecord.fqtv.isNotEmpty ) {
-            gblFqtvNumber = passengerDetailRecord.fqtv;
+          if(  passengerDetailRecord!.fqtv != null &&  passengerDetailRecord!.fqtv.isNotEmpty ) {
+            gblFqtvNumber = passengerDetailRecord!.fqtv;
           }
 
           if (gblPassengerDetail != null &&
-              gblPassengerDetail.adsNumber != null &&
-              gblPassengerDetail.adsNumber.isNotEmpty &&
-              gblPassengerDetail.adsPin != null &&
-              gblPassengerDetail.adsPin.isNotEmpty) {
-            passengerDetailRecord.adsNumber = gblPassengerDetail.adsNumber;
-            passengerDetailRecord.adsPin = gblPassengerDetail.adsPin;
+              gblPassengerDetail!.adsNumber != null &&
+              gblPassengerDetail!.adsNumber.isNotEmpty &&
+              gblPassengerDetail!.adsPin != null &&
+              gblPassengerDetail!.adsPin.isNotEmpty) {
+            passengerDetailRecord!.adsNumber = gblPassengerDetail!.adsNumber;
+            passengerDetailRecord!.adsPin = gblPassengerDetail!.adsPin;
           }
           if (isUserProfileComplete()) {
             setState(() {
@@ -187,96 +188,96 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     int paxNo = 0;
     bool gotAllDetails = true;
 //    setState(() {
-      if (passengerDetailRecord.title != null && passengerDetailRecord.title.length > 0) {
-        _passengerDetails[paxNo].title = passengerDetailRecord.title;
+      if (passengerDetailRecord!.title != null && passengerDetailRecord!.title.length > 0) {
+        _passengerDetails[paxNo].title = passengerDetailRecord!.title;
       } else {
         gotAllDetails = false;
       }
 
-      if (passengerDetailRecord.firstName != null && passengerDetailRecord.firstName.length > 0) {
-        _passengerDetails[paxNo].firstName = passengerDetailRecord.firstName;
+      if (passengerDetailRecord!.firstName != null && passengerDetailRecord!.firstName.length > 0) {
+        _passengerDetails[paxNo].firstName = passengerDetailRecord!.firstName;
       } else {
         gotAllDetails = false;
       }
 
-    if (passengerDetailRecord.middleName != null && passengerDetailRecord.middleName.length > 0) {
-      _passengerDetails[paxNo].middleName = passengerDetailRecord.middleName;
+    if (passengerDetailRecord!.middleName != null && passengerDetailRecord!.middleName.length > 0) {
+      _passengerDetails[paxNo].middleName = passengerDetailRecord!.middleName;
     }
 
-    if (passengerDetailRecord.lastName != null && passengerDetailRecord.lastName != 'null' && passengerDetailRecord.lastName.length > 0) {
-        _passengerDetails[paxNo].lastName = passengerDetailRecord.lastName;
+    if (passengerDetailRecord!.lastName != null && passengerDetailRecord!.lastName != 'null' && passengerDetailRecord!.lastName.length > 0) {
+        _passengerDetails[paxNo].lastName = passengerDetailRecord!.lastName;
     } else {
       gotAllDetails = false;
       }
 
-      if (passengerDetailRecord.fqtv != null &&  passengerDetailRecord.fqtv != 'null' && passengerDetailRecord.fqtv.length > 0 ) {
-        _passengerDetails[paxNo].fqtv = passengerDetailRecord.fqtv;
+      if (passengerDetailRecord!.fqtv != null &&  passengerDetailRecord!.fqtv != 'null' && passengerDetailRecord!.fqtv.length > 0 ) {
+        _passengerDetails[paxNo].fqtv = passengerDetailRecord!.fqtv;
       }
 
-      if (passengerDetailRecord.adsNumber != null && passengerDetailRecord.adsNumber != 'null' && passengerDetailRecord.adsNumber.length > 0) {
-        _passengerDetails[paxNo].adsNumber = passengerDetailRecord.adsNumber;
+      if (passengerDetailRecord!.adsNumber != null && passengerDetailRecord!.adsNumber != 'null' && passengerDetailRecord!.adsNumber.length > 0) {
+        _passengerDetails[paxNo].adsNumber = passengerDetailRecord!.adsNumber;
       }
 
-      if (passengerDetailRecord.adsPin != null && passengerDetailRecord.adsPin != 'null' && passengerDetailRecord.adsPin.length > 0) {
-        _passengerDetails[paxNo].adsPin =passengerDetailRecord.adsPin;
+      if (passengerDetailRecord!.adsPin != null && passengerDetailRecord!.adsPin != 'null' && passengerDetailRecord!.adsPin.length > 0) {
+        _passengerDetails[paxNo].adsPin =passengerDetailRecord!.adsPin;
       }
 
-      if (passengerDetailRecord.adsPin != null && passengerDetailRecord.adsPin != 'null' && passengerDetailRecord.adsPin.length > 0) {
-        _passengerDetails[paxNo].adsPin =passengerDetailRecord.adsPin;
+      if (passengerDetailRecord!.adsPin != null && passengerDetailRecord!.adsPin != 'null' && passengerDetailRecord!.adsPin.length > 0) {
+        _passengerDetails[paxNo].adsPin =passengerDetailRecord!.adsPin;
       }
-    if (passengerDetailRecord.email != null && passengerDetailRecord.email != 'null' && passengerDetailRecord.email.length > 0) {
-      _passengerDetails[paxNo].email =passengerDetailRecord.email;
+    if (passengerDetailRecord!.email != null && passengerDetailRecord!.email != 'null' && passengerDetailRecord!.email.length > 0) {
+      _passengerDetails[paxNo].email =passengerDetailRecord!.email;
     } else {
       gotAllDetails = false;
     }
 
-    if (passengerDetailRecord.phonenumber != null && passengerDetailRecord.phonenumber != 'null' && passengerDetailRecord.phonenumber.length > 0) {
-      _passengerDetails[paxNo].phonenumber =passengerDetailRecord.phonenumber;
+    if (passengerDetailRecord!.phonenumber != null && passengerDetailRecord!.phonenumber != 'null' && passengerDetailRecord!.phonenumber.length > 0) {
+      _passengerDetails[paxNo].phonenumber =passengerDetailRecord!.phonenumber;
     } else {
       gotAllDetails = false;
     }
 
-    if (passengerDetailRecord.disabilityID != null && passengerDetailRecord.disabilityID != 'null' && passengerDetailRecord.disabilityID.length > 0) {
-      _passengerDetails[paxNo].disabilityID =passengerDetailRecord.disabilityID;
+    if (passengerDetailRecord!.disabilityID != null && passengerDetailRecord!.disabilityID != 'null' && passengerDetailRecord!.disabilityID.length > 0) {
+      _passengerDetails[paxNo].disabilityID =passengerDetailRecord!.disabilityID;
     }
-    if (passengerDetailRecord.seniorID != null && passengerDetailRecord.seniorID != 'null' && passengerDetailRecord.seniorID.length > 0) {
-      _passengerDetails[paxNo].seniorID =passengerDetailRecord.seniorID;
+    if (passengerDetailRecord!.seniorID != null && passengerDetailRecord!.seniorID != 'null' && passengerDetailRecord!.seniorID.length > 0) {
+      _passengerDetails[paxNo].seniorID =passengerDetailRecord!.seniorID;
     }
-    if (passengerDetailRecord.country != null && passengerDetailRecord.country != 'null' && passengerDetailRecord.country.length > 0) {
-      _passengerDetails[paxNo].country =passengerDetailRecord.country;
+    if (passengerDetailRecord!.country != null && passengerDetailRecord!.country != 'null' && passengerDetailRecord!.country.length > 0) {
+      _passengerDetails[paxNo].country =passengerDetailRecord!.country;
     }
 
     if( gblSettings.wantApis ) {
       if( gblSettings.wantRedressNo) {
-        if (passengerDetailRecord.redressNo != null &&
-            passengerDetailRecord.redressNo.length > 0) {
-          _passengerDetails[paxNo].redressNo = passengerDetailRecord.redressNo;
+        if (passengerDetailRecord!.redressNo != null &&
+            passengerDetailRecord!.redressNo.length > 0) {
+          _passengerDetails[paxNo].redressNo = passengerDetailRecord!.redressNo;
         } else {
           gotAllDetails = false;
         }
       }
 
-      if (passengerDetailRecord.knowTravellerNo != null &&
-          passengerDetailRecord.knowTravellerNo.length > 0) {
+      if (passengerDetailRecord!.knowTravellerNo != null &&
+          passengerDetailRecord!.knowTravellerNo.length > 0) {
         _passengerDetails[paxNo].knowTravellerNo =
-            passengerDetailRecord.knowTravellerNo;
+            passengerDetailRecord!.knowTravellerNo;
       } else {
         //gotAllDetails = false;
       }
 
       if (gblSettings.wantGender) {
-        if (passengerDetailRecord.gender != null &&
-            passengerDetailRecord.gender.length > 0) {
-          _passengerDetails[paxNo].gender = passengerDetailRecord.gender;
+        if (passengerDetailRecord!.gender != null &&
+            passengerDetailRecord!.gender.length > 0) {
+          _passengerDetails[paxNo].gender = passengerDetailRecord!.gender;
         } else {
           gotAllDetails = false;
         }
       }
 
       if( gblSettings.passengerTypes.wantAdultDOB) {
-        if (passengerDetailRecord.dateOfBirth != null) {
+        if (passengerDetailRecord!.dateOfBirth != null) {
           _passengerDetails[paxNo].dateOfBirth =
-              passengerDetailRecord.dateOfBirth;
+              passengerDetailRecord!.dateOfBirth;
         } else {
           gotAllDetails = false;
         }
@@ -297,13 +298,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       }
       passengerDetailRecord = gblPassengerDetail;
     }
-    if(passengerDetailRecord.firstName != null && (passengerDetailRecord.firstName.length == 0) ||
-        (passengerDetailRecord.firstName == '')) {
+    if(passengerDetailRecord!.firstName != null && (passengerDetailRecord!.firstName.length == 0) ||
+        (passengerDetailRecord!.firstName == '')) {
       return false;
     }
 
-    if (passengerDetailRecord.lastName != null && (passengerDetailRecord.lastName.length == 0) ||
-        (passengerDetailRecord.lastName  == '')) {
+    if (passengerDetailRecord!.lastName != null && (passengerDetailRecord!.lastName.length == 0) ||
+        (passengerDetailRecord!.lastName  == '')) {
       return false;
     }
 
@@ -314,7 +315,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   Widget build(BuildContext context) {
     //Show dialog
     //print('build');
-    Widget floatBtn ;
+    Widget? floatBtn ;
     if (allPaxDetailsCompleted) {
       floatBtn = vidWideActionButton(context, 'CONTINUE', _onContinuePressed, offset: 35);
     }
@@ -326,7 +327,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       appBar: appBar(context, 'Passengers Details',
           curStep: 4,
           newBooking: widget.newBooking,
-          imageName:  gblSettings.wantPageImages ? 'paxDetails': null ),
+          imageName:  gblSettings.wantPageImages ? 'paxDetails': '' ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
           bottomNavigationBar: getBottomNav(context, ),
@@ -528,7 +529,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   }
   _onContinuePressed(BuildContext context, dynamic p) {
     if( !gblActionBtnDisabled) {
-      gblPaymentMsg = null;
+      gblPaymentMsg = '';
       gblActionBtnDisabled = true;
       setState(() {
 
@@ -669,6 +670,12 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   });
                 }
               } else {
+                if( passengerDetailRecord ==  null ){
+                  logit('passengerDetailRecord is null ');
+                  passengerDetailRecord = PassengerDetail();
+                } else {
+                  logit('passengerDetailRecord has value');
+                }
                 var _error = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -676,7 +683,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                             ContactDetailsWidget(
                               newbooking: widget.newBooking,
                               preLoadDetails: preLoadDetails,
-                              passengerDetailRecord: passengerDetailRecord,
+                              passengerDetailRecord: passengerDetailRecord!,
                             )));
                 displayError(_error);
               }

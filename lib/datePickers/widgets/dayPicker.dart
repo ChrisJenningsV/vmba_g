@@ -4,11 +4,11 @@ import 'package:vmba/datePickers/models/flightDatesModel.dart';
 
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
-      {Key key,
-      this.departureDate,
-      this.lastDate,
-      this.firstDate,
-      this.onChanged})
+      {Key key= const Key("daypicker_key"),
+      required this.departureDate,
+      required this.lastDate,
+      required this.firstDate,
+      required this.onChanged})
       : super(key: key);
 
   final DateTime departureDate;
@@ -20,9 +20,9 @@ class DayPickerPage extends StatefulWidget {
 }
 
 class _DayPickerPageState extends State<DayPickerPage> {
-  DateTime _selectedDate;
-  DateTime _firstDate;
-  DateTime _lastDate;
+  late DateTime _selectedDate;
+  late DateTime _firstDate;
+  late DateTime _lastDate;
 
 //  Color selectedDateStyleColor;
 //  Color selectedSingleDateDecorationColor;

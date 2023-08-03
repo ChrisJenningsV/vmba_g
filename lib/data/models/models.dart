@@ -1,19 +1,22 @@
+
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../utilities/helper.dart';
+
 
 class Passengers {
-  int adults; // = 1;
-  int children; // = 0;
-  int smallChildren; // = 0;
-  int infants; // = 0;
-  int seatedInfants; // = 0;
-  int youths;
-  int students;
-  int teachers;
-  int seniors;
+  int adults = 1;
+  int children= 0;
+  int smallChildren = 0;
+  int infants= 0;
+  int seatedInfants= 0;
+  int youths = 0;
+  int students = 0;
+  int teachers = 0;
+  int seniors = 0;
 
 
   Passengers(this.adults, this.children, this.infants, this.youths, this.seniors, this.students, this.teachers);
@@ -33,49 +36,41 @@ class ContactInfomation {
 
 class NewBooking {
   bool isReturn = true;
-  String departure;
-  String arrival;
-  String currency;
-  DateTime departureDate;
-  DateTime returnDate;
+  String departure = '';
+  String arrival = '';
+  String currency = '';
+  DateTime departureDate = DateTime.now();
+  DateTime? returnDate = DateTime.now();
   Passengers passengers = new Passengers(1, 0, 0, 0, 0, 0, 0);
   List<String> outboundflight = [];
   List<Flt> outboundflts = [];
-  String outboundClass;
+  String outboundClass = '';
   // List<String>();
   List<String> returningflight = [];
   List<Flt> returningflts = [];
-  String returningClass;
+  String returningClass = '';
   // List<String>();
   List<PassengerDetail> passengerDetails = [];
   // List<PassengerDetail>();
-  PaymentDetails paymentDetails;
-  ContactInfomation contactInfomation;
+  PaymentDetails paymentDetails = new PaymentDetails();
+  ContactInfomation contactInfomation = new ContactInfomation();
   ADS ads = ADS('', '');
-  String eVoucherCode;
+  String eVoucherCode ='';
   //List<ContactInfomation> contactInfomation = List<ContactInfomation>();
   NewBooking();
 }
 
 class MmbBooking {
-  String rloc;
+  String rloc ='';
   bool isReturn = true;
-  //String voidOrExchange;
-  //String departure;
-  //String arrival;
-  //DateTime departureDate;
-  //DateTime returnDate;
   Passengers passengers = new Passengers(1, 0, 0, 0, 0,0,0);
-  int journeyToChange;
+  int journeyToChange =1;
   List<String> oldFlights = [];
-  // List<String>();
   List<String> newFlights = [];
-  // List<String>();
   Journeys journeys = Journeys([]);
-  //List<Journey>());
-  String currency;
-  String amount;
-  AFX eVoucher;
+  String currency='';
+  String amount='';
+  AFX eVoucher = AFX();
   //List<String> outboundflight = List<String>();
   //List<String> returningflight = List<String>();
   //List<PassengerDetail> passengerDetails = List<PassengerDetail>();
@@ -100,13 +95,13 @@ class Journey {
 enum PaxType { adult, child, smallChild, infant, seatedInfant,  youth, student, senior, teacher }
 
 class PassengerDetail {
-  String paxNumber;
+  String paxNumber='';
   String title = '';
   String firstName = '';
   String middleName = '';
   String lastName = '';
   PaxType paxType = PaxType.adult;
-  DateTime dateOfBirth;
+  DateTime? dateOfBirth;
   String phonenumber = '';
   String email = '';
   String adsNumber = '';
@@ -119,24 +114,24 @@ class PassengerDetail {
   String disabilityID = '';
   String redressNo = '';
   String knowTravellerNo = '';
-  bool wantNotifications;
+  bool wantNotifications = true;
 
-  PassengerDetail({this.title,
-    this.firstName,
-    this.middleName,
-    this.lastName,
-    this.paxType,
+  PassengerDetail({this.title ='',
+    this.firstName='',
+    this.middleName='',
+    this.lastName='',
+    this.paxType=PaxType.adult,
     this.dateOfBirth,
-    this.phonenumber,
-    this.email,
-    this.adsNumber,
-    this.adsPin,
-    this.fqtv,
-    this.fqtvPassword,
-    this.gender,
-    this.redressNo,
-    this.knowTravellerNo,
-    this.wantNotifications,
+    this.phonenumber='',
+    this.email='',
+    this.adsNumber='',
+    this.adsPin='',
+    this.fqtv='',
+    this.fqtvPassword='',
+    this.gender='',
+    this.redressNo='',
+    this.knowTravellerNo='',
+    this.wantNotifications=true,
   });
 
   bool isComplete() {
@@ -228,11 +223,11 @@ class PassengerDetail {
   }
 
   PassengerDetail.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    firstName = json['firstName'];
-    middleName = json['middleName'];
-    lastName = json['lastName'];
-    wantNotifications = json['wantNotifications'];
+    if(json['title']!= null )title = json['title'];
+    if(json['firstName']!= null )firstName = json['firstName'];
+    if(json['middleName']!= null )middleName = json['middleName'];
+    if(json['lastName']!= null )lastName = json['lastName'];
+    if(json['wantNotifications']!= null )wantNotifications = json['wantNotifications'];
     if( wantNotifications == null ) {
       wantNotifications = false;
     }
@@ -276,14 +271,13 @@ class PassengerDetail {
     phonenumber = (json['phonenumber'] == null) ? '' : json['phonenumber'];
     email = (json['email'] == null) ? '' : json['email'];
     adsNumber = (json['adsNumber'] == null) ? '' : json['adsNumber'];
-    adsPin = json['adsPin'];
-    fqtv = json['fqtv'];
-    fqtvPassword = json['fqtvPassword'];
-    redressNo = json['redressNo'];
-    knowTravellerNo = json['knowTravellerNo'];
-    gender = json['gender'];
+    if(json['adsPin']!= null )adsPin = json['adsPin'];
+    if(json['fqtv']!= null )fqtv = json['fqtv'];
+    if(json['fqtvPassword']!= null )fqtvPassword = json['fqtvPassword'];
+    if(json['redressNo']!= null )redressNo = json['redressNo'];
+    if(json['knowTravellerNo']!= null )knowTravellerNo = json['knowTravellerNo'];
+    if(json['gender']!= null )gender = json['gender'];
     if (json['dateOfBirth'] != null &&  json['dateOfBirth'] != 'null') {
-
       dateOfBirth = DateTime.parse(json['dateOfBirth']);
     }
   }
@@ -323,29 +317,30 @@ class LoginResponse extends Session {
 //body:"{"sessionId":"2","varsSessionId":"9f70d986-e5d9-4b50-aa4f-ee1baf92ee4e","isSuccessful":true,"errorCode":null,"errorMessage":null…"
 
   LoginResponse.fromJson(Map<String, dynamic> json) : super('', '', '') {
-    sessionId = json['sessionId'];
-    varsSessionId = json['varsSessionId'];
+    logit(json.toString());
+    if( json['sessionId'] != null )sessionId = json['sessionId'];
+    if( json['varsSessionId'] != null )varsSessionId = json['varsSessionId'];
    // settings = Settings.fromJson(json['settings']);
-    isSuccessful = json['isSuccessful'].toString().toLowerCase() == 'true';
-    errorCode = json['errorCode'];
-    errorMessage = json['errorCode'];
+    if( json['isSuccessful'] != null ) isSuccessful = json['isSuccessful'].toString().toLowerCase() == 'true';
+    if( json['errorCode'] != null ) errorCode = json['errorCode'];
+    if(json['errorCode']!= null ) errorMessage = json['errorCode'];
   }
 
   //String sessionId;
   //String varsSessionId;
-  bool isSuccessful;
-  String errorCode;
-  String errorMessage;
-  Settings settings;
+  bool isSuccessful = false;
+  String errorCode='';
+  String errorMessage='';
+  Settings? settings;
 
   LoginResponse({
-    String sessionId,
-    String varsSessionId,
-    String vrsServerNo,
+    String sessionId='',
+    String varsSessionId='',
+    String vrsServerNo='',
     this.settings,
-    this.isSuccessful,
-    this.errorCode,
-    this.errorMessage,
+    this.isSuccessful=false,
+    this.errorCode='',
+    this.errorMessage='',
   }) : super(sessionId, varsSessionId, vrsServerNo);
 
   Session getSession() {
@@ -471,8 +466,8 @@ class FqtvMemberloginDetail {
 
 
 class ApiResponseStatus {
-  String statusCode;
-  String message;
+  String statusCode='';
+  String message='';
 
   ApiResponseStatus(
       this.statusCode,
@@ -506,7 +501,7 @@ class ApiFQTVMemberTransaction {
 }
 
 class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
-  List<ApiFQTVMemberTransaction> transactions;
+  List<ApiFQTVMemberTransaction>? transactions;
 
   ApiFqtvMemberTransactionsResp(ApiResponseStatus status, this.transactions)
       : super(status.statusCode, status.message);
@@ -519,7 +514,7 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
       message = status['message'];
       transactions = [];
       for( Map tran in strJson['transactions']) {
-        transactions.add( new ApiFQTVMemberTransaction(_getString(tran['pnr']),
+        transactions!.add( new ApiFQTVMemberTransaction(_getString(tran['pnr']),
             _getString(tran['flightNumber']),
             _getString(tran['flightDate']),
             _getString(tran['transactionDateTime']),
@@ -548,7 +543,7 @@ String _getNumber(double inNo) {
 }
 
 class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
-  int balance;
+  int balance=0;
 
   ApiFqtvMemberAirMilesResp( ApiResponseStatus status, this.balance)  : super(status.statusCode, status.message);
 
@@ -564,30 +559,30 @@ class ApiFqtvMemberAirMilesResp extends ApiResponseStatus {
   }
 }
 class ApiFqtvMemberDetails {
-  String username;
-  String password;
-  String title;
-  String firstname;
-  String surname;
-  String address1;
-  String address2;
-  String address3;
-  String address4;
-  String postcode;
-  String country;
-  String email;
-  String phoneHome;
-  String phoneWork;
-  String phoneMobile;
-  String phoneMobile2;
-  String phoneHomeCountryCode;
-  String phoneWorkCountryCode;
-  String phoneMobileCountryCode;
-  String phoneMobileCountryCode2;
-  String dob;
-  String securityQuestion;
-  String securityQuestionAnswer;
-  String issueDate;
+  String username='';
+  String password='';
+  String title='';
+  String firstname='';
+  String surname='';
+  String address1='';
+  String address2='';
+  String address3='';
+  String address4='';
+  String postcode='';
+  String country='';
+  String email='';
+  String phoneHome='';
+  String phoneWork='';
+  String phoneMobile='';
+  String phoneMobile2='';
+  String phoneHomeCountryCode='';
+  String phoneWorkCountryCode='';
+  String phoneMobileCountryCode='';
+  String phoneMobileCountryCode2='';
+  String dob='';
+  String securityQuestion='';
+  String securityQuestionAnswer='';
+  String issueDate='';
 
   ApiFqtvMemberDetails(this.username,  this.password,  this.title,
         this.firstname,  this.surname,  this.address1,
@@ -627,7 +622,7 @@ class ApiFqtvMemberDetails {
 }
 
 class ApiFqtvMemberDetailsResponse extends ApiResponseStatus {
-  ApiFqtvMemberDetails member;
+  ApiFqtvMemberDetails? member;
 
   ApiFqtvMemberDetailsResponse( ApiResponseStatus status, this.member)  : super(status.statusCode, status.message);
 

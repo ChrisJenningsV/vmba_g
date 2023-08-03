@@ -1,29 +1,30 @@
+
 class PassengerTypes {
-  bool adults ;
-  bool youths;
-  bool child ;
-  bool infant;
-  bool senior;
-  bool student;
+  bool adults =false;
+  bool youths =false;
+  bool child  =false;
+  bool infant =false;
+  bool senior =false;
+  bool student =false;
 
-  bool wantAdultDOB;
-  bool wantInfantDOB;
-  bool wantChildDOB ;
-  bool wantYouthDOB;
-  bool wantSeniorDOB;
-  bool wantStudentDOB;
+  bool wantAdultDOB =false;
+  bool wantInfantDOB =false;
+  bool wantChildDOB  =false;
+  bool wantYouthDOB =false;
+  bool wantSeniorDOB =false;
+  bool wantStudentDOB =false;
 
-  int infantMinAge;
-  int childMinAge ;
-  int youthMinAge;
-  int studentMinAge;
-  int seniorMinAge;
+  int infantMinAge=0;
+  int childMinAge =0;
+  int youthMinAge=0;
+  int studentMinAge=0;
+  int seniorMinAge=0;
 
-  int infantMaxAge;
-  int childMaxAge ;
-  int youthMaxAge;
-  int studentMaxAge;
-  int seniorMaxAge;
+  int infantMaxAge=0;
+  int childMaxAge =0;
+  int youthMaxAge=0;
+  int studentMaxAge=0;
+  int seniorMaxAge=0;
 //  bool umnr = false;
 
   PassengerTypes({this.adults=true, this.infant=false, this.youths=false, this.child=false, this.senior=false, this.student=false,

@@ -21,13 +21,13 @@ class WebPayPage extends StatefulWidget {
   final bool isMmb ;
 
   String  url = gblSettings.payPage;
-  String provider;
+  String provider = '';
   //final title;
-  bool canNotClose;
+  bool canNotClose = false;
   WebPayPage(this.provider, {
-    this.newBooking,
-    this.pnrModel,
-    this.isMmb,
+    required this.newBooking,
+    required this.pnrModel,
+    required this.isMmb,
   });
 
   @override
@@ -43,15 +43,15 @@ class _WebViewWidgetState extends State<WebPayPage> {
 
 
 
-  num _stackToView = 1;
-  Timer _timer;
-  bool _endDetected;
+  int _stackToView = 1;
+  late Timer _timer;
+  bool _endDetected = false;
 
   @override void initState() {
     _timer = Timer(Duration(minutes : gblSettings.payTimeout), () {
       logit('Payment timed out');
       _timer.cancel();
-      _timer = null;
+      //_timer = null;
       _endDetected = false;
       gblPayBtnDisabled = false;
       gblPaymentMsg = 'Payment Timeout';
@@ -71,7 +71,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
   void dispose() {
     if (_timer != null) {
       _timer.cancel();
-      _timer = null;
+      //_timer = null;
     }
     super.dispose();
   }
@@ -96,13 +96,13 @@ class _WebViewWidgetState extends State<WebPayPage> {
           print('payment success page close');
         //  _successfulPayment();
           _gotoSuccessPage(widget.pnrModel);
-          return NavigationDecision.prevent;
+          //return NavigationDecision.prevent;
         } else {
           gblPayBtnDisabled = false;
           gblPaymentState = PaymentState.needCheck;
           gblPaymentMsg = 'Payment aborted';
           try {
-            String reply = await callSmartApi('CANCELPAYMENT', "");
+            await callSmartApi('CANCELPAYMENT', "");
           } catch(e) {
           }
 
@@ -245,7 +245,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
   }
 
   void onComplete() {
-    gblPaymentMsg = null;
+    gblPaymentMsg = '';
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -272,7 +272,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           TextButton(
             onPressed: () async {
               try {
-                String reply = await callSmartApi('CANCELPAYMENT', "");
+                await callSmartApi('CANCELPAYMENT', "");
               } catch(e) {
               }
 
@@ -318,12 +318,12 @@ class _WebViewWidgetState extends State<WebPayPage> {
       }
     String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action&guid=${gblSettings.vrsGuid}&mmb=${widget.isMmb}';
     if(gblSession != null) {
-      url += '&VARSSessionID=${gblSession.varsSessionId}';
-      logit('Session = ${gblSession.varsSessionId}');
+      url += '&VARSSessionID=${gblSession!.varsSessionId}';
+      logit('Session = ${gblSession!.varsSessionId}');
     }
 
     if( gblPayFormVals != null) {
-      gblPayFormVals.forEach((key, value) {
+      gblPayFormVals!.forEach((key, value) {
         String qValue = value.replaceAll(' ', '%20');
           url += '&$key=$qValue';
       });
@@ -362,7 +362,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
-      Map map = json.decode(pnrJson);
+      Map<String, dynamic> map = json.decode(pnrJson);
       PnrModel pnrModel = new PnrModel.fromJson(map);
       PnrDBCopy pnrDBCopy = new PnrDBCopy(
           rloc: pnrModel.pNR.rLOC, //_rloc,

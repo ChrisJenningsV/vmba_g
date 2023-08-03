@@ -17,7 +17,7 @@ class CustomRowModel {
   bool selected;
   String title;
   String code;
-  CustomRowModel({this.selected, this.title, this.code});
+  CustomRowModel({this.selected=false, this.title = '', this.code= ''});
 }
 String selectedLang = 'en';
 
@@ -80,7 +80,7 @@ initLangCached(String lang) async {
       }
 
       readLang( lang).then((result ) {
-        gblLangMap = json.decode(result);
+        gblLangMap = json.decode(result as String);
         gblLangFileLoaded = true;
         logit('using internal copy of $filePath');
 /*
@@ -182,7 +182,7 @@ Future<void> deleteLang() async {
 
 
 
-Future<String> readLang(String lang) async {
+Future<String?> readLang(String lang) async {
   try {
     final path = await _localPath;
     String filePath = '$path/lang.json';

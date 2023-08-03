@@ -40,7 +40,7 @@ Future<Session> login() async {
         body: JsonEncoder().convert(body));
 
     if (response.statusCode == 200) {
-      Map map = json.decode(response.body);
+      Map<String, dynamic> map = json.decode(response.body);
       LoginResponse loginResponse = new LoginResponse.fromJson(map);
       if (loginResponse.isSuccessful) {
         if( gblVerbose == true ) { print('successful login'); }
@@ -55,7 +55,7 @@ Future<Session> login() async {
   } catch(e) {
     print(e.toString());
   }
-  return null;
+  return gblSession as Session;
 }
 
 Future sendVRSCommand(msg) async {
@@ -102,7 +102,7 @@ Future<String> _loadCountrylistAsset() async {
 }
 
 Future<String> mobileBarcodeTypeForCity(String code) async {
-  City city;
+  City? city;
   city = await Repository.get().getCityByCode(code);
 
   if (city != null) {
@@ -114,12 +114,21 @@ Future<String> mobileBarcodeTypeForCity(String code) async {
   return 'AZTEC';
 }
 
-Future<String> cityCodeToName(String code) async {
-  City city;
-  city = await Repository.get().getCityByCode(code);
+String cityCodetoAirport(String code){
+  if(gblAirportCache!= null && gblAirportCache![code]!= null ) {
+    return translate(gblAirportCache![code] as String);
+  }
+  return code;
+}
 
+Future<String> xcityCodeToName(String code) async {
+  City? city;
+  logit('cc->name $code');
+  city = await Repository.get().getCityByCode(code);
+  if(city == null )logit('c $code is null');
   if(city != null ){
-    if( city.shortName != null && city.shortName != 'null' && city.shortName.isNotEmpty) {
+    logit('c ${city.toString()}');
+    if( city.shortName != null && city.shortName != '' && city.shortName != 'null' && city.shortName.isNotEmpty) {
       return translate(city.shortName);
     } else {
       return city.name;
@@ -127,71 +136,18 @@ Future<String> cityCodeToName(String code) async {
   }
   return  code;
 
-/*   Cities city;
-  String jsonString = await _loadCitylistAsset();
-  final Map map = json.decode(jsonString);
-  Citylist citylist = new Citylist.fromJson(map);
 
-  city = citylist.cities
-      .firstWhere((item) => item.code == code, orElse: () => null);
-  return city == null ? code : city.name; */
 }
-
-/*
-class Citylist {
-  List<Cities> cities;
-
-  Citylist({this.cities});
-
-  Citylist.fromJson(Map<String, dynamic> json) {
-    if (json['cities'] != null) {
-      cities = [];
-      // new List<Cities>();
-      json['cities'].forEach((v) {
-        cities.add(new Cities.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cities != null) {
-      data['cities'] = this.cities.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Cities {
-  String code;
-  String name;
-
-  Cities({this.code, this.name});
-
-  Cities.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['name'] = this.name;
-    return data;
-  }
-}
-
- */
 
 Future<Countrylist> getCountrylist() async {
   String jsonString = await _loadCountrylistAsset();
-  final Map map = json.decode(jsonString);
+  final Map<String, dynamic> map = json.decode(jsonString);
   Countrylist countrylist = new Countrylist.fromJson(map);
   return countrylist;
 }
 
 class Countrylist {
-  List<DbCountry> countries;
+  List<DbCountry>? countries;
 
   Countrylist({this.countries});
 
@@ -200,25 +156,25 @@ class Countrylist {
       countries = [];
       //new List<Country>();
       json['countries'].forEach((v) {
-        countries.add(new DbCountry.fromJson(v));
+        countries?.add(new DbCountry.fromJson(v));
       });
     }
   }
 }
 
 class DbCountry {
-  String numCode;
-  String alpha2code;
-  String alpha3code;
-  String enShortName;
-  String nationality;
+  String numCode='';
+  String alpha2code='';
+  String alpha3code='';
+  String enShortName='';
+  String nationality='';
 
   DbCountry(
-      {this.numCode,
-      this.alpha2code,
-      this.alpha3code,
-      this.enShortName,
-      this.nationality});
+      {this.numCode='',
+      this.alpha2code='',
+      this.alpha3code='',
+      this.enShortName='',
+      this.nationality=''});
 
   DbCountry.fromJson(Map<String, dynamic> json) {
     numCode = json['num_code'];
@@ -239,43 +195,9 @@ class DbCountry {
   }
 }
 
-/* class Cities {
-  final List<City> cities;
-
-  Cities({
-    this.cities
-  });
-
-  factory Cities.fromJson(Map<String, dynamic> parsedJson) {
-  
-  return new Cities(
-      cities: parsedJson['city'],
-  );
-}
-}
-
-class City {
-  final String code;
-  final String name;
-
-  City(
-    this.code,
-    this.name,
-  );
-
-  City.fromJson(Map<String, dynamic> parsedjson)
-      : code = parsedjson['code'],
-        name = parsedjson['name'];
-
-  Map<String, dynamic> toJson() => {
-        'code': code,
-        'name': name,
-      };
-} */
-
 class SlideTopRoute extends PageRouteBuilder {
   final Widget page;
-  SlideTopRoute({this.page})
+  SlideTopRoute({required this.page})
       : super(
           pageBuilder: (BuildContext context, Animation<double> animation,
                   Animation<double> secondaryAnimation) =>
@@ -293,20 +215,6 @@ class SlideTopRoute extends PageRouteBuilder {
                   child: child),
         );
 }
-/*
-Widget appLink(String uri, String displayValue) {
-  return GestureDetector(
-    onTap: () async {
-      //String uri = 'https://flutter.io';
-      if (await canLaunch(uri)) {
-        await launch(uri);
-      } else {
-        throw 'Could not launch $uri';
-      }
-    },
-    child: Text(displayValue),
-  );
-}*/
 
 Widget appLinkWidget(String uri, Widget displayWidget) {
   return GestureDetector(
@@ -436,13 +344,13 @@ return converted;
 }
 
 String validateEmail(String value) {
-  Pattern pattern =
+  String pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value))
     return 'Enter Valid Email';
   else
-    return null;
+    return '';
 }
 
 Widget infoBox(String txt ) {
@@ -483,7 +391,7 @@ Widget warningBox(String txt ) {
 }
 
 
-InputDecoration getDecoration(String label, {String hintText, Widget prefixIcon}) {
+InputDecoration getDecoration(String label, {String hintText='', Widget? prefixIcon}) {
   //var borderRadius = 10.0;
 
   //if ( gblSettings.wantMaterialControls == true ) {
@@ -540,8 +448,8 @@ void showHtml(BuildContext context, String title, String txt ) {
 List<Widget> getDom( String str){
 List<Widget> list = [];
   dom.Document document = parser.parse(str);
-  document.body.nodes.forEach((el){
-    String s = el.text;
+  document.body?.nodes.forEach((el){
+    String s = el.text as String;
     if( s != null && s.isNotEmpty) {
       list.add(Flexible(
           child: Text(s, overflow: TextOverflow.clip,)));
@@ -569,7 +477,7 @@ bool parseBool( Object str ){
   return true;
 }
 Widget addCountry(DbCountry country) {
-  Image img;
+  Image? img;
   String name = country.enShortName;
   String name2 = '';
   if( name.length > 20) {   // was 30 but not work on old iPhone
@@ -598,7 +506,7 @@ Widget addCountry(DbCountry country) {
       width: 20,
       height: 20,);
   } catch(e) {
-    logit(e);
+    logit(e.toString());
   }
   List<Widget> list = [];
   if (img != null ) {

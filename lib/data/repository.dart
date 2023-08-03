@@ -1,4 +1,3 @@
-//import 'dart:async';
 import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
@@ -33,9 +32,9 @@ import 'models/vrsRequest.dart';
 /// A class similar to http.Response but instead of a String describing the body
 /// it already contains the parsed Dart-Object
 class ParsedResponse<T> {
-  ParsedResponse(this.statusCode, this.body, {this.error});
+  ParsedResponse(this.statusCode, this.body, {this.error=''});
   final int statusCode;
-  final T body;
+  final T? body;
   final String error;
 
   bool isOk() {
@@ -65,7 +64,7 @@ final int notSinedIn = 406;
 class Repository {
   static final Repository _repo = new Repository._internal();
 
-  AppDatabase database;
+  late AppDatabase database;
 
   static Repository get() {
     return _repo;
@@ -88,42 +87,15 @@ class Repository {
       if (profile != null) {
 
         try {
-          Map map = json.decode(
+          Map<String, dynamic> map = json.decode(
               profile.value.toString().replaceAll(
                   "'", '"')); // .replaceAll(',}', '}')
             gblPassengerDetail = PassengerDetail.fromJson(map);
 
             if( gblPassengerDetail!= null &&
-                gblPassengerDetail.fqtv != null && gblPassengerDetail.fqtv.isNotEmpty &&
-                gblPassengerDetail.fqtvPassword != null && gblPassengerDetail.fqtvPassword.isNotEmpty){
+                gblPassengerDetail!.fqtv != null && gblPassengerDetail!.fqtv.isNotEmpty &&
+                gblPassengerDetail!.fqtvPassword != null && gblPassengerDetail!.fqtvPassword.isNotEmpty){
               // get balance
-      /*        if ( gblSession != null ){
-                FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(gblPassengerDetail.email,
-                    gblPassengerDetail.fqtv,
-                    gblPassengerDetail.fqtvPassword);
-                String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
-                String method = 'GetAirMilesBalance';
-
-                //print(msg);
-                _sendVRSCommand(msg, method).then((result){
-                  if( result == null ) {
-                    gblFqtvBalance = 0;
-                  } else {
-                    Map map = json.decode(result);
-                    ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp
-                        .fromJson(map);
-                    if (resp.statusCode != 'OK') {
-*//*                    _error = resp.message;
-                    _actionCompleted();
-                    _showDialog();
-
- *//*
-                    } else {
-                      gblFqtvBalance = resp.balance;
-                    }
-                  }
-                });
-              }*/
             }
         } catch (e) {
           print(e);
@@ -131,27 +103,10 @@ class Repository {
       }
     });
   }
-  Future _sendVRSCommand(msg, method) async {
-    final http.Response response = await http.post(
-        Uri.parse(gblSettings.apiUrl + "/FqTvMember/$method"),
-        headers: getApiHeaders(),
-        body: msg);
-
-    if (response.statusCode == 200) {
-      logit('message send successfully: $msg' );
-      return response.body.trim();
-    } else {
-      logit('failed4: $msg');
-      try{
-        logit (response.body);
-      } catch(e){}
-
-    }
-  }
 
 
   /// Fetches the list of cities from the VRS XML Api with the query parameter being input.
-  Future<ParsedResponse<List<City>>> initCities() async {
+  Future<ParsedResponse<List<City>>?> initCities() async {
     var prefs = await SharedPreferences.getInstance();
     if(gblLogCities) {logit('initCities');}
     var cacheTime = prefs.getString('cache_time2');
@@ -161,6 +116,16 @@ class Repository {
       if( cached.isAfter(DateTime.now().subtract(Duration(days: 2)))) {
         // change to 2 days!
         if(gblLogCities) {logit('city cache good');}
+
+        Repository.get().getAllCities().then((cities) {
+          gblAirportCache = Map <String,String>();
+          cities.forEach((element) {
+            gblAirportCache![element.code] = element.name;
+          });
+
+        });
+
+
         return null;
       }
     }
@@ -187,13 +152,13 @@ class Repository {
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
       print('GetCityList error ${response.reasonPhrase}');
-      throw(response.reasonPhrase);
+      throw(response.reasonPhrase as String );
     }
 
-    Map map = jsonDecode('{ \"Cities\":' + response.body + '}');
+    Map<String, dynamic> map = jsonDecode('{ \"Cities\":' + response.body + '}');
     Cities networkCities = Cities.fromJson(map);
 
-    networkCities.cities.forEach((c) {
+    networkCities.cities!.forEach((c) {
       if( c.code == '####') {
         apiBuldVersion = int.parse(c.shortName) ;
         //networkCities.cities.remove(c);
@@ -202,17 +167,22 @@ class Repository {
     // cache age
     prefs.setString('cache_time2', DateTime.now().toString());
     await database.updateCities(networkCities);
+    gblAirportCache = Map <String,String>();
+    networkCities.cities!.forEach((element) {
+      gblAirportCache![element.code] = element.name;
+    });
+
     logit('cache cities');
 
     logit('webAPI version $apiBuldVersion');
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
       gblError = 'WebApi needs upgrade';
-      criticalErrorPage(NavigationService.navigatorKey.currentContext,'WebApi needs upgrade',title: 'Login', wantButtons: false);
+      criticalErrorPage(NavigationService.navigatorKey.currentContext!,'WebApi needs upgrade',title: 'Login', wantButtons: false);
       //throw('WebApi needs upgrade');
     }
 
 
-    return new ParsedResponse(response.statusCode, networkCities.cities);
+    return new ParsedResponse(response.statusCode, networkCities.cities as List<City>);
   }
 
   Future settings() async {
@@ -279,7 +249,7 @@ class Repository {
 
       if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
-        String msg =  json.encode(VrsApiRequest(gblSession, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
+        String msg =  json.encode(VrsApiRequest(gblSession as Session, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
             vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion)); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
         print('login_uri = ${gblSettings.xmlUrl}');
@@ -310,12 +280,12 @@ class Repository {
   //          data = rs.data;
         }
 
-        Map map = json.decode(data);
+        Map<String, dynamic> map = json.decode(data);
         if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
           String xmlVersion = map["version"];
-          gblSettings.skyFlyToken = map["skyFlyToken"];
+          if(map["skyFlyToken"] != null )          gblSettings.skyFlyToken = map["skyFlyToken"];
 
           // get language file last modified
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
@@ -330,7 +300,7 @@ class Repository {
           }
           //
 
-          List <dynamic> settingsJson;
+          List <dynamic>? settingsJson;
           if (settingsString != null && settingsString.isNotEmpty) {
             settingsJson = json.decode(settingsString);
           }
@@ -435,7 +405,7 @@ class Repository {
                     if( gblSettings.paySettings == null  ){
                       gblSettings.paySettings = PaySettings();
                     }
-                    gblSettings.paySettings.payImageMap = item['value'];
+                    gblSettings.paySettings!.payImageMap = item['value'];
                     break;
 
                   case 'productImageMap':
@@ -722,7 +692,7 @@ class Repository {
                 gblError = 'WebApi needs update';
               }
               print(gblError);
-              criticalErrorPage(NavigationService.navigatorKey.currentContext,gblError,title: 'Login', wantButtons: false );
+              criticalErrorPage(NavigationService.navigatorKey.currentContext!,gblError,title: 'Login', wantButtons: false );
               //throw(gblError);
             }         } else {
             logit('login failed');
@@ -875,8 +845,8 @@ class Repository {
       final Map<String, dynamic> msgMap = new Map<String, dynamic>();
 
       if( msg.notification != null ) {
-        notifyMap['body'] = msg.notification.body;
-        notifyMap['title'] = msg.notification.title;
+        notifyMap['body'] = msg.notification!.body;
+        notifyMap['title'] = msg.notification!.title;
         String sNot = jsonEncode(notifyMap);
         msgMap['notification'] = sNot;
       }
@@ -911,7 +881,7 @@ class Repository {
   }
 
 
-  Future<City> getCityByCode(String code) {
+  Future<City?> getCityByCode(String code) {
     return database.getCityByCode(code);
   }
 
@@ -962,7 +932,7 @@ class Repository {
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '');
 
-    Map map = json.decode(pnrJson);
+    Map<String, dynamic> map = json.decode(pnrJson);
     print('Fetch BPP');
     var months = [
       "",
@@ -982,39 +952,39 @@ class Repository {
     //print(months.indexOf("SEP"));
     VrsBoardingPass vrsBoardingPass = new VrsBoardingPass.fromJson(map);
     DateTime flightdate = DateTime.parse(vrsBoardingPass
-            .mobileboardingpass.flightdate
+            .mobileboardingpass!.flightdate
             .toString()
             .substring(5, 9) +
         '-' +
         months
-            .indexOf(vrsBoardingPass.mobileboardingpass.flightdate
+            .indexOf(vrsBoardingPass.mobileboardingpass!.flightdate
                 .toString()
                 .substring(2, 5)
                 .toUpperCase())
             .toString()
             .padLeft(2, "0") +
         '-' +
-        vrsBoardingPass.mobileboardingpass.flightdate
+        vrsBoardingPass.mobileboardingpass!.flightdate
             .toString()
             .substring(0, 2));
     BoardingPass boardingPass = new BoardingPass(
-      rloc: vrsBoardingPass.mobileboardingpass.rloc,
-      fltno: vrsBoardingPass.mobileboardingpass.flight,
-      depart: vrsBoardingPass.mobileboardingpass.departcitycode,
-      arrive: vrsBoardingPass.mobileboardingpass.arrivecitycode,
-      gate: vrsBoardingPass.mobileboardingpass.gate,
+      rloc: vrsBoardingPass.mobileboardingpass!.rloc,
+      fltno: vrsBoardingPass.mobileboardingpass!.flight,
+      depart: vrsBoardingPass.mobileboardingpass!.departcitycode,
+      arrive: vrsBoardingPass.mobileboardingpass!.arrivecitycode,
+      gate: vrsBoardingPass.mobileboardingpass!.gate,
       depdate: flightdate,
-      departTime: vrsBoardingPass.mobileboardingpass.departtime,
-      arriveTime: vrsBoardingPass.mobileboardingpass.arrivetime,
-      boardingTime: vrsBoardingPass.mobileboardingpass.boardtime,
+      departTime: vrsBoardingPass.mobileboardingpass!.departtime,
+      arriveTime: vrsBoardingPass.mobileboardingpass!.arrivetime,
+      boardingTime: vrsBoardingPass.mobileboardingpass!.boardtime,
       // boarding: vrsBoardingPass.mobileboardingpass.boardtime,
       // depa
-      paxname: vrsBoardingPass.mobileboardingpass.passengername,
+      paxname: vrsBoardingPass.mobileboardingpass!.passengername,
       paxno: int.parse(cmd[34]) - 1,
-      barcodedata: vrsBoardingPass.mobileboardingpass.barcode,
-      seat: vrsBoardingPass.mobileboardingpass.seat,
-      classBand: vrsBoardingPass.mobileboardingpass.classband,
-      fastTrack: (vrsBoardingPass.mobileboardingpass.fareextras != null && vrsBoardingPass.mobileboardingpass.fareextras.contains('FAST')) ? 'true': 'false',
+      barcodedata: vrsBoardingPass.mobileboardingpass!.barcode,
+      seat: vrsBoardingPass.mobileboardingpass!.seat,
+      classBand: vrsBoardingPass.mobileboardingpass!.classband,
+      fastTrack: (vrsBoardingPass.mobileboardingpass!.fareextras != null && vrsBoardingPass.mobileboardingpass!.fareextras.contains('FAST')) ? 'true': 'false',
     );
 
     await database.updateBoardingPass(boardingPass);
@@ -1047,13 +1017,13 @@ class Repository {
     return database.getPnr(rloc);
   }
 
-  Future<PnrDBCopy> fetchPnr2(String rloc) async {
+  Future<PnrDBCopy?> fetchPnr2(String rloc) async {
 
 
     sendXmlMsg( new XmlRequest(command: '*$rloc~x')).then((xmlResponse) {
       if (xmlResponse.success) {
         print('Fetch PNR OK');
-        PnrModel pnrModel = new PnrModel.fromJson(xmlResponse.map);
+        PnrModel pnrModel = new PnrModel.fromJson(xmlResponse.map as Map<String, dynamic>);
 
         PnrDBCopy pnrDBCopy = new PnrDBCopy(
             rloc: pnrModel.pNR.rLOC, //_rloc,
@@ -1075,7 +1045,7 @@ class Repository {
 
 
 
-    Future<PnrDBCopy> fetchPnr(String rloc) async {
+    Future<PnrDBCopy?> fetchPnr(String rloc) async {
       String data;
       try {
         data = await runVrsCommand('*$rloc~x');
@@ -1097,7 +1067,7 @@ class Repository {
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
-    Map map = json.decode(pnrJson);
+    Map<String, dynamic> map = json.decode(pnrJson);
     print('Fetch PNR');
     PnrModel pnrModel = new PnrModel.fromJson(map);
 
@@ -1133,7 +1103,7 @@ class Repository {
     return database.getPnrApisStatus(rloc);
   }
 
-  Future<DatabaseRecord> fetchApisStatus(String rloc) async {
+  Future<DatabaseRecord?> fetchApisStatus(String rloc) async {
 
  /*
     http.Response response = await http
@@ -1159,12 +1129,12 @@ class Repository {
         .replaceAll('</string>', '')
         .replaceAll('<string xmlns="http://videcom.com/" />', '');
     if (apisStatusJson.trim() != '') {
-      Map map = json.decode(apisStatusJson);
+      Map<String, dynamic> map = json.decode(apisStatusJson);
       logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
 
       DatabaseRecord databaseRecord = new DatabaseRecord(
-          rloc: apisPnrStatus.xml.pnrApis.pnr, //_rloc,
+          rloc: apisPnrStatus.xml!.pnrApis.pnr, //_rloc,
           data: apisStatusJson,
           delete: 0);
       Repository.get().updatePnrApisStatus(databaseRecord);
@@ -1225,7 +1195,7 @@ class Repository {
     AvailabilityModel objAv = AvailabilityModel();
     if(gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(avCmd);
-      Map map    = jsonDecode(data
+      Map<String, dynamic> map    = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
@@ -1233,7 +1203,7 @@ class Repository {
       objAv = new AvailabilityModel.fromJson(map);
       return new ParsedResponse(200, objAv);
     } else {
-      String msg = json.encode(RunVRSCommand(gblSession, avCmd));
+      String msg = json.encode(RunVRSCommand(gblSession!, avCmd));
 
       final http.Response response = await http.post(
           Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
@@ -1253,7 +1223,7 @@ class Repository {
       //If there was an error return null
       if (response.statusCode < 200 || response.statusCode >= 300) {
         logit('Availability error: ' + response.statusCode.toString() + ' ' +
-            response.reasonPhrase);
+            (response.reasonPhrase as String));
         return new ParsedResponse(response.statusCode, null);
       }
 
@@ -1270,7 +1240,7 @@ class Repository {
         return new ParsedResponse(0, null, error: response.body);
       }
       if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-        Map map    = jsonDecode(response.body
+        Map<String, dynamic> map    = jsonDecode(response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', ''));
@@ -1287,7 +1257,7 @@ class Repository {
       String data = await runVrsCommand(cmd);
       if(gblLogFQ) {logit('getfareQuote3: ' + data); }
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
-        Map map = jsonDecode(data
+        Map<String, dynamic> map = jsonDecode(data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', ''));
@@ -1328,7 +1298,7 @@ class Repository {
       }
 
       if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-        Map map = jsonDecode(response.body
+        Map<String, dynamic> map = jsonDecode(response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('\r\n', '')
@@ -1367,7 +1337,7 @@ class Repository {
       seatplan = new Seatplan.fromJson(map);
     }    */
     if (!data.contains('<string xmlns="http://videcom.com/" />')) {
-      Map map = jsonDecode(data
+      Map<String, dynamic> map = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
@@ -1382,7 +1352,7 @@ class Repository {
 
   }
 
-  Future<ParsedResponse<RoutesModel>> initRoutes() async {
+  Future<ParsedResponse<RoutesModel>?> initRoutes() async {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     var prefs = await SharedPreferences.getInstance();
@@ -1410,7 +1380,7 @@ class Repository {
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return new ParsedResponse(response.statusCode, null);
     }
-    Map map = jsonDecode('{ \"Routes\":' + response.body + '}');
+    Map<String, dynamic> map = jsonDecode('{ \"Routes\":' + response.body + '}');
     prefs.setString('route_cache_time2', DateTime.now().toString());
 
     RoutesModel networkRoutes = RoutesModel.fromJson(map);
@@ -1418,7 +1388,7 @@ class Repository {
     return new ParsedResponse(response.statusCode, networkRoutes);
   }
 
-  Future <List<String>> getAllDepartures() async {
+  Future <List<String>> getAllDepartures(void Function() onComplete) async {
     if (gblVerbose) {print('start getRoutesData');}
     List<String> departureCities = [];
     // new List<String>();
@@ -1427,24 +1397,32 @@ class Repository {
 
     database.getRoutesData().then((valueMap) {
       if (gblVerbose) {print('getRoutesData');}
-      valueMap['Routes'].forEach((item) {
+      valueMap!['Routes'].forEach((item) {
+        //logit(item.toString());
         departureCities.add(item.values.first['airportCode'] +
             "|" +
             item.values.first['airportName'] +
             " (" +
             item.values.first['airportCode'] +
             ")");
+        /*logit(item.values.first['airportCode'] +
+            "|" +
+            item.values.first['airportName'] +
+            " (" +
+            item.values.first['airportCode'] +
+            ")");*/
       });
       if( departureCities.length==0){
         print("No departures");
       }
       if (gblVerbose) {print("routes len ${departureCities.length}");}
+      onComplete();
       return departureCities;
     });
     return departureCities;
     } catch (e) {
       print(e);
-      return null;
+      return departureCities;
     }
   }
 
@@ -1454,7 +1432,7 @@ class Repository {
     if (gblVerbose) {print('getDestinations');}
 
     database.getRoutesData().then((valueMap) {
-      valueMap['Routes'].forEach((f) {
+      valueMap!['Routes'].forEach((f) {
        // print(f['departure']['airportCode']);
         if (f['departure']['airportCode'] == departure) {
           f['destinations'].forEach((dest) {
@@ -1472,7 +1450,7 @@ class Repository {
       });
       if( destinationCities.length==0){
         print("No destinations");
-        print("routes len" + valueMap['Routes'].length);
+        print("routes len" + valueMap['Routes'].length.toString());
       }
       return destinationCities;
     });
@@ -1481,9 +1459,9 @@ class Repository {
 }
 
 class FareRules {
-  List<FareRule> fareRule;
+  List<FareRule> fareRule = List.from([FareRule()]);
 
-  FareRules({this.fareRule});
+  FareRules();
 
   FareRules.fromJson(Map<String, dynamic> json) {
     if (json['FareRules'] != null) {
@@ -1496,8 +1474,10 @@ class FareRules {
       } else {
         fareRule.add(new FareRule.fromJson(json['FareRules']));
       }
+/*
     } else {
       fareRule = null;
+*/
     }
   }
 
@@ -1511,9 +1491,9 @@ class FareRules {
 }
 
 class FareRule {
-  String rule;
+  String rule ='';
 
-  FareRule({this.rule});
+  FareRule();
 
   FareRule.fromJson(Map<String, dynamic> json) {
     rule = json['FareRule'];
@@ -1529,7 +1509,8 @@ class FareRule {
 
 
 Future<String> runFunctionCommand(String function,String cmd) async {
-  String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+  logit('runFunctionCommand $cmd');
+  String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
       gblSettings.xmlToken.replaceFirst('token=', ''),
       vrsGuid: gblSettings.vrsGuid,
       notifyToken: gblNotifyToken,
@@ -1540,7 +1521,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
   http.Response response = await http
       .get(Uri.parse(
-      "${gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', function)}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+      "${gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', function)}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"),
       headers: getXmlHeaders())
       .catchError((resp) {
     logit(resp);
@@ -1552,8 +1533,8 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
   //If there was an error return null
   if (response.statusCode < 200 || response.statusCode >= 300) {
-    logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-    throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+    logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String));
+    throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String);
     //return new ParsedResponse(response.statusCode, null);
   }
 
@@ -1572,13 +1553,13 @@ Future<String> runFunctionCommand(String function,String cmd) async {
   }
 
   //String jsn = response.body;
-  Map map = jsonDecode(response.body
+  Map<String, dynamic> map = jsonDecode(response.body
       .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
       .replaceAll('<string xmlns="http://videcom.com/">', '')
       .replaceAll('</string>', ''));
 
   VrsApiResponse rs = VrsApiResponse.fromJson(map);
-  gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+  gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'] == null ? '1' : map['vrsServerNo'].toString());
   logit('rfc Server IP ${map['serverIP']}');
   if( rs.data == null ) {
     throw 'no data returned';
@@ -1593,7 +1574,7 @@ Future<String> runVrsCommand(String cmd) async {
   gblError ='';
   if( gblSettings.useWebApiforVrs) {
 
-    String msg =  json.encode(VrsApiRequest(gblSession, cmd,
+    String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
         gblSettings.xmlToken.replaceFirst('token=', ''),
         vrsGuid: gblSettings.vrsGuid,
         notifyToken: gblNotifyToken,
@@ -1604,7 +1585,7 @@ Future<String> runVrsCommand(String cmd) async {
 
     http.Response response = await http
         .get(Uri.parse(
-        "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession.varsSessionId}&req=$msg"),
+        "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"),
           headers: getXmlHeaders())
         .catchError((resp) {
 /*
@@ -1619,8 +1600,8 @@ Future<String> runVrsCommand(String cmd) async {
 
     //If there was an error return null
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + response.reasonPhrase);
-      throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + response.reasonPhrase;
+      logit('runFunctionCommand ($cmd): ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String));
+      throw 'runFunctionCommand: ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String);
       //return new ParsedResponse(response.statusCode, null);
     }
 
@@ -1648,7 +1629,7 @@ Future<String> runVrsCommand(String cmd) async {
     }
 
     //String jsn = response.body;
-    Map map = jsonDecode(response.body
+    Map<String, dynamic> map = jsonDecode(response.body
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', ''));
@@ -1687,15 +1668,15 @@ Future<String> runVrsCommand(String cmd) async {
   }
  }
 
-RemoteMessage convertMsg(NotificationMessage msg)
+RemoteMessage? convertMsg(NotificationMessage msg)
 {
     try {
       RemoteNotification rNote = new RemoteNotification(
-        title:  msg.notification.title,
-        body: msg.notification.body,
+        title:  msg.notification!.title,
+        body: msg.notification!.body,
       ) ;
       RemoteMessage rMsg = new RemoteMessage( notification: rNote,
-          data: msg.data,
+          data: msg.data as Map<String, dynamic>,
           sentTime: msg.sentTime,
           category: msg.category
       );
@@ -1714,7 +1695,7 @@ void saveSetting(String key, String value) async {
     print('save error: key $key $e');
   }
 }
-Future<String> getSetting(String key ) async {
+Future<String?> getSetting(String key ) async {
   try {
     var prefs = await SharedPreferences.getInstance();
     if (prefs.getString(key) == null) {
@@ -1724,4 +1705,5 @@ Future<String> getSetting(String key ) async {
   } catch(e){
     print('getSetting $key error: $e');
   }
+  return '';
 }

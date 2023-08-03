@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/FlightSelectionSummary/FlightSelectionSummaryPage.dart';
 import 'package:vmba/calendar/widgets/cannedFact.dart';
@@ -23,27 +24,27 @@ import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
 
 class ReturnFlightSeletionPage extends StatefulWidget {
-  ReturnFlightSeletionPage({Key key, this.newBooking, this.outboundFlight, this.outboundAvItem})
+  ReturnFlightSeletionPage({Key key= const Key("retflt_key"), required this.newBooking,required this.outboundFlight, required this.outboundAvItem})
       : super(key: key);
   final NewBooking newBooking;
   final Flt outboundFlight;
-  final avItin outboundAvItem;
+  final AvItin outboundAvItem;
   @override
   _ReturnFlightSeletionState createState() => new _ReturnFlightSeletionState();
 }
 
 class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _loadingInProgress;
-  ScrollController _scrollController;
-  bool _noInternet;
+  bool _loadingInProgress = false;
+  late ScrollController _scrollController;
+  bool _noInternet = false;
   String _loading = '';
   String avErrorMsg = 'Please check your internet connection';
 
-  DateTime _departureDate;
-  DateTime _returnDate;
+  DateTime _departureDate = DateTime.now();
+  DateTime _returnDate= DateTime.now();
 
-  AvailabilityModel objAv;
+  AvailabilityModel? objAv;
   @override
   void initState() {
     super.initState();
@@ -56,17 +57,17 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     _loadData();
     _departureDate = DateTime.parse(
         DateFormat('y-MM-dd').format(widget.newBooking.departureDate));
-    _returnDate = DateTime.parse(
-        DateFormat('y-MM-dd').format(widget.newBooking.returnDate));
+
+    if(widget.newBooking.returnDate!= null )    _returnDate = DateTime.parse(DateFormat('y-MM-dd').format(widget.newBooking.returnDate!));
   }
 
   String getAvReturnCommand(bool bRaw) {
     var buffer = new StringBuffer();
     buffer.write('A');
     buffer
-        .write(new DateFormat('dd').format(this.widget.newBooking.returnDate));
+        .write(new DateFormat('dd').format(this.widget.newBooking.returnDate!));
     buffer
-        .write(new DateFormat('MMM').format(this.widget.newBooking.returnDate));
+        .write(new DateFormat('MMM').format(this.widget.newBooking.returnDate!));
     buffer.write(this.widget.newBooking.arrival);
     buffer.write(this.widget.newBooking.departure);
 
@@ -159,16 +160,18 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   void removeDepartedFlights() {
-    if (objAv.availability.itin != null) {
-      int length = objAv.availability.itin.length - 1;
+    if (objAv?.availability.itin != null) {
+      int length = 1;
+      if( objAv?.availability.itin?.length != null ) length = objAv?.availability.itin?.length as int ;
+      length -= 1;
       for (int i = length; i >= 0; i--) {
         DateTime fltDate = DateTime.parse(
-            objAv.availability.itin[i].flt.first.time.ddaygmt +
+            objAv!.availability.itin![i].flt.first.time.ddaygmt +
                 ' ' +
-                objAv.availability.itin[i].flt.first.time.dtimgmt);
+                (objAv!.availability.itin![i].flt.first.time.dtimgmt as String));
         if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
             minutes: gblSettings.bookingLeadTime)))) {
-          objAv.availability.itin.removeAt(i);
+          objAv!.availability.itin?.removeAt(i);
         }
       }
     }
@@ -178,17 +181,19 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     int calenderWidgetSelectedItem = 0;
     double animateTo = 250;
 
-    for (var f in objAv.availability.cal.day) {
-      if (DateTime.parse(f.daylcl).isAfter(_departureDate)) {
-        calenderWidgetSelectedItem += 1;
-        if (isSearchDate(DateTime.parse(f.daylcl), _returnDate)) {
-          break;
+    if( objAv!.availability.cal?.day != null ) {
+      for (var f in (objAv!.availability.cal?.day as List<Day>)) {
+        if (DateTime.parse(f.daylcl).isAfter(_departureDate)) {
+          calenderWidgetSelectedItem += 1;
+          if (isSearchDate(DateTime.parse(f.daylcl), _returnDate)) {
+            break;
+          }
         }
       }
     }
 
     calenderWidgetSelectedItem = 0;
-    for (var f in objAv.availability.cal.day) {
+    for (var f in (objAv!.availability.cal?.day as List<Day>)) {
       if (DateTime.parse(f.daylcl).isAfter(_departureDate) ||
           isSearchDate(DateTime.parse(f.daylcl), _returnDate)) {
         calenderWidgetSelectedItem += 1;
@@ -318,7 +323,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 initialDate: _departureDate,
                 lastDate:
                     new DateTime.now().toUtc().add(new Duration(days: 363)),
-                builder: (BuildContext context, Widget child) {
+ /*               builder: (BuildContext context, Widget child) {
                 return Theme(
                     data: ThemeData.light().copyWith(
                     //primarySwatch: gblSystemColors.primaryHeaderColor,//OK/Cancel button text color
@@ -331,8 +336,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                   ),
                   ),
                   child: child,
-                  );},
-              ).then((date) => _changeSearchDate(date)),
+                  );},*/
+              ).then((date) => _changeSearchDate(date!)),
               child: TrText(
                 'CHOOSE NEW DATE',
                 style: new TextStyle(color: Colors.white),
@@ -345,13 +350,13 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Widget getCalenderWidget() {
-    if (objAv != null || objAv.availability.cal != null) {
+    if (objAv != null || objAv!.availability.cal != null) {
       return new ListView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
-          children: objAv.availability.cal.day
+          children: (objAv!.availability.cal?.day as List<Day>)
               .map(
-                (item) => getCalDay(item, 'ret' , widget.newBooking.returnDate, _departureDate,
+                (item) => getCalDay(item, 'ret' , widget.newBooking.returnDate!, _departureDate,
                     onPressed: () => {
                     hasDataConnection().then((result) {
                     if (result == true) {
@@ -427,10 +432,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Widget flightAvailability() {
-    if (objAv.availability.itin != null) {
+    if (objAv!.availability.itin != null) {
       return new ListView(
           scrollDirection: Axis.vertical,
-          children: (objAv.availability.itin
+          children: ((objAv!.availability.itin as List<AvItin>)
               .map(
                 (item) =>flightItem( item),
 
@@ -438,26 +443,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               .toList()));
     } else {
       return noFlightsFound();
-/*
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Sorry no flights found',
-            style: TextStyle(fontSize: 14.0),
-          ),
-          Text(
-            'Try search for a different date',
-            style: TextStyle(fontSize: 14.0),
-          ),
-        ],
-      ));
-*/
+
     }
   }
 
-  Widget flightItem( avItin item) {
+  Widget flightItem( AvItin item) {
     if( wantPageV2() ) {
       int seatCount = widget.newBooking.passengers.adults +
           widget.newBooking.passengers.youths +
@@ -504,7 +494,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
 
-  validateSelection(avItin avItem, index, item) {
+  validateSelection(AvItin avItem, index, item) {
     // get connect time
     int minConnTime = 0;
 
@@ -528,7 +518,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     logit( 'out arrives (inc conn): ' + arrives.toString());
 
     logit('ret leaves: ' + departs.toString());
-
+    Classbands cbs ;
+    cbs = objAv!.availability.classbands as Classbands;
+    Band cb;
+    cb = cbs.band![index];
+    String bandName = cb.cbname;
 
     if (item[0].fltav.fav[index] == '0') {
       print('No av');
@@ -536,15 +530,15 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       showSnackBar(
           'This flight is before or to close to your outbound arrival time to book');
     } else if (((widget.newBooking.outboundflight[0].contains('[CB=Fly]') &&
-            objAv.availability.classbands.band[index].cbname == 'Fly Flex') ||
+            bandName == 'Fly Flex') ||
         (widget.newBooking.outboundflight[0].contains('[CB=Fly Flex]') &&
-            objAv.availability.classbands.band[index].cbname == 'Fly'))) {
+            bandName == 'Fly'))) {
       showSnackBar('Fly and Fly Flex can\'t be mixed within a booking');
     } else if (((widget.newBooking.outboundflight[0]
                 .contains('[CB=Blue Fly]') &&
-            objAv.availability.classbands.band[index].cbname == 'Blue Flex') ||
+        bandName == 'Blue Flex') ||
         (widget.newBooking.outboundflight[0].contains('[CB=Blue Flex]') &&
-            objAv.availability.classbands.band[index].cbname == 'Blue Fly'))) {
+            bandName == 'Blue Fly'))) {
       showSnackBar('Blue Fly and Blue Flex can\'t be mixed within a booking');
     } else {
       goToClassScreen(index, item);
@@ -555,16 +549,16 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     return DateTime.parse(date + ' ' + time.trim());
   }
 
-  Widget pricebuttons(avItin avItem, List<Flt> item) {
-    if (item[0].fltav.pri.length > 3) {
+  Widget pricebuttons(AvItin avItem, List<Flt> item) {
+    if ((item[0].fltav.pri?.length as int) > 3) {
       return Wrap(
           spacing: 8.0, // gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: new List.generate(
-              item[0].fltav.pri.length,
+              (item[0].fltav.pri?.length as int),
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav[index] != '0'
+                        item[0].fltav.fav![index] != '0'
                             ? validateSelection(avItem,index, item)
                             : print('No av')
                       },
@@ -572,7 +566,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     label: Column(
-                      children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index, inRow: false),
+                      children: getPriceButtonList(objAv!.availability.classbands?.band![index].cbdisplayname, item, index, inRow: false),
                      /* <Widget>[
                         TrText(
                             objAv.availability.classbands.band[index]
@@ -621,9 +615,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                   ))));
     } else {
       MainAxisAlignment _mainAxisAlignment;
-      if (item[0].fltav.pri.length == 2) {
+      if (item[0].fltav.pri?.length == 2) {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      } else if (item[0].fltav.pri.length == 3) {
+      } else if (item[0].fltav.pri?.length == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
       } else {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
@@ -631,7 +625,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,
           children: new List.generate(
-            item[0].fltav.pri.length,
+            (item[0].fltav.pri?.length as int),
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary:
@@ -640,14 +634,14 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
                 onPressed: () {
-                  item[0].fltav.fav[index] != '0'
+                  item[0].fltav.fav![index] != '0'
                       ? validateSelection(avItem,index, item) //goToClassScreen(index, item)
                       : print('No av');
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: new Column(
-                    children: getPriceButtonList(objAv.availability.classbands.band[index].cbdisplayname, item, index),
+                    children: getPriceButtonList(objAv!.availability.classbands?.band![index].cbdisplayname, item, index),
 /*                    <Widget>[
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -716,7 +710,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         context,
         SlideTopRoute(
             page: ChooseFlight(
-          classband: objAv.availability.classbands.band[index],
+          classband: objAv!.availability.classbands?.band![index],
           flts: flts, //objAv.availability.itin[0].flt,
           seats: widget.newBooking.passengers.adults +
               widget.newBooking.passengers.youths +
@@ -724,15 +718,15 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, null,selectedFlt, flts, objAv.availability.classbands.band[index].cbname);
+    flightSelected(context, null,selectedFlt, flts, objAv!.availability.classbands?.band![index].cbname);
   }
 
-  void flightSelected(BuildContext context ,avItin avItem,List<String> flt, List<Flt> flts, String className) {
+  void flightSelected(BuildContext context ,AvItin? avItem,List<String> flt, List<Flt> flts, String? className) {
     print(flt);
     if (flt != null && flt.length > 0) {
       this.widget.newBooking.returningflight = flt;
       this.widget.newBooking.returningflts = flts;
-      this.widget.newBooking.returningClass = className;
+      this.widget.newBooking.returningClass = className as String;
     }
 
     _loadingInProgress = true;

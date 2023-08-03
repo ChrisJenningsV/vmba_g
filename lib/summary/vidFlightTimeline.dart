@@ -13,7 +13,7 @@ import '../utilities/helper.dart';
 
 
 class TimelineDelivery extends StatelessWidget {
-  TimelineDelivery({Key key, this.newBooking, this.isReturn}) : super(key: key);
+  TimelineDelivery({Key key= const Key("timedel_key"), required this.newBooking,required  this.isReturn}) : super(key: key);
 
   final NewBooking newBooking;
   final bool isReturn;
@@ -93,6 +93,7 @@ class TimelineDelivery extends StatelessWidget {
 
   Widget startTile(Flt flt, String className) {
     return VidTimelineTile(
+      key: const Key('starttime_key'),
       alignment: VidTimelineAlign.manual,
       lineXY: 0.1,
       isFirst: true,
@@ -109,6 +110,7 @@ class TimelineDelivery extends StatelessWidget {
         // getIntlDate('EEE dd MMM yyyy',
         message2: flt.fltdet.airid + flt.fltdet.fltno,
         message3: className,
+
         first: true,
       ),
       beforeLineStyle: LineStyle(
@@ -154,36 +156,37 @@ class TimelineDelivery extends StatelessWidget {
 
   Widget _airportNameTime(String time, String code, TextStyle tStyle) {
     //  return Text(code);
-    return FutureBuilder(
+    return getH2Text(time.substring(0, 5) + ' ' + cityCodetoAirport(code));
+   /* return FutureBuilder(
       future: cityCodeToName(
         code,
       ),
       initialData: code.toString(),
       builder: (BuildContext context, AsyncSnapshot<String> text) {
         String longName = code;
-        if (text.data != null && text.data.length > 0) {
-          longName = text.data;
+        if (text.data != null && text.data!.length > 0) {
+          longName = text.data!;
         }
         return getH2Text(time.substring(0, 5) + ' ' + longName);
 
       },
-    );
+    );*/
   }
 }
 
 class _RightChild extends StatelessWidget {
   const _RightChild({
-    Key key,
-    this.asset,
-    this.title,
-    this.message,
-    this.message2,
-    this.message3,
-    this.first,
+    Key key= const Key("right_key"),
+//    this.asset,
+    required this.title,
+    this.message = '',
+    this.message2 = '',
+    this.message3 = '',
+    this.first = true,
     this.disabled = false,
   }) : super(key: key);
 
-  final String asset;
+//  final String asset;
   final Widget title;
   final String message;
   final String message2;
@@ -240,7 +243,7 @@ class TimelineHeader extends StatelessWidget {
   final String title;
   final String duration;
 
-  TimelineHeader({this.title, this.duration});
+  TimelineHeader({this.title = '', this.duration = ''});
 
   @override
   Widget build(BuildContext context) {

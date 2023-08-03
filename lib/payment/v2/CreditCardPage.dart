@@ -34,21 +34,21 @@ GlobalKey<CardInputWidgetState> ccInputGlobalKeyOptions = new GlobalKey<CardInpu
 
 class CreditCardPage extends StatefulWidget {
   CreditCardPage({
-    Key key,
+    Key key= const Key("ccpage_key"),
     this.newBooking,
-    this.pnrModel,
+    required this.pnrModel,
     this.stopwatch,
     this.isMmb = false,
     this.mmbBooking,
     this.mmbAction,
-    this.session,
+    required this.session,
   }) : super(key: key);
 
-  final NewBooking newBooking;
+  final NewBooking? newBooking;
   final PnrModel pnrModel;
-  final Stopwatch stopwatch;
+  final Stopwatch? stopwatch;
   final bool isMmb;
-  final MmbBooking mmbBooking;
+  final MmbBooking? mmbBooking;
   final mmbAction;
   final Session session;
 
@@ -65,13 +65,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   //bool _displayProcessingIndicator;
   // String _displayProcessingText;
-  PnrModel pnrModel;
-  String _error;
+  PnrModel? newPnrModel ;
+  String _error='';
   String rLOC = '';
-  Session session;
+  Session? session;
 
   @override
   initState() {
+    logit('init CreditCardPage');
     super.initState();
     gblCurPage = 'CREDITCARDPAGE';
     logit(gblCurPage);
@@ -97,7 +98,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           'Payment',
           newBooking: widget.newBooking,
           curStep: 5,
-          imageName: gblSettings.wantPageImages ? 'paymentPage' : null,
+          imageName: gblSettings.wantPageImages ? 'paymentPage' : '',
         ),
         endDrawer: DrawerMenu(),
 
@@ -125,8 +126,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
       // showAlertDialog(context, 'Error making payment', gblError);
       // return null;
     }
-    Widget popButton;
-    void Function() customAction;
+    Widget? popButton;
+    void Function()? customAction;
     if( gblSettings.creditCardProvider != null && gblSettings.creditCardProvider.toLowerCase() == 'videcard' ) {
       //bool gotVideCard = false;
       customAction =_populateCC;
@@ -145,7 +146,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         'Payment',
         newBooking: widget.newBooking,
         curStep: 5,
-        imageName: gblSettings.wantPageImages ? 'paymentPage' : null,
+        imageName: gblSettings.wantPageImages ? 'paymentPage' : '',
       ),
       endDrawer: DrawerMenu(),
       bottomNavigationBar: getBottomNav(context, popButton: popButton, helpText: 'The test CC will popular field with working test card values.', custom: customAction),
@@ -233,7 +234,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           widget.pnrModel.pNR.names.pAX[0].firstName + ' ' +
               widget.pnrModel.pNR.names.pAX[0].surname;
     }
-    ccInputGlobalKeyOptions.currentState.initPayDetails(paymentDetails);
+    ccInputGlobalKeyOptions.currentState?.initPayDetails(paymentDetails);
   }
 
   Future<bool> _onWillPop() async {
@@ -276,7 +277,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
     gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
-    _sendVRSCommand(json.encode(RunVRSCommand(session, msg).toJson()))
+    _sendVRSCommand(json.encode(RunVRSCommand(session!, msg).toJson()))
         .then((result) {
       try {
         if (!result.toString().startsWith('{')) {
@@ -286,8 +287,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
               '/ErrorPage', (Route<dynamic> route) => false);
           return null;
         }
-        Map map = json.decode(result);
+        Map<String, dynamic> map = json.decode(result);
         PnrModel pnrModel = new PnrModel.fromJson(map);
+        newPnrModel = pnrModel;
         PnrDBCopy pnrDBCopy = new PnrDBCopy(
             rloc: pnrModel.pNR.rLOC, //_rloc,
             data: result,
@@ -305,7 +307,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               arguments: arg);
         });
       } catch (e) {
-        logit(e);
+        logit(e.toString());
       }
     });
   }
@@ -333,8 +335,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (gblBookingState != BookingState.changeFlt &&
         gblSession != null &&
         (session == null ||
-            session.varsSessionId == null ||
-            session.varsSessionId.isEmpty)) {
+            session!.varsSessionId == null ||
+            session!.varsSessionId.isEmpty)) {
       logit('set session');
       session = gblSession;
     }
@@ -354,7 +356,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
       msg += getPaymentCmd(false);
       logit(msg);
-      String result = await sendVarsCommand(msg) ;
+      String? result = await sendVarsCommand(msg) ;
 
     if( result != null){
       logit('MakePaymentVars: ' + result);
@@ -394,7 +396,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             }
           }
           logit('MakePayments send:$cmd');
-          String onValue = await sendVarsCommand(cmd) ;
+          String? onValue = await sendVarsCommand(cmd) ;
 /*
           _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
               .then((onValue) {
@@ -420,8 +422,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
               return;
             }
             // Server Exception ?
-            Map map = json.decode(onValue);
+            Map<String, dynamic> map = json.decode(onValue);
             PnrModel pnrModel = new PnrModel.fromJson(map);
+            newPnrModel = pnrModel;
             PnrDBCopy pnrDBCopy = new PnrDBCopy(
                 rloc: pnrModel.pNR.rLOC, //_rloc,
                 data: onValue,
@@ -467,16 +470,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
         logit('CCP MMB');
         msg = '*$rLOC';
         bool deleteDone = false;
-        widget.mmbBooking.newFlights.reversed.forEach((flt) {
+        widget.mmbBooking!.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
 
           if( deleteDone == false ) {
-            if( widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1].itin.length ==1 ){
-              msg += '^X${widget.mmbBooking.journeyToChange}';
+            if( widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1].itin.length ==1 ){
+              msg += '^X${widget.mmbBooking!.journeyToChange}';
             } else {
-              widget.mmbBooking.journeys
-                  .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+              widget.mmbBooking!.journeys
+                  .journey[widget.mmbBooking!.journeyToChange - 1].itin.forEach((
                   j) {
                 DateTime fltDate = DateTime.parse(j.ddaygmt);
                 msg +=
@@ -496,22 +499,22 @@ class _CreditCardPageState extends State<CreditCardPage> {
         int flightLineNumber=-1;
         if(  gblBookingState == BookingState.changeFlt ) {
           /*int connectedLine = -1;
-          if( widget.mmbBooking.newFlights.length > 1) flightLineNumber= 0;*/
-          if( widget.mmbBooking.newFlights.length > 1) {
-            if (widget.mmbBooking.journeyToChange == 1) {
+          if( widget.mmbBooking!.newFlights.length > 1) flightLineNumber= 0;*/
+          if( widget.mmbBooking!.newFlights.length > 1) {
+            if (widget.mmbBooking!.journeyToChange == 1) {
               // make first line connection
               flightLineNumber =1;
             } else {
               // count lines and add 1
-              flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+              flightLineNumber = widget.mmbBooking!.journeys.journey[0].itin.length +1;
             }
-            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking!.newFlights);
           }
 
         } else {
           flightLineNumber = getConnectingFlightLineIdentifier(
-              widget.mmbBooking.journeys.journey[widget.mmbBooking
-                  .journeyToChange - 1]);
+              widget.mmbBooking!.journeys.journey[widget.mmbBooking
+                  !.journeyToChange - 1]);
         }
         if (flightLineNumber >= 0) {
           logit("Journey has a connecting flight.");
@@ -550,8 +553,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
         //showSnackBar(_error);
         return null;
       } else {
-        Map map = json.decode(_response);
-        pnrModel = new PnrModel.fromJson(map);
+        Map<String, dynamic> map = json.decode(_response);
+        PnrModel pnrModel = new PnrModel.fromJson(map);
+        newPnrModel = pnrModel;
         logit(pnrModel.pNR.rLOC);
         if (pnrModel.hasNonHostedFlights() &&
             pnrModel.hasPendingCodeShareOrInterlineFlights()) {
@@ -566,7 +570,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
             String data = await runVrsCommand(msg);
             if (data.contains('ERROR - ')) {
-              _error = response.body
+              _error = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
@@ -580,7 +584,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
-              Map map = json.decode(pnrJson);
+              Map<String, dynamic> map = json.decode(pnrJson);
 
               pnrModel = new PnrModel.fromJson(map);
               logit('ccp got PNR');
@@ -607,8 +611,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         });
         showSnackBar(translate('Unable to confirm partner airlines flights.'));
         //Cnx new flights
-        msg = '*${widget.mmbBooking.rloc}';
-        widget.mmbBooking.newFlights.forEach((flt) {
+        msg = '*${widget.mmbBooking!.rloc}';
+        widget.mmbBooking!.newFlights.forEach((flt) {
           logit('x' + flt.split('NN1')[0].substring(2));
           msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
         });
@@ -626,13 +630,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
           i <
               widget
                   .mmbBooking
-                  .journeys
-                  .journey[widget.mmbBooking.journeyToChange - 1]
+                  !.journeys
+                  .journey[widget.mmbBooking!.journeyToChange - 1]
                   .itin
                   .length;
           i++) {
-            Itin f = widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            Itin f = widget.mmbBooking!.journeys
+                .journey[widget.mmbBooking!.journeyToChange - 1].itin[i];
             String _depDate = DateFormat('ddMMM')
                 .format(DateTime.parse(f.depDate))
                 .toString();
@@ -644,7 +648,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           }
         }
 
-        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFg(widget.mmbBooking!.currency, true);
         msg += addFareStore(true);
 
         msg += 'e*r^';
@@ -658,7 +662,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       try {
         logit("Payment sent $msg");
       } catch (e) {
-        logit(e);
+        logit(e.toString());
       }
 
       if( gblSettings.useSmartPay){
@@ -690,9 +694,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
             //_displayProcessingText = 'Completing your booking...';
             //_displayProcessingIndicator = true;
           });
+/*
           if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
           }
+*/
           ticketBooking();
         } else if (result.contains('VrsServerResponse')) {
           _error = json.decode(result)['VrsServerResponse']['PaymentResult']
@@ -729,7 +735,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         if (result.isNotEmpty) {
           _error = result;
         } else {
-          _error = response.body; // 'Please check your details';
+          _error = result; // 'Please check your details';
         }
         logit(_error);
         _dataLoaded();
@@ -739,11 +745,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
   }
 
-  Future<String> sendVarsCommand(String msg) async {
+  Future<String?> sendVarsCommand(String msg) async {
 
       String req = json.encode(
           VrsApiRequest(
-              gblSession, Uri.encodeComponent( msg),
+              gblSession!, Uri.encodeComponent( msg),
               gblSettings.xmlToken.replaceFirst('token=', ''),
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
@@ -752,7 +758,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               language: gblLanguage
           )
       );
-      String xmsg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$req";
+      String xmsg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$req";
       final response = await http.get(Uri.parse(xmsg),headers: getXmlHeaders());
       if( response == null ) {
 
@@ -786,8 +792,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (gblBookingState != BookingState.changeFlt &&
         gblSession != null &&
         (session == null ||
-            session.varsSessionId == null ||
-            session.varsSessionId.isEmpty)) {
+            session!.varsSessionId == null ||
+            session!.varsSessionId.isEmpty)) {
       session = gblSession;
     }
     if (rLOC.isEmpty) {
@@ -803,7 +809,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       msg += getPaymentCmd(false);
       logit(msg);
 
-      _sendVRSCommand(json.encode(RunVRSCommand(session, msg).toJson()))
+      _sendVRSCommand(json.encode(RunVRSCommand(session!, msg).toJson()))
           .then((result) {
       {
         logit(result);
@@ -839,7 +845,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           } else if (widget.mmbAction == 'PAYOUTSTANDING') {
             cmd = "EMT*R~x";
           }
-          _sendVRSCommand(json.encode(RunVRSCommand(session, cmd).toJson()))
+          _sendVRSCommand(json.encode(RunVRSCommand(session!, cmd).toJson()))
               .then((onValue) {
             if (onValue.toString().contains('error')) {
               _error = onValue;
@@ -859,8 +865,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
               return;
             }
             // Server Exception ?
-            Map map = json.decode(onValue);
+            Map<String, dynamic> map = json.decode(onValue);
             PnrModel pnrModel = new PnrModel.fromJson(map);
+            newPnrModel = pnrModel;
             PnrDBCopy pnrDBCopy = new PnrDBCopy(
                 rloc: pnrModel.pNR.rLOC, //_rloc,
                 data: onValue,
@@ -900,14 +907,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (widget.isMmb) {
         msg = '*$rLOC';
         bool deleteDone = false;
-//        int i = widget.mmbBooking.newFlights.length - 1;
-        widget.mmbBooking.newFlights.reversed.forEach((flt) {
+//        int i = widget.mmbBooking!.newFlights.length - 1;
+        widget.mmbBooking!.newFlights.reversed.forEach((flt) {
           // remove old flight
           //XLM0032Q15FebABZKOI
 
           if( deleteDone == false ) {
-            widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin.forEach((
+            widget.mmbBooking!.journeys
+                .journey[widget.mmbBooking!.journeyToChange - 1].itin.forEach((
                 j) {
               DateTime fltDate = DateTime.parse(j.ddaygmt);
               msg +=
@@ -917,8 +924,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
             deleteDone = true;
           }
 /*
-          Itin j = widget.mmbBooking.journeys
-              .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+          Itin j = widget.mmbBooking!.journeys
+              .journey[widget.mmbBooking!.journeyToChange - 1].itin[i];
           i--;
           DateTime fltDate = DateTime.parse(j.ddaygmt);
           msg +=
@@ -931,7 +938,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           //String org = flt.substring(15, 18);
           //String dest = flt.substring(19, 22);
 
-         /* widget.mmbBooking.journeys.journey.forEach((j) {
+         /* widget.mmbBooking!.journeys.journey.forEach((j) {
             if (j.itin[0].depart == org) {
               //      msg += '^X${j.itin[0].line}';
             }
@@ -943,22 +950,22 @@ class _CreditCardPageState extends State<CreditCardPage> {
         int flightLineNumber=-1;
         if(  gblBookingState == BookingState.changeFlt ) {
           /*int connectedLine = -1;
-          if( widget.mmbBooking.newFlights.length > 1) flightLineNumber= 0;*/
-          if( widget.mmbBooking.newFlights.length > 1) {
-            if (widget.mmbBooking.journeyToChange == 1) {
+          if( widget.mmbBooking!.newFlights.length > 1) flightLineNumber= 0;*/
+          if( widget.mmbBooking!.newFlights.length > 1) {
+            if (widget.mmbBooking!.journeyToChange == 1) {
               // make first line connection
               flightLineNumber =1;
             } else {
               // count lines and add 1
-              flightLineNumber = widget.mmbBooking.journeys.journey[0].itin.length +1;
+              flightLineNumber = widget.mmbBooking!.journeys.journey[0].itin.length +1;
             }
-            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking.newFlights);
+            //flightLineNumber =            GetConnectingFlightLine(widget.mmbBooking!.newFlights);
           }
 
         } else {
             flightLineNumber = getConnectingFlightLineIdentifier(
-              widget.mmbBooking.journeys.journey[widget.mmbBooking
-                  .journeyToChange - 1]);
+              widget.mmbBooking!.journeys.journey[widget.mmbBooking
+                  !.journeyToChange - 1]);
         }
         if (flightLineNumber >= 0) {
           logit("Journey has a connecting flight.");
@@ -995,8 +1002,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
         //showSnackBar(_error);
         return null;
       } else {
-        Map map = json.decode(_response);
-        pnrModel = new PnrModel.fromJson(map);
+        Map<String, dynamic> map = json.decode(_response);
+        PnrModel pnrModel = new PnrModel.fromJson(map);
+        newPnrModel = pnrModel;
         logit(pnrModel.pNR.rLOC);
         if (pnrModel.hasNonHostedFlights() &&
             pnrModel.hasPendingCodeShareOrInterlineFlights()) {
@@ -1010,7 +1018,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
             String data = await runVrsCommand(msg);
             if (data.contains('ERROR - ')) {
-              _error = response.body
+              _error = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
@@ -1023,7 +1031,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
-              Map map = json.decode(pnrJson);
+              Map<String, dynamic> map = json.decode(pnrJson);
 
               pnrModel = new PnrModel.fromJson(map);
             }
@@ -1046,8 +1054,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
         });
         showSnackBar(translate('Unable to confirm partner airlines flights.'));
         //Cnx new flights
-        msg = '*${widget.mmbBooking.rloc}';
-        widget.mmbBooking.newFlights.forEach((flt) {
+        msg = '*${widget.mmbBooking!.rloc}';
+        widget.mmbBooking!.newFlights.forEach((flt) {
           logit('x' + flt.split('NN1')[0].substring(2));
           msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
         });
@@ -1068,13 +1076,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
               i <
                   widget
                       .mmbBooking
-                      .journeys
-                      .journey[widget.mmbBooking.journeyToChange - 1]
+                      !.journeys
+                      .journey[widget.mmbBooking!.journeyToChange - 1]
                       .itin
                       .length;
               i++) {
-            Itin f = widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            Itin f = widget.mmbBooking!.journeys
+                .journey[widget.mmbBooking!.journeyToChange - 1].itin[i];
             String _depDate = DateFormat('ddMMM')
                 .format(DateTime.parse(f.depDate))
                 .toString();
@@ -1086,7 +1094,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           }
         }
 
-        msg += addFg(widget.mmbBooking.currency, true);
+        msg += addFg(widget.mmbBooking!.currency, true);
         msg += addFareStore(true);
 
         msg += 'e*r^';
@@ -1099,7 +1107,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       try {
         logit("Payment sent $msg");
       } catch (e) {
-        logit(e);
+        logit(e.toString());
       }
 
       if( gblSettings.useSmartPay){
@@ -1130,9 +1138,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
             //_displayProcessingText = 'Completing your booking...';
             //_displayProcessingIndicator = true;
           });
-          if (pnrModel.pNR.tickets != null) {
+  /*        if (pnrModel.pNR.tickets != null) {
             await pullTicketControl(pnrModel.pNR.tickets);
-          }
+          }*/
           ticketBooking();
         } else if (result.contains('VrsServerResponse')) {
           _error = json.decode(result)['VrsServerResponse']['PaymentResult']
@@ -1169,7 +1177,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         if (result.isNotEmpty) {
           _error = result;
         } else {
-          _error = response.body; // 'Please check your details';
+          _error = 'not data returned'; // 'Please check your details';
         }
         logit(_error);
         _dataLoaded();
@@ -1194,12 +1202,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //if (isLive) {
     //buffer.write('MK($creditCardProviderProduction)');
     double am = 0.0;
-    String currency;
+    String currency='';
     if (gblRedeemingAirmiles) {
       if (gblPassengerDetail != null &&
-          gblPassengerDetail.fqtv != null &&
-          gblPassengerDetail.fqtv.isNotEmpty) {
-        buffer.write('MF-${gblPassengerDetail.fqtv}^');
+          gblPassengerDetail!.fqtv != null &&
+          gblPassengerDetail!.fqtv.isNotEmpty) {
+        buffer.write('MF-${gblPassengerDetail!.fqtv}^');
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
       }
@@ -1214,10 +1222,17 @@ class _CreditCardPageState extends State<CreditCardPage> {
         if (am <= 0) {
           return '';
         }
-      } else if (pnrModel != null &&
+      /*} else if (pnrModel != null &&
           pnrModel.pNR.basket.outstanding.amount != null) {
         am = double.parse(pnrModel.pNR.basket.outstanding.amount);
         currency = pnrModel.pNR.basket.outstanding.cur;
+        if (am <= 0) {
+          return '';
+        }*/
+      } else if (widget.pnrModel != null &&
+          widget.pnrModel.pNR.basket.outstanding.amount != null) {
+        am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+        currency = widget.pnrModel.pNR.basket.outstanding.cur;
         if (am <= 0) {
           return '';
         }
@@ -1232,9 +1247,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (gblRedeemingAirmiles) {
       // sb.AppendFormat("MK({0}){1}{2}", pSession.Payment.PaymentSchemeName, pSession.Payment.CurrentTransaction.PaymentCurrency, CDbl(pSession.Payment.CurrentTransaction.PaymentTotalAmount).ToString("#0.00"))
       // sb.AppendFormat("/{0}", .CardNumber.Trim)
-      if (pnrModel != null) {
-        buffer.write('${pnrModel.pNR.basket.outstandingairmiles.cur}');
-        buffer.write('${pnrModel.pNR.basket.outstandingairmiles.amount}');
+      if (newPnrModel != null) {
+        buffer.write('${newPnrModel!.pNR.basket.outstandingairmiles.cur}');
+        buffer.write('${newPnrModel!.pNR.basket.outstandingairmiles.amount}');
       } else if (widget.pnrModel != null) {
         buffer.write('${widget.pnrModel.pNR.basket.outstandingairmiles.cur}');
         buffer
@@ -1296,21 +1311,23 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   Future<void> pullTicketControl(Tickets tickets) async {
     String msg = '';
-    for (var i = 0; i < pnrModel.pNR.tickets.tKT.length; i++) {
-      if (pnrModel.pNR.tickets.tKT[i].status == 'A') {
-        msg = '*${widget.mmbBooking.rloc}^';
-        msg += '*t-' +
-            pnrModel.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
-            '/' +
-            pnrModel.pNR.tickets.tKT[i].coupon +
-            '=o';
+    if(newPnrModel != null ) {
+      for (var i = 0; i < newPnrModel!.pNR.tickets.tKT.length; i++) {
+        if (newPnrModel!.pNR.tickets.tKT[i].status == 'A') {
+          msg = '*${widget.mmbBooking!.rloc}^';
+          msg += '*t-' +
+              newPnrModel!.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
+              '/' +
+              newPnrModel!.pNR.tickets.tKT[i].coupon +
+              '=o';
 /*
         await http.get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
             .catchError((resp) {});*/
-      }
+        }
 
-      await runVrsCommand(msg);
+        await runVrsCommand(msg);
+      }
     }
   }
 
@@ -1331,10 +1348,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
 
-      Map map = json.decode(pnrJson);
+      Map<String, dynamic> map = json.decode(pnrJson);
 
       PnrModel pnrModel = new PnrModel.fromJson(map);
-
+      newPnrModel = pnrModel;
       PnrDBCopy pnrDBCopy = new PnrDBCopy(
           rloc: pnrModel.pNR.rLOC, //_rloc,
           data: pnrJson,
@@ -1342,9 +1359,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
           nextFlightSinceEpoch: pnrModel.getnextFlightEpoch());
       Repository.get().updatePnr(pnrDBCopy);
       Repository.get()
-          .fetchApisStatus(this.pnrModel.pNR.rLOC)
+          .fetchApisStatus(pnrModel.pNR.rLOC)
           .then((_) => sendEmailConfirmation(pnrModel))
-          .then((_) => getArgs(this.pnrModel.pNR))
+          .then((_) => getArgs(pnrModel.pNR))
           .then((args) => Navigator.of(context).pushNamedAndRemoveUntil(
               '/CompletedPage', (Route<dynamic> route) => false,
               arguments: args
@@ -1356,7 +1373,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (pnrJson.isNotEmpty) {
         _error = pnrJson;
       } else {
-        _error = response.body; // 'Please check your details';
+        _error = 'no data returned'; // 'Please check your details';
       }
       logit(_error);
       _dataLoaded();

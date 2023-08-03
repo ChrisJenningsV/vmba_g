@@ -10,7 +10,7 @@ import '../data/globals.dart';
 import '../data/models/products.dart';
 import '../utilities/helper.dart';
 
-NetworkImage getProductImage(Product product){
+NetworkImage? getProductImage(Product product){
   try {
     String name;
     if( gblSettings.productImageMode == 'index') {
@@ -42,11 +42,14 @@ NetworkImage getProductImage(Product product){
     }
 
     Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
-    String pageImage = pageMap[name.toUpperCase()];
-    if( pageImage == null || pageImage.isEmpty) {
+    String pageImage = '';
+    if( pageMap[name.toUpperCase()] != null ) {
+      pageImage = pageMap[name.toUpperCase()];
+  }
+    if( pageImage == null || pageImage == '') {
       pageImage = name;
     }
-    if( pageImage == null) {
+    if( pageImage == '') {
       pageImage = 'blank';
     }
     if( gblLogProducts ) { logit('getProductImage: $name'); }
@@ -58,16 +61,16 @@ NetworkImage getProductImage(Product product){
             '${gblSettings.gblServerFiles}/productImages/$pageImage.png');
       }
   } catch(e) {
-    logit(e);
+    logit(e.toString());
   }
-  return null;
+  //return Never;
 }
 
 List <String> getSeatsForFlt(int fltNo){
   List <String> list = [];
 
-    if( gblPnrModel != null && gblPnrModel.pNR != null && gblPnrModel.pNR.aPFAX != null && gblPnrModel.pNR.aPFAX.aFX != null ) {
-      gblPnrModel.pNR.aPFAX.aFX.forEach((af) {
+    if( gblPnrModel != null && gblPnrModel!.pNR != null && gblPnrModel!.pNR.aPFAX != null && gblPnrModel!.pNR.aPFAX.aFX != null ) {
+      gblPnrModel!.pNR.aPFAX.aFX.forEach((af) {
         if (af.aFXID == 'SEAT' && af.seg == (fltNo+1).toString()) {
             list.add(af.seat);
         }

@@ -1,14 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 
-Widget vidWideTextButton(BuildContext context, String caption, void Function({int p1}) onPressed, {IconData icon, int iconRotation,int p1 } ) {
+Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
 }
 
-Widget vidTextButton(BuildContext context, String caption, void Function({int p1}) onPressed, {IconData icon, int iconRotation,int p1 } ) {
+Widget vidTextButton(BuildContext context, String caption, void Function({int? p1}) onPressed, {IconData? icon, int iconRotation=0,int? p1 } ) {
   Widget iconWidget = Container();
   if( icon != null) {
     if( iconRotation != null && iconRotation > 0 ) {
@@ -65,7 +66,7 @@ BorderRadius getButtonRadius() {
 /*
   NEXT button at the bottom of most pages
  */
-Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData icon, int iconRotation, var param1, double offset=0, bool wantIcon = true} ) {
+Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true} ) {
 
   List<Widget> list = [];
   if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
@@ -116,7 +117,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
 //  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
 }
 
-Widget vid3DActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, bool isRectangular } ) {
+Widget vid3DActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData? icon, int iconRotation=0, bool isRectangular=false } ) {
   if( icon == null) {
     icon = Icons.check;
   }
@@ -149,9 +150,9 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
 
 
 
-Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData icon, int iconRotation, bool isRectangular } ) {
-  ShapeBorder shape;
-  if(isRectangular != null &&  isRectangular == true ){
+Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData? icon, int iconRotation=0, bool isRectangular=false } ) {
+  ShapeBorder? shape;
+  if( isRectangular == true ){
     shape = RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(5.0))
     );
@@ -176,11 +177,11 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
       ]));
 }
 
-Widget vidInfoButton(BuildContext context, {void Function(BuildContext) onPressed}){
+Widget vidInfoButton(BuildContext context, {void Function(BuildContext)? onPressed}){
   return vidRoundButton(context, Icons.info_outline, onPressed);
 }
 
-Widget vidAddButton(BuildContext context, {void Function(BuildContext) onPressed,   bool disabled}){
+Widget vidAddButton(BuildContext? context, {void Function(BuildContext?)? onPressed,   bool disabled = false}){
   Color clr = gblSystemColors.primaryButtonColor;
   if( disabled != null && disabled) {
     clr = Colors.grey;
@@ -191,13 +192,15 @@ Widget vidAddButton(BuildContext context, {void Function(BuildContext) onPressed
       color: clr,
     ),
     onPressed: () {
-         onPressed(context);
+        //if( context != null ) {
+          onPressed!(context);
+        //}
     },
   );
   //return vidRoundButton(context, Icons.add_circle_outline, onPressed, btnClr: Colors.white);
 }
 
-Widget vidRemoveButton(BuildContext context, {void Function(BuildContext, int, int) onPressed, int paxNo, int segNo, bool disabled}){
+Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false}){
   Color clr = gblSystemColors.primaryButtonColor;
       if( disabled != null && disabled) {
         clr = Colors.grey;
@@ -208,27 +211,29 @@ Widget vidRemoveButton(BuildContext context, {void Function(BuildContext, int, i
       color: clr,
     ),
     onPressed: () {
-      if( disabled == null || disabled == false) {
-        onPressed(context, paxNo, segNo,);
+      if( context != null ) {
+        if (disabled == null || disabled == false) {
+          onPressed!(context as BuildContext, paxNo, segNo,);
+        }
       }
     },
   ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
 }
 
-Widget vidRightButton(BuildContext context, {void Function(BuildContext) onPressed}){
+Widget vidRightButton(BuildContext context, {void Function(BuildContext)? onPressed}){
   return IconButton(
     icon: Icon(
       Icons.chevron_right,
       color: gblSystemColors.primaryButtonColor,
     ),
     onPressed: () {
-      onPressed(context);
+      onPressed!(context);
     },
   ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
 }
 
 
-Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildContext) onPressed,{Color btnClr}){
+Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildContext)? onPressed,{Color btnClr = Colors.white}){
   if( btnClr == null ) {
     btnClr = gblSystemColors.primaryButtonColor;
   }
@@ -239,7 +244,7 @@ Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildCo
       //color: gblSystemColors.primaryButtonColor,
     ),
     onPressed: () {
-      onPressed(context);
+      onPressed!(context);
     },
   ); // retur
 
@@ -264,11 +269,11 @@ Widget vidLineButton(BuildContext context, Widget body, int index, void Function
 }
 
 class VidBlinkingButton extends StatefulWidget {
-  void Function(dynamic p) onClick;
-  String title;
-  Color color;
+  final void Function(dynamic p)? onClick;
+  final String title;
+  final Color color;
 
-  VidBlinkingButton({this.onClick, this.title, this.color});
+  VidBlinkingButton({this.onClick, this.title='', this.color=Colors.white});
 
   @override
   _MyBlinkingButtonState createState() => _MyBlinkingButtonState();
@@ -276,7 +281,7 @@ class VidBlinkingButton extends StatefulWidget {
 
 class _MyBlinkingButtonState extends State<VidBlinkingButton>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController ;
 
   @override
   void initState() {
@@ -291,7 +296,7 @@ class _MyBlinkingButtonState extends State<VidBlinkingButton>
     return FadeTransition(
       opacity: _animationController,
       child: MaterialButton(
-        onPressed: () => widget.onClick(context),
+        onPressed: () => widget.onClick!(context),
         child: Text(widget.title, style: TextStyle(color: Colors.white),),
         color: widget.color,
       ),

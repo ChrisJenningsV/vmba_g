@@ -6,7 +6,7 @@ import 'package:vmba/data/globals.dart';
 
 
 
-Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData icon, double height, EdgeInsets padding, bool titleText}) {
+Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData? icon, double? height, EdgeInsets? padding, bool? titleText}) {
   double w = MediaQuery.of(context).size.width -30 ;
   TextStyle textStyle = TextStyle(color: gblSystemColors.textEditIconColor, fontSize: 14);
   if( titleText != null && titleText){
@@ -52,7 +52,7 @@ Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData i
 
 }
 
-EdgeInsets ContainerMargins({String location}){
+EdgeInsets containerMargins({String location = ''}){
   if( location == 'day'){
     return wantPageV2() ? EdgeInsets.only( left: 3.0, right: 3.0, top: 5.0) : EdgeInsets.all(0);
   }
@@ -66,13 +66,13 @@ EdgeInsets ContainerMargins({String location}){
   return wantPageV2() ? EdgeInsets.all(10.0) : EdgeInsets.all(0);
 }
 
-Decoration ContainerDecoration({String location}) {
+Decoration? containerDecoration({String location = ''}) {
   return wantPageV2() ? v2ContainerDecoration(location: location) : null;
 }
 
-Decoration v2ContainerDecoration({String location})
+Decoration v2ContainerDecoration({String location = ''})
 {
-  BorderRadiusGeometry br;
+  BorderRadiusGeometry? br;
   if(location == 'top') {
     br = BorderRadius.only(
       topLeft: Radius.circular(10.0),
@@ -113,18 +113,18 @@ InputDecoration v2Decoration() {
 class V2TextWidget extends StatefulWidget {
   //final void Function(BuildContext context) flightSelected;
 
-  TextEditingController controller;
-  String Function(String ) validator;
-  void Function(String) onFieldSubmitted;
-  void Function(String) onSaved;
-  List<TextInputFormatter> inputFormatters;
-  TextInputAction textInputAction;
-  TextInputType keyboardType;
-  InputDecoration decoration;
+   TextEditingController? controller;
+   String? Function(String? )? validator;
+   void Function(String)? onFieldSubmitted;
+   void Function(String?)? onSaved;
+   List<TextInputFormatter>? inputFormatters;
+   TextInputAction? textInputAction;
+   TextInputType? keyboardType;
+   InputDecoration? decoration;
   //String title;
-  int maxLength;
+  final int? maxLength;
 
-  V2TextWidget({Key key, this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
+  V2TextWidget({Key key= const Key("t2text_key"), this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
     this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType})
       : super(key: key);
 
@@ -142,7 +142,7 @@ class _V2TextWidgetState extends State<V2TextWidget> {
   @override
   Widget build(BuildContext context) {
     if( wantPageV2()) {
-      return v2BorderBox(context, ' ' + translate(widget.decoration.labelText),
+      return v2BorderBox(context, ' ' + translate(widget.decoration?.labelText as String),
         TextFormField(
           decoration: v2Decoration(),
           maxLength: widget.maxLength,

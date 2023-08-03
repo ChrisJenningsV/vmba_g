@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/SystemColors.dart';
@@ -107,7 +108,7 @@ void configSI() {
   ),
   fqtvName:  "",
   appFeedbackEmail:  "webmaster@blueislands.com",
-  prohibitedItemsNoticeUrl: null,
+  prohibitedItemsNoticeUrl: '',
   groupsBookingsEmail:  "groups@blueislands.com",
   maxNumberOfPax:  8,
   hideFareRules:  true,

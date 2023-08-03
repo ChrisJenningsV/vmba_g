@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 
-Widget smallButton({String text, IconData icon, void Function() onPressed, Color backClr, String id }) {
+Widget smallButton({required  String text, IconData? icon, required void Function() onPressed, Color? backClr, String? id }) {
   Color back = gblSystemColors.primaryButtonColor;
   if( backClr != null ) back = backClr;
 
@@ -44,7 +44,7 @@ Widget smallButton({String text, IconData icon, void Function() onPressed, Color
   }
 }
 
-Widget saveButton({String text, IconData icon, void Function() onPressed }) {
+Widget saveButton({required String text, IconData? icon, required void Function() onPressed }) {
   return ElevatedButton(
     onPressed: () {
       onPressed();

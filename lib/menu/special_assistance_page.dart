@@ -137,7 +137,6 @@ class SpecialAssistancePage extends StatelessWidget {
                 Text(
                     'We require at least 48 hours’ notice to ensure everything is arranged prior to your arrival at the airport.'),
               ];
-              break;
 
             case 'SI':
               return <Widget>[
@@ -150,14 +149,12 @@ class SpecialAssistancePage extends StatelessWidget {
                 Text(
                     'We require at least 48 hours’ notice to ensure everything is arranged prior to your arrival at the airport.'),
               ];
-              break;
             case 'T6':
               return <Widget>[
                 Padding(
                   padding: EdgeInsets.all(8),
                 ),
               ];
-              break;
             default:
               return <Widget>[
                 Wrap(

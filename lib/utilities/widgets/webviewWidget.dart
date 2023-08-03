@@ -19,7 +19,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
       Completer<WebViewController>();
 
 
-num _stackToView = 1;
+int _stackToView = 1;
 
 void _handleLoad() {
   setState(() {

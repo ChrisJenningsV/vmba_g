@@ -22,12 +22,12 @@ import '../utilities/messagePages.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
-      {Key key, this.passengers, this.newbooking, this.preLoadDetails, this.passengerDetailRecord})
+      {Key key= const Key("contact_key"),  this.passengers, required this.newbooking, required this.preLoadDetails, required this.passengerDetailRecord})
       : super(key: key);
   final NewBooking newbooking;
-  final Passengers passengers;
+  final Passengers? passengers;
   final bool preLoadDetails;
-  final PassengerDetail passengerDetailRecord;
+  final PassengerDetail? passengerDetailRecord;
 
   _ContactDetailsWidgetState createState() => _ContactDetailsWidgetState();
 }
@@ -35,11 +35,11 @@ class ContactDetailsWidget extends StatefulWidget {
 class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   //ContactInfomation _contactInfomation = ContactInfomation();
   GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool _displayProcessingIndicator;
-  bool _tooManyUmnr;
+  bool _displayProcessingIndicator= false;
+  bool _tooManyUmnr= false;
   String _displayProcessingText = 'Making your Booking...';
-  PnrModel pnrModel;
-  String _error;
+  PnrModel pnrModel= PnrModel();
+  String _error = '';
 
 
   TextEditingController _emailTextEditingController = TextEditingController();
@@ -47,6 +47,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   @override
   initState() {
+    logit('init contactDetailsWidget');
     super.initState();
     _displayProcessingIndicator = false;
     _tooManyUmnr = false;
@@ -56,14 +57,14 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     if (widget.preLoadDetails && widget.passengerDetailRecord != null )
       {
 //      Repository.get().getUserProfile().then((profile) {
-        if (widget.passengerDetailRecord.email.length > 0) {
+        if (widget.passengerDetailRecord!.email.length > 0) {
           _emailTextEditingController.text =
-              widget.passengerDetailRecord.email;
+              widget.passengerDetailRecord!.email;
         }
 
-        if (widget.passengerDetailRecord.phonenumber.length > 0) {
+        if (widget.passengerDetailRecord!.phonenumber.length > 0) {
           _phoneTextEditingController.text =
-              widget.passengerDetailRecord.phonenumber;
+              widget.passengerDetailRecord!.phonenumber;
         }
       }
     if( gblSettings.wantNewEditPax) {
@@ -85,7 +86,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           key: _key,
           appBar: appBar(context, 'Payment',
             curStep: 5,
-            imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
+            imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
 
           endDrawer: DrawerMenu(),
           body: new Center(
@@ -184,11 +185,11 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
-                              validator: (value) => value.isEmpty
+                              validator: (value) => value!.isEmpty
                                   ? translate('Phone number can\'t be empty')
                                   : null,
                               onSaved: (value) => widget.newbooking
-                                  .contactInfomation.phonenumber = value.trim(),
+                                  .contactInfomation.phonenumber = value!.trim(),
                             ),
                           ),
                         ),
@@ -210,9 +211,13 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                               ),
                               controller: _emailTextEditingController,
                               keyboardType: TextInputType.emailAddress,
-                              validator: (value) => validateEmail(value.trim()),
+                              validator: (value) {
+                                String er = validateEmail(value!.trim());
+                                if( er != '') return er;
+                                return null;
+                              },
                               onSaved: (value) => widget.newbooking
-                                  .contactInfomation.email = value.trim(),
+                                  .contactInfomation.email = value!.trim(),
                             ),
                           ),
                         ),
@@ -258,18 +263,18 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   }
 
   String validateEmail(String value) {
-    Pattern pattern =
+    String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'Enter Valid Email';
     else
-      return null;
+      return '';
   }
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -283,7 +288,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     //_key.currentState.showSnackBar(_snackbar);
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit({int? p1}) async {
     if (validateAndSave()) {
       setState(() {
         _displayProcessingIndicator = true;
@@ -404,7 +409,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
-          Map map = json.decode(pnrJson);
+          Map<String, dynamic> map = json.decode(pnrJson);
 
           pnrModel = new PnrModel.fromJson(map);
           print(pnrModel.pNR.rLOC);
@@ -455,7 +460,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
-                Map map = json.decode(pnrJson);
+                Map<String, dynamic> map = json.decode(pnrJson);
 
                 pnrModel = new PnrModel.fromJson(map);
               }
@@ -561,7 +566,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                 .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                 .replaceAll('<string xmlns="http://videcom.com/">', '')
                 .replaceAll('</string>', '');
-            Map map = json.decode(pnrJson);
+            Map<String, dynamic> map = json.decode(pnrJson);
 
             pnrModel = new PnrModel.fromJson(map);
             print(pnrModel.pNR.rLOC);
@@ -614,7 +619,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                       .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                       .replaceAll('<string xmlns="http://videcom.com/">', '')
                       .replaceAll('</string>', '');
-                  Map map = json.decode(pnrJson);
+                  Map<String, dynamic> map = json.decode(pnrJson);
 
                   pnrModel = new PnrModel.fromJson(map);
                 }
@@ -800,7 +805,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         }
         if (pax.dateOfBirth != null) {
           // get age in years
-          Duration td = DateTime.now().difference(pax.dateOfBirth);
+          Duration td = DateTime.now().difference(pax.dateOfBirth as DateTime);
           int ageYears = (td.inDays / 365).round();
           int ageMonths = (td.inDays / 30).round();
           if( ageMonths == 24) ageMonths = 23;
@@ -815,7 +820,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           } else if (pax.paxType == PaxType.senior) {
             sb.write('.CD');
             String _dob =
-            DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+            DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
             sb.write('($_dob)');
             wantDOB = true;
           } else if (pax.paxType == PaxType.infant) {
@@ -824,7 +829,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           }
             if( gblSettings.wantApis && wantDOB) {
               String _dob =
-              DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+              DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
               sb.write('^3-${pax.paxNumber}FDOB $_dob');
           }
         } else {
@@ -858,7 +863,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
       if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){
         String _dob =
-        DateFormat('ddMMMyyyy').format(pax.dateOfBirth).toString();
+        DateFormat('ddMMMyyyy').format(pax.dateOfBirth as DateTime).toString();
         sb.write('3-${paxNo}FDOB $_dob^');
 
       }

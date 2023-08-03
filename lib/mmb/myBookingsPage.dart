@@ -20,7 +20,7 @@ import '../components/bottomNav.dart';
 
 
 class MyBookingsPage extends StatefulWidget {
-  MyBookingsPage({Key key}) : super(key: key);
+  MyBookingsPage({Key key= const Key("mybook_key")}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new MyBookingsPageState();
@@ -31,18 +31,18 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
   List<PnrDBCopy> recentPnrs = [];
   List<PnrDBCopy> oldPnrs = [];
   // new List<PnrDBCopy>();
-  bool _loadingInProgress;
-  Offset _tapPosition;
-String _error = '';
-  TabController _controller;
+  bool _loadingInProgress = false;
+  Offset? _tapPosition;
+  String _error = '';
+  TabController? _controller;
   final formKey = GlobalKey<FormState>();
-  String _rloc;
+  String _rloc ='';
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
-  String _surname;
-  bool _isButtonDisabled ;
-  bool _isHidden;
+  String _surname ='';
+  bool _isButtonDisabled = false;
+  bool _isHidden = false;
   TextEditingController _fqtvTextEditingController =   TextEditingController();
   TextEditingController _passwordEditingController =   TextEditingController();
   TextEditingController _emailEditingController =   TextEditingController();
@@ -77,7 +77,7 @@ String _error = '';
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
       List<PnrDBCopy> thisOldpnrs = [];
-      List<PnrDBCopy> cancelledPnrs = [];
+
       List<PnrDBCopy> olderPnrs = [];
       // new List<PnrDBCopy>();
       logit('get my bookings');
@@ -115,7 +115,7 @@ String _error = '';
             Repository.get().deletePnr(item.rloc);
             Repository.get().deleteApisPnr(item.rloc);
           } catch(e) {
-            logit(e);
+            logit(e.toString());
           }
         }
 
@@ -325,7 +325,7 @@ String _error = '';
 
 
   void _fqtvLogin() async {
-    if ( gblSession == null || gblSession.isTimedOut()) {
+    if ( gblSession == null || gblSession!.isTimedOut()) {
       await login().then((result) {
         gblSession =
             Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
@@ -335,7 +335,7 @@ String _error = '';
     FqtvMemberloginDetail fqtvMsg = FqtvMemberloginDetail(_emailEditingController.text,
         _fqtvTextEditingController.text,
         _passwordEditingController.text);
-    String msg = json.encode(FqTvCommand(gblSession, fqtvMsg ).toJson());
+    String msg = json.encode(FqTvCommand(gblSession!, fqtvMsg ).toJson());
     String method = 'GetAirMilesBalance';
 
     logit(msg);
@@ -348,7 +348,7 @@ String _error = '';
         showAlertDialog(context, 'Error', _error);
         return;
       }
-      Map map = json.decode(result);
+      Map<String, dynamic> map = json.decode(result);
       ApiFqtvMemberAirMilesResp resp = new ApiFqtvMemberAirMilesResp.fromJson(
           map);
       _loadingInProgress = false;
@@ -422,7 +422,7 @@ String _error = '';
  //       showAlertDialog(context, 'Error', _error);
         return;
       } else {
-        Map map = json.decode(result);
+        Map<String, dynamic> map = json.decode(result);
         ApiFqtvMemberTransactionsResp resp = new ApiFqtvMemberTransactionsResp
             .fromJson(map);
         if (resp.statusCode != 'OK') {
@@ -433,7 +433,7 @@ String _error = '';
           var transactions = resp.transactions;
           _loadingInProgress = true;
           setState(() {});
-          _bulkLoadPnrs(transactions);
+          _bulkLoadPnrs(transactions!);
           //showAlertDialog(context, 'Information', 'Found ${transactions.length} PNRs');
         }
       }
@@ -495,7 +495,7 @@ String _error = '';
                   //maxLength: 6,
                   decoration: getDecoration(translate("Enter your booking reference")),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return translate('Please enter a booking reference');
                     }
                     if (value.trim().length != 6) {
@@ -504,20 +504,20 @@ String _error = '';
                     }
                     return null;
                   },
-                  onSaved: (value) => _rloc = value.trim(),
+                  onSaved: (value) => _rloc = value!.trim(),
                 ),
                 new Padding(padding: EdgeInsets.all(10)),
                 TextFormField(
                   textCapitalization: TextCapitalization.characters,
                   decoration: getDecoration(translate("Enter your surname")),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return translate('Please enter a surname');
                     } else {
                       return null;
                     }
                   },
-                  onSaved: (value) => _surname = value.trim().toUpperCase(),
+                  onSaved: (value) => _surname = value!.trim().toUpperCase(),
                 ),
                 Center(
                     child: Padding(
@@ -537,7 +537,7 @@ String _error = '';
                             color: gblSystemColors.primaryButtonTextColor),
                       ),
                       onPressed: () {
-                        if (formKey.currentState.validate()) {
+                        if (formKey.currentState!.validate()) {
                           _loadPnr();
                         }
                       },
@@ -574,7 +574,7 @@ String _error = '';
         itemBuilder: (BuildContext context, index) =>
             _buildListItem(context, pnrs[index]));
 
-    return listViewOfBookings.semanticChildCount > 0
+    return listViewOfBookings.semanticChildCount! > 0
         ? new Container(child: listViewOfBookings)
         : noFutureBookingsFound;
   }
@@ -687,11 +687,11 @@ String _error = '';
   }
 
   _showPopupMenu(String rloc) async {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    final RenderBox overlay = Overlay.of(context)!.context.findRenderObject() as RenderBox;
     await showMenu(
       context: context,
       position: RelativeRect.fromRect(
-          _tapPosition & Size(40, 40), // smaller rect, the touch area
+          _tapPosition! & Size(40, 40), // smaller rect, the touch area
           Offset.zero & overlay.size),
       items: [
          PopupMenuItem(
@@ -759,7 +759,7 @@ String _error = '';
     //List<List<Itin>> journeys  = List<List<Itin>>();
     List<Itin> flt = [];
     // List<Itin>();
-    List<List> journeys = [];
+    List<List<Itin>> journeys = [];
     // List<List>();
     //journeys
 
@@ -807,24 +807,31 @@ String _error = '';
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(cityCodetoAirport(journey.last.arrive),
+                  style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
+/*
               FutureBuilder(
                 future: cityCodeToName(journey.last.arrive),
                 initialData: journey.last.arrive.toString(),
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate(text.data),
+                  return new Text(translate(text.data!),
                       style: new TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.w700));
                 },
               ),
-              FutureBuilder(
+*/
+ /*             FutureBuilder(
                 future: cityCodeToName(journey.first.depart),
                 initialData: journey.first.depart.toString(),
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate('from ') + translate(text.data),
+                  return new Text(translate('from ') + translate(text.data!),
                       style: new TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w300));
                 },
-              ),
+              ),*/
+              Text(cityCodetoAirport(journey.last.depart),
+                  style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
+
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -918,9 +925,9 @@ String _error = '';
       transactions.forEach((tran) {
         loadBooking(tran.pnr).then((pnrJson) {
           index++;
-          pnrJson = pnrJson.replaceAll('\n', '').replaceAll('\r', '');
+          pnrJson = pnrJson!.replaceAll('\n', '').replaceAll('\r', '');
           if (pnrJson.startsWith('{')) {
-            Map pnrMap = json.decode(pnrJson);
+            Map<String, dynamic> pnrMap = json.decode(pnrJson);
             logit('Loaded PNR: ${tran.pnr}');
             var objPnr = new PnrModel.fromJson(pnrMap);
             _rloc = tran.pnr;
@@ -958,7 +965,7 @@ String _error = '';
 
   }
 
-  Future<String> loadBooking(String rloc) async {
+  Future<String?> loadBooking(String rloc) async {
 
 
     String data = await runVrsCommand('*$rloc~x');
@@ -986,7 +993,7 @@ String _error = '';
         //var objPnr = new PnrModel.fromJson(pnrMap);
         return pnrJson;
       } catch (e) {
-        logit(e);
+        logit(e.toString());
       }
     }
     return null;
@@ -1002,7 +1009,7 @@ String _error = '';
       String data = await runVrsCommand('*$_rloc~x');
 
       String pnrJson;
-      Map pnrMap;
+      Map<String, dynamic> pnrMap;
       // await for (String pnrRaw in resStream) {
 
       if (data.contains('ERROR - RECORD NOT FOUND -')) {
@@ -1077,11 +1084,11 @@ String _error = '';
         .replaceAll('</string>', '')
         .trim();
     try {
-      Map map = json.decode(apisStatusJson);
+      Map<String, dynamic> map = json.decode(apisStatusJson);
       logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
       DatabaseRecord databaseRecord = new DatabaseRecord(
-          rloc: apisPnrStatus.xml.pnrApis.pnr, //_rloc,
+          rloc: apisPnrStatus.xml!.pnrApis.pnr, //_rloc,
           data: apisStatusJson,
           delete: 0);
       Repository.get().updatePnrApisStatus(databaseRecord).then(
@@ -1092,7 +1099,7 @@ String _error = '';
                 }
               });
     } catch (e) {
-      showAlertDialog(context, 'Alert', e);
+      showAlertDialog(context, 'Alert', e.toString());
       //_showDialog();
       logit('$e');
     }
@@ -1100,7 +1107,7 @@ String _error = '';
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {

@@ -89,7 +89,7 @@ class NotificationService {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(channel);
+          ?.createNotificationChannel(channel!);
 
       /// Update the iOS foreground notification presentation options to allow
       /// heads up notifications.
@@ -104,16 +104,16 @@ class NotificationService {
 
       FirebaseMessaging.instance.getToken().then((token){
 
-        print('token= ' + token);
+        //print('token= ' + token);
         if( gblIsLive == false ) {
           serverLog('Firebase token=$token');
         }
-        saveToken(token);
+        saveToken(token!);
       });
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
 
-        RemoteNotification notification = message.notification;
+        RemoteNotification? notification = message.notification;
         //AndroidNotification android = message.notification?.android;
         logit('Listener msg received');
         //Map data = message.data;
@@ -180,12 +180,12 @@ void processNotification(Map data){
     }
 
   }
-void onClickNotification(String s) {
+void onClickNotification(String? s) {
     print('onClickNotification');
 }
 
   // called in iOS < v10.0
-  void onDidReceiveLocalNotification(int a, String b, String c, String d) {
+  void onDidReceiveLocalNotification(int a, String? b, String? c, String? d) {
 
   }
 
@@ -203,10 +203,10 @@ Future onSelectNotification(String payload,BuildContext context) async {
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
-AndroidNotificationChannel channel;
+AndroidNotificationChannel? channel;
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,

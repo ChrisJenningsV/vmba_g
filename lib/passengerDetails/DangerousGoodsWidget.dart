@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
@@ -9,13 +10,13 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 //ignore: must_be_immutable
 class DangerousGoodsWidget extends StatefulWidget {
   bool preLoadDetails = false;
-  final PassengerDetail passengerDetailRecord;
-  final NewBooking newBooking;
-  final PnrModel pnr;
+  final PassengerDetail? passengerDetailRecord;
+  final NewBooking? newBooking;
+  final PnrModel? pnr;
   final int journeyNo;
   final int paxNo;
 
-  DangerousGoodsWidget({Key key, this.preLoadDetails, this.passengerDetailRecord, this.newBooking, this.pnr, this.paxNo, this.journeyNo})
+  DangerousGoodsWidget({Key key= const Key("dangerous_key"), this.preLoadDetails=false, this.passengerDetailRecord, this.newBooking, this.pnr, this.paxNo=1, this.journeyNo=1})
       : super(key: key);
 
   //final LoadDataType dataType;
@@ -24,8 +25,8 @@ class DangerousGoodsWidget extends StatefulWidget {
 }
 
 class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
-  bool _buttonEnabled;
-  bool continuePass;
+  bool _buttonEnabled=true;
+  bool continuePass=true;
 
   @override void initState() {
     _buttonEnabled = false;
@@ -62,7 +63,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
     value: _buttonEnabled,
     onChanged: (newValue) {
       setState(() {
-        _buttonEnabled = newValue;
+        _buttonEnabled = newValue!;
       });
     },
     controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
@@ -81,9 +82,9 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ContactDetailsWidget(
-                          newbooking: widget.newBooking,
+                          newbooking: widget.newBooking!,
                           preLoadDetails: widget.preLoadDetails,
-                          passengerDetailRecord: widget.passengerDetailRecord,
+                          passengerDetailRecord: widget.passengerDetailRecord!,
                         )));
             print(_error);
           } else {

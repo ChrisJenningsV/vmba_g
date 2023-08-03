@@ -1,3 +1,4 @@
+
 import 'dart:async';
 //import 'package:credit_card/credit_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,9 @@ class CardInputWidget extends StatefulWidget {
   final PaymentDetails  paymentDetails;
 
   const CardInputWidget({
-    Key key,
-    this.payCallback,
-    this.paymentDetails}) : super(key: key);
+    Key key= const Key("ccinw_key"),
+    required this.payCallback,
+    required this.paymentDetails}) : super(key: key);
 
   @override
   CardInputWidgetState createState() => CardInputWidgetState();
@@ -151,8 +152,8 @@ void initState() {
     widget.paymentDetails.cVV = '1234';
     if( gblPnrModel != null ) {
       widget.paymentDetails.cardHolderName =
-          gblPnrModel.pNR.names.pAX[0].firstName + ' ' +
-              gblPnrModel.pNR.names.pAX[0].surname;
+          gblPnrModel!.pNR.names.pAX[0].firstName + ' ' +
+              gblPnrModel!.pNR.names.pAX[0].surname;
     }
     widget.paymentDetails.addressLine1 = 'Windsor Castle' ;
     widget.paymentDetails.addressLine2 = 'Castle Hill' ;
@@ -393,13 +394,13 @@ void initState() {
 
   Future<void> _showCreditCardDialog() async {
     final MaskedTextController _cardNumberController =
-        MaskedTextController(mask: '0000 0000 0000 0000');
+        MaskedTextController(mask: '0000 0000 0000 0000', translator: MaskedTextController.getDefaultTranslator() );
     final TextEditingController _expiryDateController =
-        MaskedTextController(mask: '00/00');
+        MaskedTextController(mask: '00/00', translator: MaskedTextController.getDefaultTranslator());
     final TextEditingController _cardHolderNameController =
         TextEditingController();
     final TextEditingController _cvvCodeController =
-        MaskedTextController(mask: '0000');
+        MaskedTextController(mask: '0000', translator: MaskedTextController.getDefaultTranslator());
 
     if (cardNumber != null) {
       _cardNumberController.text = cardNumber.toString();
@@ -464,7 +465,7 @@ void initState() {
                               //margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
                               child: TextFormField(
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return translate('Card number cannot be empty');
                                   }
 
@@ -475,7 +476,7 @@ void initState() {
                                   return null;
                                 },
 
-                                onSaved: (value) => cardNumber = value.trim(),
+                                onSaved: (value) => cardNumber = value!.trim(),
                                 controller: _cardNumberController,
                                 //   cursorColor: widget.cursorColor ?? themeColor,
                                //style: TextStyle(
@@ -507,7 +508,7 @@ void initState() {
                               //  margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                               child: TextFormField(
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return translate('Expiry date cannot be empty');
                                   }
                                   if (value.length < 5) {
@@ -539,7 +540,7 @@ void initState() {
 
                                   return null;
                                 },
-                                onSaved: (value) => expiryDate = value.trim(),
+                                onSaved: (value) => expiryDate = value!.trim(),
 
                                 controller: _expiryDateController,
                                 decoration: getDecoration('Expiry Date', prefixIcon: Icon(Icons.date_range),hintText: 'MM/YY') ,
@@ -565,7 +566,7 @@ void initState() {
                               child: TextFormField(
                                 // focusNode: cvvFocusNode,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return translate('Security code cannot be empty');
                                   }
                                   if (value.length < 3) {
@@ -573,7 +574,7 @@ void initState() {
                                   }
                                   return null;
                                 },
-                                onSaved: (value) => cvvCode = value.trim(),
+                                onSaved: (value) => cvvCode = value!.trim(),
                                 controller: _cvvCodeController,
                                decoration: getDecoration('Security Code', prefixIcon: Icon(Icons.lock),hintText: 'XXXX'),
                                /*InputDecoration(
@@ -598,11 +599,11 @@ void initState() {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: TextFormField(
-                                validator: (value) => value.isEmpty
+                                validator: (value) => value!.isEmpty
                                     ? translate('Card holder name cannot be empty')
                                     : null,
                                 onSaved: (value) =>
-                                    cardHolderName = value.trim(),
+                                    cardHolderName = value!.trim(),
                                 controller: _cardHolderNameController,
                                 style: TextStyle(),
                                 decoration: getDecoration( 'Card Holder'),
@@ -655,7 +656,7 @@ void initState() {
 
   validateAndSubmit() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       Navigator.pop(context);
     }
@@ -699,7 +700,7 @@ void initState() {
       List<Widget> widgets = [];
       //new List<Widget>();
       Countrylist countrylist = snapshot.data;
-      countrylist.countries.forEach((c) => widgets.add(ListTile(
+      countrylist.countries!.forEach((c) => widgets.add(ListTile(
           title: Text(c.enShortName),
           onTap: () {
             Navigator.pop(context, c.alpha2code);
@@ -730,7 +731,7 @@ void initState() {
                         ),
                       );
                     } else {
-                      return null;
+                      return Container();
                     }
                   } else {
                     return Container(
@@ -794,11 +795,11 @@ void initState() {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             //margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
                             child: TextFormField(
-                              validator: (value) => value.isEmpty
+                              validator: (value) => value!.isEmpty
                                   ? translate('Address field required')
                                   : null,
 
-                              onSaved: (value) => street = value.trim(),
+                              onSaved: (value) => street = value!.trim(),
                               controller: _streetTextEditingController,
                               //   cursorColor: widget.cursorColor ?? themeColor,
                               style: TextStyle(
@@ -817,10 +818,10 @@ void initState() {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             //  margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                             child: TextFormField(
-                              validator: (value) => value.isEmpty
+                              validator: (value) => value!.isEmpty
                                   ? translate('Address field required')
                                   : null,
-                              onSaved: (value) => town = value.trim(),
+                              onSaved: (value) => town = value!.trim(),
 
                               controller: _townTextEditingController,
                               // cursorColor: widget.cursorColor ?? themeColor,
@@ -841,10 +842,10 @@ void initState() {
                             // margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                             child: TextFormField(
                               // focusNode: cvvFocusNode,
-                              validator: (value) => value.isEmpty
+                              validator: (value) => value!.isEmpty
                                   ? translate('Address field required')
                                   : null,
-                              onSaved: (value) => state = value.trim(),
+                              onSaved: (value) => state = value!.trim(),
                               controller: _stateTextEditingController,
                               //cursorColor: widget.cursorColor ?? themeColor,
                               style: TextStyle(
@@ -864,10 +865,10 @@ void initState() {
                           Container(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              validator: (value) => value.isEmpty
+                              validator: (value) => value!.isEmpty
                                   ? translate('Address field required')
                                   : null,
-                              onSaved: (value) => postcode = value.trim(),
+                              onSaved: (value) => postcode = value!.trim(),
                               controller: _postcodeTextEditingController,
                               style: TextStyle(),
                               decoration: getDecoration(translate('Post code / Zip Code')),
@@ -889,7 +890,7 @@ void initState() {
                                   decoration: getDecoration(translate('Country')),
                                   controller: _countryTextEditingController,
                                   textInputAction: TextInputAction.done,
-                                  validator: (value) => value.isEmpty
+                                  validator: (value) => value!.isEmpty
                                       ? translate('Address field required')
                                       : null,
                                   onSaved: (value) {
@@ -931,9 +932,9 @@ void initState() {
 
 
 class MaskedTextController extends TextEditingController {
-  MaskedTextController({String text, this.mask, Map<String, RegExp> translator})
+  MaskedTextController({String text='', required this.mask, required Map<String, RegExp> translator  })
       : super(text: text) {
-    this.translator = translator ?? MaskedTextController.getDefaultTranslator();
+    this.translator = MaskedTextController.getDefaultTranslator();
 
     addListener(() {
       final String previous = _lastUpdatedText;
@@ -950,7 +951,7 @@ class MaskedTextController extends TextEditingController {
 
   String mask;
 
-  Map<String, RegExp> translator;
+  Map<String, RegExp> translator = MaskedTextController.getDefaultTranslator();
 
   Function afterChange = (String previous, String next) {};
   Function beforeChange = (String previous, String next) {
@@ -981,7 +982,7 @@ class MaskedTextController extends TextEditingController {
   void moveCursorToEnd() {
     final String text = _lastUpdatedText;
     selection =
-        TextSelection.fromPosition(TextPosition(offset: (text ?? '').length));
+        TextSelection.fromPosition(TextPosition(offset: (text ).length));
   }
 
   @override
@@ -1031,7 +1032,7 @@ class MaskedTextController extends TextEditingController {
 
       // apply translator if match
       if (translator.containsKey(maskChar)) {
-        if (translator[maskChar].hasMatch(valueChar)) {
+        if (translator[maskChar]!.hasMatch(valueChar)) {
           result += valueChar;
           maskCharIndex += 1;
         }

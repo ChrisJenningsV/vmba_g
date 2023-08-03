@@ -32,14 +32,14 @@ cancel msp
 
 
 
-Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, dynamic p) onComplete, void Function(String msg) onError} ) async {
+Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, dynamic p)? onComplete, void Function(String msg)? onError} ) async {
   if( gblLogProducts) logit('save product');
   String msg = '';
-  String _error;
+  String _error = '';
   msg = '*${pnr.rLOC}^';
   String pCmd = buildSaveProductCmd(product, pnr);
   if( pCmd.isEmpty){
-    onComplete( null, product);
+    onComplete!( PnrModel(), product);
     return;
   }
   msg += pCmd;
@@ -61,7 +61,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
 
       //_dataLoaded();
       print('saveProduct $_error');
-      onError(_error);
+      onError!(_error);
       //_showDialog();
       //_gotoPreviousPage();
       return;
@@ -73,7 +73,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
           .replaceAll('</string>', '');
 
       print(pnrJson);
-      Map map = json.decode(pnrJson);
+      Map<String, dynamic> map = json.decode(pnrJson);
 
       PnrModel  pnrModel = new PnrModel.fromJson(map);
       if( pnrModel.pNR != null ) {
@@ -82,10 +82,10 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
         refreshStatusBar();
         refreshMmbBooking();
       }
-      onComplete( pnrModel, product);
+      onComplete!( pnrModel, product);
     }
   } catch(e) {
-    logit(e);
+    logit(e.toString());
   }
 }
   String buildSaveProductCmd(Product product, PNR pnr) {
@@ -101,7 +101,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
          MP element = pnr.mPS.mP[i];
         if( element.mPID == product.productCode) {
           // check if this still wanted
-          if( product.curProducts == null || product.curProducts.length == 0 ){
+          if( product.curProducts == null || product.curProducts!.length == 0 ){
             // remove
             if( gblLogProducts) logit('remove 1 ${element.text }');
             if (cmd.isNotEmpty) cmd += '^';
@@ -109,7 +109,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
 
           } else {
             bool found = false;
-            product.curProducts.forEach((p) {
+            product.curProducts!.forEach((p) {
               int paxNo = int.parse(p.split(':')[0]);
               int segNo = int.parse(p.split(':')[1]);
 
@@ -136,7 +136,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
     }
 
 
-    product.curProducts.forEach((element) {
+    product.curProducts!.forEach((element) {
       int paxNo = int.parse(element.split(':')[0]);
       int segNo = int.parse(element.split(':')[1]);
 

@@ -16,7 +16,7 @@ import '../../utilities/helper.dart';
 
 class EditDetailsWidget extends StatefulWidget {
   EditDetailsWidget(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})
+      {Key key= const Key("editdetw_key"), required this.passengerDetail, this.isAdsBooking = false, this.isLeadPassenger = false})
       : super(key: key);
   final PassengerDetail passengerDetail;
   final bool isAdsBooking;
@@ -30,7 +30,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
   bool _loadingInProgress = false;
   final formKey = new GlobalKey<FormState>();
-  String _error;
+  String _error ='';
   //var _title = new TextEditingController();
   TextEditingController _titleTextEditingController = TextEditingController();
 
@@ -48,7 +48,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   TextEditingController _adsPinTextEditingController = TextEditingController();
   TextEditingController _fqtvTextEditingController = TextEditingController();
 
-  List<UserProfileRecord> userProfileRecordList;
+  List<UserProfileRecord>? userProfileRecordList;
   @override
   initState() {
     super.initState();
@@ -58,7 +58,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     _dateOfBirthTextEditingController.text =
         widget.passengerDetail.dateOfBirth != null
             ? DateFormat('dd-MMM-yyyy')
-                .format(widget.passengerDetail.dateOfBirth)
+                .format(widget.passengerDetail.dateOfBirth!)
             : '';
     _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
     _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
@@ -194,7 +194,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               ),
               controller: _titleTextEditingController,
               validator: (value) =>
-                  value.isEmpty ? translate('Title cannot be empty') : null,
+                  value!.isEmpty ? translate('Title cannot be empty') : null,
               onSaved: (value) {
                 if (value != null) {
                   //widget.passengerDetail.title = value.trim();
@@ -233,7 +233,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
             ],
             validator: (value) =>
-                value.isEmpty ? translate('First name cannot be empty') : null,
+                value!.isEmpty ? translate('First name cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.firstName = value.trim();
@@ -269,7 +269,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               widget.passengerDetail.lastName = value;
             },
             validator: (value) =>
-                value.isEmpty ? translate('Last name cannot be empty') : null,
+                value!.isEmpty ? translate('Last name cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                 widget.passengerDetail.lastName = value.trim();
@@ -303,10 +303,10 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
                     //initialValue: field.value,
                     controller: _dateOfBirthTextEditingController,
                     validator: (value) =>
-                        value.isEmpty ? translate('Date of Birth is required') : null,
+                        value!.isEmpty ? translate('Date of Birth is required') : null,
                     onSaved: (value) {
                       if (value != '') {
-                        var date = value.split('-')[2] +
+                        var date = value!.split('-')[2] +
                             ' ' +
                             value.split('-')[1] +
                             ' ' +
@@ -389,7 +389,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               widget.passengerDetail.adsNumber = value;
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'An ADS number is required';
               } else if (!value.toUpperCase().startsWith('ADS') ||
                   value.length != 16 ||
@@ -433,7 +433,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
     widget.passengerDetail.adsPin = value;
     },
     validator: (value) {
-    if (value.isEmpty) {
+    if (value!.isEmpty) {
     return 'ADS Pin is required';
     } else {
     return null;
@@ -455,7 +455,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           value: gblRememberMe,
           onChanged: (newValue) {
             setState(() {
-              gblRememberMe = newValue;
+              gblRememberMe = newValue!;
             });
           },
           controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
@@ -567,7 +567,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   }
 
   _showCalenderDialog(PaxType paxType) {
-    DateTime dateTime;
+    DateTime dateTime = DateTime.now();
     DateTime _maximumDate;
     DateTime _minimumDate;
     DateTime _initialDateTime;
@@ -705,7 +705,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -715,7 +715,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
   void formSave() {
     final form = formKey.currentState;
-    form.save();
+    form!.save();
   }
 
   void validateAndSubmit() async {

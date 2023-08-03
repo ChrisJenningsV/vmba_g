@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -16,11 +17,11 @@ import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 
 void showNotification(
-    BuildContext context, RemoteNotification notification, Map data) {
+    BuildContext? context, RemoteNotification? notification, Map data) {
   //String time = DateFormat('kk:mm').format(DateTime.now());
   showDialog(
     barrierDismissible: false,
-    context: context,
+    context: context as BuildContext,
     builder: (BuildContext cxt) {
       return Align(
         alignment: Alignment.topCenter,
@@ -35,7 +36,7 @@ void showNotification(
                 padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 5),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: _getBody(context, notification, data),
+                  children: _getBody(context, notification as RemoteNotification, data),
                 ),
               ),
               /*                 Positioned( // will be positioned in the top right of the container
@@ -122,7 +123,7 @@ List<Widget> _getBody(
   if (data['format'] != null && data['format'] == 'HTML') {
     body = data['html'];
   } else {
-    body = notification.body;
+    body = notification.body as String;
   }
   double h = 200;
   if (data['height'] != null && data['height'] != '') {

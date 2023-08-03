@@ -381,7 +381,7 @@ Future makeBooking(NewBooking newBooking) async {
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
-        Map map = json.decode(pnrJson);
+        Map<String, dynamic> map = json.decode(pnrJson);
 
         pnrModel = new PnrModel.fromJson(map);
         gblPnrModel = pnrModel;
@@ -436,7 +436,7 @@ Future makeBooking(NewBooking newBooking) async {
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
-              Map map = json.decode(pnrJson);
+              Map<String, dynamic> map = json.decode(pnrJson);
 
               pnrModel = new PnrModel.fromJson(map);
             }
@@ -548,7 +548,7 @@ Future makeBooking(NewBooking newBooking) async {
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
-        Map map = json.decode(pnrJson);
+        Map<String, dynamic> map = json.decode(pnrJson);
 
         pnrModel = new PnrModel.fromJson(map);
         print(pnrModel.pNR.rLOC);
@@ -603,7 +603,7 @@ Future makeBooking(NewBooking newBooking) async {
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
-              Map map = json.decode(pnrJson);
+              Map<String, dynamic> map = json.decode(pnrJson);
 
               pnrModel = new PnrModel.fromJson(map);
             }
@@ -704,7 +704,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
       }
       if (pax.dateOfBirth != null) {
         // get age in years
-        Duration td = DateTime.now().difference(pax.dateOfBirth);
+        Duration td = DateTime.now().difference(pax.dateOfBirth as DateTime);
         int ageYears = (td.inDays / 365).round();
         int ageMonths = (td.inDays / 30).round();
         if( ageMonths == 24) ageMonths = 23;
@@ -719,7 +719,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
         } else if (pax.paxType == PaxType.senior) {
           sb.write('.CD');
           String _dob =
-          DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+          DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
           sb.write('($_dob)');
           wantDOB = true;
         } else if (pax.paxType == PaxType.infant) {
@@ -730,7 +730,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
         }
         if( gblSettings.wantApis && wantDOB) {
           String _dob =
-          DateFormat('ddMMMyy').format(pax.dateOfBirth).toString();
+          DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
           sb.write('^3-${pax.paxNumber}FDOB $_dob');
         }
       } else {
@@ -764,7 +764,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
 
     if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){
       String _dob =
-      DateFormat('ddMMMyyyy').format(pax.dateOfBirth).toString();
+      DateFormat('ddMMMyyyy').format(pax.dateOfBirth as DateTime).toString();
       sb.write('3-${paxNo}FDOB $_dob^');
 
     }
@@ -784,7 +784,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
 void refreshMmbBooking() {
   try {
     if( mmbGlobalKeyBooking != null && mmbGlobalKeyBooking.currentState != null ) {
-      mmbGlobalKeyBooking.currentState.refresh();
+      mmbGlobalKeyBooking.currentState?.refresh();
     }
   } catch (e) {
 
@@ -793,7 +793,7 @@ void refreshMmbBooking() {
 void reloadMmbBooking(String rloc) {
   try {
     if( mmbGlobalKeyBooking != null && mmbGlobalKeyBooking.currentState != null ) {
-      mmbGlobalKeyBooking.currentState.reload(rloc);
+      mmbGlobalKeyBooking.currentState?.reload(rloc);
     }
   } catch (e) {
 
@@ -803,7 +803,7 @@ void refreshStatusBar() {
   try {
 
   if( statusGlobalKeyOptions != null && statusGlobalKeyOptions.currentState != null ) {
-    statusGlobalKeyOptions.currentState.refresh();
+    statusGlobalKeyOptions.currentState?.refresh();
   }
   } catch (e) {
     print(e.toString());
@@ -811,7 +811,7 @@ void refreshStatusBar() {
 
   try{
   if( statusGlobalKeyPax != null && statusGlobalKeyPax.currentState != null ) {
-    statusGlobalKeyPax.currentState.refresh();
+    statusGlobalKeyPax.currentState?.refresh();
   }
 } catch (e) {
 print(e.toString());

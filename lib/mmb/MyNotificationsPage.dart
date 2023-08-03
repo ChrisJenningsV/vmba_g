@@ -12,7 +12,7 @@ import '../data/models/notifyMsgs.dart';
 
 
 class MyNotificationsPage extends StatefulWidget {
-  MyNotificationsPage({Key key}) : super(key: key);
+  MyNotificationsPage({Key key= const Key("mynot_key")}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new _MyNotificationsPageState();
@@ -20,14 +20,14 @@ class MyNotificationsPage extends StatefulWidget {
 
 class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerProviderStateMixin  {
   // new List<PnrDBCopy>();
-  bool _loadingInProgress;
-  Offset _tapPosition;
+  bool _loadingInProgress=false;
+  Offset? _tapPosition;
   final formKey = GlobalKey<FormState>();
   String fqtvEmail = '';
   String fqtvNo = '';
   String fqtvPass='';
  // List<NotificationMessage> msgs;
-  TabController _controller;
+  TabController? _controller;
 
   var tablen = 3;
 
@@ -39,7 +39,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
     gblNotifications = null;  // incase none found
     Repository.get().getAllNotifications().then((m) {
       gblNotifications = m;
-      print('Got ${gblNotifications.length} notifications');
+      print('Got ${gblNotifications!.length} notifications');
       _loadingInProgress = false;
       setState(() {
 
@@ -52,14 +52,16 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    final List<String> args = ModalRoute.of(context).settings.arguments;
+  //  final List<String> args = ModalRoute.of(context)!.settings.arguments as List<String>;
+/*
     print('args = $args');
     if( args != null && args.toString().contains('new') ){
-      _controller.index = 1;
+      _controller!.index = 1;
     }
     if( args != null && args.toString().contains('promo') ){
-      _controller.index = 2;
+      _controller!.index = 2;
     }
+*/
 
     if (_loadingInProgress) {
       return Scaffold(
@@ -88,7 +90,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       tabeViews.add(new Container(child: myNotifies('promo')));
 
       if (gblNotifications != null) {
-        title += ' ${gblNotifications.length} ' + translate('found');
+        title += ' ${gblNotifications!.length} ' + translate('found');
       }
       return Scaffold(
         appBar: appBar(context, title,
@@ -118,7 +120,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
   Widget myNotifies(String  show) {
 
-    if( gblNotifications != null && gblNotifications.length > 0 )
+    if( gblNotifications != null && gblNotifications!.length > 0 )
       {
 
       } else {
@@ -137,21 +139,21 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
     if (show == 'promo') {
       listMsgs = [];
-      gblNotifications.forEach((element) {
-        if(element.data['actions'] != null &&  element.data['actions'] == 'promo'){
+      gblNotifications!.forEach((element) {
+        if(element.data!['actions'] != null &&  element.data!['actions'] == 'promo'){
           listMsgs.add(element);
         }
       });
 
     } else if (show == 'new') {
       listMsgs = [];
-      gblNotifications.forEach((element) {
-        if(element.background == 'true' && !element.data['actions'].toString().contains('promo')){
+      gblNotifications!.forEach((element) {
+        if(element.background == 'true' && !element.data!['actions'].toString().contains('promo')){
           listMsgs.add(element);
         }
       });
     } else {
-      listMsgs = gblNotifications;
+      listMsgs = gblNotifications!;
     }
     ListView listViewOfNote = ListView.builder(
         itemCount: listMsgs.length,
@@ -165,20 +167,21 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
     String title = '';
     String body = '';
-    Color clr = Colors.black38;
-    Color bkClr = Colors.white;
+    Color? clr = Colors.black38;
+    Color? bkClr = Colors.white;
 
-    if( msg.data['actions'] != null && msg.data['actions'].toString().contains('promo')) {
+    if( msg.data!['actions'] != null && msg.data!['actions'].toString().contains('promo')) {
       bkClr = gblSystemColors.promoBackColor;
     } else  if(msg.background == 'true'){
       clr = Colors.blue;
     }
     if (msg != null && msg.notification != null ) {
-      title = msg.notification.title;
+      title = msg.notification!.title;
+      if( title == null ) title = '';
       if( msg.data != null ){
-        title = msg.data['rloc'] + ' ' + title;
+        title = msg.data!['rloc'] + ' ' + title;
       }
-      body = msg.notification.body;
+      body = msg.notification!.body;
     }
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
     return Container(
@@ -192,7 +195,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime) + ' $title', //document['rloc'],
+              new Text( DateFormat('MMM dd kk:mm').format(msg.sentTime as DateTime) + ' $title', //document['rloc'],
                   style: new TextStyle(color: clr,
                       fontSize: 16.0, fontWeight: FontWeight.w700)),
               GestureDetector(
@@ -207,10 +210,10 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
         ]),
         onPressed: () {
           print('Click on notification');
-          Map m = msg.data;
+          Map? m = msg.data;
           if( msg.background == 'true'){
             // mark as no longer no read
-            Repository.get().updateNotification(convertMsg(msg), false, true).then((value) {
+            Repository.get().updateNotification(convertMsg(msg) as RemoteMessage, false, true).then((value) {
               Repository.get().getAllNotifications().then((m) {
                 gblNotifications = m;
                 _loadingInProgress = false;
@@ -230,8 +233,8 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
             });
           }
 
-          RemoteNotification n = RemoteNotification(title: msg.notification.title, body: msg.notification.body);
-          showNotification( context, n, m);
+          RemoteNotification n = RemoteNotification(title: msg.notification!.title, body: msg.notification!.body);
+          showNotification( context, n, m as Map);
           /*Navigator.push(
             context,
             MaterialPageRoute(
@@ -261,11 +264,11 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
   }
 
   _showPopupMenu(String sTime) async {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    final RenderBox overlay = Overlay.of(context)!.context.findRenderObject() as RenderBox;
     await showMenu(
       context: context,
       position: RelativeRect.fromRect(
-          _tapPosition & Size(40, 40), // smaller rect, the touch area
+          _tapPosition! & Size(40, 40), // smaller rect, the touch area
           Offset.zero & overlay.size),
       items: [
 

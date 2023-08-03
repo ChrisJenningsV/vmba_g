@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ import '../../data/models/vrsRequest.dart';
 
 
 class ApisWidget extends StatefulWidget {
-  ApisWidget({Key key, this.apisCmd, this.rloc, this.paxIndex, this.pnr}) : super(key: key);
+  ApisWidget({Key key= const Key("apiswid_key"), required this.apisCmd,required  this.rloc,required  this.paxIndex, required this.pnr}) : super(key: key);
 
   final String apisCmd;
   final String rloc;
@@ -33,8 +34,8 @@ class ApisWidget extends StatefulWidget {
 
 class _ApisWidgetState extends State<ApisWidget> {
   final formKey = new GlobalKey<FormState>();
-  bool _loadingInProgress;
-  ApisModel apisForm;
+  bool _loadingInProgress = false;
+  ApisModel? apisForm;
   String _error ='';
 
   @override
@@ -58,7 +59,7 @@ class _ApisWidgetState extends State<ApisWidget> {
       if (gblSession == null) gblSession = new Session('0', '', '0');
       msg = json.encode(
           VrsApiRequest(
-              gblSession, cmd,
+              gblSession!, cmd,
               gblSettings.xmlToken.replaceFirst('token=', ''),
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
@@ -67,7 +68,7 @@ class _ApisWidgetState extends State<ApisWidget> {
               language: gblLanguage
           )
       );
-      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession.varsSessionId}&req=$msg";
+      msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
     } else {
       msg = gblSettings.xmlUrl +
           gblSettings.xmlToken +
@@ -76,7 +77,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     }
     print(msg);
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
-    Map map;
+    late Map<String, dynamic> map;
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON
       try {
@@ -89,7 +90,7 @@ class _ApisWidgetState extends State<ApisWidget> {
       }
 
       print('Loaded APIS fields');
-      if(gblSettings.useWebApiforVrs ) {
+      if(gblSettings.useWebApiforVrs && response.statusCode == 200  ) {
         VrsApiResponse rs = VrsApiResponse.fromJson(map);
         if( rs.errorMsg != null && rs.errorMsg.isNotEmpty) {
           _error = rs.errorMsg;
@@ -120,14 +121,14 @@ class _ApisWidgetState extends State<ApisWidget> {
     String url = gblSettings.apisUrl;
     // 'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?';
 
-    Response response = null;
+    Response response = Response('',0);
         String cmd = '';
     if( gblSettings.useWebApiforVrs) {
-      cmd = 'DAX/' + apisForm.toXmlString();
+      cmd = 'DAX/' + apisForm!.toXmlString();
       if (gblSession == null) gblSession = new Session('0', '', '0');
       String msg = json.encode(
           VrsApiRequest(
-              gblSession, cmd,
+              gblSession!, cmd,
               gblSettings.xmlToken.replaceFirst('token=', ''),
               vrsGuid: gblSettings.vrsGuid,
               notifyToken: gblNotifyToken,
@@ -137,20 +138,20 @@ class _ApisWidgetState extends State<ApisWidget> {
           )
       ) ;
 
-      response = await http.post(Uri.parse('${gblSettings.xmlUrl.replaceAll('PostVRSCommand', 'DoVRSCommand')}VarsSessionID=${gblSession.varsSessionId}'),
+      response = await http.post(Uri.parse('${gblSettings.xmlUrl.replaceAll('PostVRSCommand', 'DoVRSCommand')}VarsSessionID=${gblSession!.varsSessionId}'),
           headers: getXmlHeaders(),
           body: {
             'token': gblSettings.xmlTokenPost,
             'Command': cmd,
             'req': msg,
-            'FormData': apisForm.toXmlString()
+            'FormData': apisForm!.toXmlString()
           });
     } else {
       cmd = 'DAX/';
-      final response = await http.post(Uri.parse(url), body: {
+      await http.post(Uri.parse(url), body: {
         'token': gblSettings.xmlTokenPost,
         'Command': cmd,
-        'FormData': apisForm.toXmlString()
+        'FormData': apisForm!.toXmlString()
       });
     }
 
@@ -163,13 +164,13 @@ class _ApisWidgetState extends State<ApisWidget> {
             .replaceAll('</string>', '');
         print(result);
         if( gblSettings.useWebApiforVrs) {
-          Map map = json.decode(result);
+          Map<String, dynamic> map = json.decode(result);
           VrsApiResponse rs = VrsApiResponse.fromJson(map);
           result = rs.data;
         }
         if (result.trim() == 'OK') {
           Repository.get().fetchApisStatus(widget.rloc).then((w) {
-            Map map = json.decode(w.data);
+            Map<String, dynamic> map = json.decode(w!.data);
 
             ApisPnrStatusModel apisPnrStatus =
                 new ApisPnrStatusModel.fromJson(map);
@@ -200,7 +201,7 @@ class _ApisWidgetState extends State<ApisWidget> {
           .firstWhere((field) => field.displayname == fieldname)
           .value = value;*/
 
-      apisForm.apis.sections.section.forEach((section) {
+      apisForm!.apis.sections.section.forEach((section) {
         if( section.sectionname == sectionname){
           section.fields.field.forEach((field) {
             if(field.displayname == fieldname) {
@@ -236,7 +237,7 @@ class _ApisWidgetState extends State<ApisWidget> {
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -246,7 +247,7 @@ class _ApisWidgetState extends State<ApisWidget> {
 
   void formSave() {
     final form = formKey.currentState;
-    form.save();
+    form!.save();
   }
 
   @override
@@ -332,12 +333,12 @@ class _ApisWidgetState extends State<ApisWidget> {
                   controller: _textEditingController,
                   //keyboardType: TextInputType.text,
                   validator: (value) =>
-                      value.isEmpty && field.required == "True"
+                      value!.isEmpty && field.required == "True"
                           ? '${field.displayname} cannot be empty'
                           : null,
                   onSaved: (value) {
                     if (value != null) {
-                      apisForm.apis.sections.section
+                      apisForm!.apis.sections.section
                           .firstWhere(
                               (s) => s.sectionname == section.sectionname)
                           .fields
@@ -360,7 +361,7 @@ class _ApisWidgetState extends State<ApisWidget> {
             //initialValue: _textEditingController.text,//field.value,
             keyboardType: TextInputType.text,
             controller: _textEditingController,
-            validator: (value) => value.isEmpty && field.required == "True"
+            validator: (value) => value!.isEmpty && field.required == "True"
                 ? '${field.displayname} can\'t be empty'
                 : null,
             onFieldSubmitted: (value) {
@@ -370,7 +371,7 @@ class _ApisWidgetState extends State<ApisWidget> {
                   .field
                   .firstWhere((f) => f.displayname == field.displayname)
                   .value = value.trim();*/
-              apisForm.apis.sections.section.forEach((s) {
+              apisForm!.apis.sections.section.forEach((s) {
                 if( section.sectionname == s.sectionname){
                   section.fields.field.forEach((f) {
                     if(field.displayname == f.displayname) {
@@ -388,7 +389,7 @@ class _ApisWidgetState extends State<ApisWidget> {
                     .field
                     .firstWhere((f) => f.displayname == field.displayname)
                     .value = value.trim();*/
-                apisForm.apis.sections.section.forEach((s) {
+                apisForm!.apis.sections.section.forEach((s) {
                   if( section.sectionname == s.sectionname){
                     section.fields.field.forEach((f) {
                       if(field.displayname == f.displayname) {
@@ -412,7 +413,7 @@ class _ApisWidgetState extends State<ApisWidget> {
   }
 
   ListView renderApis() {
-    if( apisForm == null || apisForm.apis == null ) {
+    if( apisForm == null || apisForm!.apis == null ) {
       logit('no apis data');
       return ListView(
         padding: EdgeInsets.all(10),
@@ -428,7 +429,7 @@ class _ApisWidgetState extends State<ApisWidget> {
             'As you are travelling internationally, we require you to add passport details to your booking before checking in.'),
       ),
     );
-    apisForm.apis.sections.section.forEach((section) {
+    apisForm!.apis.sections.section.forEach((section) {
       if (section.displayable == "True") {
         expandionTiles.add(ExpansionTile(
           initiallyExpanded:
@@ -692,7 +693,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     List<Widget> widgets = [];
     // new List<Widget>();
     Countrylist countrylist = snapshot.data;
-    countrylist.countries.forEach((c) => widgets.add(ListTile(
+    countrylist.countries!.forEach((c) => widgets.add(ListTile(
         title: Text(fieldname == 'Nationality' ? c.nationality : c.enShortName),
         onTap: () {
           Navigator.pop(context, c.alpha3code);

@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -5,12 +6,14 @@ import 'package:vmba/utilities/helper.dart';
 import '../globals.dart';
 
 class ProductCategorys {
-  List<ProductCategory> productCategorys;
+  List<ProductCategory> productCategorys = List.from([ProductCategory()]);
 
 
   ProductCategorys.fromJson(String str) {
+   // logit('ProductCategorys.fromJson');
+    int index = 0;
     List<ProductCategory> cats = List<ProductCategory>.from(
-        json.decode(str).map((x) => ProductCategory.fromJson(x)));
+       json.decode(str).map((x) => ProductCategory.fromJson(x)));
 
     productCategorys = cats;
   }
@@ -18,14 +21,14 @@ class ProductCategorys {
 }
 
 class ProductCategory {
-  int productCategoryID;
-  String productCategoryName;
-  bool subCategory;
-  bool autoExpand;
-  bool aggregateProducts;
-  List <Product> products;
+  int productCategoryID=0;
+  String productCategoryName='';
+  bool subCategory=false;
+  bool autoExpand=false;
+  bool aggregateProducts=false;
+  List <Product> products = List.from([Product()]);
 
-  ProductCategory({this.aggregateProducts, this.autoExpand, this.productCategoryID, this.productCategoryName, this.subCategory, this.products});
+  ProductCategory();
 
   Map toJson() {
     Map map = new Map();
@@ -43,20 +46,30 @@ class ProductCategory {
 
   ProductCategory.fromJson(Map<String, dynamic> json) {
     try {
-      productCategoryID = json['productCategoryID'];
-      productCategoryName = json['productCategoryName'];
-      subCategory =
-      (json['subCategory'] == true || json['autoExpand'] == 'true')
-          ? true
-          : false;
-      autoExpand = (json['autoExpand'] == true || json['autoExpand'] == 'true')
-          ? true
-          : false;
-      aggregateProducts =
-      (json['aggregateProducts'] == true || json['aggregateProducts'] == 'true')
-          ? true
-          : false;
-      products = _getProducts(json['products']);
+      //logit('ProductCat.fromJ');
+      if( json['productCategoryID'] != null )productCategoryID = json['productCategoryID'];
+      if( json['productCategoryName'] != null )productCategoryName = json['productCategoryName'];
+      if( json['subCategory'] != null ) {
+        subCategory =
+        (json['subCategory'] == true || json['autoExpand'] == 'true')
+            ? true
+            : false;
+      }
+      if( json['autoExpand'] != null ) {
+        autoExpand =
+        (json['autoExpand'] == true || json['autoExpand'] == 'true')
+            ? true
+            : false;
+      }
+      if( json['aggregateProducts'] != null ) {
+        aggregateProducts =
+        (json['aggregateProducts'] == true ||
+            json['aggregateProducts'] == 'true')
+            ? true
+            : false;
+      }
+        if(json['products'] != null )products = _getProducts(json['products']);
+      //logit('end ProductCat.fromJ');
     } catch(e) {
       logit(e.toString());
     }
@@ -64,10 +77,14 @@ class ProductCategory {
 
   List <Product> _getProducts(List<dynamic> data ) {
     List <Product> products = [];
-    if( data == null) return null;
+    if( data == null) return products;
 
+    int index = 0;
     data.forEach((p){
-      products.add(Product.fromJson(p));
+      //logit('add ${p.toString()}');
+      // if( index < 1)
+       products.add(Product.fromJson(p));
+      index ++;
     });
     /*
     products = List<Product>.from(
@@ -81,20 +98,9 @@ class ProductCategory {
 
 
 class Products {
-  List<Product> products;
+  List<Product> products = List.from([Product()]);
 
-  Products({this.products});
-
-  /*
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.products != null) {
-      data['products'] = this.products.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-
-   */
+  Products();
 
   Products.fromJson(String str) {
     try {
@@ -112,99 +118,60 @@ class Products {
 }
 
 class Product {
-  int productID;
-  String productCode;
-  String productName;
-  int currencyID;
-  double productPriceCalc;
-  double productPrice;
-  double taxAmountCalc;
-  double taxAmount;
-  String currencyCode;
-  String taxCurrencyCode;
-  int taxID;
-  double currencyRatetoNUC;
-  int productcategoryID;
-  String productType;
-  String mmbProductDescription;
-  String productDescription;
-  String productDescriptionText;
-  String productDescriptionURL;
-  String productImageURL;
-  int cityID;
-  String cityCode;
-  String cityName;
-  String arrivalCityCode;
-  String arrivalCityName;
-  String via1;
-  bool commandLinePrice;
-  String operator;
-  String additionalInfo;
-  bool requiresQuantity;
-  int maxQuantity;
-  String unitOfMeasure;
-  bool paxRelate;
-  bool segmentRelate;
-  bool restrictPurchaseToAllPaxOrNone;
-  bool autoSelect;
-  String productImageLink;
-  String applyToClasses;
-  bool routeSpecificCombinable;
-  int displayOrder;
-  int productImageIndex;
-  bool displayOnwebsite;
+  int productID=0;
+  String productCode='';
+  String productName='';
+  int currencyID=0;
+  double productPriceCalc=0;
+  double productPrice=0;
+  double taxAmountCalc=0;
+  double taxAmount=0;
+  String currencyCode='';
+  String taxCurrencyCode='';
+  int taxID=0;
+  double currencyRatetoNUC=0;
+  int productcategoryID=0;
+  String productType='';
+  String mmbProductDescription='';
+  String productDescription='';
+  String productDescriptionText='';
+  String productDescriptionURL='';
+  String productImageURL='';
+  int cityID=0;
+  String cityCode='';
+  String cityName='';
+  String arrivalCityCode='';
+  String arrivalCityName='';
+  String via1='';
+  bool commandLinePrice=false;
+  String operator='';
+  String additionalInfo='';
+  bool requiresQuantity=false;
+  int maxQuantity=0;
+  String unitOfMeasure='';
+  bool paxRelate=false;
+  bool segmentRelate=false;
+  bool restrictPurchaseToAllPaxOrNone=false;
+  bool autoSelect=false;
+  String productImageLink='';
+  String applyToClasses='';
+  bool routeSpecificCombinable=false;
+  int displayOrder=0;
+  int productImageIndex=0;
+  bool displayOnwebsite=false;
 
 //int count;
-List<String> curProducts ;
+List<String>? curProducts; //= List.from([Product()]) ;
 
 
-  Product({this.productCode, this.productName, this.productPrice,
-      this.productType,
-  this.currencyCode,
-  this.arrivalCityCode,
-  this.additionalInfo,
-  this.applyToClasses,
-  this.arrivalCityName,
-    this.autoSelect,
-    this.cityCode,
-    this.cityID,
-    this.cityName,
-    this.commandLinePrice,
-    this.currencyID,
-    this.currencyRatetoNUC,
-    this.displayOnwebsite,
-    this.displayOrder,
-    this.maxQuantity = 999,
-    this.mmbProductDescription,
-    this.operator,
-    this.paxRelate,
-    this.productcategoryID,
-    this.productDescription,
-    this.productDescriptionText,
-    this.productDescriptionURL,
-    this.productID,
-    this.productImageLink,
-    this.productImageURL,
-    this.productImageIndex,
-    this.productPriceCalc,
-    this.requiresQuantity,
-    this.restrictPurchaseToAllPaxOrNone,
-    this.routeSpecificCombinable,
-    this.segmentRelate,
-    this.taxAmount,
-    this.taxAmountCalc,
-    this.taxCurrencyCode,
-    this.taxID,
-    this.unitOfMeasure,
-    this.via1
-  });
+  Product();
 
   int count(int segNo) {
-    if( this.curProducts == null || this.curProducts.length == 0) {
+    if( this.curProducts == null || this.curProducts!.length == 0) {
       return 0;
     }
     int c = 0;
-    this.curProducts.forEach((element) {
+    this.curProducts!.forEach((element) {
       if(element.endsWith(':$segNo' )) {
         c +=1;
       }
@@ -229,17 +196,17 @@ List<String> curProducts ;
   void resetProducts(PnrModel pnrModel) {
     curProducts = [];
 
-    if( pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
+    if( pnrModel != null && pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
       pnrModel.pNR.mPS.mP.forEach((element) {
         if( element.mPID == productCode){
-          curProducts.add(getID(int.parse(element.pax), int.parse(element.seg)));
+          curProducts!.add(getID(int.parse(element.pax), int.parse(element.seg)));
         }
       });
     }
 
   }
   bool hasItem(String paxNo, String segNo) {
-    return curProducts.contains(getID(int.parse(paxNo), int.parse(segNo)));
+    return curProducts!.contains(getID(int.parse(paxNo), int.parse(segNo)));
   }
 
   String getID(int paxNo, int segNo) {
@@ -248,7 +215,7 @@ List<String> curProducts ;
   void addProduct(int paxNo, int segNo) {
     if( curProducts == null) curProducts = [];
     String str = getID(paxNo, segNo);
-    curProducts.add(str);
+    curProducts!.add(str);
    // count +=1;
 
   }
@@ -258,7 +225,7 @@ List<String> curProducts ;
 
     int index = 0 ;
     bool found = false;
-    curProducts.forEach((element) {
+    curProducts!.forEach((element) {
       if( found == false) {
         if (element == str) {
           found = true;
@@ -269,7 +236,7 @@ List<String> curProducts ;
       }
       });
     if(found ) {
-      curProducts.removeAt(index);
+      curProducts!.removeAt(index);
     }
 
   }
@@ -281,7 +248,7 @@ List<String> curProducts ;
     }
     String str = getID(paxNo, segNo);
     int cnt = 0;
-    curProducts.forEach((element) {
+    curProducts!.forEach((element) {
       if( element == str){
         cnt +=1;
       }
@@ -303,56 +270,90 @@ List<String> curProducts ;
   Product.fromJson(Map<String, dynamic> json) {
     try {
       //count = 0;
-      productID = json['productID'];
-      productCode = json['productCode'];
-      productName = json['productName'];
-      currencyID = json['currencyID'];
-      currencyCode = json['currencyCode'];
-      taxCurrencyCode = json['taxCurrencyCode'];
-      taxID = json['taxID'];
-      productcategoryID = json['productcategoryID'];
-      productType = json['productType'];
-      mmbProductDescription = json['mmbProductDescription'];
-      productDescription = json['productDescription'];
-      productDescriptionText = json['productDescriptionText'];
-      productDescriptionURL = json['productDescriptionURL'];
-      productImageURL = json['productImageURL'];
-      cityID = json['cityID'];
-      cityCode = json['cityCode'];
-      cityName = json['cityName'];
-      arrivalCityCode = json['arrivalCityCode'];
-      arrivalCityName = json['arrivalCityName'];
-      via1 = json['via1'];
-      operator = json['operator'];
-      additionalInfo = json['additionalInfo'];
-      unitOfMeasure = json['unitOfMeasure'];
-      productImageLink = json['productImageLink'];
-      productImageURL = json['productImageURL'];
-      productImageIndex = json['productImageIndex'];
-      applyToClasses = json['applyToClasses'];
-      // ints
-      maxQuantity = json['maxQuantity'];
-      // doubles
-      currencyRatetoNUC = json['currencyRatetoNUC'];
-      productPriceCalc = json['productPriceCalc'];
-      productPrice = json['productPrice'];
-      if( json['exPrice'] != null && json['exPrice'] != ''){
-        productPrice = json['exPrice'];
-        currencyCode = gblSelectedCurrency;
-      }
-      taxAmountCalc = json['taxAmountCalc'];
-      taxAmount = json['taxAmount'];
-      // bools
-      commandLinePrice = parseBool(json['commandLinePrice']);
-      requiresQuantity = parseBool(json['requiresQuantity']);
-      paxRelate = parseBool(json['paxRelate']);
-      segmentRelate = parseBool(json['segmentRelate']);
-      restrictPurchaseToAllPaxOrNone = parseBool(json['restrictPurchaseToAllPaxOrNone']);
-      autoSelect = parseBool(json['autoSelect']);
-      routeSpecificCombinable = parseBool(json['routeSpecificCombinable']);
-      displayOnwebsite = parseBool(json['displayOnwebsite']);
+      //logit('Product.fromJ');
+      try {
+        if (json['productID'] != null) productID = json['productID'];
+        if (json['productCode'] != null) productCode = json['productCode'];
+        if (json['productName'] != null) productName = json['productName'];
+        if (json['currencyID'] != null) currencyID = json['currencyID'];
+        if (json['currencyCode'] != null) currencyCode = json['currencyCode'];
+        if (json['taxCurrencyCode'] != null)
+          taxCurrencyCode = json['taxCurrencyCode'];
+        if (json['taxID'] != null) taxID = json['taxID'];
+        if (json['productcategoryID'] != null)
+          productcategoryID = json['productcategoryID'];
+        if (json['productType'] != null) productType = json['productType'];
+        if (json['mmbProductDescription'] != null)
+          mmbProductDescription = json['mmbProductDescription'];
+        if (json['productDescription'] != null)
+          productDescription = json['productDescription'];
+        if (json['productDescriptionText'] != null)
+          productDescriptionText = json['productDescriptionText'];
+        if (json['productDescriptionURL'] != null)
+          productDescriptionURL = json['productDescriptionURL'];
+        if (json['productImageURL'] != null)
+          productImageURL = json['productImageURL'];
+        if (json['cityID'] != null) cityID = json['cityID'];
+        if (json['cityCode'] != null) cityCode = json['cityCode'];
+        if (json['cityName'] != null) cityName = json['cityName'];
+        if (json['arrivalCityCode'] != null)
+          arrivalCityCode = json['arrivalCityCode'];
+        if (json['arrivalCityName'] != null)
+          arrivalCityName = json['arrivalCityName'];
+        if (json['via1'] != null) via1 = json['via1'];
+        if (json['operator'] != null) operator = json['operator'];
+        if (json['additionalInfo'] != null)
+          additionalInfo = json['additionalInfo'];
+        if (json['unitOfMeasure'] != null)
+          unitOfMeasure = json['unitOfMeasure'];
+        if (json['productImageLink'] != null)
+          productImageLink = json['productImageLink'];
+        if (json['productImageURL'] != null)
+          productImageURL = json['productImageURL'];
+        if (json['productImageIndex'] != null)
+          productImageIndex = json['productImageIndex'];
+        if (json['applyToClasses'] != null)
+          applyToClasses = json['applyToClasses'];
+        // ints
+        if (json['maxQuantity'] != null) maxQuantity = json['maxQuantity'];
+        // doubles
+        if (json['currencyRatetoNUC'] != null)
+          currencyRatetoNUC = json['currencyRatetoNUC'];
+        if (json['productPriceCalc'] != null)
+          productPriceCalc = json['productPriceCalc'];
+        if (json['productPrice'] != null) productPrice = json['productPrice'];
+        if (json['exPrice'] != null && json['exPrice'] != '') {
+          productPrice = json['exPrice'];
+          currencyCode = gblSelectedCurrency;
+        }
+        if (json['taxAmountCalc'] != null)
+          taxAmountCalc = json['taxAmountCalc'];
+        if (json['taxAmount'] != null) taxAmount = json['taxAmount'];
+        // bools
+        if (json['commandLinePrice'] != null)
+          commandLinePrice = parseBool(json['commandLinePrice']);
+        if (json['requiresQuantity'] != null)
+          requiresQuantity = parseBool(json['requiresQuantity']);
+        if (json['paxRelate'] != null) paxRelate = parseBool(json['paxRelate']);
+        if (json['segmentRelate'] != null)
+          segmentRelate = parseBool(json['segmentRelate']);
+        if (json['restrictPurchaseToAllPaxOrNone'] != null)
+          restrictPurchaseToAllPaxOrNone =
+              parseBool(json['restrictPurchaseToAllPaxOrNone']);
+        if (json['autoSelect'] != null)
+          autoSelect = parseBool(json['autoSelect']);
+        if (json['routeSpecificCombinable'] != null)
+          routeSpecificCombinable = parseBool(json['routeSpecificCombinable']);
+        if (json['displayOnwebsite'] != null)
+          displayOnwebsite = parseBool(json['displayOnwebsite']);
 
-      displayOrder = json['displayOrder'];
+        if (json['displayOrder'] != null) displayOrder = json['displayOrder'];
+        //logit('end Product.fromJ');
+      }
+      catch(e){
+        logit('p ${e.toString()}');
+
+      }
     } catch(e) {
       logit(e.toString());
     }

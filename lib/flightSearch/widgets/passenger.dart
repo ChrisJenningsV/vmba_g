@@ -10,12 +10,12 @@ import '../../Helpers/stringHelpers.dart';
 import '../../components/pageStyleV2.dart';
 
 class PassengerWidget extends StatefulWidget {
-  PassengerWidget({Key key, this.systemColors, this.passengers, this.onChanged})
+  PassengerWidget({Key key= const Key("paxwi_key"), this.systemColors, this.passengers, this.onChanged})
       : super(key: key);
 
-  final SystemColors systemColors;
-  final Passengers passengers;
-  final ValueChanged<Passengers> onChanged;
+  final SystemColors? systemColors;
+  final Passengers? passengers;
+  final ValueChanged<Passengers>? onChanged;
 
   _PassengerWidgetState createState() => _PassengerWidgetState();
 }
@@ -33,32 +33,32 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   initState() {
     super.initState();
     if (widget.passengers != null) {
-      adults = widget.passengers.adults;
-      children = widget.passengers.children;
-      infants = widget.passengers.infants;
-      youths = widget.passengers.youths;
-      students = widget.passengers.students;
-      seniors = widget.passengers.seniors;
-      teachers = widget.passengers.teachers;
+      adults = widget.passengers!.adults;
+      children = widget.passengers!.children;
+      infants = widget.passengers!.infants;
+      youths = widget.passengers!.youths;
+      students = widget.passengers!.students;
+      seniors = widget.passengers!.seniors;
+      teachers = widget.passengers!.teachers;
     }
   }
 
   void _removeAdult() {
-    if( widget.passengers.adults == 1 && gblSettings.wantUmnr == false) {
+    if( widget.passengers!.adults == 1 && gblSettings.wantUmnr == false) {
      return;
     }
-    if( widget.passengers.adults == 0) {
+    if( widget.passengers!.adults == 0) {
       return;
     }
 
-    widget.passengers.adults -= 1;
+    widget.passengers!.adults -= 1;
     setState(() {
       adults -= 1;
     });
   }
 
   void _addAdult() {
-    widget.passengers.adults += 1;
+    widget.passengers!.adults += 1;
     setState(() {
       adults += 1;
     });
@@ -98,16 +98,16 @@ class _PassengerWidgetState extends State<PassengerWidget> {
         students = value.students;
         seniors = value.seniors;
         teachers = value.teachers;
-        widget.passengers.adults = value.adults;
-        widget.passengers.children = value.children;
-        widget.passengers.infants = value.infants;
-        widget.passengers.youths = value.youths;
-        widget.passengers.students = value.students;
-        widget.passengers.seniors = value.seniors;
-        widget.passengers.teachers = value.teachers;
+        widget.passengers!.adults = value.adults;
+        widget.passengers!.children = value.children;
+        widget.passengers!.infants = value.infants;
+        widget.passengers!.youths = value.youths;
+        widget.passengers!.students = value.students;
+        widget.passengers!.seniors = value.seniors;
+        widget.passengers!.teachers = value.teachers;
       });
     }
-    widget.onChanged(widget.passengers);
+    widget.onChanged!(widget.passengers as Passengers);
   }
 
   @override
@@ -283,12 +283,12 @@ class _PassengerWidgetState extends State<PassengerWidget> {
 }
 
 class PassengerSelectionPage extends StatefulWidget {
-  PassengerSelectionPage({Key key, this.passengers, this.systemColors})
+  PassengerSelectionPage({Key key= const Key("paxsel_key"), this.passengers, this.systemColors})
       : super(key: key);
 
   //final ValueChanged<Passengers> onChanged;
-  final Passengers passengers;
-  final SystemColors systemColors;
+  final Passengers? passengers;
+  final SystemColors? systemColors;
   @override
   _PassengerSelectionPageState createState() => _PassengerSelectionPageState();
 }
@@ -297,7 +297,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
   // int adults = 1;
   // int children = 0;
   // int infants = 0;
-  Passengers passengers;
+  late Passengers passengers ;
   @override
   initState() {
     super.initState();
@@ -305,13 +305,13 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
     // children = widget.passengers.children;
     // infants = widget.passengers.infants;
     passengers = new Passengers(
-        widget.passengers.adults,
-        widget.passengers.children,
-        widget.passengers.infants,
-        widget.passengers.youths,
-        widget.passengers.seniors,
-        widget.passengers.students,
-        widget.passengers.teachers);
+        widget.passengers!.adults,
+        widget.passengers!.children,
+        widget.passengers!.infants,
+        widget.passengers!.youths,
+        widget.passengers!.seniors,
+        widget.passengers!.students,
+        widget.passengers!.teachers);
   }
 
 
@@ -433,7 +433,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                     icon: Icon(Icons.check,
                         color: gblSystemColors
                             .primaryButtonTextColor),
-                    backgroundColor: widget.systemColors
+                    backgroundColor: widget.systemColors!
                         .primaryButtonColor, //new Color(0xFF000000),
                     onPressed: () {
                       if ( passengers.totalPassengers() > 0) {
@@ -475,7 +475,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                                 passengers.adults == 0 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
                               ),
                               onPressed: () {
-                                passengers.adults == 0 ? null : _removeAdult();
+                                if(passengers.adults > 0 ) _removeAdult();
                               },
                             ),
                             new Text(passengers.adults.toString()),

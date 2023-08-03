@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -32,7 +33,7 @@ class AppDatabase {
 
   static final _databaseVersion = 9;
 
-  Database db;
+  late Database db;
 
   bool didInit = false;
 
@@ -40,7 +41,7 @@ class AppDatabase {
     return _appDatabase;
   }
 
-  AppDatabase._internal();
+  AppDatabase._internal() ;
 
   /// Use this method to access the database, because initialization of the database (it has to go through the method channel)
   Future<Database> _getDb() async {
@@ -218,7 +219,7 @@ class AppDatabase {
    */
 
   /// Get a city by its ISO Code, if there is not entry for that ISO code, returns null.
-  Future<City> getCityByCode(String code) async {
+  Future<City?> getCityByCode(String code) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         "SELECT * FROM $tableNameCities WHERE ${City.dbCode} = '$code'");
@@ -257,7 +258,11 @@ class AppDatabase {
   Future updateCities(Cities cities) async {
     String values = '';
 
-    cities.cities.forEach((c)  async {
+    if(cities.cities == null )
+      {
+        throw('cities null');
+      }
+    cities.cities!.forEach((c)  async {
       String name = c.name;
       if( name.contains("'")) {
         name = name.replaceAll("'", "&quot;");
@@ -499,7 +504,7 @@ class AppDatabase {
   Future updatePnr(PnrDBCopy pnr) async {
     try {
       var db = await _getDb();
-      Map mappedPnr = pnr.toMap();
+      Map<String, dynamic> mappedPnr = pnr.toMap();
       if (mappedPnr.containsKey('nextFlightSinceEpoch')) {
         mappedPnr.remove('nextFlightSinceEpoch');
       }
@@ -561,7 +566,7 @@ class AppDatabase {
 
   Future updatePnrApisStatus(DatabaseRecord pnr) async {
     var db = await _getDb();
-    Map map = pnr.toMap();
+    Map<String, dynamic> map = pnr.toMap();
     try {
       await db.insert(tableNamePnrApisStatus, map);
     } catch (e) {
@@ -624,7 +629,7 @@ class AppDatabase {
         "SELECT * FROM $tableNameUserProfile WHERE ${UserProfileRecord
             .dbName} = '$name' ");
     if (result.length == 0) {
-      UserProfileRecord _l; // = new UserProfileRecord();
+      UserProfileRecord _l = UserProfileRecord(name: 'Error', value: ''); // = new UserProfileRecord();
       return _l;
     }
 
@@ -668,7 +673,7 @@ class AppDatabase {
   Future<ADS> getADSDetails() async {
     UserProfileRecord profile = await getNamedUserProfile('PAX1');
     try {
-      Map map = json.decode(
+      Map<String, dynamic> map = json.decode(
           profile.value.toString().replaceAll(
               "'", '"')); // .replaceAll(',}', '}')
       PassengerDetail pax = PassengerDetail.fromJson(map);
@@ -724,12 +729,12 @@ class AppDatabase {
 //     return routes;
 //   }
 
-  Future<Map> getRoutesData() async {
+  Future<Map?> getRoutesData() async {
     try{
     var db = await _getDb();
     var result = await db
         .rawQuery("SELECT value FROM $tableNameAppData where name = 'routes'");
-    Map valueMap = json.decode(result[0].values.first);
+    Map valueMap = json.decode(result[0].values.first as String);
     return valueMap;
     } catch (e) {
       print(e);
@@ -746,7 +751,7 @@ class AppDatabase {
           .rawQuery(
           "SELECT value FROM $tableNameAppData where name = 'routes'");
 
-      Map valueMap = json.decode(result[0].values.first);
+      Map valueMap = json.decode(result[0].values.first as String);
       var departureCities = [];
       //new List<String>();
       for (Map<String, dynamic> item in valueMap['Routes']) {
@@ -758,10 +763,10 @@ class AppDatabase {
             ")";
         departureCities.add(org);
       }
-      return departureCities;
+      return departureCities as List<String>;
     } catch (e) {
-      print(e);
-      return null;
+      print(e.toString());
+      return List.from(['']);
     }
   }
 
@@ -787,7 +792,7 @@ class AppDatabase {
     for (Map<String, dynamic> item in result) {
       destinationCities.add(item.values.first);
     }
-    return null;
+    return RoutesModel();
   }
 
   Future<List<String>> getDestinations(String departure) async {
@@ -795,7 +800,7 @@ class AppDatabase {
     var result = await db.rawQuery(
         'SELECT DISTINCT dest FROM $tableNameRoutes where org like \'$departure%\'');
 
-    var destinationCities = [];
+    List<String> destinationCities = [];
     //new List<String>();
     for (Map<String, dynamic> item in result) {
       destinationCities.add(item.values.first);
@@ -858,13 +863,13 @@ class AppDatabase {
         sMsg = sMsg.replaceAll('|', '"');
 
         Map<String, dynamic> jsonMap = json.decode(sMsg);
-        Notification not;
+        Notification not = Notification(body: 'body',title: 'title');
         if( jsonMap['notification'] != null ) {
           Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
            not = Notification(body: notMap['body'],
               title: notMap['title']);
         }
-        Map<String, dynamic> dataMap;
+        Map<String, dynamic> dataMap = Map();
         if( jsonMap['data'] != null ) {
            dataMap= json.decode(jsonMap['data']);
         }

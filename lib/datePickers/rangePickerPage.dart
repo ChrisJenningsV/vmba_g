@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
@@ -7,7 +8,7 @@ import '../components/vidButtons.dart';
 
 
 class RangePickerWidget extends StatefulWidget {
-  RangePickerWidget({Key key, this.departureDate, this.returnDate})
+  RangePickerWidget({Key key= const Key("ranpik_key"), required this.departureDate,required  this.returnDate})
       : super(key: key);
 
   final DateTime departureDate;
@@ -19,10 +20,10 @@ class RangePickerWidget extends StatefulWidget {
 
 class _RangePickerWidgetState extends State<RangePickerWidget>
     with TickerProviderStateMixin {
-  DateTime startOfPeriod;
-  DateTime endOfPeriod;
-  DateTime firstDate;
-  DateTime lastDate;
+  DateTime startOfPeriod = DateTime.now();
+  DateTime endOfPeriod = DateTime.now();
+  DateTime firstDate = DateTime.now();
+  DateTime lastDate = DateTime.now();
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
 
   void _handleDateChanged(FlightDates newValue) {
     startOfPeriod = newValue.departureDate;
-    endOfPeriod = newValue.returnDate;
+    endOfPeriod = newValue.returnDate!;
   }
 
   @override

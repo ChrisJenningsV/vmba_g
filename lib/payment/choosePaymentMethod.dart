@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
@@ -36,22 +35,22 @@ bool _cancelTimer = false;
 //ignore: must_be_immutable
 class ChoosePaymenMethodWidget extends StatefulWidget {
   ChoosePaymenMethodWidget(
-      {Key key,
+      {Key key= const Key("choosepaym_key"),
       this.newBooking,
-      this.pnrModel,
-      this.isMmb ,
-      this.mmbCmd,
+      required this.pnrModel,
+      this.isMmb =false,
+      this.mmbCmd ='',
       this.mmbBooking,
-      this.mmbAction,
+      this.mmbAction ='',
       this.session})
       : super(key: key);
-  final NewBooking newBooking;
+   NewBooking? newBooking;
   PnrModel pnrModel;
   final bool isMmb ;
   final String mmbCmd;
   final String mmbAction;
-  final MmbBooking mmbBooking;
-  final Session session;
+  MmbBooking? mmbBooking;
+  final Session? session;
 
   _ChoosePaymenMethodWidgetState createState() =>
       _ChoosePaymenMethodWidgetState();
@@ -60,23 +59,24 @@ class ChoosePaymenMethodWidget extends StatefulWidget {
 class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
   final formKey = new GlobalKey<FormState>();
-  String currencyCode;
-  bool _displayProcessingIndicator;
-  String _displayProcessingText;
+  String currencyCode = '';
+  bool _displayProcessingIndicator = false;
+  String _displayProcessingText = '';
  // PnrModel pnrModel;
   Stopwatch stopwatch = new Stopwatch();
   int timeout = 15;
-  String _error;
+  String _error = '';
   Passengers _passengers = new Passengers(1, 0, 0, 0,0, 0, 0);
   String nostop = '';
   bool isMmb = false;
 
-  Session session ;
+  Session? session ;
 
   @override
   initState() {
     super.initState();
     if( gblLogPayment ) { logit('CPM initState');}
+    if( widget.newBooking == null ) widget.newBooking = NewBooking();
     gblCurPage = 'CHOOSEPAY';
     gblPnrModel = widget.pnrModel;
     logit(gblCurPage);
@@ -102,7 +102,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //pnrModel = widget.pnrModel;
     setCurrencyCode();
     if( widget.isMmb ) {
-      if (session == null || session.varsSessionId == "") {
+      if (session == null || session!.varsSessionId == "") {
       //  signin().then((_) => makeMmbBooking());
       } else {
         //     makeMmbBooking();
@@ -164,7 +164,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, double.parse(widget.pnrModel.pNR.basket.outstanding.amount) ?? 0.0),
+            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, double.parse(widget.pnrModel.pNR.basket.outstanding.amount)),
 /*
                 NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
@@ -301,14 +301,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     widget.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          total += double.tryParse(d.fare ?? 0.0);
-          total += double.tryParse(d.tax1 ?? 0.0);
-          total += double.tryParse(d.tax2 ?? 0.0);
-          total += double.tryParse(d.tax3 ?? 0.0);
-          if( d.disc != null ) {
+          if( d.fare != '') total += double.tryParse(d.fare )!;
+          if( d.tax1 != '') total += double.tryParse(d.tax1 )!;
+          if( d.tax2 != '') total += double.tryParse(d.tax2 )!;
+          if( d.tax3 != '') total += double.tryParse(d.tax3 )!;
+          if( d.disc != null && d.disc != '') {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc)!);
             //total += double.tryParse(d.disc ?? 0.0);
           }
         });
@@ -346,10 +346,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     widget.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          if( d.disc != null ) {
+          if( d.disc != null && d.disc != '') {
             d.disc
                 .split(',')
-                .forEach((disc) => total += double.tryParse(disc ?? 0.0));
+                .forEach((disc) => total += double.tryParse(disc)!);
             //total += double.tryParse(d.disc ?? 0.0);
           }
         });
@@ -386,15 +386,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         widget.pnrModel.pNR.mPS.mP.forEach((element) {
           // this seg ?
           if( element.seg == null || element.seg == ''){
-            widgets.add(
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TrText(element.text),
-                    Text(formatPrice(element.mPSCur,double.parse(element.mPSAmt)))
-                  ],
-                ));
-
+            if( element.mPSAmt != null && element.mPSAmt != '') {
+              widgets.add(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      TrText(element.text),
+                      Text(formatPrice(
+                          element.mPSCur, double.parse(element.mPSAmt)))
+                    ],
+                  ));
+            }
           }
         });
       }
@@ -419,32 +421,38 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            FutureBuilder(
+            Text(cityCodetoAirport(widget.pnrModel.pNR.itinerary.itin[i].depart),
+                style:  TextStyle(fontWeight: FontWeight.w700)),
+
+            /*FutureBuilder(
               future: cityCodeToName(
                 widget.pnrModel.pNR.itinerary.itin[i].depart,
               ),
               initialData: widget.pnrModel.pNR.itinerary.itin[i].depart.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
-                return new Text(text.data,
+                return new Text(text.data!,
                     style: TextStyle(fontWeight: FontWeight.w700));
               },
-            ),
+            ),*/
             TrText(
               ' to ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-            FutureBuilder(
+  /*          FutureBuilder(
               future: cityCodeToName(
                 widget.pnrModel.pNR.itinerary.itin[i].arrive,
               ),
               initialData: widget.pnrModel.pNR.itinerary.itin[i].arrive.toString(),
               builder: (BuildContext context, AsyncSnapshot<String> text) {
                 return new Text(
-                  text.data,
+                  text.data!,
                   style: TextStyle(fontWeight: FontWeight.w700),
                 );
               },
-            ),
+            ),*/
+            Text(cityCodetoAirport(widget.pnrModel.pNR.itinerary.itin[i].arrive),
+                style:  TextStyle(fontWeight: FontWeight.w700)),
+
           ],
         ),
       );
@@ -581,7 +589,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 TrText('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
-                Text(formatPrice(seat.cur ?? currencyCode, double.parse(seat.amt) ?? 0.0) ),
+                Text(formatPrice(seat.cur != '' ? seat.cur : currencyCode, double.parse(seat.amt)) ),
               ],
             ),
           );
@@ -616,7 +624,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   bool validate() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       return true;
     } else {
       return false;
@@ -659,25 +667,24 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 */
   Future completeBookingNothingtoPayVRS() async {
     String msg = '';
-    String data;
 
-    widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange - 1]
+    widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]
         .itin.reversed
         .forEach((f) {
         msg += 'X${f.line}';
     });
 
-    widget.mmbBooking.newFlights.forEach((flt) {
+    widget.mmbBooking!.newFlights.forEach((flt) {
       print(flt);
       msg += '^' + flt;
     });
     msg += '^';
-    msg += addFg(widget.mmbBooking.currency, true);
+    msg += addFg(widget.mmbBooking!.currency, true);
     msg += addFareStore(true);
     msg += 'e*r~x';
-    logit('CMP msg:${msg}');
+    logit('CMP msg:$msg');
     try {
-      data = await runVrsCommand(msg);
+      runVrsCommand(msg);
     } catch(e) {
       _error = e.toString();
       _dataLoaded();
@@ -711,7 +718,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       String msg = '';
       String data;
       if (this.isMmb) {
-        msg = '*${widget.mmbBooking.rloc}';
+        msg = '*${widget.mmbBooking!.rloc}';
 
         // add delete
 /*
@@ -725,7 +732,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
 */
 
-        widget.mmbBooking.newFlights.forEach((flt) {
+        widget.mmbBooking!.newFlights.forEach((flt) {
           print(flt);
           msg += '^' + flt;
         });
@@ -759,7 +766,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       return null;
     }*/
 
-      logit('CMP msg:${msg}');
+      logit('CMP msg:$msg');
       try {
         data = await runVrsCommand(msg);
 
@@ -802,7 +809,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
               .replaceAll('</string>', '');
-          Map map = json.decode(pnrJson);
+          Map<String, dynamic> map = json.decode(pnrJson);
 
           widget.pnrModel = new PnrModel.fromJson(map);
           print(widget.pnrModel.pNR.rLOC);
@@ -815,7 +822,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             flightsConfirmed = false;
             for (var i = 0; i < 4; i++) {
               msg = '*' + widget.pnrModel.pNR.rLOC + '~x';
-              logit('save cmd ${msg}');
+              logit('save cmd $msg');
               String data = await runVrsCommand(msg);
               if (data.contains('ERROR - ')) {
                 _error = data
@@ -832,7 +839,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
                     .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                     .replaceAll('<string xmlns="http://videcom.com/">', '')
                     .replaceAll('</string>', '');
-                Map map = json.decode(pnrJson);
+                Map<String, dynamic> map = json.decode(pnrJson);
                 logit('OK step 2');
                 widget.pnrModel = new PnrModel.fromJson(map);
               }
@@ -859,27 +866,27 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               translate('Unable to confirm partner airlines flights.'));
 
           //Cnx new flights
-          msg = '*${widget.mmbBooking.rloc}';
-          widget.mmbBooking.newFlights.forEach((flt) {
+          msg = '*${widget.mmbBooking!.rloc}';
+          widget.mmbBooking!.newFlights.forEach((flt) {
             print('x' + flt.split('NN1')[0].substring(2));
             msg += '^' + 'x' + flt.split('NN1')[0].substring(2);
           });
-          logit('Send msg ${msg}');
+          logit('Send msg $msg');
           await runVrsCommand(msg);
           return null;
         }
 
         // }
         else {
-          msg = '*${widget.mmbBooking.rloc}^';
+          msg = '*${widget.mmbBooking!.rloc}^';
           //update to use full cancel segment command
           for (var i = 0;
           i <
-              widget.mmbBooking.journeys
-                  .journey[widget.mmbBooking.journeyToChange - 1].itin.length;
+              widget.mmbBooking!.journeys
+                  .journey[widget.mmbBooking!.journeyToChange - 1].itin.length;
           i++) {
-            Itin f = widget.mmbBooking.journeys
-                .journey[widget.mmbBooking.journeyToChange - 1].itin[i];
+            Itin f = widget.mmbBooking!.journeys
+                .journey[widget.mmbBooking!.journeyToChange - 1].itin[i];
             String _depDate =
             DateFormat('ddMMM').format(DateTime.parse(f.depDate)).toString();
             msg +=
@@ -888,13 +895,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               nostop += ".${f.line}X^";
             }
           }
-          msg += addFg(widget.mmbBooking.currency, true);
+          msg += addFg(widget.mmbBooking!.currency, true);
           msg += addFareStore(true);
 
           msg += 'e*r~x';
           //msg += 'fg^fs1^e*r~x';
         }
-        logit('sending msg: ${msg}');
+        logit('sending msg: $msg');
         data = await runVrsCommand(msg);
 
         String result = data
@@ -908,7 +915,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           _dataLoaded();
           _showDialog();
         } else {
-          Map map = json.decode(result);
+          Map<String, dynamic> map = json.decode(result);
           widget.pnrModel = new PnrModel.fromJson(map);
 
           setState(() {
@@ -924,7 +931,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         }
       } catch (e) {
         _error = e.toString();
-        logit('e871:${_error}');
+        logit('e871:$_error');
         _dataLoaded();
         _showDialog();
         return null;
@@ -936,7 +943,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     String msg = '';
     for (var i = 0; i < widget.pnrModel.pNR.tickets.tKT.length; i++) {
       if (widget.pnrModel.pNR.tickets.tKT[i].status == 'A') {
-        msg = '*${widget.mmbBooking.rloc}^';
+        msg = '*${widget.mmbBooking!.rloc}^';
         msg += '*t-' +
             widget.pnrModel.pNR.tickets.tKT[i].tktNo.replaceAll(' ', '') +
             '/' +
@@ -965,11 +972,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Future ticketBooking() async {
     if(gblLogPayment) { logit('CPM:ticketBooking');}
-    http.Response response;
-    String msg = '*${widget.mmbBooking.rloc}^';
+    String msg = '*${widget.mmbBooking!.rloc}^';
     msg += nostop;
     msg += 'EZV*[E][ZWEB]^EZT*R~x';
-    gblCurrentRloc = widget.mmbBooking.rloc;
+    gblCurrentRloc = widget.mmbBooking!.rloc;
 
   /*  response = await http
         .get(Uri.parse(
@@ -1002,7 +1008,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
 
-      Map map = json.decode(pnrJson);
+      Map<String, dynamic> map = json.decode(pnrJson);
 
       PnrModel pnrModel = new PnrModel.fromJson(map);
 
@@ -1024,7 +1030,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       //sendEmailConfirmation();
 
     } catch (e) {
-      _error = e; // 'Please check your details';
+      _error = e.toString(); // 'Please check your details';
       _dataLoaded();
       _showDialog();
     }
@@ -1105,7 +1111,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           appBar: appBar(context, 'Payment',
             newBooking: widget.newBooking,
             curStep: 5,
-            imageName: gblSettings.wantPageImages ? 'paymentPage' : null,),
+            imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
           endDrawer: DrawerMenu(),
           body: new Center(
             child: Column(
@@ -1155,7 +1161,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             appBar: appBar(context, 'Payment',
               newBooking: widget.newBooking,
               curStep: 5,
-              imageName: gblSettings.wantPageImages ? 'paymentpage' : null,) ,
+              imageName: gblSettings.wantPageImages ? 'paymentpage' : '',) ,
             endDrawer: DrawerMenu(),
             body: SafeArea(
               child: Column(
@@ -1208,7 +1214,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(dynamic p){
-    gblPaymentMsg = null;
+    gblPaymentMsg = '';
 //    Navigator.of(context).pop();
     setState(() {
     });
@@ -1260,7 +1266,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         initiallyExpanded: false,
         title: Text(
           translate('Total') + ' ' +
-              formatPrice(cur, double.parse(amount) ?? 0.0) ,
+              formatPrice(cur, double.parse(amount)) ,
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         children: [
@@ -1488,7 +1494,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         padding: EdgeInsets.only(top: 8.0),
       ));
 
-      gblProviders.providers.forEach((provider) {
+      gblProviders!.providers.forEach((provider) {
         logit('provider: ${provider.paymentSchemeName} name: ${provider.paymentSchemeDisplayName} type: ${provider.paymentType.toString()}');
         bool bShow = false;
 
@@ -1526,29 +1532,30 @@ List<Widget> getPayOptions(String amount, String cur) {
               gblSettings.creditCardProvider = provider.paymentSchemeName;
               if (provider.paymentType == 'ExternalPayment') {
                 gblCurrentRloc = widget.pnrModel.pNR.rLOC;
-                gblPaymentMsg = null;
+                gblPaymentMsg = '';
                 if (provider.fields == null ||
                     provider.fields.paymentFields == null ||
                     provider.fields.paymentFields.length == 0) {
                   if (widget.mmbAction == 'CHANGEFLT') {
                     await changeFlt(
-                        widget.pnrModel, widget.mmbBooking, context);
+                        widget.pnrModel, widget.mmbBooking!, context);
                   }
                   _cancelTimer = true;
                   await Navigator.push(
                       context, SlideTopRoute(page: WebPayPage(
-                    provider.paymentSchemeName, newBooking: widget.newBooking,
+                    provider.paymentSchemeName, newBooking: widget.newBooking!,
                     pnrModel: widget.pnrModel,
                     isMmb: widget.isMmb,)));
                   setState(() {});
 
                 } else {
+                  if( widget.mmbBooking == null ) widget.mmbBooking = MmbBooking();
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) =>
                       ProviderFieldsPage(pnrModel: widget.pnrModel,
                         provider: provider,
                         isMmb: isMmb,
-                        mmbBooking: widget.mmbBooking,
+                        mmbBooking: widget.mmbBooking!,
                         mmbAction: widget.mmbAction,)));
                 }
               } else if ( provider.paymentType == 'FundTransferPayment') {
@@ -1571,10 +1578,14 @@ List<Widget> getPayOptions(String amount, String cur) {
                 );*/
 
               } else {
+                if( session == null){
+                  logit('choosePay ses null');
+                  session = Session('','','');
+                }
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
                     CreditCardPage(pnrModel: widget.pnrModel,
-                      session: session,
+                      session: session!,
                       isMmb: isMmb,
                       mmbBooking: widget.mmbBooking,
                       mmbAction: widget.mmbAction,)));
@@ -1597,7 +1608,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       return Column(children: paymentButtons);
     } else {
       return DataLoaderWidget(dataType: LoadDataType.providers,
-        newBooking: widget.newBooking,
+        newBooking: widget.newBooking!,
         pnrModel: widget.pnrModel,
         onComplete: (PnrModel pnrModel) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -1623,7 +1634,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       String data = json.encode(pay);
       try {
         String reply = await callSmartApi('MAKEPAYMENT', data);
-        Map map = json.decode(reply);
+        Map<String, dynamic> map = json.decode(reply);
         var objPnr = new PnrModel.fromJson(map);
 //        PaymentReply payRs = new PaymentReply.fromJson(map);
         endProgressMessage();
@@ -1720,17 +1731,17 @@ List<Widget> getPayOptions(String amount, String cur) {
           onPressed: () {
             if (providerName.startsWith('3DS_')) {
               gblCurrentRloc = widget.pnrModel.pNR.rLOC;
-              gblPaymentMsg = null;
+              gblPaymentMsg = '';
               Navigator.push(
                   context, SlideTopRoute(page: WebPayPage(
-                providerName, newBooking: widget.newBooking,
+                providerName, newBooking: widget.newBooking!,
                 pnrModel: widget.pnrModel,
                 isMmb: widget.isMmb,)));
             } else {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) =>
                   CreditCardPage(pnrModel: widget.pnrModel,
-                    session: session,
+                    session: session!,
                     isMmb: isMmb,
                     mmbBooking: widget.mmbBooking,
                     mmbAction: widget.mmbAction,)));
@@ -1750,13 +1761,12 @@ List<Widget> getPayOptions(String amount, String cur) {
       return Column(children: paymentButtons);
   }
 
-  Timer _timer;
  // int _start = 10;
 
   void startTimer() {
     const oneSec = const Duration(milliseconds: 100);
     _cancelTimer = false;
-    _timer = new Timer.periodic(
+    Timer.periodic(
       oneSec,
           (Timer timer) {
           setState(() {
@@ -1766,7 +1776,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   }
 
 
-  List<Widget> _getPayButton(String text, String providerType, Provider provider) {
+  List<Widget> _getPayButton(String text, String providerType, Provider? provider) {
     List<Widget> list = [];
     if(text == null  ) {
       text = 'AGREE AND PAY';
@@ -1794,9 +1804,9 @@ List<Widget> getPayOptions(String amount, String cur) {
       style: new TextStyle(color: Colors.black),
       ));
       String action = '';
-      if( provider != null && gblSettings.paySettings != null && gblSettings.paySettings.payImageMap != null ) {
-        Map pageMap = json.decode(            gblSettings.paySettings.payImageMap.toUpperCase());
-         action = pageMap[provider.paymentSchemeName.toUpperCase()];
+      if( provider != null && gblSettings.paySettings != null && gblSettings.paySettings!.payImageMap != null ) {
+        Map pageMap = json.decode(            gblSettings.paySettings!.payImageMap.toUpperCase());
+        if( pageMap[provider.paymentSchemeName.toUpperCase()] != null )          action = pageMap[provider.paymentSchemeName.toUpperCase()];
       }
 
 
@@ -1817,7 +1827,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             list.add(Padding(
               padding: EdgeInsets.all(4),
             ));
-            list.add(Image.network('${gblSettings.gblServerFiles}/pageImages/${provider.paymentSchemeName}.png', width: 30,));
+            list.add(Image.network('${gblSettings.gblServerFiles}/pageImages/${provider!.paymentSchemeName}.png', width: 30,));
           }
       } else if (providerType == 'FundTransferPayment') {
         if( action != 'NONE') {
@@ -1832,26 +1842,26 @@ List<Widget> getPayOptions(String amount, String cur) {
 
 
 class TimerText extends StatefulWidget {
-  TimerText({this.stopwatch, this.onComplete });
+  TimerText({required this.stopwatch, this.onComplete });
   final Stopwatch stopwatch;
-  void Function() onComplete;
+  void Function()? onComplete;
   final double timerStart = 600000;
 
   TimerTextState createState() => new TimerTextState(stopwatch: stopwatch);
 }
 
 class TimerTextState extends State<TimerText> {
-  Timer timer;
+  late Timer timer;
   final Stopwatch stopwatch;
-  void Function() onComplete;
+  void Function()? onComplete;
 
-  TimerTextState({this.stopwatch, this.onComplete}) {
+  TimerTextState({required this.stopwatch, this.onComplete}) {
     timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
     if(_cancelTimer) {
       timer.cancel();
-      timer = null;
+      //timer = null;
       return;
     }
     if (widget.timerStart < stopwatch.elapsedMilliseconds) {
@@ -1860,13 +1870,13 @@ class TimerTextState extends State<TimerText> {
       print('expired 2');
       if( timer != null ) {
         timer.cancel();
-        timer = null;
+        //timer = null;
       }
       //Navigator.of(context).pop();
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
       if( onComplete != null ) {
-        onComplete();
+        onComplete!();
       }
       return;
     }

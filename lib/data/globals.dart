@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
@@ -11,18 +12,18 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'T6';
+String gblBuildFlavor = 'H4';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
-int apiBuldVersion;
+int apiBuldVersion = 0;
 bool gblDoVersionCheck = true;
 bool gblUseCache = false;
 String gblTestFlags = '';
 List<String> gblLogBuffer= [];
 
-String gblAppTitle ;
+String gblAppTitle ='';
 String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
@@ -35,19 +36,19 @@ String gblAction='';
 String gblPayAction ='';
 String gblPayCmd ='';
 //String gblMobileFlags = '';
-String gblDestination;
-String gblOrigin;
+String gblDestination ='';
+String gblOrigin ='';
 String gblPayable = '';
-String gblCurrentRloc;
-String gblPaymentMsg;
-String gblNotifyToken;
-String gblDeviceId;
-String gblCurPage;
-String gblUndoCommand;
+String gblCurrentRloc ='';
+String gblPaymentMsg ='';
+String gblNotifyToken ='';
+String gblDeviceId ='';
+String gblCurPage ='';
+String gblUndoCommand ='';
 
 /* logging */
 bool gblLogProducts = false;
-bool gblLogPayment = false;
+bool gblLogPayment = true;
 bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;
@@ -71,18 +72,19 @@ bool gblFqtvLoggedIn = false;
 String gblFqtvNumber = '';
 //String gblAdsNo = '';
 //String gblAdsPin = '';
-PassengerDetail gblPassengerDetail;
-SystemColors gblSystemColors;
-Session gblSession;
-Map gblLangMap ;
-Settings gblSettings;
-bool gblNoNetwork;
+PassengerDetail? gblPassengerDetail;
+late SystemColors gblSystemColors;
+Session? gblSession;
+Map? gblLangMap ;
+Map<String,String>? gblAirportCache;
+late Settings gblSettings;
+bool gblNoNetwork = false;
 bool gblPushInitialized = false;
 bool gblVerbose = false;
 bool  gblWantLogin = true;
 bool gblDemoMode = false;
 bool gblDebugMode = false;
-PnrModel gblPnrModel;
+PnrModel? gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers}
@@ -104,18 +106,18 @@ PaymentState gblPaymentState = PaymentState.none;
 VrsCmdState gblLoadSeatState = VrsCmdState.none;
 VrsCmdState gblBookSeatState = VrsCmdState.none;
 
-ProductCategorys gblProducts ;
-String gblProductCacheDeparts;
-String gblProductCacheArrives;
-String gblSelectedCurrency;
+ProductCategorys? gblProducts ;
+String gblProductCacheDeparts='';
+String gblProductCacheArrives='';
+String gblSelectedCurrency='';
 String gblLastCurrecy = '';
 String gblLastProviderCurrecy = '';
-Providers gblProviders;
-String gblBookingCurrency;
-List<NotificationMessage> gblNotifications;
+Providers? gblProviders;
+String gblBookingCurrency='';
+List<NotificationMessage>? gblNotifications;
 
 
-TextStyle gblTitleStyle;
+TextStyle? gblTitleStyle;
 List<String> gblTitles = <String>[
   'Mr',
   'Mrs',
@@ -126,6 +128,6 @@ List<String> gblTitles = <String>[
   'Prof',
   'Rev'
 ];
-Map<String, String > gblPayFormVals;
+Map<String, String >? gblPayFormVals;
 
-TextEditingController gblPhoneCodeEditingController;
+TextEditingController? gblPhoneCodeEditingController;

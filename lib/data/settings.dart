@@ -4,16 +4,14 @@ import 'models/passengerTypesDisplay.dart';
 import 'dart:convert' as myJson;
 
 
-
-
 class KeyPair {
   static final dbName = "name";
   static final dbValue = "value";
 
   String key, value;
   KeyPair({
-    @required this.key,
-    @required this.value,
+    required this.key,
+    required this.value,
   });
 
   KeyPair.fromMap(Map<String, dynamic> map)
@@ -48,30 +46,28 @@ class GobalSettings {
     return await Repository.get().settings();
   }
 
-
-
-  Settings settings = Settings();
+  late Settings settings ;
 }
 class PaySettings {
   String payImageMap;
 
 
-  PaySettings({this.payImageMap});
+  PaySettings({this.payImageMap =''});
 }
 
 class Settings {
-  PaySettings paySettings;
-  String xmlToken;
-  String xmlTokenPost;
-  String aircode;
-  String brandID;
-  String airlineName;
-  bool wantApis;
-  bool displayErrorPnr;
+  PaySettings? paySettings;
+  String xmlToken = '';
+  String xmlTokenPost ='';
+  String aircode ='';
+  String brandID ='';
+  String airlineName ='';
+  bool wantApis =false;
+  bool displayErrorPnr=false;
   bool needTicketsToImport = false;
   bool wantPayStack = false;
   bool wantLeftLogo = false;
-  bool wantMyAccount ;
+  bool wantMyAccount =true;
   bool wantProfileList = false;
   bool wantFQTV = false;
   bool wantFindBookings = false;
@@ -82,31 +78,31 @@ class Settings {
   bool wantBuyNowPayLater = false;
   bool wantPassengerPassport = false;
   bool wantRememberMe = false;
-  bool wantCustomProgress;
+  bool wantCustomProgress =false;
   bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
   bool youthIsAdult = false;
   bool wantEnglishTranslation = false;
-  bool want24HourClock;
-  bool wantNewEditPax;
+  bool want24HourClock = false;
+  bool wantNewEditPax = true;
 // bool wantMaterialControls;
-  bool wantCitySwap;
-  bool wantPageImages;
-  bool wantProducts;
-  bool wantSeatsWithProducts;
-  bool wantMmbProducts;
-  String productImageMode;
-  bool wantDangerousGoods;
-  bool wantInternatDialCode;
-  bool wantCovidWarning;
-  bool wantCountry;
-  bool wantClassBandImages;
-  bool wantStatusLine;
-  bool wantTallPageImage;
-  bool wantProgressBar;
-  bool wantGender;
-  bool wantMiddleName;
-  bool wantRedressNo;
+  bool wantCitySwap = true;
+  bool wantPageImages = false;
+  bool wantProducts = false;
+  bool wantSeatsWithProducts = false;
+  bool wantMmbProducts = false;
+  String productImageMode ='';
+  bool wantDangerousGoods = false;
+  bool wantInternatDialCode=false;
+  bool wantCovidWarning = false;
+  bool wantCountry = false;
+  bool wantClassBandImages = false;
+  bool wantStatusLine = false ;
+  bool wantTallPageImage = false;
+  bool wantProgressBar = false;
+  bool wantGender = false;
+  bool wantMiddleName = false ;
+  bool wantRedressNo = false ;
   bool wantKnownTravNo;
   bool wantPushNoticications;
   bool wantNotificationEdit;
@@ -131,40 +127,40 @@ class Settings {
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
-  String trackerUrl;
-  String specialAssistanceUrl;
-  String faqUrl;
-  String contactUsUrl;
+  String trackerUrl='';
+  String specialAssistanceUrl='';
+  String faqUrl='';
+  String contactUsUrl='';
   //String payStartUrl;
-  String paySuccessUrl;
-  String payFailUrl;
-  String stopUrl;
-  String stopTitle;
-  String stopMessage;
+  String paySuccessUrl='';
+  String payFailUrl='';
+  String stopUrl='';
+  String stopTitle='';
+  String stopMessage='';
   String locale = 'en-EN';
   int bookingLeadTime = 60;
   bool webCheckinNoSeatCharge;
-  String vrsGuid;
-  String previousVrsGuid;
+  String vrsGuid='';
+  String previousVrsGuid='';
   bool autoSeatOption;
-  String backgroundImageUrl;
-  String iOSDemoBuilds;
-  String androidDemoBuilds;
-  String demoUser;
-  String demoPassword;
-  String debugUser;
-  String debugPassword;
+  String backgroundImageUrl='';
+  String iOSDemoBuilds='';
+  String androidDemoBuilds='';
+  String demoUser='';
+  String demoPassword='';
+  String debugUser='';
+  String debugPassword='';
 
-  String customMenu1;
-  String customMenu2;
-  String customMenu3;
-  String pageImageMap;
-  String productImageMap;
-  String skyFlyToken;
+  String customMenu1='';
+  String customMenu2='';
+  String customMenu3='';
+  String pageImageMap='';
+  String productImageMap='';
+  String skyFlyToken='';
 
  // String hostBaseUrl;
-  String iOSAppId;
-  String androidAppId;
+  String iOSAppId='';
+  String androidAppId='';
   String latestBuildiOS = '1';
   String latestBuildAndroid = '1';
   String lowestValidBuildiOS = '1';
@@ -231,18 +227,18 @@ class Settings {
 
 bool bpShowFastTrack;
   Settings({
-    this.paySettings,
-    this.xmlToken,
-    this.xmlTokenPost,
-    this.aircode,
-    this.brandID,
-    this.airlineName,
-    this.creditCardProvider,
+    this.paySettings ,
+    this.xmlToken ='',
+    this.xmlTokenPost ='',
+    this.aircode ='',
+    this.brandID ='',
+    this.airlineName ='',
+    this.creditCardProvider ='',
     this.displayErrorPnr = false,
     this.wantPayStack = false,
     this.wantLeftLogo = false,
     this.needTicketsToImport = false,
-    this.wantCurrencySymbols,
+    this.wantCurrencySymbols =false,
     this.wantCurrencyPicker = false,
     this.wantBuyNowPayLater = false,
     this.wantPassengerPassport = false,
@@ -261,7 +257,7 @@ bool bpShowFastTrack;
     this.productImageMode = 'index',
     this.wantDangerousGoods = false,
     this.wantInternatDialCode = false,
-    this.defaultCountryCode,
+    this.defaultCountryCode ='',
     this.wantCovidWarning = false,
     this.wantCountry = false,
     this.wantClassBandImages = false,
@@ -295,99 +291,99 @@ bool bpShowFastTrack;
 
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,
-    this.termsAndConditionsUrl,
-    this.adsTermsUrl,
-    this.privacyPolicyUrl,
+    this.termsAndConditionsUrl='',
+    this.adsTermsUrl='',
+    this.privacyPolicyUrl='',
     this.trackerUrl = '',
-    this.faqUrl,
-    this.contactUsUrl,
+    this.faqUrl='',
+    this.contactUsUrl='',
     //this.payStartUrl,
     this.paySuccessUrl = 'paySuccess.aspx',
     this.payFailUrl = 'payFail.aspx',
-    this.specialAssistanceUrl,
-    this.locale,
-    this.bookingLeadTime,
-    this.webCheckinNoSeatCharge,
-    this.vrsGuid,
-    this.previousVrsGuid,
-    this.autoSeatOption,
-    this.backgroundImageUrl,
+    this.specialAssistanceUrl='',
+    this.locale = 'en-EN',
+    this.bookingLeadTime =60,
+    this.webCheckinNoSeatCharge = false,
+    this.vrsGuid='',
+    this.previousVrsGuid='',
+    this.autoSeatOption=false,
+    this.backgroundImageUrl='',
 //    this.hostBaseUrl,
-    this.iOSAppId,
-    this.androidAppId,
-    this.latestBuildiOS,
-    this.latestBuildAndroid,
-    this.lowestValidBuildiOS,
-    this.lowestValidBuildAndroid,
+    this.iOSAppId='',
+    this.androidAppId='',
+    this.latestBuildiOS='',
+    this.latestBuildAndroid='',
+    this.lowestValidBuildiOS='',
+    this.lowestValidBuildAndroid='',
     //this.payUrl,
-    this.payPage,
-    this.xmlUrl,
-    this.apisUrl,
-    this.apiUrl,
-    this.apiKey,
-    this.smartApiUrl,
-    this.eVoucher,
-    this.passengerTypes,
-    this.currency,
-    this.gblLanguages,
-    this.covidText,
-    this.currencies,
-    this.gblServerFiles,
-    this.testServerFiles,
+    this.payPage='',
+    this.xmlUrl='',
+    this.apisUrl='',
+    this.apiUrl='',
+    this.apiKey='',
+    this.smartApiUrl='',
+    this.eVoucher=false,
+    required this.passengerTypes,
+    this.currency='',
+    this.gblLanguages='',
+    this.covidText='',
+    this.currencies='',
+    this.gblServerFiles='',
+    this.testServerFiles='',
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
-    this.skyFlyToken,
+    this.skyFlyToken = '',
 
-    this.fqtvName,
-    this.updateMessage,
-    this.appFeedbackEmail,
-    this.prohibitedItemsNoticeUrl,
-    this.groupsBookingsEmail,
-    this.maxNumberOfPax,
+    this.fqtvName = '',
+    this.updateMessage = '',
+    this.appFeedbackEmail = '',
+    this.prohibitedItemsNoticeUrl = '',
+    this.groupsBookingsEmail = '',
+    this.maxNumberOfPax = 9,
     this.maxNumberOfInfants = 9,
-    this.hideFareRules,
+    this.hideFareRules = false,
     //this.fqtvEnabled,
-    this.bpShowFastTrack,
-    this.bpShowLoungeAccess,
+    this.bpShowFastTrack = false,
+    this.bpShowLoungeAccess = false,
     this.wantMyAccount = true,
     this.wantFQTV = false,
     this.wantFindBookings = false,
     this.wantFQTVNumber = false,
-    this.searchDateOut,
-    this.searchDateBack,
-    this.reqUpdateMsg,
-    this.optUpdateMsg,
+    this.searchDateOut = 1,
+    this.searchDateBack = 1,
+    this.reqUpdateMsg ='',
+    this.optUpdateMsg = '',
     this.payTimeout = 10,
 
     //this.testPayUrl,
-    this.testPayPage,
-    this.testXmlUrl,
-    this.testApisUrl,
-    this.testApiUrl,
-    this.testSmartApiUrl,
-    this.testCreditCardProvider,
+    this.testPayPage ='',
+    this.testXmlUrl ='',
+    this.testApisUrl ='',
+    this.testApiUrl ='',
+    this.testSmartApiUrl ='',
+    this.testCreditCardProvider ='',
 
     //this.livePayUrl,
-    this.livePayPage,
-    this.liveXmlUrl,
-    this.liveApisUrl,
-    this.liveApiUrl,
-    this.liveSmartApiUrl,
-    this.liveCreditCardProvider,
-    this.fQTVpointsName,
-    this.buttonStyle,
-    this.upgradeMessage,
-    this.bpShowAddPassToWalletButton,
+    this.livePayPage ='',
+    this.liveXmlUrl='',
+    this.liveApisUrl='',
+    this.liveApiUrl='',
+    this.liveSmartApiUrl='',
+    this.liveCreditCardProvider='',
+    this.fQTVpointsName='',
+    this.buttonStyle='',
+    this.upgradeMessage='',
+    this.bpShowAddPassToWalletButton=false,
     this.passportLayoutStyle = 1,
-    this.iOSDemoBuilds,
-    this.androidDemoBuilds,
-    this.demoUser,
-    this.demoPassword,
-    this.customMenu1,
-    this.customMenu2,
-    this.customMenu3,
+    this.iOSDemoBuilds='',
+    this.androidDemoBuilds='',
+    this.demoUser='',
+    this.demoPassword='',
+    this.customMenu1='',
+    this.customMenu2='',
+    this.customMenu3='',
     this.progressFactor = 25,
-    this.blockedUrls,
+    this.blockedUrls='',
   });
   void setDefaults() {
     if( searchDateOut == null || searchDateOut == 0) {

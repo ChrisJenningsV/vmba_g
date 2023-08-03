@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/SystemColors.dart';
@@ -115,7 +116,7 @@ void configAH() {
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",
-    prohibitedItemsNoticeUrl: null,
+    prohibitedItemsNoticeUrl: '',
     groupsBookingsEmail:  "",
     maxNumberOfPax:  9,
     hideFareRules:  true,

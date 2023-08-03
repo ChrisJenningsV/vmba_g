@@ -7,7 +7,7 @@ import 'package:vmba/data/globals.dart';
 class TimerWidget extends StatelessWidget {
   final VoidCallback timerExpired;
 
-  const TimerWidget({Key key, this.timerExpired}) : super(key: key);
+  const TimerWidget({Key key= const Key("timer"), required this.timerExpired}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

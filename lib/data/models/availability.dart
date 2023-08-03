@@ -1,47 +1,43 @@
+
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
 
 import '../../components/trText.dart';
 
 class AvailabilityModel {
-  Availability availability;
+  late Availability availability;
 
-  AvailabilityModel({this.availability});
+  AvailabilityModel();
 
   AvailabilityModel.fromJson(Map<String, dynamic> json) {
-    availability =
-        json['xml'] != null ? new Availability.fromJson(json['xml']) : null;
+    if( json['xml'] != null) {
+      availability =new Availability.fromJson(json['xml']) ;
+    }
   }
 }
 
 class Availability {
-  Classbands classbands;
-  List<avItin> itin;
-  Cal cal;
+  Classbands? classbands;
+  List<AvItin>? itin;
+  Cal? cal;
 
-  Availability({this.classbands, this.itin, this.cal});
+   Availability({this.classbands, this.itin, this.cal });
 
   Availability.fromJson(Map<String, dynamic> json) {
-    classbands = json['classbands'] != null
+    this.classbands = json['classbands'] != null
         ? new Classbands.fromJson(json['classbands'])
         : null;
 
-    /*if (json['itin'] != null) {
-      itin = new List<Itin>();
-      json['itin'].forEach((v) {
-        itin.add(new Itin.fromJson(v));
-      });
-    }*/
 
     if (json['itin'] != null) {
       itin = [];
       //new List<Itin>();
       if (json['itin'] is List) {
         json['itin'].forEach((v) {
-          itin.add(new avItin.fromJson(v));
+          itin?.add(new AvItin.fromJson(v));
         });
       } else {
-        itin.add(new avItin.fromJson(json['itin']));
+        itin?.add(new AvItin.fromJson(json['itin']));
       }
     }
 
@@ -50,7 +46,7 @@ class Availability {
 }
 
 class Classbands {
-  List<Band> band;
+  List<Band>? band;
 
   Classbands({this.band});
 
@@ -60,42 +56,43 @@ class Classbands {
       //new List<Band>();
       if (json['band'] is List) {
         json['band'].forEach((v) {
-          band.add(new Band.fromJson(v));
+          band?.add(new Band.fromJson(v));
         });
       } else {
-        band.add(new Band.fromJson(json['band']));
+        band?.add(new Band.fromJson(json['band']));
       }
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.band != null) {
-      data['band'] = this.band.map((v) => v.toJson()).toList();
+    final band = this.band;
+    if (band != null) {
+      data['band'] = band.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Band {
-  String cb;
-  String cbname;
-  String cbclasses;
-  String cabin;
-  String shortcbname;
-  String product;
-  String cbdisplayname;
-  Cbnotvalidwith cbnotvalidwith;
-  Cbtextrecords cbtextrecords;
+  String cb = '';
+  String cbname = '';
+  String cbclasses = '';
+  String cabin = '';
+  String shortcbname ='';
+  String product = '';
+  String cbdisplayname = '';
+  Cbnotvalidwith? cbnotvalidwith;
+  Cbtextrecords? cbtextrecords;
 
   Band(
-      {this.cb,
-      this.cbname,
-      this.cbclasses,
-      this.cbdisplayname,
-      this.cabin,
-      this.shortcbname,
-      this.product,
+      {this.cb ='',
+      this.cbname = '',
+      this.cbclasses = '',
+      this.cbdisplayname = '',
+      this.cabin = '',
+      this.shortcbname = '',
+      this.product = '',
       this.cbnotvalidwith,
       this.cbtextrecords});
 
@@ -124,20 +121,22 @@ class Band {
     data['shortcbname'] = this.shortcbname;
     data['product'] = this.product;
     data['cbdisplayname'] = this.cbdisplayname;
-    if (this.cbnotvalidwith != null) {
-      data['cbnotvalidwith'] = this.cbnotvalidwith.toJson();
+    final cbnotvalidwith = this.cbnotvalidwith;
+    if (cbnotvalidwith != null) {
+      data['cbnotvalidwith'] = cbnotvalidwith.toJson();
     }
-    if (this.cbtextrecords != null) {
-      data['cbtextrecords'] = this.cbtextrecords.toJson();
+    final cbtextrecords = this.cbtextrecords;
+    if (cbtextrecords != null) {
+      data['cbtextrecords'] = cbtextrecords.toJson();
     }
     return data;
   }
 }
 
 class Cbnotvalidwith {
-  String cbname;
+  String cbname ='';
 
-  Cbnotvalidwith({this.cbname});
+  Cbnotvalidwith({this.cbname=''});
 
   Cbnotvalidwith.fromJson(Map<String, dynamic> json) {
     cbname = '';
@@ -160,9 +159,9 @@ class Cbnotvalidwith {
 }
 
 class Cbtextrecords {
-  List<Cbtext> cbtext;
+  List<Cbtext> cbtext = [];
 
-  Cbtextrecords({this.cbtext});
+  Cbtextrecords();
 
   Cbtextrecords.fromJson(Map<String, dynamic> json) {
     if (json['cbtext'] != null) {
@@ -182,18 +181,19 @@ class Cbtextrecords {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cbtext != null) {
-      data['cbtext'] = this.cbtext.map((v) => v.toJson()).toList();
+    final cbtext = this.cbtext;
+    if (cbtext != null) {
+      data['cbtext'] = cbtext.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Cbtext {
-  String text;
-  String id;
+  String text ='';
+  String id ='';
 
-  Cbtext({this.text, this.id});
+  Cbtext({this.text ='', this.id = ''});
 
   Cbtext.fromJson(Map<String, dynamic> json) {
     text = json['text'];
@@ -208,37 +208,37 @@ class Cbtext {
   }
 }
 
-class avItin {
-  String line;
-  String dep;
-  String arr;
-  String international;
-  String depmctdd;
-  String depmctdi;
-  String depmctid;
-  String depmctii;
-  String arrmctdd;
-  String arrmctdi;
-  String arrmctid;
-  String arrmctii;
-  List<Flt> flt;
+class AvItin {
+  String line ='';
+  String dep ='';
+  String arr ='';
+  String international ='';
+  String depmctdd ='';
+  String depmctdi ='';
+  String depmctid ='';
+  String depmctii ='';
+  String arrmctdd ='';
+  String arrmctdi ='';
+  String arrmctid ='';
+  String arrmctii ='';
+  List<Flt> flt =[];
 
-  avItin(
-      {this.line,
-      this.dep,
-      this.arr,
-      this.international,
-      this.depmctdd,
-      this.depmctdi,
-      this.depmctid,
-      this.depmctii,
-        this.arrmctdd,
-        this.arrmctdi,
-        this.arrmctid,
-        this.arrmctii,
-      this.flt});
+  AvItin(
+      {this.line ='',
+      this.dep ='',
+      this.arr ='',
+      this.international ='',
+      this.depmctdd ='',
+      this.depmctdi ='',
+      this.depmctid ='',
+      this.depmctii ='',
+        this.arrmctdd ='',
+        this.arrmctdi ='',
+        this.arrmctid ='',
+        this.arrmctii ='',
+      required this.flt});
 
-  avItin.fromJson(Map<String, dynamic> json) {
+  AvItin.fromJson(Map<String, dynamic> json) {
     line = json['line'];
     dep = json['dep'];
     arr = json['arr'];
@@ -262,8 +262,8 @@ class avItin {
       } else {
         flt.add(new Flt.fromJson(json['flt']));
       }
-    } else {
-      flt = null;
+/*    } else {
+      flt = null;*/
     }
   }
 
@@ -284,28 +284,34 @@ class avItin {
 
     // translate duration
     if( wantRtl()) {
-      return translateNo('${hours}') + translate('h.') + ' ' + translateNo('${min}') + translate('min');
+      return translateNo('$hours') + translate('h.') + ' ' + translateNo('$min') + translate('min');
     }
     return '${hours}h. ${min}min';
   }
 }
 
 class Flt {
-  String dep;
-  String arr;
-  Time time;
-  Fltdet fltdet;
-  Fltav fltav;
+  String dep ='';
+  String arr ='';
+  Time time = Time() ;
+  Fltdet fltdet = Fltdet( );
+  Fltav fltav = Fltav();
 
-  Flt({this.dep, this.arr, this.time, this.fltdet, this.fltav});
+  Flt({this.dep ='', this.arr ='', required this.time, required this.fltdet, required this.fltav});
 
   Flt.fromJson(Map<String, dynamic> json) {
     dep = json['dep'];
     arr = json['arr'];
-    time = json['time'] != null ? new Time.fromJson(json['time']) : null;
-    fltdet =
-        json['fltdet'] != null ? new Fltdet.fromJson(json['fltdet']) : null;
-    fltav = json['fltav'] != null ? new Fltav.fromJson(json['fltav']) : null;
+    if( json['time'] != null) {
+      time = Time.fromJson(json['time']);
+    }
+    if( json['fltdet'] != null) {
+      fltdet =Fltdet.fromJson(json['fltdet']);
+    }
+    if( json['fltav'] != null)
+      {
+        fltav = Fltav.fromJson(json['fltav']);
+      }
   }
 
   Map<String, dynamic> toJson() {
@@ -330,43 +336,43 @@ class Flt {
 }
 
 class Time {
-  String ddaylcl;
-  String ddaygmt;
-  String dofst;
-  String dtimlcl;
-  String dtimgmt;
-  String adaylcl;
-  String adaygmt;
-  String aofst;
-  String atimlcl;
-  String atimgmt;
-  String duration;
+  String ddaylcl ='';
+  String ddaygmt ='';
+  String dofst ='';
+  String dtimlcl ='';
+  String dtimgmt ='';
+  String adaylcl ='';
+  String adaygmt ='';
+  String aofst ='';
+  String atimlcl ='';
+  String atimgmt ='';
+  String duration ='';
 
   Time(
-      {this.ddaylcl,
-      this.ddaygmt,
-      this.dofst,
-      this.dtimlcl,
-      this.dtimgmt,
-      this.adaylcl,
-      this.adaygmt,
-      this.aofst,
-      this.atimlcl,
-      this.atimgmt,
-      this.duration});
+      {this.ddaylcl ='',
+      this.ddaygmt ='',
+      this.dofst ='',
+      this.dtimlcl ='',
+      this.dtimgmt ='',
+      this.adaylcl ='',
+      this.adaygmt ='',
+      this.aofst ='',
+      this.atimlcl ='',
+      this.atimgmt ='',
+      this.duration =''});
 
   Time.fromJson(Map<String, dynamic> json) {
-    ddaylcl = json['ddaylcl'];
-    ddaygmt = json['ddaygmt'];
-    dofst = json['dofst'];
-    dtimlcl = json['dtimlcl'];
-    dtimgmt = json['dtimgmt'];
-    adaylcl = json['adaylcl'];
-    adaygmt = json['adaygmt'];
-    aofst = json['aofst'];
-    atimlcl = json['atimlcl'];
-    atimgmt = json['atimgmt'];
-    duration = json['duration'];
+    if(json['ddaylcl'] !=null)ddaylcl = json['ddaylcl'];
+    if(json['ddaygmt'] !=null)ddaygmt = json['ddaygmt'];
+    if( json['dofst'] !=null)dofst = json['dofst'];
+    if( json['dtimlcl'] != null)dtimlcl = json['dtimlcl'];
+    if( json['dtimgmt'] != null )dtimgmt = json['dtimgmt'];
+    if( json['adaylcl'] != null )adaylcl = json['adaylcl'];
+    if( json['adaygmt'] != null )adaygmt = json['adaygmt'];
+    if( json['aofst'] != null )aofst = json['aofst'];
+    if( json['atimlcl'] != null )atimlcl = json['atimlcl'];
+    if( json['atimgmt'] != null )atimgmt = json['atimgmt'];
+    if(  json['duration'] != null )duration = json['duration'];
   }
 
   Map<String, dynamic> toJson() {
@@ -387,27 +393,28 @@ class Time {
 }
 
 class Fltdet {
-  String airid;
-  String fltno;
-  String seq;
-  String eqp;
-  String stp;
-  Canfac canfac;
-  String depterm;
-  String arrterm;
+  String airid ='';
+  String fltno ='';
+  String seq ='';
+  String eqp ='';
+  String stp ='';
+  Canfac? canfac = Canfac();
+  String depterm ='';
+  String arrterm ='';
 
-  Fltdet({this.airid, this.fltno, this.seq, this.eqp, this.stp, this.canfac, this.depterm, this.arrterm});
+  Fltdet({this.airid ='', this.fltno ='', this.seq ='', this.eqp ='', this.stp ='', this.canfac, this.depterm ='', this.arrterm =''});
 
   Fltdet.fromJson(Map<String, dynamic> json) {
-    airid = json['airid'];
-    fltno = json['fltno'];
-    seq = json['seq'];
-    eqp = json['eqp'];
-    stp = json['stp'];
-    depterm = json['depterm'];
-    arrterm = json['arrterm'];
-    canfac =
-        json['canfac'] != null ? new Canfac.fromJson(json['canfac']) : null;
+    if( json['airid'] != null)airid = json['airid'];
+    if(json['fltno'] != null)fltno = json['fltno'];
+    if( json['seq'] != null )seq = json['seq'];
+    if( json['eqp']!= null )eqp = json['eqp'];
+    if(  json['stp'] != null )stp = json['stp'];
+    if( json['depterm'] != null )depterm = json['depterm'];
+    if( json['arrterm'] != null )arrterm = json['arrterm'];
+    if( json['canfac'] != null) {
+      canfac =Canfac.fromJson(json['canfac']) ;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -419,17 +426,18 @@ class Fltdet {
     data['stp'] = this.stp;
     data['depterm'] = this.depterm;
     data['arrterm'] = this.arrterm;
-    if (this.canfac != null) {
-      data['canfac'] = this.canfac.toJson();
+    final canfac = this.canfac;
+    if (canfac != null) {
+      data['canfac'] = canfac.toJson();
     }
     return data;
   }
 }
 
 class Canfac {
-  String fac;
+  String fac='';
 
-  Canfac({this.fac});
+  Canfac({this.fac=''});
 
   Canfac.fromJson(Map<String, dynamic> json) {
     fac = json['fac'];
@@ -443,19 +451,19 @@ class Canfac {
 }
 
 class Fltav {
-  List<String> cb;
-  List<String> id;
-  List<String> av;
-  List<String> cur;
-  List<String> curInf;
-  List<String> pri;
-  List<String> tax;
-  List<String> fav;
-  List<String> miles;
-  List<String> awards;
-  List<String> fid;
-  List<String> finf;
-  List<String> discprice;
+  List<String>? cb =[''];
+  List<String>? id;
+  List<String>? av;
+  List<String>? cur;
+  List<String>? curInf;
+  List<String>? pri;
+  List<String>? tax;
+  List<String>? fav;
+  List<String>? miles;
+  List<String>? awards;
+  List<String>? fid;
+  List<String>? finf;
+  List<String>? discprice;
 
   Fltav(
       {this.cb,
@@ -478,7 +486,7 @@ class Fltav {
     } else {
       cb = [];
       //new List<String>();
-      cb.add(json['cb']);
+      cb?.add(json['cb']);
     }
 
     if (json['id'] is List) {
@@ -486,7 +494,7 @@ class Fltav {
     } else {
       id = [];
       //new List<String>();
-      id.add(json['id']);
+      id?.add(json['id']);
     }
 
     if (json['av'] is List) {
@@ -494,7 +502,7 @@ class Fltav {
     } else {
       av = [];
       //new List<String>();
-      av.add(json['av']);
+      av?.add(json['av']);
     }
 
     if (json['cur'] is List) {
@@ -502,7 +510,7 @@ class Fltav {
     } else {
       cur = [];
       //new List<String>();
-      cur.add(json['cur']);
+      cur?.add(json['cur']);
     }
 
     if (json['CurInf'] is List) {
@@ -510,7 +518,7 @@ class Fltav {
     } else {
       curInf = [];
       //new List<String>();
-      curInf.add(json['CurInf']);
+      curInf?.add(json['CurInf']);
     }
 
     if (json['pri'] is List) {
@@ -518,7 +526,7 @@ class Fltav {
     } else {
       pri = [];
       //new List<String>();
-      pri.add(json['pri']);
+      pri?.add(json['pri']);
     }
 
     if (json['tax'] is List) {
@@ -526,7 +534,7 @@ class Fltav {
     } else {
       tax = [];
       //new List<String>();
-      tax.add(json['tax']);
+      tax?.add(json['tax']);
     }
 
     if (json['fav'] is List) {
@@ -534,7 +542,7 @@ class Fltav {
     } else {
       fav = [];
       //new List<String>();
-      fav.add(json['fav']);
+      fav?.add(json['fav']);
     }
 
     if (json['miles'] is List) {
@@ -542,7 +550,7 @@ class Fltav {
     } else {
       miles = [];
       // new List<String>();
-      miles.add(json['miles']);
+      miles?.add(json['miles']);
     }
 
     if (json['awards'] is List) {
@@ -550,7 +558,7 @@ class Fltav {
     } else {
       awards = [];
       //new List<String>();
-      awards.add(json['awards']);
+      awards?.add(json['awards']);
     }
 
     if (json['fid'] is List) {
@@ -558,7 +566,7 @@ class Fltav {
     } else {
       fid = [];
       //new List<String>();
-      fid.add(json['fid']);
+      fid?.add(json['fid']);
     }
 
     if (json['finf'] is List) {
@@ -566,14 +574,14 @@ class Fltav {
     } else {
       finf = [];
       //new List<String>();
-      finf.add(json['finf']);
+      finf?.add(json['finf']);
     }
     if (json['discprice'] is List) {
       discprice = json['discprice'].cast<String>();
     } else {
       discprice = [];
       //new List<String>();
-      discprice.add(json['discprice']);
+      if( json['discprice'] != null )      discprice?.add(json['discprice']);
     }
 
     //av = json['av'].cast<String>();
@@ -608,9 +616,9 @@ class Fltav {
 }
 
 class Cal {
-  List<Day> day;
+  List<Day> day = List.from([Day()]);
 
-  Cal({this.day});
+  Cal();
 
   Cal.fromJson(Map<String, dynamic> json) {
     if (json['day'] != null) {
@@ -632,14 +640,14 @@ class Cal {
 }
 
 class Day {
-  String daylcl;
-  String cur;
-  String curinf;
-  String amt;
-  String miles;
-  String awards;
+  String daylcl ='';
+  String cur = '';
+  String curinf = '';
+  String amt = '';
+  String miles = '';
+  String awards = '';
 
-  Day({this.daylcl, this.cur, this.curinf, this.amt, this.miles, this.awards});
+  Day({this.daylcl ='', this.cur = '', this.curinf = '', this.amt = '', this.miles = '', this.awards = ''});
 
   Day.fromJson(Map<String, dynamic> json) {
     daylcl = json['daylcl'];

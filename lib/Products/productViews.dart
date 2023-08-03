@@ -5,6 +5,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/products.dart';
 
 import '../data/globals.dart';
+import '../data/models/pnr.dart';
 import '../utilities/helper.dart';
 
 class ProductCard extends StatefulWidget {
@@ -12,7 +13,7 @@ class ProductCard extends StatefulWidget {
   final List<Product> products;
 
  // ProductCardState appState = new ProductCardState();
-  ProductCard({this.productType, this.products});
+  ProductCard({required this.productType, required this.products});
   ProductCardState createState() => ProductCardState();
 
 /*
@@ -41,7 +42,7 @@ class ProductCard extends StatefulWidget {
 
 }
 class ProductCardState extends State<ProductCard> {
-  String title;
+  String title ='';
 
   @override
   initState() {
@@ -59,7 +60,8 @@ class ProductCardState extends State<ProductCard> {
         break;
     }
     widget.products.forEach((prod) {
-      prod.resetProducts(gblPnrModel);
+
+      prod.resetProducts(gblPnrModel as PnrModel);
     });
 
   }
@@ -106,7 +108,7 @@ class ProductCardState extends State<ProductCard> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Image(image: getProductImage(prod)),
+          Image(image: getProductImage(prod) as NetworkImage),
           Align(alignment: Alignment.centerLeft,
               child: TrText(prod.productName)),
 
@@ -146,13 +148,13 @@ class ProductCardState extends State<ProductCard> {
       return;
     }
     setState(() {
-      widget.products[index].curProducts.removeAt(0);
+      widget.products[index].curProducts?.removeAt(0);
     });
   }
 
   void addProduct(int index) {
     setState(() {
-      widget.products[index].curProducts.add('0:0');
+      widget.products[index].curProducts?.add('0:0');
     });
   }
 }

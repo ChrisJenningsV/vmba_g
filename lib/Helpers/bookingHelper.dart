@@ -17,7 +17,7 @@ Future<bool> onWillPop(BuildContext context) async {
     builder: (context) => new AlertDialog(
       shape: alertShape(),
       titlePadding: alertTitlePadding(),
-      title: alertTitle(translate('Are you sure?'), gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
+      title: alertTitle(translate('Are you sure?'), gblSystemColors.headerTextColor!, gblSystemColors.primaryHeaderColor),
       content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget> [
@@ -45,8 +45,8 @@ Future<bool> onWillPop(BuildContext context) async {
             } catch(e) {
             }
 
-            if (pnrCompleted() ||  pnrHasTTL()) {
-              resetPnrContent(gblPnrModel.pNR.rLOC).then((x) {
+            if (gblPnrModel != null && ( pnrCompleted() ||  pnrHasTTL())) {
+              resetPnrContent(gblPnrModel!.pNR.rLOC).then((x) {
                 // return to choose flights
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/HomePage', (Route<dynamic> route) => false);
@@ -70,13 +70,13 @@ Future<bool> onWillPop(BuildContext context) async {
 }
 
 bool pnrCompleted() {
-  if( gblPnrModel != null && gblPnrModel.pNR.payments != null && gblPnrModel.pNR.payments.fOP.length >0 ){
+  if( gblPnrModel != null && gblPnrModel!.pNR.payments != null && gblPnrModel!.pNR.payments.fOP.length >0 ){
     return true;
   }
   return false;
 }
 bool pnrHasTTL() {
-  if( gblPnrModel != null && gblPnrModel.pNR.timeLimits != null && gblPnrModel.pNR.timeLimits.tTL != null ){
+  if( gblPnrModel != null && gblPnrModel!.pNR.timeLimits != null && gblPnrModel!.pNR.timeLimits.tTL != null ){
     return true;
   }
   return false;
@@ -85,10 +85,10 @@ bool pnrHasTTL() {
 
 
 Future deletePnrContent() async {
-  if( gblPnrModel != null &&  gblPnrModel.pNR.rLOC != null && gblPnrModel.pNR.rLOC.isNotEmpty){
+  if( gblPnrModel != null &&  gblPnrModel!.pNR.rLOC != null && gblPnrModel!.pNR.rLOC.isNotEmpty){
     String msg = '';
     String data = '';
-      gblPnrModel.pNR.itinerary.itin.reversed.forEach((flt) {
+      gblPnrModel!.pNR.itinerary.itin.reversed.forEach((flt) {
         if(msg.isNotEmpty){
           msg += '^';
         }
@@ -96,7 +96,7 @@ Future deletePnrContent() async {
 
     });
       if( msg.isNotEmpty){
-        msg = '*${gblPnrModel.pNR.rLOC}^' + msg;
+        msg = '*${gblPnrModel!.pNR.rLOC}^' + msg;
         msg += '^E';
         logit('deletePnrContent msg:$msg ');
         try {
@@ -134,7 +134,7 @@ Future<PnrDBCopy> resetPnrContent(String rloc) async {
       .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
       .replaceAll('<string xmlns="http://videcom.com/">', '')
       .replaceAll('</string>', '');
-  Map map = json.decode(pnrJson);
+  Map<String, dynamic> map = json.decode(pnrJson);
   print('Fetch PNR');
   PnrModel pnrModel = new PnrModel.fromJson(map);
 

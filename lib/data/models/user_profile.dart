@@ -1,18 +1,17 @@
 import 'package:meta/meta.dart';
 
-
 class UserProfileRecord {
   //static final db_id = "id";
   static final dbName = "name";
   static final dbValue = "value";
 
-  String value, name;
-  int id;
+  String value='', name='';
+  int id=0;
 
   UserProfileRecord({
    // this.id,
-    @required this.name,
-    @required this.value,
+    required this.name,
+    required this.value,
   });
 
   UserProfileRecord.fromMap(Map<String, dynamic> map)

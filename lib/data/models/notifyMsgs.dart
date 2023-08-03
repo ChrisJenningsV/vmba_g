@@ -1,8 +1,7 @@
 
-
 class Notification {
 
-  Notification( {this.title, this.body});
+  Notification( {this.title='', this.body=''});
 
   final String title;
 
@@ -20,13 +19,13 @@ class Notification {
 
 class NotificationMessage {
 
-  NotificationMessage({this.notification, this.category, this.sentTime , this.background, this.data});
+  NotificationMessage({this.notification, this.category='', this.sentTime  , this.background ='', this.data});
 
-  final Notification notification;
+  final Notification? notification;
   final String category;
   String background;
-  final DateTime sentTime;
-  final Map data;
+  final DateTime? sentTime;
+  final Map? data;
 
   Map  toJson() {
     Map map = new Map();

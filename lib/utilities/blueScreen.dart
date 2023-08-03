@@ -9,8 +9,8 @@ import 'messagePages.dart';
 
 class BlueScreenPage extends StatefulWidget {
   BlueScreenPage({
-  Key key,
-  this.action,
+  Key key= const Key("blue_key"),
+  this.action='',
  });
 
   String action;
@@ -22,7 +22,7 @@ class BlueScreenPage extends StatefulWidget {
 class BlueScreenPageState extends State<BlueScreenPage> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
   TextEditingController _inputController = TextEditingController();
-  String _displayText;
+  String _displayText='';
 
   @override
   initState() {
@@ -65,7 +65,7 @@ class BlueScreenPageState extends State<BlueScreenPage> {
       return AlertDialog(
         shape: alertShape(),
         titlePadding: const EdgeInsets.all(0),
-        title: alertTitle(translate('Blue Screen'), gblSystemColors.headerTextColor, gblSystemColors.primaryHeaderColor),
+        title: alertTitle(translate('Blue Screen'), gblSystemColors.headerTextColor!, gblSystemColors.primaryHeaderColor),
         contentPadding: EdgeInsets.all(5),
         insetPadding: EdgeInsets.all(5),
         content:

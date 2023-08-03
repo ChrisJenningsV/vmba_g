@@ -1,3 +1,5 @@
+/*
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'dart:convert';
@@ -29,7 +31,7 @@ class VrsCmdWidget extends StatefulWidget {
   final VrsCmdWidgetState myAppState=new VrsCmdWidgetState();
 
   VrsCmdWidget(
-      { Key key, this.dataType, this.rloc, this.paxlist, this.journeyNo  }) : super( key: key);
+      { Key key= const Key("vrscmd_key"), this.dataType, this.rloc='', this.paxlist, this.journeyNo ='' }) : super( key: key);
 
 
   VrsCmdWidgetState createState() =>      VrsCmdWidgetState();
@@ -171,7 +173,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
         msg = json.encode(RunVRSCommand(session, "E"));
         _sendVRSCommand(msg).then(
                 (onValue) => Repository.get().fetchPnr(params.rloc).then((pnr) {
-              Map map = json.decode(pnr.data);
+              Map<String, dynamic> map = json.decode(pnr.data);
               PnrModel pnrModel = new PnrModel.fromJson(map);
               Navigator.pop(context, pnrModel);
             }));
@@ -189,7 +191,7 @@ class VrsCmdWidgetState extends State<VrsCmdWidget> {
       } else {
         msg = json.encode(RunVRSCommand(session, "*R~x"));
         _sendVRSCommand(msg).then((pnrJson) {
-          Map map = json.decode(pnrJson);
+          Map<String, dynamic> map = json.decode(pnrJson);
 
           _displayProcessingIndicator = false;
 
@@ -319,4 +321,4 @@ class VrsCmdParams {
 
   VrsCmdParams({this.journeyNo, this.paxlist, this.dataType, this.rloc, this.context, this.onStateChange});
 
-}
+}*/

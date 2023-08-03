@@ -19,18 +19,18 @@ import '../utilities/widgets/appBarWidget.dart';
 //ignore: must_be_immutable
 class MyAccountPage extends StatefulWidget {
   MyAccountPage(
-      {Key key, this.passengerDetail, this.isAdsBooking, this.isLeadPassenger})
+      {Key key= const Key("MyAcc_key"), this.passengerDetail, this.isAdsBooking=false, this.isLeadPassenger=true})
       : super(key: key);
 
   _MyAccountPageState createState() => _MyAccountPageState();
 
-  PassengerDetail passengerDetail;
-  final bool isAdsBooking;
-  final bool isLeadPassenger;
+  PassengerDetail? passengerDetail;
+   bool isAdsBooking = false;
+   bool isLeadPassenger = true;
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-  bool _gotData;
+  bool _gotData = false;
   TextEditingController _titleTextEditingController = TextEditingController();
   TextEditingController _firstNameTextEditingController = TextEditingController();
   TextEditingController _middleNameTextEditingController = TextEditingController();
@@ -48,35 +48,35 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _disabilityTextEditingController = TextEditingController();
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
-  int _curGenderIndex ;
+  int _curGenderIndex =0;
   List <String> genderList = ['Male', 'Female', 'Undisclosed'];
 
-  List<UserProfileRecord> userProfileRecordList;
+  List<UserProfileRecord>? userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
-  String oldADSNumber;
-  String oldADSpin;
-  bool oldNotify;
+  String oldADSNumber='';
+  String oldADSpin='';
+  bool oldNotify=false;
   //String phoneNumber;
   //String phoneIsoCode;
 
 
 //  bool _loadingInProgress = false;
-  String _error;
+  String _error='';
 
   @override
   initState() {
     super.initState();
     _gotData = false;
     widget.passengerDetail = new PassengerDetail(email: '', phonenumber: '');
-    if (widget.passengerDetail.paxType == null) {
-      widget.passengerDetail.paxType = PaxType.adult;
+    if (widget.passengerDetail!.paxType == null) {
+      widget.passengerDetail!.paxType = PaxType.adult;
     }
 
     Repository.get().getNamedUserProfile('PAX1').then((profile) {
-      if (profile != null) {
-        widget.passengerDetail.firstName = profile.name.toString();
+      if (profile != null && profile.name != 'Error') {
+        widget.passengerDetail!.firstName = profile.name.toString();
         try {
-          Map map = json.decode(profile.value
+          Map<String, dynamic> map = json.decode(profile.value
               .toString()
               .replaceAll("'", '"')); // .replaceAll(',}', '}')
           widget.passengerDetail = PassengerDetail.fromJson(map);
@@ -111,8 +111,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
         _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
         _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
 */
-        if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
-          _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender) ;
+        if( widget.passengerDetail!.gender != null && widget.passengerDetail!.gender.isNotEmpty ){
+          _curGenderIndex = genderList.indexOf(widget.passengerDetail!.gender) ;
           logit('genderPicker index:$_curGenderIndex');
           setState(() {
 
@@ -120,8 +120,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
         }
 
       }
-      if (widget.passengerDetail.paxType == null) {
-        widget.passengerDetail.paxType = PaxType.adult;
+      if (widget.passengerDetail!.paxType == null) {
+        widget.passengerDetail!.paxType = PaxType.adult;
       }
       _populateFromGlobalProfile();
       setState(() {
@@ -132,31 +132,31 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
 
   void _initFields() {
-    _titleTextEditingController.text = translate(widget.passengerDetail.title);
+    _titleTextEditingController.text = translate(widget.passengerDetail!.title);
     //_titleTextEditingController.text = widget.passengerDetail.title;
-    _firstNameTextEditingController.text = widget.passengerDetail.firstName;
-    _middleNameTextEditingController.text = widget.passengerDetail.middleName;
-    _lastNameTextEditingController.text = widget.passengerDetail.lastName;
-    _emailTextEditingController.text = widget.passengerDetail.email;
-    _phoneNumberTextEditingController.text = widget.passengerDetail.phonenumber;
-    oldNotify =  widget.passengerDetail.wantNotifications;
+    _firstNameTextEditingController.text = widget.passengerDetail!.firstName;
+    _middleNameTextEditingController.text = widget.passengerDetail!.middleName;
+    _lastNameTextEditingController.text = widget.passengerDetail!.lastName;
+    _emailTextEditingController.text = widget.passengerDetail!.email;
+    _phoneNumberTextEditingController.text = widget.passengerDetail!.phonenumber;
+    oldNotify =  widget.passengerDetail!.wantNotifications;
 
     //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
-    if( widget.passengerDetail.dateOfBirth != null ) {
+    if( widget.passengerDetail!.dateOfBirth != null ) {
       _dobController.text = DateFormat('dd-MMM-yyyy')
-          .format( widget.passengerDetail.dateOfBirth);
+          .format( widget.passengerDetail!.dateOfBirth as DateTime) ;
     }
-    _fqtvTextEditingController.text = widget.passengerDetail.fqtv;
-    _fqtvPasswordEditingController.text = widget.passengerDetail.fqtvPassword;
+    _fqtvTextEditingController.text = widget.passengerDetail!.fqtv;
+    _fqtvPasswordEditingController.text = widget.passengerDetail!.fqtvPassword;
 
-    _adsNumberTextEditingController.text = widget.passengerDetail.adsNumber;
-    _adsPinTextEditingController.text = widget.passengerDetail.adsPin;
-    oldADSNumber = widget.passengerDetail.adsNumber;
-    oldADSpin = widget.passengerDetail.adsPin;
+    _adsNumberTextEditingController.text = widget.passengerDetail!.adsNumber;
+    _adsPinTextEditingController.text = widget.passengerDetail!.adsPin;
+    oldADSNumber = widget.passengerDetail!.adsNumber;
+    oldADSpin = widget.passengerDetail!.adsPin;
 
-    _seniorIDTextEditingController.text = widget.passengerDetail.seniorID;
-    _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
-    _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
+    _seniorIDTextEditingController.text = widget.passengerDetail!.seniorID;
+    _knownTravellerNoTextEditingController.text = widget.passengerDetail!.knowTravellerNo;
+    _redressNoTextEditingController.text = widget.passengerDetail!.redressNo;
 
   }
 
@@ -193,62 +193,62 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
     if (_titleTextEditingController.text == null ||
         _titleTextEditingController.text.isEmpty) {
-      _titleTextEditingController.text = gblPassengerDetail.title;
+      _titleTextEditingController.text = gblPassengerDetail!.title;
     }
     if (_firstNameTextEditingController.text == null ||
         _firstNameTextEditingController.text.isEmpty) {
-      _firstNameTextEditingController.text = gblPassengerDetail.firstName;
+      _firstNameTextEditingController.text = gblPassengerDetail!.firstName;
     }
     if (_middleNameTextEditingController.text == null ||
         _middleNameTextEditingController.text.isEmpty) {
-      _middleNameTextEditingController.text = gblPassengerDetail.middleName;
+      _middleNameTextEditingController.text = gblPassengerDetail!.middleName;
     }
 
     if (_lastNameTextEditingController.text == null ||
         _lastNameTextEditingController.text.isEmpty) {
-      _lastNameTextEditingController.text = gblPassengerDetail.lastName;
+      _lastNameTextEditingController.text = gblPassengerDetail!.lastName;
     }
 
     if ((_dobController.text == null ||  _dobController.text.isEmpty) &&
-        gblPassengerDetail.dateOfBirth != null ) {
+        gblPassengerDetail!.dateOfBirth != null ) {
       _dobController.text =DateFormat('dd-MMM-yyyy')
-          .format( gblPassengerDetail.dateOfBirth);
+          .format( gblPassengerDetail!.dateOfBirth as DateTime);
     }
 
     if (_phoneNumberTextEditingController.text == null ||
         _phoneNumberTextEditingController.text.isEmpty) {
-      _phoneNumberTextEditingController.text = gblPassengerDetail.phonenumber;
+      _phoneNumberTextEditingController.text = gblPassengerDetail!.phonenumber;
     }
     if (_emailTextEditingController.text == null ||
         _emailTextEditingController.text.isEmpty) {
-      _emailTextEditingController.text = gblPassengerDetail.email;
+      _emailTextEditingController.text = gblPassengerDetail!.email;
     }
 
     if (_fqtvTextEditingController.text == null ||
         _fqtvTextEditingController.text.isEmpty) {
-      _fqtvTextEditingController.text = gblPassengerDetail.fqtv;
+      _fqtvTextEditingController.text = gblPassengerDetail!.fqtv;
     }
     if (_fqtvPasswordEditingController.text == null ||
         _fqtvPasswordEditingController.text.isEmpty) {
-      _fqtvPasswordEditingController.text = gblPassengerDetail.fqtvPassword;
+      _fqtvPasswordEditingController.text = gblPassengerDetail!.fqtvPassword;
     }
 
     if (_seniorIDTextEditingController.text == null ||
         _seniorIDTextEditingController.text.isEmpty) {
-      _seniorIDTextEditingController.text = gblPassengerDetail.seniorID;
+      _seniorIDTextEditingController.text = gblPassengerDetail!.seniorID;
     }
     if (_disabilityTextEditingController.text == null ||
         _disabilityTextEditingController.text.isEmpty) {
-      _disabilityTextEditingController.text = gblPassengerDetail.disabilityID;
+      _disabilityTextEditingController.text = gblPassengerDetail!.disabilityID;
     }
 
     if (_redressNoTextEditingController.text == null ||
         _redressNoTextEditingController.text.isEmpty) {
-      _redressNoTextEditingController.text = gblPassengerDetail.redressNo;
+      _redressNoTextEditingController.text = gblPassengerDetail!.redressNo;
     }
     if (_knownTravellerNoTextEditingController.text == null ||
         _knownTravellerNoTextEditingController.text.isEmpty) {
-      _knownTravellerNoTextEditingController.text = gblPassengerDetail.knowTravellerNo;
+      _knownTravellerNoTextEditingController.text = gblPassengerDetail!.knowTravellerNo;
     }
 
 
@@ -317,7 +317,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       primaryColorDark: Colors.blue,
     );
 
-    logit('title a = ${widget.passengerDetail.title}');
+    //logit('title a = ${widget.passengerDetail!.title}');
     // title
     widgets.add(Padding(
       padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
@@ -343,7 +343,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             controller: _titleTextEditingController,
             // TextEditingController(text: widget.passengerDetail.title ),
             validator: (value) =>
-                value.isEmpty ? translate('Title cannot be empty') : null,
+                value!.isEmpty ? translate('Title cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
                // widget.passengerDetail.title = value.trim();
@@ -366,7 +366,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             decoration: _getDecoration('First name (as Passport)'),
             controller: _firstNameTextEditingController,
             onFieldSubmitted: (value) {
-              widget.passengerDetail.firstName = value;
+              widget.passengerDetail!.firstName = value;
             },
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.text,
@@ -374,10 +374,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
             ],
             validator: (value) =>
-                value.isEmpty ? translate('First name cannot be empty') : null,
+                value!.isEmpty ? translate('First name cannot be empty') : null,
             onSaved: (value) {
               if (value != null) {
-                widget.passengerDetail.firstName = value.trim();
+                widget.passengerDetail!.firstName = value.trim();
               }
             },
           ),
@@ -397,7 +397,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               decoration: _getDecoration('Middle name (or NONE)'),
               controller: _middleNameTextEditingController,
               onFieldSubmitted: (value) {
-                widget.passengerDetail.middleName = value;
+                widget.passengerDetail!.middleName = value;
               },
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.text,
@@ -405,10 +405,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
               ],
               validator: (value) =>
-              value.isEmpty ? translate('Middle name cannot be empty') : null,
+              value!.isEmpty ? translate('Middle name cannot be empty') : null,
               onSaved: (value) {
                 if (value != null) {
-                  widget.passengerDetail.middleName = value.trim();
+                  widget.passengerDetail!.middleName = value.trim();
                 }
               },
             ),
@@ -432,13 +432,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
             FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
           ],
           onFieldSubmitted: (value) {
-            widget.passengerDetail.lastName = value;
+            widget.passengerDetail!.lastName = value;
           },
           validator: (value) =>
-              value.isEmpty ? translate('Last name cannot be empty') : null,
+              value!.isEmpty ? translate('Last name cannot be empty') : null,
           onSaved: (value) {
             if (value != null) {
-              widget.passengerDetail.lastName = value.trim();
+              widget.passengerDetail!.lastName = value.trim();
             }
           },
         ),
@@ -459,7 +459,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           onSaved: ( String newNumber) {
             setState(() {
               _phoneCodeTextEditingController.text = newNumber;
-              widget.passengerDetail.phonenumber = newNumber + _phoneNumberTextEditingController.text;
+              widget.passengerDetail!.phonenumber = newNumber + _phoneNumberTextEditingController.text;
  /*             _phoneNumberTextEditingController.text = newNumber;
               widget.passengerDetail.phonenumber = newNumber;*/
             });
@@ -488,11 +488,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 FilteringTextInputFormatter.digitsOnly,
               ],
               validator: (value) =>
-              value.isEmpty ? translate('Phone Number cannot be empty') : null,
+              value!.isEmpty ? translate('Phone Number cannot be empty') : null,
               onSaved: (value) {
                 if (value != null) {
                   //.contactInfomation.phonenumber = value.trim()
-                  widget.passengerDetail.phonenumber = value.trim();
+                  widget.passengerDetail!.phonenumber = value.trim();
                 }
               },
             )),
@@ -508,12 +508,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
           controller: _emailTextEditingController,
           decoration: _getDecoration('Email'),
           keyboardType: TextInputType.emailAddress,
-          validator: (value) => validateEmail(value.trim()),
+          validator: (value) {
+            String er = validateEmail(value!.trim());
+            if( er != '' ) return er;
+            return null;
+          },
             //value.isEmpty ? translate('Email cannot be empty') : null,
 
           onSaved: (value) {
-            if (value.isNotEmpty) {
-              widget.passengerDetail.email = value.trim();
+            if (value!.isNotEmpty) {
+              widget.passengerDetail!.email = value.trim();
             }
           },
         ),
@@ -523,14 +527,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
  //   return widgets;
 
     // DOB
-    if( (widget.passengerDetail.paxType == PaxType.adult && gblSettings.passengerTypes.wantAdultDOB ) ||
-      widget.passengerDetail.paxType != PaxType.adult &&
-        widget.passengerDetail.paxType != null ) {
+    if( (widget.passengerDetail!.paxType == PaxType.adult && gblSettings.passengerTypes.wantAdultDOB ) ||
+      widget.passengerDetail!.paxType != PaxType.adult &&
+        widget.passengerDetail!.paxType != null ) {
       widgets.add(Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child:  InkWell(
           onTap: () {
-            _showCalenderDialog(widget.passengerDetail.paxType);
+            _showCalenderDialog(widget.passengerDetail!.paxType);
           },
           child: IgnorePointer(
             child: TextFormField(
@@ -538,12 +542,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
               //initialValue: field.value,
               controller: _dobController, //
               validator: (value) =>
-              value.isEmpty ? translate('Date of Birth is required') : null,
+              value!.isEmpty ? translate('Date of Birth is required') : null,
               onSaved: (value) {
                 if (value != null && value.isNotEmpty) {
 
                   DateFormat format = new DateFormat("dd-MMM-yyyy"); //""yyyy MMM dd");
-                  widget.passengerDetail.dateOfBirth = format.parse(value);
+                  widget.passengerDetail!.dateOfBirth = format.parse(value);
                 }
               },
 
@@ -570,10 +574,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if( gblSettings.wantNotificationEdit) {
       widgets.add( CheckboxListTile(
           title: TrText("I want promotional messages"),
-          value:  widget.passengerDetail.wantNotifications,
+          value:  widget.passengerDetail!.wantNotifications,
           onChanged: (newValue) {
             setState(() {
-              widget.passengerDetail.wantNotifications = newValue;
+              widget.passengerDetail!.wantNotifications = newValue as bool;
             });
           },
           controlAffinity: ListTileControlAffinity.leading,
@@ -598,7 +602,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               onSaved: (value) {
                 if (value != null) {
                   //.contactInfomation.phonenumber = value.trim()
-                  widget.passengerDetail.fqtv = value.trim();
+                  widget.passengerDetail!.fqtv = value.trim();
                 }
               },
             )),
@@ -620,7 +624,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               keyboardType: TextInputType.visiblePassword,
               onSaved: (value) {
                 if (value != null) {
-                  widget.passengerDetail..fqtvPassword = value.trim();
+                  widget.passengerDetail!.fqtvPassword = value.trim();
                 }
               },
             )),
@@ -641,8 +645,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-              if (value.isNotEmpty) {
-                widget.passengerDetail.adsNumber = value.trim();
+              if (value!.isNotEmpty) {
+                widget.passengerDetail!.adsNumber = value.trim();
               }
             },
           ),
@@ -660,7 +664,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             keyboardType: TextInputType.number,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-              widget.passengerDetail.adsPin = value.trim();
+              widget.passengerDetail!.adsPin = value!.trim();
             },
           ),
         ),
@@ -678,8 +682,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-              if (value.isNotEmpty) {
-                widget.passengerDetail.seniorID = value.trim();
+              if (value!.isNotEmpty) {
+                widget.passengerDetail!.seniorID = value.trim();
               }
             },
           ),
@@ -696,8 +700,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
             onSaved: (value) {
-              if (value.isNotEmpty) {
-                widget.passengerDetail.disabilityID = value.trim();
+              if (value!.isNotEmpty) {
+                widget.passengerDetail!.disabilityID = value.trim();
               }
             },
           ),
@@ -716,8 +720,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             decoration: _getDecoration('Redress No'),
             keyboardType: TextInputType.streetAddress,
             onSaved: (value) {
-              if (value.isNotEmpty) {
-                widget.passengerDetail.redressNo = value.trim();
+              if (value!.isNotEmpty) {
+                widget.passengerDetail!.redressNo = value.trim();
               }
             },
           ),
@@ -736,8 +740,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
             decoration: _getDecoration('Known Traveller No'),
             keyboardType: TextInputType.streetAddress,
             onSaved: (value) {
-              if (value.isNotEmpty) {
-                widget.passengerDetail.knowTravellerNo = value.trim();
+              if (value!.isNotEmpty) {
+                widget.passengerDetail!.knowTravellerNo = value.trim();
               }
             },
           ),
@@ -746,7 +750,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     }
 
 
-    if( widget.passengerDetail.firstName != null && widget.passengerDetail.firstName.isNotEmpty )
+    if( widget.passengerDetail!.firstName != null && widget.passengerDetail!.firstName.isNotEmpty )
     {
     widgets.add(
     Row(
@@ -818,7 +822,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     UserProfileRecord _profileRecord = new UserProfileRecord(
         name: 'PAX1',
         value: json
-            .encode(widget.passengerDetail.toJson())
+            .encode(widget.passengerDetail!.toJson())
             .replaceAll('"', "'"));
 
     _userProfileRecordList.add(_profileRecord);
@@ -848,7 +852,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     var index = 0;
-    logit('genderPicker :${widget.passengerDetail.gender}');
+    logit('genderPicker :${widget.passengerDetail!.gender}');
 /*    if( widget.passengerDetail.gender != null && widget.passengerDetail.gender.isNotEmpty ){
       _curGenderIndex = genderList.indexOf(widget.passengerDetail.gender);
       logit('genderPicker index:${_curGenderIndex}');
@@ -876,7 +880,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               onChanged: (value) {
                 setState(() {
                  // logit('Value = ' + value.toString());
-                  widget.passengerDetail.gender = genderList[ value];
+                  widget.passengerDetail!.gender = genderList[ value!];
 
                 });
               },
@@ -888,7 +892,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void _updateTitle(String value) {
     setState(() {
-      widget.passengerDetail.title = value;
+      widget.passengerDetail!.title = value;
       _titleTextEditingController.text = translate(value);
       FocusScope.of(context).requestFocus(new FocusNode());
     });
@@ -896,11 +900,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void formSave() {
     final form = formKey.currentState;
-    form.save();
+    form!.save();
   }
 
   _showCalenderDialog(PaxType paxType) {
-    DateTime dateTime;
+    DateTime dateTime = DateTime.now();
     DateTime _maximumDate;
     DateTime _minimumDate;
     DateTime _initialDateTime;
@@ -1004,13 +1008,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
 
   String validateEmail(String value) {
-    Pattern pattern =
+    String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return translate('Enter Valid Email');
     else
-      return null;
+      return '';
   }
 
   void validateAndSubmit(dynamic context) async {
@@ -1029,15 +1033,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
           UserProfileRecord _profileRecord = new UserProfileRecord(
               name: 'PAX1',
               value: json
-                  .encode(widget.passengerDetail.toJson())
+                  .encode(widget.passengerDetail!.toJson())
                   .replaceAll('"', "'"));
 
           _userProfileRecordList.add(_profileRecord);
           Repository.get().updateUserProfile(_userProfileRecordList);
           Navigator.pop(context, widget.passengerDetail);
           gblPassengerDetail = widget.passengerDetail;
-          if( gblSettings.wantPushNoticications && oldNotify != widget.passengerDetail.wantNotifications) {
-            if( widget.passengerDetail.wantNotifications) {
+          if( gblSettings.wantPushNoticications && oldNotify != widget.passengerDetail!.wantNotifications) {
+            if( widget.passengerDetail!.wantNotifications) {
               subscribeForNotifications();
             } else {
               unsubscribeForNotifications();
@@ -1052,7 +1056,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -1101,7 +1105,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         UserProfileRecord _profileRecord = new UserProfileRecord(
             name: 'PAX1',
             value: json
-                .encode(widget.passengerDetail.toJson())
+                .encode(widget.passengerDetail!.toJson())
                 .replaceAll('"', "'"));
 
         _userProfileRecordList.add(_profileRecord);

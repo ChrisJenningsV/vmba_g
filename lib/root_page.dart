@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:io';
 //import 'package:connectivity/connectivity.dart';
@@ -25,12 +26,12 @@ class RootPageState extends State<RootPage> {
   MyConnectivity _connectivity = MyConnectivity.instance;
 
   bool appInitalized = false;
-  bool _displayProcessingIndicatorS;
-  bool _displayProcessingIndicatorC;
-  bool _displayProcessingIndicatorR;
-  bool _displayFinalError;
+  bool _displayProcessingIndicatorS=false;
+  bool _displayProcessingIndicatorC=false;
+  bool _displayProcessingIndicatorR=false;
+  bool _displayFinalError=false;
   bool _dataLoaded = false;
-  String _displayProcessingText;
+  String _displayProcessingText='';
 
   @override
   void initState() {

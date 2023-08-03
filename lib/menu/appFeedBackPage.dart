@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 class AppFeedBackPage extends StatefulWidget {
-  AppFeedBackPage({Key key, this.version}) : super(key: key);
+  AppFeedBackPage({Key key= const Key("appfeed_key"), required this.version}) : super(key: key);
   final String version;
 
   _AppFeedBackPageState createState() => _AppFeedBackPageState();
@@ -43,7 +44,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     return widgets;
   }
 
-  bool _displayProcessingIndicator;
+  bool _displayProcessingIndicator = false;
   String _displayProcessingText = 'Changing settings...';
   GlobalKey<ScaffoldState> _key = GlobalKey();
 
@@ -123,7 +124,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
                     showLogin(context);
                   },
-                  child: null,
+                  child: Container(),
                   onPressed: () {},
                 ),
               ),

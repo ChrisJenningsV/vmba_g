@@ -3,12 +3,12 @@
 import 'package:vmba/utilities/helper.dart';
 
 class ApisModel {
-  Apis apis;
+  Apis apis = Apis();
 
-  ApisModel({this.apis});
+  ApisModel();
 
   ApisModel.fromJson(Map<String, dynamic> json) {
-    apis = json['apis'] != null ? new Apis.fromJson(json['apis']) : null;
+    if( json['apis'] != null) apis = Apis.fromJson(json['apis']);
   }
 
   Map<String, dynamic> toJson() {
@@ -66,27 +66,20 @@ class ApisModel {
 }
 
 class Apis {
-  String required;
-  String platform;
-  String agentcity;
-  String apisformat;
-  Sections sections;
+  String required ='';
+  String platform ='';
+  String agentcity ='';
+  String apisformat ='';
+  Sections sections =Sections();
 
-  Apis(
-      {this.required,
-      this.platform,
-      this.agentcity,
-      this.apisformat,
-      this.sections});
+  Apis();
 
   Apis.fromJson(Map<String, dynamic> json) {
     required = json['required'];
     platform = json['platform'];
     agentcity = json['agentcity'];
     apisformat = json['apisformat'];
-    sections = json['sections'] != null
-        ? new Sections.fromJson(json['sections'])
-        : null;
+    if(json['sections'] != null) sections = Sections.fromJson(json['sections']);
   }
 
   Map<String, dynamic> toJson() {
@@ -103,9 +96,10 @@ class Apis {
 }
 
 class Sections {
-  List<Section> section;
+  List<Section> section = List.from([Section()]);
 
-  Sections(this.section);
+//  Sections(this.section);
+  Sections();
 
   Sections.fromJson(Map<String, dynamic> json) {
     if (json['section'] != null) {
@@ -128,20 +122,18 @@ class Sections {
 }
 
 class Section {
-  String sectionname;
-  String required;
-  String displayable;
-  Fields fields;
+  String sectionname = '';
+  String required = '';
+  String displayable = '';
+  Fields fields = Fields();
 
-  Section({this.sectionname, this.required, this.displayable, this.fields});
+  Section();
 
   Section.fromJson(Map<String, dynamic> json) {
     sectionname = json['sectionname'];
     required = json['required'];
     displayable = json['displayable'];
-    fields =
-        //json['fields'] != null ? new Field.fromJson(json['fields']) : null;
-        json['fields'] != null ? new Fields.fromJson(json['fields']) : null;
+    if( json['fields'] != null) fields = Fields.fromJson(json['fields']) ;
   }
 
   Map<String, dynamic> toJson() {
@@ -158,9 +150,9 @@ class Section {
 }
 
 class Fields {
-  List<Field> field;
+  List<Field> field = List.from([Field()]);
 
-  Fields({this.field});
+  Fields();
 
   Fields.fromJson(Map<String, dynamic> json) {
     try {
@@ -196,37 +188,28 @@ class Fields {
 }
 
 class Field {
-  String required;
-  String id;
-  String displayname;
-  String fieldtype;
-  String length;
-  String displayable;
-  String editable;
-  String value;
-  Choices choices;
+  String required ='';
+  String id = '';
+  String displayname = '';
+  String fieldtype = '';
+  String length = '';
+  String displayable = '';
+  String editable = '';
+  String value = '';
+  Choices choices = new Choices();
 
-  Field(
-      {this.required,
-      this.id,
-      this.displayname,
-      this.fieldtype,
-      this.length,
-      this.displayable,
-      this.editable,
-      this.value,
-      this.choices});
+  Field();
 
   Field.fromJson(Map<String, dynamic> json) {
-    required = json['required'] != null ? json['required'] : null;
-    id = json['id'] != null ? json['id'] : null;
-    displayname = json['displayname'] != null ? json['displayname'] : null;
-    fieldtype = json['fieldtype'] != null ? json['fieldtype'] : null;
-    length = json['length'] != null ? json['length'] : null;
-    displayable = json['displayable'] != null ? json['displayable'] : null;
-    editable = json['editable'] != null ? json['editable'] : null;
-    value = json['value'] != null ? json['value'] : null;
-    choices = _getChoices(json['choices']);
+    if( json['required'] != null ) required =  json['required'];
+    if(json['id'] != null ) id = json['id'] ;
+    if( json['displayname'] != null) displayname =   json['displayname'] ;
+    if(json['fieldtype'] != null) fieldtype =  json['fieldtype'] ;
+    if( json['length'] != null ) length =  json['length'] ;
+    if(json['displayable'] != null ) displayable = json['displayable'];
+    if( json['editable'] != null) editable = json['editable'] ;
+    if(json['value'] != null ) value =  json['value'] ;
+    if( json['choices'] != null )choices = _getChoices(json['choices']);
   }
 
   Map<String, dynamic> toJson() {
@@ -248,7 +231,6 @@ class Field {
 
 Choices _getChoices(Map<String, dynamic> json  ) {
   Choices choices;
-  if( json == null) return null;
 
   choices = Choices.fromJson(json);
 
@@ -257,9 +239,10 @@ Choices _getChoices(Map<String, dynamic> json  ) {
 
 
 class Choices {
-  List<Choice> choice;
+   List<Choice> choice = [];
 
-  Choices({this.choice});
+  Choices();
+
 
   Choices.fromJson(Map<String, dynamic> json) {
 
@@ -268,8 +251,8 @@ class Choices {
         String asStr = json.toString();
         bool isArray = asStr.contains('choice: [');
 
-        choice = [];
-    //    choice.add( new Choice(value: 't',description: 'first'  ));
+        // choice = [];
+        choice.clear();
 
 //        Type ty = json['choice'].runtimeType;
         // check if single only one entry!
@@ -310,16 +293,16 @@ class Choices {
 }
 
 class Choice {
-  String value;
-  String description;
-  String docissuingcountry;
-  String passportexpiry;
+  String value = '';
+  String description = '';
+  String docissuingcountry = '';
+  String passportexpiry = '';
 
   Choice(
-      {this.value,
-      this.description,
-      this.docissuingcountry,
-      this.passportexpiry});
+      {this.value = '',
+      this.description = '',
+      this.docissuingcountry ='',
+      this.passportexpiry = ''});
 
   Choice.fromJson(Map<String, dynamic> json) {
     value = json['value'];
