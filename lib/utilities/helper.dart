@@ -22,6 +22,9 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../components/showNotification.dart';
+import '../main.dart';
+import 'messagePages.dart';
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
@@ -325,6 +328,7 @@ showSnackBar(String message,BuildContext context) {
 void logit(String msg) {
   var now = DateTime.now();
 
+
   log( '${now.hour}:${now.minute}:${now.second}:${now.millisecond} $msg', name: ':');
   // add to msg buffer
   if( gblWantLogBuffer) {
@@ -333,6 +337,10 @@ void logit(String msg) {
     }
     gblLogBuffer.add(msg);
   }
+}
+void showAlert(String txt) {
+  criticalErrorPage(NavigationService.navigatorKey.currentContext!,txt,title: txt, wantButtons: false );
+  //showNotification( NavigationService.navigatorKey.currentContext, notification, txt);
 }
 // convert UK dd/mm/yyyy G
 DateTime parseUkDateTime(String str) {
@@ -480,11 +488,11 @@ Widget addCountry(DbCountry country) {
   Image? img;
   String name = country.enShortName;
   String name2 = '';
-  if( name.length > 20) {   // was 30 but not work on old iPhone
+  if( name.length > 28) {   // was 30 but not work on old iPhone
     // split on a space'
     //name2 = name.substring(30);
     //name = name.substring(0,30);
-    int  middle = 20; // (name.length / 2).round();
+    int  middle = 28; // (name.length / 2).round();
     int before = name.lastIndexOf(' ', middle);
     int after = name.indexOf(' ', middle + 1);
 

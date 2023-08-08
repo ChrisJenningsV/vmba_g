@@ -285,8 +285,12 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
 NetworkImage? bagImage(String name){
   try {
     Map pageMap = json.decode(gblSettings.productImageMap.toUpperCase());
-    String pageImage = pageMap[name.toUpperCase()];
-    if( pageImage == null || pageImage.isEmpty) {
+    String? pageImage;
+    if( pageMap[name.toUpperCase()] != null)
+    {
+      pageImage = pageMap[name.toUpperCase()];
+    }
+    if( pageImage == null || pageImage == '') {
       pageImage = name;
     }
     if( pageImage == null) {

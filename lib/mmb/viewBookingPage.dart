@@ -725,7 +725,7 @@ class CheckinBoardingPassesWidgetState
         AFX? seatAfx ;
         bool found = false;
         pnr.pNR.aPFAX.aFX.forEach((f) {
-          if(found=false &&  f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
+          if(found==false &&  f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
               f.seg == (journey + 1).toString()){
             seatAfx = f;
             found = true;
@@ -1365,9 +1365,9 @@ class CheckinBoardingPassesWidgetState
                   .webCheckinStart));
 */
       if( pnr.  pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT.isEmpty ||
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == '' ||
           pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ||
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT.isEmpty){
+          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT== ''){
         checkinOpen = false;
       } else {
         checkinOpens = DateTime.parse(
@@ -1404,11 +1404,11 @@ class CheckinBoardingPassesWidgetState
         checkinOpen = (isBeforeClosed && isAfterOpens)
             ? true
             : false;
-        if(  pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != null &&
+        if(  (pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != null || pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != '')&&
                 pnr.pNR.itinerary.itin[journeyNo].onlineCheckin == 'False' ) {
           checkinOpen = false;
         }
-        if( pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null &&
+        if( (pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null || pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != '' ) &&
             pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed == 'False' ) {
           checkinOpen = false;
         }
@@ -1456,7 +1456,7 @@ class CheckinBoardingPassesWidgetState
 
           // any outstanding amount ??
           var amount = pnr.pNR.basket.outstanding.amount;
-          if( amount == null || amount.isEmpty ) {
+          if( amount == null || amount == '' ) {
             amount = '0';
           }
           if( double.parse(amount) > 0 ) {
@@ -1699,8 +1699,8 @@ class CheckinBoardingPassesWidgetState
         response = translate('Check-in with other airline ');
       } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
         response = translate('Online Check in closed ');
-      } else if ( city.webCheckinEnabled == 0 ) {
-        response = translate('no Check-in online for this city ');
+   //   } else if ( city.webCheckinEnabled == 0 ) {
+     //   response = translate('no Check-in online for this city ');
       } else if ( itin.onlineCheckin != null &&  itin.onlineCheckin == 'False' ) {
         response = translate('Online Check in closed ');
       } else if (isBeforeClosed &&
@@ -1715,7 +1715,7 @@ class CheckinBoardingPassesWidgetState
         response = translate('Check-in with other airline ');
       } else if (isBeforeClosed) {
         // get date time local
-        if( itin.onlineCheckinTimeStartLocal == null ) {
+        if( itin.onlineCheckinTimeStartLocal == null || itin.onlineCheckinTimeStartLocal == '') {
           response = translate('Please Reload');
         } else {
           DateTime dt = DateTime.parse(
@@ -2276,13 +2276,21 @@ class CheckinBoardingPassesWidgetState
 
         }
 
-        if (gblSettings.autoSeatOption &&
+        bool found = false;
+        paxlist.forEach((element) {
+          if(found== false &&  (element.id == paxNo+1) && (element.seat == null || element.seat == '' ) ){
+            found=true;
+          }
+        });
+
+        if (gblSettings.autoSeatOption && found
+            /*
             (paxlist
                 .firstWhere((p) => p.id == paxNo + 1)
                 .seat == null ||
                 paxlist
                     .firstWhere((p) => p.id == paxNo + 1)
-                    .seat == '') &&
+                    .seat == '')*/ &&
             checkinOpen) {
           autoSeatingSelection(
               paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
@@ -2758,8 +2766,18 @@ class CheckinBoardingPassesWidgetState
       });
     } else {
       pnr.pNR.names.pAX.forEach((p ) {
-        if (p.paxType != 'IN' &&
-            pnr.pNR.aPFAX.aFX.firstWhere(
+        if (p.paxType != 'IN') {
+          bool found = false;
+          pnr.pNR.aPFAX.aFX.forEach((ap) {
+            if(ap.pax == p.paxNo &&
+                ap.seat != "" &&
+                ap.text.contains(pnr.pNR.itinerary.itin[journey].cityPair)){
+                found = true;
+            }
+             if(found == false ) paxList.add(p);
+          });
+        }
+           /* pnr.pNR.aPFAX.aFX.firstWhere(
                     (ap) =>
                         ap.pax == p.paxNo &&
                         ap.seat != "" &&
@@ -2768,7 +2786,7 @@ class CheckinBoardingPassesWidgetState
                     ) ==
                 null) {
           paxList.add(p);
-        }
+        }*/
       });
     }
 

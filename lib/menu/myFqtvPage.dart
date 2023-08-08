@@ -172,16 +172,19 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
       if( gblSettings.pageImageMap != null ) {
         Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
-        String pageImage = pageMap['FQTV'];
+        if(pageMap['FQTV'] != null ) {
+          String pageImage = pageMap['FQTV'];
 
-        if( pageImage != null && pageImage.isNotEmpty){
-          NetworkImage backgroundImage = NetworkImage('${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
-          flexibleSpace = Image(
-            image:
-            backgroundImage,
-            fit: BoxFit.cover,);
-          //backgroundColor = Colors.transparent;
+          if (pageImage != null && pageImage.isNotEmpty) {
+            NetworkImage backgroundImage = NetworkImage(
+                '${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
+            flexibleSpace = Image(
+              image:
+              backgroundImage,
+              fit: BoxFit.cover,);
+            //backgroundColor = Colors.transparent;
 
+          }
         }
       }
 

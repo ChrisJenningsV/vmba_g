@@ -1817,7 +1817,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               height: 40,
             ));
             list.add(Padding(
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(6),
             ));
             list.add(Image.asset(
               'lib/assets/images/payment/mastercard.png',
@@ -1825,7 +1825,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             ));
           } else if (action == 'IMAGE') {
             list.add(Padding(
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(6),
             ));
             list.add(Image.network('${gblSettings.gblServerFiles}/pageImages/${provider!.paymentSchemeName}.png', width: 30,));
           }

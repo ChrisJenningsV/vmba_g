@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vmba/completed/ProcessCommandsPage.dart';
+import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/flightSearch/flt_search_page.dart';
 import 'package:vmba/completed/completed.dart';
 import 'package:vmba/mmb/myBookingsPage.dart';
@@ -15,6 +16,7 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vmba/utilities/CustomeError.dart';
 import 'package:vmba/utilities/helper.dart';
 
 import 'Helpers/settingsHelper.dart';
@@ -51,7 +53,7 @@ void main() async {
 
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
-  if (gblAppTitle == null){
+  if (gblAppTitle == null || gblAppTitle ==''){
     switch(gblBuildFlavor){
       case 'AG':
         configAG();
@@ -186,6 +188,12 @@ bool bFirstTime = true;
       child: Consumer<LocaleModel>(
           builder: (context, provider, child) =>
               MaterialApp(
+                builder: (BuildContext context, Widget? widget) {
+                  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                    return CustomError(errorDetails: errorDetails);
+                  };
+                  return widget!;
+                },
             navigatorKey: NavigationService.navigatorKey,
       localizationsDelegates: localizationsDelegates,
       locale: Provider.of<LocaleModel>(context).getLocale(),

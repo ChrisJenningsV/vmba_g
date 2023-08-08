@@ -1252,6 +1252,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     _maximumDate = _initialDateTime;
     _minimumYear = _minimumDate.year;
     _maximumYear = _initialDateTime.year;
+    dateTime = _initialDateTime;
 
     _updateDateOfBirth(_initialDateTime);
 

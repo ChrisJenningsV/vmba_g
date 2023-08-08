@@ -56,14 +56,17 @@ PreferredSizeWidget appBar(BuildContext context, String title,
   if( imageName != null && imageName.isNotEmpty) {
     // map page name to image name
     Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
-    String pageImage = pageMap[imageName.toUpperCase()];
+    String pageImage = '' ;
+    if( pageMap[imageName.toUpperCase()] != null ){
+      pageImage = pageMap[imageName.toUpperCase()];
+    }
 
     switch (pageImage) {
       case '[DEST]':
         pageImage = gblDestination;
         break;
     }
-    if( pageImage == null) {
+    if( pageImage == '') {
       pageImage = 'blank';
     }
 

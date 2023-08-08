@@ -37,6 +37,7 @@ class RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     logit('init RootPageState');
+    //showAlert('init root');
 
     _displayProcessingIndicatorS = true;
     _displayProcessingIndicatorC = true;

@@ -591,6 +591,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           IconButton(
               onPressed: () {
                 if (gblSettings.wantNewEditPax) {
+
                   Navigator.push(
                       context,
                       SlideTopRoute(
@@ -602,6 +603,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                               destination: widget.newBooking.arrival,
                             newBooking: widget.newBooking,)))
                       .then((passengerDetails) {
+                        if(passengerDetails==null ) passengerDetails=PaymentDetails();
                     updatePassengerDetails(passengerDetails, paxNo - 1);
                   });
                 } else {

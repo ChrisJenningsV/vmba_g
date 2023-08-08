@@ -311,8 +311,18 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     //DF/LM0038/10may/ABZ
 
     setState(() {
-      _boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
-      _boardingPass!.boarding = boardingTime != null ? boardingTime : 60;
+      if( _boardingPass != null ) {
+        if (gateNo != null && gateNo != '') {
+          _boardingPass!.gate = gateNo;
+        } else {
+          _boardingPass!.gate = '-';
+        }
+        //_boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
+        _boardingPass!.boarding = 60;
+        if( boardingTime != null && boardingTime != '') {
+          _boardingPass!.boarding = boardingTime ;
+        }
+      }
       Repository.get().updateBoardingPass(_boardingPass!);
     });
   }
@@ -872,7 +882,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
   Widget _airlineName() {
     if( gblSettings.wantBpLogo == null || gblSettings.wantBpLogo == true  ) {
-      return Image.asset('lib/assets/$gblAppTitle/images/appBar.png', width: 80);
+      //return Image.asset('lib/assets/$gblAppTitle/images/appBar.png', width: 80);
+      return Image.asset('lib/assets/$gblAppTitle/images/logo.png', width: 160);
     }
     return Padding(
       padding: EdgeInsets.only(top: 10),
