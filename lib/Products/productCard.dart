@@ -237,7 +237,7 @@ class ProductCardState extends State<ProductCard> {
                     widget.onError!(msg);
                   },
                 ))).then((pnrMod) {
-          if( pnrMod != null ) {
+          if( pnrMod != null && pnrMod.pNR.rLOC != '') {
             widget.pnrModel = pnrMod;
             setState(() {
             });
