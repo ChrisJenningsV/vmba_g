@@ -230,7 +230,7 @@ class ProductCardState extends State<ProductCard> {
         Navigator.push(
             context,
             SlideTopRoute(
-                page: ComplextProductWidget( product: prod, savedProduct: savedProd , pnrModel: widget.pnrModel, isMmb: widget.isMmb, onSaved: (product) {
+                page: ComplextProductWidget( key: Key('prod${index}_${prod.productCode}_key'), product: prod, savedProduct: savedProd , pnrModel: widget.pnrModel, isMmb: widget.isMmb, onSaved: (product) {
                   //saveProduct(product, widget.pnrModel.pNR.rLOC);
                 },
                   onError: (msg){

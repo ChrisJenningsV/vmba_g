@@ -141,7 +141,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
             widget.product!.applyToClasses.isEmpty ||
             widget.product!.applyToClasses.contains( itin.xclass)) {
           if (isThisProductValid(widget.pnrModel, widget.product!, segNo)) {
-            list.add(ProductFlightCard(
+            list.add(ProductFlightCard( key: Key('flt_card${list.length}'),
               pnrModel: widget.pnrModel,
               product: widget.product!,
               savedProduct: widget.savedProduct!,
@@ -197,9 +197,11 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     )
     );
 
-    return SingleChildScrollView( child:  Column(
+    return Container(
+        height: 800,
+        child: SingleChildScrollView( child:  Column(
         children: list,
-    ));
+    )));
   }
   void validateAndSave() {
      saveProduct(widget.product!, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
