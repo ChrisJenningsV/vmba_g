@@ -181,7 +181,7 @@ class ProductCardState extends State<ProductCard> {
               if( gblLogProducts) {logit('addProduct');}
               // addProduct(index);
               if( prod.count(0) < prod.maxQuantity) {
-                prod.incProduct(0, 0);
+                prod.addProduct(0, 0);
                 checkSaveButton(prod);
                 setState(() {
 
@@ -237,10 +237,8 @@ class ProductCardState extends State<ProductCard> {
                     widget.onError!(msg);
                   },
                 ))).then((pnrMod) {
-          if( pnrMod != null && pnrMod.pNR.rLOC !='' ) {
-            logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
+          if( pnrMod != null && pnrMod.pNR.rLOC != '') {
             widget.pnrModel = pnrMod;
-            logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
             setState(() {
             });
             if( widget.onComplete != null ) {
