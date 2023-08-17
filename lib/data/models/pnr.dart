@@ -438,7 +438,8 @@ class PNR {
   PNR(      );
 
   PNR.fromJson(Map<String, dynamic> json) {
-    if( json['APPVERSION'] != null)appVersion = json['APPVERSION'];
+
+      if( json['APPVERSION'] != null)appVersion = json['APPVERSION'];
     if( json['RLOC'] != null )rLOC = json['RLOC'];
     if( json['ADS'] != null )aDS = json['ADS'];
     if(  json['PNRLocked'] != null )pNRLocked = json['PNRLocked'];
@@ -676,6 +677,10 @@ class Itinerary {
   Itinerary();
 
   Itinerary.fromJson(Map<String, dynamic> json) {
+    if (json['ItinMsg'] != null) {
+      throw(json['ItinMsg']);
+    }
+
     if (json['Itin'] != null) {
       itin = [];
       // new List<Itin>();
@@ -1104,20 +1109,42 @@ class AFX {
 }
 
 class GenFax {
+  List<GFX> gFX = List.from([GFX()]);
+  GenFax();
+
+  GenFax.fromJson(Map<String, dynamic> json) {
+    if (json['AFX'] != null) {
+      gFX = [];
+      // new List<AFX>();
+      if (json['GFX'] is List) {
+        json['GFX'].forEach((v) {
+          gFX.add(new GFX.fromJson(v));
+        });
+      } else {
+        gFX.add(new GFX.fromJson(json['GFX']));
+      }
+    }
+  }
+
+}
+
+
+
+class GFX {
   String line='';
   String genFaxID='';
   String pax='';
   String seg='';
   String text='';
 
-  GenFax();
+  GFX();
 
-  GenFax.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    genFaxID = json['GenFaxID'];
-    pax = json['Pax'];
-    seg = json['Seg'];
-    text = json['text'];
+  GFX.fromJson(Map<String, dynamic> json) {
+    if( json['Line']!= '') line = json['Line'];
+    if(json['GenFaxID'] != '' ) genFaxID = json['GenFaxID'];
+    if( json['Pax'] != '' ) pax = json['Pax'];
+    if( json['Seg'] != '') seg = json['Seg'];
+    if( json['text'] != '') text = json['text'];
   }
 
   Map<String, dynamic> toJson() {

@@ -1130,6 +1130,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
+      bool wantButtons = false;
+      if( gblPaymentMsg.contains('currency not support')) {
+        wantButtons = true;
+      }
       return WillPopScope(
           onWillPop: _onWillPop,
           child:  Scaffold(
@@ -1147,7 +1151,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete),
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete, wantButtons: wantButtons),
           bottomNavigationBar: getBottomNav(context),
       ));
 
@@ -1214,6 +1218,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(dynamic p){
+
     gblPaymentMsg = '';
 //    Navigator.of(context).pop();
     setState(() {
