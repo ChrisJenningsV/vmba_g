@@ -200,7 +200,7 @@ Widget vidAddButton(BuildContext? context, {void Function(BuildContext?)? onPres
   //return vidRoundButton(context, Icons.add_circle_outline, onPressed, btnClr: Colors.white);
 }
 
-Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false}){
+Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext?, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false}){
   Color clr = gblSystemColors.primaryButtonColor;
       if( disabled != null && disabled) {
         clr = Colors.grey;
@@ -215,6 +215,8 @@ Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, 
         if (disabled == null || disabled == false) {
           onPressed!(context as BuildContext, paxNo, segNo,);
         }
+      } else {
+        onPressed!(null, paxNo, segNo,);
       }
     },
   ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);

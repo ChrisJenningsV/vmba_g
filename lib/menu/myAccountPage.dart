@@ -483,7 +483,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               maxLength: 30,
               decoration: _getDecoration('Phone Number'),
               controller: _phoneNumberTextEditingController,
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -595,7 +595,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               decoration: _getDecoration(
                   '${gblSettings.fqtvName} ' + translate('number')),
               controller: _fqtvTextEditingController,
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],

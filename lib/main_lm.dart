@@ -63,7 +63,7 @@ void configLM() {
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',
   termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
-   trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
+   //trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
   prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
   //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
@@ -100,8 +100,8 @@ void configLM() {
 
 //Production setttings
 
-  liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-//    liveXmlUrl:      "https://booking.loganair.co.uk/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//  liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    liveXmlUrl:      "https://booking.loganair.co.uk/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl:      'https://booking.loganair.co.uk/VARS/webApiv2/api/',
   livePayPage:      'https://booking.loganair.co.uk/VARS/Public/MobilePaymentStart.aspx',

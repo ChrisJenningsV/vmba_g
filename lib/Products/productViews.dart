@@ -134,7 +134,7 @@ class ProductCardState extends State<ProductCard> {
                   ),
                   onPressed: () {
                     if( gblLogProducts ) { logit('getProductRow-add: ${prod.productName}'); }
-                    addProduct(index);
+                    addProduct(index,1);
                   },
                 ),
               ],)
@@ -152,9 +152,9 @@ class ProductCardState extends State<ProductCard> {
     });
   }
 
-  void addProduct(int index) {
+  void addProduct(int index,int count ) {
     setState(() {
-      widget.products[index].curProducts?.add('0:0');
+      widget.products[index].curProducts?.add(new prodCount('0:0', count));
     });
   }
 }

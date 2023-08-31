@@ -74,7 +74,7 @@ void configFN() {
     termsAndConditionsUrl: 'https://fastjet.com/terms-conditions/',
     privacyPolicyUrl:  'https://www.fastjet.com/our-policies/',
     prohibitedItemsNoticeUrl:  'https://www.fastjet.com/flying-with-us/baggage-allowances/s',
- //   faqUrl: 'https://www.fastjet.com/en/footer-contact/faqs',
+    faqUrl: '', //'''https://www.fastjet.com/en/footer-contact/faqs',
     contactUsUrl: 'https://fastjet.com/contact-us/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 

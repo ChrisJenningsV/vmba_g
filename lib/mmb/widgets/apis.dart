@@ -121,7 +121,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     String url = gblSettings.apisUrl;
     // 'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?';
 
-    Response response = Response('',0);
+    Response? response;
         String cmd = '';
     if( gblSettings.useWebApiforVrs) {
       cmd = 'DAX/' + apisForm!.toXmlString();
@@ -155,7 +155,7 @@ class _ApisWidgetState extends State<ApisWidget> {
       });
     }
 
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       try {
         String result;
         result = response.body
@@ -303,7 +303,7 @@ class _ApisWidgetState extends State<ApisWidget> {
     section.fields.field.forEach((field) {
       //var _textEditingController = new TextEditingController();
       if (field.displayable == 'True') {
-        if (field.choices != null ||
+        if ((field.choices != null && field.choices.choice.length >0) ||
             field.fieldtype == 'PastDate' ||
             field.fieldtype == 'FutureDate' ||
             field.fieldtype == 'CountryCode') {
@@ -313,7 +313,7 @@ class _ApisWidgetState extends State<ApisWidget> {
             InkWell(
               onTap: () {
                 formSave();
-                if (field.choices != null) {
+                if (field.choices != null && field.choices.choice.length >0) {
                   _showDialog(section.sectionname, field);
                 } else if (field.fieldtype == 'PastDate' ||
                     field.fieldtype == 'FutureDate') {

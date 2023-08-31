@@ -90,7 +90,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
 }
   String buildSaveProductCmd(Product product, PNR pnr) {
     String cmd = '';
-
+    int noFound = 0;
     // check booking for this product
     if( pnr.mPS != null && pnr.mPS.mP != null ){
       //pnr.mPS.mP.forEach((element) {
@@ -108,24 +108,32 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
             cmd += '7X${element.line}';
 
           } else {
-            bool found = false;
+            //bool found = false;
+
+            noFound = 0;
             product.curProducts!.forEach((p) {
-              int paxNo = int.parse(p.split(':')[0]);
-              int segNo = int.parse(p.split(':')[1]);
+              int paxNo = int.parse(p.key.split(':')[0]);
+              int segNo = int.parse(p.key.split(':')[1]);
 
               if (int.parse(element.pax) == paxNo &&
                   int.parse(element.seg) == segNo) {
-                  found = true;
+                  //found = true;
+                if(p.count >  noFound) {
+                  noFound += 1;
+                } else {
+                  //remove it
+                  if (cmd.isNotEmpty) cmd += '^';
+                  if( gblLogProducts) logit('remove ${element.text }');
+                  cmd += '7X${element.line}';
+                }
 /*
               } else {
                 // remove
-                if (cmd.isNotEmpty) cmd += '^';
-                if( gblLogProducts) logit('remove ${element.text }');
-                cmd += '7X${element.line}';
+
 */
               }
             });
-            if( !found ){
+            if( noFound == 0 ){
               if (cmd.isNotEmpty) cmd += '^';
               if( gblLogProducts) logit('remove ${element.text }');
               cmd += '7X${element.line}';
@@ -137,9 +145,10 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
 
 
     product.curProducts!.forEach((element) {
-      int paxNo = int.parse(element.split(':')[0]);
-      int segNo = int.parse(element.split(':')[1]);
-
+      int paxNo = int.parse(element.key.split(':')[0]);
+      int segNo = int.parse(element.key.split(':')[1]);
+      int count = element.count;
+      noFound = 0;
       bool alreadyAdded = false;
       if( pnr.mPS != null && pnr.mPS.mP != null ){
         pnr.mPS.mP.forEach((p) {
@@ -148,13 +157,15 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
             // check if already in PNR
             if (( int.parse(p.seg) == segNo ) && (int.parse(p.pax) == paxNo))
               {
-                alreadyAdded = true;
+                //alreadyAdded = true;
+                noFound +=1;
               }
           }
           } );
       }
 
-      if( alreadyAdded == false) {
+      while ( noFound < element.count) {
+
       if(cmd.isNotEmpty) cmd += '^';
 
       if (paxNo != 0) {
@@ -178,6 +189,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
           cmd += '7-1F${product.productCode}';
         }
       }
+      noFound+=1;
       }
     });
     if( gblLogProducts) logit('sent $cmd');

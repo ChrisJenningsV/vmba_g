@@ -274,7 +274,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               new TextFormField(
                 decoration: getDecoration( '${gblSettings.fqtvName} ' + translate('number')),
                 controller: _fqtvTextEditingController,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.number,
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()

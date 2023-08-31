@@ -13,9 +13,9 @@ class TrText extends StatelessWidget {
   final bool noTrans;
   final TextAlign textAlign;
   final double textScaleFactor;
-  final int maxLines;
+  final int? maxLines;
 
-  TrText(this.labelText,  {this.style, this.variety='', this.noTrans=false, this.textAlign = TextAlign.start , this.textScaleFactor = 1.0, this.maxLines = 1});
+  TrText(this.labelText,  {this.style, this.variety='', this.noTrans=false, this.textAlign = TextAlign.start , this.textScaleFactor = 1.0, this.maxLines = null});
 
   build(BuildContext context) {
     var txt = labelText;

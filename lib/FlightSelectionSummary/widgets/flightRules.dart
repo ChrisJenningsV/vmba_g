@@ -60,7 +60,16 @@ class _FlightRulesState extends State<FlightRulesWidget> {
         if( result.body == null ) {
           fareRulesPerSegment[seg -1].add('no fare rules for segment $seg');
         } else {
-          fareRulesPerSegment[seg -1].addAll(result.body as List<String>);
+
+          String str = result.body![0];
+          if( str.contains('<br>')) {
+            List<String> str2 = str.split('<br>');
+            fareRulesPerSegment[seg - 1].addAll(
+                str2);
+          } else {
+            fareRulesPerSegment[seg - 1].add(
+                str); // result.body as List<String>
+          }
         }
       });
 

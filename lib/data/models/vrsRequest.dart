@@ -261,6 +261,15 @@ class FqtvLoginReply {
   }
 }
 
+class FareRuleRequest {
+  FareRuleRequest(this.IDs);
+  String IDs;
 
+  Map  toJson() {
+    Map map = new Map();
+    map['IDs'] = IDs;
+     return map;
+  }
+}
 
 

@@ -33,7 +33,7 @@ class PnrModel {
 
   String getBookingCurrency() {
     if( this.pNR.payments != null && this.pNR.payments.fOP != null &&
-    this.pNR.payments.fOP.length > 0  ) {
+        this.pNR.payments.fOP.length > 0  ) {
       return this.pNR.payments.fOP[0].payCur;
     }
 
@@ -155,8 +155,8 @@ class PnrModel {
     DateTime now = DateTime.now();
     var fltDate;
     fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
-            ' ' +
-            this.pNR.itinerary.itin.last.depTime)
+        ' ' +
+        this.pNR.itinerary.itin.last.depTime)
         .add(Duration(days: days));
     if (now.isAfter(fltDate)) {
       return false;
@@ -266,7 +266,7 @@ class PnrModel {
     try {
       pnr.names.pAX.forEach((pax) {
         var tkt = pnr.tickets.tKT.where((tkt) =>
-            tkt.pax == pax.paxNo &&
+        tkt.pax == pax.paxNo &&
             (tkt.tKTID == 'ETKT' || tkt.tKTID == 'ELFT') &&
             (tkt.status == 'O' ||
                 tkt.status == 'C' ||
@@ -274,7 +274,7 @@ class PnrModel {
                 tkt.status == 'A') &&
             tkt.firstname == pax.firstName &&
             tkt.surname == pax.surname
-                &&            tkt.tktFor != 'MPD'); // chargable seats get MPD !!!
+            &&            tkt.tktFor != 'MPD'); // chargable seats get MPD !!!
 
         List<TKT> tickets = [];
         //new List<TKT>();
@@ -282,18 +282,18 @@ class PnrModel {
           pnr.itinerary.itin.forEach((flt) {
             if (flt.status == 'HK' || flt.status == 'RR') {
               var otkt = tkt.firstWhere(
-                  (t) =>
-                      t.tktArrive == flt.arrive &&
-                      t.tktDepart == flt.depart &&
-                      t.tktFltDate ==
-                          DateFormat('ddMMMyyyy')
-                              .format(DateTime.parse(
-                                  flt.depDate + ' ' + flt.depTime))
-                              .toUpperCase() &&
-                      t.tktFltNo == (flt.airID + flt.fltNo)
-                         &&                      t.tktBClass == flt.xclass,
+                    (t) =>
+                t.tktArrive == flt.arrive &&
+                    t.tktDepart == flt.depart &&
+                    t.tktFltDate ==
+                        DateFormat('ddMMMyyyy')
+                            .format(DateTime.parse(
+                            flt.depDate + ' ' + flt.depTime))
+                            .toUpperCase() &&
+                    t.tktFltNo == (flt.airID + flt.fltNo)
+                    &&                      t.tktBClass == flt.xclass,
                 //  orElse: () => null
-                  );
+              );
               if (otkt != null) {
                 tickets.add(otkt);
               }
@@ -301,13 +301,13 @@ class PnrModel {
           });
         }
         if ((tickets.length !=
-                pnr.itinerary.itin
-                    .where((flt) => flt.status == 'HK' || flt.status == 'RR')
-                    .length) &&
+            pnr.itinerary.itin
+                .where((flt) => flt.status == 'HK' || flt.status == 'RR')
+                .length) &&
             (pnr.payments.fOP.where((p) => p.fOPID == 'III').length > 0)) {
           validateTickets = false;
           if( logPnrErrors) print('validateTickets = false;');
- //         return validateTickets;
+//         return validateTickets;
         }
 
         if ((tickets.length !=
@@ -356,11 +356,11 @@ class PnrModel {
   bool validateItineraryStatus(Itinerary itinerary) {
     bool validateItineraryStatus = false;
     if (itinerary.itin
-            .where((itin) =>
-                itin.status.startsWith('PN') ||
-                itin.status.startsWith('MM') ||
-                itin.status.startsWith('SA'))
-            .length ==
+        .where((itin) =>
+    itin.status.startsWith('PN') ||
+        itin.status.startsWith('MM') ||
+        itin.status.startsWith('SA'))
+        .length ==
         0) {
       validateItineraryStatus = true;
     } else {
@@ -438,6 +438,7 @@ class PNR {
   PNR(      );
 
   PNR.fromJson(Map<String, dynamic> json) {
+
     if( json['APPVERSION'] != null)appVersion = json['APPVERSION'];
     if( json['RLOC'] != null )rLOC = json['RLOC'];
     if( json['ADS'] != null )aDS = json['ADS'];
@@ -490,7 +491,7 @@ class PNR {
     }
     int noSeats = 0;
     names.pAX.forEach((element) {
-        noSeats ++;
+      noSeats ++;
     });
     return noSeats;
   }
@@ -501,7 +502,7 @@ class PNR {
       if( gblLogProducts ) { logit('None');}
       return ;
     }
- /*   mPS.mP.forEach((p) {
+/*   mPS.mP.forEach((p) {
       if( gblLogProducts ) {
         logit('${p.line} ${p.mPID} P=${p.pax} S=${p.seg} ${p.text}');
       };
@@ -595,13 +596,13 @@ class Names {
 
   Passengers getPassengerTypeCounts() {
     return Passengers(
-      pAX.where((p) => p.paxType == 'AD').length,
-      pAX.where((p) => p.paxType == 'CH').length,
-      pAX.where((p) => p.paxType == 'IN').length,
-      pAX.where((p) => p.paxType == 'TH').length,
-      pAX.where((p) => p.paxType == 'CD').length,
-      pAX.where((p) => p.paxType == 'SD').length,
-      pAX.where((p) => p.paxType == 'TD').length
+        pAX.where((p) => p.paxType == 'AD').length,
+        pAX.where((p) => p.paxType == 'CH').length,
+        pAX.where((p) => p.paxType == 'IN').length,
+        pAX.where((p) => p.paxType == 'TH').length,
+        pAX.where((p) => p.paxType == 'CD').length,
+        pAX.where((p) => p.paxType == 'SD').length,
+        pAX.where((p) => p.paxType == 'TD').length
     );
   }
 
@@ -676,6 +677,10 @@ class Itinerary {
   Itinerary();
 
   Itinerary.fromJson(Map<String, dynamic> json) {
+    if (json['ItinMsg'] != null) {
+      throw(json['ItinMsg']);
+    }
+
     if (json['Itin'] != null) {
       itin = [];
       // new List<Itin>();
@@ -1104,20 +1109,42 @@ class AFX {
 }
 
 class GenFax {
+  List<GFX> gFX = List.from([GFX()]);
+  GenFax();
+
+  GenFax.fromJson(Map<String, dynamic> json) {
+    if (json['AFX'] != null) {
+      gFX = [];
+      // new List<AFX>();
+      if (json['GFX'] is List) {
+        json['GFX'].forEach((v) {
+          gFX.add(new GFX.fromJson(v));
+        });
+      } else {
+        gFX.add(new GFX.fromJson(json['GFX']));
+      }
+    }
+  }
+
+}
+
+
+
+class GFX {
   String line='';
   String genFaxID='';
   String pax='';
   String seg='';
   String text='';
 
-  GenFax();
+  GFX();
 
-  GenFax.fromJson(Map<String, dynamic> json) {
-    line = json['Line'];
-    genFaxID = json['GenFaxID'];
-    pax = json['Pax'];
-    seg = json['Seg'];
-    text = json['text'];
+  GFX.fromJson(Map<String, dynamic> json) {
+    if( json['Line']!= '') line = json['Line'];
+    if(json['GenFaxID'] != '' ) genFaxID = json['GenFaxID'];
+    if( json['Pax'] != '' ) pax = json['Pax'];
+    if( json['Seg'] != '') seg = json['Seg'];
+    if( json['text'] != '') text = json['text'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1900,3 +1927,4 @@ class Fqfield {
     return data;
   }
 }
+

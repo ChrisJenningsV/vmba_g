@@ -63,8 +63,8 @@ void configUZ() {
     wantEnglishTranslation: true,
 
     gblLanguages: 'ar,عربي,en,English',
-    homePageStyle: 'V2',
-    pageStyle: 'V2',
+/*    homePageStyle: 'V2',
+    pageStyle: 'V2',*/
     buttonStyle: 'RO3',
     airlineName: "Buraq",
   gblServerFiles: 'https://booking.buraq.aero/VARS/AppFiles/',

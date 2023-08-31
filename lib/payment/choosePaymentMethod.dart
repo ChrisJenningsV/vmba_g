@@ -667,7 +667,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 */
   Future completeBookingNothingtoPayVRS() async {
     String msg = '';
-
+    msg='*${widget.mmbBooking!.rloc}^';
     widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]
         .itin.reversed
         .forEach((f) {
@@ -1130,6 +1130,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
+
+      bool wantButtons = false;
+      if( gblPaymentMsg.contains('urrency not support')) {
+        wantButtons = true;
+      }
+
       return WillPopScope(
           onWillPop: _onWillPop,
           child:  Scaffold(
@@ -1147,7 +1153,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete),
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete,wantButtons: wantButtons),
           bottomNavigationBar: getBottomNav(context),
       ));
 
@@ -1738,6 +1744,13 @@ List<Widget> getPayOptions(String amount, String cur) {
                 pnrModel: widget.pnrModel,
                 isMmb: widget.isMmb,)));
             } else {
+              if( session==null){
+                if( gblSession != null) {
+                  session = gblSession;
+              } else{
+                  session = new Session('', '', '');
+                }
+              }
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) =>
                   CreditCardPage(pnrModel: widget.pnrModel,
@@ -1856,7 +1869,7 @@ class TimerTextState extends State<TimerText> {
   void Function()? onComplete;
 
   TimerTextState({required this.stopwatch, this.onComplete}) {
-    timer = new Timer.periodic(new Duration(seconds: 1), callback);
+    //timer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
     if(_cancelTimer) {

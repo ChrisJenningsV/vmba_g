@@ -196,7 +196,8 @@ class DrawerMenu extends StatefulWidget {
 
     // FAQ
     if(gblNoNetwork == false &&
-        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.faqUrl != null)) {
+        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' ||
+            (gblSettings.faqUrl != null && gblSettings.faqUrl != ''))) {
       list.add(ListTile(
         dense: dense,
         title: _getMenuItem( Icons.live_help, 'FAQs' ),

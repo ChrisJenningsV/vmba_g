@@ -503,6 +503,7 @@ class CheckinBoardingPassesWidgetState
             PnrModel pnr = new PnrModel.fromJson(map);
             setState(() {
               objPNR = pnr;
+              gblPnrModel = pnr;
               _mmbBooking.journeys.journey = [];
               loadJourneys(objPNR!);
             });
@@ -2539,8 +2540,8 @@ class CheckinBoardingPassesWidgetState
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              TrText(
-                  "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."),
+          Flexible(child:Text(
+                 translate( "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."))),
               Padding(
                 padding: EdgeInsets.all(4),
               ),
@@ -2556,8 +2557,8 @@ class CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              TrText(
-                  'I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'),
+              Flexible(child: Text(
+                  translate('I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'))),
               Padding(
                 padding: EdgeInsets.all(4),
               ),

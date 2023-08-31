@@ -229,7 +229,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                   decoration: getDecoration(
                       '${gblSettings.fqtvName} ' + translate('number')),
                   controller: _fqtvTextEditingController,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.number,
                   onSaved: (value) {
                     if (value != null) {
                       //.contactInfomation.phonenumber = value.trim()

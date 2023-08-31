@@ -274,7 +274,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
     Flexible( child:
      TextFormField(
        decoration: getDecoration('Phone number'),
-       keyboardType: TextInputType.phone,
+       keyboardType: TextInputType.number,
       controller: widget.controller,
       validator: (value) =>      value!.isEmpty ? translate('Phone number cannot be empty') : null,
       onSaved: (value) {

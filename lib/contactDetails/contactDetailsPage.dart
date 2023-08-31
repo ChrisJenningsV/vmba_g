@@ -181,7 +181,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                                 ),
                               ),
                               controller: _phoneTextEditingController,
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                               ],

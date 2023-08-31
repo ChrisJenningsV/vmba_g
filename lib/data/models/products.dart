@@ -116,7 +116,12 @@ class Products {
 
 
 }
+class prodCount{
+  String key = '';
+  int count = 0;
 
+  prodCount(this.key, this.count);
+}
 class Product {
   int productID=0;
   String productCode='';
@@ -160,8 +165,9 @@ class Product {
   int productImageIndex=0;
   bool displayOnwebsite=false;
 
-//int count;
-List<String>? curProducts; //= List.from([Product()]) ;
+//int count
+
+List<prodCount>? curProducts; //= List.from([Product()]) ;
 
 
   Product();
@@ -172,7 +178,7 @@ List<String>? curProducts; //= List.from([Product()]) ;
     }
     int c = 0;
     this.curProducts!.forEach((element) {
-      if(element.endsWith(':$segNo' )) {
+      if(element.key.endsWith(':$segNo' )) {
         c +=1;
       }
     });
@@ -199,7 +205,8 @@ List<String>? curProducts; //= List.from([Product()]) ;
     if( pnrModel != null && pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
       pnrModel.pNR.mPS.mP.forEach((element) {
         if( element.mPID == productCode){
-          curProducts!.add(getID(int.parse(element.pax), int.parse(element.seg)));
+          incProduct(int.parse(element.pax), int.parse(element.seg));
+          //curProducts!.add(prodCount(getID(int.parse(element.pax), int.parse(element.seg)),1));
         }
       });
     }
@@ -212,10 +219,26 @@ List<String>? curProducts; //= List.from([Product()]) ;
   String getID(int paxNo, int segNo) {
     return '$paxNo:$segNo';
   }
-  void addProduct(int paxNo, int segNo) {
+  void incProduct(int paxNo, int segNo ) {
     if( curProducts == null) curProducts = [];
     String str = getID(paxNo, segNo);
-    curProducts!.add(str);
+    bool found = false;
+    curProducts!.forEach((element) {
+        if(element.key == str){
+          element.count +=1;
+          found = true;
+        }
+    });
+    if(found == false ) {
+      curProducts!.add(prodCount(str, 1));
+    }
+    // count +=1;
+
+  }
+  void xaddProduct(int paxNo, int segNo, int count ) {
+    if( curProducts == null) curProducts = [];
+    String str = getID(paxNo, segNo);
+    curProducts!.add(prodCount(str, count));
    // count +=1;
 
   }
@@ -224,19 +247,29 @@ List<String>? curProducts; //= List.from([Product()]) ;
     String str = getID(paxNo, segNo);
 
     int index = 0 ;
+    int removeAt = -1;
     bool found = false;
     curProducts!.forEach((element) {
-      if( found == false) {
+      if( element.key == str){
+        if(element.count >1){
+          element.count -=1;
+        }else {
+          removeAt = index;
+        }
+
+      }
+      index += 1;
+      /*if( found == false) {
         if (element == str) {
           found = true;
         //  count -=1;
         } else {
-          index += 1;
+
         }
-      }
+      }*/
       });
-    if(found ) {
-      curProducts!.removeAt(index);
+    if(removeAt != -1 ) {
+       curProducts!.removeAt(removeAt);
     }
 
   }
@@ -249,8 +282,8 @@ List<String>? curProducts; //= List.from([Product()]) ;
     String str = getID(paxNo, segNo);
     int cnt = 0;
     curProducts!.forEach((element) {
-      if( element == str){
-        cnt +=1;
+      if( element.key == str){
+       cnt= element.count;
       }
     });
     return cnt;
