@@ -12,7 +12,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'LM';
+String gblBuildFlavor = 'FN';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
@@ -47,7 +47,7 @@ String gblCurPage ='';
 String gblUndoCommand ='';
 
 /* logging */
-bool gblLogProducts = false;
+bool gblLogProducts = true;
 bool gblLogPayment = true;
 bool gblLogFQ = false;
 bool gblLogCities = false;
