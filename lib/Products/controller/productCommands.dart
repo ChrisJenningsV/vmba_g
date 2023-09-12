@@ -143,7 +143,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
       }
     }
 
-
+    List<int> nlist =[];
     product.curProducts!.forEach((element) {
       int paxNo = int.parse(element.key.split(':')[0]);
       int segNo = int.parse(element.key.split(':')[1]);
@@ -152,7 +152,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
       bool alreadyAdded = false;
       if( pnr.mPS != null && pnr.mPS.mP != null ){
         pnr.mPS.mP.forEach((p) {
-          if( gblLogProducts) logit('check ${p.mPID} v ${product.productCode}');
+         // if( gblLogProducts) logit('check ${p.mPID} v ${product.productCode}');
           if (p.mPID == product.productCode) {
             // check if already in PNR
             if (( int.parse(p.seg) == segNo ) && (int.parse(p.pax) == paxNo))
@@ -164,34 +164,61 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
           } );
       }
 
-      while ( noFound < element.count) {
 
-      if(cmd.isNotEmpty) cmd += '^';
+      if(noFound < element.count)
+      {
+        while (noFound < element.count) {
+          if (cmd.isNotEmpty) cmd += '^';
 
-      if (paxNo != 0) {
-        // pax related
-        if (segNo != 0) {
-          // pax and seg related
-          // eg   7-1=1Fxxxx         Passenger 1, flight 1.   (xxxx = unique product code)
-          //      7-3=2Fxxxx         Passenger 3, flight 2
-          cmd += '7-$paxNo=${segNo}F${product.productCode}';
-        } else {
-          // just pax related
-          //  7-1Fxxxx              Passenger 1 – no segment relation
-          cmd += '7-${paxNo}F${product.productCode}';
-        }
-      } else {
-        if (segNo != 0) {
-          // just seg related
-          cmd += '7-1=${segNo}F${product.productCode}';
-        } else {
-          // neither pax or seg related
-          cmd += '7-1F${product.productCode}';
+          if (paxNo != 0) {
+            // pax related
+            if (segNo != 0) {
+              // pax and seg related
+              // eg   7-1=1Fxxxx         Passenger 1, flight 1.   (xxxx = unique product code)
+              //      7-3=2Fxxxx         Passenger 3, flight 2
+              cmd += '7-$paxNo=${segNo}F${product.productCode}';
+            } else {
+              // just pax related
+              //  7-1Fxxxx              Passenger 1 – no segment relation
+              cmd += '7-${paxNo}F${product.productCode}';
+            }
+          } else {
+            if (segNo != 0) {
+              // just seg related
+              cmd += '7-1=${segNo}F${product.productCode}';
+            } else {
+              // neither pax or seg related
+              cmd += '7-1F${product.productCode}';
+            }
+          }
+          noFound += 1;
         }
       }
-      noFound+=1;
+      else  if (noFound > element.count){
+        while (noFound > element.count){
+
+          for( int i=pnr.mPS.mP.length-1; i >= 0 ; i--) {
+            MP mp = pnr.mPS.mP[i];
+            //seg and pax related product
+            if((noFound > element.count) &&  mp.mPID == product.productCode && int.parse(mp.pax) == paxNo && int.parse(mp.seg) == segNo) {
+               nlist.add(int.parse(mp.line));
+              noFound -= 1;
+            }
+          }
+        }
       }
     });
+
+    // sort lines to delete into desc order to prevent errors
+    if( nlist.length > 0) {
+      nlist.sort((b, a) => a.compareTo(b));
+      nlist.forEach((element) {
+        if (cmd.isNotEmpty) cmd += '^';
+        if (gblLogProducts) logit('remove ${element }');
+        cmd += '7X${element}';
+      });
+
+    }
     if( gblLogProducts) logit('sent $cmd');
     return cmd;
   }

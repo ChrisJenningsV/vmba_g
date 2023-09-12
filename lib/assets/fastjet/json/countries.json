@@ -8,6 +8,20 @@
       "nationality": "British, UK"
     },
     {
+      "num_code": "710",
+      "alpha_2_code": "ZA",
+      "alpha_3_code": "ZAF",
+      "en_short_name": "South Africa",
+      "nationality": "South African"
+    },
+    {
+      "num_code": "716",
+      "alpha_2_code": "ZW",
+      "alpha_3_code": "ZWE",
+      "en_short_name": "Zimbabwe",
+      "nationality": "Zimbabwean"
+    },
+    {
       "num_code": "56",
       "alpha_2_code": "BE",
       "alpha_3_code": "BEL",
@@ -1443,14 +1457,7 @@
       "en_short_name": "Somalia",
       "nationality": "Somali, Somalian"
     },
-    {
-      "num_code": "710",
-      "alpha_2_code": "ZA",
-      "alpha_3_code": "ZAF",
-      "en_short_name": "South Africa",
-      "nationality": "South African"
-    },
-    {
+      {
       "num_code": "239",
       "alpha_2_code": "GS",
       "alpha_3_code": "SGS",
@@ -1736,13 +1743,6 @@
       "alpha_3_code": "ZMB",
       "en_short_name": "Zambia",
       "nationality": "Zambian"
-    },
-    {
-      "num_code": "716",
-      "alpha_2_code": "ZW",
-      "alpha_3_code": "ZWE",
-      "en_short_name": "Zimbabwe",
-      "nationality": "Zimbabwean"
     }
   ]
 }

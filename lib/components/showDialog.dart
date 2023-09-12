@@ -107,6 +107,9 @@ void showAlertDialog(BuildContext context, String title, String msg, {void Funct
 AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete}) {
   logit('getAlertDialog');
 
+  if (gblStack != null){
+    msg += gblStack.toString();
+  }
   return AlertDialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0))),

@@ -29,6 +29,7 @@ bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
 String gblError = '';
+StackTrace? gblStack;
 String gblErrorTitle = '';
 String gblSine = '';
 String gblVersion = '';

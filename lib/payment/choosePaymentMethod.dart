@@ -85,6 +85,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     //gblPaymentMsg = '';
     gblError = '';
+    gblStack = null;
+
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
     //gblPaymentMsg = null;
@@ -685,8 +687,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     logit('CMP msg:$msg');
     try {
       runVrsCommand(msg);
-    } catch(e) {
+    } catch(e,stack) {
       _error = e.toString();
+      gblStack = stack ;
+
       _dataLoaded();
       _showDialog();
       return null;
@@ -720,18 +724,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       if (this.isMmb) {
         msg = '*${widget.mmbBooking!.rloc}';
 
-        // add delete
-/*
-      if( gblSettings.useWebApiforVrs) {
-        widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange -
-            1]
-            .itin.reversed
-            .forEach((f) {
-          msg += '^X${f.line}';
-        });
-      }
-*/
-
         widget.mmbBooking!.newFlights.forEach((flt) {
           print(flt);
           msg += '^' + flt;
@@ -740,31 +732,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
 
       msg += 'e*r~x';
-
-
-      /*  http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }*/
 
       logit('CMP msg:$msg');
       try {
@@ -778,8 +745,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('</string>', '')
               .replaceAll('ERROR - ', '')
               .trim();
-          // _dataLoaded();
-          // return null;
 
           print('completeBookingNothingtoPay: ' + _error);
 
@@ -795,8 +760,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('</string>', '')
               .replaceAll('ERROR: ', '')
               .trim();
-          // _dataLoaded();
-          // return null;
 
           print('completeBookingNothingtoPay: ' + _error);
 
@@ -929,8 +892,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           logit('ticket booking');
           ticketBooking();
         }
-      } catch (e) {
+      } catch (e, stack) {
         _error = e.toString();
+        gblStack = stack ;
+
         logit('e871:$_error');
         _dataLoaded();
         _showDialog();
@@ -1029,8 +994,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               ));
       //sendEmailConfirmation();
 
-    } catch (e) {
+    } catch (e, stack) {
       _error = e.toString(); // 'Please check your details';
+      gblStack = stack ;
+
       _dataLoaded();
       _showDialog();
     }
@@ -1059,11 +1026,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        String er = _error;
+        if( gblStack != null){
+          er += gblStack.toString();
+        }
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Error"),
-          content: _error != null && _error != ''
-              ? new Text(_error)
+          content: er != null && er != ''
+              ? new Text(er)
               : new Text("Please try again"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
@@ -1693,15 +1664,18 @@ List<Widget> getPayOptions(String amount, String cur) {
             successMessagePage(context,msg, title: translate('Booking Complete-Payment Pending'), isHtml: isHtml, actions: actions );
           });
         } else {
-          criticalErrorPage(context, 'gblError', title: 'Payment Error');
+          criticalErrorPage(context, gblError, title: 'Payment Error');
         }
-      } catch (e) {
+      } catch (e, stack) {
         gblError = e.toString();
+        gblStack = stack ;
         endProgressMessage();
         criticalErrorPage(context, gblError, title: 'Payment Error');
       }
-    } catch(e) {
+    } catch(e, stack) {
       gblError = e.toString();
+      gblStack = stack ;
+
       endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Payment Error');
 

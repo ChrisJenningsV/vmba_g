@@ -441,6 +441,7 @@ class PNR {
 
     if( json['APPVERSION'] != null)appVersion = json['APPVERSION'];
     if( json['RLOC'] != null )rLOC = json['RLOC'];
+  //  rLOC = json['nullsa']; //force error
     if( json['ADS'] != null )aDS = json['ADS'];
     if(  json['PNRLocked'] != null )pNRLocked = json['PNRLocked'];
     if( json['PNRLockedReason'] != null )pNRLockedReason = json['PNRLockedReason'];
