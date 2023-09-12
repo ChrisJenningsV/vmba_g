@@ -57,7 +57,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
           fareRulesPerSegment.add(list);
         }
         logit(' add to seg ${seg-1} cur len= ${fareRulesPerSegment.length} body=${result.body}');
-        if( result.body == null ) {
+        if( result.body == null || result.body == '' || result.body!.length == 0 ) {
           fareRulesPerSegment[seg -1].add('no fare rules for segment $seg');
         } else {
 

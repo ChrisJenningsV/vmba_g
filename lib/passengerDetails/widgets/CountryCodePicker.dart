@@ -110,7 +110,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
     _fetchCountryData().then((list) {
       Country preSelectedItem;
 
-      if (widget.initialSelection != null) {
+      if (widget.initialSelection != null && widget.initialSelection != '') {
         preSelectedItem = list.firstWhere(
                 (e) =>
             (e.code.toUpperCase() ==
