@@ -120,7 +120,7 @@ List<Widget> _getBody(
 
   // web view
   String body = "";
-  if (data['format'] != null && data['format'] == 'HTML') {
+  if (data['format'] != null && data['format'] == 'HTML' && data['html'] != '') {
     body = data['html'];
   } else {
     body = notification.body as String;
@@ -133,10 +133,10 @@ List<Widget> _getBody(
   late final WebViewController _controller;
   _controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(Uri.dataFromString(
+    ..loadHtmlString(
         '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
             body +
-            '</body></html>'));
+            '</body></html>');
 
 
   list2.add(Container(
@@ -164,7 +164,7 @@ List<Widget> _getBody(
       }
     }*/
   // buttons?
-  if (data != null) {
+  if (data != null && data != '') {
     if (data['image'] != null && data['image'].toString().isNotEmpty) {
       list2.add(SizedBox(
         height: 5.0,
@@ -187,7 +187,7 @@ List<Widget> _getBody(
 
     }
 
-    if (data['buttons'] != null) {
+    if (data['buttons'] != null && data['buttons'] != '') {
       list2.add(SizedBox(
         height: 5.0,
       ));
@@ -195,67 +195,70 @@ List<Widget> _getBody(
       List map = json.decode(data['buttons']);
 
       map.forEach((v) {
-        if( v != null ) {
+        if( v != null && v != '' ) {
           String c = v['caption'];
           String a = v['action'];
           String d = v['data'];
           String d2 = v['data2'];
 
-          list3.add(
-            smallButton(
-                text: translate(c), //icon: Icons.check,
-                onPressed: () {
-                  switch (a.toUpperCase()) {
-                    case 'URL':
-                      Navigator.push(
-                          context, SlideTopRoute(page: CustomPageWeb(d2, d)));
-                      break;
-                    case 'APP':
-                      switch (d.toUpperCase()) {
-                        case 'OPENPNR':
-                          gblPnrModel = null;
-                          gblCurrentRloc = d2;
-                          // get current page
+          if (c != '') {
+            list3.add(
+              smallButton(
+                  text: translate(c), //icon: Icons.check,
+                  onPressed: () {
+                    switch (a.toUpperCase()) {
+                      case 'URL':
+                        Navigator.push(
+                            context, SlideTopRoute(page: CustomPageWeb(d2, d)));
+                        break;
+                      case 'APP':
+                        switch (d.toUpperCase()) {
+                          case 'OPENPNR':
+                            gblPnrModel = null;
+                            gblCurrentRloc = d2;
+                            // get current page
 
-                          if( gblCurPage  == 'VIEWBOOKING') {
+                            if (gblCurPage == 'VIEWBOOKING') {
                               Navigator.of(context).pop();
                               gblCurrentRloc = d2;
                               reloadMmbBooking(d2);
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ViewBookingPage(
+                                          rloc: d2,
+                                        )),
+                              );
 
-                          } else {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewBookingPage(
-                                      rloc: d2,
-                                    )),
-                          );
-
-                            /*
+                              /*
                             Navigator.of(context).pushNamedAndRemoveUntil(
                               '/ViewBookingPage', (Route<
                                 dynamic> route) => false,);
 */
-                          }
-                          break;
-                        case 'RELOADPNR':
-                          break;
-                        case 'CHECKIN':
-                          break;
-                        case 'UPDATEBOARDINGPASS':
-                          reloadBoardingPass(d2);
-                          break;
-                      }
-                      break;
-                  }
-                }),
-          );
+                            }
+                            break;
+                          case 'RELOADPNR':
+                            break;
+                          case 'CHECKIN':
+                            break;
+                          case 'UPDATEBOARDINGPASS':
+                            reloadBoardingPass(d2);
+                            break;
+                        }
+                        break;
+                    }
+                  }),
+            );
+          }
         }
       });
-      list2.add(Row(
-        children: list3,
-      ));
+      if( list3.length >0 ) {
+        list2.add(Row(
+          children: list3,
+        ));
+      }
     }
 
   }

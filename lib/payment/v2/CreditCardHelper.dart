@@ -93,10 +93,10 @@ Widget getCardTypeIcon(String cardNumber) {
   switch (detectCCType(cardNumber)) {
     case CardType.visa:
       icon = Image.asset(
-        'icons/visa.png',
+        'lib/assets/icons/visa.png',
         height: 64,
         width: 64,
-        package: 'credit_card',
+ //       package: 'credit_card',
       );
       //  isAmex = false;
       break;
@@ -106,7 +106,7 @@ Widget getCardTypeIcon(String cardNumber) {
         'icons/amex.png',
         height: 64,
         width: 64,
-        package: 'credit_card',
+ //       package: 'credit_card',
       );
       //    isAmex = true;
       break;
@@ -116,7 +116,7 @@ Widget getCardTypeIcon(String cardNumber) {
         'icons/mastercard.png',
         height: 64,
         width: 64,
-        package: 'credit_card',
+//        package: 'credit_card',
       );
       //    isAmex = false;
       break;
@@ -126,7 +126,7 @@ Widget getCardTypeIcon(String cardNumber) {
         'icons/discover.png',
         height: 64,
         width: 64,
-        package: 'credit_card',
+  //      package: 'credit_card',
       );
       //    isAmex = false;
       break;

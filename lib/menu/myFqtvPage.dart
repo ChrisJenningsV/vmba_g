@@ -988,10 +988,16 @@ Widget _getTrans() {
         _showDialog();
 
       } else {
-        title = 'Pending Transactions';
-        transactions = resp.transactions;
-        setState(() {
-        });
+        if( resp.transactions == null || resp.transactions!.length == 0 ){
+          _error = 'No transactions found';
+          _actionCompleted();
+          _showDialog();
+
+        } else {
+          title = 'Pending Transactions';
+          transactions = resp.transactions;
+          setState(() {});
+        }
       }
     });
   }

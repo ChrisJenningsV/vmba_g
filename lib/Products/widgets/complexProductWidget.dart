@@ -180,7 +180,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
               int max = widget.product!.maxQuantity ;
               if (widget.product!.getCount(paxNo, segNo) < max) {
                 setState(() {
-                  widget.product!.addProduct(paxNo, segNo);
+                  widget.product!.incProduct(paxNo, segNo);
                 });
               }
             },
@@ -311,7 +311,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
                 onAdd: (int paxNo, int segNo) {
                   int max = widget.product.maxQuantity ;
                   if (widget.product.getCount(paxNo, segNo) < max) {
-                    widget.product.addProduct(paxNo, segNo);
+                    widget.product.incProduct(paxNo, segNo);
                     widget.stateChange!();
                   };
                   setState(() {});
@@ -332,7 +332,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
         onAdd: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) < widget.product.maxQuantity) {
             setState(() {
-              widget.product.addProduct(paxNo, segNo);
+              widget.product.incProduct(paxNo, segNo);
               widget.stateChange!();
             });
           }},

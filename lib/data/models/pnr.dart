@@ -330,7 +330,7 @@ class PnrModel {
 
   bool hasTickets(Tickets tickets) {
     bool hasTickets = false;
-    if (tickets != null && tickets.tKT != null && tickets.tKT.length > 0) {
+    if (tickets != null && tickets.tKT != null && tickets.tKT.length > 0 && tickets.tKT[0].tKTID != '') {
       hasTickets = true;
     } else {
       hasTickets = false;

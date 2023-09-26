@@ -858,7 +858,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
           if (widget.mmbAction == 'SEAT') {
             cmd = "EMT*R^E*R~x";
           } else if (widget.mmbAction == 'PAYOUTSTANDING') {
-            cmd = "EMT*R~x";
+            if (widget.pnrModel.hasTickets(widget.pnrModel.pNR.tickets)) {
+              cmd = "EMT*R~x";
+            } else {
+              // issue tickets and MPD's
+              cmd = "EZT*R~x";
+            }
           }
           _sendVRSCommand(json.encode(RunVRSCommand(session!, cmd).toJson()))
               .then((onValue) {

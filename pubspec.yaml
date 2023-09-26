@@ -178,6 +178,11 @@ flutter:
     - lib/assets/buraq/images/appBarLeft.png
     - lib/assets/buraq/images/logo.png
     - lib/assets/buraq/images/loader.png
+    - lib/assets/icons/visa.png
+    - lib/assets/icons/mastercard.png
+    - lib/assets/icons/amex.png
+    - lib/assets/icons/discover.png
+    - lib/assets/icons/chip.png
     - lib/assets/buraq/json/countries.json
 
     - lib/assets/lang/en.json

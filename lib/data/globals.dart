@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
@@ -131,3 +133,5 @@ List<String> gblTitles = <String>[
 Map<String, String >? gblPayFormVals;
 
 TextEditingController? gblPhoneCodeEditingController;
+Timer? gblTimer;
+StackTrace? gblStack;
