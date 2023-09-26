@@ -281,7 +281,7 @@ class Repository {
         }
 
         Map<String, dynamic> map = json.decode(data);
-        if ( map != null && (map['errorMsg'] == null || map['errorMsg'] == '' ) ) {
+        if ( map != null ) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
           String xmlVersion = map["version"];
@@ -343,54 +343,42 @@ class Repository {
                     gblSettings.updateMessage = item['value'];
                     break;
                   case 'latestBuildAndroid':
-                    if( ! item['value'].toString().contains('.')) {
-                      gblSettings.latestBuildAndroid = item['value'];
-                      if (gblVersion.isNotEmpty && gblVersion != "") {
-                        if (int.parse(gblSettings.latestBuildAndroid) >
-                            int.parse(gblVersion.split('.')[3])) {
-                          if (!gblIsIos && gblAction != "STOP") {
-                            gblAction = "UPDATE";
-                          }
+                    gblSettings.latestBuildAndroid = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.latestBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
+                        if( !gblIsIos && gblAction != "STOP") {
+                          gblAction = "UPDATE";
                         }
                       }
                     }
                     break;
                   case 'latestBuildiOS':
-                    if( ! item['value'].toString().contains('.')) {
-                      gblSettings.latestBuildiOS = item['value'];
-                      if (gblVersion.isNotEmpty && gblVersion != "") {
-                        if (int.parse(gblSettings.latestBuildiOS) >
-                            int.parse(gblVersion.split('.')[3])) {
-                          if (gblIsIos && gblAction != "STOP") {
-                            gblAction = "UPDATE";
-                          }
+                    gblSettings.latestBuildiOS = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.latestBuildiOS) > int.parse(gblVersion.split('.')[3])) {
+                        if( gblIsIos && gblAction != "STOP") {
+                          gblAction = "UPDATE";
                         }
                       }
                     }
                     break;
                   case 'lowestValidBuildAndroid':
-                    if( ! item['value'].toString().contains('.')) {
-                      gblSettings.lowestValidBuildAndroid = item['value'];
-                      // check that this build is valid
-                      if (gblVersion.isNotEmpty && gblVersion != "") {
-                        if (int.parse(gblSettings.lowestValidBuildAndroid) >
-                            int.parse(gblVersion.split('.')[3])) {
-                          if (!gblIsIos) {
-                            gblAction = "STOP";
-                          }
+                    gblSettings.lowestValidBuildAndroid = item['value'];
+                    // check that this build is valid
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.lowestValidBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
+                        if( !gblIsIos) {
+                          gblAction = "STOP";
                         }
                       }
                     }
                     break;
                   case 'lowestValidBuildiOS':
-                    if( ! item['value'].toString().contains('.')) {
-                      gblSettings.lowestValidBuildiOS = item['value'];
-                      if (gblVersion.isNotEmpty && gblVersion != "") {
-                        if (int.parse(gblSettings.lowestValidBuildiOS) !=
-                            int.parse(gblVersion.split('.')[3])) {
-                          if (gblIsIos) {
-                            gblAction = "STOP";
-                          }
+                    gblSettings.lowestValidBuildiOS = item['value'];
+                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                      if( int.parse(gblSettings.lowestValidBuildiOS) != int.parse(gblVersion.split('.')[3])) {
+                        if( gblIsIos) {
+                          gblAction = "STOP";
                         }
                       }
                     }
@@ -719,15 +707,7 @@ class Repository {
             }
             gblNoNetwork = true;
           }
-        }
-        else if (map != null && map['errorMsg'] != null && map['errorMsg'] != '' ){
-          logit('login - ${map['errorMsg']}');
-          print(map['errorMsg']);
-          gblErrorTitle = 'Login:';
-          gblError = map['errorMsg'];
-          gblNoNetwork = true;
-        }
-        else {
+        } else {
           logit('login - map null');
           print(response.body);
           gblErrorTitle = 'Login:';
@@ -1186,13 +1166,12 @@ class Repository {
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
     var body = {"IDs": "$fareIds"};
-    String msg =  json.encode(FareRuleRequest(fareIds));
     final http.Response response = await http
         .post(
             Uri.parse(
                 '${gblSettings.apiUrl}/fare/GetFareRules'),
             headers: getApiHeaders(),
-            body: msg)//JsonEncoder().convert(body))
+            body: JsonEncoder().convert(body))
         .catchError((resp) {});
 
     if (response == null) {
@@ -1357,9 +1336,6 @@ class Repository {
 
       seatplan = new Seatplan.fromJson(map);
     }    */
-    if(data.startsWith('ERROR')){
-      return new ParsedResponse(0, seatplan, error: data);
-    }
     if (!data.contains('<string xmlns="http://videcom.com/" />')) {
       Map<String, dynamic> map = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
