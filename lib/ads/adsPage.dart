@@ -54,7 +54,7 @@ class _AdsPageState extends State<AdsPage> {
 
         ]),
         body: Row( children: <Widget>[
-          Expanded( child: WebViewWidget(
+          Expanded( child: VidWebViewWidget(
     title: 'Air Discount Scheme',
         url: gblSettings.adsTermsUrl)),
 

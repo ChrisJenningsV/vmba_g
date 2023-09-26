@@ -59,14 +59,22 @@ class NotificationService {
       final AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
 
-      final IOSInitializationSettings initializationSettingsIOS =
-      IOSInitializationSettings(
+      final DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
         requestSoundPermission: false,
         requestBadgePermission: false,
         requestAlertPermission: false,
         onDidReceiveLocalNotification: onDidReceiveLocalNotification,
       );
-
+/*
+      final DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
+        requestSoundPermission: false,
+        requestBadgePermission: false,
+        requestAlertPermission: false,
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+      );
+*/
       final InitializationSettings initializationSettings =
       InitializationSettings(
           android: initializationSettingsAndroid,
@@ -76,7 +84,7 @@ class NotificationService {
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
       flutterLocalNotificationsPlugin.initialize(
-          initializationSettings, onSelectNotification: onClickNotification);
+          initializationSettings, onDidReceiveNotificationResponse : onClickNotification);
 
 
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -180,7 +188,7 @@ void processNotification(Map data){
     }
 
   }
-void onClickNotification(String? s) {
+void onClickNotification(NotificationResponse? s) {
     print('onClickNotification');
 }
 

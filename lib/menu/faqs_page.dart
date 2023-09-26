@@ -52,7 +52,7 @@ class FAQsPage extends StatelessWidget {
 class FAQsPageWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row( children: <Widget>[ Expanded( child: WebViewWidget(
+    return Row( children: <Widget>[ Expanded( child: VidWebViewWidget(
         title: 'FAQs',
         url: gblSettings.faqUrl))]);
   }

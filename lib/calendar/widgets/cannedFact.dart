@@ -83,7 +83,7 @@ class CannedFactWidget extends StatelessWidget {
           child: SingleChildScrollView(
           child: Html(
             data: text,
-            tagsList: Html.tags..addAll(["bird", "flutter"]),
+            //tagsList: Html.tags..addAll(["bird", "flutter"]),
             style: {
               "table": Style(
                 backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
@@ -92,11 +92,11 @@ class CannedFactWidget extends StatelessWidget {
                 border: Border(bottom: BorderSide(color: Colors.grey)),
               ),
               "th": Style(
-                padding: EdgeInsets.all(6),
+               // padding: EdgeInsets.all(6),
                 backgroundColor: Colors.grey,
               ),
               "td": Style(
-                padding: EdgeInsets.all(6),
+               // padding: EdgeInsets.all(6),
                 alignment: Alignment.topLeft,
               ),
               'h5': Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
@@ -142,7 +142,7 @@ class CannedFactWidget extends StatelessWidget {
               networkSourceMatcher():
               networkImageRender(altWidget: (_) => FlutterLogo()),
             },*/
-            onLinkTap: (url, _, __, ___) {
+           /* onLinkTap: (url, _, __, ___) {
               print("Opening $url...");
             },
             onImageTap: (src, _, __, ___) {
@@ -150,7 +150,7 @@ class CannedFactWidget extends StatelessWidget {
             },
             onImageError: (exception, stackTrace) {
               print(exception);
-            },
+            },*/
             onCssParseError: (css, messages) {
               print("css that errored: $css");
               print("error messages:");

@@ -514,21 +514,24 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
       message = status['message'];
       transactions = [];
       for( Map tran in strJson['transactions']) {
-        transactions!.add( new ApiFQTVMemberTransaction(_getString(tran['pnr']),
+        ApiFQTVMemberTransaction? mTran;
+
+        mTran = new ApiFQTVMemberTransaction(_getString(tran['pnr']),
             _getString(tran['flightNumber']),
             _getString(tran['flightDate']),
             _getString(tran['transactionDateTime']),
             _getString(tran['departureCityCode']),
             _getString(tran['arrivalCityCode']),
             _getNumber(tran['airMiles']),
-            _getString(tran['description'])) );
+            _getString(tran['description'])) ;
+        transactions!.add(mTran as ApiFQTVMemberTransaction) ;
       }
     } catch (e) {
       print(e);
     }
   }
 }
-String _getString(String inStr) {
+String _getString(String? inStr) {
   if( inStr != null ) {
     return inStr;
   }

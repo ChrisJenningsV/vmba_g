@@ -161,8 +161,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
       if (rs.isOk()) {
         objSeatplan = rs.body;
-        if (!objSeatplan!.hasSeatsAvailable() &&
-            objSeatplan!.hasBlockedSeats()) {
+        if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
           setState(() {
             _loadingInProgress = false;
             _noSeats = true;
@@ -170,12 +169,6 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         } else {
           _dataLoaded();
         }
-      } else if (rs.error != '') {
-        setState(() {
-          _loadingInProgress = false;
-          gblError = rs.error;
-          _noInternet = true;
-        });
       } else {
         setState(() {
           _loadingInProgress = false;

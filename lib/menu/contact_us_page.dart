@@ -51,7 +51,7 @@ class ContactUsPage extends StatelessWidget {
 class ContactUsPageWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row( children: <Widget>[ Expanded( child: WebViewWidget(
+    return Row( children: <Widget>[ Expanded( child: VidWebViewWidget(
         title: 'Contact Us',
         url: gblSettings.contactUsUrl))]);
   }
@@ -65,7 +65,7 @@ class CustomPageWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row( children: <Widget>[ Expanded( child: WebViewWidget(
+    return Row( children: <Widget>[ Expanded( child: VidWebViewWidget(
         title: title,
         url: url))]);
   }

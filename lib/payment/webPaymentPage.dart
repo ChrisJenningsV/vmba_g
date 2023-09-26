@@ -35,19 +35,90 @@ class WebPayPage extends StatefulWidget {
 }
 
 class _WebViewWidgetState extends State<WebPayPage> {
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
-
   // new bits
   final GlobalKey webViewKey = GlobalKey();
+  late final WebViewController controller;
 
-
+  int _percentLoaded = 0;
+  String _url = '';
 
   int _stackToView = 1;
   late Timer _timer;
   bool _endDetected = false;
 
   @override void initState() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%) url $_url');
+            setState(() {
+              _percentLoaded = progress;
+            });
+          },
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            _url = url;
+            _handleLoad();
+            debugPrint('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              debugPrint('blocking navigation to ${request.url}');
+              return NavigationDecision.prevent;
+            }
+            if (request.url.contains(gblSettings.payFailUrl)) {
+              // FAILED
+              print('payment failed $request}');
+              gblPayBtnDisabled = false;
+              gblPaymentState = PaymentState.declined;
+              if (request.url.contains('?')) {
+                String err = request.url.split('?')[1];
+                err = err.split('=')[1];
+                gblPaymentMsg = Uri.decodeFull(err);
+              } else {
+                gblPaymentMsg = 'Payment Declined';
+              }
+              _endDetected = true;
+              //   getAlertDialog( context, 'Payment Error', gblPaymentMsg, onComplete: onComplete );
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ChoosePaymenMethodWidget(newBooking: widget.newBooking,
+                        pnrModel: widget.pnrModel,
+                        isMmb: widget.isMmb,),
+                ),
+              );
+
+              return NavigationDecision.prevent;
+            }
+
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          },
+          onUrlChange: (UrlChange change) {
+            _url = change.url!;
+            debugPrint('url change to ${change.url}');
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(_getPayUrl()));
+
     _timer = Timer(Duration(minutes : gblSettings.payTimeout), () {
       logit('Payment timed out');
       _timer.cancel();
@@ -135,21 +206,28 @@ class _WebViewWidgetState extends State<WebPayPage> {
     ));
   }
 
+
   Widget _getWebView() {
-    return WebView(
-      initialUrl: _getPayUrl(),
-      javascriptMode: JavascriptMode.unrestricted,
+
+
+
+    return WebViewWidget(
+      controller: controller,
+      //initialUrl: _getPayUrl(),
+      //javascriptMode: JavascriptMode.unrestricted,
       //debuggingEnabled: true,
-      onWebViewCreated: (WebViewController webViewController) {
+  /*    onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
         print('on created');
-      },
+      },*/
+/*
       onWebResourceError: (WebResourceError e) {
         print('resource error $e');
       },
+*/
 
 
-      navigationDelegate: (NavigationRequest request) {
+   /*   navigationDelegate: (NavigationRequest request) {
         logit('Web Payment Page change url to ${request.url}');
         if (request.url.contains(gblSettings.payFailUrl)) {
           // FAILED
@@ -206,7 +284,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
           // may need this if page closed
           gblPaySuccess = true;
         }
-      },
+      },*/
     );
   }
 

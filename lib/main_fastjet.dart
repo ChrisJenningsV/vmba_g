@@ -55,6 +55,7 @@ void configFN() {
     paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
     wantRememberMe: false,
     wantApis: true,
+//    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
     currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',

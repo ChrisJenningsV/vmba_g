@@ -46,11 +46,13 @@ Future<bool> onWillPop(BuildContext context) async {
             }
 
             if (gblPnrModel != null && ( pnrCompleted() ||  pnrHasTTL())) {
-              resetPnrContent(gblPnrModel!.pNR.rLOC).then((x) {
+              try {
+                logit('reset PNR and exit');
+                resetPnrContent(gblPnrModel!.pNR.rLOC);
+              } catch(e) {}
                 // return to choose flights
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/HomePage', (Route<dynamic> route) => false);
-              });
             } else {
 
               // delete PNR contents

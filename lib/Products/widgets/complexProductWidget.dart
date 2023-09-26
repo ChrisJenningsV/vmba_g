@@ -168,7 +168,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
                 widget.savedProduct!.getCount(int.parse(pax.paxNo), 0);
           }
 
-          list.add(getProductPaxRow(context, widget.product!, pax, 0, 0, disable,
+          list.add(getProductPaxRow(widget.product!, pax, 0, 0, disable,
             onDelete: (int paxNo, int segNo) {
               if (widget.product!.getCount(paxNo, segNo) > 0) {
                 setState(() {
@@ -180,7 +180,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
               int max = widget.product!.maxQuantity ;
               if (widget.product!.getCount(paxNo, segNo) < max) {
                 setState(() {
-                  widget.product!.incProduct(paxNo, segNo);
+                  widget.product!.addProduct(paxNo, segNo);
                 });
               }
             },
@@ -282,13 +282,12 @@ class ProductFlightCardState extends State<ProductFlightCard> {
             },
           ),*/
         ]), true,
-        _getBody(int.parse(widget.itin.line.trim())));
+        _getBody(int.parse(widget.itin.line)));
 
   }
 
   List<Widget> _getBody(int lineNo) {
     List<Widget> list = [];
-  logit('get line [$lineNo');
 
     if (widget.product.paxRelate) {
       widget.pnrModel.pNR.names.pAX.forEach((pax) {
@@ -300,7 +299,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
 
         if(pax.paxType != 'IN') {
           list.add(
-              getProductPaxRow(context, widget.product, pax, lineNo, lineNo, disable,
+              getProductPaxRow(widget.product, pax, lineNo, lineNo, disable,
                 onDelete: (int paxNo, int segNo) {
                   if (widget.product.getCount(paxNo, segNo) > 0) {
                     setState(() {
@@ -312,7 +311,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
                 onAdd: (int paxNo, int segNo) {
                   int max = widget.product.maxQuantity ;
                   if (widget.product.getCount(paxNo, segNo) < max) {
-                    widget.product.incProduct(paxNo, segNo);
+                    widget.product.addProduct(paxNo, segNo);
                     widget.stateChange!();
                   };
                   setState(() {});
@@ -333,7 +332,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
         onAdd: (int paxNo, int segNo) {
           if( widget.product.getCount(paxNo, segNo) < widget.product.maxQuantity) {
             setState(() {
-              widget.product.incProduct(paxNo, segNo);
+              widget.product.addProduct(paxNo, segNo);
               widget.stateChange!();
             });
           }},
@@ -345,7 +344,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   }
 }
 
-Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
+Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
   List<Widget> widgets = [];
 
   widgets.add(Align(alignment: Alignment.centerLeft,

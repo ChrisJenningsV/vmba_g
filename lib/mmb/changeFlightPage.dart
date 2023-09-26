@@ -36,7 +36,7 @@ class ChangeFlightPage extends StatefulWidget {
 }
 
 class _ChangeFlightState extends State<ChangeFlightPage> {
-  bool _loadingInProgress= false;
+  bool _loadingInProgress= false  ;
   AvailabilityModel objAv = AvailabilityModel();
   ScrollController _scrollController = ScrollController();
   GlobalKey<ScaffoldState> _key = GlobalKey();

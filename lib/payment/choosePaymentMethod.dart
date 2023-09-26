@@ -85,6 +85,8 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     //gblPaymentMsg = '';
     gblError = '';
+    gblStack = null;
+
     _displayProcessingText = 'Making your Booking...';
     _displayProcessingIndicator = false;
     //gblPaymentMsg = null;
@@ -667,26 +669,46 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 */
   Future completeBookingNothingtoPayVRS() async {
     String msg = '';
-
+    msg='*${widget.mmbBooking!.rloc}';
     widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]
         .itin.reversed
         .forEach((f) {
-        msg += 'X${f.line}';
+        msg += '^X${f.line}';
     });
 
     widget.mmbBooking!.newFlights.forEach((flt) {
       print(flt);
       msg += '^' + flt;
     });
+    int flightLineNumber=-1;
+    if(  gblBookingState == BookingState.changeFlt ) {
+      if( widget.mmbBooking!.newFlights.length > 1) {
+        if (widget.mmbBooking!.journeyToChange == 1) {
+          // make first line connection
+          flightLineNumber =1;
+        } else {
+          // count lines and add 1
+          flightLineNumber = widget.mmbBooking!.journeys.journey[0].itin.length +1;
+        }
+      }
+    } else {
+      flightLineNumber = getConnectingFlightLineIdentifier(widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]);
+    }
+    if (flightLineNumber >= 0){
+      logit("Journey has a connecting flight on itin($flightLineNumber)");
+      msg += '^*r^.${flightLineNumber}x';
+    }
     msg += '^';
     msg += addFg(widget.mmbBooking!.currency, true);
     msg += addFareStore(true);
     msg += 'e*r~x';
     logit('CMP msg:$msg');
     try {
-      runVrsCommand(msg);
-    } catch(e) {
+      await runVrsCommand(msg);
+    } catch(e,stack) {
       _error = e.toString();
+      gblStack = stack ;
+
       _dataLoaded();
       _showDialog();
       return null;
@@ -696,7 +718,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       if (widget.pnrModel.pNR.tickets != null) {
         await pullTicketControl(widget.pnrModel.pNR.tickets);
       }
-      logit('ticket booking');
+      logit('ticket booking 1');
       ticketBooking();
 
     } catch(e ) {
@@ -705,6 +727,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
    // _dataLoaded();
   }
 
+  int getConnectingFlightLineIdentifier(Journey journey) {
+    int connectedLine = -1;
+    journey.itin.forEach((itn) {
+      if (itn.nostop == "X") {
+        connectedLine = int.parse(itn.line);
+      }
+    });
+    return connectedLine;
+  }
   Future completeBookingNothingtoPay() async {
     setState(() {
       _displayProcessingText = 'Processing your changes...';
@@ -720,18 +751,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       if (this.isMmb) {
         msg = '*${widget.mmbBooking!.rloc}';
 
-        // add delete
-/*
-      if( gblSettings.useWebApiforVrs) {
-        widget.mmbBooking.journeys.journey[widget.mmbBooking.journeyToChange -
-            1]
-            .itin.reversed
-            .forEach((f) {
-          msg += '^X${f.line}';
-        });
-      }
-*/
-
         widget.mmbBooking!.newFlights.forEach((flt) {
           print(flt);
           msg += '^' + flt;
@@ -740,31 +759,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
 
       msg += 'e*r~x';
-
-
-      /*  http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }*/
 
       logit('CMP msg:$msg');
       try {
@@ -778,8 +772,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('</string>', '')
               .replaceAll('ERROR - ', '')
               .trim();
-          // _dataLoaded();
-          // return null;
 
           print('completeBookingNothingtoPay: ' + _error);
 
@@ -795,8 +787,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               .replaceAll('</string>', '')
               .replaceAll('ERROR: ', '')
               .trim();
-          // _dataLoaded();
-          // return null;
 
           print('completeBookingNothingtoPay: ' + _error);
 
@@ -926,11 +916,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           if (widget.pnrModel.pNR.tickets != null) {
             await pullTicketControl(widget.pnrModel.pNR.tickets);
           }
-          logit('ticket booking');
+          logit('ticket booking 2');
           ticketBooking();
         }
-      } catch (e) {
+      } catch (e, stack) {
         _error = e.toString();
+        gblStack = stack ;
+
         logit('e871:$_error');
         _dataLoaded();
         _showDialog();
@@ -1007,8 +999,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', '');
+      if( pnrJson.contains('ERROR:')){
+        _error = pnrJson; // 'Please check your details';
+        gblStack =null ;
+
+        _dataLoaded();
+        _showDialog();
+        return;
+      }
 
       Map<String, dynamic> map = json.decode(pnrJson);
+
 
       PnrModel pnrModel = new PnrModel.fromJson(map);
 
@@ -1029,8 +1030,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
               ));
       //sendEmailConfirmation();
 
-    } catch (e) {
+    } catch (e, stack) {
       _error = e.toString(); // 'Please check your details';
+      gblStack = stack ;
+
       _dataLoaded();
       _showDialog();
     }
@@ -1059,11 +1062,15 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        String er = _error;
+        if( gblStack != null && gblIsLive == false){
+          er += gblStack.toString();
+        }
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Error"),
-          content: _error != null && _error != ''
-              ? new Text(_error)
+          content: er != null && er != ''
+              ? new Text(er)
               : new Text("Please try again"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
@@ -1130,10 +1137,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       }
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
+
       bool wantButtons = false;
-      if( gblPaymentMsg.contains('currency not support')) {
+      if( gblPaymentMsg.contains('urrency not support')) {
         wantButtons = true;
       }
+
       return WillPopScope(
           onWillPop: _onWillPop,
           child:  Scaffold(
@@ -1151,7 +1160,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           ),
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
-          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete, wantButtons: wantButtons),
+          body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete,wantButtons: wantButtons),
           bottomNavigationBar: getBottomNav(context),
       ));
 
@@ -1218,7 +1227,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   void onComplete(dynamic p){
-
     gblPaymentMsg = '';
 //    Navigator.of(context).pop();
     setState(() {
@@ -1382,7 +1390,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                 Navigator.push(
                     context,
                     SlideTopRoute(
-                        page: WebViewWidget(
+                        page: VidWebViewWidget(
                             title: 'Terms & Conditions',
                             url: url))),
           )
@@ -1410,7 +1418,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                 Navigator.push(
                     context,
                     SlideTopRoute(
-                        page: WebViewWidget(
+                        page: VidWebViewWidget(
                             title: translate('Privacy Policy'),
                             url: url))),
           )
@@ -1459,6 +1467,10 @@ List<Widget> getPayOptions(String amount, String cur) {
                 borderRadius: BorderRadius.circular(30.0))),
         onPressed: () {
           if(_displayProcessingIndicator == false ) {
+            if( gblTimer != null){
+              gblTimer?.cancel();
+              gblTimer = null;
+            }
             completeBookingNothingtoPay();
           }
         },
@@ -1531,6 +1543,10 @@ List<Widget> getPayOptions(String amount, String cur) {
             if ( gblPayBtnDisabled == false ) {
               if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
+              if( gblTimer != null){
+                gblTimer?.cancel();
+                gblTimer = null;
+              }
               setState(() {
 
               });
@@ -1585,11 +1601,16 @@ List<Widget> getPayOptions(String amount, String cur) {
               } else {
                 if( session == null){
                   logit('choosePay ses null');
-                  session = Session('','','');
+                  if(gblSession != null){
+                    session = gblSession;
+                  } else {
+                    session = Session('', '', '');
+                  }
                 }
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
                     CreditCardPage(pnrModel: widget.pnrModel,
+                      stopwatch: stopwatch,
                       session: session!,
                       isMmb: isMmb,
                       mmbBooking: widget.mmbBooking,
@@ -1692,15 +1713,18 @@ List<Widget> getPayOptions(String amount, String cur) {
             successMessagePage(context,msg, title: translate('Booking Complete-Payment Pending'), isHtml: isHtml, actions: actions );
           });
         } else {
-          criticalErrorPage(context, 'gblError', title: 'Payment Error');
+          criticalErrorPage(context, gblError, title: 'Payment Error');
         }
-      } catch (e) {
+      } catch (e, stack) {
         gblError = e.toString();
+        gblStack = stack ;
         endProgressMessage();
         criticalErrorPage(context, gblError, title: 'Payment Error');
       }
-    } catch(e) {
+    } catch(e, stack) {
       gblError = e.toString();
+      gblStack = stack ;
+
       endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Payment Error');
 
@@ -1743,10 +1767,18 @@ List<Widget> getPayOptions(String amount, String cur) {
                 pnrModel: widget.pnrModel,
                 isMmb: widget.isMmb,)));
             } else {
+              if( session==null){
+                if( gblSession != null) {
+                  session = gblSession;
+              } else{
+                  session = new Session('', '', '');
+                }
+              }
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) =>
                   CreditCardPage(pnrModel: widget.pnrModel,
                     session: session!,
+                    stopwatch: stopwatch,
                     isMmb: isMmb,
                     mmbBooking: widget.mmbBooking,
                     mmbAction: widget.mmbAction,)));
@@ -1856,12 +1888,12 @@ class TimerText extends StatefulWidget {
 }
 
 class TimerTextState extends State<TimerText> {
-  late Timer timer;
+  //late Timer timer;
   final Stopwatch stopwatch;
   void Function()? onComplete;
 
   TimerTextState({required this.stopwatch, this.onComplete}) {
-    timer = new Timer.periodic(new Duration(seconds: 1), callback);
+    gblTimer = new Timer.periodic(new Duration(seconds: 1), callback);
   }
   void callback(Timer timer) {
     if(_cancelTimer) {

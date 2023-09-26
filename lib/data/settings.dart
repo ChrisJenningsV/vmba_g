@@ -324,7 +324,7 @@ bool bpShowFastTrack;
     this.smartApiUrl='',
     this.eVoucher=false,
     required this.passengerTypes,
-    this.currency='',
+    this.currency='GBP',
     this.gblLanguages='',
     this.covidText='',
     this.currencies='',

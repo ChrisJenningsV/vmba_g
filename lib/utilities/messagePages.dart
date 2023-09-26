@@ -160,36 +160,36 @@ class MessagePageState extends State<MessagePage> {
             titlePadding: const EdgeInsets.all(0),
             title: alertTitle(
                 translate('LOGIN'), widget.titleTextClr!, widget.titleBackClr!),
-    content: contentBox(context),
-    actions: <Widget>[
-    ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
-    child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
-    onPressed: () {
-    //Put your code here which you want to execute on Cancel button click.
-    Navigator.of(context).pop();
-    },
-    ),
-    ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryHeaderColor) ,
-    child: TrText("CONTINUE"),
-    onPressed: () {
-      String result = widget.onOk!(context, _sineController.text, _passwordController.text);
-      widget._errorMsg = '';
-      if( result == 'OK') {
-        // close dialog
-        Navigator.of(context).pop();
-      }else {
-        // error
-        widget._errorMsg = result;
-        setState(() {
+            content: contentBox(context),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+                child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+                onPressed: () {
+                  //Put your code here which you want to execute on Cancel button click.
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryHeaderColor) ,
+                child: TrText("CONTINUE"),
+                onPressed: () {
+                  String result = widget.onOk!(context, _sineController.text, _passwordController.text);
+                  widget._errorMsg = '';
+                  if( result == 'OK') {
+                    // close dialog
+                    Navigator.of(context).pop();
+                  }else {
+                    // error
+                    widget._errorMsg = result;
+                    setState(() {
 
-        });
-      }
-    },
-    ),
-],
-    ));
+                    });
+                  }
+                },
+              ),
+            ],
+          ));
     }
 
 
@@ -242,7 +242,7 @@ class MessagePageState extends State<MessagePage> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-               // keyboardType: TextInputType.visiblePassword,
+                // keyboardType: TextInputType.visiblePassword,
 
                 onSaved: (value) {
                   if (value != null) {
@@ -266,21 +266,21 @@ class MessagePageState extends State<MessagePage> {
     return Center(
         heightFactor: 1,
         child:
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-        Stack(
-          children:  [
-            Positioned(
-                left: offset,
-                top: offset,
-                child:
-                CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: radius,
-                    child: Image.asset('lib/assets/$gblAppTitle/images/loader.png') //Icon(Icons.check),
-                )),
-            /*SizedBox(
+        Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Stack(
+                children:  [
+                  Positioned(
+                      left: offset,
+                      top: offset,
+                      child:
+                      CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: radius,
+                          child: Image.asset('lib/assets/$gblAppTitle/images/loader.png') //Icon(Icons.check),
+                      )),
+                  /*SizedBox(
           width: 100,
           height: 100,
           child: CircularProgressIndicator(
@@ -288,21 +288,21 @@ class MessagePageState extends State<MessagePage> {
            // value: 1,
           ),
         ),*/
-            SizedBox(
-              width: 150,
-              height: 150,
-              child: CircularProgressIndicator(
-                color: gblSystemColors.progressColor,
-                strokeWidth: 10,
-                backgroundColor: Colors.grey.shade100,
-                // value: .5, // Change this value to update the progress
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: CircularProgressIndicator(
+                      color: gblSystemColors.progressColor,
+                      strokeWidth: 10,
+                      backgroundColor: Colors.grey.shade100,
+                      // value: .5, // Change this value to update the progress
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-                Padding(padding: EdgeInsets.all(10.0)),
-                TrText('' + _msg),
-    ])
+              Padding(padding: EdgeInsets.all(10.0)),
+              TrText('' + _msg),
+            ])
     );
   }
 
@@ -326,7 +326,7 @@ Widget messageWidget() {
 }*/
 Widget criticalErrorPageWidget(BuildContext context, String msg, {String title='', bool wantButtons=false, void Function(dynamic p)? onComplete}) {
   return Scaffold(
-      //key: _key,
+    //key: _key,
       appBar: new AppBar(
         automaticallyImplyLeading: false,
         //brightness: gblSystemColors.statusBar,
@@ -352,21 +352,21 @@ Widget criticalErrorWidget(BuildContext context, String msg, {String title='', b
     actionList.add(Container());
   } else {
     actionList = <Widget>[
-        Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
-              child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                if( onComplete != null ){
-                  onComplete(false);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-            )),
-      ];
+      Align(
+          alignment: Alignment.center,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+            child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+            onPressed: () {
+              //Put your code here which you want to execute on Cancel button click.
+              if( onComplete != null ){
+                onComplete(false);
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          )),
+    ];
   }
   return messageBodyWidget(title, msg,
       Icons.close, Colors.red,
@@ -478,16 +478,23 @@ void endProgressMessage() {
 
   }
 }
-Widget messageBodyWidget( String title, String msg, IconData? icon, Color? titleBackClr, Color? backClr, Color? borderClr, Color? iconClr, {List<Widget>? actions, bool isHtml=false }  )  {
+Widget messageBodyWidget( String title, String msg, IconData? icon, Color? titleBackClr, Color? backClr, Color? borderClr, Color? iconClr, {List<Widget>? actions, bool isHtml=false }  )
+{
   Widget msgWidget;
-  final Completer<WebViewController> _controller =  Completer<WebViewController>();
+  late final WebViewController _controller;
+  _controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.dataFromString(
+        '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
+            msg +
+            '</body></html>'));
 
   if(isHtml != null && isHtml == true) {
     msgWidget = Container(
         height: 250,
         width: 500,
-        child: WebView(
-      initialUrl: Uri.dataFromString(
+        child: WebViewWidget(controller: _controller
+          /*initialUrl: Uri.dataFromString(
           '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
               msg +
               '</body></html>',
@@ -495,8 +502,8 @@ Widget messageBodyWidget( String title, String msg, IconData? icon, Color? title
           .toString(),
       onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
-      },
-    ));
+      },*/
+        ));
   } else {
     msgWidget = Text(msg);
   }
@@ -573,15 +580,13 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
         children: <Widget> [
           Container(
             width: (wide==true) ? MediaQuery.of(context).size.width : null,
-            decoration: BoxDecoration(
+ /*           decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: backClr,
                 border: Border.all(color: borderClr, width: 3)
-            ),
-           // child: Icon(icon, color: iconClr ,size: 100,),
+            ),*/
+            child: content,
           ),
-          Padding(padding: EdgeInsets.all(5)),
-          content,
         ]),
     actions: actions,
   );
@@ -596,11 +601,11 @@ Widget alertTitle(String title, Color titleTextClr, Color  titleBackClr) {
   return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-      color: titleBackClr,
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
-  padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+          color: titleBackClr,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+      padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
 
-  child: Text(title,style: TextStyle(color: titleTextClr),));
+      child: Text(title,style: TextStyle(color: titleTextClr),));
 }
 EdgeInsets alertTitlePadding() {
   return const EdgeInsets.all(0);

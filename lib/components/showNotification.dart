@@ -104,9 +104,9 @@ Widget _getTitle(
 
 List<Widget> _getBody(
     BuildContext context, RemoteNotification notification, Map data) {
-  final Completer<WebViewController> _controller =
+ /* final Completer<WebViewController> _controller =
       Completer<WebViewController>();
-
+*/
   List<Widget> list = [];
   List<Widget> list2 = [];
   List<Widget> list3 = [];
@@ -129,11 +129,21 @@ List<Widget> _getBody(
   if (data['height'] != null && data['height'] != '') {
     h = double.parse(data['height']);
   }
+
+  late final WebViewController _controller;
+  _controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.dataFromString(
+        '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
+            body +
+            '</body></html>'));
+
+
   list2.add(Container(
       height: h,
       width: 400,
-      child: WebView(
-        initialUrl: Uri.dataFromString(
+      child: WebViewWidget(controller: _controller
+        /*initialUrl: Uri.dataFromString(
                 '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
                     body +
                     '</body></html>',
@@ -141,7 +151,7 @@ List<Widget> _getBody(
             .toString(),
         onWebViewCreated: (WebViewController webViewController) {
           _controller.complete(webViewController);
-        },
+        },*/
       )));
   /* } else {
       if( notification != null ) {

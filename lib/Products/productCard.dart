@@ -57,12 +57,13 @@ class ProductCardState extends State<ProductCard> {
 
     widget.productCategory.products.forEach((prod) {
       if( isThisProductValid(widget.pnrModel, prod, 0)) {
+        if( prod.maxQuantity == null ){
+          prod.maxQuantity = 10;
+        }
         if( prod.requiresQuantity == false ) {
           prod.maxQuantity = 1;
         }
-        if( prod.maxQuantity == null ){
-          prod.maxQuantity = 999;
-        }
+
         if(index > 0 && index < widget.productCategory.products.length){
           bags.add(Divider(color: Colors.grey, height: 6.0,));
         }
@@ -100,7 +101,7 @@ class ProductCardState extends State<ProductCard> {
   }
 
   Widget getProductRow(int index, Product prod) {
-
+    List<Widget> widgets0 = [];
     List<Widget> widgets1 = [];
     List<Widget> widgets = [];
 
@@ -128,7 +129,12 @@ class ProductCardState extends State<ProductCard> {
           width: 70,),);
       }
     }
-
+    String route = '';
+    if( prod.cityCode != '' && prod.arrivalCityCode != ''){
+      route = prod.cityName + '>' + prod.arrivalCityName;
+      widgets0.add(Align(alignment: Alignment.centerLeft,
+          child: TrText(route,style: TextStyle(fontWeight: FontWeight.bold),)));
+    }
     widgets.add(Align(alignment: Alignment.centerLeft,
         child: TrText(prod.productName)),);
 
@@ -181,7 +187,7 @@ class ProductCardState extends State<ProductCard> {
               if( gblLogProducts) {logit('addProduct');}
               // addProduct(index);
               if( prod.count(0) < prod.maxQuantity) {
-                prod.addProduct(0, 0);
+                prod.incProduct(0, 0);
                 checkSaveButton(prod);
                 setState(() {
 
@@ -237,8 +243,10 @@ class ProductCardState extends State<ProductCard> {
                     widget.onError!(msg);
                   },
                 ))).then((pnrMod) {
-          if( pnrMod != null && pnrMod.pNR.rLOC != '') {
+          if( pnrMod != null && pnrMod.pNR.rLOC !='' ) {
+            logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
             widget.pnrModel = pnrMod;
+            logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
             setState(() {
             });
             if( widget.onComplete != null ) {
@@ -256,18 +264,27 @@ class ProductCardState extends State<ProductCard> {
       );
     }
 
-  if( widgets1.length > 0) {
+  if( widgets1.length > 0 || widgets0.length > 0) {
+    List <Widget> list = [];
+
+    if(widgets0.length >0){
+      list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: widgets0
+      ));
+    }
+    if(widgets.length >0) {
+      list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: widgets
+      ));
+    }
+    list.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: widgets1
+    ));
     return Column(
-      children: [
-    Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: widgets
-    ),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: widgets1
-        ),
-    ]);
+      children: list);
 
   } else {
     return Row(

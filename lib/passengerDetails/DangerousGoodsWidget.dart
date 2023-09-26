@@ -48,6 +48,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
   Widget _body() {
     List<Widget> list = [];
 
+    list.add(Text(''));
     list.add(TrText('The following is a non-exhaustive list of Prohibited Items'));
 
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));

@@ -759,7 +759,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 //width: MediaQuery.of(context).size.width,
                                 child: RepaintBoundary(
                                   key: globalKey,
-                                  child: QrImage(
+                                  child: QrImageView(
                                     data: _boardingPass!.barcodedata,
                                     size: 0.25 * bodyHeight,
                                     //size: 0.5 * bodyHeight,
@@ -840,7 +840,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                         Center(
                           child: RepaintBoundary(
                             key: globalKey,
-                            child: QrImage(
+                            child: QrImageView(
                               data: _boardingPass!.barcodedata,
                               size: 0.25 * bodyHeight,
                               //size: 0.5 * bodyHeight,
