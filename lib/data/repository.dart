@@ -1635,7 +1635,21 @@ Future<String> runVrsCommand(String cmd) async {
         .replaceAll('</string>', ''));
 
     VrsApiResponse rs = VrsApiResponse.fromJson(map);
-    gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+    if(gblSession != null  ) {
+      String id = '';
+      if(map['sessionId'] != null ){
+        id = map['sessionId'];
+      }
+      String sid = '';
+      if(map['varsSessionId'] != null ){
+        sid = map['varsSessionId'];
+      }
+      String no = '';
+      if(map['vrsServerNo'] != null ){
+        no = map['vrsServerNo'];
+      }
+      gblSession = Session(id, sid, no);
+    }
     logit('rvc Server IP ${map['serverIP']}');
     if( rs.data == null ) {
       logit('no data returned');

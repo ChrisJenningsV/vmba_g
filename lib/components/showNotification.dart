@@ -63,6 +63,10 @@ void showNotification(
 Widget _getTitle(
     BuildContext context, RemoteNotification notification, Map data) {
   String time = DateFormat('kk:mm').format(DateTime.now());
+  String title = notification.title.toString();
+  if( data != null && data[title] != null ) {
+    title = data['title'];
+  }
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -87,7 +91,7 @@ Widget _getTitle(
       /*      ),*/
       SizedBox(width: 5),
       Expanded(
-        child: Text(data['title']), //Text(notification.title),
+        child: Text(title), //Text(notification.title),
       ),
       Text(time),
       new IconButton(

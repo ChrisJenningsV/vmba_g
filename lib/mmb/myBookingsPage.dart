@@ -753,6 +753,23 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
     }
 
+  bool isFltPassedDate(List<Itin> journey) {
+//      DateTime now = DateTime.now();
+    DateTime now = DateTime.now().toUtc();
+    var fltDate;
+    bool result = false;
+    journey.forEach((f) {
+      // fltDate = DateTime.parse(f.depDate + ' ' + f.depTime);
+      fltDate = DateTime.parse(f.ddaygmt + ' ' + f.dtimgmt);
+      //f.ddaygmt)
+      if (now.isAfter(fltDate)) {
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
   Widget fltLines(PnrModel pnr) {
     List<Widget> fltWidgets = [];
     // List<Widget>();
@@ -763,22 +780,6 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     // List<List>();
     //journeys
 
-    bool isFltPassedDate(List<Itin> journey) {
-//      DateTime now = DateTime.now();
-      DateTime now = DateTime.now().toUtc();
-      var fltDate;
-      bool result = false;
-      journey.forEach((f) {
-       // fltDate = DateTime.parse(f.depDate + ' ' + f.depTime);
-        fltDate = DateTime.parse(f.ddaygmt + ' ' + f.dtimgmt);
-        //f.ddaygmt)
-        if (now.isAfter(fltDate)) {
-          result = true;
-        }
-      });
-
-      return result;
-    }
 
 
     int noFlts = 0;
@@ -798,76 +799,77 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       new Divider();
     }
 
+    int no = 0;
     journeys.forEach((journey) {
       //can this be moved outside
+      no +=1;
+      List <Widget> list =[];
+
+      if( journey.last.depart.length + journey.last.arrive.length < 40) {
+          list.add(Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(cityCodetoAirport(journey.first.depart),style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
+              Padding(padding: EdgeInsets.all(2)),
+              Icon(Icons.arrow_forward,color: Colors.black,size: 12.0,),
+              Padding(padding: EdgeInsets.all(2)),
+              Text(cityCodetoAirport(journey.last.arrive),style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
+            ],
+          )) ;
+      } else {
+        list.add(Text(cityCodetoAirport(journey.first.depart),
+            style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)));
+        list.add(Text(cityCodetoAirport(journey.last.arrive),
+            style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)));
+      }
+
+      list.add( Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+      new Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: (formatFltTimeWidget(journey.first)),
+      ),
+      new Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+      new RotatedBox(
+      quarterTurns: 1,
+      child: Icon(
+      Icons.airplanemode_active,
+      )),
+      new Padding(
+      padding: EdgeInsets.only(left: 5.0),
+      ),
+      // new Text(
+      //   journey.first.airID +
+      //       journey.first.fltNo,
+      new Text(
+      isFltPassedDate(journey)
+      ? translate('departed')
+          : journey.length > 1
+      ? '${journey.length - 1} ' + translate('connection')
+          : translate('Direct Flight'),
+      style: new TextStyle(
+      fontSize: 14.0, fontWeight: FontWeight.w300),
+      ),
+      ],
+      ),
+      ],
+      ));
+
+
 
       fltWidgets.add(
         new Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(cityCodetoAirport(journey.last.arrive),
-                  style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
-/*
-              FutureBuilder(
-                future: cityCodeToName(journey.last.arrive),
-                initialData: journey.last.arrive.toString(),
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate(text.data!),
-                      style: new TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w700));
-                },
-              ),
-*/
- /*             FutureBuilder(
-                future: cityCodeToName(journey.first.depart),
-                initialData: journey.first.depart.toString(),
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return new Text(translate('from ') + translate(text.data!),
-                      style: new TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w300));
-                },
-              ),*/
-              Text(cityCodetoAirport(journey.last.depart),
-                  style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700)),
-
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: (formatFltTimeWidget(journey.first)),
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      new RotatedBox(
-                          quarterTurns: 1,
-                          child: Icon(
-                            Icons.airplanemode_active,
-                          )),
-                      new Padding(
-                        padding: EdgeInsets.only(left: 5.0),
-                      ),
-                      // new Text(
-                      //   journey.first.airID +
-                      //       journey.first.fltNo,
-                      new Text(
-                        isFltPassedDate(journey)
-                            ? translate('departed')
-                            : journey.length > 1
-                                ? '${journey.length - 1} ' + translate('connection')
-                                : translate('Direct Flight'),
-                        style: new TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ]),
+            children: list),
       );
+      if( no < journeys.length ) {
+        fltWidgets.add(Padding(padding: EdgeInsets.all(5)));
+      }
     });
 
     return new Column(children: fltWidgets.toList());

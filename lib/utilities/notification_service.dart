@@ -138,23 +138,6 @@ class NotificationService {
         processNotification(message.data);
         showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
 
-     /*     flutterLocalNotificationsPlugin.show(
-              notification.hashCode,
-              notification.title,
-              notification.body,
-              NotificationDetails(
-                android: AndroidNotificationDetails(
-                  channel.id,
-                  channel.name,
-                  importance: Importance.max,
-                  priority: Priority.high,
-                  // styleInformation: BigTextStyleInformation(''),
-                  //icon: 'app_icon',
-                ),
-              )
-          );*/
-    //    }
-
 
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -174,19 +157,20 @@ class NotificationService {
 
 void processNotification(Map data){
     logit('processNotify data=$data');
-    if( data == null ) {
+    if( data == null  ) {
 
       return ;
     }
 
-    String action = data['actions'];
-    String rloc = data['rloc'];
+    if( data['actions'] != null && data['rloc'] != null) {
+      String action = data['actions'];
+      String rloc = data['rloc'];
 
-    if(action == 'paycomplete'){
-      // reload booking
-      refreshBooking(rloc);
+      if (action == 'paycomplete') {
+        // reload booking
+        refreshBooking(rloc);
+      }
     }
-
   }
 void onClickNotification(NotificationResponse? s) {
     print('onClickNotification');
