@@ -1,4 +1,6 @@
 
+import '../../utilities/helper.dart';
+
 class Seatplan {
   Seats seats = Seats();
 
@@ -62,14 +64,20 @@ class Seats {
   Seats();
 
   Seats.fromJson(Map<String, dynamic> json) {
-    if(json['SeatsFlt'] != null) seatsFlt =SeatsFlt.fromJson(json['SeatsFlt']);
-    if(json['CabinCount'] != null) cabinCount =CabinCount.fromJson(json['CabinCount']);
-    if (json['Seat'] != null) {
-      seat = [];
-      // new List<Seat>();
-      json['Seat'].forEach((v) {
-        seat.add(new Seat.fromJson(v));
-      });
+    try {
+      if (json['SeatsFlt'] != null)
+        seatsFlt = SeatsFlt.fromJson(json['SeatsFlt']);
+      if (json['CabinCount'] != null)
+        cabinCount = CabinCount.fromJson(json['CabinCount']);
+      if (json['Seat'] != null) {
+        seat = [];
+        // new List<Seat>();
+        json['Seat'].forEach((v) {
+          seat.add(new Seat.fromJson(v));
+        });
+      }
+    } catch(e) {
+      logit(e.toString());
     }
   }
 
@@ -127,7 +135,8 @@ class CabinCount {
   CabinCount.fromJson(Map<String, dynamic> json) {
     print('${json['Cabin'].runtimeType}');
 
-    if( json['Cabin'].runtimeType.toString() == '_InternalLinkedHashMap<String, dynamic>') {
+    if( json['Cabin'].runtimeType.toString() == '_InternalLinkedHashMap<String, dynamic>' ||
+        json['Cabin'].runtimeType.toString() == '_Map<String, dynamic>') {
       if( json['Cabin'] != null ) {
         cabins.add(new Cabin.fromJson(json['Cabin']));
       }
@@ -195,6 +204,7 @@ class Seat {
   Seat();
 
   Seat.fromJson(Map<String, dynamic> json) {
+    try {
     if(json['SeatID'] != null )sSeatID = json['SeatID'];
     if(json['Row'] != null )sRow = int.parse(json['Row']);
     if(json['Col'] != null )sCol = int.parse(json['Col']);
@@ -225,7 +235,9 @@ class Seat {
     } else {
       pRMSeat = false;
     }
-
+    } catch(e) {
+      logit(e.toString());
+    }
   }
 
   Map<String, dynamic> toJson() {
