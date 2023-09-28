@@ -64,6 +64,14 @@ class _WebViewWidgetState extends State<WebPayPage> {
             _url = url;
             _handleLoad();
             debugPrint('Page finished loading: $url');
+            if (url.contains(gblSettings.paySuccessUrl)) {
+              // SUCCESS
+              print('payment success ');
+              gblPaymentState = PaymentState.success;
+              //_successfulPayment();
+              _gotoSuccessPage(widget.pnrModel);
+              //return NavigationDecision.prevent;
+            }
           },
           onWebResourceError: (WebResourceError error) {
             debugPrint('''
