@@ -124,6 +124,11 @@ android {
             resValue "string", "flavored_app_name", "Buraq"
             applicationId "com.buraq.booking"
         }
+        UnitedNigeria {
+            dimension "version"
+            resValue "string", "flavored_app_name", "UnitedNigeria"
+            applicationId "com.unitednigeria.booking"
+        }
   /*      Keylime {
             dimension "version"
             resValue "string", "flavored_app_name", "key Lime Air"

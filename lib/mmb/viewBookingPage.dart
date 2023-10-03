@@ -1198,6 +1198,30 @@ class CheckinBoardingPassesWidgetState
     return result;
   }
 
+  bool _hasApisInfoForPax(int fltNo, int paxNo){
+    bool bFound = false;
+    if(apisPnrStatus != null &&
+        apisPnrStatus!.xml != null &&
+        apisPnrStatus!.xml!.pnrApis != null &&
+        apisPnrStatus!.xml!.pnrApis.flights != null &&
+        apisPnrStatus!.xml!.pnrApis.flights!.flight.length >= fltNo ){
+
+      if( apisPnrStatus!.xml!.pnrApis.flights!.flight[fltNo].passengers != null) {
+        apisPnrStatus!.xml!.pnrApis.flights!.flight[fltNo].passengers?.passenger.forEach((element) {
+
+          if( int.parse(element.paxno) == paxNo +1) {
+            if (element.apisentered == 'True') {
+              bFound = true;
+            }
+          }
+        });
+      }
+
+    }
+
+    return bFound;
+  }
+
   Widget apisButtonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
     //Apis
     if (apisPnrStatus != null &&
@@ -1240,10 +1264,16 @@ class CheckinBoardingPassesWidgetState
               Padding(
                 padding: EdgeInsets.only(left: 5.0),
               ),
-              Icon(
-                Icons.info_outline,
+
+              (_hasApisInfoForPax(journeyNo, paxNo) == true ) ?
+              Icon(Icons.check_circle_outline,
                 size: 20.0,
-                color: Colors.grey,
+                color: Colors.green,
+              ) :
+              Icon(
+                Icons.close,
+                size: 20.0,
+                color: Colors.red,
               )
             ],
           ));
@@ -1290,6 +1320,14 @@ class CheckinBoardingPassesWidgetState
       //           pnr.pNR.itinerary.itin[journeyNo].fltNo,
       //       pnr.pNR.rLOC,
       //       paxNo);
+
+      // check APIS done
+      if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+        return Container();
+      }
+
+
+
       bool hasDownloadedBoardingPass = true;
       //return new TextButton(
       return new TextButton(
@@ -1464,6 +1502,12 @@ class CheckinBoardingPassesWidgetState
             return payOutstandingButton(pnr, amount);
 
           }
+
+          // apis button required and yet to be done ?
+          if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+              return Container();
+          }
+
 
           //Checkin Button
           return new TextButton(
@@ -2246,6 +2290,12 @@ class CheckinBoardingPassesWidgetState
       bool checkinOpen, bool chargeForPreferredSeating) {
     String btnText = '';
     if(checkinOpen) {
+
+      // apis button required and yet to be done ?
+      if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+        return Container();
+      }
+
       btnText = 'Check-in';
     } else {
         if(paxlist

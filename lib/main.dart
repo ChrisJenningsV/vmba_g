@@ -39,6 +39,8 @@ import 'main_skane.dart';
 import 'main_keylime.dart';
 import 'package:vmba/menu/errorPage.dart';
 
+import 'main_u5.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //AppLanguage appLanguage = AppLanguage();
@@ -97,6 +99,9 @@ void main() async {
         break;
       case 'UZ':
         configUZ();
+        break;
+      case 'U5':
+        configU5();
         break;
       default:
         gblAppTitle='Test Title';

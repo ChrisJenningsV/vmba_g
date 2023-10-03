@@ -168,7 +168,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
                 widget.savedProduct!.getCount(int.parse(pax.paxNo), 0);
           }
 
-          list.add(getProductPaxRow(widget.product!, pax, 0, 0, disable,
+          list.add(getProductPaxRow(context, widget.product!, pax, 0, 0, disable,
             onDelete: (int paxNo, int segNo) {
               if (widget.product!.getCount(paxNo, segNo) > 0) {
                 setState(() {
@@ -299,7 +299,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
 
         if(pax.paxType != 'IN') {
           list.add(
-              getProductPaxRow(widget.product, pax, lineNo, lineNo, disable,
+              getProductPaxRow(context, widget.product, pax, lineNo, lineNo, disable,
                 onDelete: (int paxNo, int segNo) {
                   if (widget.product.getCount(paxNo, segNo) > 0) {
                     setState(() {
@@ -344,7 +344,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
   }
 }
 
-Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
+Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
   List<Widget> widgets = [];
 
   widgets.add(Align(alignment: Alignment.centerLeft,
@@ -355,7 +355,7 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disab
 
     widgets.add(Align(alignment: Alignment.centerRight,
         child: Row(children: [
-          vidRemoveButton(null, paxNo: int.parse(pax.paxNo), segNo: segNo,
+          vidRemoveButton(context, paxNo: int.parse(pax.paxNo), segNo: segNo,
               disabled: disable,
               onPressed: (context, paxNo, segNo) {
             if(gblLogProducts) logit('onDelete p=${pax.paxNo} s=$segNo');
@@ -365,7 +365,7 @@ Widget getProductPaxRow(Product prod, PAX pax, int segNo, int lineNo, bool disab
           new Text(prod.getCount(int.parse(pax.paxNo), lineNo).toString(),
               style: TextStyle(fontSize: 20)),
 
-        vidAddButton(null,
+        vidAddButton(context,
             disabled: prod.getCount(int.parse(pax.paxNo), segNo) >= prod.maxQuantity,
             onPressed: (context) {
           onAdd!(int.parse(pax.paxNo), lineNo);
