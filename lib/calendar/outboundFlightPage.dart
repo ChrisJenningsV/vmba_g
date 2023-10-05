@@ -573,7 +573,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               item[0].fltav.pri!.length,
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav![index] != '0'
+                    isJourneyAvailableForCb(item, index)
                             ? goToClassScreen(avItem,index, item)
                             : print('No av')
                       },
@@ -582,47 +582,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
-                      /*<Widget>[
-                        TrText(
-                            objAv.availability.classbands.band[index]
-                                        .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                ? 'Fly Flex +'
-                                : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                            style: TextStyle(
-                                color: gblSystemColors
-                                    .primaryButtonTextColor)),
-                        item[0].fltav.fav[index] != '0'
-                            ? new Text(
-                                calenderPrice(
-                                    item[0].fltav.cur[index],
-                                    item
-                                        .fold(
-                                            0.0,
-                                            (previous, current) =>
-                                                previous +
-                                                (double.tryParse(current
-                                                        .fltav.pri[index]) ??
-                                                    0.0) +
-                                                (double.tryParse(current
-                                                        .fltav.tax[index]) ??
-                                                    0.0))
-                                        .toStringAsFixed(2),
-                                    item[0].fltav.miles[index]),
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 12.0,
-                                ),
-                              )
-                            : new TrText('No Seats',
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 12.0,
-                                )),
-                      ],*/
+
                     ),
                   ))));
     } else {
@@ -638,7 +598,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             item[0].fltav.pri!.length,
             (index) => ElevatedButton(
                 onPressed: () {
-                  item[0].fltav.fav![index] != '0'
+                  isJourneyAvailableForCb(item, index)
                       ? goToClassScreen(avItem,index, item)
                       : print('No av');
                 },

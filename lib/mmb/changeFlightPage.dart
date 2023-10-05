@@ -303,7 +303,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       }
     }
 
-    if (item[0].fltav.fav[index] == '0') {
+    if (isJourneyAvailableForCb(item, index) == false) {
       print('No av');
     } else if ((widget.mmbBooking.journeys.journey[noneChangingJourney].itin
                     .first.classBand
@@ -731,15 +731,30 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Widget pricebuttons(List<Flt> item) {
-    if (item[0].fltav.pri!.length > 3) {
+    int noItems =item[0].fltav.pri!.length;
+
+   /* item.forEach((element) {
+      int noAV = 0;
+      element.fltav.fav!.forEach((avelement) {
+        if(avelement != '' && avelement != '0' ) noAV +=1;
+      });
+      logit('len = $noAV');
+      if( noAV < noItems){
+        noItems = noAV;
+      }
+    });*/
+
+//  logit('noItems = $noItems');
+
+    if (noItems > 3) {
       return Wrap(
           spacing: 8.0, // gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: new List.generate(
-              item[0].fltav.pri!.length,
+              noItems,
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav![index] != '0'
+                    isJourneyAvailableForCb(item, index)
                             ? goToClassScreen(index, item)
                             : print('No av')
                       },
@@ -748,57 +763,13 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     gblSystemColors.primaryButtonColor,
                     label: Column(
                       children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
-/*
-                      <Widget>[
-                        TrText(
-                            objAv.availability.classbands.band[index]
-                                        .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                ? 'Fly Flex +'
-                                : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                            style: TextStyle(
-                                color: gblSystemColors
-                                    .primaryButtonTextColor)),
-                        item[0].fltav.fav[index] != '0'
-                            ? new Text(
-                                calenderPrice(
-                                    item[0].fltav.cur[index],
-                                    item
-                                        .fold(
-                                            0.0,
-                                            (previous, current) =>
-                                                previous +
-                                                (double.tryParse(current
-                                                        .fltav.pri[index]) ??
-                                                    0.0) +
-                                                (double.tryParse(current
-                                                        .fltav.tax[index]) ??
-                                                    0.0))
-                                        .toStringAsFixed(2),'0'),
-                                style: new TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                ),
-                              )
-                            : new TrText('No Seats',
-                                style: new TextStyle(
-                                  color: gblSystemColors
-                                      .primaryButtonTextColor,
-                                  fontSize: 12.0,
-                                )),
-
-                        // Text(calenderPrice('NGN', '55000'),
-                        //  style: TextStyle(color: Colors.white)),
-                      ],
-*/
                     ),
                   ))));
     } else {
       MainAxisAlignment _mainAxisAlignment;
-      if (item[0].fltav.pri!.length == 2) {
+      if (noItems == 2) {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
-      } else if (item[0].fltav.pri!.length == 3) {
+      } else if (noItems == 3) {
         _mainAxisAlignment = MainAxisAlignment.spaceBetween;
       } else {
         _mainAxisAlignment = MainAxisAlignment.spaceAround;
@@ -806,7 +777,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       return new Row(
           mainAxisAlignment: _mainAxisAlignment,
           children: new List.generate(
-            item[0].fltav.pri!.length,
+            noItems,
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary:
@@ -815,7 +786,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
                 onPressed: () {
-                  item[0].fltav.fav![index] != '0'
+
+                  isJourneyAvailableForCb(item, index)
                       ? validateSelection(
                           index, item) //goToClassScreen(index, item)
                       : print('No av');
@@ -824,59 +796,6 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: new Column(
                     children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index),
-        /*            <Widget>[
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new TrText(
-                            objAv.availability.classbands.band[index]
-                                        .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                ? 'Fly Flex +'
-                                : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                            style: new TextStyle(
-                              color: gblSystemColors
-                                  .primaryButtonTextColor,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          item[0].fltav.fav[index] != '0'
-                              ? new Text(
-                                  calenderPrice(
-                                      item[0].fltav.cur[index],
-                                      item
-                                          .fold(
-                                              0.0,
-                                              (previous, current) =>
-                                                  previous +
-                                                  (double.tryParse(current
-                                                          .fltav.pri[index]) ??
-                                                      0.0) +
-                                                  (double.tryParse(current
-                                                          .fltav.tax[index]) ??
-                                                      0.0))
-                                          .toStringAsFixed(2),'0'),
-                                  style: new TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor,
-                                    fontSize: 12.0,
-                                  ),
-                                )
-                              : new TrText('No Seats',
-                                  style: new TextStyle(
-                                    color: gblSystemColors
-                                        .primaryButtonTextColor,
-                                    fontSize: 12.0,
-                                  )),
-                        ],
-                      )
-                    ],*/
                   ),
                 )),
           ));

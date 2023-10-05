@@ -8,6 +8,7 @@ import 'package:vmba/components/trText.dart';
 import '../Helpers/settingsHelper.dart';
 import '../calendar/widgets/langConstants.dart';
 import '../components/vidButtons.dart';
+import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 
 class ChooseFlight extends StatelessWidget {
@@ -165,6 +166,11 @@ class ChooseFlight extends StatelessWidget {
 //      DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaygmt));
       String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
       String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
+
+      if( f.fltav.id![cb - 1] == ''){
+        logit('not class ID');
+      }
+
       msg.add(
           '0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![cb - 1] + _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=$cabin)[CB=$classBandName]');
     }

@@ -45,7 +45,7 @@ void configU5() {
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
-  gblAppTitle = 'United Nigeria';
+  gblAppTitle = 'unitednigeria';
   gblBuildFlavor = 'U5';
   gblCurrentRloc = '';
 

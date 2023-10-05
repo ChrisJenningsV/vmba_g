@@ -103,7 +103,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                   item[0].fltav.pri!.length,
                       (index) => GestureDetector(
                       onTap: () => {
-                        item[0].fltav.fav![index] != '0'
+                        isJourneyAvailableForCb(item, index)
                             ? goToClassScreen(context, newBooking, objAv, index, item)
                             : print('No av')
                       },
@@ -141,7 +141,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                 item[0].fltav.pri!.length,
                     (index) => ElevatedButton(
                     onPressed: () {
-                      item[0].fltav.fav![index] != '0'
+                      isJourneyAvailableForCb(item, index)
                           ? goToClassScreen(context,newBooking,objAv, index, item)
                           : print('No av');
                     },
@@ -981,32 +981,18 @@ List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bo
   List<Widget> rlist = [];
   String cbName = cbNameIn as String;
 
+  int noAv = int.parse(item[0].fltav.fav![index]);
+  item.forEach((element) {
+    if( element.fltav.fav![index] == '0'){
+      noAv = 0;
+    }
+    });
 
-  if( cbName.length > 15) cbName = cbName.substring(0,10);
+
+      if( cbName.length > 15) cbName = cbName.substring(0,10);
       list.add(getClassNameRow(cbName, inRow: inRow));
-/*
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new TrText(
-                            objAv.availability.classbands.band[index]
-                                        .cbdisplayname ==
-                                    'Fly Flex Plus'
-                                ? 'Fly Flex +'
-                                : objAv.availability.classbands.band[index]
-                                    .cbdisplayname,
-                            style: new TextStyle(
-                              color: gblSystemColors
-                                  .primaryButtonTextColor,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-*/
 
-
-  if(item[0].fltav.fav![index] != '0') {
+  if(noAv > 0) {
     if( item[0].fltav.discprice!.length > index &&
         item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')
     {
@@ -1084,3 +1070,12 @@ class FlightLine extends StatelessWidget {
       return false;
     }
   }
+bool isJourneyAvailableForCb(List<Flt> flts, int cbIndex) {
+  bool hasAV = true;
+  flts.forEach((element) {
+    if(element.fltav.fav![cbIndex] == '0'){
+      hasAV = false;
+    }
+  });
+  return hasAV;
+}

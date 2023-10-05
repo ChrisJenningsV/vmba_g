@@ -84,7 +84,7 @@ class Repository {
       return null;
     }
     database.getNamedUserProfile('PAX1').then((profile) {
-      if (profile != null) {
+      if (profile != null && profile.value != '') {
 
         try {
           Map<String, dynamic> map = json.decode(
@@ -281,7 +281,7 @@ class Repository {
         }
 
         Map<String, dynamic> map = json.decode(data);
-        if ( map != null ) {
+        if ( map != null && map['isSuccessful']  == true) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
           String xmlVersion = map["version"];
@@ -707,7 +707,15 @@ class Repository {
             }
             gblNoNetwork = true;
           }
-        } else {
+        }
+        else if(map['isSuccessful']  == false) {
+          logit('login - ${map['errorMsg']}');
+          gblErrorTitle = 'Login:';
+          gblError = 'login - ${map['errorMsg']}';
+          gblNoNetwork = true;
+
+        }
+        else {
           logit('login - map null');
           print(response.body);
           gblErrorTitle = 'Login:';
