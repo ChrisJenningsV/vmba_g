@@ -178,7 +178,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
     if (msg != null && msg.notification != null ) {
       title = msg.notification!.title;
       if( title == null ) title = '';
-      if( msg.data != null ){
+      if( msg.data != null && msg.data!['rloc'] != null ){
         title = msg.data!['rloc'] + ' ' + title;
       }
       body = msg.notification!.body;

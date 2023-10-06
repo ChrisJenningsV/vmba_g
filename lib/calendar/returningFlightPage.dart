@@ -524,7 +524,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     cb = cbs.band![index];
     String bandName = cb.cbname;
 
-    if (item[0].fltav.fav[index] == '0') {
+    if (isJourneyAvailableForCb(item, index) == false) {
       print('No av');
     } else if (arrives.isAfter( departs) ) {
       showSnackBar(
@@ -558,7 +558,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               (item[0].fltav.pri?.length as int),
               (index) => GestureDetector(
                   onTap: () => {
-                        item[0].fltav.fav![index] != '0'
+                    isJourneyAvailableForCb(item, index)
                             ? validateSelection(avItem,index, item)
                             : print('No av')
                       },
@@ -634,7 +634,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
                 onPressed: () {
-                  item[0].fltav.fav![index] != '0'
+                  isJourneyAvailableForCb(item, index)
                       ? validateSelection(avItem,index, item) //goToClassScreen(index, item)
                       : print('No av');
                 },

@@ -38,6 +38,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   int _currentBarcode = 1;
   bool _barCodeScanError = false;
   GlobalKey globalKey = new GlobalKey();
+  bool _dataReady = false;
 
   String barCodeData='';
   //String cmd = "BPPLM0037:10Apr2019:KOI:ABZ:AATPCR1";
@@ -206,13 +207,22 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     setState(() {
       logit('boardingpass loaded');
       _loadingInProgress = false;
+      if(_boardingPass!.boarding != null && _boardingPass!.boarding != '' && _boardingPass!.departTime != null && _boardingPass!.departTime != ''){
+        _dataReady = true;
+      }
     });
   }
 
   void getVRSMobileBP(String cmd) {
     Repository.get().getVRSMobileBP(cmd).then((value) => setState(() {
           _boardingPass = value;
-          //_boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
+          logit('got data');
+          if(_boardingPass!.boarding != null && _boardingPass!.boarding != '' && _boardingPass!.departTime != null && _boardingPass!.departTime != ''){
+            _dataReady = true;
+          }
+
+
+      //_boardingPass!.gate = gateNo.isNotEmpty ? gateNo : '-';
           //_boardingPass!.boarding = boardingTime != null ? boardingTime : 60;
           // Repository.get().updateBoardingPass(_boardingPass);
         }));
@@ -299,11 +309,16 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     print(data);
     int indexOfGate = data.indexOf('Gate:'); //data.allMatches('Gate:');
     int indexOfIn = data.indexOf('IN:');
-    String gateNo = data.substring(indexOfGate + 5, indexOfIn).trim();
-    int indexOfBoardingTime = data.indexOf('Boarding Time:');
-    int indexOfPUB1 = data.indexOf('PUB1:');
+
+    String gateNo = '';
+    if( data != null && data != '' ) data.substring(indexOfGate + 5, indexOfIn).trim();
+    int indexOfBoardingTime = -1;
+    if( data != null && data != '' ) indexOfBoardingTime= data.indexOf('Boarding Time:');
+    int indexOfPUB1 = -1;
+    if( data != null && data != '' ) indexOfPUB1 = data.indexOf('PUB1:');
     int boardingTime = 0;
-    var btStr = data.substring(indexOfBoardingTime + 14, indexOfPUB1).trim();
+    var btStr = '';
+    if( data != null && data != '' ) btStr = data.substring(indexOfBoardingTime + 14, indexOfPUB1).trim();
     if ( btStr.isNotEmpty){
       boardingTime = int.parse(btStr);
     }
@@ -322,6 +337,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
         if( boardingTime != null && boardingTime != '') {
           _boardingPass!.boarding = boardingTime ;
         }
+        if(_boardingPass!.boarding != null && _boardingPass!.boarding != '' && _boardingPass!.departTime != null && _boardingPass!.departTime != ''){
+          _dataReady = true;
+        }
+
+
       }
       Repository.get().updateBoardingPass(_boardingPass!);
     });
@@ -334,6 +354,11 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       setState(() {
         //Switch to displaying the PDF_417 barcode
         _barCodeScanError = true;
+        if(_boardingPass!.boarding != null && _boardingPass!.boarding != '' && _boardingPass!.departTime != null && _boardingPass!.departTime != ''){
+          _dataReady = true;
+        }
+
+
       });
     }
   }
@@ -897,7 +922,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
 
   Widget drawAddPassToWalletButton(BoardingPass pass) {
-    if (canShowAddBoardingPassToWalletButton() == false) {
+    if (canShowAddBoardingPassToWalletButton() == false || _dataReady == false) {
       //Do not render save pass to wallet button
       return SizedBox.shrink();
     }

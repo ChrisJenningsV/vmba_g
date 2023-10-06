@@ -859,27 +859,39 @@ class AppDatabase {
     List<NotificationMessage> notes = []; // new List<City>();
     for (Map<String, dynamic> map in result) {
       try {
-        String sMsg = map['value'];
-        sMsg = sMsg.replaceAll('|', '"');
+        if( map['value'] != null ) {
+          String sMsg = map['value'];
+          sMsg = sMsg.replaceAll('|', '"');
 
-        Map<String, dynamic> jsonMap = json.decode(sMsg);
-        Notification not = Notification(body: 'body',title: 'title');
-        if( jsonMap['notification'] != null ) {
-          Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
-           not = Notification(body: notMap['body'],
-              title: notMap['title']);
-        }
-        Map<String, dynamic> dataMap = Map();
-        if( jsonMap['data'] != null ) {
-           dataMap= json.decode(jsonMap['data']);
-        }
-        NotificationMessage msg = NotificationMessage(notification: not,
-            category: jsonMap['category'],
-            background: jsonMap['background'],
-            data: dataMap,
-            sentTime: DateTime.parse(jsonMap['sentTime']));
+          Map<String, dynamic> jsonMap = json.decode(sMsg);
+          Notification not = Notification(body: 'body', title: 'title');
+          if (jsonMap['notification'] != null) {
+            Map<String, dynamic> notMap = json.decode(jsonMap['notification']);
+            if( notMap['body'] != null && notMap['title'] != null ) {
+              not = Notification(body: notMap['body'],
+                  title: notMap['title']);
+            }
+          }
+          Map<String, dynamic> dataMap = Map();
+          if (jsonMap['data'] != null) {
+            dataMap = json.decode(jsonMap['data']);
+          }
+          String cat = '';
+          String back = '';
+          String sent = DateTime.now().toString();
 
-        notes.add(msg);
+          if (jsonMap['category'] != null) cat = jsonMap['category'];
+          if (jsonMap['background'] != null) back = jsonMap['background'];
+          if (jsonMap['sentTime'] != null) sent = jsonMap['sentTime'];
+
+          NotificationMessage msg = NotificationMessage(notification: not,
+              category: cat,
+              background: back,
+              data: dataMap,
+              sentTime: DateTime.parse(sent));
+
+          notes.add(msg);
+        }
       } catch(e) {
         print(e.toString());
       }

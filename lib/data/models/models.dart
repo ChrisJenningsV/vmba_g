@@ -317,7 +317,7 @@ class LoginResponse extends Session {
 //body:"{"sessionId":"2","varsSessionId":"9f70d986-e5d9-4b50-aa4f-ee1baf92ee4e","isSuccessful":true,"errorCode":null,"errorMessage":null…"
 
   LoginResponse.fromJson(Map<String, dynamic> json) : super('', '', '') {
-    logit(json.toString());
+//    logit(json.toString());
     if( json['sessionId'] != null )sessionId = json['sessionId'];
     if( json['varsSessionId'] != null )varsSessionId = json['varsSessionId'];
    // settings = Settings.fromJson(json['settings']);

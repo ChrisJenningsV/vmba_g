@@ -560,7 +560,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Due to social distancing measures currently in place, seat allocation for certain flights is unavailable online. Please report to the airport check-in desk to complete check-in. Your flight is still scheduled to operate.',
+                  'Please report to the airport check-in desk to complete check-in.',
                   textAlign: TextAlign.justify,
                 ),
               ),

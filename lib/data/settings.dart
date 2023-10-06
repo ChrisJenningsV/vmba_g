@@ -119,6 +119,7 @@ class Settings {
   bool wantBpLogo;
   bool wantCanFacs;
   bool wantTerminal;
+  bool wantMeterial3;
 
   String productFormat;
   String homePageStyle;
@@ -280,6 +281,7 @@ bool bpShowFastTrack;
     this.wantBpLogo = true,
     this.wantCanFacs = true,
     this.wantTerminal = true,
+    this.wantMeterial3 = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

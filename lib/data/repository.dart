@@ -933,6 +933,7 @@ class Repository {
         .replaceAll('<string xmlns="http://videcom.com/">', '')
         .replaceAll('</string>', '');*/
 
+    logit('get BP $cmd');
     String data = await runVrsCommand(cmd);
     String pnrJson;
     pnrJson = data

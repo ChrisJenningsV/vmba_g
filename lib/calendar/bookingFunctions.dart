@@ -708,24 +708,24 @@ String buildAddPaxCmd(NewBooking newBooking) {
         int ageYears = (td.inDays / 365).round();
         int ageMonths = (td.inDays / 30).round();
         if( ageMonths == 24) ageMonths = 23;
+        String _dob = DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
 
         bool wantDOB = false;
         if (pax.paxType == PaxType.child) {
-          sb.write('.CH${ageYears.toStringAsFixed(2)}');
+          //sb.write('.CH${ageYears.toStringAsFixed(2)}');
+          sb.write('.CH${ageYears}($_dob)');
           wantDOB = true;
         } else if (pax.paxType == PaxType.youth) {
-          sb.write('.TH${ageYears.toStringAsFixed(2)}');
+          sb.write('.TH${ageYears}');
           wantDOB = true;
         } else if (pax.paxType == PaxType.senior) {
           sb.write('.CD');
-          String _dob =
-          DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
           sb.write('($_dob)');
           wantDOB = true;
         } else if (pax.paxType == PaxType.infant) {
           // 2@jones/babyMstr.IN23^3-2FDOB 26Aug2
           //sb.write('.IN${ageMonths.toStringAsFixed(2)}');
-          sb.write('.IN${ageMonths.toString()}');
+          sb.write('.IN${ageMonths.toString()}($_dob)');
           wantDOB = true;
         }
         if( gblSettings.wantApis && wantDOB) {

@@ -2781,7 +2781,7 @@ class CheckinBoardingPassesWidgetState
             print(vrsResponse);
             if (vrsResponse.contains('ERROR - FAILED TO AUTO ALLOCATE SEATS')) {
               _showError(
-                  'Due to social distancing measures currently in place, seat allocation for certain flights is unavailable online. Please report to the airport check-in desk to complete check-in. Your flight is still scheduled to operate.');
+                  'Please report to the airport check-in desk to complete check-in.');
             } else {
               _showError(vrsResponse);
             }
