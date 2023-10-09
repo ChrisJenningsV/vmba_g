@@ -114,8 +114,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildADSCmd() {
     StringBuffer sb = new StringBuffer();
     String paxNo = '1';
-    if (this.widget.newBooking.ads.pin != null && this.widget.newBooking.ads.pin != '' &&
-        this.widget.newBooking.ads.number != null && this.widget.newBooking.ads.number != '') {
+    if (this.widget.newBooking.ads.pin != ''  && this.widget.newBooking.ads.number != '') {
       sb.write(
           '4-${paxNo}FADSU/${this.widget.newBooking.ads.number}/${this.widget.newBooking.ads.pin}^');
     }

@@ -84,7 +84,7 @@ Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText=
     int newNotifications = 0;
     int promos = 0;
 
-    gblNotifications!.forEach((element) {
+    gblNotifications!.list.forEach((element) {
       if(element.data!['actions'] != null && element.data!['actions'] == 'promo') {
         promos +=1;
       } else if( element.background == 'true') {
@@ -167,7 +167,7 @@ Widget getNotification(int counter, IconData icon){
    }
    if( value == 1 && gblNotifications != null) {
      if( newNotifications == 1){
-       gblNotifications!.forEach((element) {
+       gblNotifications!.list.forEach((element) {
          if( element.background == 'true') {
            RemoteNotification n = RemoteNotification(title: element.notification!.title, body: element.notification!.body);
            showNotification( context, n, element.data as Map);

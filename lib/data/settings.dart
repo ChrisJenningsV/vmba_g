@@ -119,7 +119,8 @@ class Settings {
   bool wantBpLogo;
   bool wantCanFacs;
   bool wantTerminal;
-  bool wantMeterial3;
+  bool wantMaterial3;
+  bool wantPriceCalendar;
 
   String productFormat;
   String homePageStyle;
@@ -281,7 +282,8 @@ bool bpShowFastTrack;
     this.wantBpLogo = true,
     this.wantCanFacs = true,
     this.wantTerminal = true,
-    this.wantMeterial3 = false,
+    this.wantMaterial3 = false,
+    this.wantPriceCalendar = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

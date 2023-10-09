@@ -38,3 +38,8 @@ class NotificationMessage {
 
 
 }
+class NotificationStore{
+  List<NotificationMessage> list = [];
+  String errMsg = '';
+  int rawCount = 0;
+}

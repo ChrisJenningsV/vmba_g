@@ -55,33 +55,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
           ],
         ),
         floatingActionButton: vidWideActionButton(context,'Done', onPressed, icon: Icons.check, offset: 35.0 ) );
-/*
-        Padding(
-            padding: EdgeInsets.only(left: 35.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new FloatingActionButton.extended(
-                    elevation: 0.0,
-                    isExtended: true,
-                    label: TrText('Done', style: TextStyle(color: gblSystemColors
-                              .primaryButtonTextColor),),
-                    icon: Icon(Icons.check, color: gblSystemColors
-                              .primaryButtonTextColor,),
-                    backgroundColor: gblSystemColors
-                              .primaryButtonColor,//new Color(0xFF000000),
-                    onPressed: () {
-                      Navigator.pop(
-                          context,
-                          FlightDates(
-                              DateTime.parse(
-                                  DateFormat('y-MM-dd').format(departureDate) +
-                                      ' 00:00:00'),
-                              null));
-                    }),
-              ],
-            )));
-*/
+
   }
   void onPressed(BuildContext context, dynamic p) {
     Navigator.pop(

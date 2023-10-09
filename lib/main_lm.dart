@@ -54,7 +54,7 @@ void configLM() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    wantMeterial3: false,
+    wantMaterial3: false,
     //pageStyle: 'V2',
 
     airlineName: "Loganair",

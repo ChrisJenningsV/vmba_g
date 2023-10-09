@@ -323,21 +323,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 initialDate: _departureDate,
                 lastDate:
                     new DateTime.now().toUtc().add(new Duration(days: 363)),
- /*               builder: (BuildContext context, Widget child) {
-                return Theme(
-                    data: ThemeData.light().copyWith(
-                    //primarySwatch: gblSystemColors.primaryHeaderColor,//OK/Cancel button text color
-
-                    primaryColor: gblSystemColors.primaryHeaderColor,//Head background
-                    //accentColor: gblSystemColors.primaryHeaderColor, //selection color
-                    colorScheme: ColorScheme.light(primary: gblSystemColors.primaryHeaderColor),
-                  buttonTheme: ButtonThemeData(
-                  textTheme: ButtonTextTheme.primary
-                  ),
-                  ),
-                  child: child,
-                  );},*/
-              ).then((date) => _changeSearchDate(date!)),
+               ).then((date) => _changeSearchDate(date!)),
               child: TrText(
                 'CHOOSE NEW DATE',
                 style: new TextStyle(color: Colors.white),

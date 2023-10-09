@@ -39,7 +39,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
     gblNotifications = null;  // incase none found
     Repository.get().getAllNotifications().then((m) {
       gblNotifications = m;
-      print('Got ${gblNotifications!.length} notifications');
+      print('Got ${gblNotifications!.list.length} notifications');
       _loadingInProgress = false;
       setState(() {
 
@@ -90,7 +90,12 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       tabeViews.add(new Container(child: myNotifies('promo')));
 
       if (gblNotifications != null) {
-        title += ' ${gblNotifications!.length} ' + translate('found');
+        if( gblIsLive ==  false &&  gblNotifications!.list.length == 0 ){
+          title += ' ${gblNotifications!.rawCount} ' + ' R ' + translate('found');
+
+        } else {
+          title += ' ${gblNotifications!.list.length} ' + translate('found');
+        }
       }
       return Scaffold(
         appBar: appBar(context, title,
@@ -120,12 +125,18 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
   Widget myNotifies(String  show) {
 
-    if( gblNotifications != null && gblNotifications!.length > 0 )
+    if( gblNotifications != null && gblNotifications!.list.length > 0 )
       {
 
       } else {
+      String msg = 'No Notifications found';
+      if( gblIsLive == false && gblNotifications!.errMsg != '' ){
+        msg = gblNotifications!.errMsg;
+      } else if (gblIsLive == false &&  gblError != '') {
+        msg = gblError;
+      }
       Center noFutureBookingsFound = Center(
-          child: TrText('No Notifications found',
+          child: TrText(msg,
               style: TextStyle(fontSize: 26.0), textAlign: TextAlign.center));
       if (show == 'new') {
         noFutureBookingsFound = Center(
@@ -139,7 +150,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
     if (show == 'promo') {
       listMsgs = [];
-      gblNotifications!.forEach((element) {
+      gblNotifications!.list.forEach((element) {
         if(element.data!['actions'] != null &&  element.data!['actions'] == 'promo'){
           listMsgs.add(element);
         }
@@ -147,13 +158,13 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
 
     } else if (show == 'new') {
       listMsgs = [];
-      gblNotifications!.forEach((element) {
+      gblNotifications!.list.forEach((element) {
         if(element.background == 'true' && !element.data!['actions'].toString().contains('promo')){
           listMsgs.add(element);
         }
       });
     } else {
-      listMsgs = gblNotifications!;
+      listMsgs = gblNotifications!.list;
     }
     ListView listViewOfNote = ListView.builder(
         itemCount: listMsgs.length,

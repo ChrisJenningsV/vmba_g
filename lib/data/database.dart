@@ -852,11 +852,13 @@ class AppDatabase {
   }
 
 
-   Future<List<NotificationMessage>> getAllNotifications() async {
+   Future<NotificationStore> getAllNotifications() async {
     var db = await _getDb();
+    NotificationStore store = new NotificationStore();
     var result = await db.rawQuery('SELECT * FROM $tableNameNotifications');
-    if (result.length == 0) return [];
-    List<NotificationMessage> notes = []; // new List<City>();
+    store.rawCount = result.length;
+    if (result.length == 0) return store;
+    //List<NotificationMessage> notes = []; // new List<City>();
     for (Map<String, dynamic> map in result) {
       try {
         if( map['value'] != null ) {
@@ -890,13 +892,14 @@ class AppDatabase {
               data: dataMap,
               sentTime: DateTime.parse(sent));
 
-          notes.add(msg);
+          store.list.add(msg);
         }
       } catch(e) {
+        store.errMsg = e.toString();
         print(e.toString());
       }
     }
-    return notes;
+    return store;
   }
 
   Future deleteNotifications() async {

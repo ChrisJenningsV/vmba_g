@@ -377,8 +377,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 });
                   });
                 Navigator.of(context).pop();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/HomePage', (Route<dynamic> route) => false);
+/*                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/HomePage', (Route<dynamic> route) => false);*/
               },
             ),
           ],

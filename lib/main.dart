@@ -218,7 +218,7 @@ bool bFirstTime = true;
         primaryColor: gblSystemColors.primaryColor,
         secondaryHeaderColor: gblSystemColors.accentColor,
 
-        colorScheme: gblSettings.wantMeterial3 ? null : ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
+        colorScheme: gblSettings.wantMaterial3 ? null : ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
       darkTheme: ThemeData(

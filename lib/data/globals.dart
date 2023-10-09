@@ -116,7 +116,7 @@ String gblLastCurrecy = '';
 String gblLastProviderCurrecy = '';
 Providers? gblProviders;
 String gblBookingCurrency='';
-List<NotificationMessage>? gblNotifications;
+NotificationStore? gblNotifications;
 
 
 TextStyle? gblTitleStyle;

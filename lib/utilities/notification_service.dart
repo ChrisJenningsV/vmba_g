@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../controllers/vrsCommands.dart';
+import '../data/models/notifyMsgs.dart';
 import '../data/repository.dart';
 import '../main.dart';
 import 'helper.dart';
@@ -142,7 +143,16 @@ class NotificationService {
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('A new onMessageOpenedApp event was published!');
+        try {
+          Repository.get().updateNotification(message, false, false).then((value) {
+            Repository.get().getAllNotifications().then((m) {
+              gblNotifications = m;
+            });
+          });
+        } catch(e) {
 
+        }
+        processNotification(message.data);
         showNotification( NavigationService.navigatorKey.currentContext, message.notification, message.data);
         /*         Navigator.pushNamed(context, '/message',
               arguments: MessageArguments(message, true));*/

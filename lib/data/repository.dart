@@ -842,7 +842,7 @@ class Repository {
     return database.getAllCities();
   }
 
-  Future<List<NotificationMessage>> getAllNotifications() {
+  Future<NotificationStore> getAllNotifications() {
     return database.getAllNotifications();
   }
 
@@ -852,11 +852,15 @@ class Repository {
       final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
       final Map<String, dynamic> msgMap = new Map<String, dynamic>();
 
-      if( msg.notification != null ) {
-        notifyMap['body'] = msg.notification!.body;
-        notifyMap['title'] = msg.notification!.title;
-        String sNot = jsonEncode(notifyMap);
-        msgMap['notification'] = sNot;
+      try {
+        if (msg.notification != null) {
+          notifyMap['body'] = msg.notification!.body;
+          notifyMap['title'] = msg.notification!.title;
+          String sNot = jsonEncode(notifyMap);
+          msgMap['notification'] = sNot;
+        }
+      } catch(e){
+        notifyMap['body'] = 'error ${e.toString()}';
       }
 
       final Map<String, dynamic> dataMap = msg.data; // = new Map<String, dynamic>();
@@ -864,19 +868,36 @@ class Repository {
 
       String sData = jsonEncode(dataMap);
 
-      msgMap['category'] = msg.category;
-      msgMap['background'] = background.toString();
-      if( msg.sentTime.toString() != 'null') {
-        msgMap['sentTime'] = msg.sentTime.toString();
-      } else {
-        msgMap['sentTime'] = DateTime.now().toString();
+      try {
+        msgMap['category'] = msg.category;
+      } catch(e){
+        notifyMap['body'] = 'cat error ${e.toString()}';
       }
-      msgMap['data'] = sData;
+      try {
+        msgMap['background'] = background.toString();
+      } catch(e){
+        notifyMap['body'] = 'bg error ${e.toString()}';
+      }
+      try {
+        if (msg.sentTime.toString() != 'null') {
+          msgMap['sentTime'] = msg.sentTime.toString();
+        } else {
+          msgMap['sentTime'] = DateTime.now().toString();
+        }
+        } catch(e){
+        notifyMap['body'] = 'date error ${e.toString()}';
+        }
+        try{
+          msgMap['data'] = sData;
+        } catch(e){
+          notifyMap['body'] = 'data error ${e.toString()}';
+        }
 
       String sMsg = jsonEncode(msgMap);
     await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime'], replace);
     } catch(e) {
       String m = e.toString();
+      gblError = 'notify error ${e.toString()}';
       print(m);
     }
   }
