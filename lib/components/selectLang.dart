@@ -91,7 +91,7 @@ initLangCached(String lang) async {
         return;
       });
     } else {
-      logit('no cached lang file');
+      if( gblVerbose) logit('no cached lang file');
       await initLang(lang);
       return;
       }

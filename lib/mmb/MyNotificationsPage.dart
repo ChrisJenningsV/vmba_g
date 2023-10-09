@@ -90,7 +90,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       tabeViews.add(new Container(child: myNotifies('promo')));
 
       if (gblNotifications != null) {
-        if( gblIsLive ==  false &&  gblNotifications!.list.length == 0 ){
+        if( gblIsLive ==  false &&  gblNotifications!.list.length == 0  && gblNotifications!.rawCount != 0){
           title += ' ${gblNotifications!.rawCount} ' + ' R ' + translate('found');
 
         } else {
@@ -245,7 +245,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
           }
 
           RemoteNotification n = RemoteNotification(title: msg.notification!.title, body: msg.notification!.body);
-          showNotification( context, n, m as Map);
+          showNotification( context, n, m as Map, 'note page');
           /*Navigator.push(
             context,
             MaterialPageRoute(

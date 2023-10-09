@@ -16,8 +16,7 @@ import '../calendar/bookingFunctions.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 
-void showNotification(
-    BuildContext? context, RemoteNotification? notification, Map data) {
+void showNotification( BuildContext? context, RemoteNotification? notification, Map data, String from) {
   //String time = DateFormat('kk:mm').format(DateTime.now());
   showDialog(
     barrierDismissible: false,
@@ -36,23 +35,10 @@ void showNotification(
                 padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 5),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: _getBody(context, notification as RemoteNotification, data),
+                  children: _getBody(context, notification as RemoteNotification, data, from),
                 ),
               ),
-              /*                 Positioned( // will be positioned in the top right of the container
-                      top: -12,
-                      right: -12,
-                          child: new IconButton(
-                              icon: Icon(
-                                Icons.cancel,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }), //
-                        ),
-   */
-            ]),
+              ]),
           ),
         ),
       );
@@ -60,12 +46,14 @@ void showNotification(
   );
 }
 
-Widget _getTitle(
-    BuildContext context, RemoteNotification notification, Map data) {
+Widget _getTitle( BuildContext context, RemoteNotification notification, Map data, String from) {
   String time = DateFormat('kk:mm').format(DateTime.now());
   String title = notification.title.toString();
   if( data != null && data[title] != null ) {
     title = data['title'];
+  }
+  if(gblIsLive == false ){
+   // title += ' ' + from;
   }
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,7 +95,7 @@ Widget _getTitle(
 }
 
 List<Widget> _getBody(
-    BuildContext context, RemoteNotification notification, Map data) {
+    BuildContext context, RemoteNotification notification, Map data, String from) {
  /* final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 */
@@ -116,7 +104,7 @@ List<Widget> _getBody(
   List<Widget> list3 = [];
 
   // if (notification != null ) {
-  list2.add(_getTitle(context, notification, data));
+  list2.add(_getTitle(context, notification, data, from));
   //  }
   list2.add(SizedBox(
     height: 5.0,

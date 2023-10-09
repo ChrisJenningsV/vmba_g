@@ -1040,7 +1040,7 @@ class Repository {
           '{"RLOC":', '{"APPVERSION": "$latestVersion", "RLOC":');
     }
     await database.updatePnr(pnrDBCopy);
-    logit('e update pnr');
+    if( gblVerbose) logit('e update pnr');
   }
 
   Future<PnrDBCopy> getPnr(String rloc) {
@@ -1160,7 +1160,7 @@ class Repository {
         .replaceAll('<string xmlns="http://videcom.com/" />', '');
     if (apisStatusJson.trim() != '') {
       Map<String, dynamic> map = json.decode(apisStatusJson);
-      logit('Loaded APIS status');
+      if( gblVerbose) logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
 
       DatabaseRecord databaseRecord = new DatabaseRecord(
@@ -1680,7 +1680,7 @@ Future<String> runVrsCommand(String cmd) async {
       }
       gblSession = Session(id, sid, no);
     }
-    logit('rvc Server IP ${map['serverIP']}');
+    if( gblVerbose) logit('rvc Server IP ${map['serverIP']}');
     if( rs.data == null ) {
       logit('no data returned');
       throw 'no data returned';

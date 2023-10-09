@@ -89,7 +89,7 @@ class _ApisWidgetState extends State<ApisWidget> {
         print(e.toString());
       }
 
-      print('Loaded APIS fields');
+      if( gblVerbose) print('Loaded APIS fields');
       if(gblSettings.useWebApiforVrs && response.statusCode == 200  ) {
         VrsApiResponse rs = VrsApiResponse.fromJson(map);
         if( rs.errorMsg != null && rs.errorMsg.isNotEmpty) {

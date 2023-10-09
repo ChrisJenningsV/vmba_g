@@ -930,7 +930,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
           pnrJson = pnrJson!.replaceAll('\n', '').replaceAll('\r', '');
           if (pnrJson.startsWith('{')) {
             Map<String, dynamic> pnrMap = json.decode(pnrJson);
-            logit('Loaded PNR: ${tran.pnr}');
+            if( gblVerbose) logit('Loaded PNR: ${tran.pnr}');
             var objPnr = new PnrModel.fromJson(pnrMap);
             _rloc = tran.pnr;
 
@@ -991,7 +991,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
       try {
         //pnrMap = json.decode(pnrJson);
-        logit('Loaded PNR');
+        if( gblVerbose) logit('Loaded PNR');
         //var objPnr = new PnrModel.fromJson(pnrMap);
         return pnrJson;
       } catch (e) {
@@ -1030,7 +1030,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
         try {
           pnrMap = json.decode(pnrJson);
-          logit('Loaded PNR');
+          if( gblVerbose) logit('Loaded PNR');
           var objPnr = new PnrModel.fromJson(pnrMap);
           if (validate(objPnr)) {
             PnrDBCopy pnrDBCopy = new PnrDBCopy(
@@ -1087,7 +1087,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         .trim();
     try {
       Map<String, dynamic> map = json.decode(apisStatusJson);
-      logit('Loaded APIS status');
+      if( gblVerbose) logit('Loaded APIS status');
       ApisPnrStatusModel apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
       DatabaseRecord databaseRecord = new DatabaseRecord(
           rloc: apisPnrStatus.xml!.pnrApis.pnr, //_rloc,

@@ -170,7 +170,7 @@ Widget getNotification(int counter, IconData icon){
        gblNotifications!.list.forEach((element) {
          if( element.background == 'true') {
            RemoteNotification n = RemoteNotification(title: element.notification!.title, body: element.notification!.body);
-           showNotification( context, n, element.data as Map);
+           showNotification( context, n, element.data as Map, 'bottom');
            return;
          }
        });

@@ -89,7 +89,7 @@ void refreshBooking(String rloc) {
       }
     }).then((onValue) {
       if (objPNR != null) {
-        logit('fetchAPIS $rloc');
+        if( gblVerbose) logit('fetchAPIS $rloc');
         //GET APIS STATUS
         Repository.get()
             .fetchApisStatus(rloc);

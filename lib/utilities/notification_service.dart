@@ -124,7 +124,7 @@ class NotificationService {
 
         RemoteNotification? notification = message.notification;
         //AndroidNotification android = message.notification?.android;
-        logit('Listener msg received');
+        logit('onMessage.listen msg received ${message.messageId}');
         //Map data = message.data;
 
        try {
@@ -137,12 +137,12 @@ class NotificationService {
 
        }
         processNotification(message.data);
-        showNotification( NavigationService.navigatorKey.currentContext, notification, message.data);
+        showNotification( NavigationService.navigatorKey.currentContext, notification, message.data, 'om listen');
 
 
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        print('A new onMessageOpenedApp event was published!');
+        logit('A new onMessageOpenedApp msg received ${message.messageId}');
         try {
           Repository.get().updateNotification(message, false, false).then((value) {
             Repository.get().getAllNotifications().then((m) {
@@ -153,7 +153,7 @@ class NotificationService {
 
         }
         processNotification(message.data);
-        showNotification( NavigationService.navigatorKey.currentContext, message.notification, message.data);
+        showNotification( NavigationService.navigatorKey.currentContext, message.notification, message.data, 'appOpen listen');
         /*         Navigator.pushNamed(context, '/message',
               arguments: MessageArguments(message, true));*/
       });
@@ -214,7 +214,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   //await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
+  logit('Handling a background message ${message.messageId}');
   try {
     Repository.get().updateNotification(message, true, false).then((value) {
       Repository.get().getAllNotifications().then((m) {
