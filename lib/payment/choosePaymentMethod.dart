@@ -77,14 +77,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     super.initState();
     if( gblLogPayment ) { logit('CPM initState');}
     if( widget.newBooking == null ) widget.newBooking = NewBooking();
-    gblCurPage = 'CHOOSEPAY';
+    commonPageInit('CHOOSEPAY');
+
     gblPnrModel = widget.pnrModel;
     logit(gblCurPage);
     //widget.newBooking.paymentDetails = new PaymentDetails();
     session=widget.session;
 
     //gblPaymentMsg = '';
-    gblError = '';
     gblStack = null;
 
     _displayProcessingText = 'Making your Booking...';
@@ -1107,7 +1107,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     }
 
-    if (_displayProcessingIndicator) {
+    if (_displayProcessingIndicator && gblInRefreshing == false) {
       if(gblLogPayment) { logit('CPM Build processing');}
       if( gblSettings.wantCustomProgress) {
         progressMessagePage(context, _displayProcessingText, title: 'Payment');
@@ -1386,13 +1386,16 @@ List<Widget> getPayOptions(String amount, String cur) {
           TrText('Terms & Conditions'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () =>
+            onPressed: () {
+              if( gblNoNetwork == false ) {
                 Navigator.push(
                     context,
                     SlideTopRoute(
                         page: VidWebViewWidget(
                             title: 'Terms & Conditions',
-                            url: url))),
+                            url: url)));
+              }
+            }
           )
         ],
       ));
@@ -1414,50 +1417,21 @@ List<Widget> getPayOptions(String amount, String cur) {
           TrText('Privacy Policy'),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
-            onPressed: () =>
+            onPressed: () {
+              if(gblNoNetwork == false ) {
                 Navigator.push(
                     context,
                     SlideTopRoute(
                         page: VidWebViewWidget(
                             title: translate('Privacy Policy'),
-                            url: url))),
+                            url: url)));
+              }
+            }
           )
         ],
       ));
     }
     list.add(Divider());
-
-/*
-    if( gblSettings.wantProducts) {
-      //if( gblProductsState == LoadState.none) {
-        list.add(DataLoaderWidget(dataType: LoadDataType.products, newBooking: widget.newBooking,
-          pnrModel: widget.pnrModel,
-          onComplete: (PnrModel pnrModel) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            if(gblLogProducts) { logit('On Complete products');}
-            widget.pnrModel = pnrModel;
-            pnrModel = pnrModel;
-            setState(() {
-
-            });
-          },));
-      */
-/*} else {
-        list.add(ExpansionTile(
-          tilePadding: EdgeInsets.only(left: 0),
-          initiallyExpanded: false,
-          title: Text(
-            'Baggage options',
-          ),
-          children: getBagOptions(),));
-        list.add(Divider());
-      }
-
-       *//*
-
-    }
-*/
-
 
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(
@@ -1466,7 +1440,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         onPressed: () {
-          if(_displayProcessingIndicator == false ) {
+          if(_displayProcessingIndicator == false && gblNoNetwork == false ) {
             if( gblTimer != null){
               gblTimer?.cancel();
               gblTimer = null;
@@ -1536,11 +1510,11 @@ List<Widget> getPayOptions(String amount, String cur) {
         btnText = provider.paymentSchemeDisplayName;
         paymentButtons.add(ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.white,
+              backgroundColor: gblNoNetwork ==  false? Colors.white : Colors.grey.shade200,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
-            if ( gblPayBtnDisabled == false ) {
+            if ( gblPayBtnDisabled == false && gblNoNetwork ==  false ) {
               if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
               if( gblTimer != null){

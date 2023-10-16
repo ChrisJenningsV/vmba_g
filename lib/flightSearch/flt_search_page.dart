@@ -15,6 +15,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
+import '../utilities/helper.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads = false});
@@ -31,14 +32,15 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   @override
   initState() {
     super.initState();
+    commonPageInit('FLIGHTSEARCH');
+
     booking = new NewBooking();
-    gblCurPage = 'FLIGHTSEARCH';
+
     gblUndoCommand = '';
     booking.currency = gblSettings.currency;
     gblSelectedCurrency = gblSettings.currency;
     adsTermsAccepted = false;
     gblCurrentRloc = '';
-    gblActionBtnDisabled = false;
 
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail!.adsNumber != null && gblPassengerDetail!.adsNumber.isNotEmpty &&

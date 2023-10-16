@@ -156,12 +156,17 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                           onLoad: _onLoad,
                           showSnackBar: showSnackBar,
                           key: mmbGlobalKeyBooking,),
-                        onRefresh: refreshBooking //(context),
+                        onRefresh: doRefresh //(context),
                     )),
               )),
         ));
   }
+Future <void> doRefresh() async{
+  refreshBooking();
+  setState(() {
 
+  });
+}
  void _onLoad(BuildContext? context) {
     setState(() {
 
@@ -288,7 +293,8 @@ class CheckinBoardingPassesWidgetState
   @override
   void initState() {
     super.initState();
-    gblError = '';
+    commonPageInit('VIEWBOOKING');
+
     _mmbBooking = MmbBooking();
     _loadingInProgress = true;
     _displayProcessingText = '';
@@ -604,7 +610,7 @@ class CheckinBoardingPassesWidgetState
         new Text(rLOC,
             style: new TextStyle(
                 fontSize: 16.0, fontWeight: FontWeight.w700)),
-        _refreshButton(pnr),
+        gblNoNetwork == false ? _refreshButton(pnr) : Container(),
       ],
     ),);
 
@@ -919,6 +925,11 @@ class CheckinBoardingPassesWidgetState
   }
   Widget _flightButtons( pnr ,journeyToChange ) {
     //_journeyToChange = journeyToChange;
+    if( gblNoNetwork == true){
+      return Container();
+    }
+
+
     if( gblSettings.wantRefund &&
         objPNR!.canRefund(journeyToChange)
     ){
@@ -1378,6 +1389,11 @@ class CheckinBoardingPassesWidgetState
     }
 
     //get apis state for the booking DSP/AATQ4T
+
+    // all the rest need to be online
+    if( gblNoNetwork == true){
+      return Container();
+    }
 
 
     bool checkinOpen = false;

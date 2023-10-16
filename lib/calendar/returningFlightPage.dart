@@ -20,6 +20,7 @@ import '../Helpers/settingsHelper.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/colourHelper.dart';
 import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
 
@@ -48,7 +49,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   @override
   void initState() {
     super.initState();
-    gblActionBtnDisabled = false;
+    commonPageInit('RETURNING');
+
+    //gblActionBtnDisabled = false;
     _loading = 'Searching for Flights';
 
     _scrollController = new ScrollController();
@@ -235,9 +238,9 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Widget _buildBody() {
-    if (_loadingInProgress) {
+    if (_loadingInProgress && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _loading, title: 'loading');
+        progressMessagePage(context, _loading, title: 'searching');
         return Container();
       } else {
       return new Center(
@@ -544,13 +547,14 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               (item[0].fltav.pri?.length as int),
               (index) => GestureDetector(
                   onTap: () => {
-                    isJourneyAvailableForCb(item, index)
-                            ? validateSelection(avItem,index, item)
-                            : print('No av')
+                    if( gblNoNetwork == false ){
+                      isJourneyAvailableForCb(item, index)
+                          ? validateSelection(avItem, index, item)
+                          : print('No av')
+                    }
                       },
                   child: Chip(
-                    backgroundColor:
-                    gblSystemColors.primaryButtonColor,
+                    backgroundColor: actionButtonColor(),
                     label: Column(
                       children: getPriceButtonList(objAv!.availability.classbands?.band![index].cbdisplayname, item, index, inRow: false),
                      /* <Widget>[
@@ -689,7 +693,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   void goToClassScreen(int index, List<Flt> flts) async {
-    _loadingInProgress = true;
+   // _loadingInProgress = true;
     gblActionBtnDisabled = false;
     _loading = 'Loading';
     var selectedFlt = await Navigator.push(
@@ -704,7 +708,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, null,selectedFlt, flts, objAv!.availability.classbands?.band![index].cbname);
+    if( selectedFlt != null ) {
+      flightSelected(context, null, selectedFlt, flts,
+          objAv!.availability.classbands?.band![index].cbname);
+    }
   }
 
   void flightSelected(BuildContext context ,AvItin? avItem,List<String> flt, List<Flt> flts, String? className) {
@@ -753,8 +760,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             newBooking: this.widget.newBooking)));
           }
         } else {
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+//          noInternetSnackBar(context);
         }
       });
     }

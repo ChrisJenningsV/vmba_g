@@ -9,6 +9,7 @@ import '../data/models/pnr.dart';
 import '../home/home_page.dart';
 import '../menu/menu.dart';
 import '../payment/choosePaymentMethod.dart';
+import '../utilities/helper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 class OptionsPageWidget extends StatefulWidget {
@@ -24,8 +25,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
   @override
   initState() {
     super.initState();
-    gblCurPage = 'OPTIONS';
-    gblActionBtnDisabled = false;
+    commonPageInit('OPTIONS');
   }
 
   @override
@@ -79,7 +79,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
 
   onComplete(BuildContext context, dynamic p) {
     try {
-      if( !gblActionBtnDisabled) {
+      if( !gblActionBtnDisabled && gblNoNetwork == false ) {
         gblPaymentMsg = '';
         Navigator.push(
             context,

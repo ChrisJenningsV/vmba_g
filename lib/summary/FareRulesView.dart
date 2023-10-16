@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:vmba/data/globals.dart';
 import '../components/trText.dart';
 import '../components/vidGraphics.dart';
 import '../data/models/pnr.dart';
@@ -27,7 +28,9 @@ class _FareRulesState extends State<FareRulesView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_displayProcessingIndicator) {
+    if( gblNoNetwork == true) {
+        return Text(translate('No Network'));
+    } else if (_displayProcessingIndicator) {
       return vidProcessing('Getting the flight rules');
     } else {
       List<Widget> rulesWidget = [];

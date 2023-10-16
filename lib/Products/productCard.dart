@@ -233,32 +233,39 @@ class ProductCardState extends State<ProductCard> {
 
       // more button
       widgets.add( vidRightButton(context, onPressed: (context) {
-        Navigator.push(
-            context,
-            SlideTopRoute(
-                page: ComplextProductWidget( key: Key('prod${index}_${prod.productCode}_key'), product: prod, savedProduct: savedProd , pnrModel: widget.pnrModel, isMmb: widget.isMmb, onSaved: (product) {
-                  //saveProduct(product, widget.pnrModel.pNR.rLOC);
-                },
-                  onError: (msg){
-                    widget.onError!(msg);
-                  },
-                ))).then((pnrMod) {
-          if( pnrMod != null && pnrMod.pNR.rLOC !='' ) {
-            logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
-            widget.pnrModel = pnrMod;
-            logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
-            setState(() {
-            });
-            if( widget.onComplete != null ) {
-              widget.onComplete!(pnrMod);
-            }
-          } else {
-            setState(() {
+        if( gblNoNetwork == false) {
+          Navigator.push(
+              context,
+              SlideTopRoute(
+                  page: ComplextProductWidget(
+                    key: Key('prod${index}_${prod.productCode}_key'),
+                    product: prod,
+                    savedProduct: savedProd,
+                    pnrModel: widget.pnrModel,
+                    isMmb: widget.isMmb,
+                    onSaved: (product) {
+                      //saveProduct(product, widget.pnrModel.pNR.rLOC);
+                    },
+                    onError: (msg) {
+                      widget.onError!(msg);
+                    },
+                  ))).then((pnrMod) {
+            if (pnrMod != null && pnrMod.pNR.rLOC != '') {
+              logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
+              widget.pnrModel = pnrMod;
+              logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
+              setState(() {});
+              if (widget.onComplete != null) {
+                widget.onComplete!(pnrMod);
+              }
+            } else {
+              setState(() {
 
-            });
-          }
-          //updatePassengerDetails(passengerDetails, paxNo - 1);
-        });
+              });
+            }
+            //updatePassengerDetails(passengerDetails, paxNo - 1);
+          });
+        }
       },),
 
       );

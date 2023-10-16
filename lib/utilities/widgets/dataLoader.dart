@@ -60,7 +60,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
       return TrText(_displayProcessingText + _error,style: TextStyle(fontSize: 14.0));
     } else if (gblNoNetwork == true) {
-      noInternetSnackBar(context);
+      //noInternetSnackBar(context);
       return Container();
     } else if (_displayProcessingIndicator) {
 /*

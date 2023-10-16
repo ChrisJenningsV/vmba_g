@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
@@ -11,10 +12,13 @@ import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
+import '../Helpers/pageHelper.dart';
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
+import '../components/networCheck.dart';
 import '../components/showDialog.dart';
 import '../data/repository.dart';
+import '../main.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
@@ -24,6 +28,7 @@ GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
 GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
 GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePageState>();
+//GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 //GlobalKey<HomeState> homePageKeyProgress = new GlobalKey<HomeState>();
 
 class HomePage extends StatefulWidget {
@@ -36,6 +41,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage>  with WidgetsBindingObserver {
+  final NetworkCheck _connectivity = NetworkCheck.instance;
   late AssetImage appBarImage;
   Image? appBarImageLeft;
   late AssetImage mainBackGroundImage;
@@ -45,6 +51,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   bool gotBG = false;
   String buildNo = '';
   String updateMsg = '';
+  Map _netState = {ConnectivityResult.none: false};
 
 
   @override
@@ -53,8 +60,37 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    gblCurPage = 'HOME';
+    commonPageInit('HOME');
+
     if( gblVerbose) logit('init HomeState');
+
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      _netState = source;
+      networkStateChange(_netState);
+      // check network
+/*
+      switch(_netState.keys.toList()[0]){
+        case ConnectivityResult.mobile:
+        // 'Mobile: Online';
+          logit('Mobile: Online');
+          networkOnline();
+          break;
+        case ConnectivityResult.wifi:
+        // 'WiFi: Online';
+          logit('WiFi: Online');
+          networkOnline();
+          break;
+        case ConnectivityResult.none:
+        default:
+        // 'Offline';
+          logit('Offline');
+          networkOffline();
+      }
+*/
+
+      //setState(() => gblNetState = source);
+    });
 
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
@@ -202,65 +238,6 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       print(e);
     }
   }
-/*
-
-  void updateAppDialog() {
-    var txt = '';
-    if (gblSettings.optUpdateMsg != null &&
-        gblSettings.optUpdateMsg.isNotEmpty) {
-      txt = gblSettings.optUpdateMsg;
-    }
-    shownUpdate = true;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-            title: Text('Update App'),
-            content:
-            Text('A newer version of the app is available to download' + '\n' +
-                txt),
-            actions: <Widget>[
-              new TextButton(
-                child: new Text(
-                  'Close',
-                  style: TextStyle(color: Colors.black),
-                ),
-                style: TextButton.styleFrom(primary: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              new TextButton(
-                child: new Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: TextButton.styleFrom(
-                    backgroundColor: gblSystemColors.primaryButtonColor,
-                    side: BorderSide(
-                        color: gblSystemColors.textButtonTextColor, width: 1),
-                    primary: gblSystemColors.primaryButtonTextColor),
-                onPressed: () {
-
-                  StoreRedirect.redirect(
-                      androidAppId: gblSettings.androidAppId,
-                      iOSAppId: gblSettings.iOSAppId);
-
-                  OpenAppstore.launch(
-                      androidAppId: gblSettings.androidAppId,
-                      iOSAppId: gblSettings.iOSAppId);
-
-
-
-
-
-                },
-              ),
-            ]);
-      },
-    );
-  }
-*/
 
   //Future<Widget> getImage() async {
   Widget getImage() {
@@ -347,6 +324,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
             borderRadius: BorderRadius.all(Radius.circular(10.0)));
         break;
     }
+
 
     if (_displayProcessingIndicator) {
       return Scaffold(
@@ -466,6 +444,8 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         bottomNavigationBar: getBottomNav(context),
         endDrawer: new DrawerMenu(),
       );
+
+
     }
   }
 Widget _getLogo(){
@@ -601,11 +581,14 @@ Widget _getLogo(){
                   style: TextButton.styleFrom(
                       shape: buttonShape,
                       backgroundColor: b1Clr),
-                  onPressed: () =>
+                  onPressed: () {
+                    if( gblNoNetwork == false) {
                       Navigator.of(context)
                           .pushNamedAndRemoveUntil(
                           '/FlightSearchPage',
-                              (Route<dynamic> route) => false),
+                              (Route<dynamic> route) => false);
+                    }
+                  },
                   child: Container(
                     height: buttonHeight,
                     child: Row(

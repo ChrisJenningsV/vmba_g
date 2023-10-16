@@ -110,7 +110,7 @@ void _onPressed(BuildContext context, dynamic p ) {
             : _ackErrorAlert(context);
       } else {
 //showSnackBar(context, translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
+        //noInternetSnackBar(context);
       }
     });
   }

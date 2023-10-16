@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 
+import 'colourHelper.dart';
+
 Widget smallButton({required  String text, IconData? icon, required void Function() onPressed, Color? backClr, String? id }) {
   Color back = gblSystemColors.primaryButtonColor;
   if( backClr != null ) back = backClr;
@@ -47,11 +49,12 @@ Widget smallButton({required  String text, IconData? icon, required void Functio
 Widget saveButton({required String text, IconData? icon, required void Function() onPressed }) {
   return ElevatedButton(
     onPressed: () {
-      onPressed();
+      if( gblNoNetwork == false ) {
+        onPressed();
+      }
     },
     style: ElevatedButton.styleFrom(
-        primary: gblSystemColors
-            .primaryButtonColor, //Colors.black,
+        backgroundColor: actionButtonColor(), //Colors.black,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0))),
     child: Row(

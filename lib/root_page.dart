@@ -37,6 +37,7 @@ class RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     logit('init RootPageState');
+    gblCurPage = 'ROOTPAGE';
     //showAlert('init root');
 
     _displayProcessingIndicatorS = true;
@@ -48,7 +49,9 @@ class RootPageState extends State<RootPage> {
 
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
+      if( gblCurPage == 'ROOTPAGE' || gblCurPage == 'HOME') {
+        setState(() => _source = source);
+      }
       if (_source.keys.toList()[0] != ConnectivityResult.none) {
         if( _dataLoaded == false ) {
           loadData();
@@ -56,7 +59,9 @@ class RootPageState extends State<RootPage> {
       } else {
         gblNoNetwork = true;
       }
-    });
+      networkStateChange(source);
+    }
+    );
     //   loadData();
   }
 
@@ -336,6 +341,15 @@ class MyConnectivity {
 
   Stream get myStream => controller.stream;
 
+/*
+  void initialise() async {
+    ConnectivityResult result = await connectivity.checkConnectivity();
+    _checkStatus(result);
+    connectivity.onConnectivityChanged.listen((result) {
+      _checkStatus(result);
+    });
+  }
+*/
   void initialise() async {
     ConnectivityResult result = await connectivity.checkConnectivity();
     _checkStatus(result);
@@ -344,7 +358,7 @@ class MyConnectivity {
     });
   }
 
-  void _checkStatus(ConnectivityResult result) async {
+ /* void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
       final result = await InternetAddress.lookup('example.com');
@@ -358,6 +372,16 @@ class MyConnectivity {
     try {
       controller.sink.add({result: isOnline});
     } catch(e) {}
+  }*/
+  void _checkStatus(ConnectivityResult result) async {
+    bool isOnline = false;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (e) {
+      isOnline = false;
+    }
+    controller.sink.add({result: isOnline});
   }
 
   void disposeStream() => controller.close();

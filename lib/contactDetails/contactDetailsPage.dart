@@ -77,7 +77,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_displayProcessingIndicator) {
+    if (_displayProcessingIndicator && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
         progressMessagePage(context, _displayProcessingText, title: 'Payment');
         return Container();
@@ -301,8 +301,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             endProgressMessage();
             _displayProcessingIndicator = false;
           });
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+//          noInternetSnackBar(context);
         }
       });
     }
@@ -377,7 +376,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     if( gblSettings.useWebApiforVrs) {
       print('Calling VRS with Cmd = $msg');
       String data = await runVrsCommand(msg).catchError((e) {
-        noInternetSnackBar(context);
+        //noInternetSnackBar(context);
         return null;
       });
 
@@ -431,7 +430,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                   _displayProcessingIndicator = false;
                 });
                 //showSnackBar(translate('Please, check your internet connection'));
-                noInternetSnackBar(context);
+                //noInternetSnackBar(context);
                 return null;
               }
 
@@ -442,7 +441,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                   _displayProcessingIndicator = false;
                 });
                 //showSnackBar(translate('Please, check your internet connection'));
-                noInternetSnackBar(context);
+                //noInternetSnackBar(context);
                 return null;
               } else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
                 _error = response.body
@@ -522,7 +521,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             _displayProcessingIndicator = false;
           });
           //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
           return null;
         }
 
@@ -533,7 +532,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             _displayProcessingIndicator = false;
           });
           //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
           return null;
           // return new ParsedResponse(response.statusCode, []);
         }
@@ -589,7 +588,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                     _displayProcessingIndicator = false;
                   });
                   //showSnackBar(translate('Please, check your internet connection'));
-                  noInternetSnackBar(context);
+                  //noInternetSnackBar(context);
                   return null;
                 }
 
@@ -600,7 +599,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
                     _displayProcessingIndicator = false;
                   });
                   //showSnackBar(translate('Please, check your internet connection'));
-                  noInternetSnackBar(context);
+                  //noInternetSnackBar(context);
                   return null;
                 } else if (response.body.contains('ERROR - ') ||
                     response.body.contains('ERROR:')) {

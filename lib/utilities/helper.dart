@@ -22,9 +22,14 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
 import '../Helpers/networkHelper.dart';
+/*
 import '../components/showNotification.dart';
+import '../home/home_page.dart';
+*/
 import '../main.dart';
 import 'messagePages.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
@@ -48,6 +53,7 @@ Future<Session> login() async {
       if (loginResponse.isSuccessful) {
         if( gblVerbose == true ) { print('successful login'); }
         gblSession = loginResponse.getSession();
+        gblLoginSuccessful = true;
         return loginResponse.getSession();
       }
     } else {
@@ -253,14 +259,15 @@ List<Text> textSpliterBoldText(String data) {
 }
 
 Future<bool> hasDataConnection() async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
+  return (gblNoNetwork == false);
+/*  var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.mobile ||
       connectivityResult == ConnectivityResult.wifi) {
     return true;
   } else {
     logit('check connectivity result ${connectivityResult.toString()}');
     return false;
-  }
+  }*/
 }
 
 Future<bool> hasSystemMessage() async {
@@ -297,6 +304,8 @@ String formatPrice(String currency, double price) {
   return _currencySymbol + price.toStringAsFixed(2);
  // return _currencySymbol + formatCurrency.format(price);
 }
+
+/*
 noInternetSnackBar(BuildContext context) {
   final snackBar = SnackBar(
     content: Text(translate('No Internet Connection.'), style: TextStyle(color: Colors.red),),
@@ -311,19 +320,24 @@ noInternetSnackBar(BuildContext context) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-showSnackBar(String message,BuildContext context) {
+*/
+showSnackBar(String message,BuildContext context,{String label= 'Undo' }) {
   final snackBar = SnackBar(
     content: Text(message),
+    dismissDirection: DismissDirection.none,
+    duration: Duration(days: 365),
     action: SnackBarAction(
-      label: 'Undo',
+      label: label,
       onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop();
+        //Navigator.of(context, rootNavigator: true).pop();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         // Some code to undo the change.
       },
     ),
   );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  ScaffoldMessenger.of(context).showSnackBar(snackBar,);
 }
+
 
 void logit(String msg) {
   var now = DateTime.now();
@@ -342,6 +356,40 @@ void showAlert(String txt) {
   criticalErrorPage(NavigationService.navigatorKey.currentContext!,txt,title: txt, wantButtons: false );
   //showNotification( NavigationService.navigatorKey.currentContext, notification, txt);
 }
+
+bool gblSnackBarShowing = false;
+showSnackbarMessage(String msg){
+  gblSnackBarShowing = true;
+  final snackBar = SnackBar(
+      content: Container(
+        //height: 40,
+        child: Row(
+
+        children: [
+        Icon(Icons.error,size: 30,color: Color(Colors.red.value),
+        ),
+      Padding(padding: EdgeInsets.all(3),),
+      Text(translate(msg), style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, ), textScaleFactor: 1.5, ),
+    ]),
+      ),
+    duration: const Duration(hours: 1),
+   /* action: SnackBarAction(
+      label: translate('OK'),
+      onPressed: () {
+        ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).hideCurrentSnackBar();
+        // Some code to undo the change.
+      },
+    ),*/
+  );
+  ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).showSnackBar(snackBar);
+}
+hideSnackBarMessage() {
+  if(gblSnackBarShowing == true){
+    ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).hideCurrentSnackBar();
+  }
+  gblSnackBarShowing = false;
+}
+
 // convert UK dd/mm/yyyy G
 DateTime parseUkDateTime(String str) {
   DateFormat inputFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
@@ -532,21 +580,60 @@ Widget addCountry(DbCountry country) {
     list.add(new Text(name));
   }
 
-  /*   if (img == null ) {
-      return Row(children: <Widget>[
-        SizedBox(width: 10,),
-        Expanded( child: new Text(name))
-      ],
-      mainAxisAlignment: MainAxisAlignment.start,);
-    } else {
-      return Row(children: <Widget>[
-        img,
-        SizedBox(width: 10,),
-        Expanded( child: new Text(name))
-      ],
-        mainAxisAlignment: MainAxisAlignment.start,
-      );*/
 
   return Row(children: list);
 }
 
+networkOffline() {
+  gblNoNetwork = true;
+  showSnackbarMessage('No Network');
+  refreshCurPage();
+
+}
+
+networkOnline() async {
+  gblNoNetwork = false;
+  hideSnackBarMessage();
+  if( gblLoginSuccessful == false){
+    await Repository.get().settings();
+  } else {
+    refreshCurPage();
+  }
+}
+
+refreshCurPage(){
+  gblInRefreshing = true;
+  Provider.of<LocaleModel>(NavigationService.navigatorKey.currentContext as BuildContext,listen:false).changelocale(Locale(gblLanguage));
+  Timer(Duration(seconds: 10), () {
+    gblInRefreshing = false;
+  });
+}
+
+commonPageInit(String pageName) {
+  gblPayAction = pageName;
+  gblActionBtnDisabled = false;
+  gblError = '';
+  gblStack = null;
+  gblInRefreshing = false;
+}
+
+networkStateChange(Map netState) {
+  switch(netState.keys.toList()[0]){
+    case ConnectivityResult.mobile:
+    // 'Mobile: Online';
+      logit('Mobile: Online');
+      networkOnline();
+      break;
+    case ConnectivityResult.wifi:
+    // 'WiFi: Online';
+      logit('WiFi: Online');
+      networkOnline();
+      break;
+    case ConnectivityResult.none:
+    default:
+    // 'Offline';
+      logit('Offline');
+      networkOffline();
+  }
+
+}

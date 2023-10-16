@@ -121,6 +121,7 @@ class Settings {
   bool wantTerminal;
   bool wantMaterial3;
   bool wantPriceCalendar;
+  bool wantPriceCalendarRounding;
 
   String productFormat;
   String homePageStyle;
@@ -284,6 +285,7 @@ bool bpShowFastTrack;
     this.wantTerminal = true,
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,
+    this.wantPriceCalendarRounding = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

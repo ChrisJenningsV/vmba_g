@@ -101,7 +101,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       //_displayProcessingIndicator = false;
     });
 */
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 
@@ -111,7 +111,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       //_displayProcessingIndicator = false;
     });
 */
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 
@@ -149,7 +149,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
             //_displayProcessingIndicator = false;
           });*/
           //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
           return null;
         }
 
@@ -159,7 +159,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
             //_displayProcessingIndicator = false;
           });
 */          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
           return null;
         }
         if (response.body.contains('ERROR - ')) {
@@ -261,7 +261,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       //_displayProcessingIndicator = false;
     });*/
     //showSnackBar(translate('Please, check your internet connection'));
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 
@@ -271,7 +271,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       //_displayProcessingIndicator = false;
     });*/
     //showSnackBar(translate('Please, check your internet connection'));
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 
@@ -387,7 +387,7 @@ void saveChanges(BuildContext context)  async{
       //_displayProcessingIndicator = false;
     });
 */
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 
@@ -397,7 +397,7 @@ void saveChanges(BuildContext context)  async{
       //_displayProcessingIndicator = false;
     });
 */
-    noInternetSnackBar(context);
+    //noInternetSnackBar(context);
     return null;
   }
 

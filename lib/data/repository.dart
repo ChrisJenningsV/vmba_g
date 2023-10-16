@@ -663,6 +663,7 @@ class Repository {
                     }
                 }
               }
+              gblLoginSuccessful = true;
             } else {
               print('settingsJson == null');
 /*
@@ -1602,6 +1603,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
 Future<String> runVrsCommand(String cmd) async {
   gblError ='';
+  logit('runVrsCommand $cmd');
   if( gblSettings.useWebApiforVrs) {
 
     String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
@@ -1618,12 +1620,14 @@ Future<String> runVrsCommand(String cmd) async {
         "${gblSettings.xmlUrl.replaceFirst('?', '')}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"),
           headers: getXmlHeaders())
         .catchError((resp) {
+      logit('runVrsCommand error ${resp.toString()}');
 /*
       var error = '';
 */
     });
 
     if (response == null) {
+      logit('runVrsCommand response null');
       throw 'No Internet';
       //return new ParsedResponse(noInterent, null);
     }

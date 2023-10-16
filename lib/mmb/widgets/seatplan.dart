@@ -18,6 +18,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../../calendar/bookingFunctions.dart';
 import '../../data/smartApi.dart';
+import '../../utilities/widgets/colourHelper.dart';
 
 enum SeatType { regular, emergency }
 
@@ -56,7 +57,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   List<Pax>? paxlist;
   bool showkey = true;
   String seatplan = '';
-  bool _noInternet = false;
+  //bool _noInternet = false;
   bool _noSeats = false;
   Session? session;
 
@@ -65,7 +66,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     super.initState();
     gblPaymentMsg = '';
     gblError = '';
-    _noInternet = false;
+    //_noInternet = false;
     _noSeats = false;
     _loadingInProgress = true;
     _displayProcessingText = translate('Loading seat plan...');
@@ -172,7 +173,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       } else {
         setState(() {
           _loadingInProgress = false;
-          _noInternet = true;
+          //_noInternet = true;
         });
       }
     });
@@ -442,7 +443,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   }
 
   _showError(String err) {
-    print(err);
+    logit(err);
     setState(() {
       _loadingInProgress = false;
     });
@@ -451,7 +452,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   retryLoad() {
     setState(() {
       _loadingInProgress = true;
-      _noInternet = false;
+      //_noInternet = false;
       _loadData(widget.seatplan);
     });
   }
@@ -480,7 +481,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         //endDrawer: DrawerMenu(),
 
         body: body(),
-        floatingActionButton: _loadingInProgress || _noInternet || _noSeats
+        floatingActionButton: _loadingInProgress || gblNoNetwork || _noSeats
             ? null
             : Padding(
                 padding: EdgeInsets.only(left: 35.0),
@@ -493,18 +494,18 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         label: TrText(
                           'SELECT SEAT',
                           style: TextStyle(
-                              color: gblSystemColors
-                                  .primaryButtonTextColor),
+                              color: gblSystemColors.primaryButtonTextColor),
                         ),
                         icon: Icon(
                           Icons.check,
                           color: gblSystemColors
                               .primaryButtonTextColor,
                         ),
-                        backgroundColor: gblSystemColors
-                            .primaryButtonColor,
+                        backgroundColor: actionButtonColor(),
                         onPressed: () {
-                          _handleBookSeats(paxlist!);
+                          if( gblNoNetwork == false) {
+                            _handleBookSeats(paxlist!);
+                          }
                         }),
                   ],
                 )));
@@ -524,7 +525,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           ],
         ),
       );
-    } else if (_noInternet) {
+    }
+/*    else if (_noInternet) {
       String msg = 'Please check your internet connection';
           if( gblError != null && gblError != '' ){
             msg = gblError ;
@@ -551,7 +553,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           ],
         ),
       );
-    } else if (_noSeats) {
+    }*/
+    else if (_noSeats) {
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

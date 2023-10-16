@@ -51,10 +51,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     if( gblCurPage != 'CHOOSEFLIGHT') {
       backPressed = true;
     }
-    gblCurPage = 'PASSENGERDETAILS';
+    commonPageInit('PASSENGERDETAILS');
     gblPnrModel = widget.pnrModel;
-    gblError = '';
-    gblActionBtnDisabled = false;
 
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
@@ -528,7 +526,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     //print('end paxEntryHeader');
   }
   _onContinuePressed(BuildContext context, dynamic p) {
-    if( !gblActionBtnDisabled) {
+    if( !gblActionBtnDisabled && !gblNoNetwork) {
       gblPaymentMsg = '';
       gblActionBtnDisabled = true;
       setState(() {
@@ -694,7 +692,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         } else {
           //showSnackBar('Please, check your internet connection');
           gblActionBtnDisabled = false;
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
         }
       });
     } catch (e) {

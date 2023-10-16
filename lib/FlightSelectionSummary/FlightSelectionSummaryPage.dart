@@ -35,7 +35,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   PnrModel pnrModel = PnrModel();
   bool _loadingInProgress = false;
   String currencyCode = '';
-  bool _noInternet = false;
+  //bool _noInternet = false;
   bool _eVoucherNotValid = false;
   bool _tooManyUmnr = false;
   bool _hasError = false;
@@ -45,15 +45,16 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   @override
   initState() {
     super.initState();
+    commonPageInit('SUMMARY');
+
     _loadingInProgress = true;
-    _noInternet = false;
+    //_noInternet = false;
     _eVoucherNotValid = false;
     _tooManyUmnr = false;
     _hasError = false;
     gblActionBtnDisabled = false;
     _error = '';
-    gblError = '';
-    gblCurPage = 'FLIGHTSEARCH';
+
     // _error = 'We are unable to proceed with this request. Please contact customer services to make your booking';
     getFareQuote();
 
@@ -121,22 +122,21 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     return sb.toString();
   }
 
-  retryBooking() {
+  /*retryBooking() {
     hasDataConnection().then((result) {
       if (result == true) {
         setState(() {
           _loadingInProgress = true;
-          _noInternet = false;
+          //_noInternet = false;
           _eVoucherNotValid = false;
           _tooManyUmnr = false;
           getFareQuote();
         });
       } else {
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
+        //noInternetSnackBar(context);
       }
     });
-  }
+  }*/
 
   String convertNumberIntoWord(int number) {
     var _arrWordList = [
@@ -209,8 +209,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     }
 
     //Add voucher code
-    if (widget.newBooking.eVoucherCode != null &&
-        widget.newBooking.eVoucherCode.trim() != '') {
+    if (widget.newBooking.eVoucherCode.trim() != '') {
       cmd += '4-1FDISC${widget.newBooking.eVoucherCode.trim()}^';
     }
     cmd += addFg(widget.newBooking.currency, true);
@@ -267,7 +266,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           _loadingInProgress = false;
           endProgressMessage();
 
-          _noInternet = true;
+          //_noInternet = true;
         });
       }
     }).catchError((resp) {
@@ -709,7 +708,7 @@ Row airMiles() {
 
   @override
   Widget build(BuildContext context) {
-    if (_loadingInProgress) {
+    if (_loadingInProgress && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
         progressMessagePage(
             context, 'Calculating your price...', title: 'Summary');
@@ -736,7 +735,7 @@ Row airMiles() {
           ),
         );
       }
-    } else if (_noInternet) {
+/*    } else if (_noInternet) {
       return Scaffold(
           key: _key,
           appBar: appBar(context, 'Summary',
@@ -766,7 +765,7 @@ Row airMiles() {
                 )
               ],
             ),
-          ));
+          ));*/
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
@@ -796,7 +795,7 @@ Row airMiles() {
                       primary: Colors.black),
                   onPressed: () {
                     widget.newBooking.eVoucherCode = '';
-                    retryBooking();
+                    //retryBooking();
                   },
                   child: TrText(
                     'Remove and retry booking',
@@ -839,18 +838,14 @@ Row airMiles() {
     }
   }
   onCompletePressed(BuildContext context, dynamic p) {
-    hasDataConnection().then((result) {
-      if (result == true) {
+    //hasDataConnection().then((result) {
+      if (gblNoNetwork == false) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => PassengerDetailsWidget(
                     newBooking: widget.newBooking)));
-      } else {
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
       }
-  });
   }
 
   Widget _getBody() {
@@ -1079,13 +1074,18 @@ Row airMiles() {
               TrText('Fare Rules'),
               IconButton(
                 icon: Icon(Icons.keyboard_arrow_down),
-                onPressed: () => Navigator.push(
-                    context,
-                    SlideTopRoute(
-                        page: FlightRulesWidget(
-                          fQItin: pnrModel.pNR.fareQuote.fQItin,
-                          itin: pnrModel.pNR.itinerary.itin,
-                        ))),
+                onPressed: () {
+                  if( gblNoNetwork == false ) {
+                    Navigator.push(
+                        context,
+                        SlideTopRoute(
+                            page: FlightRulesWidget(
+                              fQItin: pnrModel.pNR.fareQuote.fQItin,
+                              itin: pnrModel.pNR.itinerary.itin,
+                            )));
+                  }
+
+                }
               )
             ],
           ),
@@ -1096,18 +1096,13 @@ Row airMiles() {
                 shape: RoundedRectangleBorder(
                     borderRadius: getButtonRadius())),
             onPressed: () {
-              hasDataConnection().then((result) {
-                if (result == true) {
+                if (gblNoNetwork == false) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => PassengerDetailsWidget(
                               newBooking: widget.newBooking)));
-                } else {
-                  //showSnackBar(translate('Please, check your internet connection'));
-                  noInternetSnackBar(context);
                 }
-              });
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,

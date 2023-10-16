@@ -604,7 +604,12 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
               GestureDetector(
                 child: Icon(Icons.more_vert),
                 onTapDown: _storePosition,
-                onTapUp: (tabUpDetails) => _showPopupMenu(document.rloc),
+                onTapUp: (tabUpDetails) {
+                  if( gblNoNetwork == false) {
+                    _showPopupMenu(document.rloc);
+                  }
+                }
+                ,
               ),
             ],
           ),

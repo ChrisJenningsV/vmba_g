@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:vmba/Products/productFunctions.dart';
 import 'package:vmba/calendar/bookingFunctions.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
@@ -134,7 +135,7 @@ class SeatCardState extends State<SeatCard> {
                           arr, ),
                       Spacer(),
                       Icon(Icons.chevron_right, size: 30,
-                        color: gblSystemColors.primaryHeaderColor,),
+                        color: actionButtonColor(),),
                     ],),
                   Row(children: seatLine                    ,)
                 ]
@@ -143,7 +144,7 @@ class SeatCardState extends State<SeatCard> {
   }
 
   onFltPressed(BuildContext context, int journeyNo) {
-    if( gblPnrModel != null ) {
+    if( gblPnrModel != null  && gblNoNetwork == false ) {
       List<Pax> paxlist = getPaxlist(gblPnrModel as PnrModel, journeyNo);
 
       Navigator.push(

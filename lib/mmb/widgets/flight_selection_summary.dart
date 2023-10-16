@@ -56,8 +56,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           getFareQuote();
         });
       } else {
-        //showSnackBar(translate('Please, check your internet connection'));
-        noInternetSnackBar(context);
+        //noInternetSnackBar(context);
       }
     });
   }
@@ -785,8 +784,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                                       mmbCmd: '',
                                     )));
                       } else {
-                        //showSnackBar(translate('Please,, check your internet connection'));
-                        noInternetSnackBar(context);
+                        //noInternetSnackBar(context);
                       }
                     });
                   },

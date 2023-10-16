@@ -239,64 +239,72 @@ class DrawerMenu extends StatefulWidget {
   }
 
     // custom1
-    if( gblSettings.customMenu1 != null && gblSettings.customMenu1.isNotEmpty) {
-      try{
-      var menuText = gblSettings.customMenu1.split(',')[0];
-      var pageText = gblSettings.customMenu1.split(',')[1].trim();
-      var url = gblSettings.customMenu1.split(',')[2];
-      if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
-        // SizedBox(height: 24,
-        //             child:
-        list.add( ListTile(
-            dense: dense,
-            title: _getMenuItem(Icons.web, menuText),
-            onTap: () {
-              Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
-            })
-        );
-      }
-          } catch(e) {
-        logit(e.toString());
-    }
-    }
-
-    // custom2
-    if( gblSettings.customMenu2 != null && gblSettings.customMenu2.isNotEmpty) {
-      try{
-        var menuText = gblSettings.customMenu2.split(',')[0];
-        var pageText = gblSettings.customMenu2.split(',')[1].trim();
-        var url = gblSettings.customMenu2.split(',')[2];
-        if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
-          list.add(ListTile(
-              dense: dense,
-              title: _getMenuItem(Icons.web, menuText),
-              onTap: () {
-                Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
-              }));
+    if( gblNoNetwork == false) {
+      if (gblSettings.customMenu1 != null &&
+          gblSettings.customMenu1.isNotEmpty) {
+        try {
+          var menuText = gblSettings.customMenu1.split(',')[0];
+          var pageText = gblSettings.customMenu1.split(',')[1].trim();
+          var url = gblSettings.customMenu1.split(',')[2];
+          if (menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
+            // SizedBox(height: 24,
+            //             child:
+            list.add(ListTile(
+                dense: dense,
+                title: _getMenuItem(Icons.web, menuText),
+                onTap: () {
+                  Navigator.push(context,
+                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
+                })
+            );
+          }
+        } catch (e) {
+          logit(e.toString());
         }
-      } catch(e) {
-        logit(e.toString());
       }
-    }
-    // custom3
-    if( gblSettings.customMenu3 != null && gblSettings.customMenu3.isNotEmpty) {
-      try{
-        var menuText = gblSettings.customMenu3.split(',')[0];
-        var pageText = gblSettings.customMenu3.split(',')[1].trim();
-        var url = gblSettings.customMenu3.split(',')[2];
-        if( menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
-          list.add(ListTile(
-              dense: dense,
-              title: _getMenuItem(Icons.web, menuText),
-              onTap: () {
-                Navigator.push(context, SlideTopRoute(page: CustomPageWeb(pageText, url)));
-              }));
-        }
-      } catch(e) {
-        logit(e.toString());
-      }
-    }
 
+      // custom2
+      if (gblSettings.customMenu2 != null &&
+          gblSettings.customMenu2.isNotEmpty) {
+        try {
+          var menuText = gblSettings.customMenu2.split(',')[0];
+          var pageText = gblSettings.customMenu2.split(',')[1].trim();
+          var url = gblSettings.customMenu2.split(',')[2];
+          if (menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
+            list.add(ListTile(
+                dense: dense,
+                title: _getMenuItem(Icons.web, menuText),
+                onTap: () {
+                  Navigator.push(context,
+                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
+                }));
+          }
+        } catch (e) {
+          logit(e.toString());
+        }
+      }
+      // custom3
+      if (gblSettings.customMenu3 != null &&
+          gblSettings.customMenu3.isNotEmpty) {
+        try {
+          var menuText = gblSettings.customMenu3.split(',')[0];
+          var pageText = gblSettings.customMenu3.split(',')[1].trim();
+          var url = gblSettings.customMenu3.split(',')[2];
+          if (menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
+            list.add(ListTile(
+                dense: dense,
+                title: _getMenuItem(Icons.web, menuText),
+                onTap: () {
+                  Navigator.push(context,
+                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
+                }));
+          }
+        } catch (e) {
+          logit(e.toString());
+        }
+      }
+    }
+    
     if( gblIsLive == false && gblWantLogBuffer) {
       list.add(ListTile(
           dense: dense,

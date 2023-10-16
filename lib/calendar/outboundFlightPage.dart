@@ -20,6 +20,7 @@ import '../Helpers/settingsHelper.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/colourHelper.dart';
 import 'bookingFunctions.dart';
 
 class FlightSeletionPage extends StatefulWidget {
@@ -41,8 +42,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   @override
   void initState() {
     super.initState();
-    gblActionBtnDisabled = false;
-    gblPayAction = 'NEWBOOKING';
+    commonPageInit('NEWBOOKING');
+
+//    gblActionBtnDisabled = false;
+
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _loading = 'Searching for Flights';
@@ -356,8 +359,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                     if (result == true) {
                     _changeSearchDate(DateTime.parse(item.daylcl));
                     } else {
-                    //showSnackBar('Please, check your internet connection');
-                    noInternetSnackBar(context);
+//                    noInternetSnackBar(context);
                     }
                     })
                     }),
@@ -446,7 +448,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   void goToClassScreen(AvItin avItem,int index, List<Flt> flts) async {
-    _loadingInProgress = true;
+    //_loadingInProgress = true;
     gblActionBtnDisabled = false;
     _loading = 'Loading';
     double pri = 0.0;
@@ -478,7 +480,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               widget.newBooking.passengers.students +
               widget.newBooking.passengers.children,
         )));
-    flightSelected(context, avItem,selectedFlt, flts, objAv.availability.classbands!.band![index].cbname);
+    _loadingInProgress = false;
+    if( selectedFlt != null ) {
+      flightSelected(context, avItem, selectedFlt, flts,
+          objAv.availability.classbands!.band![index].cbname);
+    }
   }
 
   void flightSelected(BuildContext context,AvItin? avItem, List<String> flt, List<Flt> outboundflts, String className) {
@@ -543,9 +549,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           }
         } else {
           logit('FlightSelected: no iternet');
-          //showSnackBar(translate('Please, check your internet connection'));
-       //   endProgressMessage();
-          noInternetSnackBar(context);
+//          noInternetSnackBar(context);
         }
       });
     }
@@ -573,13 +577,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               item[0].fltav.pri!.length,
               (index) => GestureDetector(
                   onTap: () => {
-                    isJourneyAvailableForCb(item, index)
-                            ? goToClassScreen(avItem,index, item)
-                            : print('No av')
+                    if( gblNoNetwork == false ){
+                      isJourneyAvailableForCb(item, index)
+                          ? goToClassScreen(avItem, index, item)
+                          : print('No av')
+                    }
                       },
                   child: Chip(
-                    backgroundColor:
-                    gblSystemColors.primaryButtonColor,
+                    backgroundColor: actionButtonColor(),
                     label: Column(
                       children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
 
@@ -598,15 +603,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             item[0].fltav.pri!.length,
             (index) => ElevatedButton(
                 onPressed: () {
-                  isJourneyAvailableForCb(item, index)
-                      ? goToClassScreen(avItem,index, item)
-                      : print('No av');
+                  if( gblNoNetwork == false) {
+                    isJourneyAvailableForCb(item, index)
+                        ? goToClassScreen(avItem, index, item)
+                        : print('No av');
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
-                    primary:
-                    gblSystemColors.primaryButtonColor,
+                    backgroundColor: actionButtonColor(),
                     padding: new EdgeInsets.all(5.0)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),

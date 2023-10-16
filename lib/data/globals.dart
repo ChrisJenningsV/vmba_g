@@ -14,7 +14,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'LM';
+String gblBuildFlavor = 'FN';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
@@ -55,6 +55,7 @@ bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;
 bool gblLanguageLogging = false;
+bool gblInRefreshing = false;
 
 
 int gblSecurityLevel = 0;
@@ -86,6 +87,7 @@ bool gblVerbose = false;
 bool  gblWantLogin = true;
 bool gblDemoMode = false;
 bool gblDebugMode = false;
+bool gblLoginSuccessful = false;
 PnrModel? gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 

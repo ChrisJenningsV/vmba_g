@@ -18,6 +18,7 @@ import '../utilities/helper.dart';
 
 void showNotification( BuildContext? context, RemoteNotification? notification, Map data, String from) {
   //String time = DateFormat('kk:mm').format(DateTime.now());
+  logit('show notification from $from');
   showDialog(
     barrierDismissible: false,
     context: context as BuildContext,
@@ -43,7 +44,12 @@ void showNotification( BuildContext? context, RemoteNotification? notification, 
         ),
       );
     },
-  );
+  ).then((val){
+    if(gblCurPage == 'MYNOTIFICATIONS'){
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          '/MyNotificationsPage', (Route<dynamic> route) => false);
+    }
+  });
 }
 
 Widget _getTitle( BuildContext context, RemoteNotification notification, Map data, String from) {
@@ -200,6 +206,7 @@ List<Widget> _getBody(
                   onPressed: () {
                     switch (a.toUpperCase()) {
                       case 'URL':
+
                         Navigator.push(
                             context, SlideTopRoute(page: CustomPageWeb(d2, d)));
                         break;

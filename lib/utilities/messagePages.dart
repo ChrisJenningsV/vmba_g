@@ -481,13 +481,18 @@ void endProgressMessage() {
 Widget messageBodyWidget( String title, String msg, IconData? icon, Color? titleBackClr, Color? backClr, Color? borderClr, Color? iconClr, {List<Widget>? actions, bool isHtml=false }  )
 {
   Widget msgWidget;
+
+  String body = msg;
+  if( msg.contains('<html>') == false){
+    body = '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
+        msg +
+        '</body></html>';
+  }
+
   late final WebViewController _controller;
   _controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(Uri.dataFromString(
-        '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
-            msg +
-            '</body></html>'));
+    ..loadHtmlString(body);
 
   if(isHtml != null && isHtml == true) {
     msgWidget = Container(

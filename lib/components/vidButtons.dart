@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
@@ -66,7 +67,8 @@ BorderRadius getButtonRadius() {
 /*
   NEXT button at the bottom of most pages
  */
-Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true} ) {
+Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, 
+    {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true, bool availableOffline = false} ) {
 
   List<Widget> list = [];
   if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
@@ -99,11 +101,12 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   child:
     ElevatedButton(
     onPressed: () {
-      onPressed(context, param1);
+      if( availableOffline == true || gblNoNetwork == false) {
+        onPressed(context, param1);
+      }
     },
     style: ElevatedButton.styleFrom(
-        primary: gblSystemColors
-            .primaryButtonColor, //Colors.black,
+        backgroundColor: actionButtonColor( availableOffline: availableOffline),
         shape: RoundedRectangleBorder(
             borderRadius: getButtonRadius())),
     child: Row(
@@ -172,7 +175,7 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
 
             icon: gblSettings.wantButtonIcons ? Icon(Icons.check,
                 color: gblSystemColors.primaryButtonTextColor) : null ,
-            backgroundColor: gblSystemColors.primaryButtonColor ,
+            backgroundColor: actionButtonColor() ,
             onPressed: () => onPressed(context))
       ]));
 }
@@ -224,7 +227,7 @@ Widget vidRightButton(BuildContext context, {void Function(BuildContext)? onPres
   return IconButton(
     icon: Icon(
       Icons.chevron_right,
-      color: gblSystemColors.primaryButtonColor,
+      color:  actionButtonColor(),
     ),
     onPressed: () {
       onPressed!(context);
@@ -235,7 +238,7 @@ Widget vidRightButton(BuildContext context, {void Function(BuildContext)? onPres
 
 Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildContext)? onPressed,{Color btnClr = Colors.white}){
   if( btnClr == null ) {
-    btnClr = gblSystemColors.primaryButtonColor;
+    btnClr =  actionButtonColor();
   }
 
   return IconButton(

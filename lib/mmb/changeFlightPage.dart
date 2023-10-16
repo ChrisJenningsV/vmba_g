@@ -18,6 +18,7 @@ import 'package:vmba/components/trText.dart';
 import '../Helpers/settingsHelper.dart';
 import '../calendar/calendarFunctions.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/colourHelper.dart';
 
 // ignore: must_be_immutable
 class ChangeFlightPage extends StatefulWidget {
@@ -45,6 +46,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   @override
   void initState() {
     super.initState();
+    commonPageInit('CHANGEFLT');
+
     _isReturn = isReturn();
     _scrollController = new ScrollController();
     _loadingInProgress = true;
@@ -414,7 +417,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, 'Searching for Flights', title: 'loading');
+        progressMessagePage(context, 'Searching for Flights', title: ' ');
         return Container();
       } else {
         return new Center(
@@ -499,7 +502,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             _changeSearchDate(DateTime.parse(item.daylcl));
                           } else {
                             //showSnackBar('Please, check your internet connection');
-                            noInternetSnackBar(context);
+                            //noInternetSnackBar(context);
                           }
                         });
                       },
@@ -723,8 +726,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                         //intJourney: widget.journey,
                       )));
         } else {
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+           //noInternetSnackBar(context);
         }
       });
     }
@@ -754,13 +756,14 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
               noItems,
               (index) => GestureDetector(
                   onTap: () => {
-                    isJourneyAvailableForCb(item, index)
-                            ? goToClassScreen(index, item)
-                            : print('No av')
+                    if( gblNoNetwork == false){
+                      isJourneyAvailableForCb(item, index)
+                          ? goToClassScreen(index, item)
+                          : print('No av')
+                    }
                       },
                   child: Chip(
-                    backgroundColor:
-                    gblSystemColors.primaryButtonColor,
+                    backgroundColor: actionButtonColor(),
                     label: Column(
                       children: getPriceButtonList(objAv.availability.classbands!.band![index].cbdisplayname, item, index, inRow: false),
                     ),

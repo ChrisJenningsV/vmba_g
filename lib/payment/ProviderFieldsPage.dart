@@ -311,8 +311,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           setState(() {
             _displayProcessingIndicator = false;
           });
-          //showSnackBar(translate('Please, check your internet connection'));
-          noInternetSnackBar(context);
+          //noInternetSnackBar(context);
         }
       });
     } else {

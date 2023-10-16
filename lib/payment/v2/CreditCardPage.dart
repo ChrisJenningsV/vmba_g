@@ -203,7 +203,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                           // _displayProcessingIndicator = false;
                         });
                         //showSnackBar(translate('Please, check your internet connection'));
-                        noInternetSnackBar(context);
+                        //noInternetSnackBar(context);
                       }
                     }).catchError((e) {
                       logit('pay error ${e.toString()}');

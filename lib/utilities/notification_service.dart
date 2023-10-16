@@ -89,8 +89,8 @@ class NotificationService {
 
 
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-      channel = const AndroidNotificationChannel(
-        'com.domain.appname.urgent',//'high_importance_channel', // id
+      channel = AndroidNotificationChannel(
+        gblSettings.androidAppId as String ,   //'com.domain.appname.urgent',//'high_importance_channel', // id
         'High Importance Notifications', // title
         importance: Importance.high,
       );
@@ -109,7 +109,15 @@ class NotificationService {
         sound: true,
       );
       //await firebase.messaging().registerDeviceForRemoteMessages()
-      FirebaseMessaging.instance.requestPermission();
+      NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,);
+      logit('permission: ${settings.authorizationStatus}');
+      if(settings.authorizationStatus !=  AuthorizationStatus.authorized){
+        logit('PERMISSION NOT GRANTED');
+        gblError = 'PERMISSION NOT GRANTED';
+      }
 
       FirebaseMessaging.instance.getToken().then((token){
 
@@ -210,6 +218,7 @@ AndroidNotificationChannel? channel;
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.

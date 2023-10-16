@@ -55,6 +55,8 @@ void configLM() {
     wantApis: true,
     wantHomeFQTVButton: false,
     wantMaterial3: false,
+    wantPriceCalendar: false ,
+    wantPriceCalendarRounding: true,
     //pageStyle: 'V2',
 
     airlineName: "Loganair",
