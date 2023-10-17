@@ -1,0 +1,13 @@
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "lib/assets/unitednigeria/images/unitednigeria_1024x1024.png"
+
+# flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_loganair.yaml
+#
+#
+# copy -path lib\assets\loganair\images\bg.png -Destination lib\assets\images
+# cp  lib/assets/loganair/images/bg.png lib/assets/images
+# copy key

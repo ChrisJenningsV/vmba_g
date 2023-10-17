@@ -383,7 +383,9 @@ class CheckinBoardingPassesWidgetState
   void refresh(){
     widget.onLoad(null);
     setState(() {
-      objPNR = gblPnrModel;
+      if( gblPnrModel != null ) {
+        objPNR = gblPnrModel;
+      }
     });
   }
   void reload( String rloc){
@@ -540,10 +542,12 @@ class CheckinBoardingPassesWidgetState
                 _loadingInProgress = false;
                 _displayProcessingText = '';
                 if( val == '') {
-                if( gblPnrModel!.isFundTransferPayment()) {
-                  gblError = '';
-                }
-                objPNR = gblPnrModel!;
+                  if( gblPnrModel != null ) {
+                    if (gblPnrModel!.isFundTransferPayment()) {
+                      gblError = '';
+                    }
+                    objPNR = gblPnrModel!;
+                  }
 
               } else {
                   if( val == 'No Flights'){
@@ -2913,7 +2917,10 @@ class CheckinBoardingPassesWidgetState
             selectedpaxNo: paxNo + 1,
           ),
         )).then((pnrModel) {
-      _handleSeatChanged(pnrModel);
+          if( pnrModel != null ) {
+            // pnrModel null if page closed
+            _handleSeatChanged(pnrModel);
+          }
       // Navigator.of(context).pop();
     });
   }

@@ -14,6 +14,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/bottomNav.dart';
@@ -523,7 +524,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                     child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Material(
-                    color: gblSystemColors.primaryButtonColor,
+                    color: actionButtonColor(),
                     borderRadius: BorderRadius.circular(25.0),
                     shadowColor: Colors.grey.shade100,
                     elevation: 5.0,
@@ -537,7 +538,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                             color: gblSystemColors.primaryButtonTextColor),
                       ),
                       onPressed: () {
-                        if (formKey.currentState!.validate()) {
+                        if (gblNoNetwork == false &&  formKey.currentState!.validate()) {
                           _loadPnr();
                         }
                       },

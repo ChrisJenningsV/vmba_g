@@ -594,11 +594,12 @@ networkOffline() {
 networkOnline() async {
   gblNoNetwork = false;
   hideSnackBarMessage();
-  if( gblLoginSuccessful == false){
+  if( gblLoginSuccessful == false && gblCurPage != 'ROOTPAGE'){
     await Repository.get().settings();
   } else {
     refreshCurPage();
   }
+
 }
 
 refreshCurPage(){

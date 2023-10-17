@@ -190,10 +190,11 @@ class Repository {
   // CJ overwrites hardcoded!!! -  await getSettingsFromDatabase();
     //get values from webservice
   // cj - test returning live vals
+    gblLoginSuccessful = true;
     await getSettingsFromApi();
-    if(gblNoNetwork == true){
+  /*  if(gblNoNetwork == true){
       await getSettingsFromApi();
-    }
+    }*/
     //Save GobalSetting to DB
     //await database.saveAllSettings(gbl_settings);
     return true;
@@ -219,6 +220,7 @@ class Repository {
 */
   Future getSettingsFromApi() async {
     var body = {"AgentGuid": "${gblSettings.vrsGuid}"};
+    gblLoginSuccessful = true;
     Map<String, String>       headers = {
         'Content-Type': 'application/json',
         'Videcom_ApiKey': gblSettings.apiKey,
@@ -725,11 +727,13 @@ class Repository {
 
         }
       } else {
+        gblLoginSuccessful = false;
         logit('login - status=${response.statusCode}'+ response.body );
         gblErrorTitle = 'Login-';
         gblError = response.statusCode.toString();
       }
     } catch (e) {
+      gblLoginSuccessful = false;
       logit('login - catch error');
       print(e);
       gblErrorTitle = 'Login-';

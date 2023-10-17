@@ -144,13 +144,13 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         }
 
       }
-      print('failed to get providers: ${response.body}');
+      print('failed to get $_dataName: ${response.body}');
       try{
         print (response.body);
         _displayFinalError = true;
-         _displayProcessingText = 'failed to get providers';
+         _displayProcessingText = 'failed to get $_dataName';
 
-         criticalErrorPage(context, 'failed to get providers', title: 'Payment error');
+         criticalErrorPage(context, 'failed to get $_dataName', title: 'Data error');
         setLoadState(LoadState.loadFailed);
         setState(() {
 
@@ -179,7 +179,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
           }*/
           gblBookingCurrency =currency;
-          _msg = json.encode(GetProductsMsg(currency, currency: gblSelectedCurrency, cityCode: gblOrigin,
+          _msg = json.encode(GetProductsMsg(currency, currency: currency, cityCode: gblOrigin,
               arrivalCityCode: gblDestination ).toJson());  // , arrivalCityCode: gblDestination
 
           break;

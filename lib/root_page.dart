@@ -77,7 +77,9 @@ class RootPageState extends State<RootPage> {
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
       if( _source.keys.toList()[0] != ConnectivityResult.none ){
-        loadData();
+        if( _dataLoaded == false ) {
+          loadData();
+        }
       } else {
         gblNoNetwork = true;
       }
@@ -334,6 +336,7 @@ class MyConnectivity {
   static final MyConnectivity _instance = MyConnectivity._internal();
 
   static MyConnectivity get instance => _instance;
+  bool _closed = false;
 
   Connectivity connectivity = Connectivity();
 
@@ -381,8 +384,13 @@ class MyConnectivity {
     } on SocketException catch (e) {
       isOnline = false;
     }
-    controller.sink.add({result: isOnline});
+    if( _closed == false ) {
+      controller.sink.add({result: isOnline});
+    }
   }
 
-  void disposeStream() => controller.close();
+  void disposeStream() {
+    _closed = true;
+    controller.close();
+  }
 }
