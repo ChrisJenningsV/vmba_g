@@ -300,7 +300,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _loading, title: 'loading');
+        progressMessagePage(context, _loading, title: '');
         return Container();
       } else {
         return new Center(

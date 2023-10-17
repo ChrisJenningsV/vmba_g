@@ -73,6 +73,7 @@ void configT6() {
     customMenu2: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
 
     aircode: 'T6',
+      currency: 'PHP',
 
       locale: 'en-EN',
       bookingLeadTime: 60,

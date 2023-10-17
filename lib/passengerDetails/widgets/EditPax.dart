@@ -875,11 +875,11 @@ Widget getFirstname() {
        ),
      ));
      list.add(infoBox(
-         'You may be entitled to a 20% Senior Citizen discount on the base fare of your PHILIPPINES flight/s'));
+         'Senior Citizen is entitled of 20% discount and VAT exempt upon presenting valid ID card issued by the OSCA. This discount applies to base fare only and does not apply to products such as prepaid baggage, travel insurance and reserve seats. Failure to provide the required valid identification, evidence and documents upon check-in will result to invalidate the senior citizen discount granted plus a penalty of Php 1,500.00 and airfare difference from the regular fare or forfeiture of ticket.'));
    }
     //logit('Country: ' + widget.passengerDetail.country);
 
-   if (gblSettings.aircode == 'T6' && widget.passengerDetail.country == 'Philippines') {
+   if (gblSettings.aircode == 'T6' && widget.passengerDetail.country == 'Philippines' &&  widget.passengerDetail.paxType != PaxType.senior) {
      list.add(infoBox(
          'Persons with Disability availing of the 20% discount are required to present a PWD ID issued by the National Council on Disability Affairs (NCDA) or local government unit upon check-in or boarding.' +
         'This discount applies to the base fare, and does not apply to add-ons such as baggage allowance or inflight meals.' ));

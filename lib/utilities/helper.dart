@@ -611,6 +611,10 @@ refreshCurPage(){
 }
 
 commonPageInit(String pageName) {
+  if(gblNoNetwork == false){
+    // check no snackbar
+    hideSnackBarMessage();
+  }
   gblPayAction = pageName;
   gblActionBtnDisabled = false;
   gblError = '';

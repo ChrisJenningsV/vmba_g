@@ -1,5 +1,7 @@
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/mmb/widgets/apis.dart';
 import 'package:vmba/mmb/widgets/boardingPass.dart';
@@ -2601,6 +2603,28 @@ class CheckinBoardingPassesWidgetState
   }
 
   _displayCheckingDialog(PnrModel pnr, int journeyNo, int paxNo) {
+    Widget para1 = Text(      translate( "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."));
+    if(gblSettings.aircode == 'SI') {
+      para1 = RichText(
+        text: new TextSpan(
+          children: [
+            new TextSpan(
+              text: 'Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. ',
+              style: new TextStyle(color: Colors.black),
+            ),
+            new TextSpan(
+              text: 'Prohibited Items Notice.',
+              style: new TextStyle(color: Colors.blue,decoration: TextDecoration.underline),
+              recognizer: new TapGestureRecognizer()
+                ..onTap = () {
+                  launchUrl(Uri.parse('https://www.blueislands.com/media/cpdjyjlw/cap1402as_dangerousgoods_1920x1080_2018.jpg'));
+                },
+            ),
+          ],
+        ),
+      );
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -2610,8 +2634,7 @@ class CheckinBoardingPassesWidgetState
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-          Flexible(child:Text(
-                 translate( "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."))),
+          Flexible(child: para1          ),
               Padding(
                 padding: EdgeInsets.all(4),
               ),
