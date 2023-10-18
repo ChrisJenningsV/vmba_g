@@ -17,6 +17,7 @@ import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../components/networCheck.dart';
 import '../components/showDialog.dart';
+import '../components/vidAppBar.dart';
 import '../data/repository.dart';
 import '../main.dart';
 import '../mmb/viewBookingPage.dart';
@@ -69,25 +70,6 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       _netState = source;
       networkStateChange(_netState);
       // check network
-/*
-      switch(_netState.keys.toList()[0]){
-        case ConnectivityResult.mobile:
-        // 'Mobile: Online';
-          logit('Mobile: Online');
-          networkOnline();
-          break;
-        case ConnectivityResult.wifi:
-        // 'WiFi: Online';
-          logit('WiFi: Online');
-          networkOnline();
-          break;
-        case ConnectivityResult.none:
-        default:
-        // 'Offline';
-          logit('Offline');
-          networkOffline();
-      }
-*/
 
       //setState(() => gblNetState = source);
     });
@@ -147,6 +129,25 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
     });
   }
+/*
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        logit("h app in resumed");
+        break;
+      case AppLifecycleState.inactive:
+        logit("h app in inactive");
+        break;
+      case AppLifecycleState.paused:
+        logit("h app in paused");
+        break;
+      case AppLifecycleState.detached:
+        logit("h app in detached");
+        break;
+    }
+  }
+*/
 
   @override
   void dispose() {
@@ -345,7 +346,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
       return new Scaffold(
           extendBodyBehindAppBar: extendBodyBehindAppBar,
-          appBar:  new AppBar(
+          appBar:  new vidAppBar(
             elevation: elevation,
             centerTitle: gblCentreTitle,
 
@@ -427,7 +428,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
       return new Scaffold(
         extendBodyBehindAppBar: extendBodyBehindAppBar,
-        appBar: new AppBar(
+        appBar: new vidAppBar(
           elevation: elevation,
             centerTitle: gblCentreTitle,
             //brightness: gblSystemColors.statusBar,

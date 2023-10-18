@@ -2856,7 +2856,10 @@ class CheckinBoardingPassesWidgetState
 
     if (pnr.pNR.aPFAX == null) {
       pnr.pNR.names.pAX.forEach((p) {
-        paxList = pnr.pNR.names.pAX.where((p) => p.paxType != 'IN').toList();
+        //paxList = pnr.pNR.names.pAX.where((p) => p.paxType != 'IN').toList();
+        if( p.paxType != 'IN'){
+          paxList.add(p);
+        }
       });
     } else {
       pnr.pNR.names.pAX.forEach((p ) {
@@ -2868,8 +2871,8 @@ class CheckinBoardingPassesWidgetState
                 ap.text.contains(pnr.pNR.itinerary.itin[journey].cityPair)){
                 found = true;
             }
-             if(found == false ) paxList.add(p);
           });
+          if(found == false ) paxList.add(p);
         }
            /* pnr.pNR.aPFAX.aFX.firstWhere(
                     (ap) =>

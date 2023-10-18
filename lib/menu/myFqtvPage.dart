@@ -512,89 +512,11 @@ if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
 
     widgets.add(vidWideActionButton(context, 'Show Transactions', _showTransactions, wantIcon: false));
     widgets.add(vidWideActionButton(context, 'Refresh Points', _reloadPoints, wantIcon: false));
- /*   widgets.add(ElevatedButton(
-      onPressed: () {
-        isPending = false;
-        _showTransactions();
-      },
-      style: ElevatedButton.styleFrom(
-          primary: gblSystemColors
-              .primaryButtonColor, //Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0))),
-      child:
-          TrText(
-            'Show Transactions',
-            style: TextStyle(color: Colors.white),)
-    ));*/
+
     widgets.add(vidWideActionButton(context, 'Show Pending Transactions', _showPendingTransactions, wantIcon: false));
-/*
-    widgets.add(ElevatedButton(
-        onPressed: () {
-          isPending = true;
-          _showPendingTransactions();
-        },
-        style: ElevatedButton.styleFrom(
-            primary: gblSystemColors
-                .primaryButtonColor, //Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0))),
-        child:
-        TrText(
-          'Show Pending Transactions',
-          style: TextStyle(color: Colors.white),)
-    ));
-*/
     widgets.add(vidWideActionButton(context, 'Change Password', _changePasswordDialog, wantIcon: false));
-
- /*   widgets.add(ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: gblSystemColors
-                .primaryButtonColor, //Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0))),
-        child: TrText("Change Password"),
-        onPressed: () {
-          _changePasswordDialog();
-          //Navigator.of(context).pop();
-        }));
-*/
     widgets.add(vidWideActionButton(context, 'Book a flight', _bookAFlight, wantIcon: false));
- /*   widgets.add(ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          primary: gblSystemColors
-              .primaryButtonColor, //Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0))),
-      child: TrText("Book a flight"),
-      onPressed: () {
-        List<String> args = [];
-        args.add('wantRedeemMiles');
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/FlightSearchPage', (Route<dynamic> route) => false, arguments: args);
-      },
-    ));
-*/
     widgets.add(vidWideActionButton(context, 'Logout', _logout, wantIcon: false));
-
- /*   widgets.add(ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          primary: gblSystemColors
-              .primaryButtonColor, //Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0))),
-      child: TrText("Logout"),
-      onPressed: () {
-        gblFqtvNumber = "";
-        widget.passengerDetail.fqtv = '';
-        fqtvNo = '';
-        fqtvEmail = '';
-        fqtvPass = '';
-        gblFqtvBalance = 0;
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/HomePage', (Route<dynamic> route) => false);
-      },
-    ));*/
 
     if(_error != null && _error.isNotEmpty){
       widgets.add(Text(_error));
@@ -602,14 +524,6 @@ if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
 
     if( transactions != null ) {
           widgets.add(_getTrans());
- /*     widgets.add(new SingleChildScrollView(
-        padding: EdgeInsets.only(left: 1.0, right: 1.0),
-        scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-            child: _getTrans()
-        ),
-      ));*/
    }
     return widgets;
   }
@@ -654,7 +568,7 @@ Widget _getTrans() {
         list.add(Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            tran.flightDate  == null ? Text('') : Text(DateFormat(
+            (tran.flightDate  == null || tran.flightDate.startsWith('0001')) ? Text('no date') : Text(DateFormat(
                 'dd MMM yyyy').format(DateTime.parse(tran.flightDate)), textScaleFactor: 1.2,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             Text(' '),
@@ -666,7 +580,7 @@ Widget _getTrans() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 2023-01-18T00:00:00
-            tran.transactionDateTime == null ? Text('') : Text(DateFormat(
+            (tran.transactionDateTime == null || tran.transactionDateTime.startsWith('000')) ? Text('') : Text(DateFormat(
                 'dd MMM yyyy').format(DateTime.parse(tran.transactionDateTime)), textScaleFactor: 1.2,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             Text(' '),
@@ -675,37 +589,33 @@ Widget _getTrans() {
       }
 
       if( tran.flightNumber.isNotEmpty ) {
-        list.add(Row(
-          children: [
-            //Padding(padding: EdgeInsets.only(right: 8.0),child: Icon(Icons.favorite,color: Colors.green,),),
-            Text(tran.flightNumber),
-            Text(' '),
-            Text(tran.departureCityCode,),
-            Text(' '),
-            Text(tran.arrivalCityCode),
-            Text(' '),
-            if(tran.flightDate.isNotEmpty &&
-                (!tran.flightDate.startsWith(('0001'))) )Text(
-                DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate))),
-          ],));
+        String fltDate = '';
+        if(tran.flightDate.isNotEmpty &&
+            (!tran.flightDate.startsWith(('0001'))) ) {
+            fltDate = DateFormat('ddMMMyy').format(DateTime.parse(tran.flightDate));
+        }
+          list.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //Padding(padding: EdgeInsets.only(right: 8.0),child: Icon(Icons.favorite,color: Colors.green,),),
+              Text('${tran.flightNumber} ${tran.departureCityCode} ${tran.arrivalCityCode} $fltDate' ),
+
+              (getAirMilesDisplayValue(tran.airMiles) != '') ?Text(getAirMilesDisplayValue(tran.airMiles), textScaleFactor: 1.2,
+                style: TextStyle(fontWeight: FontWeight.bold),): Text(''),
+            ],));
       }
 
   list.add(Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
   Expanded(
   child: Container(
-  child: Text(tran.description ,
-  maxLines: 5, overflow: TextOverflow.ellipsis,)))]));
+  child: Text( tran.description ,
+  maxLines: 5, overflow: TextOverflow.ellipsis,))),
+    tran.flightNumber.isNotEmpty? Text('') : Text(getAirMilesDisplayValue(tran.airMiles), textScaleFactor: 1.2,
+      style: TextStyle(fontWeight: FontWeight.bold),)
+  ]));
 
-  // third row
-  if( getAirMilesDisplayValue(tran.airMiles) != '') {
-    list.add(Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(getAirMilesDisplayValue(tran.airMiles), textScaleFactor: 1.2,
-          style: TextStyle(fontWeight: FontWeight.bold),),
-      ],
-    ));
-  }
 
   list.add(Divider(color: Colors.grey, height: 6.0,),);
 
@@ -876,6 +786,7 @@ Widget _getTrans() {
         widget.joiningDate = fqtvLoginReply.joiningDate;
         //DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate))
         gblError ='';
+        _error = '';
         _isButtonDisabled = false;
         _loadingInProgress = false;
         _actionCompleted();
@@ -893,7 +804,8 @@ Widget _getTrans() {
         _loadingInProgress = false;
         //_actionCompleted();
         endProgressMessage();
-        criticalErrorPage(context, gblError, title: 'Login Error');
+        criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true, doublePop: true);
+        //Navigator.of(context).pop();
         print(gblError);
         _error = gblError;
         //_showDialog();
@@ -903,12 +815,14 @@ Widget _getTrans() {
       fqtvPass = '';
 
       _error = e.toString();
+      gblError = _error;
       _isButtonDisabled = false;
       _loadingInProgress = false;
       //_actionCompleted();
       //_showDialog();
       endProgressMessage();
-      criticalErrorPage(context, gblError, title: 'Login Error');
+      criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true);
+      //Navigator.of(context).pop();
       return;
     }
 
@@ -957,6 +871,11 @@ Widget _getTrans() {
      } else {
        title = 'Awarded Transactions';
        transactions = resp.transactions;
+       if( transactions != null && transactions!.length > 0) {
+         transactions?.sort((a, b) {
+           return b.transactionDateTime.compareTo(a.transactionDateTime);
+         } );
+       }
        setState(() {
        });
      }
@@ -996,6 +915,11 @@ Widget _getTrans() {
         } else {
           title = 'Pending Transactions';
           transactions = resp.transactions;
+          if( transactions != null && transactions!.length > 0) {
+            transactions?.sort((a, b) {
+              return b.transactionDateTime.compareTo(a.transactionDateTime);
+            } );
+          }
           setState(() {});
         }
       }

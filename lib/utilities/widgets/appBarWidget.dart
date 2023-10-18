@@ -5,6 +5,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
 import '../../Products/productFunctions.dart';
 import '../../calendar/bookingFunctions.dart';
+import '../../components/vidAppBar.dart';
 import '../../data/models/pnr.dart';
 import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';

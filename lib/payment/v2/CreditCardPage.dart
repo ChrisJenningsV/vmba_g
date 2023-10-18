@@ -783,6 +783,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', ''));
 
+        if(response.body.contains('ERROR:') ){
+
+          throw(map['errorMsg']);
+        }
+
         String result = map['data'];
         return result;
       }

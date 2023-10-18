@@ -25,6 +25,7 @@ class MessagePage extends StatefulWidget {
     this.isHtml=false,
     this.displayFormat='',
     this.onOk,
+    this.doublePop=false,
   }) : super(key: key);
 
   final String action;
@@ -38,6 +39,7 @@ class MessagePage extends StatefulWidget {
   Color? titleTextClr;
   IconData? icon;
   bool isHtml=false;
+  bool doublePop = false;
   String displayFormat ='';
   void Function(dynamic p)? onComplete;
   String Function(dynamic p, String user, String pw)? onOk;
@@ -168,6 +170,9 @@ class MessagePageState extends State<MessagePage> {
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
                   Navigator.of(context).pop();
+                  if( widget.doublePop) {
+                    Navigator.of(context).pop();
+                  }
                 },
               ),
               ElevatedButton(
@@ -375,7 +380,7 @@ Widget criticalErrorWidget(BuildContext context, String msg, {String title='', b
       actions: actionList );
 }
 
-void criticalErrorPage(BuildContext context, String msg, {String title='', bool wantButtons=false}){
+void criticalErrorPage(BuildContext context, String msg, {String title='', bool wantButtons=false, bool doublePop=false}){
   List<Widget>? actionList ;
   if( wantButtons != null && wantButtons == false) {
     actionList = [];
@@ -391,7 +396,9 @@ void criticalErrorPage(BuildContext context, String msg, {String title='', bool 
         icon: Icons.close,
         titleBackClr: Colors.red,
         displayFormat: '1',
-        title: title,))
+        title: title,
+          doublePop: doublePop,
+        ))
   );
 }
 

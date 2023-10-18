@@ -21,7 +21,7 @@ class RootPage extends StatefulWidget {
   State<StatefulWidget> createState() => new RootPageState();
 }
 
-class RootPageState extends State<RootPage> {
+class RootPageState extends State<RootPage> with WidgetsBindingObserver {
   Map _source = {ConnectivityResult.none: false};
   MyConnectivity _connectivity = MyConnectivity.instance;
 
@@ -63,6 +63,8 @@ class RootPageState extends State<RootPage> {
     }
     );
     //   loadData();
+    WidgetsBinding.instance.addObserver(this);
+
   }
 
   retryLoadData() {
@@ -320,6 +322,31 @@ class RootPageState extends State<RootPage> {
       return new HomePage();
     }
   }
+
+ /* @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        logit("app in resumed");
+        break;
+      case AppLifecycleState.inactive:
+        logit("app in inactive");
+        break;
+      case AppLifecycleState.paused:
+        logit("app in paused");
+        break;
+      case AppLifecycleState.detached:
+        logit("app in detached");
+        break;
+    }
+  }
+*/
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
 }
 Future<void> initFirebase(BuildContext context) async {
 
