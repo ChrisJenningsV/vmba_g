@@ -382,7 +382,13 @@ class _CreditCardPageState extends State<CreditCardPage> {
             var cmd = "EZT*R~x";
             if (widget.mmbAction == 'CHANGEFLT') {
               // get tickets
-              cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R~x"; // server exception
+              // widget.mmbBooking!.journeyToChange
+              if(hasValidTkt(widget.mmbBooking!.journeyToChange) ){
+                cmd = "EZV*[E][ZWEB]^EZT*R^EMT*R^E*R~x"; // server exception
+
+              } else {
+                cmd = "EZT*R^EMT*R^E*R~x"; // server exception
+              }
               //cmd = "EZV*[E][ZWEB]^E*R~x"; // good, no tickets
               //cmd = "EZV*[E][ZWEB]^EZT*R~x"; // good
               //cmd = "EZV*[E][ZWEB]^EZT^EMT*R~x"; //
@@ -759,6 +765,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
       showAlertDialog(context, 'Error', _error);
     }
   }
+bool hasValidTkt(int journeyToChange){
+    bool bFound = false;
+    widget.pnrModel.pNR.tickets.tKT.forEach((t) {
+      if( t.segNo == journeyToChange && t.tktFor!= 'MPD' ) {
+        bFound = true;
+      }
+    });
+    return bFound;
+  }
+
 
   Future<String?> sendVarsCommand(String msg) async {
 
@@ -1326,8 +1342,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
   String getTicketingCmd() {
     var buffer = new StringBuffer();
-    if (widget.isMmb) {
+    if (widget.isMmb && hasValidTkt(widget.mmbBooking!.journeyToChange)) {
       buffer.write(nostop);
+
       buffer.write('EZV*[E][ZWEB]^');
     }
     buffer.write('EZT*R^*R~x');

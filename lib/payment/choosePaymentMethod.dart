@@ -961,12 +961,25 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     //   }
     // });
   }
+  bool hasValidTkt(int journeyToChange){
+    bool bFound = false;
+    widget.pnrModel.pNR.tickets.tKT.forEach((t) {
+      if( t.segNo == journeyToChange && t.tktFor!= 'MPD' ) {
+        bFound = true;
+      }
+    });
+    return bFound;
+  }
 
   Future ticketBooking() async {
     if(gblLogPayment) { logit('CPM:ticketBooking');}
     String msg = '*${widget.mmbBooking!.rloc}^';
     msg += nostop;
-    msg += 'EZV*[E][ZWEB]^EZT*R~x';
+    if (hasValidTkt(widget.mmbBooking!.journeyToChange)) {
+      msg += 'EZV*[E][ZWEB]^EZT*R~x';
+    } else {
+      msg += 'EZT*R~x';
+    }
     gblCurrentRloc = widget.mmbBooking!.rloc;
 
   /*  response = await http

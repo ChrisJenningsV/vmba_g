@@ -639,11 +639,20 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       hasDataConnection().then((result) async {
         if (result == true) {
             if( gblSettings.wantDangerousGoods == true ){
+
+              if( passengerDetailRecord ==  null ){
+                logit('passengerDetailRecord is null ');
+                passengerDetailRecord = PassengerDetail();
+              } else {
+                logit('passengerDetailRecord has value');
+              }
+
               Navigator.push(
                   context,
                   SlideTopRoute(
-                      page: DangerousGoodsWidget( preLoadDetails: preLoadDetails, newBooking: widget.newBooking, passengerDetailRecord: passengerDetailRecord, ))).then((passengerDetails) {
-                //updatePassengerDetails(passengerDetails, paxNo - 1);
+                      page: DangerousGoodsWidget( preLoadDetails: preLoadDetails, newBooking: widget.newBooking, passengerDetailRecord: passengerDetailRecord, ))
+              ).then((passengerDetails) {
+                logit('return from DG');
               });
             } else {
 

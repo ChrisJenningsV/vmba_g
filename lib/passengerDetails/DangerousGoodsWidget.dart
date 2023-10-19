@@ -7,6 +7,9 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../components/showDialog.dart';
+import '../utilities/helper.dart';
+
 //ignore: must_be_immutable
 class DangerousGoodsWidget extends StatefulWidget {
   bool preLoadDetails = false;
@@ -78,6 +81,16 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
       onPressed: () async {
         if( _buttonEnabled == true ) {
           if( widget.newBooking != null ) {
+            logit('has newBooking - go to CDW');
+            if( widget.newBooking == null){
+              logit('widget.newBooking == null');
+              showAlertDialog(context, 'Alert', 'NB Error in data');
+            }
+            if( widget.passengerDetailRecord == null ){
+              logit('widget.passengerDetailRecord == null');
+              showAlertDialog(context, 'Alert', 'PDR Error in data');
+
+            }
             var _error = await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -89,6 +102,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
                         )));
             print(_error);
           } else {
+            logit('no newBooking');
             continuePass = true;
             Navigator.pop(context, continuePass);
           }
