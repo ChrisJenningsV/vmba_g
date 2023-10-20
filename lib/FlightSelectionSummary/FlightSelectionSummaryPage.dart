@@ -345,7 +345,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     List <Row> rows = [];
 
-    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+   // if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         if(  paxTax.separate == 'true'){
             sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
@@ -353,7 +353,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           tax += (double.tryParse(paxTax.amnt) ?? 0.0);
         }
       });
-    }
+    //}
     rows.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -417,11 +417,11 @@ Row airMiles() {
         0.0);
     double tax = 0.0;
 
-    if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+ //   if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
         tax += (double.tryParse(paxTax.amnt) ?? 0.0);
       });
-    }
+   // }
 
     double netFareTotal = total - tax;
 
@@ -451,12 +451,11 @@ Row airMiles() {
           total += double.tryParse(d.tax1) as double;
           total += double.tryParse(d.tax2) as double;
           total += double.tryParse(d.tax3) as double;
-          if (d.disc != null && d.disc != '') {
-            if( d.disc != null && d.disc != '' ) {
+            if( d.disc != '' ) {
               d.disc
                   .split(',')
                   .forEach((disc) {
-                    if( disc != null ) {
+                    if( disc != '' ) {
                       total += double.tryParse(disc) as double;
                     }
                   }
@@ -464,7 +463,7 @@ Row airMiles() {
 
               // total += double.tryParse(d.disc ?? 0.0);
             }
-          }
+
         });
 
       }
@@ -493,7 +492,7 @@ Row airMiles() {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          if( d.disc != null && d.disc != '') {
+          if( d.disc != '') {
             d.disc
                 .split(',')
                 .forEach((disc) => total += double.tryParse(disc) as double);
@@ -641,7 +640,7 @@ Row airMiles() {
       );
       double taxTotal = 0.0;
 
-      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+ //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
         this
             .pnrModel
             .pNR
@@ -654,7 +653,7 @@ Row airMiles() {
                 taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
               }
         });
-      }
+  //    }
       if (taxTotal != 0.0) {
         widgets.add(
           Row(
@@ -670,7 +669,7 @@ Row airMiles() {
       double sepTax1 = 0.0;
       String desc1 = '';
 
-      if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+ //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
         this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
           if(  paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()){ //
             if( desc1 == '' || desc1 == paxTax.desc) {
@@ -679,7 +678,7 @@ Row airMiles() {
             }
           }
         });
-      }
+ //     }
       if (sepTax1 != 0.0) {
         widgets.add(
           Row(
@@ -818,7 +817,7 @@ Row airMiles() {
               ],
             ),
           ));
-    } else if (_error != null && _error.isNotEmpty) {
+    } else if (_error != '' && _error.isNotEmpty) {
       return criticalErrorPageWidget( context, _error,title: 'Booking Error', onComplete:  onComplete);
     } else {
 

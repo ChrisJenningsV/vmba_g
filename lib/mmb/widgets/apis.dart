@@ -487,11 +487,14 @@ class _ApisWidgetState extends State<ApisWidget> {
           title: new Text(field.displayname),
           content: Container(
             width: double.maxFinite,
-            child: new Column(
+            child: new ListView(
+              children: optionList(sectionname, field.choices, field.displayname),
+            ),
+ /*           child: new Column(
               mainAxisSize: MainAxisSize.min,
               children:
                   optionList(sectionname, field.choices, field.displayname),
-            ),
+            ),*/
           ),
         );
       },

@@ -16,12 +16,6 @@
         //     "type": "dart",
         //     "program": "lib/main_si.dart"
         // },
-        // {
-        //     "name": "IbomAir",
-        //     "request": "launch",
-        //     "type": "dart",         
-        //     "program": "lib/main_z4.dart"
-        // },
         {
             "name": "Loganair",
             "request": "launch",

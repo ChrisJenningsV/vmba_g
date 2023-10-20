@@ -35,6 +35,10 @@ class ApisModel {
           if (field.fieldtype == 'Choice' && field.choices != null) {
             sb.write("<choices>");
             field.choices.choice.forEach((choice) {
+              if(choice.description.contains(' \& ')){
+                logit( ' contains & ${choice.description} ${choice.description.contains(' \& ')}');
+                choice.description = choice.description.replaceAll(' & ', ' &amp; ');
+              }
               sb.write(
                   "<choice value=\"${choice.value}\" description=\"${choice.description}\" ");
               if (choice.passportexpiry != null) {

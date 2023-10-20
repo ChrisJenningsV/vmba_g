@@ -72,13 +72,13 @@ Future<bool> onWillPop(BuildContext context) async {
 }
 
 bool pnrCompleted() {
-  if( gblPnrModel != null && gblPnrModel!.pNR.payments != null && gblPnrModel!.pNR.payments.fOP.length >0 ){
+  if( gblPnrModel != null &&  gblPnrModel!.pNR.payments.fOP.length >0 ){
     return true;
   }
   return false;
 }
 bool pnrHasTTL() {
-  if( gblPnrModel != null && gblPnrModel!.pNR.timeLimits != null && gblPnrModel!.pNR.timeLimits.tTL != null ){
+  if( gblPnrModel != null &&   gblPnrModel!.pNR.timeLimits.tTL.tTLID !='' ){
     return true;
   }
   return false;
@@ -87,7 +87,7 @@ bool pnrHasTTL() {
 
 
 Future deletePnrContent() async {
-  if( gblPnrModel != null &&  gblPnrModel!.pNR.rLOC != null && gblPnrModel!.pNR.rLOC.isNotEmpty){
+  if( gblPnrModel != null &&  gblPnrModel!.pNR.rLOC != '' && gblPnrModel!.pNR.rLOC.isNotEmpty){
     String msg = '';
     String data = '';
       gblPnrModel!.pNR.itinerary.itin.reversed.forEach((flt) {

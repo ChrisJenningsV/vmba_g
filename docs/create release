@@ -2,7 +2,6 @@ In directory vmba
 # set up flavor
 edit data/globals.dart
 # set up correct images
-flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 # check androidid correct in build.gradle
 #  android\app\build.gradle
 
@@ -15,7 +14,6 @@ flutter pub run flutter_launcher_icons:main -f launch_icons_ibom.yaml
 # Modify the flavor parameter as required (set to airleap in this example)
 flutter build appbundle -t lib/main.dart --flavor airleap
 flutter build appbundle -t lib/main.dart --flavor loganair
-flutter build appbundle -t lib/main.dart --flavor ibomair
 flutter build appbundle -t lib/main.dart --flavor airswift
 flutter build appbundle -t lib/main.dart --flavor buraq
 flutter build appbundle -t lib/main.dart --flavor blueislands

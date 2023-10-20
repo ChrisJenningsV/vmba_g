@@ -30,7 +30,6 @@ import 'main_fl.dart';
 import 'main_hiSky.dart';
 import 'main_lm.dart';
 import 'main_medSky.dart';
-import 'main_qi.dart';
 import 'main_si.dart';
 import 'main_t6.dart';
 import 'main_gotland.dart';
@@ -87,9 +86,6 @@ void main() async {
         break;
       case 'FL':
         configFL();
-        break;
-      case 'QI':
-        configQI();
         break;
       case 'SI':
         configSI();

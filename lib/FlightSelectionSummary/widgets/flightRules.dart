@@ -106,7 +106,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
   Widget displayRules() {
     List<Widget> rulesWidget = [];
 
-    if( fareRulesPerSegment == null || fareRulesPerSegment.length == 0 ) {
+    if(  fareRulesPerSegment.length == 0 ) {
       rulesWidget.add(TrText('No rules found'));
     } else {
       fareRulesPerSegment.asMap().forEach((index, list) {

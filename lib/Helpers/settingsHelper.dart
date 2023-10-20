@@ -23,7 +23,7 @@ void setLiveTest() {
     gblSettings.apiUrl = gblSettings.testApiUrl;
     gblSettings.smartApiUrl = gblSettings.testSmartApiUrl;
     gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
-    if( gblSettings.testServerFiles != null && gblSettings.testServerFiles.isNotEmpty){
+    if( gblSettings.testServerFiles != '' && gblSettings.testServerFiles.isNotEmpty){
       gblSettings.gblServerFiles = gblSettings.testServerFiles;
     }
   }
