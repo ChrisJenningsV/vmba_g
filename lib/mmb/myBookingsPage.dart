@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
@@ -495,6 +496,9 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                   textCapitalization: TextCapitalization.characters,
                   //maxLength: 6,
                   decoration: getDecoration(translate("Enter your booking reference")),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[0-9A-Za-z]"))
+                  ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return translate('Please enter a booking reference');

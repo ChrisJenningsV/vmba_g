@@ -103,7 +103,7 @@ void configUZ() {
   adults: true,
   child: true,
   infant: true,
-  youths: true,
+  youths: false,
       wantYouthDOB: true,
 
   ),
@@ -164,6 +164,7 @@ void configUZ() {
   testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
   wantPayStack: false,
+  wantApis: true,
   wantPageImages: false,
   wantLeftLogo: false,
   wantCurrencySymbols: true,

@@ -1110,6 +1110,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
         _userProfileRecordList.add(_profileRecord);
         Repository.get().updateUserProfile(_userProfileRecordList);
+        gblPassengerDetail = widget.passengerDetail;
         Navigator.pop(context, widget.passengerDetail);
         //     Navigator.pop(context, widget.passengerDetail);
       } else {

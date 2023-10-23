@@ -383,7 +383,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             keyboardType: TextInputType.text,
             controller: _adsNumberTextEditingController,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
+              FilteringTextInputFormatter.allow(RegExp("[0-9adsADSresRES]"))
             ],
             onFieldSubmitted: (value) {
               widget.passengerDetail.adsNumber = value;
@@ -391,7 +391,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'An ADS number is required';
-              } else if (!value.toUpperCase().startsWith('ADS') ||
+              } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
                   value.length != 16 ||
                   !isNumeric(value.substring(3))) {
                 return 'ADS not valid';

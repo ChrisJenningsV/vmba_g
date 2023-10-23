@@ -99,6 +99,7 @@ void configT6() {
     wantFindBookings: true,
     wantClassBandImages: true,
     wantCountry: true,
+    wantApis: false,
     wantTallPageImage: true,
     //pageStyle: 'V2',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',

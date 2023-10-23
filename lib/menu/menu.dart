@@ -218,7 +218,7 @@ class DrawerMenu extends StatefulWidget {
 
     // contact us
     if( gblNoNetwork == false &&
-        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.contactUsUrl != null)) {
+        (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.contactUsUrl != '')) {
       list.add(ListTile(
         dense: dense,
     title: _getMenuItem( Icons.phone, 'Contact us' ),

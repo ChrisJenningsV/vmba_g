@@ -54,7 +54,7 @@ void configU5() {
 //    latestBuildAndroid: '1.0.0.98',
     paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
     wantRememberMe: false,
-    wantApis: true,
+    wantApis: false,
 //    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
     currencies: 'ng,NGN,us,USD',
@@ -125,13 +125,13 @@ void configU5() {
 
     testPayPage: 'https://customertest.videcom.com/unitednigeria/VARS/Public/MobilePaymentStart.aspx',
 
-    //testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+   // testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/unitednigeria/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 //       testSmartApiUrl:      "http://10.0.2.2:62559/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/unitednigeria/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/unitednigeria/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/unitednigeria/VARS/webApiv2/api/',
-//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+  // testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
     creditCardProvider: '3DS_videcard',
@@ -140,7 +140,7 @@ void configU5() {
     displayErrorPnr: false,    // just for test, to display pnr problems
     wantPayStack: false,
     wantPageImages: false,
-    wantLeftLogo: true,
+    wantLeftLogo: false,
     wantCurrencySymbols: true,
     wantMyAccount: true,
     wantFQTV: false,
@@ -159,7 +159,7 @@ void configU5() {
     productImageMode: 'none',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
-    wantEnglishTranslation: true,
+    wantEnglishTranslation: false,
     wantBpLogo: false,
     defaultCountryCode: 'ZA',
 

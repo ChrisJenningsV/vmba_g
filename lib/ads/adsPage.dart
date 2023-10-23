@@ -44,7 +44,7 @@ class _AdsPageState extends State<AdsPage> {
           child: TrText('Accept', style: new TextStyle(color: gblSystemColors.primaryButtonTextColor),)),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  backgroundColor: Colors.grey,
               ),
               onPressed:() {
                 Navigator.of(context).pushNamedAndRemoveUntil(

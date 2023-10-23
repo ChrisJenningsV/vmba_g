@@ -619,7 +619,7 @@ Widget getFirstname() {
           keyboardType: TextInputType.text,
           controller: _adsNumberTextEditingController,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
+            FilteringTextInputFormatter.allow(RegExp("[0-9adsADSRESres]"))
           ],
           onFieldSubmitted: (value) {
             widget.passengerDetail.adsNumber = value;
@@ -627,7 +627,7 @@ Widget getFirstname() {
           validator: (value) {
             if (value!.isEmpty) {
               return 'An ADS number is required';
-            } else if (!value.toUpperCase().startsWith('ADS') ||
+             } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
                 value.length != 16 ||
                 !isNumeric(value.substring(3))) {
               return 'ADS not valid';
@@ -643,7 +643,7 @@ Widget getFirstname() {
         ),
       ));
     }
-    if(widget.isAdsBooking && widget.isLeadPassenger) {
+    if(widget.isAdsBooking ) {
       list.add( Padding(
         padding: _padding,
         child: TextFormField(
@@ -675,6 +675,7 @@ Widget getFirstname() {
         ),
       ));
     }
+/*
 
     if(widget.isAdsBooking) {
       list.add(Padding(
@@ -711,6 +712,7 @@ Widget getFirstname() {
         ),
       ));
     }
+*/
 
 
     if( widget.isLeadPassenger) {
@@ -1105,21 +1107,6 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
       //_loadingInProgress = true;
     });
 
-//ZADSVERIFY/ADS4000000153501/7978
-
-  /*  http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}'"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      //return new ParsedResponse(NO_INTERNET, []);
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      //return new ParsedResponse(response.statusCode, []);
-    }*/
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
@@ -1347,7 +1334,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      if (widget.isAdsBooking && widget.isLeadPassenger) {
+      if (widget.isAdsBooking /*&& widget.isLeadPassenger */ && widget.passengerDetail.adsNumber != '') {
         adsValidate();
       } else {
         try {

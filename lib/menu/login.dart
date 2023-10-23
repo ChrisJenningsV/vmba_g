@@ -35,6 +35,15 @@ class _LoginPageState extends State<LoginPage> {
   initState() {
     super.initState();
     _btnDisabled = false;
+
+    if( gblPassengerDetail != null ){
+      _adsNumberTextEditingController.text = gblPassengerDetail!.adsNumber;
+      _adsPinTextEditingController.text = gblPassengerDetail!.adsPin;
+
+    }
+    //
+
+
   }
 
   @override

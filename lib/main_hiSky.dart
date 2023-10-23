@@ -94,7 +94,7 @@ void configH4() {
     bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
-    wantApis: false,
+    wantApis: true,
     wantMmbProducts: true,
     wantProducts: true,
     wantStatusLine: true,
@@ -104,7 +104,7 @@ void configH4() {
       adults: true,
       child: true,
       infant: true,
-      youths: true,
+      youths: false,
       wantYouthDOB: true,
 
     ),

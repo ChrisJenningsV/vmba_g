@@ -770,7 +770,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     this.widget.newbooking.passengerDetails.asMap().forEach((index, pax) {
       if (pax.adsNumber != null && pax.adsNumber != '' && index != 0) {
-        sb.write('4-${index + 1}FADSU${pax.adsNumber}^');
+        sb.write('4-${index + 1}FADSU${pax.adsNumber}/${this.widget.newbooking.ads.pin}^');
       }
     });
 
