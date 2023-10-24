@@ -192,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
   Future _checkAdsLogin() async {
 
     try {
+      logit('adsValidate L');
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController
         .text}/${_adsPinTextEditingController.text}');
     String adsJson;

@@ -326,7 +326,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     String msg = '';
     // if using VRS sessions/AAA clear out temp booking
 
-    print('gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
+    print('makeBooking gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
     if(gblSettings.useWebApiforVrs ) msg = 'I^';
 
     msg += buildAddPaxCmd();
@@ -681,6 +681,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   void _dataLoaded() {
     setState(() {
       endProgressMessage();
+      gblActionBtnDisabled = false;
       _displayProcessingIndicator = false;
     });
   }

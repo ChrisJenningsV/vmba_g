@@ -81,6 +81,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   @override
   initState() {
     gblCurPage = 'VIEWBOOKING';
+    gblActionBtnDisabled = false;
     gblError = '';
     gblPaymentMsg = '';
     if(widget.rloc == null || widget.rloc == ''){
@@ -998,6 +999,7 @@ class CheckinBoardingPassesWidgetState
       String reply = await callSmartApi('REFUND', data);
       Map<String, dynamic> map = json.decode(reply);
       RefundReply refundRs = new RefundReply.fromJson(map);
+      gblActionBtnDisabled = false;
       if( refundRs.success == true ) {
         showAlertDialog(context, 'Refund', 'Refund successful');
       } else {

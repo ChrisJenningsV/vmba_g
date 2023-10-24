@@ -11,6 +11,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
@@ -66,6 +67,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   @override
   initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     if( gblSettings.wantPageImages) {
    //   _loadBgCityImage();
     }
@@ -920,11 +922,16 @@ Widget getFirstname() {
      children: [
        TextButton(
          style: TextButton.styleFrom(
-             backgroundColor: gblSystemColors.primaryButtonColor ,
+             backgroundColor: actionButtonColor(),
              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
              primary: gblSystemColors.primaryButtonTextColor),
          onPressed: () {
-           validateAndSubmit();
+           if( gblActionBtnDisabled == false) {
+             setState(() {
+               gblActionBtnDisabled = true;
+             });
+             validateAndSubmit();
+           }
          },
          child: Text( '    ' + translate('SAVE') + '    '),
        ),
@@ -1106,7 +1113,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     setState(() {
       //_loadingInProgress = true;
     });
-
+    logit('adsValidate E');
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
@@ -1119,14 +1126,17 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
-        print('Login success');
+        print('ADS Login success');
+        gblActionBtnDisabled = false;
         Navigator.pop(context, widget.passengerDetail);
       } else {
         _error = 'Please check your details';
+        gblActionBtnDisabled = false;
         _actionCompleted();
         _showDialog();
       }
     } catch (e) {
+      gblActionBtnDisabled = false;
       _actionCompleted();
       _showDialog();
     }
@@ -1335,9 +1345,10 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       if (widget.isAdsBooking /*&& widget.isLeadPassenger */ && widget.passengerDetail.adsNumber != '') {
-        adsValidate();
+        await adsValidate();
       } else {
         try {
+          gblActionBtnDisabled = false;
           Navigator.pop(context, widget.passengerDetail);
         } catch (e) {
           print('Error: $e');

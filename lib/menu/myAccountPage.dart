@@ -935,8 +935,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       case PaxType.adult:
         {
           _initialDateTime = DateTime.now();
-          _minimumDate = DateTime( 110, 0, 0 );
-
+          _minimumDate = DateTime.now().subtract(new Duration(days: 365 * 110));
         }
         break;
       default:
@@ -951,13 +950,27 @@ class _MyAccountPageState extends State<MyAccountPage> {
     _minimumYear = _minimumDate.year;
     _maximumYear = _initialDateTime.year;
 
+    if ( widget.passengerDetail != null &&  widget.passengerDetail?.dateOfBirth != null  ){
+      _initialDateTime = widget.passengerDetail?.dateOfBirth as DateTime;
+    }
+
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    bool isDark = brightnessValue == Brightness.dark;
+    Color bgColour = Colors.white;
+    Color txtColor = Colors.black;
+    if (isDark) {
+      bgColour = Colors.black;
+      txtColor = Colors.white;
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.all(0),
-          title: new TrText('Date of Birth'),
+          backgroundColor: bgColour,
+          title: new TrText('Date of Birth', style: TextStyle(color: txtColor),),
           content: SizedBox(
               //padding: EdgeInsets.all(1),
               height: MediaQuery.of(context).copyWith().size.height / 3,
@@ -970,6 +983,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   ),
                 ),
                 child: CupertinoDatePicker(
+                  backgroundColor: bgColour,
+
                   initialDateTime: _initialDateTime,
                   onDateTimeChanged: (DateTime newValue) {
                     setState(() {
@@ -987,6 +1002,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
               )),
           actions: <Widget>[
             new TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor:bgColour ,
+                  side: BorderSide(color:  txtColor, width: 1),
+                  primary:txtColor),
               child: new TrText("Ok"),
               onPressed: () {
                 Navigator.pop(context, dateTime);
@@ -1003,6 +1022,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     setState(() {
       _dobController.text =
           DateFormat('dd-MMM-yyyy').format(dateOfBirth);
+      widget.passengerDetail?.dateOfBirth = dateOfBirth;
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
@@ -1087,6 +1107,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       //return new ParsedResponse(response.statusCode, []);
     }*/
 
+    logit('adsValidate A');
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
@@ -1099,7 +1120,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
-        print('Login success');
+        print('ADS Login success');
 
         List<UserProfileRecord> _userProfileRecordList = [];
         UserProfileRecord _profileRecord = new UserProfileRecord(

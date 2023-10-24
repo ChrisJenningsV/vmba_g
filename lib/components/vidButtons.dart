@@ -33,7 +33,12 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
 
   return
      TextButton(
-      onPressed: () => onPressed(p1: p1) ,
+      onPressed: () {
+        if( gblActionBtnDisabled == false ) {
+          gblActionBtnDisabled = true;
+          onPressed(p1: p1);
+        }
+      } ,
       style: TextButton.styleFrom(
           side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
           primary: gblSystemColors.textButtonTextColor),
@@ -101,7 +106,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   child:
     ElevatedButton(
     onPressed: () {
-      if( availableOffline == true || gblNoNetwork == false) {
+      if(gblActionBtnDisabled == false &&  availableOffline == true || gblNoNetwork == false) {
         onPressed(context, param1);
       }
     },
@@ -126,7 +131,9 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
   }
   return ElevatedButton(
     onPressed: () {
-      onPressed(context);
+      if( gblActionBtnDisabled == false ) {
+        onPressed(context);
+      }
     },
     style: ElevatedButton.styleFrom(
         primary: gblSystemColors.primaryButtonColor, //Colors.black,
@@ -176,7 +183,11 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
             icon: gblSettings.wantButtonIcons ? Icon(Icons.check,
                 color: gblSystemColors.primaryButtonTextColor) : null ,
             backgroundColor: actionButtonColor() ,
-            onPressed: () => onPressed(context))
+            onPressed: () {
+              if(gblActionBtnDisabled == false ) {
+                onPressed(context);
+              }
+            })
       ]));
 }
 
@@ -196,6 +207,7 @@ Widget vidAddButton(BuildContext? context, {void Function(BuildContext?)? onPres
     ),
     onPressed: () {
         //if( context != null ) {
+
           onPressed!(context);
         //}
     },

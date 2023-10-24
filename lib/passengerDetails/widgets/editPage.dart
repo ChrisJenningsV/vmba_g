@@ -52,6 +52,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   @override
   initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     _titleTextEditingController.text = widget.passengerDetail.title;
     _firstNameTextEditingController.text = widget.passengerDetail.firstName;
     _lastNameTextEditingController.text = widget.passengerDetail.lastName;
@@ -122,7 +123,14 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
     paxWidgets.add(renderFields());
 
-    paxWidgets.add(saveButton( text: 'SAVE', onPressed: () {validateAndSubmit();}, icon: Icons.check ));
+    paxWidgets.add(saveButton( text: 'SAVE', onPressed: () {
+      if( gblActionBtnDisabled == false) {
+        setState(() {
+          gblActionBtnDisabled = true;
+        });
+        validateAndSubmit();
+      }
+      }, icon: Icons.check ));
     /*
         ElevatedButton(
       onPressed: () {
@@ -508,6 +516,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
       //return new ParsedResponse(response.statusCode, []);
     }
 */
+    logit('adsValidate e');
     String data = await runVrsCommand('ZADSVERIFY/${_adsNumberTextEditingController.text}/${_adsPinTextEditingController.text}');
     try {
       String adsJson;
@@ -520,15 +529,18 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
       if (map['VrsServerResponse']['data']['ads']['users']['user']['isvalid'] ==
           'true') {
-        print('Login success');
+        print('ADS Login success');
+        gblActionBtnDisabled = false;
         Navigator.pop(context, widget.passengerDetail);
       } else {
         _error = 'Please check your details';
+        gblActionBtnDisabled = false;
         _actionCompleted();
         _showDialog();
       }
     } catch (e) {
       _actionCompleted();
+      gblActionBtnDisabled = false;
       _showDialog();
     }
   }
@@ -721,7 +733,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       if (widget.isAdsBooking && widget.isLeadPassenger) {
-        adsValidate();
+        await adsValidate();
       } else {
         try {
           Navigator.pop(context, widget.passengerDetail);
