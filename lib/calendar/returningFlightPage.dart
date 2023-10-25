@@ -17,6 +17,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../components/showDialog.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -117,8 +118,13 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(',journey=$_journey');
 
     if (this.widget.newBooking.ads.pin != '' &&
-        this.widget.newBooking.ads.number != '') buffer.write(',ads=true');
-
+        this.widget.newBooking.ads.number != '') {
+      if(this.widget.newBooking.ads.number.toUpperCase().contains('ADS')) {
+        buffer.write(',ads=true');
+      } else {
+        buffer.write(',ADSResident=true');
+      }
+    }
     buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
 
     buffer.write(
@@ -731,11 +737,12 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         if (result == true) {
           if( gblSettings.wantProducts) {
             gblError = '';
+            try {
             PnrModel pnrModel = await searchSaveBooking(
                 this.widget.newBooking);
             // go to options page
             if (gblError != '') {
-
+              showAlertDialog(context, 'Error', gblError);
             } else {
               Navigator.push(
                   context,
@@ -751,6 +758,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             newBooking: this.widget.newBooking,
                             pnrModel: pnrModel,)));
 */            }
+            } catch(e){
+              gblError = e.toString();
+              showAlertDialog(context, 'Error', gblError);
+
+            }
           } else {
             Navigator.push(
                 context,

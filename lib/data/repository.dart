@@ -345,21 +345,27 @@ class Repository {
                     gblSettings.updateMessage = item['value'];
                     break;
                   case 'latestBuildAndroid':
-                    gblSettings.latestBuildAndroid = item['value'];
-                    if( gblVersion.isNotEmpty && gblVersion != "" ){
-                      if( int.parse(gblSettings.latestBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
-                        if( !gblIsIos && gblAction != "STOP") {
-                          gblAction = "UPDATE";
+                    if( !item['value'].toString().contains('.')) {
+                      gblSettings.latestBuildAndroid = item['value'];
+                      if (gblVersion.isNotEmpty && gblVersion != "") {
+                        if (int.parse(gblSettings.latestBuildAndroid) >
+                            int.parse(gblVersion.split('.')[3])) {
+                          if (!gblIsIos && gblAction != "STOP") {
+                            gblAction = "UPDATE";
+                          }
                         }
                       }
                     }
                     break;
                   case 'latestBuildiOS':
-                    gblSettings.latestBuildiOS = item['value'];
-                    if( gblVersion.isNotEmpty && gblVersion != "" ){
-                      if( int.parse(gblSettings.latestBuildiOS) > int.parse(gblVersion.split('.')[3])) {
-                        if( gblIsIos && gblAction != "STOP") {
-                          gblAction = "UPDATE";
+                    if( !item['value'].toString().contains('.')) {
+                      gblSettings.latestBuildiOS = item['value'];
+                      if (gblVersion.isNotEmpty && gblVersion != "") {
+                        if (int.parse(gblSettings.latestBuildiOS) >
+                            int.parse(gblVersion.split('.')[3])) {
+                          if (gblIsIos && gblAction != "STOP") {
+                            gblAction = "UPDATE";
+                          }
                         }
                       }
                     }
@@ -1290,6 +1296,9 @@ class Repository {
     PnrModel pnrModel = PnrModel();
     if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
+      if( data.contains('ERROR')){
+        return new ParsedResponse(0, null, error: data);
+      }
       if(gblLogFQ) {logit('getfareQuote3: ' + data); }
       if (!data.contains('<string xmlns="http://videcom.com/" />')) {
         Map<String, dynamic> map = jsonDecode(data
@@ -1594,7 +1603,10 @@ Future<String> runFunctionCommand(String function,String cmd) async {
       .replaceAll('</string>', ''));
 
   VrsApiResponse rs = VrsApiResponse.fromJson(map);
-  gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'] == null ? '1' : map['vrsServerNo'].toString());
+  if( gblSession == null && map['sessionId'] != null && map['varsSessionId'] != null && map['vrsServerNo'] != null ) {
+    gblSession = Session(map['sessionId'], map['varsSessionId'],
+        map['vrsServerNo'] == null ? '1' : map['vrsServerNo'].toString());
+  }
   logit('rfc Server IP ${map['serverIP']}');
   if( rs.data == null ) {
     throw 'no data returned';

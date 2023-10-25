@@ -58,7 +58,7 @@ void configT6() {
     wantFQTV:  true,
     wantMyAccount: true,
 
-    airlineName: "Air SWIFT",
+    airlineName: "AirSWIFT",
       xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
       xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     gblServerFiles: 'https://booking.air-swift.com/AppFiles',
@@ -69,8 +69,8 @@ void configT6() {
     termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
     privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
     prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/ ',
-    customMenu1: 'AirSWIFT Picks, AirSWIFT Picks, http://www.airswiftpicks.com',
-    customMenu2: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
+    //customMenu1: 'AirSWIFT Picks, AirSWIFT Picks, http://www.airswiftpicks.com',
+    customMenu1: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
 
     aircode: 'T6',
       currency: 'PHP',

@@ -640,7 +640,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           child: new TextFormField(
             maxLength: 20,
             controller: _adsNumberTextEditingController,
-            decoration: _getDecoration('ADS Number'),
+            decoration: _getDecoration('ADS / Island Resident Number'),
             // controller: _emailTextEditingController,
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),
@@ -659,7 +659,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           child: new TextFormField(
             maxLength: 4,
             controller: _adsPinTextEditingController,
-            decoration: _getDecoration('ADS Pin'),
+            decoration: _getDecoration('ADS / Island Resident Pin'),
             // controller: _emailTextEditingController,
             keyboardType: TextInputType.number,
 //                validator: (value) => validateEmail(value.trim()),

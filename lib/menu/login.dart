@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
-        title: new TrText('Air Discount Scheme',
+        title: new TrText('ADS / Island Resident Scheme',
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),

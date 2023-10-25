@@ -49,8 +49,7 @@ void configLM() {
   gblCurrentRloc = '';
 
   gblSettings = Settings (
-//    latestBuildiOS: '1.0.5',
-//    latestBuildAndroid: '1.0.0.98',
+    paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
@@ -91,7 +90,7 @@ void configLM() {
     searchDateOut: 1,
     searchDateBack: 6,
 
-    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
+    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/air-discount-scheme-residents-fare-card-terms-and-conditions/',
     passengerTypes: PassengerTypes(
   adults: true,
   child: true,
@@ -141,6 +140,7 @@ void configLM() {
     testApiUrl:      'https://customertest.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
 */
 
+  //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 //////    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",

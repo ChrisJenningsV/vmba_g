@@ -83,7 +83,7 @@ class DrawerMenu extends StatefulWidget {
         list.add(ListTile(
           dense: dense,
           // contentPadding: EdgeInsets.zero,
-          title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS flight'),
+          title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS / Island Resident Flight'),
           onTap: () {
             gblCurPage = 'BOOKADS';
             Navigator.push(context, SlideTopRoute(page: AdsPage()));

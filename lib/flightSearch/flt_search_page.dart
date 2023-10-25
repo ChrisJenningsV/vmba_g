@@ -110,7 +110,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     firstBuild = false;
     return new Scaffold(
         appBar:
-        appBar(context, widget.ads == true ? 'ADS Flight Search': 'Flight Search'),
+        appBar(context, widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search'),
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(

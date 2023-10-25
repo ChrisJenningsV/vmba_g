@@ -650,7 +650,7 @@ Widget _getLogo(){
                           ),
                         ) : Container(),
                         TrText(
-                          'Book an ADS Flight',
+                          'Book an ADS / Island Resident ',
                           textScaleFactor: tsf,
                           style: TextStyle(color: Colors.white),
                         ),

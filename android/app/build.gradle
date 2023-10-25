@@ -90,7 +90,7 @@ android {
 
         AirSwift {
             dimension "version"
-            resValue "string", "flavored_app_name", "AirSwift"
+            resValue "string", "flavored_app_name", "AirSWIFT"
             applicationId "com.airswift"
         }
 

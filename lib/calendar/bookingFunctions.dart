@@ -48,6 +48,7 @@ Future searchSaveBooking(NewBooking newBooking) async {
       return pnrModel;
     } else if (rs.statusCode == 0) {
       gblError = rs.error;
+      throw(gblError);
       /* _hasError = true;
         setState(() {
           _loadingInProgress = false;

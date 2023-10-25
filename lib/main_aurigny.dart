@@ -90,7 +90,7 @@ void configGR() {
     productImageMode: 'none',
     wantSeatsWithProducts: true,
 
-    adsTermsUrl: 'https://www.aurigny.com/travel-help/ads-terms/',
+    //adsTermsUrl: 'https://www.aurigny.com/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
       adults: true,
       child: true,

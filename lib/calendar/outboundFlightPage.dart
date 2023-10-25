@@ -17,6 +17,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../components/showDialog.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -135,8 +136,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
     buffer.write(',journey=$_journey');
 
-    if (this.widget.newBooking.ads.pin != '' &&
-        this.widget.newBooking.ads.number != '') buffer.write(',ads=true');
+    if (this.widget.newBooking.ads.pin != '' &&        this.widget.newBooking.ads.number != '') {
+        if(this.widget.newBooking.ads.number.toUpperCase().contains('ADS')) {
+          buffer.write(',ads=true');
+        } else {
+          buffer.write(',ADSResident=true');
+        }
+    }
 
 
     buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
@@ -519,21 +525,26 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
             if( gblSettings.wantProducts) {
               // first save new booking
               gblError = '';
-              PnrModel pnrModel = await searchSaveBooking(
-                  this.widget.newBooking);
-              gblPnrModel = pnrModel;
-              refreshStatusBar();
-              // go to options page
-              if (gblError != '') {
-
-              } else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PassengerDetailsWidget(
-                            newBooking: widget.newBooking,
-                            pnrModel:  pnrModel,)));
-
+              try {
+                PnrModel pnrModel = await searchSaveBooking(
+                    this.widget.newBooking);
+                gblPnrModel = pnrModel;
+                refreshStatusBar();
+                // go to options page
+                if (gblError != '') {
+                  showAlertDialog(context, 'Error', gblError);
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PassengerDetailsWidget(
+                                newBooking: widget.newBooking,
+                                pnrModel: pnrModel,)));
+                }
+              } catch(e){
+                gblError = e.toString();
+                showAlertDialog(context, 'Error', gblError);
 
               }
 

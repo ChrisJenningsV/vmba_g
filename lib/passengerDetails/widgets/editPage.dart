@@ -381,7 +381,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             decoration: InputDecoration(
               contentPadding: new EdgeInsets.symmetric(
                   vertical: 15.0, horizontal: 15.0),
-              labelText: 'ADS number',
+              labelText: 'ADS / Island Resident number',
               fillColor: Colors.white,
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
@@ -398,11 +398,11 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
             },
             validator: (value) {
               if (value!.isEmpty) {
-                return 'An ADS number is required';
+                return 'An ADS / Island Resident number is required';
               } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
                   value.length != 16 ||
                   !isNumeric(value.substring(3))) {
-                return 'ADS not valid';
+                return 'ADS / Island Resident not valid';
               } else {
                 return null;
               }

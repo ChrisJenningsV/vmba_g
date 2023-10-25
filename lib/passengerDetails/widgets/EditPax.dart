@@ -616,7 +616,7 @@ Widget getFirstname() {
         child: TextFormField(
           maxLength: 20,
           textCapitalization: TextCapitalization.characters,
-          decoration: getDecoration('ADS number'),
+          decoration: getDecoration('ADS / Island Resident number'),
 
           keyboardType: TextInputType.text,
           controller: _adsNumberTextEditingController,
@@ -628,11 +628,11 @@ Widget getFirstname() {
           },
           validator: (value) {
             if (value!.isEmpty) {
-              return 'An ADS number is required';
+              return 'An ADS / Island Resident number is required';
              } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
                 value.length != 16 ||
                 !isNumeric(value.substring(3))) {
-              return 'ADS not valid';
+              return 'ADS / Island Resident not valid';
             } else {
               return null;
             }
@@ -651,7 +651,7 @@ Widget getFirstname() {
         child: TextFormField(
           maxLength: 4,
           textCapitalization: TextCapitalization.characters,
-          decoration: getDecoration('ADS Pin'),
+          decoration: getDecoration('ADS / Island Resident Pin'),
           keyboardType: TextInputType.text,
           obscureText: true,
           controller: _adsPinTextEditingController,
