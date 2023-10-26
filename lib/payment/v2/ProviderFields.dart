@@ -77,8 +77,11 @@ class VInputFieldState extends State<VInputField> {
           textInputAction: TextInputAction.done,
           // keyboardType: TextInputType.text,
           inputFormatters: widget.fieldParams!.inputFormatters,
-          validator: (value) =>
-          value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
+          validator: (value) {
+            if( widget.fieldParams!.required == false ) return null;
+            return value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null;
+
+          },
           onSaved: (value) {
             if (value != null) {
               if( gblPayFormVals == null ) {
@@ -131,6 +134,10 @@ class VInputFieldState extends State<VInputField> {
             gblPayFormVals = new Map();
           }
           gblPayFormVals![widget.fieldParams!.id] = c;
+          setState(() {
+
+          });
+
           Navigator.pop(context, c);
         }
         )
@@ -145,9 +152,9 @@ class VInputFieldState extends State<VInputField> {
         _showDialog(widget.fieldParams!.label);
       },
       child: IgnorePointer(
-        child: TextFormField(
-/*
-      maxLength: widget.fieldParams!.maxLength,*/
+        child: Column( 
+      children: [
+        TextFormField(
       decoration:getDecoration(widget.fieldParams!.label),
 
 
@@ -157,11 +164,19 @@ class VInputFieldState extends State<VInputField> {
       textInputAction: TextInputAction.done,
       // keyboardType: TextInputType.text,
       //inputFormatters: widget.fieldParams!.inputFormatters,
-      validator: (value) =>
-      value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
+      validator: (value) {
+        if( widget.fieldParams!.required == false ) return null;
+        return value!.isEmpty ? translate('${widget.fieldParams!.label}') +
+            ' ' + translate('cannot be empty') : null;
+      },
       onSaved: (value) {
       },
-    )
+    ),
+        // assum cc type selection as only choice currently
+        _textEditingController.text == 'Corporate' ?
+        TrText('For corporate cards a fee will apply.', style: TextStyle(color: Colors.red),textAlign: TextAlign.left,) :
+            Container()
+        ])
     )
     );
   }
@@ -204,8 +219,12 @@ class VInputFieldState extends State<VInputField> {
                           value: index++,
                         )
                         ).toList(),
-                        validator: (value) =>
-                        (value == null) ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
+                        validator: (value) {
+
+                            if( widget.fieldParams!.required == false ) return null;
+                            return (value == null) ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null;
+                          },
+
                         // DbCountryext('Country'),
                         onChanged: (value) {
                           setState(() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 //import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 //import 'package:connectivity/connectivity.dart';
@@ -361,19 +362,19 @@ bool gblSnackBarShowing = false;
 showSnackbarMessage(String msg){
   gblSnackBarShowing = true;
   final snackBar = SnackBar(
-      content: Container(
-        //height: 40,
-        child: Row(
+    content: Container(
+      //height: 40,
+      child: Row(
 
-        children: [
-        Icon(Icons.error,size: 30,color: Color(Colors.red.value),
-        ),
-      Padding(padding: EdgeInsets.all(3),),
-      Text(translate(msg), style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, ), textScaleFactor: 1.5, ),
-    ]),
-      ),
+          children: [
+            Icon(Icons.error,size: 30,color: Color(Colors.red.value),
+            ),
+            Padding(padding: EdgeInsets.all(3),),
+            Text(translate(msg), style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, ), textScaleFactor: 1.5, ),
+          ]),
+    ),
     duration: const Duration(hours: 1),
-   /* action: SnackBarAction(
+    /* action: SnackBarAction(
       label: translate('OK'),
       onPressed: () {
         ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).hideCurrentSnackBar();
@@ -383,6 +384,7 @@ showSnackbarMessage(String msg){
   );
   ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).showSnackBar(snackBar);
 }
+
 hideSnackBarMessage() {
   if(gblSnackBarShowing == true){
     ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).hideCurrentSnackBar();
@@ -585,8 +587,10 @@ Widget addCountry(DbCountry country) {
 }
 
 networkOffline() {
-  gblNoNetwork = true;
-  showSnackbarMessage('No Network');
+  if( gblNoNetwork == false) {
+    gblNoNetwork = true;
+    showSnackbarMessage('No Network');
+  }
   refreshCurPage();
 
 }

@@ -762,12 +762,13 @@ Widget _getLogo(){
     ));
 
     if( gblNoNetwork ) {
-      list.add(Row(children: <Widget>[
+/*      list.add(Row(children: <Widget>[
         Expanded(child: new Text('No Network Connection',
             style: TextStyle(backgroundColor: Colors.red,
               color: Colors.white,
               fontSize: 18.0,)))
-      ]));
+      ]));*/
+      networkOffline();
     }
 
 
