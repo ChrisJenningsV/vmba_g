@@ -46,6 +46,16 @@ class VInputFieldState extends State<VInputField> {
         ),
       );
     }
+    if ( widget.fieldParams!.ftype == FieldType.choice) {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: theme,
+          child: choicePicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), theme)!,
+        ),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
       child: new Theme(
@@ -82,6 +92,80 @@ class VInputFieldState extends State<VInputField> {
       ),
     );
   }
+
+  void _showDialog(
+      String label,
+
+      ) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(label),
+          content: Container(
+            width: double.maxFinite,
+            child: new ListView(
+              children: optionList(widget.fieldParams!.options),
+            ),
+            /*           child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children:
+                  optionList(sectionname, field.choices, field.displayname),
+            ),*/
+          ),
+        );
+      },
+    );
+  }
+  List<Widget> optionList(String choices) {
+    List<Widget> widgets = [];
+    // new List<Widget>();
+    choices.split(',').forEach((c) {
+      widgets.add(ListTile(
+        title: Text(c),
+        onTap: () {
+          _textEditingController.text = c;
+          if( gblPayFormVals == null ) {
+            gblPayFormVals = new Map();
+          }
+          gblPayFormVals![widget.fieldParams!.id] = c;
+          Navigator.pop(context, c);
+        }
+        )
+      );
+    });
+    return widgets;
+  }
+
+  Widget? choicePicker(EdgeInsetsGeometry padding, ThemeData theme) {
+    return InkWell(
+      onTap: () {
+        _showDialog(widget.fieldParams!.label);
+      },
+      child: IgnorePointer(
+        child: TextFormField(
+/*
+      maxLength: widget.fieldParams!.maxLength,*/
+      decoration:getDecoration(widget.fieldParams!.label),
+
+
+      controller: _textEditingController,
+      onFieldSubmitted: (value) {
+      },
+      textInputAction: TextInputAction.done,
+      // keyboardType: TextInputType.text,
+      //inputFormatters: widget.fieldParams!.inputFormatters,
+      validator: (value) =>
+      value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null,
+      onSaved: (value) {
+      },
+    )
+    )
+    );
+  }
+
 
 
   Widget? countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
@@ -144,64 +228,10 @@ class VInputFieldState extends State<VInputField> {
           return Container();
         });
   }
-
- /* Widget addCountry(DbCountry country) {
-    Image img;
-    String name = country.enShortName;
-    String name2 = '';
-    if( name.length > 25) {
-      name2 = name.substring(30);
-      name = name.substring(0,30);
-    }
-    //return Text(name);
-
-    try {
-      img = Image.asset(
-        'icons/flags/png/${country.alpha2code.toLowerCase()}.png',
-        package: 'country_icons',
-        width: 20,
-        height: 20,);
-    } catch(e) {
-      logit(e);
-    }
-    List<Widget> list = [];
-    if (img != null ) {
-      list.add(img);
-    }
-    list.add(SizedBox(width: 10,));
-    if( name2 != '') {
-      list.add(Column(
-        children: [
-          new Text(name),
-          new Text(name2)
-        ],
-      ));
-    } else {
-      list.add(new Text(name));
-    }
-
- *//*   if (img == null ) {
-      return Row(children: <Widget>[
-        SizedBox(width: 10,),
-        Expanded( child: new Text(name))
-      ],
-      mainAxisAlignment: MainAxisAlignment.start,);
-    } else {
-      return Row(children: <Widget>[
-        img,
-        SizedBox(width: 10,),
-        Expanded( child: new Text(name))
-      ],
-        mainAxisAlignment: MainAxisAlignment.start,
-      );*//*
-
-      return Row(children: list);
-      }
-*/
   }
 
 
-enum FieldType { text, country, checkbox}
+enum FieldType { text, country, checkbox, choice}
 
 class FieldParams {
   String label;
@@ -211,6 +241,7 @@ class FieldParams {
   bool required;
   String id;
   FieldType ftype;
+  String options;
 
   List<TextInputFormatter>? inputFormatters;
 
@@ -222,6 +253,7 @@ class FieldParams {
     this.required = false,
     this.id = '',
     this.ftype = FieldType.text,
+    this.options = ''
   });
 
 

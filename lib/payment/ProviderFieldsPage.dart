@@ -165,6 +165,9 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
 
       switch (element.paymentFieldName) {
         case 'CardType':
+          bShow = true;
+          params.ftype = FieldType.choice;
+          params.options = element.fieldOptions;
           break;
         case 'BankName':
           break;
@@ -231,6 +234,10 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
         case 'CardHolderSurname':
           bShow = true;
           break;
+        default:
+          logit('pay field not supported ${element.paymentFieldName}');
+          break;
+
      }
      if( bShow) {
        list.add(VInputField(fieldParams: params, key: Key((element.paymentFieldName as String) + '_key'),));
@@ -256,7 +263,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
               }
             },
             style: ElevatedButton.styleFrom(
-                primary: gblSystemColors
+                backgroundColor: gblSystemColors
                     .primaryButtonColor, //Colors.black,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0))),

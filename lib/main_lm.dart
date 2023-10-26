@@ -49,7 +49,7 @@ void configLM() {
   gblCurrentRloc = '';
 
   gblSettings = Settings (
-    paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
+   // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
