@@ -20,3 +20,13 @@ apply plugin: 'com.google.gms.google-services'
 at the bottom
 
 add google-services.json to android/app directory
+
+
+rvm install ruby-2.6
+rvm use ruby-2.6.5
+rvm --default use 2.6.5
+sudo gem update
+sudo gem install ffi
+brew install libffi
+sudo gem install cocoapods
+pod setup
