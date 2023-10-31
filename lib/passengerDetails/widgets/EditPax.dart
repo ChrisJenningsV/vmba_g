@@ -762,6 +762,7 @@ Widget getFirstname() {
           child: V2TextWidget(
             maxLength: 50,
             decoration: getDecoration('Email'),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: _emailTextEditingController,
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
@@ -927,8 +928,8 @@ Widget getFirstname() {
              primary: gblSystemColors.primaryButtonTextColor),
          onPressed: () {
            if( gblActionBtnDisabled == false) {
+             gblActionBtnDisabled = true;
              setState(() {
-               gblActionBtnDisabled = true;
              });
              validateAndSubmit();
            }
@@ -1354,6 +1355,8 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
           print('Error: $e');
         }
       }
+    } else {
+      gblActionBtnDisabled = false;
     }
   }
 

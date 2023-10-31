@@ -125,8 +125,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
 
     paxWidgets.add(saveButton( text: 'SAVE', onPressed: () {
       if( gblActionBtnDisabled == false) {
+        gblActionBtnDisabled = true;
         setState(() {
-          gblActionBtnDisabled = true;
         });
         validateAndSubmit();
       }
@@ -741,6 +741,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           print('Error: $e');
         }
       }
+    } else {
+      gblActionBtnDisabled = false;
     }
   }
 
