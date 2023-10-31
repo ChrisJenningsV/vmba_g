@@ -677,45 +677,6 @@ Widget getFirstname() {
         ),
       ));
     }
-/*
-
-    if(widget.isAdsBooking) {
-      list.add(Padding(
-        padding: _padding,
-        child: TextFormField(
-          maxLength: 20,
-          textCapitalization: TextCapitalization.characters,
-          decoration: getDecoration('ADS number'),
-
-          keyboardType: TextInputType.text,
-          controller: _adsNumberTextEditingController,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9adsADS]"))
-          ],
-          onFieldSubmitted: (value) {
-            widget.passengerDetail.adsNumber = value;
-          },
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'An ADS number is required';
-            } else if (!value.toUpperCase().startsWith('ADS') ||
-                value.length != 16 ||
-                !isNumeric(value.substring(3))) {
-              return 'ADS not valid';
-            } else {
-              return null;
-            }
-          },
-          onSaved: (value) {
-            if (value != null) {
-              widget.passengerDetail.adsNumber = value.trim();
-            }
-          },
-        ),
-      ));
-    }
-*/
-
 
     if( widget.isLeadPassenger) {
 // phone
@@ -938,34 +899,6 @@ Widget getFirstname() {
        ),
      ],
    ));
-
-   /*
-   list.add(ElevatedButton(
-     onPressed: () {
-       validateAndSubmit();
-     },
-     style: ElevatedButton.styleFrom(
-         primary: gblSystemColors
-             .primaryButtonColor, //Colors.black,
-         shape: RoundedRectangleBorder(
-             borderRadius: BorderRadius.circular(30.0))),
-     child: Row(
-       //mainAxisSize: MainAxisSize.min,
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: <Widget>[
-         Icon(
-           Icons.check,
-           color: Colors.white,
-         ),
-         TrText(
-           'SAVE',
-           style: TextStyle(color: Colors.white),
-         ),
-       ],
-     ),
-   ));
-
-    */
 
    list.add(Padding(
      padding: new EdgeInsets.only(top: 10.0),
@@ -1366,14 +1299,5 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     }
     return num.tryParse(s) != null;
   }
-  /*
-  NetworkImage _getImage(){
-    try {
-      return NetworkImage('${gblSettings.gblServerFiles}/cityImages/VBY.png');
-    } catch(e) {
-      logit(e);
-    }
-  }
 
-   */
 }
