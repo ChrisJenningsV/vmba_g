@@ -121,11 +121,12 @@ class V2TextWidget extends StatefulWidget {
    TextInputAction? textInputAction;
    TextInputType? keyboardType;
    InputDecoration? decoration;
+   AutovalidateMode? autovalidateMode;
   //String title;
   final int? maxLength;
 
   V2TextWidget({Key key= const Key("t2text_key"), this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
-    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType})
+    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode})
       : super(key: key);
 
 
@@ -153,6 +154,7 @@ class _V2TextWidgetState extends State<V2TextWidget> {
           textInputAction: widget.textInputAction,
           onSaved: widget.onSaved,
           keyboardType: widget.keyboardType,
+          autovalidateMode: widget.autovalidateMode,
 
         ),
         padding: EdgeInsets.only(left: 10, right: 10),
@@ -169,6 +171,7 @@ class _V2TextWidgetState extends State<V2TextWidget> {
             textInputAction: widget.textInputAction,
             onSaved: widget.onSaved,
             keyboardType: widget.keyboardType,
+          autovalidateMode: widget.autovalidateMode,
 
         );
     }
