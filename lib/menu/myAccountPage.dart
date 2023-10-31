@@ -498,6 +498,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             )),
       ));
     }
+
     // email
     widgets.add(Padding(
       padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
@@ -507,8 +508,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
           maxLength: 100,
           controller: _emailTextEditingController,
           decoration: _getDecoration('Email'),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
+          ],
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           validator: (value) {
             String er = validateEmail(value!.trim());
             if( er != '' ) return er;
@@ -1030,7 +1034,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   String validateEmail(String value) {
     String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        r'^(([^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+(\.[^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return translate('Enter Valid Email');
@@ -1044,8 +1048,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
           widget.isLeadPassenger &&
           _adsNumberTextEditingController.text.isNotEmpty &&
           _adsPinTextEditingController.text.isNotEmpty &&
-           oldADSNumber != _adsNumberTextEditingController.text &&
-           oldADSpin != _adsPinTextEditingController.text) {
+          (oldADSNumber != _adsNumberTextEditingController.text ||
+           oldADSpin != _adsPinTextEditingController.text)) {
 
           adsValidate();
       } else {
