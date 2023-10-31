@@ -507,6 +507,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           maxLength: 100,
           controller: _emailTextEditingController,
           decoration: _getDecoration('Email'),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: TextInputType.emailAddress,
           validator: (value) {
             String er = validateEmail(value!.trim());
