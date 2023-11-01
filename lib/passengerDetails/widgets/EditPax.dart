@@ -725,7 +725,10 @@ Widget getFirstname() {
             decoration: getDecoration('Email'),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: _emailTextEditingController,
-            keyboardType: TextInputType.emailAddress,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
+            ],
+            keyboardType: TextInputType.text,
             validator: (value) {
                 String er = validateEmail(value!.trim());
                 if(er != '' ) return er;
