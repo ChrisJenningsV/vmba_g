@@ -1,4 +1,4 @@
-rem build release version of logan air for android
+rem build release version  for android
 @ECHO OFF
 cls
 ECHO =================
