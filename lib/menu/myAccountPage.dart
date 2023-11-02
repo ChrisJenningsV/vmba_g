@@ -646,6 +646,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
             maxLength: 20,
             controller: _adsNumberTextEditingController,
             decoration: _getDecoration('ADS / Island Resident Number'),
+            validator: (value) {
+              if (! value!.isEmpty && _adsPinTextEditingController.text == '' ) {
+                return 'ADS / Island Resident Pin is Required';
+              } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
+                  value.length != 16 ||
+                  !isNumeric(value.substring(3))) {
+                return 'ADS / Island Resident not valid';
+              } else {
+                return null;
+              }
+            },
             // controller: _emailTextEditingController,
             keyboardType: TextInputType.streetAddress,
 //                validator: (value) => validateEmail(value.trim()),

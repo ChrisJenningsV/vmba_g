@@ -822,7 +822,7 @@ Widget getFirstname() {
      ));
    }
 // Senior ID
-   if( widget.passengerDetail.paxType == PaxType.senior && gblSettings.aircode == 'T6' ) {
+   if( widget.passengerDetail.paxType == PaxType.senior && gblSettings.aircode == 'T6' && widget.passengerDetail.country == 'Philippines' ) {
      list.add(Padding(
        padding: _padding,
        child: new Theme(

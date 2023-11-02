@@ -573,6 +573,9 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
     ];
   }
 
+  if( ipad == null ){
+    ipad = EdgeInsets.all(5);
+  }
 
   return AlertDialog(
     shape: alertShape(),
