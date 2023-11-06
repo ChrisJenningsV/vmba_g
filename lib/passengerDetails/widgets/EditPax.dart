@@ -974,13 +974,14 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
              // String val = countrylist.countries[0].enShortName;
               var curIndex ;
               var index = 0;
-              if(widget.passengerDetail.country == null ) {
-                countrylist.countries!.map((country) {
+              var tempIndex = 0;
+              if(widget.passengerDetail.country != '' ) {
+                countrylist.countries!.forEach((country) {
                   if (widget.passengerDetail.country.toUpperCase() ==
                       country.enShortName.toUpperCase()) {
-                    curIndex = index;
+                    curIndex = tempIndex;
                   }
-                  index += 1;
+                  tempIndex += 1;
                 });
               }
               return Padding(
@@ -990,11 +991,14 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
                   child: DropdownButtonFormField<int>(
                     decoration: getDecoration('Country'),
                       value: curIndex,
-                      items: countrylist.countries!.map((country )
-                         => DropdownMenuItem(
+                      items: countrylist.countries!.map((country ) {
+                       // logit('index= $index curIndex=$curIndex ${country.enShortName}');
+                       // if( curIndex == index+1) logit('index==curIndex ${country.enShortName}');
+                      return DropdownMenuItem(
                            child: addCountry(country), //ext(trimCountry(country.enShortName)),
                            value: index++,
-                         )
+                         );
+                      }
                       ).toList(),
 
                      // DbCountryext('Country'),
