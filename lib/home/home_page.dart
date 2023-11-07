@@ -63,9 +63,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     super.initState();
     commonPageInit('HOME');
 
-    if(gblWarning != ''){
-      updateMsg = gblWarning;
-    }
+
     if( gblVerbose) logit('init HomeState');
 
     _connectivity.initialise();
@@ -328,7 +326,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
             borderRadius: BorderRadius.all(Radius.circular(10.0)));
         break;
     }
-
+    if(gblWarning != ''){
+      updateMsg = gblWarning;
+    }
 
     if (_displayProcessingIndicator) {
       return Scaffold(
@@ -393,6 +393,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
                         ElevatedButton(
                           onPressed: () {
                             updateMsg = '';
+                            gblWarning = '';
                             setState(() {
 
                             });

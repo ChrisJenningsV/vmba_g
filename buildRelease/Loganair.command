@@ -9,7 +9,7 @@ cd StudioProjects/vmba_g
 #pwd
 #ls
 cp  ./lib/assets/loganair/images/bg.png ./lib/assets/images
-cp  ./ios/runner/loganair/info.plist ./ios/runner
+cp  ./ios/runner/logan/info.plist ./ios/runner
 echo done
 
 flutter pub run flutter_launcher_icons -f launch_icons_loganair.yaml
