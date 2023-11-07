@@ -14,8 +14,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'T6';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
@@ -31,6 +31,7 @@ bool gblLangFileLoaded = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
 String gblError = '';
+String gblWarning = '';
 String gblErrorTitle = '';
 String gblSine = '';
 String gblVersion = '';

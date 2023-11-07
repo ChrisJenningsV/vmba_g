@@ -63,6 +63,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     super.initState();
     commonPageInit('HOME');
 
+    if(gblWarning != ''){
+      updateMsg = gblWarning;
+    }
     if( gblVerbose) logit('init HomeState');
 
     _connectivity.initialise();
