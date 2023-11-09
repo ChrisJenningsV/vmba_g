@@ -2615,7 +2615,7 @@ class CheckinBoardingPassesWidgetState
               style: new TextStyle(color: Colors.black),
             ),
             new TextSpan(
-              text: 'Prohibited Items Notice.',
+              text: 'Please read the Prohibited Items Notice.',
               style: new TextStyle(color: Colors.blue,decoration: TextDecoration.underline),
               recognizer: new TapGestureRecognizer()
                 ..onTap = () {
@@ -2697,6 +2697,31 @@ class CheckinBoardingPassesWidgetState
   }
 
   _displayCheckingAllDialog(PnrModel pnr, int journeyNo) {
+    Widget para1 = Text(      translate( "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."));
+    if(gblSettings.aircode == 'SI') {
+      para1 = RichText(
+        text: new TextSpan(
+          children: [
+            new TextSpan(
+              text: 'Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. ',
+              style: new TextStyle(color: Colors.black),
+            ),
+            new TextSpan(
+              text: 'Please read the Prohibited Items Notice.',
+              style: new TextStyle(color: Colors.blue,decoration: TextDecoration.underline),
+              recognizer: new TapGestureRecognizer()
+                ..onTap = () {
+                  launchUrl(Uri.parse('https://www.blueislands.com/media/cpdjyjlw/cap1402as_dangerousgoods_1920x1080_2018.jpg'));
+                },
+            ),
+          ],
+        ),
+      );
+    }
+
+
+
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -2706,8 +2731,9 @@ class CheckinBoardingPassesWidgetState
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                  "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."),
+              para1,
+              /*Text(
+                  "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."),*/
               Padding(
                 padding: EdgeInsets.all(4),
               ),

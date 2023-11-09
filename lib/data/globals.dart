@@ -6,6 +6,7 @@ import 'package:vmba/data/models/models.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
+import 'models/flightPrices.dart';
 import 'models/notifyMsgs.dart';
 import 'models/pnr.dart';
 import 'models/products.dart';
@@ -14,7 +15,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'LM';
+String gblBuildFlavor = 'U5';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
@@ -92,7 +93,7 @@ bool gblLoginSuccessful = false;
 PnrModel? gblPnrModel;
 //bool  gblUseWebApiforVrs = false;
 
-enum LoadDataType {settings, routes, cities, products, language, providers}
+enum LoadDataType {settings, routes, cities, products, language, providers, calprices}
 enum VrsCmdType {bookSeats, loadSeatplan}
 enum LoadState { none, loading, loaded, loadFailed }
 enum VrsCmdState { none, loading, loaded, loadFailed }
@@ -104,6 +105,7 @@ LoadState gblRoutesState = LoadState.none;
 LoadState gblCitiesState = LoadState.none;
 LoadState gblProductsState = LoadState.none;
 LoadState gblProvidersState = LoadState.none;
+LoadState gblCalPriceState = LoadState.none;
 LoadState gblLanguageState = LoadState.none;
 BookingState gblBookingState = BookingState.none;
 PaymentState gblPaymentState = PaymentState.none;
@@ -118,6 +120,7 @@ String gblSelectedCurrency='';
 String gblLastCurrecy = '';
 String gblLastProviderCurrecy = '';
 Providers? gblProviders;
+FlightPrices? gblFlightPrices;
 String gblBookingCurrency='';
 NotificationStore? gblNotifications;
 

@@ -25,15 +25,16 @@ void main() {
 }
 void configU5() {
   SystemColors _systemColors = SystemColors(
-    progressColor: Colors.yellow,
+    progressColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
     primaryButtonColor: Colors.black,
-    accentButtonColor: Color.fromRGBO(0X48, 0x53, 0x5B, 1),
+    accentButtonColor: Color.fromRGBO(0xF8, 0x99, 0x23, 1),
+    classBandIconColor: Color.fromRGBO(0xF8, 0x99, 0x23, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.orange,
     primaryButtonTextColor: Colors.white,
-    primaryHeaderColor: Colors.black,
-    headerTextColor: Colors.orange,
+    primaryHeaderColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
+    headerTextColor: Colors.white,
     statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
     seatPlanColorAvailable: Colors.blue, //Colors.green
@@ -75,7 +76,7 @@ void configU5() {
     termsAndConditionsUrl: 'https://flyUnitedNigeria.com/terms-conditions/',
     privacyPolicyUrl:  'https://www.flyUnitedNigeria.com/our-policies/',
     prohibitedItemsNoticeUrl:  'https://www.flyUnitedNigeria.com/flying-with-us/baggage-allowances/s',
-    faqUrl: '', //'''https://www.fastjet.com/en/footer-contact/faqs',
+    faqUrl: 'https://flyunitednigeria.com/faq/',
     contactUsUrl: 'https://flyUnitedNigeria.com/contact-us/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
@@ -161,7 +162,7 @@ void configU5() {
     wantSeatsWithProducts: true,
     wantEnglishTranslation: false,
     wantBpLogo: false,
-    defaultCountryCode: 'ZA',
+    defaultCountryCode: 'NG',
 
     wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',

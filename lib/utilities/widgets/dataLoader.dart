@@ -9,6 +9,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/providers.dart';
 import '../../Helpers/networkHelper.dart';
+import '../../data/models/flightPrices.dart';
 import '../helper.dart';
 import 'package:vmba/data/models/products.dart';
 import 'package:vmba/Products/widgets/productsWidget.dart';
@@ -55,6 +56,12 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if( widget.dataType == LoadDataType.calprices){
+      if( gblCalPriceState == LoadState.loaded){
+        widget.onComplete(widget.pnrModel);
+      }
+      return Container(width: 10, height: 10,);
+    }
     if(_fullLogging) logit('dataLoader build (${widget.dataType.toString()}) ');
 
     if (_displayFinalError || (_error != null && _error.isNotEmpty)) {
@@ -100,6 +107,10 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
           widget.onComplete(widget.pnrModel);
           break;
+        case LoadDataType.calprices:
+        //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
+          widget.onComplete(widget.pnrModel);
+          break;
         case LoadDataType.routes:
           break;
         case LoadDataType.settings:
@@ -117,7 +128,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     _displayProcessingIndicator = true;
     final http.Response response = await http.post(
         Uri.parse(_url),
-        headers: getApiHeaders(),
+        headers: widget.dataType == LoadDataType.calprices ? getApiHeadersReferer() : getApiHeaders(),
         body: _msg);
     if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
     if (response.statusCode == 200) {
@@ -194,6 +205,20 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           _msg = json.encode(GetProvidersMsg("BSIA9992AW/EB", currency).toJson());  // , arrivalCityCode: gblDestination
 
           break;
+        case LoadDataType.calprices:
+          _dataName = 'Prices';
+          _url = '${gblSettings.apiUrl}/flightcalendar/GetFlightPrices';
+          //gblLastProviderCurrecy =gblSelectedCurrency;
+          String currency = gblSelectedCurrency; // gblSettings.currency;
+          if( currency == null || currency.isEmpty) {
+            currency = widget.pnrModel.pNR.basket.outstanding.cur;
+          }
+          _msg = json.encode(FlightSearchRequest(departCity: 'ABZ',arrivalCity: 'KOI', flightDateStart: '2023-11-01',
+              flightDateEnd: '2023-12-01',    isReturnJourney: 0,  selectedCurrency: 'GBP',
+          isADS: false, showFlightPrices: true).toJson());  // , arrivalCityCode: gblDestination
+
+          break;
+
         case LoadDataType.routes:
           _dataName = 'Routes';
           break;
@@ -217,6 +242,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           break;
         case LoadDataType.providers:
           gblProductsState = newState;
+          break;
+        case LoadDataType.calprices:
+          gblCalPriceState = newState;
           break;
         case LoadDataType.routes:
           gblRoutesState = newState;
@@ -246,6 +274,14 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         try {
           gblProviders = Providers.fromJson(data);
           if(gblLogPayment) logit('loaded providers ' + data );
+        } catch(e) {
+          logit(e.toString());
+        }
+        break;
+      case LoadDataType.calprices:
+        try {
+          gblFlightPrices = FlightPrices.fromJson(data);
+          if(gblLogPayment) logit('loaded flight prices ' + data );
         } catch(e) {
           logit(e.toString());
         }

@@ -5,6 +5,10 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
+import '../../data/models/pnr.dart';
+import '../../utilities/helper.dart';
+import '../../utilities/widgets/dataLoader.dart';
+
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
       {Key key= const Key("daypicker_key"),
@@ -88,18 +92,32 @@ class _DayPickerPageState extends State<DayPickerPage> {
             width: width - 50,
             height: 400,
             child:
-            CalendarDatePicker2(
-                config: config,
-                value: _singleDatePickerValueWithDefaultValue,
-                onValueChanged: (dates) {
-                  setState(() {
-                    _singleDatePickerValueWithDefaultValue = dates;
-                    _selectedDate = dates[0] as DateTime;
-                    widget.onChanged(FlightDates(_selectedDate, null));
-                  }
-                  );
-                }
-            )
+                Column( children: [
+                  CalendarDatePicker2(
+                      config: config,
+                      value: _singleDatePickerValueWithDefaultValue,
+                      onValueChanged: (dates) {
+                        setState(() {
+                          _singleDatePickerValueWithDefaultValue = dates;
+                          _selectedDate = dates[0] as DateTime;
+                          widget.onChanged(FlightDates(_selectedDate, null));
+                        }
+                        );
+                      }
+                  ),
+                  SizedBox( height: 15, width: 15,
+                      child: DataLoaderWidget(dataType: LoadDataType.calprices,
+                  newBooking: null,
+                  pnrModel: PnrModel(),
+                  onComplete: (PnrModel pnrModel) {
+                    setState(() {
+
+                    });
+                  },
+                  )),
+
+                ],)
+
         );
     } else {
       return
@@ -131,9 +149,28 @@ class _DayPickerPageState extends State<DayPickerPage> {
     bool? isDisabled ,
     bool? isToday,}) {
     if(isToday != null && isToday == true ){
-
-      decoration = BoxDecoration( border: Border.all(width: 1), 
+/*
+      decoration = BoxDecoration( border: Border.all(width: 1),
               borderRadius: BorderRadius.circular(5.0));
+*/
+    }
+    if( gblFlightPrices != null ) {
+      // check for this date
+      gblFlightPrices!.flightPrices.forEach((flightPrice) {
+ //       logit( ' match ${flightPrice.FlightDate} to ${date.toString().substring(0,10)}');
+        if( flightPrice.FlightDate != '' && flightPrice.FlightDate== date.toString().substring(0,10)){
+          if( flightPrice.Selectable == false){
+            logit( ' match no sel  ${flightPrice.FlightDate}');
+        //    if ( textStyle != null ) {
+              textStyle = TextStyle( color: Colors.red);
+          //  }
+          }
+          if( flightPrice.CssClass.contains('not-available')){
+            isDisabled = true;
+            textStyle = TextStyle( color: Colors.blue);
+          }
+        }
+      });
     }
     return Container(
       decoration: decoration,
@@ -143,7 +180,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
           children: [
             Text(
               MaterialLocalizations.of(context).formatDecimal(date.day),
-              style: textStyle,textScaleFactor: 1.25,
+              style: textStyle,
+              textScaleFactor: 1.25,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 27.5),

@@ -147,6 +147,7 @@ void configLM() {
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
+//    testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',
 
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 

@@ -749,7 +749,10 @@ Widget _getTrans() {
     progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
     gblRedeemingAirmiles = false;
     try {
-      FqtvLoginRequest rq = new FqtvLoginRequest( user: _fqtvTextEditingController.text, password: _passwordEditingController.text);
+      String pw = Uri.encodeComponent(_passwordEditingController.text);
+      //String pw = _passwordEditingController.text;
+      FqtvLoginRequest rq = new FqtvLoginRequest( user: _fqtvTextEditingController.text,
+          password: pw);
       fqtvNo = _fqtvTextEditingController.text;
       fqtvPass = _passwordEditingController.text;
 

@@ -240,6 +240,10 @@ return str;
   }
 
   Icon iconWidget(String id) {
+    Color iconClr = Colors.green;
+    if( gblSystemColors.classBandIconColor != null) {
+      iconClr = gblSystemColors.classBandIconColor as Color;
+    }
     switch (id) {
       case '90':
         return Icon(null);
@@ -254,7 +258,7 @@ return str;
         return Icon(null);
         break;
       default:
-        return Icon(Icons.check_circle, color: Colors.green,);
+        return Icon(Icons.check_circle, color: iconClr,);
         break;
     }
   }

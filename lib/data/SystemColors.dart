@@ -17,6 +17,7 @@ class SystemColors {
    Color? otherButtonColor;
    Color textButtonTextColor;
    Color accentColor; // = Colors.white;
+  Color? classBandIconColor;
 
   Color borderColor;
    Color primaryHeaderColor ;
@@ -46,6 +47,7 @@ class SystemColors {
     required this.accentButtonColor,
     required this.primaryColor,
     required this.accentColor,
+    this.classBandIconColor,
     this.progressColor,
     this.otherButtonColor,
     this.otherButtonTextColor,

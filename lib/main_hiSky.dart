@@ -62,7 +62,7 @@ void configH4() {
     currency: 'USD',
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
-    wantCanFacs: false,
+    wantCanFacs: true,
 
     airlineName: "HiSky",
     gblServerFiles: 'https://booking.hisky.md/VARS/AppFiles/',
@@ -106,6 +106,7 @@ void configH4() {
       infant: true,
       youths: false,
       wantYouthDOB: true,
+      wantAdultDOB: true,
 
     ),
 
