@@ -132,65 +132,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
     list.add(new SeatCard(newBooking: newBooking));
   }
 
-  /*if ( newBooking != null && pnrModel != null  ) {
-    newBooking.passengerDetails.forEach((pax) {
-      pnrModel.pNR.fareQuote.fareStore.forEach((element) {
-        if ((element.pax == pax.paxNumber) &&
-            (element.fSID.contains('MPS') == false)) {
-          // get fq for pax
-          var segCount = element.segmentFS.length;
 
-          var holdBagWt = element.segmentFS[0].holdWt;
-          var holdBagPcs = element.segmentFS[0].holdPcs;
-          var handBagWt = element.segmentFS[0].handWt;
-          if (holdBagWt != null && holdBagWt.endsWith('K')) {
-            holdBagWt = holdBagWt.replaceAll('K', 'Kg');
-          }
-
-          if (holdBagPcs == null || holdBagPcs == '0') {
-            holdBagPcs = holdBagWt;
-            holdBagWt = '';
-          }
-          //var holdBagWtRet = '';
-          var holdBagPcsRet = '';
-          var handBagWtRet = '';
-          var holdBagWtRet = '';
-          if (segCount > 1) {
-            holdBagWtRet = element.segmentFS[1].holdWt;
-            holdBagPcsRet = element.segmentFS[1].holdPcs;
-            handBagWtRet = element.segmentFS[1].handWt;
-            if (holdBagPcsRet == null || holdBagPcsRet == '0') {
-              holdBagPcsRet = holdBagWtRet;
-              holdBagWtRet = '';
-            }
-          }
-          if (holdBagWt == null) {
-            holdBagWt = '0';
-          }
-          list.add(Card(child:
-          Padding(
-              padding: EdgeInsets.only(top: 3, left: 6, right: 6, bottom: 2),
-              child: ExpansionTile(
-                title: Text('${pax.title} ${pax.firstName} ${pax.lastName} ' +
-                    translate('allowance'),
-                    textScaleFactor: 1),
-                children: [
-                  if( segCount > 1) getBaggageRow(null, null, null, null, null),
-
-                  getBaggageRow(
-                      smallBag, handBagWt, handBagWtRet, 'Hand Luggage', ''),
-                  //              Divider(),
-                  Divider(),
-                  getBaggageRow(
-                      holdBag, holdBagPcs, holdBagPcsRet, 'Checked Luggage',
-                      holdBagWt)
-                ],)
-          )
-          ));
-        }
-      });
-    });
-  }*/
     // add  bag products
     if(gblProducts != null ) {
       gblProducts!.productCategorys.forEach((pc) {
@@ -211,7 +153,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
               );
         list.add( Divider(height: 100,));
       }*/
-      list.add( Divider(height: 200,));
+      if( gblProducts!.productCategorys.length > 1) list.add( Divider(height: 200,));
     }
 
   return list;

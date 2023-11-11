@@ -28,13 +28,13 @@ void configU5() {
     progressColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
     primaryButtonColor: Colors.black,
     accentButtonColor: Color.fromRGBO(0xF8, 0x99, 0x23, 1),
-    classBandIconColor: Color.fromRGBO(0xF8, 0x99, 0x23, 1),
+    classBandIconColor: Color.fromRGBO(0X6E, 0xC1, 0xE4, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.orange,
     primaryButtonTextColor: Colors.white,
-    primaryHeaderColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
-    headerTextColor: Colors.white,
+    primaryHeaderColor: Colors.white,
+    headerTextColor: Color.fromRGBO(0X6E, 0xC1, 0xE4, 1),
     statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
     seatPlanColorAvailable: Colors.blue, //Colors.green
@@ -72,7 +72,7 @@ void configU5() {
     testServerFiles: 'https://customertest.videcom.com/UnitedNigeria/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
-    aircode: 'FN',
+    aircode: 'U5',
     termsAndConditionsUrl: 'https://flyUnitedNigeria.com/terms-conditions/',
     privacyPolicyUrl:  'https://www.flyUnitedNigeria.com/our-policies/',
     prohibitedItemsNoticeUrl:  'https://www.flyUnitedNigeria.com/flying-with-us/baggage-allowances/s',

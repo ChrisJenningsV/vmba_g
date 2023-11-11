@@ -491,7 +491,7 @@ Widget _getLogo(){
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
   }
   if( gblIsLive == false) {
-    TextStyle st = new TextStyle( color: gblTitleStyle!.color  );
+    TextStyle st = new TextStyle( color: gblSystemColors.headerTextColor  );
     list.add(Text(txt, style: st, textScaleFactor: 0.75,));
   }
   if( gblSettings.wantCentreTitle) {

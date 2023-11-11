@@ -27,6 +27,7 @@ import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../../components/bottomNav.dart';
 import '../../components/vidButtons.dart';
+import '../choosePaymentMethod.dart';
 import '../paymentCmds.dart';
 
 GlobalKey<CardInputWidgetState> ccInputGlobalKeyOptions = new GlobalKey<CardInputWidgetState>();
@@ -69,6 +70,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
   String _error='';
   String rLOC = '';
   Session? session;
+  Stopwatch stopwatch = new Stopwatch();
+
 
   @override
   initState() {
@@ -82,12 +85,19 @@ class _CreditCardPageState extends State<CreditCardPage> {
     if (am <= 0) {
       signin().then((_) => completeBooking());
     }
+    stopwatch.start();
+
   }
 /*
     if( widget.pnrModel.pNR.basket.outstanding.amount == '0') {
       signin().then((_) => completeBooking() );
     }
  */
+  @override
+  void dispose() {
+    stopwatch.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,12 +179,19 @@ class _CreditCardPageState extends State<CreditCardPage> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w300),
                           ),
-                          ChangeNotifierProvider(
+                      TimerText(
+                        stopwatch: stopwatch,
+                        onComplete:() {
+                          setState(() {
+
+                          });
+                        }),
+                      /*    ChangeNotifierProvider(
                               create: (context) => CountDownTimer(),
                               child: TimerWidget(timerExpired: () {
                                 timerExpired();
                                 logit('expired 1');
-                              })),
+                              })),*/
                         ],
                       ),
                     ),

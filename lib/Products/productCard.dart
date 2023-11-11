@@ -291,7 +291,8 @@ class ProductCardState extends State<ProductCard> {
         children: widgets1
     ));
     return Column(
-      children: list);
+      children: list
+    );
 
   } else {
     return Row(
