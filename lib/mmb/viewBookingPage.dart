@@ -1315,8 +1315,8 @@ class CheckinBoardingPassesWidgetState
 
 
 
-    if (pnr.pNR.itinerary.itin[journeyNo].airID !=
-        gblSettings.aircode) {
+    if (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.aircode &&
+        (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.altAircode ) ) {
       return Text(''
           // 'Please check in at the airport',
           );

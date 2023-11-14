@@ -60,6 +60,7 @@ class Settings {
   String xmlToken = '';
   String xmlTokenPost ='';
   String aircode ='';
+  String altAircode ='';
   String brandID ='';
   String airlineName ='';
   bool wantApis =false;
@@ -234,6 +235,7 @@ bool bpShowFastTrack;
     this.xmlToken ='',
     this.xmlTokenPost ='',
     this.aircode ='',
+    this.altAircode = '',
     this.brandID ='',
     this.airlineName ='',
     this.creditCardProvider ='',

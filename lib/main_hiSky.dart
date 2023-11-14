@@ -70,6 +70,8 @@ void configH4() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'H4',
+    altAircode: 'H7',
+
     termsAndConditionsUrl: '{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
     privacyPolicyUrl:  '{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
     //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
@@ -84,7 +86,7 @@ void configH4() {
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '1457545908',
     androidAppId: 'aero.hisky.reservations',
-    fqtvName: 'Club',
+    fqtvName: '',
     appFeedbackEmail: 'appfeedback@hisky.md',
     groupsBookingsEmail: 'groups@hisky.md',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
@@ -160,7 +162,7 @@ void configH4() {
     wantCountry: false,
     useSmartPay: false,
 
-    wantFQTVNumber: true,
+    wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
     maxNumberOfPax: 8,
     hideFareRules: false,
