@@ -652,3 +652,45 @@ bool isNumeric(String s) {
   }
   return num.tryParse(s) != null;
 }
+
+List <String> splitString(String str, int maxLen){
+  List <String> splitStr = str.split(' ');
+  List <String> strings = [];
+
+  String addStr = '';
+  int index = 0;
+  splitStr.forEach((element) {
+    bool addedEl = false;
+    if( addStr != '' && (addStr.length + element.length > maxLen)  ){
+      strings.add(addStr);
+      addStr = '';
+  /*  } else if(  addStr != '' && (addStr.length + element.length <= maxLen)   ) {
+      strings.add(addStr + ' ' + element);
+      addStr = '';
+      addedEl = true;*/
+    }
+    if( addedEl == false && element.length >= maxLen ){
+      addStr = '';
+      strings.add( element);
+      addedEl = true;
+    }
+
+
+    index +=1;
+    if( index == splitStr.length){
+      // last one
+      if( addStr != '' && (addStr.length + element.length <= maxLen)  ) {
+        strings.add(addStr + ' ' + element);
+        addedEl = true;
+      } else if (addStr != '' ) {
+        strings.add(addStr);
+      }
+      if(addedEl == false ) strings.add(element);
+
+    } else {
+      if( addedEl == false) addStr = addStr + ' ' + element;
+    }
+  });
+
+  return strings;
+}

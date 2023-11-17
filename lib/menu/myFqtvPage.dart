@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -931,6 +932,8 @@ Widget _getTrans() {
 
 
   void _changePasswordDialog(BuildContext context, dynamic p ) {
+    _oldPasswordEditingController.text = '';
+    _newPasswordEditingController.text = '';
    showDialog(
        context: context,
        builder: (BuildContext context) {
@@ -952,6 +955,7 @@ Widget _getTrans() {
    Container(
      child: Column(
      mainAxisSize: MainAxisSize.min,
+     crossAxisAlignment: CrossAxisAlignment.start,
      children: <Widget>[
        new TextFormField(
          decoration: getDecoration('Old password'),
@@ -966,14 +970,35 @@ Widget _getTrans() {
          decoration: getDecoration('new Password'),
          obscureText: _isHidden,
          obscuringCharacter: "*",
+         inputFormatters: [
+           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9!@%\$&*]"))
+         ],
          keyboardType: TextInputType.visiblePassword,
-
+         autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value)  {
+              if(value != null && value.length >= 8 && value.length <= 16 ){
+                String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@%\$&*]).{8,}$';
+                RegExp regExp = new RegExp(pattern);
+                logit('A-Z ${regExp.hasMatch(value)}');
+                if(regExp.hasMatch(value)) {
+                  return null;
+                }
+              }
+              return 'invalid password';
+          },
          onSaved: (value) {
            if (value != null) {
              //.contactInfomation.phonenumber = value.trim()
            }
          },
        ),
+       Padding(padding: EdgeInsets.all(5)),
+       TrText('Password must contain the following:', textScaleFactor: 0.9,),
+       TrText('   A lowercase letter', textScaleFactor: 0.75,),
+       TrText('   A capital (uppercase) letter', textScaleFactor: 0.75,),
+       TrText('   A number', textScaleFactor: 0.75,),
+       TrText('   one of the following ! @ % & *', textScaleFactor: 0.75,),
+       TrText('Between 8 and 16 characters in length', textScaleFactor: 0.9,),
      ],
    ),
          ),

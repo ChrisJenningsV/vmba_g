@@ -49,7 +49,7 @@ void configM1() {
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
   gblAppTitle = 'medsky';
-  gblBuildFlavor = 'M1';
+  gblBuildFlavor = 'BM';
   gblCurrentRloc = '';
 
 
@@ -71,7 +71,7 @@ void configM1() {
     testServerFiles: 'https://customertest.videcom.com/medsky/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
-    aircode: 'H4',
+    aircode: 'BM',
     termsAndConditionsUrl: '', //'''{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
     privacyPolicyUrl:  '', //'''{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
     //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
@@ -165,7 +165,7 @@ void configM1() {
     useSmartPay: false,
 
     wantFQTVNumber: true,
-    apiKey: '93a9626c78514c2baab494f4f6e0c197',
+    apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
     maxNumberOfPax: 8,
     hideFareRules: false,
 

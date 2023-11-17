@@ -1584,7 +1584,9 @@ class CheckinBoardingPassesWidgetState
           if (pnr.pNR.itinerary.itin[journeyNo].secID != '') {
             return Text('');
           } else if (pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
-              pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode)  {
+              ((pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode) &&
+                  (pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.altAircode))
+          )  {
               return TrText('Check-in with partner airline');
           } else if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
               pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
@@ -1620,7 +1622,9 @@ class CheckinBoardingPassesWidgetState
               ? true
               : false;
       if( pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
-          pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode)  {
+          ((pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode) &&
+              (pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.altAircode))
+      )  {
         return TrText('Check-in with partner airline');
       }
       if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
@@ -1760,6 +1764,7 @@ class CheckinBoardingPassesWidgetState
       bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
       bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
       bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
+      bool isBeforeOpens =  is1After2(  checkinOpens, now);
       // nb DateTime isBefore and isAfter do not work accurateley !!!
     //  logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
 
@@ -1767,7 +1772,14 @@ class CheckinBoardingPassesWidgetState
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
       } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
-        response = translate('Online Check in closed ');
+        if( isBeforeOpens ) {
+          DateTime dt = DateTime.parse(
+              itin.onlineCheckinTimeStartLocal);
+          response = translate('Online check-in opens at ') +
+              getIntlDate('H:mm a dd MMM', dt);
+        } else {
+          response = translate('Online Check in closed ');
+        }
    //   } else if ( city.webCheckinEnabled == 0 ) {
      //   response = translate('no Check-in online for this city ');
       } else if ( itin.onlineCheckin != null &&  itin.onlineCheckin == 'False' ) {

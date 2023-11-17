@@ -20,6 +20,8 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/messagePages.dart';
 
+import '../utilities/widgets/CustomPageRoute.dart';
+
 class FlightSelectionSummaryWidget extends StatefulWidget {
 //  FlightSelectionSummaryWidget({Key key = GlobalKey(), this.newBooking }) : super(key: key);
   FlightSelectionSummaryWidget({Key key = const Key("flt_key"), required this.newBooking  }) : super(key: key);
@@ -841,7 +843,8 @@ Row airMiles() {
       if (gblNoNetwork == false) {
         Navigator.push(
             context,
-            MaterialPageRoute(
+           // MaterialPageRoute(
+            CustomPageRoute(
                 builder: (context) => PassengerDetailsWidget(
                     newBooking: widget.newBooking)));
       }

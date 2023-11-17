@@ -240,7 +240,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
 
      }
      if( bShow) {
-       list.add(VInputField(fieldParams: params, key: Key((element.paymentFieldName as String) + '_key'),));
+       list.add(VInputField(fieldParams: params, provider: widget.provider, pnrModel: widget.pnrModel, key: Key((element.paymentFieldName as String) + '_key'),));
      }
     });
 

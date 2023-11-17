@@ -25,6 +25,8 @@ import '../components/vidButtons.dart';
 import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
 
+import '../utilities/widgets/CustomPageRoute.dart';
+
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key= const Key("paxdetailswid_key"), required this.newBooking, this.pnrModel}) : super(key: key);
   final NewBooking newBooking;
@@ -318,8 +320,21 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       floatBtn = vidWideActionButton(context, 'CONTINUE', _onContinuePressed, offset: 35);
     }
 
+/*
     return WillPopScope(
         onWillPop: _onWillPop,
+*/
+    return
+      CustomWillPopScope(
+          action: () {
+            /*print('pop');
+            Navigator.pop(context*//*, product*//*);
+            setState(() {
+              //product.is_favorite = isFavorite;
+            });*/
+            onWillPop(context);
+          },
+          onWillPop: true,
         child: Scaffold(
       key: _key,
       appBar: appBar(context, 'Passengers Details',

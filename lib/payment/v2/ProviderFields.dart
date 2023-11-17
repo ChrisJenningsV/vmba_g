@@ -1,17 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/helper.dart';
+
+import '../../data/models/providers.dart';
+import '../../data/repository.dart';
 
 
 
 class VInputField extends StatefulWidget {
   final FieldParams?  fieldParams;
+  final Provider? provider;
+  final PnrModel? pnrModel;
 
   const VInputField({
     Key key= const Key("vinput_key"),
-    this.fieldParams}) : super(key: key);
+    this.fieldParams,
+    this.provider,
+    this.pnrModel}) : super(key: key);
 
   @override
   VInputFieldState createState() => VInputFieldState();
@@ -20,6 +30,7 @@ class VInputField extends StatefulWidget {
 class VInputFieldState extends State<VInputField> {
 
   late TextEditingController _textEditingController;
+  String taxAmount = '';
 
 
   @override
@@ -173,12 +184,52 @@ class VInputFieldState extends State<VInputField> {
       },
     ),
         // assum cc type selection as only choice currently
-        _textEditingController.text == 'Corporate' ?
-        TrText('For corporate cards a fee will apply.', style: TextStyle(color: Colors.red),textAlign: TextAlign.left,) :
-            Container()
+        FutureBuilder<String>(
+            future: getCCFeeMsg(), // function where you call your api
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {  // AsyncSnapshot<Your object type>
+              if( snapshot.connectionState == ConnectionState.waiting){
+                return  Center(child: Text('Please wait its loading...'));
+              }else{
+                if (snapshot.hasError)
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                else
+                  return Center(child: new Text('${snapshot.data}', style: TextStyle(color: Colors.red),textScaleFactor: 0.75,));  // snapshot.data  :- get your object which is pass from your downloadData() function
+              }
+            },
+        )
+
         ])
     )
     );
+  }
+
+  Future<String>  getCCFeeMsg() async {
+    if(_textEditingController.text == 'Corporate' ) {
+      if( taxAmount == '') {
+        var amount = widget.pnrModel!.pNR.basket.outstanding.amount;
+        var cur = widget.pnrModel!.pNR.basket.outstanding.cur;
+        String cmd = 'MCC/4010400000000000/${cur}${amount}[provider=${widget
+            .provider?.paymentSchemeName}]~X';
+
+        String data = await runVrsCommand(cmd);
+        Map mccmap = json.decode(data);
+        Map map = mccmap['mcc'];
+
+        if( map['currency'] == cur) {
+          taxAmount = map['currency'] + map['value'];
+        } else {
+          // need to convert currency!
+          //cmd = 'ME/$cur${map['value']}/${2}"
+        }
+      }
+
+      if( taxAmount != '') {
+        return Future.value(translate('Use of Corporate Credit Card – Fee applicable') + ' $taxAmount');
+      } else {
+        return Future.value(translate('For corporate cards a fee will apply.'));
+      }
+    }
+    return Future.value('');
   }
 
 

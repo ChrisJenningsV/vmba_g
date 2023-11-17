@@ -147,7 +147,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
     product.curProducts!.forEach((element) {
       int paxNo = int.parse(element.key.split(':')[0]);
       int segNo = int.parse(element.key.split(':')[1]);
-      int count = element.count;
+//      int count = element.count;
       noFound = 0;
       bool alreadyAdded = false;
       if( pnr.mPS != null && pnr.mPS.mP != null ){

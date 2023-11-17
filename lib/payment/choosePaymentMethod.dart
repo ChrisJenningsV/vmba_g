@@ -110,6 +110,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         //     makeMmbBooking();
       }
     }
+    if( gblProviders != null &&  gblSelectedCurrency == gblLastProviderCurrecy ) {
+      startTimer();
+    }
     stopwatch.start();
   }
 

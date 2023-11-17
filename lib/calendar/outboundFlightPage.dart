@@ -21,6 +21,7 @@ import '../components/showDialog.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/colourHelper.dart';
 import 'bookingFunctions.dart';
 
@@ -175,10 +176,35 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         objAv = rs.body!;
         removeDepartedFlights();
         _dataLoaded();
+
+        // check if invalid voucher
+        if( this.widget.newBooking.eVoucherCode != '' && objAv.availability.itin != null ){
+          // look for discprice
+          bool bFound = false;
+          objAv.availability.itin!.forEach((element) {
+            if( element.flt != null ){
+              element.flt.forEach((flt) {
+                if(flt.fltav.discprice!= null ) {
+                  flt.fltav.discprice!.forEach((discprice) {
+                    if( discprice != '' ) {
+                      logit('discp $discprice');
+                      bFound = true;
+                    }
+                  });
+                }
+              });
+            }
+          });
+          if( bFound == false){
+            gblError = translate('Voucher not valid' ) + ' ' + this.widget.newBooking.eVoucherCode;
+            this.widget.newBooking.eVoucherCode = '';
+          }
+        }
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});
         Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
           objAv = rs.body!;
+
           removeDepartedFlights();
           _dataLoaded();
         });
@@ -263,7 +289,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   @override
   Widget build(BuildContext context) {
   if ( gblError!= null && gblError.isNotEmpty  ){
-    return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete);
+    return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete, wantButtons: true);
 
 
   }
@@ -532,7 +558,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 refreshStatusBar();
                 // go to options page
                 if (gblError != '') {
-                  showAlertDialog(context, 'Error', gblError);
+                  showAlertDialog(context, 'Error', gblError, onComplete:() { gblError = ''; setState(() {}); });
                 } else {
                   Navigator.push(
                       context,
@@ -552,7 +578,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
               Navigator.push(
                   context,
-                  MaterialPageRoute(
+                 // MaterialPageRoute(
+                  CustomPageRoute(
                       builder: (context) =>
                           FlightSelectionSummaryWidget(
                               newBooking: this.widget.newBooking)));

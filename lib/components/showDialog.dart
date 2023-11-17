@@ -99,7 +99,7 @@ void showAlertDialog(BuildContext context, String title, String msg, {void Funct
     context: context,
     builder: (BuildContext context) {
       // return object of type Dialog
-            return getAlertDialog(context, title, msg);
+            return getAlertDialog(context, title, msg, onComplete: onComplete);
     },
   );
 }
@@ -146,12 +146,12 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
             ),
           ),
 
-/*
+          onComplete != null ?
           InkWell(
             child: Container(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 50, right: 50),
                 decoration: BoxDecoration(
-                  color: myColor,
+                 // color: myColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(10.0),
                       bottomRight: Radius.circular(10.0)),
@@ -170,8 +170,8 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
                   },
                 )
             ),
-          ),
-*/
+          ): Container(),
+
         ],
       ),
     ),

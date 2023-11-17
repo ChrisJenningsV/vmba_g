@@ -900,7 +900,7 @@ Widget getPromoPriceRow(List<Flt> item, int index){
     }
   });
 
-  logit('promo pri = $pri');
+  // logit('promo pri = $pri');
   return  new Text(
     calenderPrice(
         item[0].fltav.cur![index],

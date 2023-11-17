@@ -135,8 +135,21 @@ class ProductCardState extends State<ProductCard> {
       widgets0.add(Align(alignment: Alignment.centerLeft,
           child: TrText(route,style: TextStyle(fontWeight: FontWeight.bold),)));
     }
-    widgets.add(Align(alignment: Alignment.centerLeft,
-        child: TrText(prod.productName)),);
+
+    if( prod.productName.length > 20){
+      List <String> list = splitString(prod.productName, 20);
+      List <Widget> children = [];
+      list.forEach((element) {
+        children.add(TrText(element));
+      });
+      Column col = new Column( children: children,);
+      widgets.add(Align(alignment: Alignment.centerLeft,
+          child: col),);
+
+    } else {
+      widgets.add(Align(alignment: Alignment.centerLeft,
+          child: TrText(prod.productName)),);
+    }
 
     widgets.add(Spacer(),);
     if( prod.productDescription != null && prod.productDescription.isNotEmpty && prod.productDescription != '' ) {
