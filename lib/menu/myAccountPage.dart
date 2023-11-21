@@ -649,9 +649,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
             validator: (value) {
               if (! value!.isEmpty && _adsPinTextEditingController.text == '' ) {
                 return 'ADS / Island Resident Pin is Required';
-              } else if (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
+              } else if (value!= '' && (!(value.toUpperCase().startsWith('ADS') || value.toUpperCase().startsWith('RES') ) ||
                   value.length != 16 ||
-                  !isNumeric(value.substring(3))) {
+                  !isNumeric(value.substring(3)))) {
                 return 'ADS / Island Resident not valid';
               } else {
                 return null;

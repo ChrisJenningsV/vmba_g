@@ -101,7 +101,8 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
         gblPaymentMsg = '';
         Navigator.push(
             context,
-            MaterialPageRoute(
+            //MaterialPageRoute(
+            CustomPageRoute(
                 builder: (context) =>
                     ChoosePaymenMethodWidget(
                       newBooking: widget.newBooking,
