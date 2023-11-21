@@ -123,6 +123,8 @@ class Settings {
   bool wantMaterial3;
   bool wantPriceCalendar;
   bool wantPriceCalendarRounding;
+  bool canGoBackFromPaxPage;
+  bool canGoBackFromOptionsPage;
 
   String productFormat;
   String homePageStyle;
@@ -284,6 +286,8 @@ bool bpShowFastTrack;
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
     this.wantCanFacs = true,
+    this.canGoBackFromPaxPage = false,
+    this.canGoBackFromOptionsPage = false,
     this.wantTerminal = true,
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,

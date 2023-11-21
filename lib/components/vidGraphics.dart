@@ -22,9 +22,9 @@ Widget vidNoFlights( ){
       Transform.rotate(angle: math.pi/4,
           child: new Icon(
             Icons.airplanemode_active,
-            size: 30.0,
+            size: 26.0,
           )),
-      Icon(Icons.block_flipped , color: Colors.red, size: 45,),
+      Icon(Icons.block_flipped , color: Colors.red, size: 39,),
     ],);
 }
 

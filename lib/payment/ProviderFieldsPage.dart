@@ -15,6 +15,8 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 import 'package:vmba/utilities/widgets/buttons.dart';
 
+import '../utilities/widgets/CustomPageRoute.dart';
+
 
 
 class ProviderFieldsPage extends StatefulWidget {
@@ -308,7 +310,10 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           }
           if( widget.newBooking == null ) widget.newBooking = NewBooking();
           await Navigator.push(
-              context, SlideTopRoute(page: WebPayPage(
+              context,
+              //SlideTopRoute(
+              CustomPageRoute(
+                  builder: (context) => WebPayPage(
             widget.provider.paymentSchemeName, newBooking: widget.newBooking!,
             pnrModel: widget.pnrModel,
             isMmb: widget.isMmb,)));

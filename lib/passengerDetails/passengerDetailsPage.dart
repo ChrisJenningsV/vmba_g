@@ -327,12 +327,16 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     return
       CustomWillPopScope(
           action: () {
-            /*print('pop');
-            Navigator.pop(context*//*, product*//*);
-            setState(() {
-              //product.is_favorite = isFavorite;
-            });*/
-            onWillPop(context);
+
+            print('pop');
+            if( gblSettings.canGoBackFromPaxPage) {
+              Navigator.pop(context);
+              setState(() {
+                //product.is_favorite = isFavorite;
+              });
+            } else {
+              onWillPop(context);
+            }
           },
           onWillPop: true,
         child: Scaffold(
@@ -684,7 +688,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   refreshStatusBar();
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+//                      MaterialPageRoute(
+                      CustomPageRoute(
                           builder: (context) =>
                               OptionsPageWidget(
                                   newBooking: this.widget.newBooking)));

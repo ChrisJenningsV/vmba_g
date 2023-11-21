@@ -73,6 +73,7 @@ Decoration? containerDecoration({String location = ''}) {
 Decoration v2ContainerDecoration({String location = ''})
 {
   BorderRadiusGeometry? br;
+  Color bgColor = Colors.white;
   if(location == 'top') {
     br = BorderRadius.only(
       topLeft: Radius.circular(10.0),
@@ -86,12 +87,13 @@ Decoration v2ContainerDecoration({String location = ''})
   Color lineClr = v2BorderColor();
   double lineWidth = v2BorderWidth();
   if( location == 'selected'){
+    bgColor = gblSystemColors.primaryHeaderColor;
     lineClr = Colors.black;
-    lineWidth = v2BorderWidth() * 3;
+    lineWidth = v2BorderWidth() * 2;
   }
   return BoxDecoration(
       borderRadius: br,
-      //color: Colors.grey,
+      color: bgColor,
       border: Border(top: (location=='middle')? BorderSide.none : BorderSide(color: lineClr, width: lineWidth),
         left: BorderSide(color: lineClr, width: lineWidth,),
         right:  BorderSide(color: lineClr, width: lineWidth),

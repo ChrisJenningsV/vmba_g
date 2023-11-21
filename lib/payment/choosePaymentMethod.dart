@@ -28,6 +28,7 @@ import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 import 'ProviderFieldsPage.dart';
 
 bool _cancelTimer = false;
@@ -1167,8 +1168,25 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         wantButtons = true;
       }
 
+/*
       return WillPopScope(
           onWillPop: _onWillPop,
+*/
+      return
+        CustomWillPopScope(
+            action: () {
+
+              print('pop');
+ /*             if( gblSettings.canGoBackFromOptionsPage) {
+                Navigator.pop(context);
+                setState(() {
+                  //product.is_favorite = isFavorite;
+                });
+              } else {*/
+                onWillPop(context);
+              //}
+            },
+            onWillPop: true,
           child:  Scaffold(
           key: _key,
           appBar: new AppBar(
@@ -1191,9 +1209,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     } else {
       if(gblLogPayment) { logit('CPM Build normal');}
 
-      return WillPopScope(
-        onWillPop: _onWillPop,
-        child:   Scaffold(
+//      return WillPopScope(
+//        onWillPop: _onWillPop,
+      return
+        CustomWillPopScope(
+          action: () {
+
+            print('pop');
+            onWillPop(context);
+          },
+          onWillPop: true,
+          child:   Scaffold(
             key: _key,
             appBar: appBar(context, 'Payment',
               newBooking: widget.newBooking,
@@ -1561,7 +1587,10 @@ List<Widget> getPayOptions(String amount, String cur) {
                   }
                   _cancelTimer = true;
                   await Navigator.push(
-                      context, SlideTopRoute(page: WebPayPage(
+                      context,
+                      //SlideTopRoute(page:
+                      CustomPageRoute(
+                          builder: (context) => WebPayPage(
                     provider.paymentSchemeName, newBooking: widget.newBooking!,
                     pnrModel: widget.pnrModel,
                     isMmb: widget.isMmb,)));
@@ -1606,7 +1635,10 @@ List<Widget> getPayOptions(String amount, String cur) {
                   }
                 }
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) =>
+                    context,
+                    //MaterialPageRoute(
+                    CustomPageRoute(
+                        builder: (context) =>
                     CreditCardPage(pnrModel: widget.pnrModel,
                       stopwatch: stopwatch,
                       session: session!,
@@ -1760,7 +1792,11 @@ List<Widget> getPayOptions(String amount, String cur) {
               gblCurrentRloc = widget.pnrModel.pNR.rLOC;
               gblPaymentMsg = '';
               Navigator.push(
-                  context, SlideTopRoute(page: WebPayPage(
+                  context,
+                  //SlideTopRoute(page:
+                  CustomPageRoute(
+                      builder: (context) =>
+                          WebPayPage(
                 providerName, newBooking: widget.newBooking!,
                 pnrModel: widget.pnrModel,
                 isMmb: widget.isMmb,)));
@@ -1773,7 +1809,10 @@ List<Widget> getPayOptions(String amount, String cur) {
                 }
               }
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) =>
+                  context,
+                  //MaterialPageRoute(
+                  CustomPageRoute(
+                      builder: (context) =>
                   CreditCardPage(pnrModel: widget.pnrModel,
                     session: session!,
                     stopwatch: stopwatch,

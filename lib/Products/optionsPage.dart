@@ -10,6 +10,7 @@ import '../home/home_page.dart';
 import '../menu/menu.dart';
 import '../payment/choosePaymentMethod.dart';
 import '../utilities/helper.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 class OptionsPageWidget extends StatefulWidget {
@@ -33,8 +34,25 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
     //Show dialog
     //print('build');
 
+/*
     return WillPopScope(
         onWillPop: _onWillPop,
+*/
+    return
+      CustomWillPopScope(
+          action: () {
+
+            print('pop');
+            if( gblSettings.canGoBackFromOptionsPage) {
+              Navigator.pop(context);
+              setState(() {
+                //product.is_favorite = isFavorite;
+              });
+            } else {
+              onWillPop(context);
+            }
+          },
+          onWillPop: true,
         child:  Scaffold(
         key: _key,
         appBar: appBar(context, 'Options',

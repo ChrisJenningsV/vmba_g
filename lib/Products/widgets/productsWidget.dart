@@ -11,6 +11,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import '../../Helpers/networkHelper.dart';
 import '../../payment/choosePaymentMethod.dart';
 import '../../utilities/helper.dart';
+import '../../utilities/widgets/CustomPageRoute.dart';
 import '../productCard.dart';
 import '../seatCard.dart';
 
@@ -163,7 +164,8 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
       gblPaymentMsg = '';
       Navigator.push(
           context,
-          MaterialPageRoute(
+          //MaterialPageRoute(
+          CustomPageRoute(
               builder: (context) => ChoosePaymenMethodWidget(
                 newBooking: widget.newBooking, pnrModel: gblPnrModel!, isMmb: false,)
             //CreditCardExample()

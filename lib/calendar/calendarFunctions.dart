@@ -42,7 +42,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     return calFlightItem(context, widget.newBooking, widget.objAv, widget.item);
   }
 
-  void goToClassScreen(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, int index, List<Flt> flts) async {
+  void goToClassScreen(BuildContext context,NewBooking newBooking, AvailabilityModel objAv, int index, List<Flt> flts,AvItin? avItem) async {
     gblActionBtnDisabled = false;
     double pri = 0.0;
     String currency='';
@@ -76,12 +76,12 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
               currency: currency,
               seats: widget.seatCount,
             )));
-    widget.flightSelected!(context,null,  selectedFlt, flts, cbName);
+    widget.flightSelected!(context,avItem,  selectedFlt, flts, cbName);
   }
 
 
 
-  Widget pricebuttons(BuildContext context, NewBooking newBooking,AvailabilityModel objAv, List<Flt> item) {
+  Widget pricebuttons(BuildContext context, NewBooking newBooking,AvailabilityModel objAv, List<Flt> item,AvItin? avItem) {
     EdgeInsets pad = EdgeInsets.symmetric(vertical: 5,horizontal: 15);
     if( wantRtl()){
       pad = EdgeInsets.symmetric(vertical: 5,horizontal: 10);
@@ -104,7 +104,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                       (index) => GestureDetector(
                       onTap: () => {
                         isJourneyAvailableForCb(item, index)
-                            ? goToClassScreen(context, newBooking, objAv, index, item)
+                            ? goToClassScreen(context, newBooking, objAv, index, item, avItem)
                             : print('No av')
                       },
                       child: Chip(
@@ -142,7 +142,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                     (index) => ElevatedButton(
                     onPressed: () {
                       isJourneyAvailableForCb(item, index)
-                          ? goToClassScreen(context,newBooking,objAv, index, item)
+                          ? goToClassScreen(context,newBooking,objAv, index, item, avItem)
                           : print('No av');
                     },
                     style: ElevatedButton.styleFrom(
@@ -251,7 +251,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
     ));
     //new Divider(),
 
-    topList.add(pricebuttons(context, newBooking as NewBooking,objAv as AvailabilityModel, item.flt));
+    topList.add(pricebuttons(context, newBooking as NewBooking,objAv as AvailabilityModel, item.flt, item));
 
     return Container(
       decoration: BoxDecoration(
@@ -662,78 +662,85 @@ Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate
       showNoFlightIcon = true;
     }
   }
-  Color txtColor = Colors.black;
+  Color? txtColor = Colors.black;
   if( isSearchDate(
       DateTime.parse(item.daylcl),
       date)){
     txtColor = Colors.white;
   }
-  if( wantPageV2()) txtColor = Colors.black;
+  if( wantPageV2()) {
+    txtColor = Colors.black;
+      if( isSearchDate(DateTime.parse(item.daylcl),
+          date)) {
+        txtColor = gblSystemColors.headerTextColor;
 
-  list.add(Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
-    //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
-    style: TextStyle(
-        fontSize: 14,
-        color: txtColor),
-  ));
+      }
+  }
 
-  if( wantPageV2()) txtColor = Colors.grey;
-  if( showNoFlightIcon ){
-    list.add(vidNoFlights());
-  } else {
-    list.add(TrText('from', style: TextStyle(fontSize: 14,
-        color: txtColor),
-    ));
-
-    list.add(Text(
-      calenderPrice(item.cur, item.amt, item.miles),
-      //textScaleFactor: 1.0,
+    list.add(Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+      //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
       style: TextStyle(
           fontSize: 14,
           color: txtColor),
     ));
-  }
 
-if( wantRtl()) {
-  return SingleChildScrollView(
-      child: Container(
-        decoration: new BoxDecoration(
-            border: new Border.all(color: Colors.black12),
-            color: !isSearchDate(DateTime.parse(item.daylcl),
-                date)
-                ? Colors.white
-                : gblSystemColors.accentButtonColor //Colors.red,
-        ),
-        width: DateTime.parse(item.daylcl).isBefore(hideBeforeDate)
-            ? 0
-            : 120.0,
-        child: new TextButton(
-            onPressed: onPressed,
-            child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: list)),
-      ));
-} else {
-  Decoration dec = new BoxDecoration(
-      border: new Border.all(color: Colors.black12),
-      color: !isSearchDate(DateTime.parse(item.daylcl),
-          date)
-          ? Colors.white
-          : gblSystemColors.accentButtonColor //Colors.red,
-  );
-  EdgeInsets marg = EdgeInsets.all(0);
-  if( wantPageV2()) {
-    if( isSearchDate(DateTime.parse(item.daylcl),
-        date)) {
-      dec = containerDecoration(location: 'selected') as Decoration;
+    if( wantPageV2()) txtColor = Colors.grey;
+    if( showNoFlightIcon ){
+      list.add(vidNoFlights());
     } else {
-      dec = containerDecoration(location: 'day') as Decoration;
+      list.add(TrText('from', style: TextStyle(fontSize: 14,
+          color: txtColor),
+      ));
+
+      list.add(Text(
+        calenderPrice(item.cur, item.amt, item.miles),
+        //textScaleFactor: 1.0,
+        style: TextStyle(
+            fontSize: 14,
+            color: txtColor),
+      ));
     }
-    marg = containerMargins(location: 'day') ;
-  }
+
+    if( wantRtl()) {
+      return SingleChildScrollView(
+          child: Container(
+            decoration: new BoxDecoration(
+                border: new Border.all(color: Colors.black12),
+                color: !isSearchDate(DateTime.parse(item.daylcl),
+                    date)
+                    ? Colors.white
+                    : gblSystemColors.accentButtonColor //Colors.red,
+            ),
+            width: DateTime.parse(item.daylcl).isBefore(hideBeforeDate)
+                ? 0
+                : 120.0,
+            child: new TextButton(
+                onPressed: onPressed,
+                child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: list)),
+          ));
+    } else {
+      Decoration dec = new BoxDecoration(
+          border: new Border.all(color: Colors.black12),
+          color: !isSearchDate(DateTime.parse(item.daylcl),
+              date)
+              ? Colors.white
+              : gblSystemColors.accentButtonColor //Colors.red,
+      );
+      EdgeInsets marg = EdgeInsets.all(0);
+      if( wantPageV2()) {
+        if( isSearchDate(DateTime.parse(item.daylcl),
+            date)) {
+          dec = containerDecoration(location: 'selected') as Decoration;
+        } else {
+          dec = containerDecoration(location: 'day') as Decoration;
+        }
+        marg = containerMargins(location: 'day') ;
+      }
 
 
-  return Container(
+      return Container(
         decoration: dec,
         margin: marg,
         width: DateTime.parse(item.daylcl).isBefore(hideBeforeDate)
@@ -745,8 +752,9 @@ if( wantRtl()) {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: list)),
       );
-}
-}
+    }
+  }
+
 
 
 

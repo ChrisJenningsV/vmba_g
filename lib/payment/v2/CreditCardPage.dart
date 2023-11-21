@@ -27,6 +27,7 @@ import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../../components/bottomNav.dart';
 import '../../components/vidButtons.dart';
+import '../../utilities/widgets/CustomPageRoute.dart';
 import '../choosePaymentMethod.dart';
 import '../paymentCmds.dart';
 
@@ -148,8 +149,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
       });
     }
+/*
     return WillPopScope(
         onWillPop: _onWillPop,
+*/
+    return
+      CustomWillPopScope(
+          action: () {
+
+            print('pop');
+            onWillPop(context);
+          },
+          onWillPop: true,
         child:  Scaffold(
       key: _key,
       appBar: appBar(

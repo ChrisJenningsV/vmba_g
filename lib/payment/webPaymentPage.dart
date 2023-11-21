@@ -12,7 +12,9 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart' as inapp;
 
+import '../Helpers/bookingHelper.dart';
 import '../data/smartApi.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 import 'choosePaymentMethod.dart';
 
 class WebPayPage extends StatefulWidget {
@@ -137,7 +139,8 @@ Page resource error:
       //Navigator.pop(context, 'fail');
       Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
+      //MaterialPageRoute(
+        CustomPageRoute(
         builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: widget.isMmb,),
       ),
     );
@@ -163,8 +166,18 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
+/*
     return WillPopScope(
       onWillPop: _onWillPop,
+*/
+    return
+      CustomWillPopScope(
+          action: () {
+
+            print('pop');
+            onWillPop(context);
+          },
+          onWillPop: true,
         child:Scaffold(
       appBar: appBar(context,  'Payment Page', automaticallyImplyLeading: false,
           actions:<Widget> [ new IconButton(
@@ -334,7 +347,8 @@ Page resource error:
     gblPaymentMsg = '';
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
+      //MaterialPageRoute(
+      CustomPageRoute(
         builder: (context) => ChoosePaymenMethodWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, isMmb: widget.isMmb,),
       ),
     );

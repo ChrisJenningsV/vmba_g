@@ -18,6 +18,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../../calendar/bookingFunctions.dart';
 import '../../data/smartApi.dart';
+import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
 
 enum SeatType { regular, emergency }
@@ -416,7 +417,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     final result = await Navigator.push(
       context,
       // Create the SelectionScreen in the next step.
-      MaterialPageRoute(
+      //MaterialPageRoute(
+      CustomPageRoute(
           builder: (context) => ChoosePaymenMethodWidget(
               pnrModel: pnrModel, isMmb: true, session: session, mmbAction: 'SEAT',)),
     );

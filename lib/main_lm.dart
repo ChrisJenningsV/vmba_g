@@ -56,6 +56,7 @@ void configLM() {
     wantMaterial3: false,
     wantPriceCalendar: false ,
     wantPriceCalendarRounding: true,
+    canGoBackFromPaxPage: true,
     //pageStyle: 'V2',
 
     airlineName: "Loganair",

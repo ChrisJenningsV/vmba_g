@@ -13,6 +13,8 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 
+import '../../utilities/widgets/CustomPageRoute.dart';
+
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget(
       {Key key= const Key("fltselsum_key"),
@@ -775,7 +777,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                         gblPaymentMsg = '';
                         Navigator.push(
                             context,
-                            MaterialPageRoute(
+                            //MaterialPageRoute(
+                            CustomPageRoute(
                                 builder: (context) => ChoosePaymenMethodWidget(
                                       mmbBooking: widget.mmbBooking,
                                       pnrModel: pnrModel,

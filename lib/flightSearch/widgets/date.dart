@@ -105,14 +105,15 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
         list2.add(
           Expanded(
               flex: 1,
-              child: v2BorderBox(context, ' ' + translate(_returningText),
-            Row(
+              child:
+                  widget.isReturn ?  v2BorderBox(context, ' ' + translate(_returningText), Row(
           children: [
-            widget.isReturn ? Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) : Container(),
+             Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) ,
             Text(getIntlDate('dd MMM yyyy', _returningDate as DateTime), textScaleFactor: 1.25,style: TextStyle(fontWeight: FontWeight.bold),),
           ],
-        ))
-          )
+        )): Container(),
+              )
+
         );
       } else {
 

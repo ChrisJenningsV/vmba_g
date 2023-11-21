@@ -440,6 +440,9 @@ class Repository {
                   case 'wantDangerousGoods':
                     gblSettings.wantDangerousGoods = parseBool(item['value']);
                     break;
+                  case 'canGoBackFromPaxPage':
+                    gblSettings.canGoBackFromPaxPage = parseBool(item['value']);
+                    break;
 
                   case 'wantYouthDOB':
                     gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);

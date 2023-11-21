@@ -65,6 +65,7 @@ void configM1() {
     wantCurrencyPicker: false,
     wantPassengerPassport: true,
     wantCanFacs: false,
+    canGoBackFromPaxPage: true,
 
     airlineName: "Medsky",
     gblServerFiles: 'https://customer3.videcom.com/Medsky/VARS/AppFiles/',

@@ -19,6 +19,7 @@ import 'package:vmba/data/repository.dart';
 import '../Helpers/networkHelper.dart';
 import '../components/vidButtons.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -668,7 +669,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       gblPaymentMsg = '';
       Navigator.push(
           context,
-          MaterialPageRoute(
+          //MaterialPageRoute(
+          CustomPageRoute(
               builder: (context) => ChoosePaymenMethodWidget(
                   newBooking: widget.newbooking, pnrModel: pnrModel, isMmb: false,)
               //CreditCardExample()
