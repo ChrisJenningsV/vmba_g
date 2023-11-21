@@ -1301,6 +1301,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   Widget _getTotals() {
    String cur = widget.pnrModel.pNR.basket.outstanding.cur;
     String amount =   widget.pnrModel.pNR.basket.outstanding.amount;
+    if( amount == '') amount = '0';
    var dAmount =double.parse(amount);
    if( dAmount <= 0 ) {
      dAmount = 0.0;

@@ -288,9 +288,9 @@ List<Pax> getPaxlist(PnrModel pnr, int  journey) {
 
 
 
-Future makeBooking(NewBooking newBooking) async {
+Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
   String msg = '';
-  PnrModel pnrModel;
+  /*PnrModel pnrModel;*/
   // if using VRS sessions/AAA clear out temp booking
 
   print('gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');

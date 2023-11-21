@@ -25,6 +25,7 @@ import '../components/vidButtons.dart';
 import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
 
+import '../payment/choosePaymentMethod.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 
 class PassengerDetailsWidget extends StatefulWidget {
@@ -675,13 +676,25 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               });
             } else {
 
+              gblError = '';
+              PnrModel pnrModel = PnrModel();
+              gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {
+              });
+
               if( gblSettings.wantProducts) {
+/*
+                setState(() {
+
+                });
+*/
+/*
                 gblError = '';
                 gblPnrModel = await makeBooking(widget.newBooking).catchError((e) {
                   setState(() {
 
                   });
                 });
+*/
 
 
                 if( gblError == '') {
@@ -709,11 +722,17 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 //                    MaterialPageRoute(
                     CustomPageRoute(
                         builder: (context) =>
+                               ChoosePaymenMethodWidget(
+                                  newBooking: widget.newBooking, pnrModel: gblPnrModel as PnrModel, isMmb: false,)
+                              /*
                             ContactDetailsWidget(
                               newbooking: widget.newBooking,
                               preLoadDetails: preLoadDetails,
                               passengerDetailRecord: passengerDetailRecord!,
-                            )));
+                            )
+*/
+                    )
+                );
                 displayError(_error);
               }
             }
