@@ -512,7 +512,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
           ],
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.emailAddress,
           validator: (value) {
             String er = validateEmail(value!.trim());
             if( er != '' ) return er;
