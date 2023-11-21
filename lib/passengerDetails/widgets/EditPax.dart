@@ -728,7 +728,7 @@ Widget getFirstname() {
             inputFormatters: [
               FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
             ],
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
                 String er = validateEmail(value!.trim());
                 if(er != '' ) return er;
