@@ -688,8 +688,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   refreshStatusBar();
                   Navigator.push(
                       context,
-//                      MaterialPageRoute(
-                      CustomPageRoute(
+                      MaterialPageRoute(
                           builder: (context) =>
                               OptionsPageWidget(
                                   newBooking: this.widget.newBooking)));
@@ -707,7 +706,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 }
                 var _error = await Navigator.push(
                     context,
-                    MaterialPageRoute(
+//                    MaterialPageRoute(
+                    CustomPageRoute(
                         builder: (context) =>
                             ContactDetailsWidget(
                               newbooking: widget.newBooking,
