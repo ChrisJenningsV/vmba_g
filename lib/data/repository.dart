@@ -602,6 +602,9 @@ class Repository {
                   case 'privacyPolicyUrl':
                     gblSettings.privacyPolicyUrl = item['value'];
                     break;
+                  case 'prohibitedItemsNoticeUrl':
+                    gblSettings.prohibitedItemsNoticeUrl = item['value'];
+                    break;
                   case 'specialAssistanceUrl':
                     gblSettings.specialAssistanceUrl = item['value'];
                     break;
