@@ -710,6 +710,7 @@ Widget _getTrans() {
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
+      _error = '';
       Map<String, dynamic> map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       if( resp.statusCode != 'OK') {
@@ -719,6 +720,8 @@ Widget _getTrans() {
 
       } else {
         _error = resp.message;
+
+        try {
         _actionCompleted();
         gblPassengerDetail!.fqtvPassword = _newPasswordEditingController.text;
         fqtvPass = _newPasswordEditingController.text;
@@ -740,8 +743,10 @@ Widget _getTrans() {
 
           }
 
-        Navigator.of(context).pop();
       });
+      } catch(e) {
+      }
+        Navigator.of(context).pop();
       }
     });
   }
