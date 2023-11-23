@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
@@ -1208,71 +1210,84 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
     } else {
       if(gblLogPayment) { logit('CPM Build normal');}
-
-//      return WillPopScope(
-//        onWillPop: _onWillPop,
-      return
+      print('CPM norm build');
+      return WillPopScope(
+        onWillPop: _onWillPop,
+     /* return
         CustomWillPopScope(
           action: () {
 
             print('pop');
             onWillPop(context);
           },
-          onWillPop: true,
-          child:   Scaffold(
-            key: _key,
-            appBar: appBar(context, 'Payment',
-              newBooking: widget.newBooking,
-              curStep: 5,
-              imageName: gblSettings.wantPageImages ? 'paymentpage' : '',) ,
-            endDrawer: DrawerMenu(),
-            body: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Row(children: <Widget>[
-                    Expanded(
-                      child: DecoratedBox(
-                          decoration: BoxDecoration(color: Colors.black),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  TrText(
-                                    'Please complete your payment within ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                  TimerText(
-                                    stopwatch: stopwatch,
-                                    onComplete:() {
-                                      setState(() {
-
-                                      });
-                                    }
-                                    ,
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
-                    )
-                  ]),
-                  // FQTV Here
-                  _getMiles(),
-                  _getTotals(),
-                ],
-              ),
-            ),
-          bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
-        ),
+          onWillPop: true,*/
+          child:  Platform.isIOS ?
+              GestureDetector(
+                onHorizontalDragEnd: (details){
+                  print('gesture');
+                  _onWillPop();
+                },
+                child: _body(),
+              )
+ : _body()
       );
     }
   }
+Widget _body() {
+    return Scaffold(
+      key: _key,
+      appBar: appBar(context, 'Payment',
+        newBooking: widget.newBooking,
+        curStep: 5,
+        imageName: gblSettings.wantPageImages ? 'paymentpage' : '',) ,
+      endDrawer: DrawerMenu(),
+      //           body: SafeArea(
+      body:
+      Container(
+        child: Column(
+          children: <Widget>[
+            Row(children: <Widget>[
+              Expanded(
+                child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            TrText(
+                              'Please complete your payment within ',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                            TimerText(
+                              stopwatch: stopwatch,
+                              onComplete:() {
+                                setState(() {
 
+                                });
+                              }
+                              ,
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
+              )
+            ]),
+            // FQTV Here
+            _getMiles(),
+            _getTotals(),
+          ],
+        ),
+      ),
+//          bottomNavigationBar: getBottomNav(context, helpText: 'Click "videcard" to proceed in demo mode.'),
+    );
+}
   Future<bool> _onWillPop() async {
+    print('onwillpop');
     return onWillPop(context);
   }
 

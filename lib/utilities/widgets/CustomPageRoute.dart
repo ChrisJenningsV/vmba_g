@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 
+import '../helper.dart';
+
 class CustomPageRoute extends CupertinoPageRoute {
   @override
   @protected
@@ -22,7 +24,7 @@ class CustomPageRoute extends CupertinoPageRoute {
 }
 /////////////////////
 class CustomWillPopScope extends StatelessWidget {
-  const CustomWillPopScope(
+  const   CustomWillPopScope(
       {required this.child,
         this.onWillPop = false,
         Key? key,
@@ -38,6 +40,7 @@ class CustomWillPopScope extends StatelessWidget {
     return Platform.isIOS
         ? GestureDetector(
         onPanEnd: (details) {
+          print('on pan end');
           if (details.velocity.pixelsPerSecond.dx < 0 ||
               details.velocity.pixelsPerSecond.dx > 0) {
             if (onWillPop) {
@@ -45,8 +48,15 @@ class CustomWillPopScope extends StatelessWidget {
             }
           }
         },
+/*        onHorizontalDragEnd: (details){
+          print('on drag end');
+        },
+        onHorizontalDragUpdate: (details){
+          print('on h drag update');
+        },*/
         child: WillPopScope(
           onWillPop: () async {
+            print('on will pop iOS');
             return false;
           },
           child: child,
