@@ -774,6 +774,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                           await saveChanges(context);
                         }
 */
+                        logit('fss gotopayopts');
                         gblPaymentMsg = '';
                         Navigator.push(
                             context,

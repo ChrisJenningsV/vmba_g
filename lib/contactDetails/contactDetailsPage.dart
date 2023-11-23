@@ -665,6 +665,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   }
 
   void gotoChoosePaymentPage() {
+    logit('cdp gotopayopts');
     try {
       gblPaymentMsg = '';
       Navigator.push(
