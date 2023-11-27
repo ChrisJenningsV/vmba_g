@@ -28,6 +28,7 @@ import 'package:vmba/components/showDialog.dart';
 import '../payment/choosePaymentMethod.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 
+
 class PassengerDetailsWidget extends StatefulWidget {
   PassengerDetailsWidget({Key key= const Key("paxdetailswid_key"), required this.newBooking, this.pnrModel}) : super(key: key);
   final NewBooking newBooking;
@@ -321,10 +322,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       floatBtn = vidWideActionButton(context, 'CONTINUE', _onContinuePressed, offset: 35);
     }
 
-/*
-    return WillPopScope(
-        onWillPop: _onWillPop,
-*/
+ /*   return WillPopScope(
+        onWillPop: _onWillPop,*/
     return
       CustomWillPopScope(
           action: () {
@@ -353,9 +352,9 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       floatingActionButton: floatBtn,
     ))  ;
   }
-  Future<bool> _onWillPop() async {
-    return onWillPop(context);
-  }
+    Future<bool> _onWillPop() async {
+      return onWillPop(context);
+    }
 
   Widget _body(NewBooking newBooking){
     if( gblError != '') {
@@ -719,11 +718,12 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 }
                 var _error = await Navigator.push(
                     context,
-//                    MaterialPageRoute(
-                    CustomPageRoute(
+                   MaterialPageRoute(
+//                    CustomPageRoute(
                         builder: (context) =>
-                               ChoosePaymenMethodWidget(
-                                  newBooking: widget.newBooking, pnrModel: gblPnrModel as PnrModel, isMmb: false,)
+                            ChoosePaymenMethodWidget(
+                        //SelectPaymentProviderWidget()
+                                  newBooking: widget.newBooking, pnrModel: gblPnrModel as PnrModel, isMmb: false, )
                               /*
                             ContactDetailsWidget(
                               newbooking: widget.newBooking,

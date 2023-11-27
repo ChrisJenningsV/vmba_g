@@ -21,6 +21,7 @@ import '../components/showDialog.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/colourHelper.dart';
 import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
@@ -746,7 +747,8 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             } else {
               Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  //MaterialPageRoute(
+                  CustomPageRoute(
                       builder: (context) => PassengerDetailsWidget(
                           newBooking: widget.newBooking,
                           pnrModel:  pnrModel)));

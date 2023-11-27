@@ -562,7 +562,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 } else {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      //MaterialPageRoute(
+                      CustomPageRoute(
                           builder: (context) =>
                               PassengerDetailsWidget(
                                 newBooking: widget.newBooking,
