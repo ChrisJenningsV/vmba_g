@@ -569,7 +569,7 @@ Widget _getTrans() {
         list.add(Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            (tran.flightDate  == null || tran.flightDate.startsWith('0001')) ? Text('no date') : Text(DateFormat(
+            (tran.flightDate  == null || tran.flightDate  == '' || tran.flightDate.startsWith('0001')) ? Text('no date') : Text(DateFormat(
                 'dd MMM yyyy').format(DateTime.parse(tran.flightDate)), textScaleFactor: 1.2,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             Text(' '),
@@ -581,7 +581,7 @@ Widget _getTrans() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 2023-01-18T00:00:00
-            (tran.transactionDateTime == null || tran.transactionDateTime.startsWith('000')) ? Text('') : Text(DateFormat(
+            (tran.transactionDateTime == null || tran.transactionDateTime == '' || tran.transactionDateTime.startsWith('000')) ? Text('') : Text(DateFormat(
                 'dd MMM yyyy').format(DateTime.parse(tran.transactionDateTime)), textScaleFactor: 1.2,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             Text(' '),
@@ -862,6 +862,7 @@ Widget _getTrans() {
 
  void  _showTransactions(BuildContext context, dynamic p) async {
    isPending = false;
+   _error = '';
    ApiFqtvGetDetailsRequest fqtvMsg = ApiFqtvGetDetailsRequest(fqtvEmail,
        fqtvNo,
        fqtvPass);
@@ -905,7 +906,7 @@ Widget _getTrans() {
         _error = 'No transactions found';
         _actionCompleted();
         _showDialog();
-
+        transactions = null;
         return;
       }
       Map<String, dynamic> map = json.decode(result);
@@ -914,12 +915,14 @@ Widget _getTrans() {
         _error = resp.message;
         _actionCompleted();
         _showDialog();
+        transactions = null;
 
       } else {
         if( resp.transactions == null || resp.transactions!.length == 0 ){
           _error = 'No transactions found';
           _actionCompleted();
           _showDialog();
+          transactions = null;
 
         } else {
           title = 'Pending Transactions';
