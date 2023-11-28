@@ -1,0 +1,6 @@
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/caicos/images/caicos-1024.png"
+
