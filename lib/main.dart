@@ -25,6 +25,7 @@ import 'data/globals.dart';
 import 'data/SystemColors.dart';
 import 'main_aurigny.dart';
 import 'main_buraq.dart';
+import 'main_caicos.dart';
 import 'main_fastjet.dart';
 import 'main_fl.dart';
 import 'main_hiSky.dart';
@@ -72,6 +73,9 @@ void main() async {
      case 'LM':
         configLM();
       break;
+      case '9Q':
+        config9Q();
+        break;
       case 'FN':
         configFN();
         break;

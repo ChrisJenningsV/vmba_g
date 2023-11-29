@@ -1366,26 +1366,7 @@ class Repository {
     try {
 
     String data = await runVrsCommand(seatPlanCmd);
- /*   http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$seatPlanCmd"))
-        .catchError((resp) {});
-    if (response == null) {
-      return new ParsedResponse(noInterent, null);
-    }
 
-    //If there was an error return null
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      return new ParsedResponse(response.statusCode, null);
-    }
-   if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-      Map map = jsonDecode(response.body
-          .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-          .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', ''));
-
-      seatplan = new Seatplan.fromJson(map);
-    }    */
     if (!data.contains('<string xmlns="http://videcom.com/" />')) {
       Map<String, dynamic> map = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')

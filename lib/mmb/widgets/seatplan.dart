@@ -172,6 +172,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           _dataLoaded();
         }
       } else {
+        gblError = rs.error;
         setState(() {
           _loadingInProgress = false;
           //_noInternet = true;
@@ -528,34 +529,24 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         ),
       );
     }
-/*    else if (_noInternet) {
-      String msg = 'Please check your internet connection';
-          if( gblError != null && gblError != '' ){
-            msg = gblError ;
-          }
+    else if( gblError != '') {
       return new Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(msg),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+          Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              gblError,
+              textAlign: TextAlign.justify,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  primary: Colors.black),
-              onPressed: () => retryLoad(),
-              child: Text(
-                'Retry',
-                style: new TextStyle(color: Colors.white),
-              ),
-            )
-          ],
-        ),
-      );
-    }*/
+          ),
+      )
+    ]
+    )
+    );
+    }
     else if (_noSeats) {
       return new Center(
         child: Column(
@@ -810,7 +801,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     String acceptTermsText =
         'This seat is a priority for customers with reduced mobility. As such you may be moved if this seat is required for that purpose. If moved, your seat charge will be refunded.';
     String notAllowEmergencySeatingText =
-        'Infants con not select this seat';
+        'Infants can not select this seat';
     bool isAllowEmergencySeating = true;
     Pax selectPax = this.paxlist!.firstWhere((p) => p.selected == true);
 

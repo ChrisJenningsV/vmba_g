@@ -12,7 +12,7 @@ void main() {
   config9Q();
 
   var configuredApp = AppConfig(
-    appTitle: 'Caicos Express Airways',
+    appTitle: 'caicos',
     child: App(),
     buildFlavor: '9Q',
     systemColors: gblSystemColors,
@@ -48,7 +48,7 @@ void config9Q() {
   gblSystemColors =_systemColors;
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
-  gblAppTitle = 'Caicos Express Airways';
+  gblAppTitle = 'caicos';
   gblBuildFlavor = '9Q';
   gblCurrentRloc = '';
 
@@ -133,14 +133,14 @@ void config9Q() {
     testPayPage: 'https://customertest.videcom.com/caicosexpressairways/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
-//    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/caicosexpressairways/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-///////    testXmlUrl:      "https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+
     //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/caicosexpressairways/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/caicosexpressairways/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/caicosexpressairways/VARS/webApiv2/api/',
-  //  testApiUrl:      'http://10.0.2.2:5000/api',  // local
+//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 // website
 // http://10.0.2.2:50311/TEST/PushTest.aspx

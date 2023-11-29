@@ -36,6 +36,7 @@ class TrText extends StatelessWidget {
         if (txt2 != null &&
             txt2.toString().isNotEmpty) {
           txt = testTxt + txt2;
+          txt = txt.replaceAll('/n', '\n');
         } else {
           //var msg = 'need trans for "$txt"';
           var msg = ' "$txt": ""';

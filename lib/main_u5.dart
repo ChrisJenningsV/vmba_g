@@ -27,7 +27,7 @@ void configU5() {
   SystemColors _systemColors = SystemColors(
     progressColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
     primaryButtonColor: Colors.black,
-    accentButtonColor: Color.fromRGBO(0xF8, 0x99, 0x23, 1),
+    accentButtonColor: Color.fromRGBO(0x00, 0x74, 0xb3, 1),
     classBandIconColor: Color.fromRGBO(0X6E, 0xC1, 0xE4, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,

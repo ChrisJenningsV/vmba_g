@@ -94,10 +94,10 @@ android {
             applicationId "com.airswift"
         }
 
-        IbomAir {
+        Caicos {
             dimension "version"
-            resValue "string", "flavored_app_name", "Ibom Air"
-            applicationId "com.ibomair"
+            resValue "string", "flavored_app_name", "Caicos Express Airways"
+            applicationId "com.caicosexpressairways.reservations"
         }
         AirLeap {
             dimension "version"
