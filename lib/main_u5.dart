@@ -34,7 +34,7 @@ void configU5() {
     textButtonTextColor: Colors.orange,
     primaryButtonTextColor: Colors.white,
     primaryHeaderColor: Colors.white,
-    headerTextColor: Color.fromRGBO(0X6E, 0xC1, 0xE4, 1),
+    headerTextColor: Color.fromRGBO(0x00, 0x74, 0xb3, 1),
     statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
     seatPlanColorAvailable: Colors.blue, //Colors.green

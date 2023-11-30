@@ -250,7 +250,9 @@ Future <void> doRefresh() async{
               child: new TrText('No'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                await reloadSavedBooking(widget.rloc);
+                gblNeedPnrReload = true;
                 Navigator.of(context).pop(true);
               },
               child: new TrText('Yes'),
@@ -1786,13 +1788,13 @@ class CheckinBoardingPassesWidgetState
         response = translate('Online Check in closed ');
       } else if (isBeforeClosed &&
           isAfterOpens &&
-          itin.airID != gblSettings.aircode) {
+          (itin.airID != gblSettings.aircode && itin.airID != gblSettings.altAircode)) {
         response = translate('Check-in with other airline ');
         //} else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
       } else if ( isBeforeClosed  && isAfterOpens) {
         response = translate('Online check-in open ');
       } else if (isBeforeClosed &&
-          itin.airID != gblSettings.aircode) {
+          (itin.airID != gblSettings.aircode && itin.airID != gblSettings.altAircode)) {
         response = translate('Check-in with other airline ');
       } else if (isBeforeClosed) {
         // get date time local

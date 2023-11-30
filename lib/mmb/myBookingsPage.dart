@@ -75,7 +75,8 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     Repository.get().getAllCities().then((cities) {});
   }
 
-  void getmybookings() {
+  getmybookings()  {
+    gblNeedPnrReload = false;
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
       List<PnrDBCopy> thisOldpnrs = [];
@@ -127,6 +128,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       thispnrs.sort(
           (a, b) => a.nextFlightSinceEpoch.compareTo(b.nextFlightSinceEpoch));
       setState(() {
+        print('getb setState');
         activePnrs = thispnrs;
         recentPnrs = thisOldpnrs;
         oldPnrs = olderPnrs;
@@ -137,7 +139,9 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
-
+  if( gblNeedPnrReload){
+    getmybookings();
+  }
     if (_loadingInProgress) {
       return Scaffold(
           body: new Center(
@@ -631,7 +635,9 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                       ViewBookingPage(
                         rloc: document.rloc,
                       )),
-            );
+            ).then((value) => setState((){
+              print('reload');
+            }));
           }
         },
       ),

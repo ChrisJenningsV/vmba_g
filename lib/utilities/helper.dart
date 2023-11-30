@@ -694,3 +694,11 @@ List <String> splitString(String str, int maxLen){
 
   return strings;
 }
+Future<void> reloadSavedBooking(String rloc) async {
+  try {
+  await Repository.get().fetchApisStatus(rloc);
+  await Repository.get().fetchPnr(rloc);
+  } catch(e) {
+    logit(e.toString());
+  }
+}

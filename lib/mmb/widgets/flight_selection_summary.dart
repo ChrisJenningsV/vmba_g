@@ -143,13 +143,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     cmd += addFg(widget.mmbBooking.currency, true);
     cmd += addFareStore(true);
-/*
-    gblPayCmd = cmd + '*r~x';
-    gblPayCmd = gblPayCmd.replaceAll('QQ', 'NN');
-*/
-   // cmd = cmd.replaceAll('QQ', 'NN');
-    cmd += '*r~x';
-//    cmd += 'E*r~x';
+//    cmd += '*r~x';
+    cmd += 'E*r~x';
     logit("flight selection cmd=$cmd");
     return cmd;
   }

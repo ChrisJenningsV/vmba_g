@@ -59,7 +59,7 @@ void configH4() {
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
     currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
-    currency: 'USD',
+    currency: 'MDL',
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
     wantCanFacs: true,
