@@ -51,7 +51,8 @@ class ApisPnrStatusModel {
 
   bool apisRequired(int journey) {
     //print(apisPnrStatus);
-    if (xml!.pnrApis.flights!.flight[journey].apisrequired == 'True') {
+    if ( xml != null && xml!.pnrApis.flights != null &&
+        xml!.pnrApis.flights!.flight[journey].apisrequired == 'True') {
       return true;
     } else {
       return false;

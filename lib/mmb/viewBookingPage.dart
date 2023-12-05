@@ -271,6 +271,11 @@ class CheckinBoardingPassesWidget extends StatefulWidget {
   final ValueChanged<String> showSnackBar;
   void Function(BuildContext? context) onLoad;
   final formKey = new GlobalKey<FormState>();
+  bool isBeforeClosed = false;
+  bool isAfterClosed =false;
+  bool isAfterOpens = false;
+  bool isBeforeOpens = false;
+
 
   @override
   State<StatefulWidget> createState() =>
@@ -493,6 +498,8 @@ class CheckinBoardingPassesWidgetState
         ),
       );
     }
+    //
+
     return ListView(children: getBookingViewWidgets(objPNR!));
   }
 
@@ -1619,6 +1626,8 @@ class CheckinBoardingPassesWidgetState
 
       //TODO:
       //Remove from not pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() != 'fly' ? true : false) &&
+      checkinStatus(pnr.pNR.itinerary.itin[journeyNo]);
+
       bool chargeForPreferredSeating =
           pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() == 'fly'
               ? true
@@ -1742,14 +1751,15 @@ class CheckinBoardingPassesWidgetState
     DateTime checkinClosed;
     DateTime departureDateTime;
     DateTime now;
-    City? city;
+ //   City? city = null ;
 
-    city = await Repository.get().getCityByCode(itin.depart);
+    //city = await Repository.get().getCityByCode(itin.depart);
 
-    if (city != null) {
+   /* if (city == null)
+    {
 
 
-
+*/
      /* checkinOpens = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt )
           .subtract(new Duration(hours: city.webCheckinStart));
       checkinClosed = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt)
@@ -1763,10 +1773,10 @@ class CheckinBoardingPassesWidgetState
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = new DateTime.now().toUtc();
 
-      bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
-      bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
-      bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
-      bool isBeforeOpens =  is1After2(  checkinOpens, now);
+      widget.isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
+      widget.isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
+      widget.isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
+      widget.isBeforeOpens =  is1After2(  checkinOpens, now);
       // nb DateTime isBefore and isAfter do not work accurateley !!!
     //  logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
 
@@ -1774,29 +1784,29 @@ class CheckinBoardingPassesWidgetState
       if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
       } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
-        if( isBeforeOpens ) {
+        if( widget.isBeforeOpens ) {
           DateTime dt = DateTime.parse(
               itin.onlineCheckinTimeStartLocal);
           response = translate('Online check-in opens at ') +
               getIntlDate('H:mm a dd MMM', dt);
         } else {
-          response = translate('Online Check in closed ');
+          response = translate('No Online Check');
         }
    //   } else if ( city.webCheckinEnabled == 0 ) {
      //   response = translate('no Check-in online for this city ');
       } else if ( itin.onlineCheckin != null &&  itin.onlineCheckin == 'False' ) {
         response = translate('Online Check in closed ');
-      } else if (isBeforeClosed &&
-          isAfterOpens &&
+      } else if (widget.isBeforeClosed &&
+          widget.isAfterOpens &&
           (itin.airID != gblSettings.aircode && itin.airID != gblSettings.altAircode)) {
         response = translate('Check-in with other airline ');
         //} else if (now.isBefore(checkinClosed) && now.isAfter(checkinOpens)) {
-      } else if ( isBeforeClosed  && isAfterOpens) {
+      } else if ( widget.isBeforeClosed  && widget.isAfterOpens) {
         response = translate('Online check-in open ');
-      } else if (isBeforeClosed &&
+      } else if (widget.isBeforeClosed &&
           (itin.airID != gblSettings.aircode && itin.airID != gblSettings.altAircode)) {
         response = translate('Check-in with other airline ');
-      } else if (isBeforeClosed) {
+      } else if (widget.isBeforeClosed) {
         // get date time local
         if( itin.onlineCheckinTimeStartLocal == null || itin.onlineCheckinTimeStartLocal == '') {
           response = translate('Please Reload');
@@ -1807,13 +1817,13 @@ class CheckinBoardingPassesWidgetState
               getIntlDate('H:mm a dd MMM', dt);
         }
             //DateFormat('H:mm a dd MMM').format(checkinOpens);
-      } else if (isAfterClosed &&
+      } else if (widget.isAfterClosed &&
           now.isBefore(departureDateTime)) {
         response = translate('Online check-in closed ');
       } else {
         response = translate('Flight closed ');
       }
-    }
+
 
     return response;
   }
@@ -1836,6 +1846,7 @@ class CheckinBoardingPassesWidgetState
       return result;
     }
     if (!isFltPassedDate(pnr.pNR.itinerary.itin[journey], 24 * 7)) { // was 24
+
       List <Widget> list = [];
         list.add( Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2336,6 +2347,7 @@ class CheckinBoardingPassesWidgetState
 
       btnText = 'Check-in';
     } else {
+        if( widget.isAfterClosed) return Container();
         if(paxlist
           .firstWhere((p) => p.id == paxNo + 1)
           .seat == null ||

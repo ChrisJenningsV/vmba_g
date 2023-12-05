@@ -69,7 +69,7 @@ void configU5() {
 
     airlineName: "UnitedNigeria",
     gblServerFiles: 'https://customer3.videcom.com/UnitedNigeria/AppFiles/',
-    testServerFiles: 'https://customertest.videcom.com/UnitedNigeria/AppFiles/',
+    testServerFiles: 'https://customertest.videcom.com/UnitedNigeria/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'U5',
@@ -160,7 +160,7 @@ void configU5() {
     productImageMode: 'none',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
-    wantEnglishTranslation: false,
+    wantEnglishTranslation: true,
     wantBpLogo: false,
     defaultCountryCode: 'NG',
 

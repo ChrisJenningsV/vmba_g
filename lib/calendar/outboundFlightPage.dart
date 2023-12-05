@@ -234,6 +234,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         }
       }
     }
+    // check days, removing any with no flights
+    objAv.availability.cal!.day.forEach((element) {
+      print('check day ${element.daylcl}');
+      if( DateFormat('yyyy-MM-dd').format(this.widget.newBooking.departureDate) == element.daylcl){
+        if( objAv.availability.itin == null || objAv.availability.itin?.length == 0){
+          element.amt = '';
+        }
+      }
+    });
+
   }
 /*
   showSnackBar(String message) {
