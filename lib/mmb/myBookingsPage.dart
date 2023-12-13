@@ -185,7 +185,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     child: new Container(
     height: 30.0, child:        TabBar(
 
-          indicatorColor: Colors.amberAccent,
+          indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.amberAccent : gblSystemColors.tabUnderlineColor,
           isScrollable: true,
           labelColor: gblSystemColors.headerTextColor,
           tabs: tabs,

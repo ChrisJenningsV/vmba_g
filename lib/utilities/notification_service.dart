@@ -12,6 +12,7 @@ import 'package:vmba/data/globals.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/models/notifyMsgs.dart';
 import '../data/repository.dart';
+import '../home/home_page.dart';
 import '../main.dart';
 import 'helper.dart';
 
@@ -229,6 +230,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     Repository.get().updateNotification(message, true, false).then((value) {
       Repository.get().getAllNotifications().then((m) {
         gblNotifications = m;
+
+        RemoteNotification n = RemoteNotification(title: message.notification!.title, body: message.notification!.body);
+        if( scaffoldKey.currentContext != null ) {
+          showNotification(
+              scaffoldKey.currentContext, message.notification, message.data,
+              'Background');
+        } else if (NavigationService.navigatorKey.currentContext != null ) {
+          showNotification(
+              NavigationService.navigatorKey.currentContext as BuildContext,
+              message.notification, message.data, 'Background');
+        }
+
       });
     });
 

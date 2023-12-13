@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 import '../../Helpers/settingsHelper.dart';
 import '../../Helpers/stringHelpers.dart';
 import '../../components/trText.dart';
@@ -153,12 +154,16 @@ class PnrModel {
       return false;
     }
     DateTime now = DateTime.now();
+/*
     var fltDate;
     fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
         ' ' +
         this.pNR.itinerary.itin.last.depTime)
         .add(Duration(days: days));
-    if (now.isAfter(fltDate)) {
+*/
+    DateTime fltDate = DateTime.parse(this.pNR.itinerary.itin.last.ddaygmt + ' ' + this.pNR.itinerary.itin.last.dtimgmt);
+    fltDate = fltDate.add(Duration(days: days));
+    if (getGmtTime().isAfter(fltDate)) {
       return false;
     } else {
       return true;

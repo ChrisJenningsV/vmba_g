@@ -230,8 +230,14 @@ bool bFirstTime = true;
                 textDirection: wantRtl() ? TextDirection.rtl : TextDirection.ltr, 
                 child: RootPage()
       ),
+/*
+    onGenerateRoute: (settings) {
+      if (settings.name == '/HomePage') {
+        return MaterialPageRoute(builder: (_) => HomePage());
+      }
+    },
+*/
       routes: <String, WidgetBuilder>{
-        /* '/UserProfile': (BuildContext context) => new ProfileWidget(),*/
         '/HomePage': (BuildContext context) => new HomePage(),
         '/FlightSearchPage': (BuildContext context) => new FlightSearchPage(
               ads: false,
@@ -294,8 +300,7 @@ bool bFirstTime = true;
 
   }
 class NavigationService {
-  static GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =  GlobalKey<NavigatorState>();
 }
 class AddBookingPage {}
 

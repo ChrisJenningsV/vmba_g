@@ -29,7 +29,7 @@ String parseHtmlString(String htmlString) {
 }
 
 String translateNo(String input) {
-  if( input == null || input.isEmpty) {
+  if( input == '' || input.isEmpty) {
     return '';
   }
   if( wantRtl()){

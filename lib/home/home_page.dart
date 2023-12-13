@@ -12,16 +12,15 @@ import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
 
-import '../Helpers/pageHelper.dart';
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../components/networCheck.dart';
 import '../components/showDialog.dart';
 import '../components/vidAppBar.dart';
 import '../data/repository.dart';
-import '../main.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
 
@@ -29,7 +28,7 @@ GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
 GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
 GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePageState>();
-//GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 //GlobalKey<HomeState> homePageKeyProgress = new GlobalKey<HomeState>();
 
 class HomePage extends StatefulWidget {
@@ -62,7 +61,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   void initState() {
     super.initState();
     commonPageInit('HOME');
-
+    //initGmtTimer();
 
     if( gblVerbose) logit('init HomeState');
 
@@ -154,6 +153,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+ //   endGmtTimer();
   }
 
   waitAndThenHideProcessingIndicator() {
@@ -269,6 +269,8 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     var buttonShape;
     double buttonHeight;
     double? elevation = null;
+
+    DateTime gmt = getGmtTime();
 
     Color headerClr = gblSystemColors.primaryHeaderColor;
        bool extendBodyBehindAppBar =  false;
@@ -431,6 +433,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       //Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
 
       return new Scaffold(
+        key: scaffoldKey,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
         appBar: new vidAppBar(
           elevation: elevation,

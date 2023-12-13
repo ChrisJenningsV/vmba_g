@@ -76,12 +76,12 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
       Map<String, dynamic> map = json.decode(pnrJson);
 
       PnrModel  pnrModel = new PnrModel.fromJson(map);
-      if( pnrModel.pNR != null ) {
+      //if( pnrModel.pNR != null ) {
         pnrModel.pNR.dumpProducts('after *r');
         gblPnrModel = pnrModel;
         refreshStatusBar();
         refreshMmbBooking();
-      }
+      //}
       onComplete!( pnrModel, product);
     }
   } catch(e) {
@@ -92,7 +92,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
     String cmd = '';
     int noFound = 0;
     // check booking for this product
-    if( pnr.mPS != null && pnr.mPS.mP != null ){
+  //  if(  pnr.mPS.mP != null ){
       //pnr.mPS.mP.forEach((element) {
       // loop in reverse order, so multi deletes work
       if( gblLogProducts) logit('delete unwanted products');
@@ -141,7 +141,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
           }
         }
       }
-    }
+    //}
 
     List<int> nlist =[];
     product.curProducts!.forEach((element) {
@@ -149,8 +149,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
       int segNo = int.parse(element.key.split(':')[1]);
 //      int count = element.count;
       noFound = 0;
-      bool alreadyAdded = false;
-      if( pnr.mPS != null && pnr.mPS.mP != null ){
+      //if( pnr.mPS != null && pnr.mPS.mP != null ){
         pnr.mPS.mP.forEach((p) {
          // if( gblLogProducts) logit('check ${p.mPID} v ${product.productCode}');
           if (p.mPID == product.productCode) {
@@ -162,7 +161,7 @@ Future saveProduct(Product product, PNR pnr, {void Function(PnrModel pntModel, d
               }
           }
           } );
-      }
+      //}
 
 
       if(noFound < element.count)

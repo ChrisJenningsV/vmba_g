@@ -52,9 +52,8 @@ bool wantHomePageV2() {
 }
 
 Color v2BorderColor(){
-  if( gblSystemColors.borderColor != null ) return gblSystemColors.borderColor;
-  return Colors.grey.withOpacity(0.5);
-  //return gblSystemColors.primaryHeaderColor;
+  return gblSystemColors.borderColor;
+  //return Colors.grey.withOpacity(0.5);
 }
 
 double v2BorderWidth() {

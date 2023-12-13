@@ -26,12 +26,13 @@ void main() {
 void configU5() {
   SystemColors _systemColors = SystemColors(
     progressColor: Color.fromRGBO(0X13, 0x3E, 0x67, 1),
-    primaryButtonColor: Colors.black,
+    primaryButtonColor: Color.fromRGBO(0x00, 0x74, 0xb3, 1),
     accentButtonColor: Color.fromRGBO(0x00, 0x74, 0xb3, 1),
     classBandIconColor: Color.fromRGBO(0X6E, 0xC1, 0xE4, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.orange,
+    tabUnderlineColor: Color.fromRGBO(0xFE, 0x01, 0x01, 1),
     primaryButtonTextColor: Colors.white,
     primaryHeaderColor: Colors.white,
     headerTextColor: Color.fromRGBO(0x00, 0x74, 0xb3, 1),
@@ -73,12 +74,13 @@ void configU5() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'U5',
-    termsAndConditionsUrl: 'https://flyUnitedNigeria.com/terms-conditions/',
-    privacyPolicyUrl:  'https://www.flyUnitedNigeria.com/our-policies/',
-    prohibitedItemsNoticeUrl:  'https://www.flyUnitedNigeria.com/flying-with-us/baggage-allowances/s',
-    faqUrl: 'https://flyunitednigeria.com/faq/',
-    contactUsUrl: 'https://flyUnitedNigeria.com/contact-us/',
+    termsAndConditionsUrl: 'https://flyunitednigeria.com/condition-for-carraige/',
+    privacyPolicyUrl:  'https://flyunitednigeria.com/private_policy/',
+    prohibitedItemsNoticeUrl:  'https://flyunitednigeria.com/baggage-declaration-dangerous-goods/',
+    faqUrl: 'https://flyunitednigeria.com/f-a-q/',
+    contactUsUrl: 'https://flyunitednigeria.com/get-in-touch/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
+    // dangerous https://flyunitednigeria.com/baggage-declaration-dangerous-goods/
 
     locale: 'en-EN',
     bookingLeadTime: 60,

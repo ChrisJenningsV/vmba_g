@@ -855,7 +855,7 @@ class AppDatabase {
    Future<NotificationStore> getAllNotifications() async {
     var db = await _getDb();
     NotificationStore store = new NotificationStore();
-    var result = await db.rawQuery('SELECT * FROM $tableNameNotifications');
+    var result = await db.rawQuery('SELECT * FROM $tableNameNotifications' );
     store.rawCount = result.length;
     if (result.length == 0) return store;
     //List<NotificationMessage> notes = []; // new List<City>();
@@ -893,6 +893,7 @@ class AppDatabase {
               sentTime: DateTime.parse(sent));
 
           store.list.add(msg);
+          store.list.sort((a,b) => b.sentTime!.compareTo(a.sentTime as DateTime));
         }
       } catch(e) {
         store.errMsg = e.toString();

@@ -50,9 +50,7 @@ class ProductCardState extends State<ProductCard> {
     List<Widget> bags = [];
     int index = 0;
 
-    if( widget.pnrModel != null && widget.pnrModel.pNR != null  ) {
-      widget.pnrModel.pNR.dumpProducts('build');
-    }
+   //   widget.pnrModel.pNR.dumpProducts('build');
 
 
     widget.productCategory.products.forEach((prod) {
@@ -107,18 +105,18 @@ class ProductCardState extends State<ProductCard> {
 
 
     // check for this product in pnr
-    if( widget.pnrModel != null && widget.pnrModel.pNR != null ) {
+ //   if( widget.pnrModel != null && widget.pnrModel.pNR != null ) {
       int noItems = widget.pnrModel.pNR.productCount(prod.productCode);
 
       if (noItems > 0) {
         widgets.add(Text(noItems.toString()));
         widgets.add(Text(' '));
-        if( prod.unitOfMeasure != null ) {
+        if( prod.unitOfMeasure != '' ) {
           widgets.add(TrText(prod.unitOfMeasure));
         }
         widgets.add(Text(' '));
       }
-    }
+ //   }
 
     if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
       NetworkImage? img = getProductImage(prod);
@@ -219,7 +217,7 @@ class ProductCardState extends State<ProductCard> {
       ));
 
       String units = '';
-      if( prod.unitOfMeasure == null || prod.unitOfMeasure.isEmpty) {
+      if( prod.unitOfMeasure == '' || prod.unitOfMeasure.isEmpty) {
         units += ' ' + translate('Per Unit');
       } else {
         units = translate('Per') + ' ' + prod.unitOfMeasure;

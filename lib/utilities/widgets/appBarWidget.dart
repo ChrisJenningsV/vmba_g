@@ -260,7 +260,7 @@ List<Widget> getTabs(BuildContext context, NewBooking newBooking, bool isExpande
                 children: <Widget>[
                   TabBar(
                     labelColor: Colors.grey,
-                    indicatorColor: Colors.blue,
+                    indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.amberAccent : gblSystemColors.tabUnderlineColor,
                     // indicatorSize: ,
                     tabs: <Widget>[
                       Tab(text: translate("Journeys"),),

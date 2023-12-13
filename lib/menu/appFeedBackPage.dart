@@ -9,6 +9,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/calendar/TabPage.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
@@ -115,7 +116,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(translate('App version: ') + widget.version),
+                child: Text(translate('App version: ') + widget.version + '  GMT:${getGmtTime().toString().substring(0,16)}'),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

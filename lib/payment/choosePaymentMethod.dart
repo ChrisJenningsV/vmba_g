@@ -1703,6 +1703,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       pay.currency = widget.pnrModel.pNR.basket.outstanding.cur;
       pay.confirmation = 'EMAIL';
 
+      gblCurrentRloc = widget.pnrModel.pNR.rLOC;
       String data = json.encode(pay);
       try {
         String reply = await callSmartApi('MAKEPAYMENT', data);

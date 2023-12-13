@@ -11,6 +11,7 @@ import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
 import '../main.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/timeHelper.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -287,7 +288,12 @@ class Repository {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
           String xmlVersion = map["version"];
-          if(map["skyFlyToken"] != null )          gblSettings.skyFlyToken = map["skyFlyToken"];
+          if( map["gmt"] != null && map["gmt"] != '') {
+              setGMT( map['gmt']);
+          }
+
+
+          if(map["skyFlyToken"] != null ) gblSettings.skyFlyToken = map["skyFlyToken"];
 
           // get language file last modified
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){

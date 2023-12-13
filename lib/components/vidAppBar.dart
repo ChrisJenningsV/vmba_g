@@ -1,10 +1,14 @@
 
 
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vmba/components/showNotification.dart';
 
 import '../data/globals.dart';
+import '../data/repository.dart';
+import '../main.dart';
 import '../utilities/helper.dart';
 
 class vidAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -52,6 +56,29 @@ class vidAppBarState extends State<vidAppBar>  with WidgetsBindingObserver {
           // check no snackbar
           hideSnackBarMessage();
         }
+
+        gblNotifications = null;  // incase none found
+        Repository.get().getAllNotifications().then((m) {
+          gblNotifications = m;
+
+          if( gblNotifications != null && gblNotifications!.list.length > 0 && gblNotifications!.list[0].background == 'true') {
+
+            RemoteNotification n = RemoteNotification(title: gblNotifications!.list[0].notification!.title,
+                body: gblNotifications!.list[0].notification!.body);
+
+            // mark msg as seen
+            Repository.get().updateNotification(convertMsg(gblNotifications!.list[0]) as RemoteMessage, false, true).then((value) {
+              Repository.get().getAllNotifications().then((m) {
+                gblNotifications = m;
+              });
+            });
+
+            showNotification( NavigationService.navigatorKey.currentContext as BuildContext, n, gblNotifications!.list[0].data as Map<dynamic, dynamic>, 'background ');
+          }
+        });
+
+
+
         break;
       case AppLifecycleState.inactive:
         logit("a app in inactive");

@@ -223,20 +223,18 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     if (itin != null) {
       int length = itin.length - 1;
       for (int i = length; i >= 0; i--) {
-        DateTime fltDate = DateTime.parse(
-            itin[i].flt.first.time.ddaygmt +
-                ' ' +
-                itin[i].flt.first.time.dtimgmt);
+        DateTime fltDate = DateTime.parse(itin[i].flt.first.time.ddaygmt + ' ' + itin[i].flt.first.time.dtimgmt);
         //DateTime utcNow = DateTime.now().toUtc().subtract(Duration(minutes: gblSettings.bookingLeadTime));
-        DateTime utcNow = DateTime.now().toUtc().add(Duration(minutes: gblSettings.bookingLeadTime));
-        if (fltDate.isBefore(utcNow)) {
+        DateTime cutOffTime = DateTime.now().toUtc().add(Duration(minutes: gblSettings.bookingLeadTime));
+        // if flight is before cutoff time, remove it!
+        if (fltDate.isBefore(cutOffTime)) {
           itin.removeAt(i);
         }
       }
     }
     // check days, removing any with no flights
     objAv.availability.cal!.day.forEach((element) {
-      print('check day ${element.daylcl}');
+      //print('check day ${element.daylcl}');
       if( DateFormat('yyyy-MM-dd').format(this.widget.newBooking.departureDate) == element.daylcl){
         if( objAv.availability.itin == null || objAv.availability.itin?.length == 0){
           element.amt = '';

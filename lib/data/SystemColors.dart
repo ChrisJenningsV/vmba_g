@@ -28,6 +28,7 @@ class SystemColors {
    Color? oldPriceColor;
    Color textEditBorderColor =  Colors.grey.shade300;
    Color? textEditIconColor;
+   Color? tabUnderlineColor;
 
    Brightness statusBar = Brightness.light;
 
@@ -64,6 +65,7 @@ class SystemColors {
     this.statusBar =Brightness.light,
     this.textEditBorderColor = Colors.grey,
     this.textEditIconColor,
+    this.tabUnderlineColor,
 //    this.primaryTitle,
  //   this.accentTitle,
  //   this.accentBody,
