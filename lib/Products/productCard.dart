@@ -55,9 +55,11 @@ class ProductCardState extends State<ProductCard> {
 
     widget.productCategory.products.forEach((prod) {
       if( isThisProductValid(widget.pnrModel, prod, 0)) {
+/*
         if( prod.maxQuantity == null ){
           prod.maxQuantity = 10;
         }
+*/
         if( prod.requiresQuantity == false ) {
           prod.maxQuantity = 1;
         }
@@ -118,7 +120,7 @@ class ProductCardState extends State<ProductCard> {
       }
  //   }
 
-    if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
+    if( /*gblSettings.productImageMode != null &&*/ gblSettings.productImageMode != 'none') {
       NetworkImage? img = getProductImage(prod);
       if( img != null ) {
         widgets.add(Image(image: img,
@@ -150,7 +152,7 @@ class ProductCardState extends State<ProductCard> {
     }
 
     widgets.add(Spacer(),);
-    if( prod.productDescription != null && prod.productDescription.isNotEmpty && prod.productDescription != '' ) {
+    if( /*prod.productDescription != null && */prod.productDescription.isNotEmpty && prod.productDescription != '' ) {
       widgets.add(vidInfoButton(context, onPressed:(context) => {
         showHtml(context, prod.productName, prod.productDescription)
       }));
@@ -232,15 +234,17 @@ class ProductCardState extends State<ProductCard> {
       ));
 
     } else {
-      Product? savedProd; // = new Product();
+      Product? savedProd = new Product();
+/*
  //     if( widget.isMmb){
         //
         if( savedProd == null ) {
-          savedProd = new Product();
+          savedProd =
         }
         savedProd.productCode = prod.productCode;
         savedProd.resetProducts(widget.savedPnr);
    //   }
+*/
 
       // more button
       widgets.add( vidRightButton(context, onPressed: (context) {
@@ -317,9 +321,9 @@ class ProductCardState extends State<ProductCard> {
     return true;
   }
   void checkSaveButton(Product prod){
-    if(widget.pnrModel != null && widget.pnrModel.pNR != null &&
+  /*  if(*//*widget.pnrModel != null && widget.pnrModel.pNR != null &&*//*
         widget.pnrModel.pNR.mPS != null  && widget.pnrModel.pNR.mPS.mP != null ){
-
+*/
       int count = widget.pnrModel.pNR.mPS.mP.where((p) => p.mPID == prod.productCode).length;
       // not same length - must have added or removed
       if( count != prod.curProducts!.length){
@@ -338,13 +342,13 @@ class ProductCardState extends State<ProductCard> {
       });
       wantSaveButton = false;
       return;
-    }
+  /*//  }
     if( prod.count(0) > 0) {
       wantSaveButton = true;
     } else {
       wantSaveButton = true;
     }
-
+*/
   }
   void onSave(BuildContext context, dynamic p) {
     saveProduct(p, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);

@@ -14,7 +14,7 @@ NetworkImage? getProductImage(Product product){
   try {
     String name;
     if( gblSettings.productImageMode == 'index') {
-      if( product.productImageURL != null && product.productImageURL.isNotEmpty) {
+      if( product.productImageURL != '' && product.productImageURL.isNotEmpty) {
           // format ../CustomerFiles/HiSky/images/bag.png
 
         // get server from gblServerFiles
@@ -31,11 +31,13 @@ NetworkImage? getProductImage(Product product){
           name +=  product.productImageURL.replaceAll('..', '');
         }
       } else {
+/*
         if (product.productImageIndex == null) {
           name = 'default';
         } else {
+*/
           name = product.productImageIndex.toString();
-        }
+//        }
       }
     } else {
       name = product.productCode;
@@ -46,7 +48,7 @@ NetworkImage? getProductImage(Product product){
     if( pageMap[name.toUpperCase()] != null ) {
       pageImage = pageMap[name.toUpperCase()];
   }
-    if( pageImage == null || pageImage == '') {
+    if(  pageImage == '') {
       pageImage = name;
     }
     if( pageImage == '') {
@@ -63,13 +65,14 @@ NetworkImage? getProductImage(Product product){
   } catch(e) {
     logit(e.toString());
   }
+  return null;
   //return Never;
 }
 
 List <String> getSeatsForFlt(int fltNo){
   List <String> list = [];
 
-    if( gblPnrModel != null && gblPnrModel!.pNR != null && gblPnrModel!.pNR.aPFAX != null && gblPnrModel!.pNR.aPFAX.aFX != null ) {
+    if( gblPnrModel != null /*&& gblPnrModel!.pNR != null && gblPnrModel!.pNR.aPFAX != null && gblPnrModel!.pNR.aPFAX.aFX != null */ ) {
       gblPnrModel!.pNR.aPFAX.aFX.forEach((af) {
         if (af.aFXID == 'SEAT' && af.seg == (fltNo+1).toString()) {
             list.add(af.seat);
@@ -82,7 +85,7 @@ List <String> getSeatsForFlt(int fltNo){
 
 String getDuration(int minutes){
   String tranTime = '';
-  if( minutes != null && minutes != 0 ) {
+  if( /*minutes != null &&*/ minutes != 0 ) {
     int days = (minutes / (24 * 60)).floor();
     if (days > 0) {
       if( days > 1) {
@@ -112,10 +115,10 @@ String getDuration(int minutes){
 }
 
 bool isThisProductSegmentFixed(PnrModel pnrModel, Product p) {
-  if (p.cityCode != null && p.cityCode.isNotEmpty) {
+  if (p.cityCode != '' && p.cityCode.isNotEmpty) {
     return true;
   }
-  if (p.cityCode != null && p.cityCode.isNotEmpty) {
+  if (p.cityCode != '' && p.cityCode.isNotEmpty) {
     return true;
   }
   return false;
@@ -124,27 +127,27 @@ bool isThisProductSegmentFixed(PnrModel pnrModel, Product p) {
 
 bool isThisProductValid(PnrModel pnrModel, Product p, int segNo) {
   bool isValid = false;
-  if( p.applyToClasses == null || p.applyToClasses.isEmpty) {
+  if( p.applyToClasses == '' || p.applyToClasses.isEmpty) {
     isValid = true;
   } else {
-    if (pnrModel != null) {
+  //  if (pnrModel != null) {
       pnrModel.pNR.itinerary.itin.forEach((element) {
         if (p.applyToClasses.contains(element.xclass)) {
           isValid = true;
         }
       });
-    }
+  //  }
   }
   // setNo =0 is initial check
   if( p.segmentRelate && segNo != 0 ) {
     if( pnrModel.pNR.itinerary.itin.length < segNo){
       return false;
     }
-    if (p.cityCode != null && p.cityCode.isNotEmpty) {
+    if (p.cityCode != '' && p.cityCode.isNotEmpty) {
       if( pnrModel.pNR.itinerary.itin[segNo].depart != p.cityCode){
         return false;
       }
-      if (p.arrivalCityCode != null && p.arrivalCityCode.isNotEmpty) {
+      if (p.arrivalCityCode != '' && p.arrivalCityCode.isNotEmpty) {
         if( pnrModel.pNR.itinerary.itin[segNo].arrive != p.arrivalCityCode){
           return false;
         }
