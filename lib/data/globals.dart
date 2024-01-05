@@ -16,7 +16,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'UZ';
+String gblBuildFlavor = 'SI';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
@@ -50,6 +50,9 @@ String gblNotifyToken ='';
 String gblDeviceId ='';
 String gblCurPage ='';
 String gblUndoCommand ='';
+//      r'^(([^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+(\.[^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 
 /* logging */
 bool gblLogProducts = false;

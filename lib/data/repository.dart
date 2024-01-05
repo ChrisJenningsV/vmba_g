@@ -584,6 +584,9 @@ class Repository {
                   case 'oldPriceColor':
                     gblSystemColors.oldPriceColor = item['value'];
                     break;
+                  case 'EmailValidationPattern':
+                    gblEmailValidationPattern = item['value'];
+                    break;
 
                 /*
                   URLs

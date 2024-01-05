@@ -23,18 +23,14 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
 import '../Helpers/networkHelper.dart';
-/*
-import '../components/showNotification.dart';
-import '../home/home_page.dart';
-*/
 import '../main.dart';
 import 'messagePages.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 // Future<String> _loadCitylistAsset() async {
 //   return await rootBundle.loadString('lib/assets/data/citylist.json');
 // }
+
 
 Future<Session> login() async {
   logit('login');
@@ -402,9 +398,11 @@ return converted;
 }
 
 String validateEmail(String value) {
+/*
   String pattern =
       r'^(([^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+(\.[^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-  RegExp regex = new RegExp(pattern);
+*/
+  RegExp regex = new RegExp(gblEmailValidationPattern);
   if (!regex.hasMatch(value))
     return 'Enter Valid Email';
   else
