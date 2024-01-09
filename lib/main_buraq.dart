@@ -30,13 +30,13 @@ void configUZ() {
       home1ButtonTextColor: Colors.white,
       textEditBorderColor: Colors.grey.shade300,
       home2ButtonTextColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),
-      primaryButtonColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),
-      accentButtonColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
+      primaryButtonColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),  // dark gold
+      accentButtonColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),
       accentColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),
       primaryColor: Color.fromRGBO(0X24, 0x80, 0xB3, 1),
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
-      primaryHeaderColor: Color.fromRGBO(0XEB, 0xD9, 0x9B, 1),
+      primaryHeaderColor: Color.fromRGBO(0XEB, 0xD9, 0x9B, 1),  // light gold
       progressColor: Color.fromRGBO(0XCA, 0xA5, 0x60, 1),
       headerTextColor: Colors.white,
       statusBar: Brightness.dark,
