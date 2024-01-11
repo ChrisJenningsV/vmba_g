@@ -395,23 +395,22 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
           flightsConfirmed = false;
           for (var i = 0; i < 10; i++) { // was 4
             msg = '*' + pnrModel.pNR.rLOC + '~x';
+
+/*
             http.Response response = await http.get(Uri.parse(
                 "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
                 headers: getXmlHeaders())
                 .catchError((resp) {});
-            if (response == null) {
-/*
-              setState(() {
-                _displayProcessingIndicator = false;
-              });
-              noInternetSnackBar(context);
- */
+*/
+            String data = await runVrsCommand(msg).catchError((e) {
+
+//            if (response == null) {
               gblError = 'Network error';
               return null;
-            }
+            });
 
             //If there was an error return an empty list
-            if (response.statusCode < 200 || response.statusCode >= 300) {
+            if(data == null ) { // (response.statusCode < 200 || response.statusCode >= 300) {
 /*
               setState(() {
                 _displayProcessingIndicator = false;
@@ -420,8 +419,9 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 */
               gblError = 'Network error';
               return null;
-            } else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
-              gblError = response.body
+            //} else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
+            } else if (data.contains('ERROR - ') || data.contains('ERROR:')) {
+              gblError = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
@@ -433,7 +433,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 */
               return;
             } else {
-              String pnrJson = response.body
+              String pnrJson = data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '');
