@@ -126,7 +126,7 @@ android {
         }
         UnitedNigeria {
             dimension "version"
-            resValue "string", "flavored_app_name", "UnitedNigeria"
+            resValue "string", "flavored_app_name", "United Nigeria Airlines"
             applicationId "com.unitednigeria.booking"
         }
   /*      Keylime {

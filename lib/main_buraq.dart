@@ -63,6 +63,7 @@ void configUZ() {
     wantEnglishTranslation: true,
 
     gblLanguages: 'ar,عربي,en,English',
+    wantEnglishDates: true,
 /*    homePageStyle: 'V2',
     pageStyle: 'V2',*/
     buttonStyle: 'RO3',

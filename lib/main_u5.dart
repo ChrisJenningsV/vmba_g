@@ -12,7 +12,7 @@ void main() {
   configU5();
 
   var configuredApp = AppConfig(
-    appTitle: 'United Nigeria',
+    appTitle: 'United Nigeria Airlines',
     child: App(),
     buildFlavor: 'U5',
     systemColors: gblSystemColors,
@@ -68,7 +68,7 @@ void configU5() {
     homePageStyle: 'V1',
     pageStyle: 'V1',
 
-    airlineName: "UnitedNigeria",
+    airlineName: "United Nigeria Airlines",
     gblServerFiles: 'https://customer3.videcom.com/UnitedNigeria/AppFiles/',
     testServerFiles: 'https://customertest.videcom.com/UnitedNigeria/VARS/AppFiles/',
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",

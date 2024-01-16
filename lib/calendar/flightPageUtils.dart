@@ -42,7 +42,9 @@ String getIntlDate(String format, DateTime dt ) {
     return '';
 
   }
-  Intl.defaultLocale = gblLanguage;
+  if( gblSettings.wantEnglishDates == false ) {
+    Intl.defaultLocale = gblLanguage;
+  }
   if ( gblSettings.want24HourClock ) {
     format = format.replaceFirst('H:mm a', 'HH:mm');
     format = format.replaceFirst('h:mm a', 'HH:mm');

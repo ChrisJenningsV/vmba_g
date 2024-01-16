@@ -149,10 +149,10 @@ class _DayPickerPageState extends State<DayPickerPage> {
     bool? isDisabled ,
     bool? isToday,}) {
     if(isToday != null && isToday == true ){
-/*
+
       decoration = BoxDecoration( border: Border.all(width: 1),
               borderRadius: BorderRadius.circular(5.0));
-*/
+
     }
     if( gblFlightPrices != null ) {
       // check for this date

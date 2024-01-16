@@ -1,6 +1,7 @@
 
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
+import 'package:vmba/data/globals.dart';
 
 import '../../components/trText.dart';
 
@@ -283,7 +284,7 @@ class AvItin {
 //${(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime).add(Duration(days: int.tryParse(pnr.pNR.itinerary.itin[journey].arrOfst.trim()) ?? (0))).difference(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).inMinutes % 60).toString()}min',
 
     // translate duration
-    if( wantRtl()) {
+    if( wantRtl() && (gblSettings.wantEnglishDates == false)) {
       return translateNo('$hours') + translate('h.') + ' ' + translateNo('$min') + translate('min');
     }
     return '${hours}h. ${min}min';
