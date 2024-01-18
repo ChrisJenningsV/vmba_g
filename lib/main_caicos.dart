@@ -12,7 +12,7 @@ void main() {
   config9Q();
 
   var configuredApp = AppConfig(
-    appTitle: 'caicos',
+    appTitle: 'Caicos Express Airways',
     child: App(),
     buildFlavor: '9Q',
     systemColors: gblSystemColors,
@@ -90,8 +90,8 @@ void config9Q() {
     fqtvName: 'Club',
     appFeedbackEmail: 'appfeedback@turksandcaicosflights.com',
     groupsBookingsEmail: 'groups@turksandcaicosflights.com',
-    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
-    wantClassBandImages: true,
+//    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
+//    wantClassBandImages: true,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     bpShowAddPassToWalletButton: false,

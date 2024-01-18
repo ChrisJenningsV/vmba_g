@@ -43,6 +43,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
     if (newValue != "null") {
       setState(() {
         departureCode = newValue.split('|')[0];
+        gblOrigin =departureCode;
         departureAirport = newValue.split('|')[1];
         arrivalAirport = translate('Select arrival airport');
         route.departure = departureCode;
@@ -56,6 +57,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
     if (newValue != null && newValue != "null") {
       setState(() {
         arrivalCode = newValue.split('|')[0];
+        gblDestination =arrivalCode;
         arrivalAirport = newValue.split('|')[1];
         route.departure = departureCode;
         route.arrival = arrivalCode;

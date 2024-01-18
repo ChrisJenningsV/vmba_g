@@ -28,7 +28,7 @@ String calenderPrice(String currency, String price, String miles) {
       return 'N/A';
     } else {
       // translate price
-      if( wantRtl()) {
+      if( wantRtl() && gblSettings.wantEnglishDates == false) {
         return translate(_currencySymbol) + translateNo(price);
       }
       return _currencySymbol + price;

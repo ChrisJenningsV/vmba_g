@@ -108,6 +108,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
                   SizedBox( height: 15, width: 15,
                       child: DataLoaderWidget(dataType: LoadDataType.calprices,
                   newBooking: null,
+                  selectedDate: _selectedDate,
                   pnrModel: PnrModel(),
                   onComplete: (PnrModel pnrModel) {
                     setState(() {

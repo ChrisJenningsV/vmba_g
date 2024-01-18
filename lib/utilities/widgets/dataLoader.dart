@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 //import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
@@ -20,9 +21,10 @@ class DataLoaderWidget extends StatefulWidget {
   NewBooking? newBooking;
   final PnrModel pnrModel;
   final Function(PnrModel pnrModel) onComplete;
+  DateTime? selectedDate;
 
   DataLoaderWidget(
-  { Key key= const Key("dload_key"), required this.dataType, this.newBooking, required this.pnrModel, required this.onComplete  }) : super( key: key);
+  { Key key= const Key("dload_key"), required this.dataType, this.newBooking, required this.pnrModel, required this.onComplete, this.selectedDate }) : super( key: key);
 
   final LoadDataType dataType;
 
@@ -213,8 +215,11 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
           if( currency == null || currency.isEmpty) {
             currency = widget.pnrModel.pNR.basket.outstanding.cur;
           }
-          _msg = json.encode(FlightSearchRequest(departCity: 'ABZ',arrivalCity: 'KOI', flightDateStart: '2023-11-01',
-              flightDateEnd: '2023-12-01',    isReturnJourney: 0,  selectedCurrency: 'GBP',
+          DateTime startDate = DateTime(widget.selectedDate!.year,widget.selectedDate!.month, 1 );
+          DateTime endDate = DateTime(widget.selectedDate!.year,widget.selectedDate!.month+1, 1 );
+          
+          _msg = json.encode(FlightSearchRequest(departCity: gblOrigin,arrivalCity: gblDestination, flightDateStart: DateFormat('yyyy-MM-dd').format(startDate), //'2023-11-01'
+              flightDateEnd: DateFormat('yyyy-MM-dd').format(endDate),    isReturnJourney: 0,  selectedCurrency: gblSelectedCurrency,
           isADS: false, showFlightPrices: true).toJson());  // , arrivalCityCode: gblDestination
 
           break;
