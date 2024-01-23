@@ -134,10 +134,10 @@ void configFN() {
  //   testPayPage: 'http://10.0.2.2:62559/MobilePaymentStart.aspx',
    testPayPage: 'https://customertest.videcom.com/FastJet/VARS/Public/MobilePaymentStart.aspx',
 
-    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
-    //testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
-    //testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+   // testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    //testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+    testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local

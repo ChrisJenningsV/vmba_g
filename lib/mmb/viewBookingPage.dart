@@ -23,6 +23,7 @@ import 'package:vmba/data/models/apis_pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/models/models.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -1213,12 +1214,13 @@ class CheckinBoardingPassesWidgetState
   }
 
   bool isFltPassedDate(Itin journey, int offset) {
-    DateTime now = DateTime.now();
+    //DateTime now = DateTime.now();
+    DateTime now = getGmtTime();
     var fltDate;
     bool result = false;
 
-    fltDate = DateTime.parse(journey.depDate + ' ' + journey.depTime)
-        .add(Duration(hours: offset));
+    fltDate = DateTime.parse(journey.ddaygmt + ' ' + journey.dtimgmt);
+        //.add(Duration(hours: offset));
     if (now.isAfter(fltDate)) {
       result = true;
     }
@@ -1318,6 +1320,7 @@ class CheckinBoardingPassesWidgetState
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
       // departed, no actions
+      logit('departed');
         return Container();
     }
 
@@ -1326,6 +1329,7 @@ class CheckinBoardingPassesWidgetState
 
     if (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.aircode &&
         (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.altAircode ) ) {
+      logit('other airline');
       return Text(''
           // 'Please check in at the airport',
           );
@@ -1351,6 +1355,7 @@ class CheckinBoardingPassesWidgetState
 
       // check APIS done
       if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+        logit('apis required');
         return Container();
       }
 
@@ -1409,6 +1414,7 @@ class CheckinBoardingPassesWidgetState
 
     // all the rest need to be online
     if( gblNoNetwork == true){
+      logit('no net');
       return Container();
     }
 
@@ -1458,7 +1464,7 @@ class CheckinBoardingPassesWidgetState
             pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT);
        // logit('checkin closed:${checkinClosed.toString()}');
 
-        now = new DateTime.now().toUtc();
+        now = getGmtTime();
 
         // logit('now:${now.toString()}');
 /*
@@ -1482,6 +1488,7 @@ class CheckinBoardingPassesWidgetState
         }
         if( (pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null || pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != '' ) &&
             pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed == 'False' ) {
+          logit('mMBCheckinAllowed false');
           checkinOpen = false;
         }
       }
@@ -1521,6 +1528,7 @@ class CheckinBoardingPassesWidgetState
 
             if( checkedInCount == 0 ) {
               // no one is checked in so infant cannot check in
+              logit('no one checked in');
               return Container();
             }
 
@@ -1538,6 +1546,7 @@ class CheckinBoardingPassesWidgetState
 
           // apis button required and yet to be done ?
           if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+            logit('apis required');
               return Container();
           }
 
@@ -1605,6 +1614,7 @@ class CheckinBoardingPassesWidgetState
                     ? true
                     : false;
             if( pnr.isFundTransferPayment()) {
+              logit('fund transfer');
               return Container();
             } else {
               return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
@@ -1641,6 +1651,7 @@ class CheckinBoardingPassesWidgetState
       if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
           pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
         if( pnr.isFundTransferPayment()) {
+          logit('fund transfer');
           return Container();
         } else {
           return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
@@ -1771,7 +1782,7 @@ class CheckinBoardingPassesWidgetState
           itin.onlineCheckinTimeEndGMT);
 
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
-      now = new DateTime.now().toUtc();
+      now = getGmtTime();
 
       widget.isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
       widget.isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
@@ -1833,12 +1844,13 @@ class CheckinBoardingPassesWidgetState
     //bool isFundTransferPayment = pnr.isFundTransferPayment();
 
     bool isFltPassedDate(Itin journey, int offset) {
-      DateTime now = DateTime.now();
+      //DateTime now = DateTime.now();
+      DateTime now = getGmtTime();
       var fltDate;
       bool result = false;
 
-      fltDate = DateTime.parse(journey.depDate + ' ' + journey.depTime)
-          .add(Duration(hours: offset));
+      fltDate = DateTime.parse(journey.ddaygmt + ' ' + journey.dtimgmt);
+          //.add(Duration(hours: offset));
       if (now.isAfter(fltDate)) {
         result = true;
       }
@@ -2105,12 +2117,13 @@ class CheckinBoardingPassesWidgetState
 */
 
     bool isFltPassedDate(Itin journey, int offset) {
-      DateTime now = DateTime.now();
+      //DateTime now = DateTime.now();
+      DateTime now = getGmtTime();
       var fltDate;
       bool result = false;
 
-      fltDate = DateTime.parse(journey.depDate + ' ' + journey.depTime)
-          .add(Duration(hours: offset));
+      fltDate = DateTime.parse(journey.ddaygmt + ' ' + journey.dtimgmt);
+          //.add(Duration(hours: offset));
       if (now.isAfter(fltDate)) {
         result = true;
       }
@@ -2342,6 +2355,7 @@ class CheckinBoardingPassesWidgetState
 
       // apis button required and yet to be done ?
       if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+        logit('APIS required');
         return Container();
       }
 

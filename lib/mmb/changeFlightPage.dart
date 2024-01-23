@@ -18,6 +18,7 @@ import 'package:vmba/components/trText.dart';
 import '../Helpers/settingsHelper.dart';
 import '../calendar/calendarFunctions.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/timeHelper.dart';
 import '../utilities/widgets/colourHelper.dart';
 
 // ignore: must_be_immutable
@@ -203,7 +204,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     buffer.write(getPaxTypeCounts(this.widget.mmbBooking.passengers ));
 
     buffer.write(
-        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
+        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(getGmtTime())}]');
 
     String msg =buffer.toString();
     logit('getAvCommand ch: ' + msg);
@@ -248,7 +249,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             objAv.availability.itin![i].flt.first.time.ddaygmt +
                 ' ' +
                 objAv.availability.itin![i].flt.first.time.dtimgmt);
-        if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
+        if (fltDate.isBefore(getGmtTime().subtract(Duration(
             minutes: gblSettings.bookingLeadTime)))) {
           objAv.availability.itin!.removeAt(i);
         }

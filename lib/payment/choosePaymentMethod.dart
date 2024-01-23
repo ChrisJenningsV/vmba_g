@@ -479,10 +479,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TrText('Departure Time:'),
-            Text(DateFormat('dd MMM kk:mm').format(DateTime.parse(
-                widget.pnrModel.pNR.itinerary.itin[i].depDate +
-                    ' ' +
-                    widget.pnrModel.pNR.itinerary.itin[i].depTime)))
+            Text(_getDateFormatted(i))
           ],
         ),
       );
@@ -628,6 +625,18 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     return Column(
       children: widgets,
     );
+  }
+
+  String _getDateFormatted(int i) {
+
+    if( widget.pnrModel.pNR.itinerary.itin[i].depDate == '' || widget.pnrModel.pNR.itinerary.itin[i].depTime == ''){
+      return '';
+    }
+
+    return DateFormat('dd MMM kk:mm').format(DateTime.parse(
+        widget.pnrModel.pNR.itinerary.itin[i].depDate +
+            ' ' +
+            widget.pnrModel.pNR.itinerary.itin[i].depTime));
   }
 
   bool validate() {

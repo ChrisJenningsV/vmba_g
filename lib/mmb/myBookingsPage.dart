@@ -9,6 +9,7 @@ import 'package:vmba/data/models/apis_pnr.dart';
 import 'dart:convert';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
@@ -771,7 +772,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
   bool isFltPassedDate(List<Itin> journey) {
 //      DateTime now = DateTime.now();
-    DateTime now = DateTime.now().toUtc();
+    DateTime now = getGmtTime(); // DateTime.now().toUtc();
     var fltDate;
     bool result = false;
     journey.forEach((f) {

@@ -315,6 +315,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    logit('pd');
     //Show dialog
     //print('build');
     Widget? floatBtn ;
@@ -716,24 +717,29 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 } else {
                   logit('passengerDetailRecord has value');
                 }
-                var _error = await Navigator.push(
-                    context,
-                   MaterialPageRoute(
+                if( gblPnrModel != null ) {
+                  var _error = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
 //                    CustomPageRoute(
-                        builder: (context) =>
-                            ChoosePaymenMethodWidget(
-                        //SelectPaymentProviderWidget()
-                                  newBooking: widget.newBooking, pnrModel: gblPnrModel as PnrModel, isMmb: false, )
-                              /*
+                          builder: (context) =>
+                              ChoosePaymenMethodWidget(
+                                //SelectPaymentProviderWidget()
+                                newBooking: widget.newBooking,
+                                pnrModel: gblPnrModel as PnrModel,
+                                isMmb: false,)
+                        /*
                             ContactDetailsWidget(
                               newbooking: widget.newBooking,
                               preLoadDetails: preLoadDetails,
                               passengerDetailRecord: passengerDetailRecord!,
                             )
 */
-                    )
-                );
-                displayError(_error);
+                      )
+                  );
+                }
+                displayError(gblError);
+                gblActionBtnDisabled = false;
               }
             }
 

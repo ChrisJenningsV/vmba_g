@@ -13,6 +13,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 
@@ -149,7 +150,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
 
     buffer.write(
-        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(DateTime.now().toUtc())}]');
+        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(getGmtTime())}]');
     //Intl.defaultLocale = gblLanguage;
 
     String msg =buffer.toString();
@@ -225,7 +226,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       for (int i = length; i >= 0; i--) {
         DateTime fltDate = DateTime.parse(itin[i].flt.first.time.ddaygmt + ' ' + itin[i].flt.first.time.dtimgmt);
         //DateTime utcNow = DateTime.now().toUtc().subtract(Duration(minutes: gblSettings.bookingLeadTime));
-        DateTime cutOffTime = DateTime.now().toUtc().add(Duration(minutes: gblSettings.bookingLeadTime));
+        DateTime cutOffTime = getGmtTime().add(Duration(minutes: gblSettings.bookingLeadTime));
         // if flight is before cutoff time, remove it!
         if (fltDate.isBefore(cutOffTime)) {
           itin.removeAt(i);
@@ -256,7 +257,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     DateTime _departureDate = DateTime.parse(
         DateFormat('y-MM-dd').format(widget.newBooking.departureDate));
     DateTime _currentDate =
-        DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc()));
+        DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime()));
 
     calenderWidgetSelectedItem = 0;
     if(objAv.availability.cal != null && objAv.availability.cal?.day != null  ) {
@@ -296,6 +297,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   @override
   Widget build(BuildContext context) {
+    logit('obf b _loadingInProgress=$_loadingInProgress');
   if ( gblError!= null && gblError.isNotEmpty  ){
     return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete, wantButtons: true);
 
@@ -393,7 +395,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           children: objAv.availability.cal!.day
               .map(
                 (item) =>
-                    getCalDay(item, 'out', widget.newBooking.departureDate, DateTime.parse(DateFormat('y-MM-dd').format(DateTime.now().toUtc())),
+                    getCalDay(item, 'out', widget.newBooking.departureDate, DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime())),
                         onPressed:() => {
                     hasDataConnection().then((result) {
                     if (result == true) {
@@ -522,6 +524,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         )));
     _loadingInProgress = false;
     if( selectedFlt != null ) {
+      _loadingInProgress = true;
+      setState(() {
+      });
       flightSelected(context, avItem, selectedFlt, flts,
           objAv.availability.classbands!.band![index].cbname);
     }

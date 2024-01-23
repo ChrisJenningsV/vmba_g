@@ -295,7 +295,7 @@ String formatPrice(String currency, double price) {
   if( gblSettings.wantCurrencySymbols == true ) {
     _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
   }
-  if( wantRtl()) {
+  if( wantRtl() && gblSettings.wantEnglishDates == false) {
     return translateNo(price.toStringAsFixed(2)) + ' ' + translate(_currencySymbol)  ;
   }
   return _currencySymbol + price.toStringAsFixed(2);

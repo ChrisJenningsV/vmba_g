@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/timeHelper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -179,7 +180,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             objAv!.availability.itin![i].flt.first.time.ddaygmt +
                 ' ' +
                 (objAv!.availability.itin![i].flt.first.time.dtimgmt as String));
-        if (fltDate.isBefore(DateTime.now().toUtc().subtract(Duration(
+        if (fltDate.isBefore(getGmtTime().subtract(Duration(
             minutes: gblSettings.bookingLeadTime)))) {
           objAv!.availability.itin?.removeAt(i);
         }
