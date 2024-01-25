@@ -10,18 +10,6 @@ edit data/globals.dart
 # set gblUseCache true
 
 # build android app bundle
-#flutter build appbundle
-# Modify the flavor parameter as required (set to airleap in this example)
-flutter build appbundle -t lib/main.dart --flavor airleap
-flutter build appbundle -t lib/main.dart --flavor loganair
-flutter build appbundle -t lib/main.dart --flavor airswift
-flutter build appbundle -t lib/main.dart --flavor buraq
-flutter build appbundle -t lib/main.dart --flavor blueislands
-flutter build appbundle -t lib/main.dart --flavor fastjet
-flutter build appbundle -t lib/main.dart --flavor hisky
-flutter build appbundle -t lib/main.dart --flavor medsky
-flutter build appbundle -t lib/main.dart --flavor Aurigny
-
 # batch file - run in terminal for \vmba
 buildRelease\airswift.bat
 buildRelease\fastjet.bat
@@ -33,6 +21,8 @@ buildRelease\logan.bat
 buildRelease\blueislands.bat
 buildRelease\aurigny.bat
 buildRelease\unitednigeria.bat
+
+# for iOS run command file in finder
 
 # output will be in vmba\build\app\outputs\bundle\AirLeapRelease or similar
 
