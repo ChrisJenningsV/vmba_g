@@ -1021,6 +1021,14 @@ class CheckinBoardingPassesWidgetState
   }
 
   void _onPressedChangeFlt({int? p1}) {
+
+    if( objPNR!.pNR.isFQTVBooking()) {
+      gblRedeemingAirmiles = true;
+    } else {
+      gblRedeemingAirmiles = false;
+    }
+
+
     if( objPNR!.pNR.fareQuote != null && objPNR!.pNR.fareQuote.fQItin != null && objPNR!.pNR.fareQuote.fQItin.length >0 ){
       if( objPNR!.pNR.payments != null && objPNR!.pNR.payments.fOP != null && objPNR!.pNR.payments.fOP.length > 0) {
         // should not change currency

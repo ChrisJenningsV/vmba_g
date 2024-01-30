@@ -77,7 +77,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
 
     //Text('Procucts Widget', style: new TextStyle(fontSize: 26),);
 
-    if( errorMsg != null && errorMsg.isNotEmpty){
+    if( errorMsg != '' && errorMsg.isNotEmpty){
 
         ScaffoldMessenger.of(context).showSnackBar(snackbar(errorMsg));
     }
@@ -176,7 +176,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
   }
 
 Row getBaggageRow(NetworkImage img, String count, String countRet, String title, String line2) {
-  if( img == null && count == null ) {
+  if(  count == '' ) {
     // heading row
     return Row(
         children: [
@@ -188,16 +188,16 @@ Row getBaggageRow(NetworkImage img, String count, String countRet, String title,
         ]);
 
   }
-  if( count != null &&  count.endsWith('K')){
+  if( count != '' &&  count.endsWith('K')){
     count =  count.replaceAll('K', 'Kg');
   }
-  if( count == null ) {
+  if( count == '' ) {
     count = '0';
   }
-  if( countRet != null &&  countRet.endsWith('K')){
+  if( countRet != '' &&  countRet.endsWith('K')){
     countRet = countRet.replaceAll('K', 'Kg');
   }
-  if( countRet == null ) {
+  if( countRet == '' ) {
     countRet = '0';
   }
   return Row(
@@ -237,7 +237,7 @@ NetworkImage? bagImage(String name){
     if( pageImage == null || pageImage == '') {
       pageImage = name;
     }
-    if( pageImage == null) {
+    if( pageImage == '') {
       pageImage = 'blank';
     }
 

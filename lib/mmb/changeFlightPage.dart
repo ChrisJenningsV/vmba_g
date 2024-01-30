@@ -58,7 +58,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     gblBookingState = BookingState.changeFlt;
 
     // check if we are redeeming airmiles
-    gblRedeemingAirmiles = false;
+    //gblRedeemingAirmiles = false;
     if( widget.pnr != null && widget.pnr.pNR != null && widget.pnr.pNR.payments != null && widget.pnr.pNR.payments.fOP != null) {
       widget.pnr.pNR.payments.fOP.forEach((element) {
         if (element.fOPID == 'ZZZ') {
@@ -530,7 +530,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             ),
                             //new Text(item.cur + item.amt)
                             new Text(
-                              calenderPrice(item.cur, item.amt, '0'),
+                              calenderPrice(item.cur, item.amt, item.miles),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),

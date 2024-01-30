@@ -304,6 +304,16 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Future completeBooking() async {
     logit('CCP:CompleteBooking');
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
+    if( gblRedeemingAirmiles){
+      try {
+        String data = await runVrsCommand('*${widget.pnrModel.pNR.rLOC}^EZV*[E][ZWEB]^E*R');
+        logit(data);
+      } catch(e) {
+        logit(e.toString());
+      }
+      //msg = "EZT*R~x";
+    }
+
     gblCurrentRloc = widget.pnrModel.pNR.rLOC;
     gblTimerExpired = true;
     _sendVRSCommand(json.encode(RunVRSCommand(session!, msg).toJson()))

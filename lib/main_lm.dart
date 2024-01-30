@@ -54,7 +54,7 @@ void configLM() {
     wantApis: true,
     wantHomeFQTVButton: false,
     wantMaterial3: false,
-    wantPriceCalendar: true ,
+    wantPriceCalendar: false ,
     wantPriceCalendarRounding: false,
     canGoBackFromPaxPage: true,
     //pageStyle: 'V2',

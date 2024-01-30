@@ -121,7 +121,7 @@ void configU5() {
 
     liveCreditCardProvider: 'worldpaydirect',
 
-    eVoucher: false,
+    eVoucher: true,
     xmlUrl:      "https://customertest.videcom.com/unitednigeria/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/unitednigeria/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse

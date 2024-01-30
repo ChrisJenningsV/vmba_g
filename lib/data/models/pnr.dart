@@ -479,6 +479,21 @@ class PNR {
     if(json['fqfields'] != null) fqfields =  Fqfields.fromJson(json['fqfields']);
   }
 
+  bool isFQTVBooking(){
+    bool retVal = false;
+    if( this.payments != null && this.payments.fOP != null &&
+        this.payments.fOP.length > 0  ) {
+      this.payments.fOP.forEach((fop) {
+        if(fop.fOPID == 'FFF'){
+          retVal =  true;
+        }
+      });
+    }
+
+    return retVal;
+  }
+
+
   int seatCount() {
     if( aPFAX == null || aPFAX.aFX == null ) {
       return 0;

@@ -153,8 +153,8 @@ bool isThisProductValid(PnrModel pnrModel, Product p, int segNo) {
         }
       }
 
-    } else if (p.arrivalCityCode != null && p.arrivalCityCode.isNotEmpty &&
-        (p.cityCode == null || p.cityCode.isNotEmpty)) {
+    } else if ( p.arrivalCityCode.isNotEmpty &&
+        (p.cityCode.isNotEmpty)) {
       if( pnrModel.pNR.itinerary.itin[segNo].arrive != p.arrivalCityCode){
         return false;
       }
@@ -162,8 +162,8 @@ bool isThisProductValid(PnrModel pnrModel, Product p, int segNo) {
 
   } else {
     // need depart city match, with or without arrival city
-    if (p.cityCode != null && p.cityCode.isNotEmpty) {
-      if (p.arrivalCityCode != null && p.arrivalCityCode.isNotEmpty) {
+    if ( p.cityCode.isNotEmpty) {
+      if ( p.arrivalCityCode.isNotEmpty) {
         // match just depart
         bool bfound = false;
         pnrModel.pNR.itinerary.itin.forEach((element) {
@@ -189,8 +189,8 @@ bool isThisProductValid(PnrModel pnrModel, Product p, int segNo) {
       }
     }
     // only arrival matches
-    if (p.arrivalCityCode != null && p.arrivalCityCode.isNotEmpty &&
-        (p.cityCode == null || p.cityCode.isNotEmpty)) {
+    if ( p.arrivalCityCode.isNotEmpty &&
+        ( p.cityCode.isNotEmpty)) {
       // match arrive only
       bool bfound = false;
       pnrModel.pNR.itinerary.itin.forEach((element) {

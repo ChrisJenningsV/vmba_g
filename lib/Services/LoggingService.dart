@@ -19,7 +19,9 @@ Future <bool> serverLog(String msg) async {
         '${gblSettings.apiUrl}/logging/LogMsg'),
     headers: getApiHeaders(),
       body: JsonEncoder().convert(msg)
-    ).catchError((resp) {});
+    ).catchError((resp) {
+      return new http.Response('error', 900);
+  });
 
   if (response == null) {
     return false;

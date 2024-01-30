@@ -87,12 +87,12 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     String units = '';
 
 
-    if( widget.product!.unitOfMeasure == null || widget.product!.unitOfMeasure.isEmpty) {
+    if(  widget.product!.unitOfMeasure.isEmpty) {
       units += ' ' + translate('Per Unit');
     } else {
       units = ' ' + translate('Per') + ' ' + widget.product!.unitOfMeasure;
     }
-    if( gblSettings.productImageMode != null && gblSettings.productImageMode != 'none') {
+    if( gblSettings.productImageMode != '' && gblSettings.productImageMode != 'none') {
       NetworkImage? img = getProductImage(widget.product!);
       if (img != null) {
         rowList.add(Image(image: img,
@@ -117,7 +117,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     headList.add(new Row(    children: rowList,));
 
     // product details
-    if( widget.product!.productDescription != null && widget.product!.productDescription.isNotEmpty ) {
+    if( widget.product!.productDescription != '' && widget.product!.productDescription.isNotEmpty ) {
       headList.add(new Row(
         children: [
           // get text (strip and HTML)
@@ -137,7 +137,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     int segNo = 0;
     if (widget.product!.segmentRelate) {
       widget.pnrModel.pNR.itinerary.itin.forEach((itin) {
-        if( widget.product!.applyToClasses == null ||
+        if( widget.product!.applyToClasses == '' ||
             widget.product!.applyToClasses.isEmpty ||
             widget.product!.applyToClasses.contains( itin.xclass)) {
           if (isThisProductValid(widget.pnrModel, widget.product!, segNo)) {
@@ -246,9 +246,11 @@ class ProductFlightCardState extends State<ProductFlightCard> {
 
   @override
   void initState() {
+/*
     if( widget.product.maxQuantity == null ){
       widget.product.maxQuantity = 999;
     }
+*/
     super.initState();
   }
   @override
@@ -293,7 +295,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
       widget.pnrModel.pNR.names.pAX.forEach((pax) {
        // list.add(Text(pax.firstName + ' ' + pax.surname),);
         bool disable = widget.product.getCount(int.parse(pax.paxNo), lineNo) == 0;
-        if( widget.isMmb && widget.savedProduct != null ){
+        if( widget.isMmb  ){ //&& widget.savedProduct != null
             disable = widget.product.getCount(int.parse(pax.paxNo), lineNo) <= widget.savedProduct.getCount(int.parse(pax.paxNo), lineNo);
         }
 

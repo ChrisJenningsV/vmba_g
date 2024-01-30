@@ -1578,6 +1578,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               }
             }
             break;
+
         }
 
         if( bShow){
@@ -1634,7 +1635,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               } else if ( provider.paymentType == 'FundTransferPayment') {
                 endProgressMessage();
                 _displayProcessingIndicator = false;
-                doFundTransferPayment(provider);
+                doDelayedPayment(provider);
               /*  Navigator.push(
                     context, MaterialPageRoute(builder: (context) =>
                     SmartApiPage(
@@ -1701,7 +1702,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         },);
     }
   }
-  Future<void> doFundTransferPayment( Provider provider) async {
+  Future<void> doDelayedPayment( Provider provider) async {
     progressMessagePage(context, 'Making payment', title:  'Payment');
     try {
       PaymentRequest pay = new PaymentRequest();

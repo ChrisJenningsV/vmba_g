@@ -44,19 +44,18 @@ class SeatCardState extends State<SeatCard> {
   @override
   Widget build(BuildContext context) {
     int noFlights = 0;
+/*
     if( widget.newBooking != null ) {
+*/
       noFlights += widget.newBooking.outboundflight.length;
-      if (widget.newBooking.returningflight != null) {
+      //if (widget.newBooking.returningflight != null) {
         noFlights += widget.newBooking.returningflight.length;
-      }
+      //}
+/*
     } else if (gblPnrModel != null  && gblPnrModel!.pNR != null &&  gblPnrModel!.pNR.itinerary != null ){
       noFlights += gblPnrModel!.pNR.itinerary.itin.length;
-/*
-      gblPnrModel.pNR.itinerary.itin.forEach((flt) {
-
-      });
-*/
     }
+*/
     if (noFlights > 0) {
       List <Widget> list = [];
       list.add(Padding(
