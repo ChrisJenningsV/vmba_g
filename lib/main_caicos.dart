@@ -26,7 +26,7 @@ void main() {
 void config9Q() {
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
-    accentButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
+    accentButtonColor: Color.fromRGBO(0X13, 0x3E, 0x68, 1),
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
@@ -92,16 +92,19 @@ void config9Q() {
     groupsBookingsEmail: 'groups@turksandcaicosflights.com',
 //    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "paxDetails": "passengers"}',
 //    wantClassBandImages: true,
+    productImageMode: 'none',
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
     wantApis: true,
-    wantMmbProducts: false,
-    wantProducts: false,
+    wantMmbProducts: true,
+    wantProducts: true,
     wantStatusLine: true,
-    wantSeatsWithProducts: false,
+    wantSeatsWithProducts: true,
+    wantGiftVouchers: false,
+
 
     passengerTypes: PassengerTypes(
       adults: true,

@@ -135,7 +135,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
 
 
     // add  bag products
-    if(gblProducts != null ) {
+    if(gblProducts != null && gblProducts!.productCategorys.length > 0 ) {
       gblProducts!.productCategorys.forEach((pc) {
         if( gblLogProducts ) {logit('products: add category ${pc.productCategoryName} ${pc.products.length} items');}
 
@@ -146,15 +146,12 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
           logit('add category error:$msg');
         }
         ));
-      });
-      /*if( widget.wantButton) {
-        list.add(Padding(padding: EdgeInsets.only(left: 10, right: 10),
-            child: vidActionButton(context,'Continue', onComplete, icon: Icons.check ) )
-            //vidWideActionButton(context, 'Continue', onComplete))
-              );
-        list.add( Divider(height: 100,));
-      }*/
+      }
+      );
       if( gblProducts!.productCategorys.length > 1) list.add( Divider(height: 200,));
+    } else {
+      list.add( Divider(height: 50,));
+      list.add(TrText('No Products'));
     }
 
   return list;

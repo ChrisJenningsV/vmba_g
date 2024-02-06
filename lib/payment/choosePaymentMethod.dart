@@ -32,6 +32,7 @@ import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import 'ProviderFieldsPage.dart';
+import 'giftVoucher.dart';
 
 bool _cancelTimer = false;
 
@@ -1507,6 +1508,10 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
     }
     list.add(Divider());
+    if( gblSettings.wantGiftVouchers){
+      list.add(GiftVoucherCard());
+      list.add(Divider());
+    }
 
       if( this.isMmb && amount == '0') {
       list.add(ElevatedButton(
@@ -1578,6 +1583,13 @@ List<Widget> getPayOptions(String amount, String cur) {
               }
             }
             break;
+          case 'BuyNowPayLater':
+            if( gblSettings.wantBuyNowPayLater) {
+              if( ! isMmb) {
+                bShow = true;
+              }
+            }
+            break;
 
         }
 
@@ -1636,20 +1648,10 @@ List<Widget> getPayOptions(String amount, String cur) {
                 endProgressMessage();
                 _displayProcessingIndicator = false;
                 doDelayedPayment(provider);
-              /*  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) =>
-                    SmartApiPage(
-                      provider: provider,
-                      onComplete:(dynamic p) {
-                        gblError = '';
-                        gblPayBtnDisabled = false;
-                        endProgressMessage();
-                        _displayProcessingIndicator = false;
-                        setState(() {
-                        });
-                      },
-                      pnrModel: gblPnrModel,))
-                );*/
+              } else if ( provider.paymentType == 'BuyNowPayLater') {
+                endProgressMessage();
+                _displayProcessingIndicator = false;
+                doDelayedPayment(provider);
 
               } else {
                 if( session == null){
@@ -1776,7 +1778,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         gblError = e.toString();
         gblStack = stack ;
         endProgressMessage();
-        criticalErrorPage(context, gblError, title: 'Payment Error');
+        criticalErrorPage(context, gblError, title: 'Payment Error', wantButtons: true);
       }
     } catch(e, stack) {
       gblError = e.toString();

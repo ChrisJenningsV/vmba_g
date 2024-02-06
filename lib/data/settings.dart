@@ -90,6 +90,7 @@ class Settings {
   bool wantCitySwap = true;
   bool wantPageImages = false;
   bool wantProducts = false;
+  bool wantGiftVouchers;
   bool wantSeatsWithProducts = false;
   bool wantMmbProducts = false;
   String productImageMode ='';
@@ -260,6 +261,7 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
+    this.wantGiftVouchers = false,
     this.wantSeatsWithProducts = false,
     this.wantMmbProducts = false,
     this.productImageMode = 'index',
@@ -281,7 +283,7 @@ bool bpShowFastTrack;
     this.wantNotificationEdit = false,
     this.wantCentreTitle = false,
     this.wantRefund = false,
-    this.wantNewPayment = false,
+    this.wantNewPayment = true,
     this.useScrollWebViewiOS = false,
     this.wantButtonIcons = true,
     this.wantAllColorButtons = true,

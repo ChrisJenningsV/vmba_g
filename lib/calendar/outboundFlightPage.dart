@@ -67,6 +67,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   String getAvCommand(bool bRaw) {
+    bRaw=true;
     var buffer = new StringBuffer();
     //String _salesCity = 'ABZ';
     //String _equalsSafeString = '%3D';
@@ -86,12 +87,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     } else {
       buffer.write('%5B');
     }
-    //SalesCity=ABZ
-    buffer.write('SalesCity=${this.widget.newBooking.departure}');
     // voucher
     if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
-      buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode.trim()}');
+      buffer.write('evoucher=${this.widget.newBooking.eVoucherCode.trim()},');
     }
+    //SalesCity=ABZ
+    buffer.write('SalesCity=${this.widget.newBooking.departure}');
     //&Vars=True
     buffer.write(',Vars=True');
     //&ClassBands=True
@@ -196,10 +197,10 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               });
             }
           });
-          if( bFound == false){
+    /*      if( bFound == false){
             gblError = translate('Voucher not valid' ) + ' ' + this.widget.newBooking.eVoucherCode;
             this.widget.newBooking.eVoucherCode = '';
-          }
+          }*/
         }
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});

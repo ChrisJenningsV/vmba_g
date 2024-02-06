@@ -44,18 +44,26 @@ class SeatCardState extends State<SeatCard> {
   @override
   Widget build(BuildContext context) {
     int noFlights = 0;
-/*
-    if( widget.newBooking != null ) {
-*/
+    bool allOpenSeating = true;
+    gblPnrModel!.pNR.itinerary.itin.forEach((element) {
+      if( element.openSeating == 'False'){
+        allOpenSeating = false;
+      }
+    });
+    if( allOpenSeating == true){
+      if( gblPnrModel!.pNR.itinerary.itin.length > 1 ) {
+        return  TrText('All Flights Open Seating');
+      } else{
+        return  TrText('Flight Open Seating');
+        }
+    }
+
+
+
       noFlights += widget.newBooking.outboundflight.length;
       //if (widget.newBooking.returningflight != null) {
         noFlights += widget.newBooking.returningflight.length;
       //}
-/*
-    } else if (gblPnrModel != null  && gblPnrModel!.pNR != null &&  gblPnrModel!.pNR.itinerary != null ){
-      noFlights += gblPnrModel!.pNR.itinerary.itin.length;
-    }
-*/
     if (noFlights > 0) {
       List <Widget> list = [];
       list.add(Padding(
@@ -63,7 +71,17 @@ class SeatCardState extends State<SeatCard> {
         child: TrText('Select Flight'),));
 
       for (int i = 0; i < noFlights; i++) {
-        list.add(vidLineButton(context, getFlight(i), i, onFltPressed));
+        bool bOpen = true;
+        if( i < widget.newBooking.outboundflight.length) {
+          if( gblPnrModel!.pNR.itinerary.itin[0].openSeating == 'False') bOpen = false;
+        } else {
+          if( gblPnrModel!.pNR.itinerary.itin[1].openSeating == 'False') bOpen = false;
+        }
+        if( bOpen){
+         list.add(TrText(''));
+        } else {
+          list.add(vidLineButton(context, getFlight(i), i, onFltPressed));
+        }
       }
 
       return vidExpanderCard(context, 'Seats', true, Icons.event_seat, list);

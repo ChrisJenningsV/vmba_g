@@ -57,11 +57,18 @@ NetworkImage? getProductImage(Product product){
     if( gblLogProducts ) { logit('getProductImage: $name'); }
 
     if( name.contains('http')){
+
         return NetworkImage(name);
+ /*     return Image.network(name, errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
+        return Text('');
+      },);*/
       } else {
         return NetworkImage(
             '${gblSettings.gblServerFiles}/productImages/$pageImage.png');
-      }
+ /*     return Image.network('${gblSettings.gblServerFiles}/productImages/$pageImage.png', errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
+        return Text('');
+      },);
+ */     }
   } catch(e) {
     logit(e.toString());
   }

@@ -1,6 +1,4 @@
 
-
-
 import 'package:flutter/material.dart';
 import 'package:vmba/Products/productFunctions.dart';
 import 'package:vmba/Products/widgets/complexProductWidget.dart';

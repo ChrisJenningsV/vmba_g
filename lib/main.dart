@@ -217,14 +217,17 @@ bool bFirstTime = true;
 */
         primaryColor: gblSystemColors.primaryColor,
         secondaryHeaderColor: gblSystemColors.accentColor,
-
+        useMaterial3: gblSettings.wantMaterial3,
         colorScheme: gblSettings.wantMaterial3 ? null : ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
+        dividerTheme: DividerThemeData(color: Colors.grey.shade300),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
       darkTheme: ThemeData(
         //brightness: Brightness.dark,
         primaryColor: gblSystemColors.primaryColor,
+        useMaterial3: gblSettings.wantMaterial3,
         colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
+        dividerTheme: DividerThemeData(color: Colors.grey.shade300),
       ),
       home: Directionality(
                 textDirection: wantRtl() ? TextDirection.rtl : TextDirection.ltr, 
