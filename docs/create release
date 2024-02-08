@@ -10,6 +10,7 @@ edit data/globals.dart
 # set gblUseCache true
 
 # build android app bundle
+# iOS set version and build in android/local.properties
 # batch file - run in terminal for \vmba
 buildRelease\airswift.bat
 buildRelease\fastjet.bat
