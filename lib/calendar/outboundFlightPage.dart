@@ -189,7 +189,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 if(flt.fltav.discprice!= null ) {
                   flt.fltav.discprice!.forEach((discprice) {
                     if( discprice != '' ) {
-                      logit('discp $discprice');
+                      // logit('discp $discprice');
                       bFound = true;
                     }
                   });

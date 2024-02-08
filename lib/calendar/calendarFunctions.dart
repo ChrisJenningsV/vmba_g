@@ -677,12 +677,9 @@ Widget getCalDay(Day item, String action, DateTime date, DateTime hideBeforeDate
       }
   }
 
-    list.add(Text(getIntlDate('EEE dd', DateTime.parse(item.daylcl)),
+    list.add( getCalDate(item.daylcl, txtColor),
       //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
-      style: TextStyle(
-          fontSize: 14,
-          color: txtColor),
-    ));
+    );
 
     if( wantPageV2()) txtColor = Colors.grey;
     if( showNoFlightIcon ){
@@ -1086,4 +1083,19 @@ bool isJourneyAvailableForCb(List<Flt> flts, int cbIndex) {
     }
   });
   return hasAV;
+}
+Widget getCalDate(String sDate, Color? txtColor){
+
+  if( gblSettings.wantMonthOnCalendar == true) {
+   return Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),style: TextStyle(
+       fontSize: 14,
+       color: txtColor)
+  );
+  } else {
+    return Text(getIntlDate('EEE dd', DateTime.parse(sDate)),style: TextStyle(
+        fontSize: 14,
+        color: txtColor)
+    );
+  }
+
 }

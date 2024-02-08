@@ -59,10 +59,14 @@ void configH4() {
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',
     currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
-    currency: 'MDL',
+    currency: 'EUR',
     wantCurrencyPicker: true,
     wantPassengerPassport: true,
     wantCanFacs: true,
+    wantMonthOnCalendar: true,
+    wantInternatDialCode: true,
+    defaultCountryCode: 'RO',
+
 
     airlineName: "HiSky",
     gblServerFiles: 'https://booking.hisky.md/VARS/AppFiles/',
@@ -101,6 +105,7 @@ void configH4() {
     wantProducts: true,
     wantStatusLine: true,
     wantSeatsWithProducts: true,
+    wantEnglishTranslation: true,
 
     passengerTypes: PassengerTypes(
       adults: true,

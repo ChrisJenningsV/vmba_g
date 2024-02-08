@@ -124,6 +124,7 @@ class Settings {
   bool wantMaterial3;
   bool wantPriceCalendar;
   bool wantPriceCalendarRounding;
+  bool wantMonthOnCalendar;
   bool canGoBackFromPaxPage;
   bool canGoBackFromOptionsPage;
   bool wantEnglishDates;
@@ -296,6 +297,7 @@ bool bpShowFastTrack;
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,
     this.wantPriceCalendarRounding = false,
+    this.wantMonthOnCalendar = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

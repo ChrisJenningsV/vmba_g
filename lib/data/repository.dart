@@ -533,6 +533,10 @@ class Repository {
                     gblSettings.wantTerminal = parseBool(item['value']);
                     break;
 
+                  case 'wantMonthOnCalendar':
+                    gblSettings.wantMonthOnCalendar = parseBool(item['value']);
+                    break;
+
                   case 'eVoucher':
                     gblSettings.eVoucher = parseBool(item['value']);
                     break;

@@ -685,7 +685,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 */
   Future completeBookingNothingtoPayVRS() async {
     String msg = '';
-    msg='*${widget.mmbBooking!.rloc}';
+    if( isMmb) {
+      msg = '*${widget.mmbBooking!.rloc}';
+    }
     widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]
         .itin.reversed
         .forEach((f) {
@@ -758,7 +760,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       _displayProcessingIndicator = true;
     });
 
-    if( gblSettings.useWebApiforVrs) {
+    if( gblSettings.useWebApiforVrs && isMmb) {
       return completeBookingNothingtoPayVRS();
     } else {
       //New code
@@ -863,11 +865,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           }
         }
         if (!flightsConfirmed) {
-/*
-          setState(() {
-            _displayProcessingIndicator = false;
-          });
-*/
           showSnackBar(
               translate('Unable to confirm partner airlines flights.'));
 
@@ -880,10 +877,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           logit('Send msg $msg');
           await runVrsCommand(msg);
           return null;
-        }
-
-        // }
-        else {
+        } else if(isMmb) {
           msg = '*${widget.mmbBooking!.rloc}^';
           //update to use full cancel segment command
           for (var i = 0;
@@ -906,6 +900,12 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
           msg += 'e*r~x';
           //msg += 'fg^fs1^e*r~x';
+        } else {
+          msg='';
+          msg += addFg(gblSelectedCurrency, true);
+          msg += addFareStore(true);
+
+          msg += 'e*r~x';
         }
         logit('sending msg: $msg');
         data = await runVrsCommand(msg);
@@ -989,7 +989,14 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Future ticketBooking() async {
     if(gblLogPayment) { logit('CPM:ticketBooking');}
-    String msg = '*${widget.mmbBooking!.rloc}^';
+    String msg = '';
+    if( widget.mmbBooking != null) {
+      msg = '*${widget.mmbBooking!.rloc}^';
+      gblCurrentRloc = widget.mmbBooking!.rloc;
+    } else {
+      msg='*R^';
+      gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+    }
     msg += nostop;
 
     // validate and ignore result
@@ -1004,31 +1011,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 /*
     }
 */
-    gblCurrentRloc = widget.mmbBooking!.rloc;
 
-  /*  response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg'"))
-        .catchError((resp) {});
-
-    if (response == null) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      //showSnackBar(translate('Please, check your internet connection'));
-      noInternetSnackBar(context);
-      return null;
-    }*/
 
     try {
       String data = await runVrsCommand(msg);
@@ -1512,8 +1495,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       list.add(GiftVoucherCard());
       list.add(Divider());
     }
-
-      if( this.isMmb && amount == '0') {
+      if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) { // this.isMmb &&
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: Colors.white,

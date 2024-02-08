@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/vidButtons.dart';
 
+import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidCards.dart';
+import '../data/globals.dart';
+import '../data/repository.dart';
 import '../utilities/helper.dart';
 
 class GiftVoucherCard extends StatefulWidget {
@@ -14,7 +17,7 @@ class GiftVoucherCard extends StatefulWidget {
 
 class GiftVoucherCardState extends State<GiftVoucherCard> {
   TextEditingController _vNoTextEditingController =  TextEditingController();
-  TextEditingController _vPinTextEditingController =  TextEditingController();
+  TextEditingController _vNoPinEditingController =  TextEditingController();
 
   @override
   initState() {
@@ -29,9 +32,10 @@ class GiftVoucherCardState extends State<GiftVoucherCard> {
 
 
     Row r = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         new SizedBox(
-            width: 100,
+            width: 150,
             child: TextFormField(
           decoration: getDecoration(
               translate('Voucher Number')),
@@ -42,25 +46,48 @@ class GiftVoucherCardState extends State<GiftVoucherCard> {
             }
           },
         )),
-      /*  new TextFormField(
+    new SizedBox(
+    width: 150,
+    child:  TextFormField(
           decoration: getDecoration(
               translate('Security Code')),
-          controller: _vPinTextEditingController,
+          controller: _vNoPinEditingController,
           keyboardType: TextInputType.number,
           onSaved: (value) {
             if (value != null) {
             }
           },
-        ),*/
+        )),
 
       ],
     );
 
-    list.add( Container( child: r,));
-    list.add(vidWideActionButton(context, 'Apply', (p0, p1) { }));
+    list.add( Container( child: r, padding: EdgeInsets.all(5),));
+    list.add(Container( child:vidWideActionButton(context, 'Apply', onApplyPressed )
+    , padding: EdgeInsets.only(left: 25, right: 25),));
    // list.add(Text('body'));
     return vidExpanderCard(context, 'Gift Voucher', true, Icons.card_giftcard, list);
   }
+
+
+void onApplyPressed(BuildContext p0, dynamic p1) async {
+  // to apply send
+  // VD/abc123/112233~X
+  // ERROR: VOUCHER NOT FOUND
+  String txt = _vNoTextEditingController.text;
+  String pin = _vNoPinEditingController.text;
+
+  String cmd='VD/$txt/$pin~X';
+  String reply =  await runVrsCommand(cmd);
+  try {
+  if( reply.contains('ERROR')){
+    showAlertDialog(context, 'Gift Voucher Error ', reply);
+  } else {
+
+  }
+  } catch(e) {
+    gblError = e.toString();
+  }
 }
 
-
+}
