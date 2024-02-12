@@ -106,6 +106,7 @@ void configH4() {
     wantStatusLine: true,
     wantSeatsWithProducts: true,
     wantEnglishTranslation: true,
+    wantTandCCheckBox: true,
 
     passengerTypes: PassengerTypes(
       adults: true,

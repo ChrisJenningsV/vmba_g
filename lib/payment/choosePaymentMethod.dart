@@ -65,6 +65,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   final formKey = new GlobalKey<FormState>();
   String currencyCode = '';
   bool _displayProcessingIndicator = false;
+  bool tandCchecked = false;
   String _displayProcessingText = '';
  // PnrModel pnrModel;
   Stopwatch stopwatch = new Stopwatch();
@@ -99,6 +100,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     gblPaymentState = PaymentState.start;
     if (widget.isMmb != null) {
       isMmb = widget.isMmb;
+    }
+    if( gblSettings.wantTandCCheckBox) {
+      tandCchecked = false;
     }
 
     if( widget.pnrModel != null ) {
@@ -1495,6 +1499,23 @@ List<Widget> getPayOptions(String amount, String cur) {
       list.add(GiftVoucherCard());
       list.add(Divider());
     }
+
+    if( gblSettings.wantTandCCheckBox){
+      list.add(CheckboxListTile(
+        title: TrText("I have read and agree with the Terms and Conditions, and the Privacy Policy."),
+        value: tandCchecked,
+        onChanged: (newValue) {
+          setState(() {
+            tandCchecked = newValue!;
+            setState(() {
+
+            });
+          });
+        },
+        controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+      ));
+    }
+
       if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) { // this.isMmb &&
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -1580,11 +1601,13 @@ List<Widget> getPayOptions(String amount, String cur) {
         btnText = provider.paymentSchemeDisplayName;
         paymentButtons.add(ElevatedButton(
           style: ElevatedButton.styleFrom(
-              backgroundColor: gblNoNetwork ==  false? Colors.white : Colors.grey.shade200,
+
+
+              backgroundColor: (gblNoNetwork ==  false || ( gblSettings.wantTandCCheckBox == true && tandCchecked== false )  ) ? Colors.white : Colors.grey.shade200,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
-            if ( gblPayBtnDisabled == false && gblNoNetwork ==  false ) {
+            if ( gblPayBtnDisabled == false && gblNoNetwork ==  false && ( gblSettings.wantTandCCheckBox == false || tandCchecked )) {
               if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
               if( gblTimer != null){

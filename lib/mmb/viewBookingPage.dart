@@ -946,6 +946,10 @@ class CheckinBoardingPassesWidgetState
       return Container();
     }
 
+    if (pnr.pNR.itinerary.itin[journeyToChange-1].status == 'QQ' && gblSettings.canChangeCancelledFlight == false) {
+      return Container();
+    }
+
 
     if( gblSettings.wantRefund &&
         objPNR!.canRefund(journeyToChange)

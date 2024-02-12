@@ -127,7 +127,9 @@ class Settings {
   bool wantMonthOnCalendar;
   bool canGoBackFromPaxPage;
   bool canGoBackFromOptionsPage;
+  bool canChangeCancelledFlight;
   bool wantEnglishDates;
+  bool wantTandCCheckBox;
 
   String productFormat;
   String homePageStyle;
@@ -292,7 +294,9 @@ bool bpShowFastTrack;
     this.wantCanFacs = true,
     this.canGoBackFromPaxPage = false,
     this.canGoBackFromOptionsPage = false,
+    this.canChangeCancelledFlight = true,
     this.wantEnglishDates = false,
+    this.wantTandCCheckBox = false,
     this.wantTerminal = true,
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,
