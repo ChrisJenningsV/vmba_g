@@ -45,8 +45,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
   void initState() {
     super.initState();
 
-    //_selectedDate = widget.departureDate;
-    _selectedDate = DateTime.now().subtract(Duration(days: 31));
+    _selectedDate = widget.departureDate;
+//    _selectedDate = DateTime.now().subtract(Duration(days: 31));
     if (widget.firstDate != null) {
       _firstDate = widget.firstDate;
     } else {
