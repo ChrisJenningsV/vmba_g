@@ -1598,12 +1598,16 @@ List<Widget> getPayOptions(String amount, String cur) {
 
         if( bShow){
         String btnText = '';
+        Color btnBack = Colors.white;
+        if(gblNoNetwork ==  true || ( gblSettings.wantTandCCheckBox == true && tandCchecked== false )   ) btnBack = Colors.grey.shade400;
+
+
         btnText = provider.paymentSchemeDisplayName;
         paymentButtons.add(ElevatedButton(
           style: ElevatedButton.styleFrom(
 
 
-              backgroundColor: (gblNoNetwork ==  false || ( gblSettings.wantTandCCheckBox == true && tandCchecked== false )  ) ? Colors.white : Colors.grey.shade200,
+              backgroundColor: btnBack,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
@@ -1679,6 +1683,20 @@ List<Widget> getPayOptions(String amount, String cur) {
                       mmbBooking: widget.mmbBooking,
                       mmbAction: widget.mmbAction,)));
               }
+            }
+            else if( gblSettings.wantTandCCheckBox == true && tandCchecked == false ) {
+              // check box
+              showDialog(
+                context: context,
+                builder: (BuildContext context)
+              {
+                return msgDialog(context, translate('Warning'),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                        child: TrText('You must accept the terms and conditions before proceeding.')),
+                    ipad: EdgeInsets.all(25)
+                );
+              });
             }
           },
           child: Column(

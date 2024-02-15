@@ -576,11 +576,13 @@ class CheckinBoardingPassesWidgetState
       }
       ).catchError((e) {
         gblError = e.toString();
+        logit(e.toString());
         _loadingInProgress = false;
         setState(() {      });
             }
       );
     } catch(e) {
+      logit(e.toString());
       gblError = e.toString();
       _loadingInProgress = false;
       setState(() {
@@ -2892,7 +2894,7 @@ class CheckinBoardingPassesWidgetState
 
           print('_sendAutoseatCommand_vrsResponse::$vrsResponse');
 
-          if (!vrsResponse.contains('ERROR')) {
+          if (!vrsResponse.contains('ERROR:')) {
             Repository.get().fetchPnr(widget.rloc).then((v) {
               _autoSeatCompleted(v!);
 

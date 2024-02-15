@@ -63,7 +63,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
           child: new Container(
         child: InkWell(
           onTap: () async {
-            FlightDates _flightDates = await Navigator.push(
+            FlightDates? _flightDates = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => widget.isReturn
@@ -75,7 +75,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                       ),
               ),
             );
-            _selectedDate(_flightDates);
+            if( _flightDates != null )_selectedDate(_flightDates);
           },
           child: Column(
             children: _getDates(),

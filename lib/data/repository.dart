@@ -1296,7 +1296,7 @@ class Repository {
       if (response.body.contains('<string xmlns="http://videcom.com/">Error')) {
         return new ParsedResponse(noFlights, null);
       }
-      if (response.body.contains('ERROR')) {
+      if (response.body.contains('ERROR:')) {
         return new ParsedResponse(0, null, error: response.body);
       }
       if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
@@ -1661,7 +1661,7 @@ Future<String> runVrsCommand(String cmd) async {
       throw er;
       //return new ParsedResponse(noFlights, null);
     }
-    if (response.body.contains('ERROR')) {
+    if (response.body.contains('ERROR:')) {
       Map map = jsonDecode(response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')

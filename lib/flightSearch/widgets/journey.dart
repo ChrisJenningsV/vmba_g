@@ -8,6 +8,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
+import '../../utilities/helper.dart';
 
 class SelectedRoute {
   String departure;
@@ -48,7 +49,10 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         arrivalAirport = translate('Select arrival airport');
         route.departure = departureCode;
         route.arrival = arrivalCode;
+        gblFlightPrices = null;
+        logit('clear FlightPrices');
         widget.onChanged!(route);
+
       });
     }
   }
@@ -62,6 +66,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         route.departure = departureCode;
         route.arrival = arrivalCode;
         widget.onChanged!(route);
+        logit('clear FlightPrices');
+        gblFlightPrices = null;
       });
     }
   }

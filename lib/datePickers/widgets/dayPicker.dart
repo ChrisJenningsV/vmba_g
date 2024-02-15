@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
@@ -111,8 +113,11 @@ class _DayPickerPageState extends State<DayPickerPage> {
                   selectedDate: _selectedDate,
                   pnrModel: PnrModel(),
                   onComplete: (PnrModel pnrModel) {
-                    setState(() {
+                    Timer(Duration(seconds : 1), ()
+                    {
+                      setState(() {
 
+                      });
                     });
                   },
                   )),
@@ -149,10 +154,28 @@ class _DayPickerPageState extends State<DayPickerPage> {
     bool? isSelected ,
     bool? isDisabled ,
     bool? isToday,}) {
-    if(isToday != null && isToday == true ){
 
-      decoration = BoxDecoration( border: Border.all(width: 1),
-              borderRadius: BorderRadius.circular(5.0));
+    Widget lineTwo = Text('');
+    //(isDisabled == null || isDisabled== true)?Text(''): Text('£129', textScaleFactor: 0.75,)
+
+    if(isToday != null && isToday == true ){
+      textStyle = TextStyle( color: Colors.red);
+      decoration = BoxDecoration( );
+     lineTwo = RotatedBox(
+          quarterTurns: 1,
+          child: new Icon(
+            Icons.airplanemode_active,
+            color: Colors.red,
+            size: 15.0,
+          ));
+    } else if( isDisabled != null && isDisabled== false){
+      lineTwo = RotatedBox(
+          quarterTurns: 1,
+          child: new Icon(
+            Icons.airplanemode_active,
+            color: Colors.black,
+            size: 15.0,
+          ));
 
     }
     if( gblFlightPrices != null ) {
@@ -161,14 +184,22 @@ class _DayPickerPageState extends State<DayPickerPage> {
  //       logit( ' match ${flightPrice.FlightDate} to ${date.toString().substring(0,10)}');
         if( flightPrice.FlightDate != '' && flightPrice.FlightDate== date.toString().substring(0,10)){
           if( flightPrice.Selectable == false){
-            logit( ' match no sel  ${flightPrice.FlightDate}');
+           // logit( ' match no sel  ${flightPrice.FlightDate}');
         //    if ( textStyle != null ) {
               textStyle = TextStyle( color: Colors.red);
           //  }
           }
+          //logit('${flightPrice.FlightDate} ${flightPrice.CssClass}');
           if( flightPrice.CssClass.contains('not-available')){
             isDisabled = true;
-            textStyle = TextStyle( color: Colors.blue);
+            textStyle = TextStyle( color: Colors.grey.shade400);
+            lineTwo =  Text('-');
+          }
+          if( flightPrice.CssClass.contains('no-price')){
+            isDisabled = true;
+            textStyle = TextStyle( color: Colors.grey.shade400);
+            lineTwo =  Text('-');
+
           }
         }
       });
@@ -187,7 +218,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
             Padding(
               padding: const EdgeInsets.only(top: 27.5),
               child: Container(
-                child: (isDisabled == null || isDisabled== true)?Text(''): Text('£129', textScaleFactor: 0.75,),
+                child: lineTwo,
  /*               height: 4,
                 width: 4,*/
 /*

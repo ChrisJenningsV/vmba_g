@@ -54,7 +54,7 @@ void configLM() {
     wantApis: true,
     wantHomeFQTVButton: false,
     wantMaterial3: false,
-    wantPriceCalendar: false ,
+    wantPriceCalendar: true ,
     wantPriceCalendarRounding: false,
     canGoBackFromPaxPage: true,
     //pageStyle: 'V2',
@@ -125,8 +125,8 @@ void configLM() {
 
  */
 
-//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
-   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
+//   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",

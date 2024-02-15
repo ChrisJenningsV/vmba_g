@@ -417,6 +417,9 @@ Page resource error:
         action = gblPayAction;
       }
     String url = '${widget.url}?gateway=$provider&rloc=$gblCurrentRloc&action=$action&guid=${gblSettings.vrsGuid}&mmb=${widget.isMmb}';
+    if(gblRedeemingAirmiles &&  gblFqtvLoggedIn == true && gblPassengerDetail!.fqtv != ''){
+      url += '&FQTVUsername=${gblPassengerDetail!.fqtv}';
+    }
     if(gblSession != null) {
       url += '&VARSSessionID=${gblSession!.varsSessionId}';
       logit('Session = ${gblSession!.varsSessionId}');
