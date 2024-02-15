@@ -61,6 +61,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     if( widget.dataType == LoadDataType.calprices){
       if( gblCalPriceState == LoadState.loaded){
         widget.onComplete(widget.pnrModel);
+        gblCalPriceState = LoadState.none;
       }
       return Container(width: 10, height: 10,);
     }
@@ -299,5 +300,51 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         break;
     }
   }
+
+  }
+
+
+  Future<void> LoadCalendarData(DateTime dt, Function() onComplete) async
+  {
+    DateTime startDate = DateTime(dt.year,dt.month, 1 );
+    DateTime endDate = DateTime(dt.year,dt.month+1, 1 );
+
+    String _url = '${gblSettings.apiUrl}/flightcalendar/GetFlightPrices';
+  String           _msg = json.encode(FlightSearchRequest(departCity: gblOrigin,arrivalCity: gblDestination, flightDateStart: DateFormat('yyyy-MM-dd').format(startDate), //'2023-11-01'
+      flightDateEnd: DateFormat('yyyy-MM-dd').format(endDate),    isReturnJourney: 0,  selectedCurrency: gblSelectedCurrency,
+      isADS: false, showFlightPrices: true).toJson());  // , arrivalCityCode: gblDestination
+
+
+  final http.Response response = await http.post(
+        Uri.parse(_url),
+      headers: getApiHeadersReferer() ,
+        body: _msg);
+    logit('dataLoader load data  result ${response.statusCode}');
+    if (response.statusCode == 200) {
+      logit('message send successfully 3: $_msg' );
+      try {
+        String data = response.body;
+        gblFlightPrices = FlightPrices.fromJson(data);
+        if(gblLogPayment) logit('loaded flight prices ' + data );
+        onComplete();
+      } catch(e) {
+        logit(e.toString());
+      }
+    } else {
+      if(response.body.startsWith('{')){
+        try {
+          Map m = jsonDecode(response.body);
+          if(m['errors'] != null ){
+          }
+        } catch(e) {
+          logit(e.toString());
+        }
+     }
+      print('failed to get  ${response.body}');
+      try{
+        print (response.body);
+      } catch(e){}
+
+    }
 
   }

@@ -45,8 +45,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
   void initState() {
     super.initState();
 
-    _selectedDate = widget.departureDate;
-
+    //_selectedDate = widget.departureDate;
+    _selectedDate = DateTime.now().subtract(Duration(days: 31));
     if (widget.firstDate != null) {
       _firstDate = widget.firstDate;
     } else {
@@ -58,6 +58,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
     } else {
       _lastDate = DateTime.now().add(Duration(days: 364));
     }
+    _initData(widget.departureDate);
   }
 
 
@@ -70,8 +71,24 @@ class _DayPickerPageState extends State<DayPickerPage> {
 //    selectedSingleDateDecorationColor = Theme.of(context).accentColor;
   }
 
+  _initData(DateTime dt) {
+    LoadCalendarData(dt, onCompleteLoad);
+  }
+  void onCompleteLoad()
+  {
+    Timer(Duration(seconds : 1), ()
+    {
+    setState(() {
+
+    });
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    checkDataUpdate();
     double width = MediaQuery
         .of(context)
         .size
@@ -107,7 +124,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
                         );
                       }
                   ),
-                  SizedBox( height: 15, width: 15,
+         /*         SizedBox( height: 15, width: 15,
                       child: DataLoaderWidget(dataType: LoadDataType.calprices,
                   newBooking: null,
                   selectedDate: _selectedDate,
@@ -120,7 +137,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
                       });
                     });
                   },
-                  )),
+                  )),*/
 
                 ],)
 
@@ -169,13 +186,13 @@ class _DayPickerPageState extends State<DayPickerPage> {
             size: 15.0,
           ));
     } else if( isDisabled != null && isDisabled== false){
-      lineTwo = RotatedBox(
+    /*  lineTwo = RotatedBox(
           quarterTurns: 1,
           child: new Icon(
             Icons.airplanemode_active,
             color: Colors.black,
             size: 15.0,
-          ));
+          ));*/
 
     }
     if( gblFlightPrices != null ) {
@@ -190,16 +207,22 @@ class _DayPickerPageState extends State<DayPickerPage> {
           //  }
           }
           //logit('${flightPrice.FlightDate} ${flightPrice.CssClass}');
-          if( flightPrice.CssClass.contains('not-available')){
+          if( flightPrice.CssClass.contains('flight-has-price' )) {
+            lineTwo = RotatedBox(
+                quarterTurns: 1,
+                child: new Icon(
+                  Icons.airplanemode_active,
+                  color: isToday == true ? Colors.red : Colors.black,
+                  size: 15.0,
+                ));
+          } else if( flightPrice.CssClass.contains('not-available')){
             isDisabled = true;
             textStyle = TextStyle( color: Colors.grey.shade400);
             lineTwo =  Text('-');
-          }
-          if( flightPrice.CssClass.contains('no-price')){
+          } else if( flightPrice.CssClass.contains('no-price')){
             isDisabled = true;
             textStyle = TextStyle( color: Colors.grey.shade400);
             lineTwo =  Text('-');
-
           }
         }
       });
@@ -237,5 +260,11 @@ class _DayPickerPageState extends State<DayPickerPage> {
 
 
     );
+  }
+  void checkDataUpdate(){
+    if( gblFlightPrices == null ){
+      // first load
+      _initData(widget.departureDate);
+    }
   }
 }
