@@ -91,7 +91,6 @@ void configLM() {
     bpShowAddPassToWalletButton: false,
     searchDateOut: 1,
     searchDateBack: 6,
-    wantGiftVouchers: false,
 
     adsTermsUrl: 'https://www.loganair.co.uk/travel-help/air-discount-scheme-residents-fare-card-terms-and-conditions/',
     passengerTypes: PassengerTypes(

@@ -83,7 +83,7 @@ void onApplyPressed(BuildContext p0, dynamic p1) async {
   if( reply.contains('ERROR')){
     showAlertDialog(context, 'Gift Voucher Error ', reply);
   } else {
-    showSnackBar('Voucher applied');
+    showSnackBar('Voucher applied', reply as BuildContext);
   }
   } catch(e) {
     gblError = e.toString();
