@@ -82,7 +82,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       List <Widget> tabs = [];
       List <Widget> tabeViews = [];
       tabs.add(TrText('All'));
-      tabs.add(TrText('Un read'));
+      tabs.add(TrText('Unread'));
       tabs.add(TrText('Promotional'));
 
       tabeViews.add(new Container(child: myNotifies('all')));
