@@ -1,4 +1,5 @@
 In directory vmba
+# hello josh
 # set up flavor
 edit data/globals.dart
 # set up correct images
