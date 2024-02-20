@@ -5,7 +5,7 @@ edit data/globals.dart
 # set up correct images
 # check androidid correct in build.gradle
 #  android\app\build.gradle
-#hello chris
+#hello christopher
 
 # set gblDoVersionCheck true
 # set gblUseCache true
