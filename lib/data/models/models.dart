@@ -677,3 +677,75 @@ class RunVRSCommandList extends Session {
     return data;
   }
 }
+
+class FopVouchers {
+  List<FopVoucher> vouchers = List.from([FopVoucher()]);
+
+  FopVouchers();
+
+  FopVouchers.fromJson(Map<String, dynamic> json) {
+    if (json['fopvoucher'] != null) {
+      vouchers = [];
+      //new List<Disruption>();
+      if (json['fopvoucher'] is List) {
+        json['fopvoucher'].forEach((v) {
+          vouchers.add(new FopVoucher.fromJson(v));
+        });
+      } else {
+        vouchers.add(new FopVoucher.fromJson(json['fopvoucher']));
+      }
+    }
+  }
+}
+class FopVoucher {
+  String vouchertype = '';
+  String vouchernumber = '';
+  String securitycode = '';
+  String vouchercode = '';
+  String description='';
+  String currency= '';
+  String amount = '';
+  String amountused = '';
+  String amountrefunded = '';
+  bool multipleuse = true;
+  String recipientname = '';
+  bool recipientonly= false;
+  String validfromdate = '';
+  String validtodate = '';
+  String flightsfromdate = '';
+  String flightstodate = '';
+  String classes = '';
+  bool returnonly = false;
+  String farecurrency = '';
+  bool closed = false;
+  bool refunded = false;
+  // "routes":{"route":{"depart":"ABZ","arrive":"KOI"}},
+
+  FopVoucher();
+
+  FopVoucher.fromJson(Map<String, dynamic> json) {
+//    logit(json.toString());
+    if (json['vouchertype'] != null) vouchertype = json['vouchertype'];
+    if (json['vouchernumber'] != null) vouchernumber = json['vouchernumber'];
+    if (json['securitycode'] != null) securitycode = json['securitycode'];
+    if (json['vouchercode'] != null) vouchercode = json['vouchercode'];
+    if (json['description'] != null) description = json['description'];
+    if (json['currency'] != null) currency = json['currency'];
+    if (json['amount'] != null) amount = json['amount'];
+    if (json['amountused'] != null) amountused = json['amountused'];
+    if (json['amountrefunded'] != null) amountrefunded = json['amountrefunded'];
+    if (json['multipleuse'] != null) multipleuse = json['multipleuse'];
+    if (json['recipientname'] != null) recipientname = json['recipientname'];
+    if (json['recipientonly'] != null) recipientonly = json['recipientonly'];
+    if (json['validfromdate'] != null) validfromdate = json['validfromdate'];
+    if (json['validtodate'] != null) validtodate = json['validtodate'];
+    if (json['flightsfromdate'] != null) flightsfromdate = json['flightsfromdate'];
+    if (json['flightstodate'] != null) flightstodate = json['flightstodate'];
+    if (json['classes'] != null) classes = json['classes'];
+    if (json['returnonly'] != null) returnonly = json['returnonly'];
+    if (json['farecurrency'] != null) farecurrency = json['farecurrency'];
+    if (json['closed'] != null) closed = json['closed'];
+    if (json['refunded'] != null) refunded = json['refunded'];
+  }
+
+}

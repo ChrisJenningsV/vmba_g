@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/vidButtons.dart';
 
@@ -6,6 +8,7 @@ import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidCards.dart';
 import '../data/globals.dart';
+import '../data/models/models.dart';
 import '../data/repository.dart';
 import '../utilities/helper.dart';
 
@@ -35,7 +38,7 @@ class GiftVoucherCardState extends State<GiftVoucherCard> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         new SizedBox(
-            width: 150,
+            width: 200,
             child: TextFormField(
           decoration: getDecoration(
               translate('Voucher Number')),
@@ -47,7 +50,7 @@ class GiftVoucherCardState extends State<GiftVoucherCard> {
           },
         )),
     new SizedBox(
-    width: 150,
+    width: 100,
     child:  TextFormField(
           decoration: getDecoration(
               translate('Security Code')),
@@ -74,6 +77,8 @@ void onApplyPressed(BuildContext p0, dynamic p1) async {
   // to apply send
   // VD/abc123/112233~X
   // ERROR: VOUCHER NOT FOUND
+  // VoucherNumber	      SecurityCode
+  // 68 22 20 00 00 035	  75 57 51
   String txt = _vNoTextEditingController.text;
   String pin = _vNoPinEditingController.text;
 
@@ -83,7 +88,11 @@ void onApplyPressed(BuildContext p0, dynamic p1) async {
   if( reply.contains('ERROR')){
     showAlertDialog(context, 'Gift Voucher Error ', reply);
   } else {
-    showSnackBar('Voucher applied');
+    Map<String, dynamic> map = json.decode(reply);
+    Map<String, dynamic> map2 = map['fopvouchers'];
+    FopVouchers fopVouchers = new FopVouchers.fromJson(map2);
+
+    showSnackBar('Voucher applied ', context);
   }
   } catch(e) {
     gblError = e.toString();
