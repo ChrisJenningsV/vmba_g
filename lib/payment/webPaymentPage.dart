@@ -171,14 +171,15 @@ Page resource error:
       onWillPop: _onWillPop,
 */
     return
-      CustomWillPopScope(
+      /*CustomWillPopScope(
           action: () {
 
             print('pop');
             onWillPop(context);
           },
           onWillPop: true,
-        child:Scaffold(
+        child:*/
+        Scaffold(
       appBar: appBar(context,  'Payment Page', automaticallyImplyLeading: false,
           actions:<Widget> [ new IconButton(
       icon:  new Icon(Icons.close),
@@ -224,7 +225,7 @@ Page resource error:
         );
       }),
       //  floatingActionButton: favoriteButton(),
-    ));
+    );
   }
 
 
