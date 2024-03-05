@@ -12,6 +12,7 @@ import '../../mmb/myBookingsPage.dart';
 import '../../utilities/helper.dart';
 import '../homePageHelper.dart';
 import '../v3BottomNav.dart';
+import 'FqtvLogin.dart';
 
 
 class V3CustomPage extends StatefulWidget {
@@ -87,6 +88,27 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
     }*/
     }
     CustomPage homePage = gblHomeCardList!.pages![pageName];
+    ImageProvider image = Image.asset('lib/assets/images/bg.png').image;
+    if( homePage.backgroundImage != ''){
+      if( homePage.backgroundImage.contains('http')){
+        NetworkImage backgroundImage = NetworkImage(
+            '${homePage.backgroundImage}');
+        image = Image(
+          image:
+          backgroundImage,
+          fit: BoxFit.cover,).image;
+
+      }else {
+        NetworkImage backgroundImage = NetworkImage(
+            '${gblSettings.gblServerFiles}/${homePage.backgroundImage}');
+        image = Image(
+          image:
+          backgroundImage,
+          fit: BoxFit.cover,).image;
+
+      }
+
+    }
 
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -110,9 +132,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: Image
-                              .asset('lib/assets/images/bg.png')
-                              .image, //mainBackGroundImage,
+                          image: image, //mainBackGroundImage,
                           fit: BoxFit.fitWidth,
                           alignment: Alignment.topLeft),
                     color: homePage!.backgroundColor,
@@ -176,6 +196,11 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
               list.add(vidExpanderCard(
                   context, card.title!.text, card.expanded, card.icon,
                   <Widget>[ Text('body')], wantTop: false, ts: ts));
+              break;
+            case 'FQTVLOGIN':
+              list.add(vidExpanderCard(
+                  context, card.title!.text, card.expanded, card.icon,
+                  <Widget>[ FqtvLoginBox()], wantTop: false, ts: ts));
               break;
             case 'MYBOOKINGS':
               list.add(vidExpanderCard(

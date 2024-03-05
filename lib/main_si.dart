@@ -139,7 +139,8 @@ void configSI() {
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
 
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
-  //  testApiUrl:      'http://10.0.2.2:5000/api',
+  testPayPage: 'https://customertest.videcom.com/blueislands/VARS/Public/MobilePaymentStart.aspx',
+    //  testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect
 
     wantNewPayment: true,

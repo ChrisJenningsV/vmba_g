@@ -308,7 +308,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 ),
                 style: TextButton.styleFrom(primary: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
-                  _resetPasswordDialog();
+                  resetPasswordDialog();
                 },
               ),
               Row(
@@ -1040,7 +1040,7 @@ Widget _getTrans() {
    });
  }
 
- void _resetPasswordDialog() {
+ void resetPasswordDialog() {
 
    showDialog(
        context: context,

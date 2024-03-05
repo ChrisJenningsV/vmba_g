@@ -18,8 +18,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'UZ';
-bool gblIsLive = false;
+String gblBuildFlavor = 'SI';
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
@@ -58,7 +58,7 @@ String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]
 
 /* logging */
 bool gblLogProducts = false;
-bool gblLogPayment = true;
+bool gblLogPayment = false;
 bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;

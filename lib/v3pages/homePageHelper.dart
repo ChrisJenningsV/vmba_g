@@ -331,6 +331,8 @@ IconData getIconFromName(String name) {
       return Icons.cases_outlined;
     case 'CHILD':
       return Icons.child_friendly;
+    case 'LOGIN':
+      return Icons.login;
     case 'QUESTION':
       return Icons.question_mark;
     case 'INFO':
