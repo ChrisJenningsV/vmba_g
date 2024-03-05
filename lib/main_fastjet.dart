@@ -60,7 +60,6 @@ void configFN() {
     currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWL',
     currency: 'ZAR',
     wantCurrencyPicker: true,
-    wantBuyNowPayLater: true,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',

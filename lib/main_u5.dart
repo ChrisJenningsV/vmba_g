@@ -62,7 +62,6 @@ void configU5() {
     currencies: 'ng,NGN,us,USD',
     currency: 'NGN',
     wantCurrencyPicker: true,
-    wantBuyNowPayLater: true,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',

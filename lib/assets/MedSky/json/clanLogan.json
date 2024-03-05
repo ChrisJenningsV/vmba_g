@@ -1,0 +1,95 @@
+{
+  "version": "1",
+  "pages": {
+    "home": {
+      "pageName": "home",
+      "title": {
+        "text": "Club Logan",
+        "fontSize": "40",
+        "fontWeight": "bold",
+        "color": "White"
+      },
+      "topPadding": "100",
+      "bottomPadding": "10",
+      "backgroundColor": "Red",
+      "cards": [
+        {
+          "card_type": "LinkList",
+          "icon": "home",
+          "expanded": "true",
+          "title": {
+            "text": "Other Homepages",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "iconLink",
+              "title": "Clan Logan",
+              "action": {
+                "function": "loadCustomPage",
+                "fileName": "Clublogan.json"
+              },
+              "icon": "home"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Basic",
+              "action": {
+                "function": "loadCustomPage",
+                "fileName": "basic.json"
+              },
+              "icon": "home"
+            }
+          ]
+        },
+        {
+          "card_type": "CardSlider",
+          "icon": "city",
+          "title": {
+            "text": "Our Destinations",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "Birmingham",
+                "color": "#F8C832"
+              },
+              "links": [
+                {
+                  "title": "Book",
+                  "destination": "BHX"
+                }
+              ],
+              "image": "destinations/birmingham.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Bristol",
+              "image": "destinations/bristol.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Dublin",
+              "image": "destinations/dublin.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Guernsey",
+              "image": "destinations/guernsey.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Southampton",
+              "fontSize": "18",
+              "image": "destinations/southampton.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

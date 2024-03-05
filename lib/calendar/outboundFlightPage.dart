@@ -312,23 +312,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           Navigator.pop(context, widget.newBooking);
         },
       )),
-      /*new AppBar(
-        brightness: gblSystemColors.statusBar,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(
-            color: gblSystemColors.headerTextColor),
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () async {
-            Navigator.pop(context, widget.newBooking);
-          },
-        ),
-        title: new TrText("Outbound Flight",
-            style: TextStyle(
-                color:
-                gblSystemColors.headerTextColor)),
-      ),
-       */
+
       endDrawer: DrawerMenu(),
       body: _buildBody(),
     );

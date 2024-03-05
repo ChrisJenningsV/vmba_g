@@ -22,7 +22,7 @@ import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
-
+import 'package:vmba/v3pages/v3HomePage.dart';
 
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
@@ -266,6 +266,12 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+
+    if( gblSettings.homePageStyle == 'V3'){
+      return new V3HomePage();
+    }
+
+
     var buttonShape;
     double buttonHeight;
     double? elevation = null;
@@ -460,6 +466,8 @@ Widget _getLogo(){
   String txt = '';
   if( gblIsLive == false ) {
     txt = 'Test build $buildNo';
+    if (gblBuildFlavor == 'BM')
+      txt = 'Test Airline $buildNo';
   }
 
  /* return Row(

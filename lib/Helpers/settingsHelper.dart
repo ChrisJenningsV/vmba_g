@@ -57,6 +57,6 @@ Color v2BorderColor(){
 }
 
 double v2BorderWidth() {
-  return 1;
+  return 0;
 }
 

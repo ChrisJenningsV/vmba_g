@@ -70,6 +70,8 @@ class SearchButtonWidget extends StatelessWidget {
   }
 
   _clearNewBookingObject() {
+    newBooking.clear();
+/*
     newBooking.outboundflight = [];
     // List<String>();
     newBooking.returningflight = [];
@@ -78,6 +80,7 @@ class SearchButtonWidget extends StatelessWidget {
     // List<PassengerDetail>();
     newBooking.paymentDetails = PaymentDetails();
     newBooking.contactInfomation = ContactInfomation();
+*/
   }
 
   showSnackBar(

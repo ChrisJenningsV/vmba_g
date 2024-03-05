@@ -16,8 +16,9 @@ import 'package:vmba/home/home_page.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
 import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vmba/utilities/CustomeError.dart';
+import 'package:vmba/utilities/CustomError.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/v3pages/homePageHelper.dart';
 
 import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
@@ -141,6 +142,10 @@ bool bFirstTime = true;
 
         });
       });
+
+    }
+    if( gblSettings.homePageStyle == 'V3'){
+      initHomePage(gblSettings.homePageFilename);
     }
 /*
     if( gblSettings.wantPushNoticications) {

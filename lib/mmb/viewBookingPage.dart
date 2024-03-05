@@ -241,7 +241,7 @@ Future <void> doRefresh() async{
         builder: (context) =>
         new AlertDialog(
           title: new TrText('Are you sure?'),
-          content: new TrText('Do you want abandon your booking '),
+          content: new TrText('Do you want to abandon your booking '),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -951,6 +951,9 @@ class CheckinBoardingPassesWidgetState
     if (pnr.pNR.itinerary.itin[journeyToChange-1].status == 'QQ' && gblSettings.canChangeCancelledFlight == false) {
       return Container();
     }
+    if( pnr.pNR.itinerary.itin[journeyToChange-1].editFlight == false ){
+      return Container();
+    }
 
 
     if( gblSettings.wantRefund &&
@@ -1596,13 +1599,7 @@ class CheckinBoardingPassesWidgetState
                 Padding(
                   padding: EdgeInsets.only(left: 5.0),
                 ),
-               /* Icon(
-                  //Icons.airline_seat_recline_normal,
-                  Icons.done,
-                  size: 20.0,
-                  color:
-                  Colors.grey,
-                ),*/
+
                 Text(
                   '',
                   style: TextStyle(

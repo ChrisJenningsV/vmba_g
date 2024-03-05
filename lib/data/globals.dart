@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
+import '../home/searchParams.dart';
+import '../v3pages/homePageHelper.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
@@ -16,8 +18,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'U5';
-bool gblIsLive = true;
+String gblBuildFlavor = 'UZ';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 106;
 int requiredApiVersion = 101;
@@ -128,7 +130,7 @@ Providers? gblProviders;
 FlightPrices? gblFlightPrices;
 String gblBookingCurrency='';
 NotificationStore? gblNotifications;
-
+PageListHolder? gblHomeCardList;
 
 TextStyle? gblTitleStyle;
 List<String> gblTitles = <String>[
@@ -146,3 +148,7 @@ Map<String, String >? gblPayFormVals;
 TextEditingController? gblPhoneCodeEditingController;
 Timer? gblTimer;
 StackTrace? gblStack;
+//List<String>? gblCityData;
+
+
+SearchParams gblSearchParams = new SearchParams();

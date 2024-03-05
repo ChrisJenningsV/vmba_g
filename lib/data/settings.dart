@@ -76,7 +76,7 @@ class Settings {
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantCurrencyPicker = false;
-  bool wantBuyNowPayLater = false;
+//  bool wantBuyNowPayLater = false;
   bool wantPassengerPassport = false;
   bool wantRememberMe = false;
   bool wantCustomProgress =false;
@@ -130,9 +130,11 @@ class Settings {
   bool canChangeCancelledFlight;
   bool wantEnglishDates;
   bool wantTandCCheckBox;
+  bool saveChangeBookingBeforePay;
 
   String productFormat;
   String homePageStyle;
+  String homePageFilename;
   String pageStyle;
   String defaultCountryCode;
   String termsAndConditionsUrl="";
@@ -252,7 +254,6 @@ bool bpShowFastTrack;
     this.needTicketsToImport = false,
     this.wantCurrencySymbols =false,
     this.wantCurrencyPicker = false,
-    this.wantBuyNowPayLater = false,
     this.wantPassengerPassport = false,
     this.wantRememberMe = false ,
     this.wantCustomProgress = true,
@@ -297,6 +298,7 @@ bool bpShowFastTrack;
     this.canChangeCancelledFlight = true,
     this.wantEnglishDates = false,
     this.wantTandCCheckBox = false,
+    this.saveChangeBookingBeforePay = true,
     this.wantTerminal = true,
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,
@@ -309,6 +311,7 @@ bool bpShowFastTrack;
     this.useSmartPay = false,
     this.avTimeFormat='HHmm',
     this.homePageStyle='V1',
+    this.homePageFilename = '',
     this.pageStyle = 'V1',
 
     this.productFormat = 'web',

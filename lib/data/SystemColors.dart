@@ -29,6 +29,7 @@ class SystemColors {
    Color textEditBorderColor =  Colors.grey.shade300;
    Color? textEditIconColor;
    Color? tabUnderlineColor;
+   Color? v3TitleColor;
 
    Brightness statusBar = Brightness.light;
 
@@ -78,6 +79,7 @@ class SystemColors {
     this.seatPlanColorUnavailable,
     this.seatPlanColorRestricted,
     this.promoBackColor ,
+    this.v3TitleColor = Colors.black,
   });
 
   void setDefaults() {

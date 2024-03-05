@@ -1162,15 +1162,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     } else if (gblPaymentMsg != null  && gblPaymentMsg.isNotEmpty) {
       if(gblLogPayment) { logit('CPM Build error');}
 
-      bool wantButtons = false;
+      bool wantButtons = true;
       if( gblPaymentMsg.contains('urrency not support')) {
         wantButtons = true;
       }
-
-/*
-      return WillPopScope(
-          onWillPop: _onWillPop,
-*/
       return
         CustomWillPopScope(
             action: () {
@@ -1580,17 +1575,13 @@ List<Widget> getPayOptions(String amount, String cur) {
             bShow = true;
             break;
           case 'FundTransferPayment':
-            if( gblSettings.wantBuyNowPayLater) {
               if( ! isMmb) {
                 bShow = true;
-              }
             }
             break;
           case 'BuyNowPayLater':
-            if( gblSettings.wantBuyNowPayLater) {
               if( ! isMmb) {
                 bShow = true;
-              }
             }
             break;
 
@@ -1638,7 +1629,9 @@ List<Widget> getPayOptions(String amount, String cur) {
                       //SlideTopRoute(page:
                       CustomPageRoute(
                           builder: (context) => WebPayPage(
-                    provider.paymentSchemeName, newBooking: widget.newBooking!,
+                    provider.paymentSchemeName,
+                            newBooking: widget.newBooking!,
+                    mmbBooking: widget.mmbBooking,
                     pnrModel: widget.pnrModel,
                     isMmb: widget.isMmb,)));
                   setState(() {});

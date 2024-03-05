@@ -20,6 +20,8 @@ import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/bottomNav.dart';
+import '../v3pages/cards/typogrify.dart';
+import '../v3pages/v3Constants.dart';
 
 
 class MyBookingsPage extends StatefulWidget {
@@ -28,15 +30,16 @@ class MyBookingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new MyBookingsPageState();
 }
+List<PnrDBCopy> activePnrs = [];
+List<PnrDBCopy> recentPnrs = [];
+List<PnrDBCopy> oldPnrs = [];
+String _error = '';
+bool gotPnrs = false;
 
 class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderStateMixin  {
-  List<PnrDBCopy> activePnrs = [];
-  List<PnrDBCopy> recentPnrs = [];
-  List<PnrDBCopy> oldPnrs = [];
   // new List<PnrDBCopy>();
   bool _loadingInProgress = false;
   Offset? _tapPosition;
-  String _error = '';
   TabController? _controller;
   final formKey = GlobalKey<FormState>();
   String _rloc ='';
@@ -50,6 +53,14 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
   TextEditingController _passwordEditingController =   TextEditingController();
   TextEditingController _emailEditingController =   TextEditingController();
 
+
+  void onComplete(){
+    _loadingInProgress = false;
+    setState(() {
+      print('getb setState');
+      _loadingInProgress = false;
+    });
+  }
 
   @override
   void initState() {
@@ -72,11 +83,11 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     }
     _controller = TabController(length: tablen, vsync: this);
 
-    getmybookings();
+    getmybookings(onComplete);
     Repository.get().getAllCities().then((cities) {});
   }
 
-  getmybookings()  {
+ /* getmybookings()  {
     gblNeedPnrReload = false;
     Repository.get().getAllPNRs().then((pnrsDBCopy) {
       List<PnrDBCopy> thispnrs = [];
@@ -136,12 +147,12 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         _loadingInProgress = false;
       });
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
   if( gblNeedPnrReload){
-    getmybookings();
+    getmybookings(onComplete);
   }
     if (_loadingInProgress) {
       return Scaffold(
@@ -204,7 +215,6 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     );
     }
   }
-
   Widget findAllBookings() {
     return AlertDialog(
         shape: RoundedRectangleBorder(
@@ -734,7 +744,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
               Repository.get()
                   .deletePnr(rloc)
                   .then((onValue) => Navigator.of(context).pop())
-                  .then((onValue) => getmybookings());
+                  .then((onValue) => getmybookings(onComplete));
             },
           ),
         ),
@@ -754,10 +764,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       await Repository.get().fetchApisStatus(rloc);
       await Repository.get().fetchPnr(rloc);
       Future.delayed(const Duration(milliseconds: 500), () {
-        getmybookings();
-        setState(() {
-          _loadingInProgress = false;
-        });
+        getmybookings(onComplete);
       });
     } catch(e) {
       logit(e.toString());
@@ -1174,4 +1181,187 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     return false;
   }
 
+}
+getmybookings(void Function() onComplete )  {
+  gblNeedPnrReload = false;
+  gotPnrs = true;
+  Repository.get().getAllPNRs().then((pnrsDBCopy) {
+    List<PnrDBCopy> thispnrs = [];
+    List<PnrDBCopy> thisOldpnrs = [];
+
+    List<PnrDBCopy> olderPnrs = [];
+    // new List<PnrDBCopy>();
+    logit('get my bookings');
+    for (var item in pnrsDBCopy) {
+      String pnrJson = item.data ; //.replaceAll('"APPVERSION": 1.0.0.98,','"');
+
+      Map<String, dynamic> map = jsonDecode(pnrJson);
+      PnrModel _pnr = new PnrModel.fromJson(map);
+      PnrDBCopy _pnrs = new PnrDBCopy(
+          rloc: item.rloc,
+          data: item.data,
+          nextFlightSinceEpoch: _pnr.getnextFlightEpoch(),
+          delete: item.delete);
+      //if (_pnrs.nextFlightSinceEpoch != 0) {
+//        logit('Loading ${_pnr.pNR.rLOC}');
+      _error = _pnr.validate();
+      //logit('Loading ${_pnr.pNR.rLOC}  $_error');
+      if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(0)) {
+        thispnrs.add(_pnrs);
+      } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {
+        thisOldpnrs.add(_pnrs);
+      } else if (gblSettings.displayErrorPnr) {
+        if ( _pnr.hasFutureFlightsAddDayOffset(0)) {
+          thispnrs.add(_pnrs);
+        } else if ( _pnr.hasFutureFlightsMinusDayOffset(7)) {
+          thisOldpnrs.add(_pnrs);
+        } else {
+          olderPnrs.add(_pnrs);
+        }
+
+      } else {
+        // remove old booking
+        try {
+          logit('Deleting ${item.rloc}');
+          Repository.get().deletePnr(item.rloc);
+          Repository.get().deleteApisPnr(item.rloc);
+        } catch(e) {
+          logit(e.toString());
+        }
+      }
+
+      //}
+    }
+
+    thispnrs.sort(
+            (a, b) => a.nextFlightSinceEpoch.compareTo(b.nextFlightSinceEpoch));
+    activePnrs = thispnrs;
+    recentPnrs = thisOldpnrs;
+    oldPnrs = olderPnrs;
+
+    onComplete();
+/*
+    setState(() {
+      print('getb setState');
+      activePnrs = thispnrs;
+      recentPnrs = thisOldpnrs;
+      oldPnrs = olderPnrs;
+      _loadingInProgress = false;
+    });
+*/
+  });
+}
+
+Widget getMiniMyBookingsPage(BuildContext context)
+{
+  if( gotPnrs == false ){
+    getmybookings((){
+
+    });
+  }
+  /*ListView listViewOfBookings = ListView.builder(
+      shrinkWrap: true,
+      itemCount: activePnrs.length,
+      itemBuilder: (BuildContext context, index) =>
+          getMiniItem(context, activePnrs[index]));
+*/
+  List<Widget> list = [];
+  activePnrs.forEach((element) {
+    list.add(getMiniItem(context, element));
+  });
+
+  return Container(
+ //   color: Colors.lightBlueAccent,
+      alignment: Alignment.topLeft,
+   //   width: 700,
+ //     height: 100,
+      child:Column(
+        children: list,
+      )
+  );
+    return Text('bookings');
+    //return myTrips('A');
+
+}
+Widget getMiniItem(BuildContext context , PnrDBCopy document) {
+  String pnrJson = document.data;
+  //pnrJson = pnrJson.replaceAll('"APPVERSION": 1.0.0.98,','"');
+  Map<String, dynamic> map = jsonDecode(pnrJson);
+  PnrModel pnr = new PnrModel.fromJson(map);
+  DateTime ddt = DateTime.parse(pnr.pNR.itinerary.itin[0].depDate);
+  DateTime adt = ddt;
+  if( pnr.pNR.itinerary.itin[0].arrOfst.trim() != '') adt.add(Duration(days: int.parse(pnr.pNR.itinerary.itin[0].arrOfst )));
+  return InkWell(
+      onTap: () async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) =>
+            ViewBookingPage(
+              rloc: document.rloc,
+            )));
+        },
+      child: Card( child: Row(
+    children: [
+      minFlight(getIntlDate('dd MMM', ddt),
+          pnr.pNR.itinerary.itin[0].depTime,
+          pnr.pNR.itinerary.itin[0].depart,
+          pnr.pNR.itinerary.itin.length> 1,
+          pnr.pNR.itinerary.itin[0].arrive)
+  /*    originDestination(cityCodetoAirport(pnr.pNR.itinerary.itin[0].depart),
+          pnr.pNR.itinerary.itin[0].depart, getIntlDate('dd MMM yyyy', ddt), pnr.pNR.itinerary.itin[0].depTime),
+
+      RotatedBox(quarterTurns: 1,child:  Icon(Icons.airplanemode_active)),
+
+      originDestination(cityCodetoAirport(pnr.pNR.itinerary.itin[0].arrive),
+          pnr.pNR.itinerary.itin[0].arrive, getIntlDate('dd MMM yyyy', adt), pnr.pNR.itinerary.itin[0].arrTime),*/
+    ])),
+  );
+}
+Widget minFlight(String strDate, String strTime, String fromCode, bool isReturn, String toCode ){
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(padding: EdgeInsets.all(2),),
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(strDate, textScaler: TextScaler.linear(1.2),), // style: TextStyle(fontWeight: FontWeight.bold),
+      labelText(strTime.substring(0, 5)),
+      ]),
+      Padding(padding: EdgeInsets.all(2),),
+      Column(
+        children: [
+      Text(fromCode, textScaler: TextScaler.linear(1.6),style: TextStyle(fontWeight: FontWeight.bold),),
+          labelText(cityCodetoAirport(fromCode)),
+        ]),
+      isReturn ? Icon(Icons.connecting_airports_outlined): RotatedBox(quarterTurns: 1,child:  Icon(Icons.airplanemode_active)),
+  Column(
+  children: [
+    Text(toCode, textScaler: TextScaler.linear(1.6),style: TextStyle(fontWeight: FontWeight.bold),),
+    labelText(cityCodetoAirport(toCode)),
+  ]),
+
+    ],
+  );
+}
+Widget originDestination(String city, String code, String dt, String tim ){
+  return SizedBox(
+      width: selectAirportCardWidth - 15,
+      //height: 50,
+
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(10, 5, 5, 10),
+          child: Column(
+            children: [
+              Align(alignment: Alignment.topLeft,child: labelText(dt),),
+              labelText(city),
+              Text(code, textScaler: TextScaler.linear(2.0),),
+
+              Text(tim, textScaler: TextScaler.linear(1.2),),
+
+            ],
+          ),
+        ),
+  );
 }

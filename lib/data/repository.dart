@@ -340,6 +340,9 @@ class Repository {
                   case 'ServerFiles':
                     gblSettings.gblServerFiles = item['value'];
                     break;
+                  case 'homePageFilename':
+                    gblSettings.homePageFilename = item['value'];
+                    break;
                   case 'titles':
                     gblTitles = item['value'].split(',');
                     break;

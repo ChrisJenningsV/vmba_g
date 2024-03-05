@@ -37,26 +37,15 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   if( gblSettings.useWebApiforVrs) {
     cmd += '*r~x';
   } else {
-    cmd += 'E*r~x';
+    if( gblSettings.saveChangeBookingBeforePay) {
+      cmd += 'E*r~x';
+    } else {
+      cmd += '*r~x';
+    }
   }
   logit('change flt $cmd');
   await runVrsCommand(cmd);
 
- /* http.Response response;
-  response = await http
-      .get(Uri.parse(
-      "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd'"))
-      .catchError((resp) {});*/
-
-
- /* if (response.statusCode < 200 || response.statusCode >= 300) {
-    noInternetSnackBar(context);
-    if (response == null) {
-      noInternetSnackBar(context);
-      return null;
-    }
-    return null;
-  }*/
 }
 
 

@@ -144,7 +144,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd += addFg(widget.mmbBooking.currency, true);
     cmd += addFareStore(true);
 //    cmd += '*r~x';
-    cmd += 'E*r~x';
+    if( gblSettings.saveChangeBookingBeforePay) {
+      cmd += 'E*r~x';
+    } else {
+      cmd += '*r~x';
+    }
     logit("flight selection cmd=$cmd");
     return cmd;
   }

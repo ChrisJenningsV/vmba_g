@@ -7,6 +7,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -20,6 +21,7 @@ import 'choosePaymentMethod.dart';
 class WebPayPage extends StatefulWidget {
   final NewBooking newBooking;
   PnrModel pnrModel;
+  MmbBooking? mmbBooking;
   final bool isMmb ;
 
   String  url = gblSettings.payPage;
@@ -29,6 +31,7 @@ class WebPayPage extends StatefulWidget {
   WebPayPage(this.provider, {
     required this.newBooking,
     required this.pnrModel,
+    this.mmbBooking,
     required this.isMmb,
   });
 
@@ -361,7 +364,7 @@ Page resource error:
       context: context,
       builder: (context) => new AlertDialog(
         title: new TrText('Are you sure?'),
-        content: new TrText('Do you want abandon your booking '),
+        content: new TrText('Do you want to abandon your booking '),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -442,23 +445,11 @@ Page resource error:
 
 
       data = await runVrsCommand('*$gblCurrentRloc~x');
-  /*  http.Response response = await http
-        .get(Uri.parse(
-        "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=*$gblCurrentRloc~x"))
-        .catchError((resp) {});
 
-    if (response == null) {
-      // error
-      logit('Load booking no data');
-      return ;
-    }
-
-    //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      // error
-      logit('Load booking network error ${response.statusCode}');
-      return ;
-    }*/
+      if( gblSettings.saveChangeBookingBeforePay == false){
+        // make change flight changes
+        await changeFlt(widget.pnrModel, widget.mmbBooking!, context);
+      }
 
     try {
       // Server Exception ?

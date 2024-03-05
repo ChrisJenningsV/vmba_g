@@ -31,7 +31,7 @@ void configM1() {
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
     primaryButtonTextColor: Colors.black,
-    primaryHeaderColor: Color.fromRGBO(0X13, 0x3E, 0x68, 1),
+    primaryHeaderColor: Colors.red,
     headerTextColor: Colors.white,
     statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
@@ -43,6 +43,7 @@ void configM1() {
     home2ButtonColor: Colors.white,
     home1ButtonTextColor: Colors.white,
     home2ButtonTextColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
+    v3TitleColor: Colors.red
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
@@ -55,7 +56,8 @@ void configM1() {
 
   gblSettings = Settings (
     pageStyle: 'V2',
-    homePageStyle: 'V2',
+    homePageStyle: 'V3',
+    homePageFilename: 'customPages.json',
     buttonStyle: 'RO3',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
@@ -68,8 +70,12 @@ void configM1() {
     canGoBackFromPaxPage: true,
 
     airlineName: "Medsky",
-    gblServerFiles: 'https://customer3.videcom.com/Medsky/VARS/AppFiles/',
-    testServerFiles: 'https://customertest.videcom.com/medsky/VARS/AppFiles/',
+    gblServerFiles: 'http://customertest.videcom.com/loganair/AppFiles/',
+    testServerFiles: 'http://customertest.videcom.com/loganair/AppFiles/',
+/*
+    xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
+    xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
+*/
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'BM',
@@ -81,6 +87,7 @@ void configM1() {
     locale: 'en-EN',
     bookingLeadTime: 60,
     webCheckinNoSeatCharge: false,
+//    vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
     useWebApiforVrs: true,
@@ -98,10 +105,11 @@ void configM1() {
     searchDateOut: 1,
     searchDateBack: 6,
     wantApis: false,
-    wantMmbProducts: true,
-    wantProducts: true,
+    wantMmbProducts: false,
+    wantProducts: false,
     wantStatusLine: true,
-    wantSeatsWithProducts: true,
+    wantSeatsWithProducts: false,
+    wantMonthOnCalendar: true,
 
     passengerTypes: PassengerTypes(
       adults: true,
@@ -129,7 +137,7 @@ void configM1() {
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 
-//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
+/*//    testPayPage: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/medsky/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
@@ -140,7 +148,16 @@ void configM1() {
     testSmartApiUrl:      "https://customertest.videcom.com/medsky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/medsky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/medsky/VARS/webApiv2/api/',
-  //  testApiUrl:      'http://10.0.2.2:5000/api',  // local
+  //  testApiUrl:      'http://10.0.2.2:5000/api',  // local*/
+    //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//////    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    //   testApiUrl:      'http://10.0.2.2:5000/api',
+    testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
+//    testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',
+
 
 // website
 // http://10.0.2.2:50311/TEST/PushTest.aspx
@@ -164,9 +181,11 @@ void configM1() {
     wantNewPayment: true,
     wantCountry: false,
     useSmartPay: false,
+    wantMaterial3: false,
 
     wantFQTVNumber: true,
-    apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
+//    apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
+    apiKey: '93a9626c78514c2baab494f4f6e0c197',
     maxNumberOfPax: 8,
     hideFareRules: false,
 

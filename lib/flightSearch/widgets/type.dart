@@ -55,7 +55,13 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
       retRadius = BorderRadius.only( topRight: const Radius.circular(7.0),bottomRight: const Radius.circular(7.0));
       owRadius =   BorderRadius.only(topLeft: const Radius.circular(7.0),bottomLeft: const Radius.circular(7.0));
     }
-    return Row(
+    return
+    Container(
+      decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.grey,
+          blurRadius: 2.0,
+          offset: Offset(0.5, 0.75))]),
+    child:
+      Row(
       mainAxisSize:  MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -93,6 +99,6 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
     onTap: () => _toggleJourneyType(false),
     )
     ],
-    );
+    ));
   }
 }

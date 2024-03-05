@@ -766,6 +766,7 @@ class Itin {
   String onlineCheckinTimeEndGMT='';
   String onlineCheckinTimeStartLocal='';
   String onlineCheckinTimeEndLocal='';
+  bool editFlight= true;
 
   Itin.getJounrey(
       // this.
@@ -815,6 +816,7 @@ class Itin {
     if(json['OnlineCheckinTimeStartGMT'] != null )onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
     if(json['OnlineCheckinTimeEndLocal'] != null )onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
     if(json['OnlineCheckinTimeStartLocal'] != null )onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
+    if( json['editFlight'] != null ) editFlight = parseBool(json['editFlight']);
   }
 
   String get cityPair => this.depart + this.arrive;
@@ -860,6 +862,7 @@ class Itin {
     data['MMBCheckinAllowed'] = mMBCheckinAllowed;
     data['OnlineCheckinTimeEndGMT'] = onlineCheckinTimeEndGMT ;
     data['OnlineCheckinTimeStartGMT'] = onlineCheckinTimeStartGMT;
+    data['editFlight'] = editFlight.toString();
 
     return data;
   }
@@ -1624,6 +1627,7 @@ class TKT {
   String sequenceNo = '';
   String loungeAccess = '';
   String fastTrack = '';
+  bool WebCheckOut = false;
 
   TKT({this.sequenceNo=''});
 
@@ -1647,6 +1651,7 @@ class TKT {
     if(json['SequenceNo']!= null)sequenceNo = json['SequenceNo'];
     if(json['LoungeAccess']!= null)loungeAccess = json['LoungeAccess'];
     if(json['FastTrack']!= null)fastTrack = json['FastTrack'];
+    if(json['WebCheckOut']!= null) WebCheckOut = parseBool(json['WebCheckOut']);
   }
 
   Map<String, dynamic> toJson() {
@@ -1670,6 +1675,8 @@ class TKT {
     data['SequenceNo'] = this.sequenceNo;
     data['LoungeAccess'] = this.loungeAccess;
     data['FastTrack'] = this.fastTrack;
+    data['WebCheckOut'] = this.WebCheckOut;
+
     return data;
   }
 }

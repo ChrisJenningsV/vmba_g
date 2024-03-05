@@ -26,26 +26,7 @@ void main() {
 }
 
 void configSI() {
-  /*
-  SystemColors _systemColors = SystemColors(
-      primaryButtonColor: Color.fromRGBO(12, 59, 111, 1),
-      accentButtonColor: Color.fromRGBO(241, 182, 0, 1),
-      accentColor: Color.fromRGBO(
-          241, 182, 0, 1), //Color.fromRGBO(0, 83, 55, 1), //Colors.white,
-      primaryColor: Colors.white,
-      primaryButtonTextColor: Colors.white,
-      textButtonTextColor: Colors.black54  ,
-      primaryHeaderColor: Color.fromRGBO(12, 59, 111, 1),
-      headerTextColor: Colors.white,
-      statusBar: Brightness.dark,
-    seatPlanColorEmergency: Colors.red, //Colors.yellow
-    seatPlanColorAvailable: Colors.blue, //Colors.green
-    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
-    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
-    seatPlanColorRestricted: Colors.green[200],
-  );
 
-   */
   SystemColors _systemColors = SystemColors(
     primaryButtonColor: Color.fromRGBO(12, 59, 111, 1),
     otherButtonColor: Color.fromRGBO(229, 0, 91, 1),
@@ -117,6 +98,7 @@ void configSI() {
     wantNewEditPax: true,
     wantAllColorButtons: false,
     wantBpLogo: false,
+    saveChangeBookingBeforePay: false,
     //wantMaterialControls: true,
     wantCitySwap: true,
     wantPageImages: false,

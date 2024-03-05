@@ -120,8 +120,7 @@ void configLM() {
   apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 //Staging setttings
-/*  testXmlUrl:      "https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  testApisUrl:      'https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+/*
   testApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',  // InHouse
 
  */

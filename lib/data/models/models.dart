@@ -4,6 +4,7 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../home/searchParams.dart';
 import '../../utilities/helper.dart';
 
 
@@ -58,6 +59,25 @@ class NewBooking {
   String eVoucherCode ='';
   //List<ContactInfomation> contactInfomation = List<ContactInfomation>();
   NewBooking();
+
+  void clear() {
+    outboundflight = [];
+    returningflight = [];
+    passengerDetails = [];
+    paymentDetails = PaymentDetails();
+    contactInfomation = ContactInfomation();
+  }
+  void populate(SearchParams params){
+    departure = params.searchOrigin.substring(0,3);
+    arrival = params.searchDestination.substring(0,3);
+    departureDate = params.departDate as DateTime;
+    if( params.returnDate != null )    returnDate = params.returnDate as DateTime;
+    passengers.adults  = params.adults;
+    passengers.youths = params.youths;
+    passengers.seniors = params.seniors;
+    passengers.students = params.students;
+    passengers.children = params.children;
+  }
 }
 
 class MmbBooking {

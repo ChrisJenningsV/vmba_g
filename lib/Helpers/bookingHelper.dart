@@ -21,7 +21,7 @@ Future<bool> onWillPop(BuildContext context) async {
       content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget> [
-            TrText('Do you want abandon your booking '),
+            TrText('Do you want to abandon your booking '),
       ]),
       actions: <Widget>[
         TextButton(
