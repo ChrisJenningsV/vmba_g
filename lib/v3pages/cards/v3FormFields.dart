@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/trText.dart';
+import '../../utilities/helper.dart';
 
 class V3TextFormField extends StatefulWidget  {
   String label = '';
@@ -10,6 +11,8 @@ class V3TextFormField extends StatefulWidget  {
   TextInputType? keyboardType;
   void Function(String?)? onSaved;
   IconData? icon;
+  bool obscureText;
+  String obscuringCharacter;
 
   V3TextFormField(this.label, this.controller,
       {
@@ -17,6 +20,8 @@ class V3TextFormField extends StatefulWidget  {
         this.keyboardType,
         this.onSaved,
         this.icon,
+        this.obscureText = false,
+        this.obscuringCharacter = "*",
     }
   );
 
@@ -24,6 +29,7 @@ class V3TextFormField extends StatefulWidget  {
 }
 class V3TextFormFieldState extends State<V3TextFormField> {
   Color _colorText = Colors.black54;
+  Color _backColor = Colors.black12;
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +37,29 @@ class V3TextFormFieldState extends State<V3TextFormField> {
     const _focusColor = Colors.purple;
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15),
+      //padding: EdgeInsets.symmetric(vertical: 15),
       child: Focus(
         onFocusChange: (hasFocus) {
-          // When you focus on input email, you need to notify the color change into the widget.
-          setState(() => _colorText = hasFocus ? _focusColor : _defaultColor);
+          logit('focus change focus = $hasFocus');
+          setState(() {
+              _colorText = hasFocus ? _focusColor : _defaultColor;
+              _backColor = hasFocus ? Colors.white : Colors.black12;
+            });
         },
+
         child: TextField(
           //decoration: getV3Decoration(label              ),
           // Validate input Email
           keyboardType: TextInputType.emailAddress,
           controller: widget.controller,
+          obscureText: widget.obscureText,
+          obscuringCharacter: widget.obscuringCharacter,
 
           decoration: InputDecoration(
             hintText: widget.hintText,
+            filled: true,
+            fillColor: _backColor,
+            focusColor: Colors.white,
             labelText: widget.label,
             labelStyle: TextStyle(color: _colorText),
 
@@ -59,7 +74,7 @@ class V3TextFormFieldState extends State<V3TextFormField> {
             ),
             icon: widget.icon == null ? null : Icon(
               widget.icon as IconData,
-              color: Colors.deepPurpleAccent,
+              color: _colorText,
             ),
           ),
         ),

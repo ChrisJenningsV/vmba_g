@@ -28,7 +28,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
   Widget build(BuildContext context) {
     List<Widget> list = [];
 
-    list.add(Padding( padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+    list.add(Padding( padding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 10),
         child: V3TextFormField(
           '${gblSettings.fqtvName} ' + translate('number'),
            _fqtvTextEditingController,
@@ -43,13 +43,14 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
     );
 
 
-    list.add( Padding( padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-        child: TextFormField(
-      //focusNode: focusNode,
+    list.add( Padding( padding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 10),
+        child:  V3TextFormField(
+          translate('Password'),
+          _passwordEditingController,
+      icon: Icons.lock,
       obscureText: _isHidden,
       obscuringCharacter: "*",
-      controller: _passwordEditingController,
-      decoration: getV3Decoration(translate('Password')),
+
 /*                  suffix: InkWell(
                     onTap: _togglePasswordView,
                     child: Icon( Icons.visibility),
@@ -63,34 +64,22 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
       },
     ))
     );
-    list.add(
-        TextButton(
-      child: new TrText(
-        'Reset Password',
-        style: TextStyle(color: Colors.black),
-      ),
-      style: TextButton.styleFrom(primary: Colors.white,
-          side: BorderSide(color: Colors.grey.shade300, width: 2)),
-      onPressed: () {
-        /* resetPasswordDialog();*/
-      },
-    )
-    );
+
+
     list.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colors.grey.shade100),
-          child: TrText(
-            "CANCEL",
+        TextButton(
+          child: new TrText(
+            'Reset Password',
             style: TextStyle(color: Colors.black),
           ),
+          style: TextButton.styleFrom(primary: Colors.white,
+              side: BorderSide(color: Colors.grey.shade300, width: 2)),
           onPressed: () {
-            //Put your code here which you want to execute on Cancel button click.
-            Navigator.of(context).pop();
+            /* resetPasswordDialog();*/
           },
         ),
-        SizedBox(width: 20,),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               primary: gblSystemColors.primaryButtonColor),
@@ -132,6 +121,10 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
       ],
     )
     );
+    list.add(Divider( color: Colors.grey, height: 1,));
+    list.add(TextButton(onPressed: (){
+
+    }, child: TrText('Continue as Guest', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),)));
 
     return Column(
       children: list,
