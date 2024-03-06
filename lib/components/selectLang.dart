@@ -239,7 +239,7 @@ dialogContent(BuildContext context) {
             style: TextButton.styleFrom(
                 backgroundColor: gblSystemColors.primaryButtonColor ,
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                primary: gblSystemColors.primaryButtonTextColor),
+                foregroundColor: gblSystemColors.primaryButtonTextColor),
             onPressed: () {
               // remove cached lang file
               deleteLang();

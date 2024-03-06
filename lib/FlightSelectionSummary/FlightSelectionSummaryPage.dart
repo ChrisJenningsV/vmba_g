@@ -793,7 +793,7 @@ Row airMiles() {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
-                      primary: Colors.black),
+                      foregroundColor: Colors.black),
                   onPressed: () {
                     widget.newBooking.eVoucherCode = '';
                     //retryBooking();
@@ -807,7 +807,7 @@ Row airMiles() {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
-                      primary: Colors.black),
+                      foregroundColor: Colors.black),
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/FlightSearchPage', (Route<dynamic> route) => false);
@@ -1093,7 +1093,7 @@ Row airMiles() {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: gblSystemColors
+                foregroundColor: gblSystemColors
                     .primaryButtonColor, //Colors.black,
                 shape: RoundedRectangleBorder(
                     borderRadius: getButtonRadius())),

@@ -889,7 +889,7 @@ Widget getFirstname() {
          style: TextButton.styleFrom(
              backgroundColor: actionButtonColor(),
              side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-             primary: gblSystemColors.primaryButtonTextColor),
+             foregroundColor: gblSystemColors.primaryButtonTextColor),
          onPressed: () {
            if( gblActionBtnDisabled == false) {
              gblActionBtnDisabled = true;
@@ -1246,7 +1246,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
               style: TextButton.styleFrom(
                   backgroundColor:bgColour ,
                   side: BorderSide(color:  txtColor, width: 1),
-                  primary:txtColor),
+                  foregroundColor:txtColor),
               child: new TrText("OK", style: TextStyle(color: txtColor),
               ),
               onPressed: () {

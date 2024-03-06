@@ -41,7 +41,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
       } ,
       style: TextButton.styleFrom(
           side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-          primary: gblSystemColors.textButtonTextColor),
+          foregroundColor: gblSystemColors.textButtonTextColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -136,7 +136,7 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
       }
     },
     style: ElevatedButton.styleFrom(
-        primary: gblSystemColors.primaryButtonColor, //Colors.black,
+        foregroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0))),
     child: Row(

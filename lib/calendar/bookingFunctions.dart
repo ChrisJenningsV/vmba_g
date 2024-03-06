@@ -152,8 +152,7 @@ String buildCmd(NewBooking newBooking) {
   }
 
   //Add voucher code
-  if (newBooking.eVoucherCode != null &&
-      newBooking.eVoucherCode.trim() != '') {
+  if (newBooking.eVoucherCode.trim() != '') {
     cmd += '4-1FDISC${newBooking.eVoucherCode.trim()}^';
   }
   cmd += addFg(newBooking.currency, true);
@@ -207,8 +206,7 @@ String buildDummyAddPaxCmd(NewBooking newBooking) {
 String buildADSCmd(NewBooking newBooking) {
   StringBuffer sb = new StringBuffer();
   String paxNo = '1';
-  if (newBooking.ads.pin != null && newBooking.ads.pin != '' &&
-      newBooking.ads.number != null && newBooking.ads.number != '') {
+  if (newBooking.ads.pin != '' &&       newBooking.ads.number != '') {
     sb.write(
         '4-${paxNo}FADSU/${newBooking.ads.number}/${newBooking.ads.pin}^');
   }

@@ -407,7 +407,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: gblSystemColors
+                              foregroundColor: gblSystemColors
                                   .primaryButtonColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius:

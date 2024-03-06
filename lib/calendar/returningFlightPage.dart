@@ -277,7 +277,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
-                primary: gblSystemColors.primaryButtonColor,
+                foregroundColor: gblSystemColors.primaryButtonColor,
               ),
               onPressed: () => retrySearch(),
               child: TrText(
@@ -325,7 +325,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               onPressed: () => showDatePicker(
@@ -626,7 +626,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             (item[0].fltav.pri?.length as int),
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary:
+                    foregroundColor:
                     gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0),
                     shape: RoundedRectangleBorder(

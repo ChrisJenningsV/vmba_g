@@ -692,7 +692,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
               style: TextButton.styleFrom(
                   backgroundColor:bgColour ,
                   side: BorderSide(color:  txtColor, width: 1),
-                  primary:txtColor),
+                  foregroundColor:txtColor),
               child: new TrText("OK", style: TextStyle(color: txtColor),
               ),
               onPressed: () {

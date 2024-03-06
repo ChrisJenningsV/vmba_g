@@ -635,7 +635,7 @@ class _ApisWidgetState extends State<ApisWidget> {
               style: TextButton.styleFrom(
                   backgroundColor:bgColour ,
                   side: BorderSide(color:  txtColor, width: 1),
-                  primary:txtColor),
+                  foregroundColor:txtColor),
               child: new TrText("OK"),
               onPressed: () {
                 Navigator.of(context).pop();

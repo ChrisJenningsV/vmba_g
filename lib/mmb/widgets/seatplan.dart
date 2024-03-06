@@ -567,7 +567,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary: Colors.black),
+                  foregroundColor: Colors.black),
               onPressed: () => Navigator.pop(context),
               child: TrText(
                 'OK',

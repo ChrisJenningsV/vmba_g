@@ -27,7 +27,7 @@ Future<bool> onWillPop(BuildContext context) async {
         TextButton(
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: gblSystemColors.textButtonTextColor),
+              foregroundColor: gblSystemColors.textButtonTextColor),
           onPressed: () {
             gblPayBtnDisabled = false;
             Navigator.of(context).pop(false);
@@ -37,7 +37,7 @@ Future<bool> onWillPop(BuildContext context) async {
         TextButton(
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: gblSystemColors.textButtonTextColor),
+              foregroundColor: gblSystemColors.textButtonTextColor),
           onPressed: () async {
             try {
               await callSmartApi('CANCELPAYMENT', "");

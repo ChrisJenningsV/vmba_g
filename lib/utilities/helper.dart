@@ -504,7 +504,7 @@ void showHtml(BuildContext context, String title, String txt ) {
 List<Widget> getDom( String str){
 List<Widget> list = [];
   dom.Document document = parser.parse(str);
-  document.body?.nodes.forEach((el){
+  (document.body?.nodes as List).forEach((el){
     String s = el.text as String;
     if( s != null && s.isNotEmpty) {
       list.add(Flexible(

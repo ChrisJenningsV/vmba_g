@@ -77,7 +77,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
       style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)),
-          primary: _buttonEnabled ? gblSystemColors.primaryButtonColor : Colors.grey.shade200),
+          foregroundColor: _buttonEnabled ? gblSystemColors.primaryButtonColor : Colors.grey.shade200),
       onPressed: () async {
         if( _buttonEnabled == true ) {
           if( widget.newBooking != null ) {

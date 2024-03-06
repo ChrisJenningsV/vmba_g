@@ -447,7 +447,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary: Colors.black),
+                  foregroundColor: Colors.black),
               onPressed: () => retrySearch(),
               child: Text(
                 'Retry Search',
@@ -784,7 +784,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             noItems,
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary:
+                    foregroundColor:
                     gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0),
                     shape: RoundedRectangleBorder(

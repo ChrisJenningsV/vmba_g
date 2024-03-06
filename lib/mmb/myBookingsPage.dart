@@ -292,7 +292,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                   */
                     // SizedBox(                      width: 20,                    ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.blue),
+                      style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
                       child: Row(children: <Widget>[
                         (_isButtonDisabled)
                             ? new Transform.scale(

@@ -1514,7 +1514,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) { // this.isMmb &&
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Colors.white,
+            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         onPressed: () {
@@ -1829,7 +1829,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
         paymentButtons.add(ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.white,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () {

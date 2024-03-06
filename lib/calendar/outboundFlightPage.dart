@@ -356,7 +356,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary: gblSystemColors.primaryButtonColor),
+                  foregroundColor: gblSystemColors.primaryButtonColor),
               onPressed: () => retrySearch(),
               child: TrText(
                 'Retry Search',

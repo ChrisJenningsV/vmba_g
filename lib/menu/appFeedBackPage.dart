@@ -179,7 +179,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText(btnText),
                   onPressed: () {_swapLiveTest();},
                 ),
@@ -189,7 +189,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Reset cache'),
                   onPressed: () {
                     _resetLangs();
@@ -202,7 +202,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Delete Notifications'),
                   onPressed: () {
 
@@ -216,7 +216,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Demo Page'),
                   onPressed: () {
                     Navigator.push(
@@ -229,7 +229,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Error msg'),
                   onPressed: () {
                     criticalErrorPage(context, 'this is a test error message', title: 'Error title');
@@ -239,7 +239,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Success msg'),
                   onPressed: () {
                     successMessagePage(context, 'this is a test success message', title: 'Booking Confirmed');
@@ -249,7 +249,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 TextButton(
                   style: TextButton.styleFrom(
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: gblSystemColors.textButtonTextColor),
+                      foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Progress msg'),
                   onPressed: () {
                     progressMessagePage(context, 'this is a progress message', title: 'loading');
@@ -360,7 +360,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
           content: contentBox(context),
           actions: <Widget>[
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.black12) ,
+              style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
               child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
               onPressed: () {
                 //Put your code here which you want to execute on Cancel button click.

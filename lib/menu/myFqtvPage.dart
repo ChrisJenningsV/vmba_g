@@ -306,7 +306,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   'Reset Password',
                   style: TextStyle(color: Colors.black),
                 ),
-                style: TextButton.styleFrom(primary: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
+                style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
                   resetPasswordDialog();
                 },
@@ -315,7 +315,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.grey.shade100),
+                    style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade100),
                     child: TrText(
                       "CANCEL",
                       style: TextStyle(color: Colors.black),
@@ -327,7 +327,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   ),
                   SizedBox(width: 20,),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryButtonColor),
+                    style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryButtonColor),
                     child: Row(children: <Widget>[
                       (_isButtonDisabled)
                           ? new Transform.scale(
@@ -1016,7 +1016,7 @@ Widget _getTrans() {
          ),
      actions: <Widget>[
        ElevatedButton(
-         style: ElevatedButton.styleFrom(primary: Colors.black12) ,
+         style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
          child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
          onPressed: () {
            //Put your code here which you want to execute on Cancel button click.
@@ -1088,7 +1088,7 @@ Widget _getTrans() {
            ),
            actions: <Widget>[
              ElevatedButton(
-               style: ElevatedButton.styleFrom(primary: Colors.black12) ,
+               style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
                child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
                onPressed: () {
                  //Put your code here which you want to execute on Cancel button click.

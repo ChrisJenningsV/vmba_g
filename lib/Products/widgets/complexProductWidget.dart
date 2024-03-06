@@ -394,7 +394,7 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
 
     widgets.add(Spacer(),);
 
-    if( prod.maxQuantity != null && prod.maxQuantity > 0 ) {
+    if(  prod.maxQuantity > 0 ) {
       widgets.add(Align(alignment: Alignment.centerRight,
           child: Row(children: [new IconButton(
             icon: Icon(Icons.remove_circle_outline,

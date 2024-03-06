@@ -59,11 +59,11 @@ Future<bool> confirmDialog(BuildContext context, String title, String msg ) asyn
         ),
         actions: [
           ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.grey),
+              style: ElevatedButton.styleFrom(foregroundColor: Colors.grey),
               onPressed: () => Navigator.pop(context, false),
               child: TrText('Cancel')),
           ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryButtonColor),
+              style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryButtonColor),
               onPressed: () => Navigator.pop(context, true),
               child: TrText('Confirm')),
         ],
@@ -160,7 +160,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.blue,
                       side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      primary: Colors.white),
+                      foregroundColor: Colors.white),
                   child: new TrText("Close"),
                   onPressed: () {
                     if( onComplete != null ) {
@@ -177,7 +177,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
     ),
       actions: [
       ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      style: ElevatedButton.styleFrom(foregroundColor: Colors.grey),
 onPressed: () {
 if( onComplete != null ) {
 onComplete();
@@ -226,7 +226,7 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      primary: gblSystemColors
+                      foregroundColor: gblSystemColors
                           .primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:
@@ -270,7 +270,7 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
                   'Close',
                   style: TextStyle(color: Colors.black),
                 ),
-                style: TextButton.styleFrom(primary: Colors.white),
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -284,7 +284,7 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
                     backgroundColor: gblSystemColors.primaryButtonColor,
                     side: BorderSide(
                         color: gblSystemColors.textButtonTextColor, width: 1),
-                    primary: gblSystemColors.primaryButtonTextColor),
+                    foregroundColor: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
                   LaunchReview.launch();
                 },

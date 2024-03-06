@@ -23,9 +23,9 @@ Future <bool> serverLog(String msg) async {
       return new http.Response('error', 900);
   });
 
-  if (response == null) {
+/*  if (response == null) {
     return false;
-  }
+  }*/
 
   //If there was an error return an empty list
   if (response.statusCode < 200 || response.statusCode >= 300) {

@@ -569,7 +569,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
-                      primary: Colors.black),
+                      foregroundColor: Colors.black),
                   onPressed: () => retryBooking(),
                   child: TrText(
                     'Retry booking',
@@ -613,7 +613,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
-                      primary: Colors.black),
+                      foregroundColor: Colors.black),
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
                   child: TrText(
@@ -761,7 +761,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary:
+                      foregroundColor:
                       gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),

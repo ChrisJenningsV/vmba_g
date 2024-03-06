@@ -162,7 +162,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))), //RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                        primary:
+                        foregroundColor:
                         gblSystemColors.primaryButtonColor,
                         padding: pad ), //new EdgeInsets.all(5.0)),
                     child: Padding(

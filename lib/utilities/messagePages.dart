@@ -84,7 +84,7 @@ class MessagePageState extends State<MessagePage> {
           Align(
               alignment: Alignment.center,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+                style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
                 child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
@@ -165,7 +165,7 @@ class MessagePageState extends State<MessagePage> {
             content: contentBox(context),
             actions: <Widget>[
               ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+                style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
                 child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
@@ -176,7 +176,7 @@ class MessagePageState extends State<MessagePage> {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: gblSystemColors.primaryHeaderColor) ,
+                style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryHeaderColor) ,
                 child: TrText("CONTINUE"),
                 onPressed: () {
                   String result = widget.onOk!(context, _sineController.text, _passwordController.text);
@@ -360,7 +360,7 @@ Widget criticalErrorWidget(BuildContext context, String msg, {String title='', b
       Align(
           alignment: Alignment.center,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
             child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
             onPressed: () {
               //Put your code here which you want to execute on Cancel button click.
@@ -563,7 +563,7 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
       Align(
           alignment: Alignment.center,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.grey.shade200) ,
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
             child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
             onPressed: () {
               //Put your code here which you want to execute on Cancel button click.

@@ -100,7 +100,7 @@ void initState() {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: gblSystemColors
+                            foregroundColor: gblSystemColors
                                 .primaryButtonColor, //Colors.black,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0))),
@@ -629,7 +629,7 @@ void initState() {
                               child: ElevatedButton(
                                 onPressed: () {validateAndSubmit();},
                                 style: ElevatedButton.styleFrom(
-                                    primary: gblSystemColors
+                                    foregroundColor: gblSystemColors
                                         .primaryButtonColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -908,7 +908,7 @@ void initState() {
                                 validateAndSubmit();
                               },
                               style: ElevatedButton.styleFrom(
-                                  primary: gblSystemColors
+                                  foregroundColor: gblSystemColors
                                       .primaryButtonColor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:

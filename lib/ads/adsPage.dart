@@ -35,7 +35,7 @@ class _AdsPageState extends State<AdsPage> {
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: gblSystemColors.primaryButtonColor,
+                foregroundColor: gblSystemColors.primaryButtonColor,
               ),
           onPressed:() {
             //Navigator.of(context).pushNamedAndRemoveUntil('/AdsFlightSearchPage', (Route<dynamic> route) => false);},

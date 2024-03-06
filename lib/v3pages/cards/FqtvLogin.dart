@@ -74,7 +74,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
             'Reset Password',
             style: TextStyle(color: Colors.black),
           ),
-          style: TextButton.styleFrom(primary: Colors.white,
+          style: TextButton.styleFrom(foregroundColor: Colors.white,
               side: BorderSide(color: Colors.grey.shade300, width: 2)),
           onPressed: () {
             /* resetPasswordDialog();*/
@@ -82,7 +82,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: gblSystemColors.primaryButtonColor),
+              foregroundColor: gblSystemColors.primaryButtonColor),
           child: Row(children: <Widget>[
             (_isButtonDisabled)
                 ? new Transform.scale(

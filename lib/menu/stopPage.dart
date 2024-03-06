@@ -38,7 +38,7 @@ class StopPageWeb extends StatelessWidget {
                         backgroundColor: gblSystemColors.primaryButtonColor,
                         side: BorderSide(
                             color: gblSystemColors.textButtonTextColor, width: 1),
-                        primary: gblSystemColors.primaryButtonTextColor),
+                        foregroundColor: gblSystemColors.primaryButtonTextColor),
                     onPressed: () {
                       LaunchReview.launch();
                     },

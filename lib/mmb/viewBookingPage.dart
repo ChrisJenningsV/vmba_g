@@ -197,7 +197,7 @@ Future <void> doRefresh() async{
           TextButton(
             style: TextButton.styleFrom(
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                primary: gblSystemColors.primaryButtonTextColor,
+                foregroundColor: gblSystemColors.primaryButtonTextColor,
                 backgroundColor: gblSystemColors.primaryButtonColor
             ),
             onPressed: () {
@@ -486,7 +486,7 @@ class CheckinBoardingPassesWidgetState
                     '/MyBookingsPage', (Route<dynamic> route) => false);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               child: TrText(
@@ -915,7 +915,7 @@ class CheckinBoardingPassesWidgetState
         },
     style: TextButton.styleFrom(
         side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-        primary: gblSystemColors.primaryButtonTextColor,
+        foregroundColor: gblSystemColors.primaryButtonTextColor,
         backgroundColor: gblSystemColors.primaryButtonColor
     ),
     child: Row(
@@ -1299,7 +1299,7 @@ class CheckinBoardingPassesWidgetState
           },
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: Colors.black),
+              foregroundColor: Colors.black),
           child: Row(
             children: <Widget>[
               TrText(
@@ -1397,7 +1397,7 @@ class CheckinBoardingPassesWidgetState
         },
         style: TextButton.styleFrom(
             side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            primary: gblSystemColors.textButtonTextColor),
+            foregroundColor: gblSystemColors.textButtonTextColor),
         child: Row(
           children: <Widget>[
             TrText(
@@ -1587,7 +1587,7 @@ class CheckinBoardingPassesWidgetState
             },
             style: TextButton.styleFrom(
                 side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                primary: gblSystemColors.textButtonTextColor),
+                foregroundColor: gblSystemColors.textButtonTextColor),
             child: Row(
               children: <Widget>[
                 TrText(
@@ -1733,7 +1733,7 @@ class CheckinBoardingPassesWidgetState
           //backgroundColor:  gblSystemColors.te,
           side: BorderSide(
               color: gblSystemColors.textButtonTextColor, width: 1),
-          primary: gblSystemColors.textButtonTextColor),
+          foregroundColor: gblSystemColors.textButtonTextColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -2111,7 +2111,7 @@ class CheckinBoardingPassesWidgetState
         style: TextButton.styleFrom(
             backgroundColor: gblSystemColors.primaryButtonColor ,
             side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            primary: gblSystemColors.primaryButtonTextColor),
+            foregroundColor: gblSystemColors.primaryButtonTextColor),
     onPressed: () {
       Navigator.push(context, SlideTopRoute(page: CustomPageWeb('Flight Tracker: ' + itin.airID +itin.fltNo, url)));
     }
@@ -2450,7 +2450,7 @@ class CheckinBoardingPassesWidgetState
         style: TextButton.styleFrom(
             side: BorderSide(
                 color: gblSystemColors.textButtonTextColor, width: 1),
-            primary: gblSystemColors.textButtonTextColor),
+            foregroundColor: gblSystemColors.textButtonTextColor),
         child: Row(
           children: <Widget>[
             TrText(btnText,style: TextStyle(
@@ -2588,7 +2588,7 @@ class CheckinBoardingPassesWidgetState
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary:
+                  foregroundColor:
                   gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Save",
@@ -2727,7 +2727,7 @@ class CheckinBoardingPassesWidgetState
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary:
+                  foregroundColor:
                   gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
@@ -2821,7 +2821,7 @@ class CheckinBoardingPassesWidgetState
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  primary:
+                  foregroundColor:
                   gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
@@ -3053,7 +3053,7 @@ class CheckinBoardingPassesWidgetState
 
     Widget preferredSeatingButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: gblSystemColors.primaryButtonColor),
+          foregroundColor: gblSystemColors.primaryButtonColor),
       child: Text(
         chargeForPreferredSeating
             ? 'Pay for preferred seat'
@@ -3096,7 +3096,7 @@ List<Widget> checkinAllButton() {
           onPressed: () => {},
           style: TextButton.styleFrom(
               side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-              primary: Colors.black),
+              foregroundColor: Colors.black),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

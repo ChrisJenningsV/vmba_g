@@ -121,7 +121,7 @@ String _displayProcessingText = 'Loading...';
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
-            primary: Colors.black),
+            foregroundColor: Colors.black),
         onPressed: () => _deleteProfile(txt),//Navigator.pop(context, ''),
         child: Text(
           'delete',
@@ -143,7 +143,7 @@ String _displayProcessingText = 'Loading...';
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0)),
-            primary: Colors.black),
+            foregroundColor: Colors.black),
         onPressed: () => Navigator.pop(context, ''),
         child: Text(
           'Cancel',

@@ -1021,7 +1021,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               style: TextButton.styleFrom(
                   backgroundColor:bgColour ,
                   side: BorderSide(color:  txtColor, width: 1),
-                  primary:txtColor),
+                  foregroundColor:txtColor),
               child: new TrText("Ok"),
               onPressed: () {
                 Navigator.pop(context, dateTime);
