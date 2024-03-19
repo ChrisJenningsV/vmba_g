@@ -509,7 +509,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                 ),
                 new TextFormField(
                   textCapitalization: TextCapitalization.characters,
-                  //maxLength: 6,
+                  maxLength: 6,
                   decoration: getDecoration(translate("Enter your booking reference")),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp("[0-9A-Za-z]"))
@@ -520,7 +520,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                     }
                     if (value.trim().length != 6) {
                       return translate(
-                          'Your booking reference is 6 charactors long');
+                          'Your booking reference is 6 characters long');
                     }
                     return null;
                   },
@@ -529,6 +529,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                 new Padding(padding: EdgeInsets.all(10)),
                 TextFormField(
                   textCapitalization: TextCapitalization.characters,
+                  maxLength: 30,
                   decoration: getDecoration(translate("Enter your surname")),
                   validator: (value) {
                     if (value!.isEmpty) {
