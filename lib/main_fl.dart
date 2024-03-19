@@ -147,7 +147,6 @@ void configFL() {
 
     testCreditCardProvider: 'videcard',
 
-    wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,

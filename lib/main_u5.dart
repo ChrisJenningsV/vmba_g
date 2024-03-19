@@ -140,7 +140,6 @@ void configU5() {
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
     displayErrorPnr: false,    // just for test, to display pnr problems
-    wantPayStack: false,
     wantPageImages: false,
     wantLeftLogo: false,
     wantCurrencySymbols: true,

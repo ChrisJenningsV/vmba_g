@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/menu/login.dart';
 
@@ -35,7 +36,7 @@ class _AdsPageState extends State<AdsPage> {
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                foregroundColor: gblSystemColors.primaryButtonColor,
+                backgroundColor: gblSystemColors.primaryButtonColor,
               ),
           onPressed:() {
             //Navigator.of(context).pushNamedAndRemoveUntil('/AdsFlightSearchPage', (Route<dynamic> route) => false);},
@@ -44,7 +45,7 @@ class _AdsPageState extends State<AdsPage> {
           child: TrText('Accept', style: new TextStyle(color: gblSystemColors.primaryButtonTextColor),)),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                  backgroundColor: cancelButtonColor(),
               ),
               onPressed:() {
                 Navigator.of(context).pushNamedAndRemoveUntil(

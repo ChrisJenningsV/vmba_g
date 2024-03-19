@@ -8,6 +8,8 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../components/vidButtons.dart';
+
 class ProfileListPage extends StatefulWidget {
   ProfileListPage(
       {Key key= const Key("proflist_key"), this.passengerDetail, this.isAdsBooking=false, this.isLeadPassenger=false})
@@ -138,16 +140,8 @@ String _displayProcessingText = 'Loading...';
         });
   }
 
-  ElevatedButton _getCancelButton(String txt) {
-   return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-            foregroundColor: Colors.black),
-        onPressed: () => Navigator.pop(context, ''),
-        child: Text(
-          'Cancel',
-          style: new TextStyle(color: Colors.white),
-        ));
+  Widget _getCancelButton(String txt) {
+   return vidCancelButton( context, "CANCEL", (context) { Navigator.pop(context, '');}
+        );
   }
 }

@@ -15,13 +15,16 @@ class VrsApiRequest extends Session {
   String language ='';
   String appVersion ='';
   String undoCmd ='';
+  String smartApiVersion = '';
 
   VrsApiRequest(
       Session session,
       this.cmd,
       this.token,
   {this.appFile='',this.vrsGuid='', this.appVersion='', this.brandId='',
-    this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='', this.data=''
+    this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='',
+    this.data='',
+    this.smartApiVersion='1.1',
 
   }
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
@@ -43,6 +46,7 @@ class VrsApiRequest extends Session {
     map['language'] = language;
     map['undoCmd'] = undoCmd;
     map['appVersion'] = appVersion;
+    map['smartApiVersion'] = smartApiVersion;
     return map;
   }
 }
@@ -94,6 +98,7 @@ class SeatReply {
   String reply ='';
   String seats ='';
   String outstandingAmount ='';
+  String bookSeatCmd = '';
 
   SeatReply(this.reply, this.seats, this.outstandingAmount);
 
@@ -102,6 +107,7 @@ class SeatReply {
     if( json['reply'] != null )reply = json['reply'];
     if( json["seats"] != null )seats = json["seats"];
     if( json["outstandingAmount"] != null )outstandingAmount = json["outstandingAmount"];
+    if( json['bookSeatCmd'] != null ) bookSeatCmd = json['bookSeatCmd'];
   }
 }
 

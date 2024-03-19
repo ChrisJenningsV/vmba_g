@@ -136,7 +136,7 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
       }
     },
     style: ElevatedButton.styleFrom(
-        foregroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
+        backgroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0))),
     child: Row(
@@ -326,8 +326,22 @@ class _MyBlinkingButtonState extends State<VidBlinkingButton>
 }
 
 Widget vidDemoButton(BuildContext context, String caption ,void Function(dynamic p) onClick ){
-  return   MaterialButton(
+  return   ElevatedButton(
+    style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(gblSystemColors.primaryButtonColor), ),
       onPressed: () => onClick(context),
   child: Text(caption, style: TextStyle(color: Colors.white),),
-  color: Colors.lightBlue.shade400);
+  );
+}
+
+Widget vidCancelButton(BuildContext context, String caption ,void Function(dynamic p) onClick ) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: cancelButtonColor(),
+    ),
+    child: TrText(caption, style: TextStyle(
+         color: Colors.black),),
+    onPressed: () {
+        onClick(context);
+      },
+  );
 }

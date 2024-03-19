@@ -11,6 +11,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/vidButtons.dart';
@@ -18,6 +19,8 @@ import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
+import '../v3pages/cards/v3FormFields.dart';
+import '../v3pages/controls/v3Dialog.dart';
 
 //ignore: must_be_immutable
 class MyFqtvPage extends StatefulWidget {
@@ -189,6 +192,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         }
       }
 
+//      return v3ShowDialog(context,Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'),   )
+
       return  Scaffold(
        /*   appBar: AppBar(
             flexibleSpace: flexibleSpace,
@@ -314,20 +319,14 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade100),
-                    child: TrText(
-                      "CANCEL",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      //Put your code here which you want to execute on Cancel button click.
+                    vidCancelButton( context, "CANCEL", (context) {
+                      //
                       Navigator.of(context).pop();
                     },
                   ),
                   SizedBox(width: 20,),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryButtonColor),
+                    style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryButtonColor,),
                     child: Row(children: <Widget>[
                       (_isButtonDisabled)
                           ? new Transform.scale(
@@ -349,7 +348,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                             _passwordEditingController.text.isNotEmpty) {
                           _isButtonDisabled = true;
                           _loadingInProgress = true;
-                          //setState(() {});
+                          setState(() {});
                           _fqtvLogin();
                         } else {
                           _error = "Please complete both fields";
@@ -677,13 +676,15 @@ Widget _getTrans() {
     // flutter defined function
   }
 
-  void _fqtvResetPassword() async {
+  void _fqtvResetPassword({void Function()? refresh }) async {
     String msg = json.encode(ApiFqtvResetPasswordRequest(
         _oldPasswordEditingController.text).toJson());
     String method = 'ResetPassword';
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
+      gblActionBtnDisabled = false;
+      if( refresh != null ) refresh();
       Map<String, dynamic> map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       _isButtonDisabled = false;
@@ -704,20 +705,24 @@ Widget _getTrans() {
 
   }
 
-  void _fqtvChangePassword() async {
+  void _fqtvChangePassword({void Function()? refresh }) async {
     String msg = json.encode(ApiFqtvChangePasswordRequest(fqtvNo,
           _oldPasswordEditingController.text,
           _newPasswordEditingController.text).toJson());
-    String method = 'ChangePassword';
+    String method = 'ChangePassword2';  // use new version
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
+      gblActionBtnDisabled = false;
+      if( refresh != null ) refresh();
       _error = '';
       Map<String, dynamic> map = json.decode(result);
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
+      _isButtonDisabled = false;
       if( resp.statusCode != 'OK') {
         _error = resp.message;
-        _actionCompleted();
+        //_actionCompleted();
+
         _showDialog();
 
       } else {
@@ -729,7 +734,7 @@ Widget _getTrans() {
         fqtvPass = _newPasswordEditingController.text;
         // save new password in profile
         Repository.get().getNamedUserProfile('PAX1').then((profile) {
-          if (profile != null) {
+          if (profile != null && profile.value != '') {
             Map<String, dynamic> map = json.decode(
                 profile.value.toString().replaceAll("'", '"')); // .replaceAll(',}', '}')
             var passengerDetail = PassengerDetail.fromJson(map);
@@ -767,6 +772,7 @@ Widget _getTrans() {
       String data = json.encode(rq);
       try {
         String reply = await callSmartApi('FQTVLOGIN', data);
+        _loadingInProgress = false;
         Map<String, dynamic> map = json.decode(reply);
         FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
 
@@ -814,12 +820,25 @@ Widget _getTrans() {
         _isButtonDisabled = false;
         _loadingInProgress = false;
         //_actionCompleted();
-        endProgressMessage();
-        criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true, doublePop: true);
+       // endProgressMessage();
+        //showAlertDialog(context, 'Login Error', gblError);
+
+        //criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true); // , doublePop: true
+        //setState(() {});
         //Navigator.of(context).pop();
         print(gblError);
         _error = gblError;
         //_showDialog();
+        _loadingInProgress = false;
+        //_actionCompleted();
+        Navigator.of(context).pop();
+        //_showDialog();
+        showAlertDialog(context, 'Information', _error, onComplete: () {
+          setState(() {
+            gblError = '';
+          });
+        }
+        );
       }
     } catch(e){
       fqtvNo = '';
@@ -833,6 +852,10 @@ Widget _getTrans() {
       //_showDialog();
       endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true);
+
+      _loadingInProgress = false;
+      _actionCompleted();
+
       //Navigator.of(context).pop();
       return;
     }
@@ -944,7 +967,71 @@ Widget _getTrans() {
   void _changePasswordDialog(BuildContext context, dynamic p ) {
     _oldPasswordEditingController.text = '';
     _newPasswordEditingController.text = '';
-   showDialog(
+
+    v3ShowDialog(context,translate('Change Password'),
+    icon: Icons.person_pin,
+      wantCancel: true,
+      actionButtonText: 'Continue',
+      onComplete: (c, refreshFunction){
+        _fqtvChangePassword(refresh: refreshFunction);
+      },
+    content: Stack(
+    children: <Widget>[
+    Container(
+    child: Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      v3FqtvPasswordFormField('Old password', _oldPasswordEditingController),
+/*
+    new TextFormField(
+    decoration: getDecoration('Old password'),
+    controller: _oldPasswordEditingController,
+    obscureText: _isHidden,
+    obscuringCharacter: "*",
+    keyboardType: TextInputType.visiblePassword,
+    ),
+*/
+    SizedBox(height: 15,),
+      v3FqtvPasswordFormField('New Password', _newPasswordEditingController),
+/*
+    new TextFormField(
+    controller: _newPasswordEditingController ,
+    decoration: getDecoration('new Password'),
+    obscureText: _isHidden,
+    obscuringCharacter: "*",
+    inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9!@%\$&*]"))
+    ],
+    keyboardType: TextInputType.visiblePassword,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    validator: (value)  {
+      return validateFqtvPassword(value);
+        },
+
+    onSaved: (value) {
+    if (value != null) {
+      }
+    },
+    ),
+*/
+    Padding(padding: EdgeInsets.all(5)),
+    TrText('Password must contain the following:', textScaleFactor: 0.9,),
+    TrText('- A lowercase letter', textScaleFactor: 0.75,),
+    TrText('- A capital (uppercase) letter', textScaleFactor: 0.75,),
+    TrText('- A number', textScaleFactor: 0.75,),
+    TrText('- one of the following ! @ % & *', textScaleFactor: 0.75,),
+    TrText('- Between 8 and 16 characters in length', textScaleFactor: 0.75,),
+    ],
+    ),
+    ),
+    ],
+    )
+    );
+
+
+
+ /*  showDialog(
        context: context,
        builder: (BuildContext context) {
    return AlertDialog(
@@ -952,7 +1039,7 @@ Widget _getTrans() {
      title: Column(
          children: [
            ListTile(
-             leading: Icon(Icons.person_pin, color: Colors.red, size: 40,),
+             leading: Icon(Icons.person_pin, color: gblSystemColors.primaryButtonColor, size: 40,),
              title: Text(translate('Change Password')),
            ),
            Divider(
@@ -1008,7 +1095,7 @@ Widget _getTrans() {
        TrText('   A capital (uppercase) letter', textScaleFactor: 0.75,),
        TrText('   A number', textScaleFactor: 0.75,),
        TrText('   one of the following ! @ % & *', textScaleFactor: 0.75,),
-       TrText('Between 8 and 16 characters in length', textScaleFactor: 0.9,),
+       TrText('Between 8 and 16 characters in length', textScaleFactor: 0.75,),
      ],
    ),
          ),
@@ -1016,17 +1103,31 @@ Widget _getTrans() {
          ),
      actions: <Widget>[
        ElevatedButton(
-         style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
-         child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
+         style: ElevatedButton.styleFrom(backgroundColor: cancelButtonColor()) ,
+         child: TrText("CANCEL", style: TextStyle( color: Colors.black),),
          onPressed: () {
            //Put your code here which you want to execute on Cancel button click.
            Navigator.of(context).pop();
          },
        ),
        ElevatedButton(
+         style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryButtonColor),
+           child:
+         _isButtonDisabled ? Row( children: [
+             _isButtonDisabled ? new CircularProgressIndicator() : Container(),
+         Padding(
+         padding: _isButtonDisabled ? EdgeInsets.all(8.0) :EdgeInsets.all(0) ,
          child: TrText("CONTINUE"),
+         )
+         ]) : TrText("CONTINUE"),
          onPressed: () {
-           _fqtvChangePassword();
+           if( _isButtonDisabled == false ) {
+             _isButtonDisabled = true;
+             setState(() {
+               /// force disable
+             });
+             _fqtvChangePassword();
+           }
 
            //});
 
@@ -1037,82 +1138,136 @@ Widget _getTrans() {
 
      ],
    );
-   });
+   });*/
  }
+
 
  void resetPasswordDialog() {
 
+
+   v3ShowDialog(context,translate('Reset Password'),
+      icon: Icons.password,
+      content: Stack(
+        children: <Widget>[
+          Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                v3EmailFormField(translate('Email'), _oldPasswordEditingController),
+               /* new TextFormField(
+                  decoration: InputDecoration(
+                    contentPadding:
+                    new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 15.0),
+                    labelText: translate('Email'),
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(15.0),
+                      borderSide: new BorderSide(),
+                    ),),
+                  controller: _oldPasswordEditingController,
+                  keyboardType: TextInputType.emailAddress,
+                  //validator: (value) => validateEmail(value.trim()),
+                  // keyboardType: TextInputType.text,
+                ),*/
+                SizedBox(height: 15,),
+              ],
+            ),
+          ),
+        ],
+      ),
+      wantCancel: true,
+     actionButtonText: 'Continue',
+     onComplete: (c,  void Function()? refresh ){
+       _fqtvResetPassword(refresh: refresh );
+     }
+   );
+
+/*
    showDialog(
        context: context,
-       builder: (BuildContext context) {
-         return AlertDialog(
-           titlePadding: EdgeInsets.only(top: 0),
-           title: Column(
-               children: [
-                 ListTile(
-                   leading: Icon(Icons.person_pin, color: Colors.red, size: 40,),
-                   title: TrText('Reset Password'),
-                 ),
-                 Divider(
-                   color: Colors.grey,
-                   height: 4.0,
-                 ),
-               ]),
+       builder: (BuildContext context)
+   {
+     return StatefulBuilder(
+         builder: (context, setState) {
+           return AlertDialog(
+             titlePadding: EdgeInsets.only(top: 0),
+             title: Column(
+                 children: [
+                   ListTile(
+                     leading: Icon(
+                       Icons.person_pin, color: gblSystemColors.primaryHeaderColor, size: 40,),
+                     title: TrText('Reset Password'),
+                   ),
+                   Divider(
+                     color: Colors.grey,
+                     height: 4.0,
+                   ),
+                 ]),
 
-           content:    Stack(
-             children: <Widget>[
-               Container(
-                 child: Column(
-                   mainAxisSize: MainAxisSize.min,
-                   children: <Widget>[
-                     new TextFormField(
-                       decoration: InputDecoration(
-                         contentPadding:
-                         new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                         labelText: translate('Email'),
-                         fillColor: Colors.white,
-                         border: new OutlineInputBorder(
-                           borderRadius: new BorderRadius.circular(15.0),
-                           borderSide: new BorderSide(),
-                         ),),
-                       controller: _oldPasswordEditingController,
-                       keyboardType: TextInputType.emailAddress,
-                       //validator: (value) => validateEmail(value.trim()),
-                      // keyboardType: TextInputType.text,
-                     ),
-                     SizedBox(height: 15,),
-                    ],
+             content: Stack(
+               children: <Widget>[
+                 Container(
+                   child: Column(
+                     mainAxisSize: MainAxisSize.min,
+                     children: <Widget>[
+                       new TextFormField(
+                         decoration: InputDecoration(
+                           contentPadding:
+                           new EdgeInsets.symmetric(
+                               vertical: 15.0, horizontal: 15.0),
+                           labelText: translate('Email'),
+                           fillColor: Colors.white,
+                           border: new OutlineInputBorder(
+                             borderRadius: new BorderRadius.circular(15.0),
+                             borderSide: new BorderSide(),
+                           ),),
+                         controller: _oldPasswordEditingController,
+                         keyboardType: TextInputType.emailAddress,
+                         //validator: (value) => validateEmail(value.trim()),
+                         // keyboardType: TextInputType.text,
+                       ),
+                       SizedBox(height: 15,),
+                     ],
+                   ),
                  ),
-               ),
-             ],
-           ),
-           actions: <Widget>[
-             ElevatedButton(
-               style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
-               child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
-               onPressed: () {
-                 //Put your code here which you want to execute on Cancel button click.
+               ],
+             ),
+             actions: <Widget>[
+               vidCancelButton(context, "CANCEL", (context) {
                  Navigator.of(context).pop();
                },
-             ),
-             ElevatedButton(
-               child: TrText("CONTINUE"),
-               onPressed: () {
-                 var str = validateEmail(_oldPasswordEditingController.text);
-                 if( str == null || str == '' ) {
-                   _fqtvResetPassword();
-                 } else {
-                   _error = str;
-                   _actionCompleted();
-                   _showDialog();
-                 }
-                 //});
+               ),
+               ElevatedButton(
+                 style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryButtonColor,),
+                 child:
+                 (_isButtonDisabled) ? new Transform.scale(scale: 0.5,
+                     child: CircularProgressIndicator(color: Colors.white)) :
+                 TrText("CONTINUE"),
+                 onPressed: () {
+                   if (_isButtonDisabled == false) {
+                     var str = validateEmail(
+                         _oldPasswordEditingController.text);
+                     if (str == null || str == '') {
+                       _isButtonDisabled = true;
+                       setState(() {
 
-                 //Navigator.of(context).pop();
-               },
-             ),
-           ],
-         );
-       });
+                       });
+                       _fqtvResetPassword();
+                     } else {
+                       _error = str;
+                       _actionCompleted();
+                       _showDialog();
+                     }
+                     //});
+                   }
+                 },
+               ),
+             ],
+           );
+         });
+   }
+    );
+*/
  }
 }

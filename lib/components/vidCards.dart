@@ -9,8 +9,8 @@ import '../data/globals.dart';
 Widget vidExpanderCard(BuildContext context, String caption, bool expanded, IconData? icon,  List<Widget> body, { bool wantTop = true,
   TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
   return vidExpanderCardExt(context,
+      // title
       Container(
-
       child: Row( children: [
          Icon(
            icon== null ? Icons.back_hand : icon,
@@ -22,6 +22,7 @@ Widget vidExpanderCard(BuildContext context, String caption, bool expanded, Icon
         Text(translate(caption),  style: ts,) :
         Text(translate(caption), textScaleFactor: 1.25),
       ],)),
+
       expanded,
       body, wantTop: wantTop  );
 }

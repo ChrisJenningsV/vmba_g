@@ -151,7 +151,6 @@ void configT6() {
     testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
-  wantPayStack: false,
     wantPushNoticications: true,
     wantNotificationEdit: false,
     wantNewPayment: true,

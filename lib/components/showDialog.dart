@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../utilities/helper.dart';
 
@@ -59,11 +60,11 @@ Future<bool> confirmDialog(BuildContext context, String title, String msg ) asyn
         ),
         actions: [
           ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: Colors.grey),
+              style: ElevatedButton.styleFrom(backgroundColor: cancelButtonColor()),
               onPressed: () => Navigator.pop(context, false),
               child: TrText('Cancel')),
           ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryButtonColor),
+              style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryButtonColor),
               onPressed: () => Navigator.pop(context, true),
               child: TrText('Confirm')),
         ],
@@ -176,8 +177,9 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
       ),
     ),
       actions: [
+        onComplete == null ?
       ElevatedButton(
-      style: ElevatedButton.styleFrom(foregroundColor: Colors.grey),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
 onPressed: () {
 if( onComplete != null ) {
 onComplete();
@@ -187,7 +189,7 @@ onComplete();
 },
 
 child: TrText
-('OK')),
+('OK')) : Container()
 ],
 );
 
@@ -226,7 +228,7 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      foregroundColor: gblSystemColors
+                      backgroundColor: gblSystemColors
                           .primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:

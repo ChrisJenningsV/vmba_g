@@ -561,7 +561,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
           title: new Text("ADS Login"),
           content: _error != null && _error != ''
               ? new Text(_error)
-              : new TrText("Please try again"),
+              : new TrText("ADS login failed. Please try again"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(

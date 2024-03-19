@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 import '../../data/globals.dart';
 
 Color actionButtonColor( {bool availableOffline = false} ){
@@ -10,6 +12,10 @@ Color actionButtonColor( {bool availableOffline = false} ){
   } else {
     return disabledActionButtonColor();
   }
+}
+
+Color cancelButtonColor( ){
+  return Colors.grey.shade100;
 }
 
 Color disabledActionButtonColor(){

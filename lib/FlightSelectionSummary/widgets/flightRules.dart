@@ -125,7 +125,14 @@ class _FlightRulesState extends State<FlightRulesWidget> {
         //list.forEach((element) {
         List<String> copyList = [];
         list.forEach((element) {
-          copyList.add(element.replaceAll('- ', ''));
+          if(element.contains('<br>')) {
+            List<String> list2 = element.split('<br>');
+            list2.forEach((e) {
+              copyList.add(e.replaceAll('- ', '').replaceAll('\n\r', ''));
+            });
+          } else {
+            copyList.add(element.replaceAll('- ', ''));
+          }
         });
         rulesWidget.add(
             BulletList(copyList));

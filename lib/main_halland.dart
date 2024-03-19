@@ -138,7 +138,6 @@ void configAH() {
     testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',
     gblServerFiles: 'https://customertest.videcom.com/AirLeap/AppFiles/',
-    wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,

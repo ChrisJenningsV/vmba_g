@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/vidButtons.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 import 'package:vmba/v3pages/cards/typogrify.dart';
 
 import '../../Helpers/stringHelpers.dart';
@@ -38,7 +39,7 @@ class FlightSearchBoxState extends State<FlightSearchBox> {
     List<Widget> list = [];
 
     if(gblSearchParams.gotAirports()) {
-      list.add( Padding(padding: EdgeInsets.only(bottom: 5),
+      list.add( Padding(padding: EdgeInsets.only(bottom: 5, top: 5),
           child: JourneyTypeWidget(
           isReturn: gblSearchParams.isReturn,
           onChanged: _handleReturnToggleChanged)));
@@ -55,6 +56,13 @@ class FlightSearchBoxState extends State<FlightSearchBox> {
     // passengers
     if( gblSearchParams.gotDates()){
       list.add(paxWidgets(context));
+      if (gblRedeemingAirmiles == true) {
+        // add check box
+      }
+      if( gblSettings.eVoucher == true){
+        // ass Text edit for voucher no
+      }
+
       list.add(searchButton(context));
     }
 
@@ -402,7 +410,7 @@ showSlideUpDialog(BuildContext context, String label, void Function()? onComplet
                     Navigator.of(context).pop(true);
                   } ,
                   child: Text('Cancel', style: TextStyle(color: Colors.white),),
-                  color: Colors.grey),
+                  color: cancelButtonColor()),
 
                 ],)
           ),

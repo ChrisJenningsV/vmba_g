@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vmba/v3pages/cards/searchCard.dart';
+import 'package:vmba/v3pages/cards/v3Card.dart';
 
 import '../../components/vidCards.dart';
 import '../../data/globals.dart';
@@ -187,39 +188,28 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
           switch (card.card_type.toUpperCase()) {
             case 'FLIGHTSEARCH':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded,
-                  card.icon as IconData,
-                  <Widget>[FlightSearchBox()], wantTop: false, ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card,FlightSearchBox(), ts: ts));
               break;
             case 'FLIGHTSCHEDULE':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded, card.icon,
-                  <Widget>[ Text('body')], wantTop: false, ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card,Text('body'), ts: ts));
               break;
             case 'FQTVLOGIN':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded, card.icon,
-                  <Widget>[ FqtvLoginBox()], wantTop: false, ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card, FqtvLoginBox(), ts: ts));
               break;
             case 'MYBOOKINGS':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded,
-                  card.icon as IconData,
-                  <Widget>[getMiniMyBookingsPage(context)], wantTop: false,
-                  ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card,getMiniMyBookingsPage(context),ts: ts));
               break;
             case 'CARDSLIDER':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded, card.icon, <Widget>[
-                getSlides(context, card.cards, doCallback)
-              ], wantTop: false, ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card, getSlides(context, card.cards, doCallback), ts: ts));
               break;
             case 'LINKLIST':
-              list.add(vidExpanderCard(
-                  context, card.title!.text, card.expanded, card.icon, <Widget>[
-                getLinks(context, card.cards, doCallback)
-              ], wantTop: false, ts: ts));
+              list.add(v3ExpanderCard(
+                  context, card, getLinks(context, card.cards, doCallback),  ts: ts));
               break;
             case 'PHOTOLINK':
               list.add(getSlide(context, card, true));

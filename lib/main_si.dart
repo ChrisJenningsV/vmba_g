@@ -92,7 +92,7 @@ void configSI() {
   prohibitedItemsNoticeUrl: '',
   groupsBookingsEmail:  "groups@blueislands.com",
   maxNumberOfPax:  8,
-  hideFareRules:  true,
+  hideFareRules:  false,
     wantInternatDialCode: true,
     wantFQTV:  true,
     wantNewEditPax: true,
@@ -130,21 +130,18 @@ void configSI() {
     //<binding protocol="http" bindingInformation="*:63954:localhost" />
     // 					<binding protocol="http" bindingInformation="*:63954:127.0.0.1" />
 
- // testXmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/blueislands/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-  //  testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
-//    testXmlUrl:      "http://192.168.100.98/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
   testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-//    testSmartApiUrl:  "http://10.0.2.2:63954/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:  "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
 
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
   testPayPage: 'https://customertest.videcom.com/blueislands/VARS/Public/MobilePaymentStart.aspx',
-    //  testApiUrl:      'http://10.0.2.2:5000/api',
+//    testApiUrl:      'http://10.0.2.2:5000/api',
   testCreditCardProvider: 'videcard', // citypaydirect
 
     wantNewPayment: true,
-    wantPayStack: false,
   bpShowFastTrack: false,
   bpShowLoungeAccess: false,
   wantPushNoticications: true,

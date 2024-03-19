@@ -448,7 +448,12 @@ Page resource error:
 
       if( gblSettings.saveChangeBookingBeforePay == false){
         // make change flight changes
-        await changeFlt(widget.pnrModel, widget.mmbBooking!, context);
+        if( gblPayAction == 'BOOKSEAT' )
+          {
+            data = await runVrsCommand('$gblBookSeatCmd^*R~x');
+          } else {
+          await changeFlt(widget.pnrModel, widget.mmbBooking!, context);
+        }
       }
 
     try {

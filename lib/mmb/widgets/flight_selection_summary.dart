@@ -761,7 +761,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                       ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      foregroundColor:
+                      backgroundColor:
                       gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),

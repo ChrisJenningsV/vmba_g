@@ -2,9 +2,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:vmba/utilities/widgets/colourHelper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../components/trText.dart';
+import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../home/home_page.dart';
 
@@ -84,7 +86,7 @@ class MessagePageState extends State<MessagePage> {
           Align(
               alignment: Alignment.center,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade200) ,
                 child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
@@ -164,10 +166,7 @@ class MessagePageState extends State<MessagePage> {
                 translate('LOGIN'), widget.titleTextClr!, widget.titleBackClr!),
             content: contentBox(context),
             actions: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
-                child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
-                onPressed: () {
+            vidCancelButton( context, "CANCEL", (context) {
                   //Put your code here which you want to execute on Cancel button click.
                   Navigator.of(context).pop();
                   if( widget.doublePop) {
@@ -176,7 +175,7 @@ class MessagePageState extends State<MessagePage> {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(foregroundColor: gblSystemColors.primaryHeaderColor) ,
+                style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryHeaderColor) ,
                 child: TrText("CONTINUE"),
                 onPressed: () {
                   String result = widget.onOk!(context, _sineController.text, _passwordController.text);
@@ -563,8 +562,9 @@ Widget msgDialog(BuildContext context, String title, Widget content,{ List<Widge
       Align(
           alignment: Alignment.center,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
-            child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200,
+            backgroundColor: titleBackClr) ,
+            child: TrText("OK", /*style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),*/),
             onPressed: () {
               //Put your code here which you want to execute on Cancel button click.
               Navigator.of(context).pop();

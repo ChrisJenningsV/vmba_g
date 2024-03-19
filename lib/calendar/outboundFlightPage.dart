@@ -46,10 +46,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   void initState() {
     super.initState();
     commonPageInit('NEWBOOKING');
+    gblBookSeatCmd = '';
 
 //    gblActionBtnDisabled = false;
 
     _scrollController = new ScrollController();
+    gblActionBtnDisabled = false;
     _loadingInProgress = true;
     _loading = 'Searching for Flights';
     _noInternet = false;
@@ -356,7 +358,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  foregroundColor: gblSystemColors.primaryButtonColor),
+                  backgroundColor: gblSystemColors.primaryButtonColor),
               onPressed: () => retrySearch(),
               child: TrText(
                 'Retry Search',

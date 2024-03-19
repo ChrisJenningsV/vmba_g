@@ -7,6 +7,7 @@ import '../utilities/helper.dart';
 import 'package:http/http.dart' as http;
 
 Future getHomepage() async {
+  logit('getHomepage');
   if( gblHomeCardList == null ) {
     String jsonString = await await rootBundle.loadString('lib/assets/$gblAppTitle/json/home.json');
 
@@ -63,7 +64,11 @@ class CustomPage {
       cards = [];
       //new List<Country>();
       json['cards'].forEach((v) {
-        cards?.add(new HomeCard.fromJson(v));
+        HomeCard c = new HomeCard.fromJson(v);
+        if( c.title != null ) {
+          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
+        }
+        cards?.add(c);
       });
     }
   }
@@ -75,8 +80,11 @@ class HomeCard extends HomeCardLink  {
   double height = 0;
   double fontSize = 0;
   bool expanded = true;
+  double cornerRadius= 10;
+
   List<HomeCard>? cards;
   List<HomeCardLink>? links;
+
 
   HomeCard();
 
@@ -98,6 +106,11 @@ class HomeCard extends HomeCardLink  {
       if( json['url'] != null ) url = json['url'];
       if( json['height'] != null ) height = double.parse(json['height']);
       if( json['fontSize'] != null ) fontSize = double.parse(json['fontSize']);
+      if( json['cornerRadius'] != null ){
+        if( int.parse(json['cornerRadius']) < 50) {
+          cornerRadius = double.parse(json['cornerRadius']);
+        }
+      }
 
       if (json['cards'] != null) {
         cards = [];
@@ -134,6 +147,7 @@ class HomeCardLink {
       if( json['title'] != null ) {
         if( json['title'] is Map) {
           title = CardText.fromJson(card_type, json['title']);
+          logit('ttl ${title!.text} bgclr ${title!.backgroundColor}');
         } else {
           title = new CardText(card_type, text: json['title']);
         }
@@ -160,12 +174,12 @@ class CardAction {
 }
 
 class CardText {
+  Color? color ;
+  Color? backgroundColor;
   String text = '';
   String card_type='';
   FontWeight fontWeight =FontWeight.normal;
-
   double fontSize = 0;
-  Color? color ;
 
   CardText(this.card_type, {this.text=''});
 
@@ -173,39 +187,51 @@ class CardText {
     this.card_type = card_type;
     if (json['text'] != null) text = json['text'];
     if (json['fontSize'] != null) fontSize = double.parse(json['fontSize']);
-    if( json['fontWeight'] != null ){
-      if(json['fontWeight'].toString().toUpperCase().contains('BOLD')) {
-        fontWeight = FontWeight.bold;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('100')) {
-        fontWeight = FontWeight.w100;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('200')) {
-        fontWeight = FontWeight.w200;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('300')) {
-        fontWeight = FontWeight.w300;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('400')) {
-        fontWeight = FontWeight.w400;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('500')) {
-        fontWeight = FontWeight.w500;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('600')) {
-        fontWeight = FontWeight.w600;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('700')) {
-        fontWeight = FontWeight.w700;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('800')) {
-        fontWeight = FontWeight.w800;
-      } else if(json['fontWeight'].toString().toUpperCase().contains('900')) {
-        fontWeight = FontWeight.w900;
 
+      if( json['fontWeight'] != null ){
+        if(json['fontWeight'].toString().toUpperCase().contains('BOLD')) {
+          fontWeight = FontWeight.bold;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('100')) {
+          fontWeight = FontWeight.w100;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('200')) {
+          fontWeight = FontWeight.w200;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('300')) {
+          fontWeight = FontWeight.w300;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('400')) {
+          fontWeight = FontWeight.w400;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('500')) {
+          fontWeight = FontWeight.w500;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('600')) {
+          fontWeight = FontWeight.w600;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('700')) {
+          fontWeight = FontWeight.w700;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('800')) {
+          fontWeight = FontWeight.w800;
+        } else if(json['fontWeight'].toString().toUpperCase().contains('900')) {
+          fontWeight = FontWeight.w900;
+
+        }
       }
-    }
-    if (json['color'] != null){
+      if (json['color'] != null){
         if( json['color'].toString().startsWith('#')) {
           color = json['color'].toString().toColor();
         } else {
           // look up color name
           color =lookUpColor( json['color'].toString());
         }
+      }
+      if( json['backgroundColor'] != null ) {
+        logit('fromJ $text got bgClr ${json['backgroundColor']}');
+
+        if( json['backgroundColor'].toString().startsWith('#')) {
+          backgroundColor = json['backgroundColor'].toString().toColor();
+        } else {
+          backgroundColor = lookUpColor(json['backgroundColor'].toString());
+        }
+        logit('fromJ $text got bgClr $backgroundColor');
+      }
     }
-  }
+
   TextStyle getStyle(){
     double fontS = 0;
     Color clr = Colors.black;
@@ -237,7 +263,6 @@ class CardText {
         fontS = 20;
         clr = Colors.grey;
         break;
-
     }
     if(fontSize != 0) fontS = fontSize;
     if( color != null ) clr = color as Color;
@@ -249,6 +274,8 @@ class CardText {
 
 Color lookUpColor(String colorName){
   switch (colorName.toUpperCase()){
+    case 'TRANSPARENT':
+      return Colors.transparent;
     case 'RED':
       return Colors.red;
     case 'PINK':

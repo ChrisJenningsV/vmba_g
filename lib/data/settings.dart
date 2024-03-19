@@ -66,7 +66,6 @@ class Settings {
   bool wantApis =false;
   bool displayErrorPnr=false;
   bool needTicketsToImport = false;
-  bool wantPayStack = false;
   bool wantLeftLogo = false;
   bool wantMyAccount =true;
   bool wantProfileList = false;
@@ -249,7 +248,6 @@ bool bpShowFastTrack;
     this.airlineName ='',
     this.creditCardProvider ='',
     this.displayErrorPnr = false,
-    this.wantPayStack = false,
     this.wantLeftLogo = false,
     this.needTicketsToImport = false,
     this.wantCurrencySymbols =false,
@@ -298,7 +296,7 @@ bool bpShowFastTrack;
     this.canChangeCancelledFlight = true,
     this.wantEnglishDates = false,
     this.wantTandCCheckBox = false,
-    this.saveChangeBookingBeforePay = true,
+    this.saveChangeBookingBeforePay = false,
     this.wantTerminal = true,
     this.wantMaterial3 = false,
     this.wantPriceCalendar = false,

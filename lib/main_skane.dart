@@ -132,7 +132,6 @@ void configAS() {
     testApiUrl:      'https://customertest.videcom.com/airleap/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',
 
-    wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,

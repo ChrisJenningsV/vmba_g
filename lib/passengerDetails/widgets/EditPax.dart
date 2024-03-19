@@ -1099,7 +1099,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
           title: new Text("ADS Login"),
           content: _error != null && _error != ''
               ? new Text(_error)
-              : new Text("Please try again"),
+              : new Text("ADS login failed. Please try again"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new TextButton(

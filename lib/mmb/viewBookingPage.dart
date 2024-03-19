@@ -41,6 +41,7 @@ import '../functions/bookingFunctions.dart';
 import '../home/home_page.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/widgets/colourHelper.dart';
 import '../utilities/widgets/dataLoader.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
@@ -2716,7 +2717,11 @@ class CheckinBoardingPassesWidgetState
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new TextButton(
+            new ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor: cancelButtonColor()),
               child: new TrText("Decline",
                   style: new TextStyle(color: Colors.black)),
               onPressed: () {
@@ -2726,8 +2731,8 @@ class CheckinBoardingPassesWidgetState
             new ElevatedButton(
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  foregroundColor:
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor:
                   gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
@@ -3053,7 +3058,7 @@ class CheckinBoardingPassesWidgetState
 
     Widget preferredSeatingButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-          foregroundColor: gblSystemColors.primaryButtonColor),
+          backgroundColor: gblSystemColors.primaryButtonColor),
       child: Text(
         chargeForPreferredSeating
             ? 'Pay for preferred seat'

@@ -18,11 +18,11 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'SI';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 106;
-int requiredApiVersion = 101;
+int requiredXmlVersion = 110;
+int requiredApiVersion = 102;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = true;
 bool gblUseCache = false;
@@ -52,6 +52,8 @@ String gblNotifyToken ='';
 String gblDeviceId ='';
 String gblCurPage ='';
 String gblUndoCommand ='';
+String gblBookSeatCmd = '';
+String gblPageName = '';
 //      r'^(([^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+(\.[^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
 String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";

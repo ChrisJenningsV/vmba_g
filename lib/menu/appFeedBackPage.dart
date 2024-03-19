@@ -360,7 +360,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
           content: contentBox(context),
           actions: <Widget>[
             ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: Colors.black12) ,
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black12) ,
               child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
               onPressed: () {
                 //Put your code here which you want to execute on Cancel button click.

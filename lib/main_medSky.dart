@@ -25,8 +25,8 @@ void main() {
 }
 void configM1() {
   SystemColors _systemColors = SystemColors(
-    primaryButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
-    accentButtonColor: Color.fromRGBO(0XF9, 0x96, 0x24, 1),
+    primaryButtonColor: Colors.red,
+    accentButtonColor: Colors.red,
     accentColor: Colors.grey, // used for calendar selection ends
     primaryColor: Colors.yellow,
     textButtonTextColor: Colors.black54,
@@ -165,7 +165,6 @@ void configM1() {
  /*   creditCardProvider: '3DS_videcard',
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 */
-    wantPayStack: false,
     wantPageImages: false,
     wantLeftLogo: false,
     wantCurrencySymbols: true,

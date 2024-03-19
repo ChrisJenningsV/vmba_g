@@ -80,7 +80,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
     super.initState();
     gblCurPage = 'CREDITCARDPAGE';
     logit(gblCurPage);
-    double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+    double am = widget.pnrModel.amountOutstanding(); //double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+/*
+    if( am == 0 && (widget.pnrModel.pNR.basket.outstandingairmiles.amount != '' && widget.pnrModel.pNR.basket.outstandingairmiles.amount != '0') )
+    {
+      am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount);
+    }
+*/
+
     gblError = '';
     gblStack = null;
     if (am <= 0) {
@@ -209,7 +216,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                   )),
             )
           ]),
-          widget.pnrModel.pNR.basket.outstanding.amount == '0'
+          widget.pnrModel.pNR.basket.outstanding.amount == '0' && widget.pnrModel.pNR.basket.outstandingairmiles.amount == '0'
               ? TrText('Completing booking...')
               : new CardInputWidget(
                   key: ccInputGlobalKeyOptions,
@@ -306,7 +313,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     var msg = "*${widget.pnrModel.pNR.rLOC}^EZT*R~x";
     if( gblRedeemingAirmiles){
       try {
-        String data = await runVrsCommand('*${widget.pnrModel.pNR.rLOC}^EZV*[E][ZWEB]^E*R');
+        String data = await runVrsCommand('*${widget.pnrModel.pNR.rLOC}^EZV*[E][ZWEB]^E*R~X');
         logit(data);
       } catch(e) {
         logit(e.toString());
@@ -429,6 +436,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               //cmd = "EZV*[E][ZWEB]^EZT^EMT*R~x"; //
             }
             if (widget.mmbAction == 'SEAT') {
+
               cmd = "EMT*R^E*R~x";
             } else if (widget.mmbAction == 'PAYOUTSTANDING') {
               if (widget.pnrModel.hasTickets(widget.pnrModel.pNR.tickets)) {
@@ -1279,7 +1287,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //buffer.write('MK($creditCardProviderProduction)');
     double am = 0.0;
     String currency='';
-    if (gblRedeemingAirmiles) {
+    if (gblRedeemingAirmiles && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != '0') {
       if (gblPassengerDetail != null &&
           gblPassengerDetail!.fqtv != null &&
           gblPassengerDetail!.fqtv.isNotEmpty) {
@@ -1287,13 +1295,20 @@ class _CreditCardPageState extends State<CreditCardPage> {
       } else if (gblFqtvNumber != null && gblFqtvNumber.isNotEmpty) {
         buffer.write('MF-$gblFqtvNumber^');
       }
-      am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount);
+      am = widget.pnrModel.amountOutstanding(); //double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount);
       currency = widget.pnrModel.pNR.basket.outstandingairmiles.cur;
     } else {
       //if(widget.pnrModel != null &&  widget.pnrModel.pNR.basket.outstanding.amount == '0')
       if (widget.pnrModel != null &&
           widget.pnrModel.pNR.basket.outstanding.amount != null) {
+/*
         am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+        if( am == 0 && (widget.pnrModel.pNR.basket.outstandingairmiles.amount != '' && widget.pnrModel.pNR.basket.outstandingairmiles.amount != '0') )
+          {
+            am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount);
+          }
+*/
+        am = widget.pnrModel.amountOutstanding();
         currency = widget.pnrModel.pNR.basket.outstanding.cur;
         if (am <= 0) {
           return '';
@@ -1307,12 +1322,26 @@ class _CreditCardPageState extends State<CreditCardPage> {
         }*/
       } else if (widget.pnrModel != null &&
           widget.pnrModel.pNR.basket.outstanding.amount != null) {
+/*
         am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
+        if( am == 0 && (widget.pnrModel.pNR.basket.outstandingairmiles.amount != '' && widget.pnrModel.pNR.basket.outstandingairmiles.amount != '0') )
+        {
+          am = double.parse(widget.pnrModel.pNR.basket.outstandingairmiles.amount);
+        }
+*/
+        am =widget.pnrModel.amountOutstanding();
+
         currency = widget.pnrModel.pNR.basket.outstanding.cur;
         if (am <= 0) {
           return '';
         }
       }
+    }
+
+    if( gblPayAction == 'BOOKSEAT' && gblBookSeatCmd != '' ) {
+//      gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^') +
+          buffer.write(gblBookSeatCmd+ (gblBookSeatCmd.endsWith('^') ? '' : '^'));
+          gblBookSeatCmd = '';
     }
 
     buffer.write(addCreditCard(currency, am, gblSettings.creditCardProvider));

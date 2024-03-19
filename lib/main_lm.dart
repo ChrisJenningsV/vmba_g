@@ -145,7 +145,8 @@ void configLM() {
   //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 //////    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+ //   testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
@@ -157,7 +158,6 @@ void configLM() {
   creditCardProvider: '3DS_videcard',
   testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
-  wantPayStack: false,
   wantPageImages: true,
   wantLeftLogo: false,
   wantCurrencySymbols: true,

@@ -54,6 +54,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     _loadingInProgress = true;
     _noInternet = false;
     gblPayAction = 'CHANGEFLT';
+    gblBookSeatCmd = '';
 
     gblBookingState = BookingState.changeFlt;
 
@@ -784,7 +785,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             noItems,
             (index) => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    foregroundColor:
+                    backgroundColor:
                     gblSystemColors.primaryButtonColor,
                     padding: new EdgeInsets.all(5.0),
                     shape: RoundedRectangleBorder(

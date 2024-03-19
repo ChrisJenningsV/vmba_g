@@ -11,10 +11,15 @@
       },
       "topPadding": "100",
       "bottomPadding": "10",
+      "backgroundColor": "Red",
       "cards": [
         {
           "card_type": "FlightSearch",
-          "title": "Flight Search",
+          "title": {
+            "text": "Flight Search",
+            "backgroundColor": "#930819",
+            "color": "white"
+          },
           "icon": "Search",
           "expanded": "false"
         },
@@ -37,19 +42,19 @@
               "card_type": "iconLink",
               "title": "Clan Logan",
               "action": {
-                "function": "customPage",
-                "pageName": "ContactUs"
+                "function": "loadCustomPage",
+                "fileName": "Clanlogan.json"
               },
-              "icon": "plane"
+              "icon": "home"
             },
             {
               "card_type": "iconLink",
               "title": "Basic",
               "action": {
-                "function": "customPage",
-                "pageName": "ContactUs"
+                "function": "loadCustomPage",
+                "fileName": "basic.json"
               },
-              "icon": "plane"
+              "icon": "home"
             }
           ]
         },

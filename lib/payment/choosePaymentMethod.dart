@@ -1324,9 +1324,12 @@ Widget _body() {
      return Expanded(
       child: new SingleChildScrollView(
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: new Form(
+          child: Container(
+           // color: Colors.black12,
+            child: new Form(
               key: formKey,
-              child: new Column(children: getPayOptions(amount, cur),))),
+              child: new Column(children: getPayOptions(amount, cur),))
+      )),
     );
   }
 List<Widget> getPayOptions(String amount, String cur) {
@@ -1514,7 +1517,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) { // this.isMmb &&
       list.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
+            backgroundColor: gblSystemColors.primaryButtonColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         onPressed: () {
@@ -1536,7 +1539,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                   this.isMmb
                       ? translate('AGREE AND MAKE CHANGES')
                       : translate('COMPLETE BOOKING'),
-                  style: new TextStyle(color: Colors.black),
+
                 ),
               ],
             ),
@@ -1546,9 +1549,9 @@ List<Widget> getPayOptions(String amount, String cur) {
     } else {
         if(gblLogPayment) { logit('render pay buttons');}
         if( gblSettings.wantNewPayment) {
-          list.add(  renderNewPaymentButtons());
+          list.add(  renderNewPaymentButtons(amount));
         } else {
-          list.add(  renderPaymentButtons());
+          list.add(  renderPaymentButtons(amount));
         }
     }
 
@@ -1556,7 +1559,7 @@ List<Widget> getPayOptions(String amount, String cur) {
     return list;
 }
 
-  Widget renderNewPaymentButtons() {
+  Widget renderNewPaymentButtons(String amount) {
     List<Widget> paymentButtons = [];
     if( gblProviders != null &&  gblSelectedCurrency == gblLastProviderCurrecy ) {
       paymentButtons.add(Padding(
@@ -1696,7 +1699,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText, provider.paymentType, provider)
+                  children: _getPayButton(btnText, provider.paymentType, provider, amount)
               ),
             ],
           ),
@@ -1808,7 +1811,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
 
 
-  Widget renderPaymentButtons() {
+  Widget renderPaymentButtons(String amount) {
     List<Widget> paymentButtons = [];
 
       List<String> providers = gblSettings.creditCardProvider.split(',');
@@ -1870,7 +1873,7 @@ List<Widget> getPayOptions(String amount, String cur) {
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText, 'ExternalPayment', null)
+                  children: _getPayButton(btnText, 'ExternalPayment', null, amount)
               ),
             ],
           ),
@@ -1895,7 +1898,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   }
 
 
-  List<Widget> _getPayButton(String text, String providerType, Provider? provider) {
+  List<Widget> _getPayButton(String text, String providerType, Provider? provider, String amount) {
     List<Widget> list = [];
     if(text == null  ) {
       text = 'AGREE AND PAY';
@@ -1904,9 +1907,7 @@ List<Widget> getPayOptions(String amount, String cur) {
     text = 'AGREE AND PAY';
     }
 
-    if( widget.pnrModel.pNR.basket.outstanding
-        .amount ==
-        '0') {
+    if( amount == '0') {
       list.add(Text('COMPLETE BOOKING' ,
         style: new TextStyle(color: Colors.black),
       ));

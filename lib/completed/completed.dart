@@ -44,7 +44,7 @@ class CompletedPage extends StatelessWidget {
                         '/MyBookingsPage', (Route<dynamic> route) => false);
                   },
                   style: ElevatedButton.styleFrom(
-                      foregroundColor:
+                      backgroundColor:
                       gblSystemColors.primaryButtonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),

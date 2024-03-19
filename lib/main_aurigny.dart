@@ -136,7 +136,6 @@ void configGR() {
     creditCardProvider: '3DS_videcard',
     testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
 
-    wantPayStack: false,
     wantPageImages: true,
     wantLeftLogo: false,
     wantCurrencySymbols: true,

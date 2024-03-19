@@ -81,6 +81,7 @@ Page resource error:
     return Scaffold(
       appBar: AppBar(
         title: TrText(widget.title),
+        backgroundColor: gblSystemColors.primaryHeaderColor,
         automaticallyImplyLeading: false,
        
         actions: (widget.canNotClose != null) ? <Widget>[Text(' ')] :  <Widget>[

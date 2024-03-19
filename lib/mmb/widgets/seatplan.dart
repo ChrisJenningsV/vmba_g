@@ -206,7 +206,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   }
 
   smartBookSeats() async {
+    gblPayAction = 'BOOKSEAT';
     SeatRequest seat = new SeatRequest();
+    gblBookSeatCmd = '';
     seat.paxlist = paxlist!;
     seat.rloc = widget.rloc;
     seat.journeyNo = int.parse(widget.journeyNo);
@@ -223,9 +225,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       Map<String, dynamic> map = json.decode(reply);
       SeatReply seatRs = new SeatReply.fromJson(map);
       double outstanding = double.parse(seatRs.outstandingAmount);
-
+      gblBookSeatCmd = seatRs.bookSeatCmd;
       if( !widget.isMmb) {
         String msg = json.encode(RunVRSCommand(session!, "*R~X"));
+
         _sendVRSCommand(msg).then(
                 (onValue) {
                   //Repository.get().fetchPnr(widget.rloc).then((pnr) {
@@ -269,7 +272,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             // build undo
             noSeats = gblPnrModel!.pNR.seatCount();
 
-            msg = json.encode(RunVRSCommand(session!, "E*R~x"));
+            // was E*R,
+            msg = json.encode(RunVRSCommand(session!, "*R~x"));
           } else {
             msg = json.encode(RunVRSCommand(session!, "*${widget.rloc}~x"));
           }

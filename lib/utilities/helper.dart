@@ -617,7 +617,8 @@ commonPageInit(String pageName) {
     // check no snackbar
     hideSnackBarMessage();
   }
-  gblPayAction = pageName;
+  //gblPayAction = pageName;
+  gblPageName = pageName;
   gblActionBtnDisabled = false;
   gblError = '';
   gblStack = null;

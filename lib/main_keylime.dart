@@ -137,7 +137,6 @@ void configKG() {
     testApiUrl:      'https://customertest.videcom.com/keylimeAir/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',
 
-    wantPayStack: false,
     wantLeftLogo: false,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,

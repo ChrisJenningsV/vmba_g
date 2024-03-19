@@ -333,6 +333,22 @@ class PnrModel {
     return validateTickets;
   }
 
+  double amountOutstanding() {
+    if( pNR != null && pNR.basket != null ){
+      if( pNR.basket.outstanding != null ){
+        if( pNR.basket.outstanding.amount != null && pNR.basket.outstanding.amount != '' && pNR.basket.outstanding.amount != '0')
+          {
+            return double.parse(pNR.basket.outstanding.amount);
+          }
+        if( pNR.basket.outstandingairmiles.amount != null && pNR.basket.outstandingairmiles.amount != '' && pNR.basket.outstandingairmiles.amount != '0')
+        {
+          return double.parse(pNR.basket.outstandingairmiles.amount);
+        }
+      }
+    }
+    return 0;
+  }
+
   bool hasTickets(Tickets tickets) {
     bool hasTickets = false;
     if (tickets != null && tickets.tKT != null && tickets.tKT.length > 0 && tickets.tKT[0].tKTID != '') {

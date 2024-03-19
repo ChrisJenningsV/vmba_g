@@ -32,6 +32,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
   @override
   void initState() {
     super.initState();
+    gblActionBtnDisabled = false;
     mmbBooking = widget.mmbBooking;
     setDateRange();
   }
@@ -85,6 +86,8 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor:
+          gblSystemColors.primaryHeaderColor,
           title: TrText(
             'New Travel Date',
             style: TextStyle(letterSpacing: 1.15),

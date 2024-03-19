@@ -11,8 +11,20 @@
       },
       "topPadding": "100",
       "bottomPadding": "10",
-      "backgroundColor": "Red",
+      "backgroundColor": "white",
+      "backgroundImage": "v3/clanLoganair.png",
       "cards": [
+        {
+          "card_type": "FQTVLogin",
+          "title": {
+            "text": "Club Logan Login",
+            "fontWeight": "bold",
+            "backgroundColor": "red",
+            "color": "White"
+          },
+          "icon": "Login",
+          "expanded": "true"
+        },
         {
           "card_type": "LinkList",
           "icon": "home",
@@ -20,7 +32,8 @@
           "title": {
             "text": "Other Homepages",
             "fontSize": "26",
-            "color": "BlueGrey"
+            "backgroundColor": "blue",
+            "color": "yellow"
           },
           "cards": [
             {
@@ -28,7 +41,16 @@
               "title": "Clan Logan",
               "action": {
                 "function": "loadCustomPage",
-                "fileName": "Clublogan.json"
+                "fileName": "Clanlogan.json"
+              },
+              "icon": "home"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Origional",
+              "action": {
+                "function": "loadCustomPage",
+                "fileName": "customPages.json"
               },
               "icon": "home"
             },
