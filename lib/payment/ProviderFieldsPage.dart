@@ -18,6 +18,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 
 
+bool wantrebook = false;
 
 class ProviderFieldsPage extends StatefulWidget {
   ProviderFieldsPage({    Key key= const Key("provfipa_key"),
@@ -305,7 +306,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     if (validate()) {
       hasDataConnection().then((result) async {
         if (result == true) {
-          if(widget.mmbAction == 'CHANGEFLT') {
+          if(widget.mmbAction == 'CHANGEFLT' ) { // && wantrebook
             await changeFlt(widget.pnrModel, widget.mmbBooking, context);
           }
           if( widget.newBooking == null ) widget.newBooking = NewBooking();

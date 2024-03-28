@@ -132,6 +132,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   showContinueButton() {
     int uncompletedItems;
+    gblWarning = '';
     uncompletedItems = _passengerDetails
         .where((pax) => !pax.isComplete()
 /*            pax.title == '' || pax.title == null ||
@@ -503,6 +504,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));
+
     //print('end renderPax');
     return paxWidgets;
   }

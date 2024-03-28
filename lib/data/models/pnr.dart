@@ -432,6 +432,7 @@ class PNR {
   String needFSM='';
   bool editFlights=false;
   String editProducts='';
+  bool editPNR=true;
   Names names = Names();
   Itinerary itinerary = Itinerary();
   Disruptions disruptions=Disruptions();
@@ -474,6 +475,7 @@ class PNR {
     if( json['NeedFSM'] != null )needFSM = json['NeedFSM'];
     if( json['editFlights'] != null )editFlights = json['editFlights'].toString().toLowerCase() == 'true';
     if( json['editProducts'] != null )editProducts = json['editProducts'];
+    if( json['editPNR'] != null )editPNR = json['editPNR'].toString().toLowerCase() == 'true';
     if( json['Names'] != null ) names =  Names.fromJson(json['Names']) ;
     if(json['Itinerary'] != null) itinerary = Itinerary.fromJson(json['Itinerary']);
     if( json['Disruptions'] != null) disruptions = Disruptions.fromJson(json['Disruptions']);
@@ -832,7 +834,8 @@ class Itin {
     if(json['OnlineCheckinTimeStartGMT'] != null )onlineCheckinTimeStartGMT = json['OnlineCheckinTimeStartGMT'];
     if(json['OnlineCheckinTimeEndLocal'] != null )onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
     if(json['OnlineCheckinTimeStartLocal'] != null )onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
-    if( json['editFlight'] != null ) editFlight = parseBool(json['editFlight']);
+    if( json['editFlight'] != null ) editFlight = json['editFlight'].toString().toLowerCase() == 'true';
+    logit('edit flight = $editFlight');
   }
 
   String get cityPair => this.depart + this.arrive;

@@ -689,40 +689,47 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 */
   Future completeBookingNothingtoPayVRS() async {
     String msg = '';
-    if( isMmb) {
-      msg = '*${widget.mmbBooking!.rloc}';
-    }
-    widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]
-        .itin.reversed
-        .forEach((f) {
-        msg += '^X${f.line}';
-    });
 
-    widget.mmbBooking!.newFlights.forEach((flt) {
-      print(flt);
-      msg += '^' + flt;
-    });
-    int flightLineNumber=-1;
-    if(  gblBookingState == BookingState.changeFlt ) {
-      if( widget.mmbBooking!.newFlights.length > 1) {
-        if (widget.mmbBooking!.journeyToChange == 1) {
-          // make first line connection
-          flightLineNumber =1;
-        } else {
-          // count lines and add 1
-          flightLineNumber = widget.mmbBooking!.journeys.journey[0].itin.length +1;
-        }
+    if( gblPayAction != 'CHANGEFLT') {
+      if (isMmb) {
+        msg = '*${widget.mmbBooking!.rloc}';
       }
-    } else {
-      flightLineNumber = getConnectingFlightLineIdentifier(widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange - 1]);
+      widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange -
+          1]
+          .itin.reversed
+          .forEach((f) {
+        msg += '^X${f.line}';
+      });
+
+      widget.mmbBooking!.newFlights.forEach((flt) {
+        print(flt);
+        msg += '^' + flt;
+      });
+      int flightLineNumber = -1;
+      if (gblBookingState == BookingState.changeFlt) {
+        if (widget.mmbBooking!.newFlights.length > 1) {
+          if (widget.mmbBooking!.journeyToChange == 1) {
+            // make first line connection
+            flightLineNumber = 1;
+          } else {
+            // count lines and add 1
+            flightLineNumber =
+                widget.mmbBooking!.journeys.journey[0].itin.length + 1;
+          }
+        }
+      } else {
+        flightLineNumber = getConnectingFlightLineIdentifier(
+            widget.mmbBooking!.journeys.journey[widget.mmbBooking!
+                .journeyToChange - 1]);
+      }
+      if (flightLineNumber >= 0) {
+        logit("Journey has a connecting flight on itin($flightLineNumber)");
+        msg += '^*r^.${flightLineNumber}x';
+      }
+      msg += '^';
+      msg += addFg(widget.mmbBooking!.currency, true);
+      msg += addFareStore(true);
     }
-    if (flightLineNumber >= 0){
-      logit("Journey has a connecting flight on itin($flightLineNumber)");
-      msg += '^*r^.${flightLineNumber}x';
-    }
-    msg += '^';
-    msg += addFg(widget.mmbBooking!.currency, true);
-    msg += addFareStore(true);
     msg += 'e*r~x';
     logit('CMP msg:$msg');
     try {

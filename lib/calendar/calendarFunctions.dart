@@ -1083,6 +1083,8 @@ List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bo
       if( cbName.length > 15) cbName = cbName.substring(0,10);
       list.add(getClassNameRow(cbName, inRow: inRow));
 
+  logit('$cbName: $noAv');
+
   if(noAv > 0) {
     if( item[0].fltav.discprice!.length > index &&
         item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')

@@ -4,6 +4,7 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../components/trText.dart';
 import '../../home/searchParams.dart';
 import '../../utilities/helper.dart';
 
@@ -156,25 +157,34 @@ class PassengerDetail {
 
   bool isComplete() {
     if (title == '' || title == null) {
+      gblWarning = 'Passenger details required';
       return false;
     }
     if (firstName == '' || firstName == null) {
+      gblWarning = 'First name is required';
       return false;
     }
 
     if (gblSettings.wantMiddleName &&
         (middleName == null || middleName.isEmpty)) {
+      gblWarning = 'Middle name is required';
       return false;
     }
 
     if (lastName == '' || lastName == null) {
+      gblWarning = 'Last name is required';
       return false;
     }
 
     if (gblSettings.wantGender && (gender == null || gender.isEmpty)) {
+      gblWarning = 'Gender is required';
       return false;
     }
 
+    if( gblRedeemingAirmiles && (fqtv == null || fqtv.isEmpty )){
+      gblWarning = '${gblSettings.fqtvName}' + translate( ' number required');
+          return false;
+    }
 
     return true;
   }

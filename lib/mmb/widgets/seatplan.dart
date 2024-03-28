@@ -35,6 +35,7 @@ class SeatPlanWidget extends StatefulWidget {
       this.seatplan ='',
       this.rloc ='',
       this.journeyNo = '',
+      this.cabin = '',
       this.selectedpaxNo = 1,
       this.isMmb = false,
       this.ischeckinOpen = false})
@@ -42,6 +43,7 @@ class SeatPlanWidget extends StatefulWidget {
 
   final List<Pax>? paxlist;
   final String seatplan;
+  final String cabin;
   final String rloc;
   final String journeyNo;
   final int selectedpaxNo;
@@ -682,6 +684,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             seatplan: objSeatplan!,
             pax: paxlist!,
             rloc: widget.rloc,
+            cabin: widget.cabin,
             onChanged: _handleSeatChanged,
             onScrollCallbackShowKey: _handleScrollChanged,
             displaySeatPrices: true,
@@ -700,10 +703,12 @@ class RenderSeatPlan extends StatefulWidget {
         required this.rloc,
         required this.displaySeatPrices,
         required this.onChanged,
+        this.cabin = '',
         required this.onScrollCallbackShowKey})
       : super(key: key);
 
   final Seatplan seatplan;
+  final String cabin;
   final List<Pax> pax;
   final ValueChanged<List<Pax>> onChanged;
   final ValueChanged<bool> onScrollCallbackShowKey;
@@ -923,11 +928,11 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
         child: ListView(
       controller: _controller,
       padding: EdgeInsets.only(left: 5, right: 5),
-      children: renderSeats(rows, minCol, maxCol, widget.rloc),
+      children: renderSeats(rows, minCol, maxCol, widget.rloc, widget.cabin),
     ));
   }
 
-  List<Widget> renderSeats(int rows, int minCol, int maxCol, String rloc) {
+  List<Widget> renderSeats(int rows, int minCol, int maxCol, String rloc, String cabin) {
     List<Widget> obj = [];
     // new List<Widget>();
     List<Seat> seats = [];
@@ -1070,7 +1075,9 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
 
         } else if ((seat!.sRLOC != null && seat!.sRLOC != '' && seat!.sRLOC != rloc) ||
             (seat!.sSeatID != '0' && (seat!.sRLOC == null || seat!.sRLOC == '')) ||
-            (seat!.sCellDescription == 'Block Seat')) {
+            (seat!.sCellDescription == 'Block Seat') ||
+            ((seat!.sCabinClass != widget.cabin) && widget.cabin !='')  ) {
+
           row.add(
             Padding(
                 padding: EdgeInsets.all(cellPadding),

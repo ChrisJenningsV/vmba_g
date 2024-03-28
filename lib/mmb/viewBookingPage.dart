@@ -952,7 +952,9 @@ class CheckinBoardingPassesWidgetState
     if (pnr.pNR.itinerary.itin[journeyToChange-1].status == 'QQ' && gblSettings.canChangeCancelledFlight == false) {
       return Container();
     }
-    if( pnr.pNR.itinerary.itin[journeyToChange-1].editFlight == false ){
+    if( pnr.pNR.editPNR == false ||
+        pnr.pNR.editFlights == false ||
+        pnr.pNR.itinerary.itin[journeyToChange-1].editFlight == false ){
       return Container();
     }
 
@@ -3023,6 +3025,7 @@ class CheckinBoardingPassesWidgetState
             seatplan:
                 'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,
+            cabin: pnr.pNR.itinerary.itin[journeyNo].cabin,
             journeyNo: journeyNo.toString(),
             selectedpaxNo: paxNo + 1,
           ),

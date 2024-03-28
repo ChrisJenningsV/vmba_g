@@ -451,7 +451,7 @@ Page resource error:
         if( gblPayAction == 'BOOKSEAT' )
           {
             data = await runVrsCommand('$gblBookSeatCmd^*R~x');
-          } else {
+          } else if (gblPayAction == 'CHANGEFLT') {
           await changeFlt(widget.pnrModel, widget.mmbBooking!, context);
         }
       }

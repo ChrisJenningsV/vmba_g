@@ -76,7 +76,7 @@ void configH4() {
     aircode: 'H4',
     altAircode: 'H7',
 
-    termsAndConditionsUrl: '{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
+    termsAndConditionsUrl: '{"en": "https://hisky.aero/en/termeni-si-conditii-mob", "ro": "https://hisky.aero/termeni-si-conditii-mob"}',
     privacyPolicyUrl:  '{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
     //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
