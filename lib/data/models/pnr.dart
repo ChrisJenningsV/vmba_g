@@ -40,6 +40,31 @@ class PnrModel {
 
     return gblSettings.currency;
   }
+
+  bool isSeatInPnr(String savedMsg) {
+    if( savedMsg == '' || savedMsg.length < 10 ){
+      return false;
+    }
+    bool bFound = false;
+    // 4-1S1FRQST7C
+    // 4- <paxno> S <segNo> FRQT <seatno>
+    String paxNo = savedMsg.substring(2,3);
+    String segNo = savedMsg.substring(4,5);
+    try{
+      this.pNR.mPS.mP.forEach((element){
+        if( element.mPID == 'SSSS' &&
+          element.seg == segNo &&
+          element.pax == paxNo ){
+          bFound =  true;
+          logit('seat found');
+        }
+      });
+    } catch(e) {
+      logit('isSeatInPnt ${e.toString()}');
+    }
+        return bFound;
+  }
+
   bool hasPendingCodeShareOrInterlineFlights() {
     bool result = false;
     if (this.pNR != null &&

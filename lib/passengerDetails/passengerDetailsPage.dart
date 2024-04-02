@@ -650,7 +650,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   void validateAndSubmit() async {
     try {
-
+      gblError = '';
 
       if (widget.newBooking.ads.isAdsBooking()) {
         widget.newBooking.ads.number = _passengerDetails[0].adsNumber;

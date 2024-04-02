@@ -1040,7 +1040,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       // await for (String pnrRaw in resStream) {
 
       if (data.contains('ERROR - RECORD NOT FOUND -')) {
-        _error = 'Please check your details';
+        _error = 'Please check your details, PNR not found';
         _pnrLoaded();
         //_showDialog();
         showAlertDialog(context, 'Alert', _error);
@@ -1145,8 +1145,9 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        fetchBooking();
-        if( gblSettings.wantApis) {
+        _error = '';
+        await fetchBooking();
+        if( _error == '' && gblSettings.wantApis) {
           fetchApisStatus(false);
         }
         logit('Getting PNR');

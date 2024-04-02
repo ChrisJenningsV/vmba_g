@@ -1340,7 +1340,18 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
     if( gblPayAction == 'BOOKSEAT' && gblBookSeatCmd != '' ) {
 //      gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^') +
-          buffer.write(gblBookSeatCmd+ (gblBookSeatCmd.endsWith('^') ? '' : '^'));
+        bool seatBooked = false;
+        if (newPnrModel != null) {
+          seatBooked = newPnrModel!.isSeatInPnr(gblBookSeatCmd);
+        } else if (widget.pnrModel != null) {
+          seatBooked = widget.pnrModel.isSeatInPnr(gblBookSeatCmd);
+
+        }
+
+          if( seatBooked == false ) {
+            buffer.write(
+                gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^'));
+          }
           gblBookSeatCmd = '';
     }
 
