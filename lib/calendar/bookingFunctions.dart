@@ -35,10 +35,10 @@ Future searchSaveBooking(NewBooking newBooking) async {
               _eVoucherNotValid = false;
               _tooManyUmnr = false;
               _hasError = true;*/
-          gblError =
+          setError(
           'You do not have enough ${gblSettings
               .fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings
-              .fQTVpointsName} required = $miles';
+              .fQTVpointsName} required = $miles');
           /* });*/
         }
       }
@@ -47,7 +47,7 @@ Future searchSaveBooking(NewBooking newBooking) async {
       setAmountPayable( pnrModel);
       return pnrModel;
     } else if (rs.statusCode == 0) {
-      gblError = rs.error;
+      setError( rs.error);
       throw(gblError);
       /* _hasError = true;
         setState(() {
@@ -61,35 +61,6 @@ Future searchSaveBooking(NewBooking newBooking) async {
         });*/
     }
 
-  /*).catchError((resp) {
-    logit(resp);
-    if (resp is FormatException) {
-      //String _error;
-      FormatException ex = resp;
-      print(ex.source.toString().trim());
-      gblError = ex.source.toString().trim();
-      *//*if (_error.contains('ERROR: E-VOUCHER ')) {
-          setState(() {
-            _loadingInProgress = false;
-            _eVoucherNotValid = true;
-          });
-        } else if(_error.contains('TOO MANY UMNR ')) {
-          setState(() {
-            _tooManyUmnr = true;
-            _eVoucherNotValid = true;
-          });
-        } else {
-          setState(() {
-            _loadingInProgress = false;
-            _eVoucherNotValid = false;
-            _hasError = true;
-          });
-        }*//*
-    }
-    else {
-      gblError = resp;
-    }
-  });*/
 }
 
 String setCurrencyCode(PnrModel pnrModel) {
@@ -342,26 +313,26 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
     print('Calling VRS with Cmd = $msg');
     String data = await runVrsCommand(msg).catchError((e) {
       //noInternetSnackBar(context);
-      gblError = e.toString();
+      setError(e.toString());
       return null;
     });
     if( data == null ){
       if( gblError == '') {
-        gblError = 'Booking Failed';
+        setError('Booking Failed');
       }
       return null;
 
     }
-
+    String errExtra = '';
     try {
       bool flightsConfirmed = true;
       if (data.contains('ERROR - ') || data.contains('ERROR:')) {
-        gblError = data
+        setError(data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '')
             .replaceAll('ERROR - ', '')
-            .trim(); // 'Please check your details';
+            .trim()); // 'Please check your details';
 
        /* if (data.contains('TOO MANY UMNR')) {
         *//*  setState(() {
@@ -388,22 +359,17 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
         //bool flightsConfirmed = true;
         if (pnrModel.hasNonHostedFlights() && pnrModel.hasPendingCodeShareOrInterlineFlights()) {
           //if external flights aren't confirmed they get removed from the PNR which makes it look like the flights are confirmed
+          errExtra = 'Interline error: ';
           int noFLts = pnrModel.flightCount();
 
           flightsConfirmed = false;
           for (var i = 0; i < 10; i++) { // was 4
             msg = '*' + pnrModel.pNR.rLOC + '~x';
 
-/*
-            http.Response response = await http.get(Uri.parse(
-                "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
-                headers: getXmlHeaders())
-                .catchError((resp) {});
-*/
             String data = await runVrsCommand(msg).catchError((e) {
 
 //            if (response == null) {
-              gblError = 'Network error';
+              setError('Network error');
               return null;
             });
 
@@ -415,16 +381,16 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
               });
               noInternetSnackBar(context);
 */
-              gblError = 'Network error';
+              setError( 'Network error');
               return null;
             //} else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
             } else if (data.contains('ERROR - ') || data.contains('ERROR:')) {
-              gblError = data
+              setError( data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
                   .replaceAll('ERROR - ', '')
-                  .trim(); // 'Please check your details';
+                  .trim()); // 'Please check your details';
 /*
               _dataLoaded();
               _gotoPreviousPage();
@@ -466,20 +432,22 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
           _displayProcessingIndicator = false;
         });
 */
-        gblError = translate('Unable to confirm partner airlines flights.');
+        setError( translate('Unable to confirm partner airlines flights.'));
         logit('Unable to confirm partner airlines flights.');
 //        Navigator.pop(context, _error);
         return null;
       }
     } catch (e) {
-      logit(e.toString());
-      gblError = e.toString();
+      logit(errExtra + e.toString());
+      setError( errExtra + e.toString());
       if( data != null ) {
-        gblError = data
+/*
+        setError( data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', '');
-        print(gblError);
+            .replaceAll('</string>', ''));
+*/
+        print(data);
       }
 /*
       _dataLoaded();
@@ -502,7 +470,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
       });
       noInternetSnackBar(context);
 */
-    gblError = 'Network error';
+      setError('Network error');
       return null;
     }
 
@@ -514,7 +482,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
       });
       noInternetSnackBar(context);
 */
-      gblError = 'Network error';
+      setError( 'Network error');
       return null;
       // return new ParsedResponse(response.statusCode, []);
     }
@@ -522,12 +490,12 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
     try {
       bool flightsConfirmed = true;
       if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
-        gblError = response.body
+        setError( response.body
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '')
             .replaceAll('ERROR - ', '')
-            .trim(); // 'Please check your details';
+            .trim()); // 'Please check your details';
 
 /*
         if (response.body.contains('TOO MANY UMNR')) {
@@ -571,13 +539,13 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
               });
               noInternetSnackBar(context);
 */
-              gblError ='Network error';
+              setError('Network error');
               return null;
             }
 
             //If there was an error return an empty list
             if (response.statusCode < 200 || response.statusCode >= 300) {
-              gblError ='Network error ${response.statusCode}';
+              setError('Network error ${response.statusCode}');
              /* setState(() {
                 _displayProcessingIndicator = false;
               });
@@ -586,12 +554,12 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
               return null;
             } else if (response.body.contains('ERROR - ') ||
                 response.body.contains('ERROR:')) {
-              gblError = response.body
+              setError(response.body
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
                   .replaceAll('</string>', '')
                   .replaceAll('ERROR - ', '')
-                  .trim(); // 'Please check your details';
+                  .trim()); // 'Please check your details';
 /*
               _dataLoaded();
               _gotoPreviousPage();
@@ -630,17 +598,17 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 /*        setState(() {
           _displayProcessingIndicator = false;
         });*/
-        gblError = translate('Unable to confirm partner airlines flights.');
+        setError( translate('Unable to confirm partner airlines flights.'));
         //showSnackBar();
         logit('Unable to confirm partner airlines flights.');
 /*        Navigator.pop(context, _error);
         return null;*/
       }
     } catch (e) {
-      gblError = response.body
+      setError( response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')
-          .replaceAll('</string>', '');
+          .replaceAll('</string>', ''));
       print(gblError);
 /*
       _dataLoaded();

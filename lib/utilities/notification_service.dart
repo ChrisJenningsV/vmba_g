@@ -117,7 +117,6 @@ class NotificationService {
       logit('**** permission: ${settings.authorizationStatus}');
       if(settings.authorizationStatus !=  AuthorizationStatus.authorized){
         logit('PERMISSION NOT GRANTED');
-        //gblError = 'PERMISSION NOT GRANTED';
         gblWarning = 'Notifications switched off for this phone. To receive booking updates go to this app in you phone settings and enable Notifications';
       }
 

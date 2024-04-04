@@ -7,6 +7,7 @@ import 'package:vmba/components/vidButtons.dart';
 import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidCards.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/models/models.dart';
 import '../data/repository.dart';
@@ -95,7 +96,7 @@ void onApplyPressed(BuildContext p0, dynamic p1) async {
     showSnackBar('Voucher applied ', context);
   }
   } catch(e) {
-    gblError = e.toString();
+    setError( e.toString());
   }
 }
 

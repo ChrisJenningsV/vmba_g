@@ -427,16 +427,6 @@ class PnrModel {
       } else {
         // allow payment outstanding
         validatePayment = true;
-/*
-        if( gblSettings.displayErrorPnr) {
-          validatePayment = true;
-          gblError = 'Payment incomplete, ${basket.outstanding.amount} outstanding';
-
-        } else {
-          validatePayment = false;
-        }
-        if( logPnrErrors) print('validatePayment = false;');
-*/
       }
     }
     return validatePayment;

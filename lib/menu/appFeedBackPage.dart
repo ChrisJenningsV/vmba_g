@@ -11,6 +11,7 @@ import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/calendar/TabPage.dart';
 import 'package:vmba/utilities/timeHelper.dart';
 
+import '../controllers/vrsCommands.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
@@ -476,7 +477,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     }
 
 
-    gblError = '';
+    setError( '');
     var msg = 'zua[sine=$sine,pwd=$pas]~X';
 
     String data = await runVrsCommand(msg);
@@ -489,7 +490,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
             .replaceAll('</string>', '');
         if( !str.startsWith('{')) {
           print(str);
-          gblError = 'not found or bad password';
+          setError('not found or bad password');
           return gblError;
         }
         Map map = json.decode(str);
@@ -498,21 +499,21 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         Map sineMap = settingsMap['sineresult'];
 
         if (sineMap['securitylevel'] =='' || sineMap['securitylevel'] == '0') {
-          gblError = 'not found or bad password';
+          setError( 'not found or bad password');
           return gblError;
         }
         if (sineMap['agentsuspended']
             .toString()
             .isEmpty || sineMap['agentsuspended'] == '1') {
           // failed,
-          gblError = 'SUSPENDED';
+          setError( 'SUSPENDED');
           return gblError;
         }
         if (sineMap['Restricted']
             .toString()
             .isNotEmpty && sineMap['Restricted'] != '0') {
           // failed,
-          gblError = 'RESTRICTED';
+          setError( 'RESTRICTED');
           return gblError;
         }
 

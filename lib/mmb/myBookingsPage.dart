@@ -20,6 +20,7 @@ import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/bottomNav.dart';
+import '../controllers/vrsCommands.dart';
 import '../v3pages/cards/typogrify.dart';
 import '../v3pages/v3Constants.dart';
 
@@ -67,7 +68,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     super.initState();
     gblActionBtnDisabled = false;
     gblPaymentMsg = '';
-    gblError = '';
+    setError('');
     gblCurPage = 'MYBOOKINGS';
 
     _loadingInProgress = true;

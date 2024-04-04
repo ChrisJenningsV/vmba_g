@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../utilities/helper.dart';
 import 'package:http/http.dart' as http;
@@ -405,7 +406,7 @@ Future<void> initHomePage(String fileName) async {
 
       logit('got home json file');
     } catch(e) {
-      gblError = e.toString() ;
+      setError( e.toString() );
       gblErrorTitle = 'Error loading home.json';
       logit(e.toString());
     }

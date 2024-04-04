@@ -13,6 +13,8 @@ import 'package:vmba/menu/stopPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/notification_service.dart';
 
+import 'controllers/vrsCommands.dart';
+
 
 class RootPage extends StatefulWidget {
   RootPage();
@@ -107,7 +109,7 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
       ).catchError((e) {
         setState(() {
           _displayProcessingText = 'Error loading : ' + e.toString();
-          gblError = 'Error loading : ' + e.toString();
+          setError('Error loading : ' + e.toString());
           _displayFinalError = true;
           _displayProcessingIndicatorS = false;
           _dataLoaded = false;
@@ -117,7 +119,7 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
       Repository.get().initFqtv();
     }
       );
-
+        String loading = 'Cities';
         Repository.get().initCities().then((_) {
           _displayProcessingIndicatorC = false;
             if( gblNoNetwork == true) {
@@ -126,6 +128,7 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
               });
               return;
             }
+              loading = 'Routes';
               Repository.get()
                   .initRoutes()
                   .then((_) => setState(() {
@@ -143,7 +146,7 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
               });
             }).catchError((e) {
               setState(() {
-                _displayProcessingText = 'Error loading routes: ' + e.toString() ;
+                _displayProcessingText = 'Error loading $loading: ' + e.toString() ;
                 gblError= 'Error loading routes: ' + e.toString() ;
                 print(_displayProcessingText);
                 _displayFinalError = true;

@@ -6,7 +6,7 @@ import '../data/globals.dart';
 import '../data/repository.dart';
 import '../utilities/helper.dart';
 
-Future<void> refreshBooking() async {
+Future<void> refreshBookingx() async {
   logit('_refreshBooking');
   await Repository.get().fetchPnr(gblCurrentRloc);
   if( gblSettings.wantApis) {

@@ -15,6 +15,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 import 'package:vmba/utilities/widgets/buttons.dart';
 
+import '../controllers/vrsCommands.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 
 
@@ -64,7 +65,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     _displayProcessingIndicator = false;
     _displayProcessingText = 'Processing your payment...';
     double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
-    gblError = '';
+    setError( '');
     gblPayBtnDisabled = false;
     if (am <= 0) {
     //  signin().then((_) => completeBooking());

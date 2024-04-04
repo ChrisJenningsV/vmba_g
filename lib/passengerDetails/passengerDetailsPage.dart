@@ -22,6 +22,7 @@ import '../calendar/bookingFunctions.dart';
 import '../components/bottomNav.dart';
 import '../components/pageStyleV2.dart';
 import '../components/vidButtons.dart';
+import '../controllers/vrsCommands.dart';
 import '../home/home_page.dart';
 import 'package:vmba/components/showDialog.dart';
 
@@ -650,7 +651,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   void validateAndSubmit() async {
     try {
-      gblError = '';
+      setError('');
 
       if (widget.newBooking.ads.isAdsBooking()) {
         widget.newBooking.ads.number = _passengerDetails[0].adsNumber;
@@ -678,7 +679,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               });
             } else {
 
-              gblError = '';
+              setError( '');
               PnrModel pnrModel = PnrModel();
               gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {
               });

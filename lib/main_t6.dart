@@ -146,6 +146,7 @@ void configT6() {
   //  testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
+  //  testApiUrl:      'http://10.0.2.2:5000/api',
  testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
 
     testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',

@@ -36,6 +36,7 @@ import '../components/pageStyleV2.dart';
 import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
 import '../components/vidGraphics.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/smartApi.dart';
 import '../functions/bookingFunctions.dart';
 import '../home/home_page.dart';
@@ -43,6 +44,7 @@ import '../menu/contact_us_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/colourHelper.dart';
 import '../utilities/widgets/dataLoader.dart';
+part 'viewBookingPageCommands.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -84,7 +86,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   initState() {
     gblCurPage = 'VIEWBOOKING';
     gblActionBtnDisabled = false;
-    gblError = '';
+    setError( '');
     gblPaymentMsg = '';
     if(widget.rloc == null || widget.rloc == ''){
       widget.rloc = gblCurrentRloc;
@@ -156,7 +158,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
               body: new Container(
                 child: new Center(
                     child: new RefreshIndicator(
-                        child: CheckinBoardingPassesWidget(
+                        child: ViewBookingBody(
                           rloc: widget.rloc,
                           onLoad: _onLoad,
                           showSnackBar: showSnackBar,
@@ -166,12 +168,12 @@ class ViewBookingPageState extends State<ViewBookingPage> {
               )),
         ));
   }
-Future <void> doRefresh() async{
+/*Future <void> doRefresh() async{
   refreshBooking();
   setState(() {
 
   });
-}
+}*/
  void _onLoad(BuildContext? context) {
     setState(() {
 
@@ -266,8 +268,8 @@ Future <void> doRefresh() async{
   }
 }
 
-class CheckinBoardingPassesWidget extends StatefulWidget {
-  CheckinBoardingPassesWidget({Key key= const Key("checkboardpa_key"), this.rloc='',required this.showSnackBar,required this.onLoad})
+class ViewBookingBody extends StatefulWidget {
+  ViewBookingBody({Key key= const Key("checkboardpa_key"), this.rloc='',required this.showSnackBar,required this.onLoad})
       : super(key: key);
   String rloc;
   final ValueChanged<String> showSnackBar;
@@ -281,11 +283,11 @@ class CheckinBoardingPassesWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      new CheckinBoardingPassesWidgetState();
+      new ViewBookingBodyState();
 }
 
-class CheckinBoardingPassesWidgetState
-    extends State<CheckinBoardingPassesWidget> {
+class ViewBookingBodyState
+    extends State<ViewBookingBody> {
   //AsyncSnapshot snapshot;
   //GlobalKey<ScaffoldState> _key = GlobalKey();
   PnrModel? objPNR;
@@ -385,7 +387,7 @@ class CheckinBoardingPassesWidgetState
         .then((onValue) => setState(() {
               objPNR = gblPnrModel!;
               if( gblPnrModel!.isFundTransferPayment()) {
-                gblError = '';
+                setError( '');
               }
               _loadingInProgress = false;
               _displayProcessingText = '';
@@ -516,7 +518,7 @@ class CheckinBoardingPassesWidgetState
       Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
         if (pnrDb != null) {
           if (pnrDb.success == false) {
-            gblError = pnrDb.data;
+            setError(pnrDb.data);
             return;
           }
 
@@ -558,16 +560,16 @@ class CheckinBoardingPassesWidgetState
                 if( val == '') {
                   if( gblPnrModel != null ) {
                     if (gblPnrModel!.isFundTransferPayment()) {
-                      gblError = '';
+                      setError( '');
                     }
                     objPNR = gblPnrModel!;
                   }
 
               } else {
                   if( val == 'No Flights'){
-                    gblError = 'Cancelled';
+                    setError( 'Cancelled');
                   } else {
-                    gblError = val;
+                    setError(val);
                   }
                 }
               });
@@ -576,7 +578,7 @@ class CheckinBoardingPassesWidgetState
         }
       }
       ).catchError((e) {
-        gblError = e.toString();
+        setError( e.toString());
         logit(e.toString());
         _loadingInProgress = false;
         setState(() {      });
@@ -584,7 +586,7 @@ class CheckinBoardingPassesWidgetState
       );
     } catch(e) {
       logit(e.toString());
-      gblError = e.toString();
+      setError(e.toString());
       _loadingInProgress = false;
       setState(() {
 
@@ -1031,7 +1033,6 @@ class CheckinBoardingPassesWidgetState
       logit(e.toString());
     }
   }
-
   void _onPressedChangeFlt({int? p1}) {
 
     if( objPNR!.pNR.isFQTVBooking()) {
@@ -2633,7 +2634,7 @@ class CheckinBoardingPassesWidgetState
     Repository.get().fetchPnr(gblPnrModel!.pNR.rLOC).then((pnrDb) {
       if (pnrDb != null) {
         if (pnrDb.success == false) {
-          gblError = pnrDb.data;
+          setError( pnrDb.data);
           showSnackBar(gblError, context);
           return;
         }

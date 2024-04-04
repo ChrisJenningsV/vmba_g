@@ -9,6 +9,7 @@ import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
+import '../controllers/vrsCommands.dart';
 import '../main.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
@@ -177,7 +178,7 @@ class Repository {
 
     logit('webAPI version $apiBuldVersion');
     if( gblDoVersionCheck && (apiBuldVersion== null ||  apiBuldVersion < requiredApiVersion )){
-      gblError = 'WebApi needs upgrade';
+      setError( 'WebApi needs upgrade');
       criticalErrorPage(NavigationService.navigatorKey.currentContext!,'WebApi needs upgrade',title: 'Login', wantButtons: false);
       //throw('WebApi needs upgrade');
     }
@@ -696,12 +697,7 @@ class Repository {
               gblLoginSuccessful = true;
             } else {
               print('settingsJson == null');
-/*
-              log('[settings string]' + settingsString);
-              log('[body]' + response.body);
-              gblError = 'settingsJson == null';
-              throw('settingsJson == null');
-*/
+
             }
             if( gblVerbose == true ) {print('successful login');}
 
@@ -718,9 +714,9 @@ class Repository {
             }
             if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || (gblSettings.useWebApiforVrs) ? int.parse(xmlVersion) < requiredXmlVersion : int.parse(xmlVersion) < requiredApiVersion  )) {
               if( gblSettings.useWebApiforVrs) {
-                gblError = 'WebService needs update';
+                setError('WebService needs update');
               } else {
-                gblError = 'WebApi needs update';
+                setError('WebApi needs update');
               }
               print(gblError);
               criticalErrorPage(NavigationService.navigatorKey.currentContext!,gblError,title: 'Login', wantButtons: false );
@@ -730,11 +726,11 @@ class Repository {
             print(response.body);
             gblErrorTitle = 'Login';
             if ( map != null && map['errorMessage'] != null && map['errorCode'] != null) {
-              gblError = map['errorMessage'] + ' :' + map['errorCode'];
+              setError(map['errorMessage'] + ' :' + map['errorCode']);
             } else if (map['errorMsg'] != null ) {
-              gblError = map['errorMsg'];
+              setError( map['errorMsg']);
             } else {
-              gblError = response.body;
+              setError( response.body);
             }
             gblNoNetwork = true;
           }
@@ -742,7 +738,7 @@ class Repository {
         else if(map['isSuccessful']  == false) {
           logit('login - ${map['errorMsg']}');
           gblErrorTitle = 'Login:';
-          gblError = 'login - ${map['errorMsg']}';
+          setError( 'login - ${map['errorMsg']}');
           gblNoNetwork = true;
 
         }
@@ -750,7 +746,7 @@ class Repository {
           logit('login - map null');
           print(response.body);
           gblErrorTitle = 'Login:';
-          gblError = response.body;
+          setError( response.body);
           gblNoNetwork = true;
 
         }
@@ -758,7 +754,7 @@ class Repository {
         gblLoginSuccessful = false;
         logit('login - status=${response.statusCode}'+ response.body );
         gblErrorTitle = 'Login-';
-        gblError = response.statusCode.toString();
+        setError( response.statusCode.toString());
       }
     } catch (e) {
       gblLoginSuccessful = false;
@@ -766,7 +762,7 @@ class Repository {
       print(e);
       gblErrorTitle = 'Login-';
 
-      gblError = e.toString();
+      setError( e.toString());
       gblNoNetwork = true;
       //rethrow;
     }
@@ -930,7 +926,7 @@ class Repository {
     await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime'], replace);
     } catch(e) {
       String m = e.toString();
-      gblError = 'notify error ${e.toString()}';
+      setError( 'notify error ${e.toString()}');
       print(m);
     }
   }
@@ -1393,7 +1389,7 @@ class Repository {
     }
     return new ParsedResponse(200, seatplan);
     } catch (e) {
-      gblError = e.toString();
+      setError( e.toString());
       return new ParsedResponse(0, seatplan, error: e.toString());
     }
 

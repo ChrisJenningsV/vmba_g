@@ -247,7 +247,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               'You do not have enough ${gblSettings
                   .fQTVpointsName} to pay for this booking\nBalance = $gblFqtvBalance, \n${gblSettings
                   .fQTVpointsName} required = $miles';
-              gblError = _error;
+              setError( _error);
               gblErrorTitle = 'Booking Error';
             });
           }

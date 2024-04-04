@@ -19,6 +19,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/showDialog.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -738,7 +739,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       hasDataConnection().then((result) async {
         if (result == true) {
           if( gblSettings.wantProducts) {
-            gblError = '';
+            setError('');
             try {
             PnrModel pnrModel = await searchSaveBooking(
                 this.widget.newBooking);
@@ -762,7 +763,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                             pnrModel: pnrModel,)));
 */            }
             } catch(e){
-              gblError = e.toString();
+              setError( e.toString());
               showAlertDialog(context, 'Error', gblError);
 
             }

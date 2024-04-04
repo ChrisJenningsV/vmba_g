@@ -177,7 +177,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, double.parse(widget.pnrModel.pNR.basket.outstanding.amount)),
+            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, widget.pnrModel.amountOutstanding()),
 /*
                 NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
@@ -693,6 +693,10 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     if( gblPayAction != 'CHANGEFLT') {
       if (isMmb) {
         msg = '*${widget.mmbBooking!.rloc}';
+
+        if( gblPayAction == 'BOOKSEAT' && gblBookSeatCmd != ''){
+          msg += gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^');
+        }
       }
       widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange -
           1]
@@ -1314,17 +1318,17 @@ Widget _body() {
 
   Widget _getTotals() {
    String cur = widget.pnrModel.pNR.basket.outstanding.cur;
-    String amount =   widget.pnrModel.pNR.basket.outstanding.amount;
-    if( amount == '') amount = '0';
-   var dAmount =double.parse(amount);
+/*    String amount =    //  widget.pnrModel.pNR.basket.outstanding.amount;
+    if( amount == '') amount = '0';*/
+   var dAmount = widget.pnrModel.amountOutstanding(); //double.parse(amount);
    if( dAmount <= 0 ) {
      dAmount = 0.0;
-     amount = '0';
+//     amount = '0';
    }
     if( gblRedeemingAirmiles) {
       // get tax amount
       cur = widget.pnrModel.pNR.basket.outstandingairmiles.cur;
-      amount =   widget.pnrModel.pNR.basket.outstandingairmiles.amount;
+  //    amount =   widget.pnrModel.pNR.basket.outstandingairmiles.amount;
     }
 
 
@@ -1335,7 +1339,7 @@ Widget _body() {
            // color: Colors.black12,
             child: new Form(
               key: formKey,
-              child: new Column(children: getPayOptions(amount, cur),))
+              child: new Column(children: getPayOptions(dAmount.toString(), cur),))
       )),
     );
   }
@@ -1801,13 +1805,13 @@ List<Widget> getPayOptions(String amount, String cur) {
           criticalErrorPage(context, gblError, title: 'Payment Error');
         }
       } catch (e, stack) {
-        gblError = e.toString();
+        setError( e.toString());
         gblStack = stack ;
         endProgressMessage();
         criticalErrorPage(context, gblError, title: 'Payment Error', wantButtons: true);
       }
     } catch(e, stack) {
-      gblError = e.toString();
+      setError( e.toString());
       gblStack = stack ;
 
       endProgressMessage();

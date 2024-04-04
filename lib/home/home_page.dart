@@ -26,7 +26,7 @@ import 'package:vmba/v3pages/v3HomePage.dart';
 
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
-GlobalKey<CheckinBoardingPassesWidgetState> mmbGlobalKeyBooking = new GlobalKey<CheckinBoardingPassesWidgetState>();
+GlobalKey<ViewBookingBodyState> mmbGlobalKeyBooking = new GlobalKey<ViewBookingBodyState>();
 GlobalKey<MessagePageState> messageGlobalKeyProgress = new GlobalKey<MessagePageState>();
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 //GlobalKey<HomeState> homePageKeyProgress = new GlobalKey<HomeState>();

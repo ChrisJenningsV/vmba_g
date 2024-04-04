@@ -23,6 +23,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../controllers/vrsCommands.dart';
 import '../main.dart';
 import 'messagePages.dart';
 import 'package:provider/provider.dart';
@@ -620,7 +621,7 @@ commonPageInit(String pageName) {
   //gblPayAction = pageName;
   gblPageName = pageName;
   gblActionBtnDisabled = false;
-  gblError = '';
+  setError('');
   gblStack = null;
   gblInRefreshing = false;
 }

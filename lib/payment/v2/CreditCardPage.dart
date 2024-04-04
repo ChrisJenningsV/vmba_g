@@ -88,7 +88,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     }
 */
 
-    gblError = '';
+    setError( '');
     gblStack = null;
     if (am <= 0) {
       signin().then((_) => completeBooking());
@@ -327,7 +327,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         .then((result) {
       try {
         if (!result.toString().startsWith('{')) {
-          gblError = result;
+          setError( result);
           gblErrorTitle = 'Payment Error';
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/ErrorPage', (Route<dynamic> route) => false);
@@ -398,10 +398,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
         if (gblBookingState != BookingState.changeSeat &&
             gblBookingState != BookingState.bookSeat &&
-            gblBookingState != BookingState.changeFlt) {
+            gblBookingState != BookingState.changeFlt &&
+            gblPayAction != 'BOOKSEAT') {
           msg = '*$rLOC^';
         }
         msg += getPaymentCmd(false);
+        if( gblPayAction == 'BOOKSEAT') {
+          //msg += '^E*R';
+        }
         logit(msg);
         String? result = await sendVarsCommand(msg);
 

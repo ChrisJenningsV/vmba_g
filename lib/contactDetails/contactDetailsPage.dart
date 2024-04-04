@@ -402,7 +402,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
             return null;
           }
           _dataLoaded();
-          gblError = _error;
+          setError( _error);
           print('makeBooking $_error');
           //_showDialog();
           _gotoPreviousPage();
@@ -560,7 +560,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               return null;
             }
             _dataLoaded();
-            gblError = _error;
+            setError( _error);
             print('makeBooking $_error');
             //_showDialog();
             _gotoPreviousPage();

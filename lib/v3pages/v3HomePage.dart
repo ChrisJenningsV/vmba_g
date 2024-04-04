@@ -7,6 +7,7 @@ import 'package:vmba/v3pages/v3BottomNav.dart';
 import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidCards.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../menu/contact_us_page.dart';
 import '../menu/menu.dart';
@@ -51,7 +52,10 @@ class V3HomePageState extends State<V3HomePage>{
   Widget build(BuildContext context) {
 
     if (gblError != '') {
-      showAlertDialog(context, gblErrorTitle, gblError, onComplete:() { gblError = ''; setState(() {}); });
+      showAlertDialog(context, gblErrorTitle, gblError, onComplete:() {
+        setError('');
+        setState(() {});
+      });
     }
 
     if (_displayProcessingIndicator) {

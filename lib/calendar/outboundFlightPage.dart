@@ -19,6 +19,7 @@ import 'package:vmba/calendar/calendarFunctions.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/showDialog.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/models/pnr.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
@@ -199,10 +200,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
               });
             }
           });
-    /*      if( bFound == false){
-            gblError = translate('Voucher not valid' ) + ' ' + this.widget.newBooking.eVoucherCode;
-            this.widget.newBooking.eVoucherCode = '';
-          }*/
+
         }
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});
@@ -322,7 +320,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     //return _buildBody();
   }
   void onComplete (dynamic p) {
-    gblError = '';
+    setError( '');
     setState(() {});
   }
 
@@ -550,7 +548,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
             if( gblSettings.wantProducts) {
               // first save new booking
-              gblError = '';
+              setError( '');
               try {
                 PnrModel pnrModel = await searchSaveBooking(
                     this.widget.newBooking);
@@ -570,7 +568,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                                 pnrModel: pnrModel,)));
                 }
               } catch(e){
-                gblError = e.toString();
+                setError( e.toString());
                 showAlertDialog(context, 'Error', gblError);
 
               }

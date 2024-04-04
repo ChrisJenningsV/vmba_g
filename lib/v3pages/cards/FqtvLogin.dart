@@ -7,6 +7,7 @@ import 'package:vmba/v3pages/cards/v3FormFields.dart';
 import '../../components/showDialog.dart';
 import '../../components/trText.dart';
 import '../../components/vidButtons.dart';
+import '../../controllers/vrsCommands.dart';
 import '../../data/globals.dart';
 import '../../data/models/models.dart';
 import '../../data/models/vrsRequest.dart';
@@ -314,7 +315,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
         fqtvNo = '';
         fqtvPass = '';
 
-        gblError = e.toString();
+        setError( e.toString());
         _isButtonDisabled = false;
         _loadingInProgress = false;
         //_actionCompleted();
@@ -330,7 +331,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
       fqtvPass = '';
 
       _error = e.toString();
-      gblError = _error;
+      setError( _error);
       _isButtonDisabled = false;
       _loadingInProgress = false;
       //_actionCompleted();

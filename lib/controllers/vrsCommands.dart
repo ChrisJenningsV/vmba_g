@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
@@ -73,7 +74,7 @@ void refreshBooking(String rloc) {
     Repository.get().fetchPnr(rloc).then((pnrDb) {
       if (pnrDb != null) {
         if (pnrDb.success == false) {
-          gblError = pnrDb.data;
+          setError( pnrDb.data);
           return;
         }
 
@@ -96,9 +97,13 @@ void refreshBooking(String rloc) {
         }});
 
   } catch(e) {
-    gblError = e.toString();
+    setError( e.toString());
     logit(gblError);
   }
 }
 
+void setError(String err, {String errTitle = 'ERROR'}){
+  gblErrorTitle = errTitle;
+  gblError= err;
+}
 

@@ -15,6 +15,7 @@ import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../components/vidButtons.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
 import '../utilities/messagePages.dart';
@@ -816,7 +817,7 @@ Widget _getTrans() {
         fqtvNo = '';
         fqtvPass = '';
 
-        gblError = e.toString();
+        setError( e.toString());
         _isButtonDisabled = false;
         _loadingInProgress = false;
         //_actionCompleted();
@@ -835,7 +836,7 @@ Widget _getTrans() {
         //_showDialog();
         showAlertDialog(context, 'Information', _error, onComplete: () {
           setState(() {
-            gblError = '';
+            setError( '');
           });
         }
         );
@@ -845,7 +846,7 @@ Widget _getTrans() {
       fqtvPass = '';
 
       _error = e.toString();
-      gblError = _error;
+      setError( _error);
       _isButtonDisabled = false;
       _loadingInProgress = false;
       //_actionCompleted();

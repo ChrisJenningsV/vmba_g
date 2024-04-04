@@ -17,6 +17,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../../calendar/bookingFunctions.dart';
+import '../../controllers/vrsCommands.dart';
 import '../../data/smartApi.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
@@ -68,7 +69,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   void initState() {
     super.initState();
     gblPaymentMsg = '';
-    gblError = '';
+    setError( '');
     //_noInternet = false;
     _noSeats = false;
     _loadingInProgress = true;
@@ -174,7 +175,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           _dataLoaded();
         }
       } else {
-        gblError = rs.error;
+        setError( rs.error);
         setState(() {
           _loadingInProgress = false;
           //_noInternet = true;
@@ -198,7 +199,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   void _handleBookSeats(List<Pax> paxValue) {
    // _bookSeats();
-    gblError = '';
+    setError( '');
     smartBookSeats();
     setState(() {
       paxlist = paxValue;

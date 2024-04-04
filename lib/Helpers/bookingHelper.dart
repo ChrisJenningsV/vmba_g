@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../components/trText.dart';
+import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/models/pnr.dart';
 import '../data/models/pnrs.dart';
@@ -105,7 +106,7 @@ Future deletePnrContent() async {
           data = await runVrsCommand(msg);
           logit(data);
         } catch(e) {
-          gblError = e.toString();
+          setError(e.toString());
         }
       }
   }
