@@ -41,6 +41,42 @@ class PnrModel {
     return gblSettings.currency;
   }
 
+  List<Pax> getBookedPaxList(int journey) {
+    List<Pax> paxlist = [];
+    for (var pax = 0; pax <= pNR.names.pAX.length - 1; pax++) {
+      if (pNR.names.pAX[pax].paxType != 'IN') {
+        paxlist.add(Pax(
+            pNR.names.pAX[pax].firstName +
+                ' ' +
+                pNR.names.pAX[pax].surname,
+            pNR.aPFAX != null
+                ? pNR.aPFAX.aFX
+                .firstWhere(
+                    (aFX) =>
+                aFX.aFXID == "SEAT" &&
+                    aFX.pax == pNR.names.pAX[pax].paxNo &&
+                    aFX.seg == (journey + 1).toString(),
+                orElse: () => new AFX())
+                .seat
+                : '',
+            pax == 0 ? true : false,
+            pax + 1,
+            pNR.aPFAX != null
+                ? pNR.aPFAX.aFX
+                .firstWhere(
+                    (aFX) =>
+                aFX.aFXID == "SEAT" &&
+                    aFX.pax == pNR.names.pAX[pax].paxNo &&
+                    aFX.seg == (journey + 1).toString(),
+                orElse: () => new AFX())
+                .seat
+                : '',
+            pNR.names.pAX[pax].paxType));
+      }
+    }
+    return paxlist;
+  }
+
   bool isSeatInPnr(String savedMsg) {
     if( savedMsg == '' || savedMsg.length < 10 ){
       return false;

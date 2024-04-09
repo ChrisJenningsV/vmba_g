@@ -44,7 +44,7 @@ import '../menu/contact_us_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/colourHelper.dart';
 import '../utilities/widgets/dataLoader.dart';
-part 'viewBookingPageCommands.dart';
+part 'viewBookingPagePax.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
@@ -168,12 +168,12 @@ class ViewBookingPageState extends State<ViewBookingPage> {
               )),
         ));
   }
-/*Future <void> doRefresh() async{
-  refreshBooking();
+Future <void> doRefresh() async{
+  refreshBooking(gblCurrentRloc);
   setState(() {
 
   });
-}*/
+}
  void _onLoad(BuildContext? context) {
     setState(() {
 
@@ -692,7 +692,7 @@ class ViewBookingBodyState
     );
   }
 
-  List<Widget> getPassengerViewWidgets(PnrModel pnr, int journey) {
+  /*List<Widget> getPassengerViewWidgets(PnrModel pnr, int journey) {
     List<Widget> list = [];
     // new List<Widget>();
 
@@ -704,10 +704,10 @@ class ViewBookingBodyState
           found=true;
         }
       });
-/*
+*//*
       _mmbBooking.eVoucher = pnr.pNR.aPFAX.aFX
           .firstWhere((f) => f.aFXID == 'DISC', );
-*/
+*//*
     } else {
      // _mmbBooking.eVoucher = null;
     }
@@ -760,11 +760,11 @@ class ViewBookingBodyState
             found = true;
           }
         });
-/*
+*//*
             .firstWhere((f) =>
         f.aFXID == 'SEAT' && f.pax == pnr.pNR.names.pAX[i].paxNo &&
             f.seg == (journey + 1).toString(), );
-*/
+*//*
 
         if (seatAfx != null) {
           seatNo = seatAfx!.seat;
@@ -879,7 +879,7 @@ class ViewBookingBodyState
     }
 
     return list;
-  }
+  }*/
 
   Widget _paymentPending(PnrModel pnr){
     return
@@ -1333,389 +1333,6 @@ class ViewBookingBodyState
     return Container();
   }
 
-  Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
-
-/*    if( gblSettings.wantApis && apisOK == false) {
-      return Container();
-    }*/
-
-    if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
-      // departed, no actions
-      logit('departed');
-        return Container();
-    }
-
-
-
-
-    if (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.aircode &&
-        (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.altAircode ) ) {
-      logit('other airline');
-      return Text(''
-          // 'Please check in at the airport',
-          );
-      //return new Text('No information for flight');
-    }
-
-    if (pnr.pNR.tickets != null &&
-        pnr.pNR.tickets.tKT
-                .where((t) =>
-                    t.pax == (paxNo + 1).toString() &&
-                    t.segNo == (journeyNo + 1).toString().padLeft(2, '0') &&
-                    t.tktFor != 'MPD' &&
-                    t.tKTID == 'ELFT')
-                .length >
-            0) {
-      //  Future<bool> hasDownloadedBoardingPass =
-      //  Repository.get()
-      //   .hasDownloadedBoardingPass(
-      //       pnr.pNR.itinerary.itin[journeyNo].airID +
-      //           pnr.pNR.itinerary.itin[journeyNo].fltNo,
-      //       pnr.pNR.rLOC,
-      //       paxNo);
-
-      // check APIS done
-      if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
-        logit('apis required');
-        return Container();
-      }
-
-
-
-      bool hasDownloadedBoardingPass = true;
-      //return new TextButton(
-      return new TextButton(
-        onPressed: () {
-          hasDownloadedBoardingPass
-              ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BoardingPassWidget(
-                      pnr: pnr,
-                      journeyNo: journeyNo,
-                      paxNo: paxNo,
-                    ),
-                  ))
-              // ignore: unnecessary_statements
-              : () => {};
-        },
-        style: TextButton.styleFrom(
-            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            foregroundColor: gblSystemColors.textButtonTextColor),
-        child: Row(
-          children: <Widget>[
-            TrText(
-              'Boarding Pass',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.textButtonTextColor),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5.0),
-            ),
-            hasDownloadedBoardingPass != null
-                ? Icon(
-                    Icons.confirmation_number,
-                    size: 20.0,
-                    color:
-                    Colors.grey,
-                  )
-                : Icon(
-                    Icons.file_download,
-                    size: 20.0,
-                    color:
-                    Colors.grey,
-                  )
-          ],
-        ),
-      );
-    }
-
-    //get apis state for the booking DSP/AATQ4T
-
-    // all the rest need to be online
-    if( gblNoNetwork == true){
-      logit('no net');
-      return Container();
-    }
-
-
-    bool checkinOpen = false;
-
-    if (cities == null || pnr.pNR.itinerary.itin.length != cities.length) {
-      checkinOpen =
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckin.toLowerCase() ==
-                  'true'
-              ? true
-              : false;
-    } else {
-      DateTime checkinOpens;
-      DateTime checkinClosed;
-      DateTime now;
-
-/*
-      checkinOpens = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
-              ' ' +
-              pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
-          .subtract(new Duration(
-              hours: cities
-                  .firstWhere(
-                      (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
-                  .webCheckinStart));
-*/
-      if( pnr.  pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == null ||
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT == '' ||
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT == null ||
-          pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT== ''){
-        checkinOpen = false;
-      } else {
-        checkinOpens = DateTime.parse(
-            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeStartGMT);
-       // logit('checkin opens:${checkinOpens.toString()}');
-        /*    checkinClosed = DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].ddaygmt +
-              ' ' +
-              pnr.pNR.itinerary.itin[journeyNo].dtimgmt)
-          .subtract(new Duration(
-              hours: cities
-                  .firstWhere(
-                      (c) => c.code == pnr.pNR.itinerary.itin[journeyNo].depart)
-                  .webCheckinEnd));*/
-
-        checkinClosed = DateTime.parse(
-            pnr.pNR.itinerary.itin[journeyNo].onlineCheckinTimeEndGMT);
-       // logit('checkin closed:${checkinClosed.toString()}');
-
-        now = getGmtTime();
-
-        // logit('now:${now.toString()}');
-/*
-        bool isBeforeClosed = now.difference(checkinClosed).inMinutes <0;
-        bool isAfterClosed = now.difference(checkinClosed).inMinutes >0;
-        bool isAfterOpens = checkinOpens.difference(now).inMinutes < 0;
-*/
-        bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
-        //bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
-        bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
-
-
-
-        //checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
-        checkinOpen = (isBeforeClosed && isAfterOpens)
-            ? true
-            : false;
-        if(  (pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != null || pnr.pNR.itinerary.itin[journeyNo].onlineCheckin != '')&&
-                pnr.pNR.itinerary.itin[journeyNo].onlineCheckin == 'False' ) {
-          checkinOpen = false;
-        }
-        if( (pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null || pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != '' ) &&
-            pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed == 'False' ) {
-          logit('mMBCheckinAllowed false');
-          checkinOpen = false;
-        }
-      }
-    }
-
-    if (!isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], -1) &&
-        pnr.pNR.itinerary.itin[journeyNo].secID == '') {
-      if (checkinOpen)
-
-      //if ((now.isBefore(checkinClosed) && now.isAfter(checkinOpens)))
-      // if (pnr.pNR.itinerary.itin[journeyNo].onlineCheckin.toLowerCase() ==
-      //         'true'
-      //     ? true
-      //     : false)
-      {
-        if ( pnr.pNR.itinerary.itin[journeyNo].status != 'QQ' &&
-            (hasSeatSelected(
-                pnr.pNR.aPFAX,
-                pnr.pNR.names.pAX[paxNo].paxNo.toString(),
-                journeyNo + 1,
-                pnr.pNR.names) ||
-            pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True')) {
-
-          // check if this is 'IN' and adults not checked in
-          if (pnr.pNR.names.pAX[paxNo].paxType == 'IN') {
-
-            var checkedInCount = 0;
-                pnr.pNR.tickets.tKT.forEach((t){
-                  if( t.segNo != null && t.segNo.isNotEmpty) {
-                    if (int.parse(t.segNo) == (journeyNo + 1) &&
-                        pnr.pNR.names.pAX[int.parse(t.pax) - 1].paxType == 'AD' &&
-                        t.tKTID == 'ELFT') {
-                      checkedInCount++;
-                    }
-                  }
-                });
-
-            if( checkedInCount == 0 ) {
-              // no one is checked in so infant cannot check in
-              logit('no one checked in');
-              return Container();
-            }
-
-          }
-
-          // any outstanding amount ??
-          var amount = pnr.pNR.basket.outstanding.amount;
-          if( amount == null || amount == '' ) {
-            amount = '0';
-          }
-          if( double.parse(amount) > 0 ) {
-            return payOutstandingButton(pnr, amount);
-
-          }
-
-          // apis button required and yet to be done ?
-          if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
-            logit('apis required');
-              return Container();
-          }
-
-
-          //Checkin Button
-          return new TextButton(
-            onPressed: () {
-              if( gblSettings.wantDangerousGoods == true ){
-                Navigator.push(
-                    context,
-                    SlideTopRoute(
-                        page: DangerousGoodsWidget( pnr: pnr, journeyNo: journeyNo, paxNo: paxNo, ))).then((continuePass) {
-                          if( continuePass != null &&  continuePass) {
-                            _displayCheckingDialog(pnr, journeyNo, paxNo);
-
-                          }
-                });
-              } else {
-                _displayCheckingDialog(pnr, journeyNo, paxNo);
-              }
-            },
-            style: TextButton.styleFrom(
-                side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                foregroundColor: gblSystemColors.textButtonTextColor),
-            child: Row(
-              children: <Widget>[
-                TrText(
-                  'Check-in',
-                  style: TextStyle(
-                      color: gblSystemColors
-                          .textButtonTextColor),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 5.0),
-                ),
-
-                Text(
-                  '',
-                  style: TextStyle(
-                      color: gblSystemColors
-                          .textButtonTextColor),
-                )
-              ],
-            ),
-          );
-        } else {
-          if (pnr.pNR.itinerary.itin[journeyNo].secID != '') {
-            return Text('');
-          } else if (pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
-              ((pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode) &&
-                  (pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.altAircode))
-          )  {
-              return TrText('Check-in with partner airline');
-          } else if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
-              pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
-            bool chargeForPreferredSeating =
-                pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() ==
-                        'fly'
-                    ? true
-                    : false;
-            if( pnr.isFundTransferPayment()) {
-              logit('fund transfer');
-              return Container();
-            } else {
-              return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
-                  chargeForPreferredSeating);
-            }
-          } else if (pnr.pNR.names.pAX[paxNo].paxType == 'IN') {
-            return new Padding(
-              padding: EdgeInsets.all(20),
-              child: new TrText('No seat option'),
-            );
-          } else if (pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True') {
-            return new Padding(
-              padding: EdgeInsets.all(20),
-              child: new TrText('Open seating'),
-            );
-          }
-        }
-      }
-
-      //TODO:
-      //Remove from not pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() != 'fly' ? true : false) &&
-      checkinStatus(pnr.pNR.itinerary.itin[journeyNo]);
-
-      bool chargeForPreferredSeating =
-          pnr.pNR.itinerary.itin[journeyNo].classBand.toLowerCase() == 'fly'
-              ? true
-              : false;
-      if( pnr.pNR.itinerary.itin[journeyNo].operatedBy.isNotEmpty &&
-          ((pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.aircode) &&
-              (pnr.pNR.itinerary.itin[journeyNo].operatedBy != gblSettings.altAircode))
-      )  {
-        return TrText('Check-in with partner airline');
-      }
-      if (pnr.pNR.names.pAX[paxNo].paxType != 'IN' &&
-          pnr.pNR.itinerary.itin[journeyNo].openSeating != 'True') {
-        if( pnr.isFundTransferPayment()) {
-          logit('fund transfer');
-          return Container();
-        } else {
-          return seatButton(paxNo, journeyNo, pnr, paxlist, checkinOpen,
-              chargeForPreferredSeating);
-        }
-      }
-
-      if (pnr.pNR.itinerary.itin[journeyNo].openSeating == 'True') {
-        return Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: TrText('Open seating'),
-            )
-          ],
-        );
-      }
-    }
-
-    return Row(
-        children: pnr.pNR.aPFAX != null &&
-                pnr.pNR.aPFAX.aFX
-                        .where(
-                          (aFX) =>
-                              aFX.aFXID == 'SEAT' &&
-                              aFX.pax == pnr.pNR.names.pAX[paxNo].paxNo &&
-                              aFX.seg == pnr.pNR.itinerary.itin[journeyNo].line,
-                        )
-                        .length <
-                    0
-            ? [
-                new Icon(
-                  Icons.airline_seat_recline_normal,
-                  size: 20.0,
-                ),
-                new Text(
-                    pnr.pNR.aPFAX.aFX
-                        .singleWhere(
-                          (aFX) =>
-                              aFX.aFXID == 'SEAT' &&
-                              aFX.pax == pnr.pNR.names.pAX[paxNo].paxNo &&
-                              aFX.seg == pnr.pNR.itinerary.itin[journeyNo].line,
-                        )
-                        .seat,
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w200))
-              ]
-            : [new Text('')]);
-  }
 
   Widget payOutstandingButton(PnrModel pnr, String amount) {
     return new TextButton(

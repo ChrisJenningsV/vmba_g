@@ -129,12 +129,12 @@ android {
             resValue "string", "flavored_app_name", "United Nigeria Airlines"
             applicationId "com.unitednigeria.booking"
         }
-  /*      Keylime {
-            dimension "version"
-            resValue "string", "flavored_app_name", "key Lime Air"
-            applicationId "com.keylime.booking"
-        }
-*/
+        /*      Keylime {
+                  dimension "version"
+                  resValue "string", "flavored_app_name", "key Lime Air"
+                  applicationId "com.keylime.booking"
+              }
+      */
     }
 
     signingConfigs {
