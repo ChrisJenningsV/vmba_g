@@ -495,7 +495,7 @@ class ViewBookingBodyState
               child: TrText(
                 //'Reload booking',
                 'Return to My Bookings',
-                style: TextStyle(color: gblSystemColors.textButtonTextColor),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -606,7 +606,7 @@ class ViewBookingBodyState
     List<Widget> list = [];
     // new List<Widget>();
 
-    print(pnr.getNextFlight());
+    //print(pnr.getNextFlight());
     //Check in or board passes
     list.add(checkinOrPassesWidget(pnr.pNR.rLOC, pnr));
 
@@ -617,6 +617,7 @@ class ViewBookingBodyState
       list.add(Text(gblError));
     }
 
+    //list.add(Text('abc'));
     return list;
   }
 
@@ -882,6 +883,10 @@ class ViewBookingBodyState
   }*/
 
   Widget _paymentPending(PnrModel pnr){
+    if( pnr.pNR.itinerary == null || pnr.pNR.itinerary.itin.length == 0){
+      // cannot pay for nothing !
+      return Container();
+    }
     return
       Container(
           color: Colors.grey.shade200,

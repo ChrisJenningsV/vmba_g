@@ -1,0 +1,11 @@
+## notes on the VRS commands for upcoming projects
+
+
+
+## undo checking command (from JT)
+Retrieve PNR using *RLOC
+Then entry is:
+EZXW/TicketNumber/CouponNumber
+
+i.e.: EZXW/6821234567890/1
+

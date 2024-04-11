@@ -260,7 +260,8 @@ class PnrModel {
 
   Itin getNextFlight() {
     Itin flight = new Itin();
-    if (this.pNR != null && this.pNR.itinerary != null && this.pNR.itinerary.itin != null) {
+    if (this.pNR != null && this.pNR.itinerary != null && this.pNR.itinerary.itin != null &&
+        this.pNR.itinerary.itin.length != 0 && this.pNR.itinerary.itin[0].airID != '') {
       for (Itin _flight in this.pNR.itinerary.itin) {
         loop:
         if (DateTime.now().isBefore(
@@ -768,7 +769,7 @@ class Itinerary {
 
   Itinerary.fromJson(Map<String, dynamic> json) {
     if (json['ItinMsg'] != null) {
-      throw(json['ItinMsg']);
+      //throw(json['ItinMsg']);
     }
 
     if (json['Itin'] != null) {
@@ -781,6 +782,8 @@ class Itinerary {
       } else {
         itin.add(new Itin.fromJson(json['Itin']));
       }
+    } else {
+      itin = [];
     }
   }
 
