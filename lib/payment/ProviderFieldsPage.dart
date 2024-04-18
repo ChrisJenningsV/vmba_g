@@ -17,6 +17,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 
 import '../controllers/vrsCommands.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
+import '../v3pages/cards/v3FormFields.dart';
 
 
 bool wantrebook = false;
@@ -244,7 +245,9 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
 
      }
      if( bShow) {
+       TextEditingController _oldPasswordEditingController =   TextEditingController();
        list.add(VInputField(fieldParams: params, provider: widget.provider, pnrModel: widget.pnrModel, key: Key((element.paymentFieldName as String) + '_key'),));
+       //list.add(v3EmailFormField(translate('Email'), _oldPasswordEditingController),);
      }
     });
 

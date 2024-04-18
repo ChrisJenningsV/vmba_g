@@ -230,7 +230,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       double outstanding = double.parse(seatRs.outstandingAmount);
       gblBookSeatCmd = seatRs.bookSeatCmd;
       if( !widget.isMmb) {
-        String msg = json.encode(RunVRSCommand(session!, "*R~X"));
+        String msg = json.encode(RunVRSCommand(session!, "E*R~X"));
+        gblBookSeatCmd = '';
 
         _sendVRSCommand(msg).then(
                 (onValue) {
