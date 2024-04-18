@@ -56,6 +56,7 @@ void main() async {
 
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
+
   if (gblAppTitle == null || gblAppTitle ==''){
     switch(gblBuildFlavor){
       case 'AG':
@@ -135,6 +136,7 @@ bool bFirstTime = true;
   void initState() {
     super.initState();
     _initLangs();
+
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
       initLangCached(gblLanguage).then((x){
@@ -157,6 +159,12 @@ bool bFirstTime = true;
   @override
   Widget build(BuildContext context) {
    // Locale myLocale = Localizations.localeOf(context);
+    try {
+      gblIs24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    } catch(e) {
+      logit(e.toString());
+    }
+
     bFirstTime = false;
     setLiveTest();
 

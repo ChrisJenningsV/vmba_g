@@ -18,7 +18,7 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'FN ';
+String gblBuildFlavor = 'H4';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 110;
@@ -32,6 +32,7 @@ List<String> gblLogBuffer= [];
 String gblAppTitle ='';
 String gblLanguage = 'en' ;
 bool gblLangFileLoaded = false;
+bool gblIs24HoursFormat = false;
 bool gblSaveLangsFile = true;
 String gblLangFileModTime = '';
 String gblError= '';
@@ -60,7 +61,7 @@ String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]
 
 /* logging */
 bool gblLogProducts = false;
-bool gblLogPayment = false;
+bool gblLogPayment = true;
 bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;

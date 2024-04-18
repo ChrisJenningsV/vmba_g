@@ -1601,13 +1601,19 @@ List<Widget> getPayOptions(String amount, String cur) {
 
         }
 
+ /*       if( !provider.paymentSchemeName.contains('VideCard')){
+          bShow = false;
+        }
+*/
+
         if( bShow){
         String btnText = '';
         Color btnBack = Colors.white;
         if(gblNoNetwork ==  true || ( gblSettings.wantTandCCheckBox == true && tandCchecked== false )   ) btnBack = Colors.grey.shade400;
 
-
+        logit('provider: ${provider.paymentSchemeName} 1');
         btnText = provider.paymentSchemeDisplayName;
+
         paymentButtons.add(ElevatedButton(
           style: ElevatedButton.styleFrom(
 
@@ -1616,6 +1622,8 @@ List<Widget> getPayOptions(String amount, String cur) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
           onPressed: () async {
+            logit('provider: ${provider.paymentSchemeName} A');
+
             if ( gblPayBtnDisabled == false && gblNoNetwork ==  false && ( gblSettings.wantTandCCheckBox == false || tandCchecked )) {
               if(gblLogPayment) { logit('pay pressed');}
               gblPayBtnDisabled = true;
@@ -1717,6 +1725,7 @@ List<Widget> getPayOptions(String amount, String cur) {
         ));
       }
       });
+      logit('provider: 2');
 
 
       return Column(children: paymentButtons);
