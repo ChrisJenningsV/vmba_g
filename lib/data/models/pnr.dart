@@ -889,7 +889,7 @@ class Itin {
     if(json['OnlineCheckinTimeEndLocal'] != null )onlineCheckinTimeEndLocal = json['OnlineCheckinTimeEndLocal'];
     if(json['OnlineCheckinTimeStartLocal'] != null )onlineCheckinTimeStartLocal = json['OnlineCheckinTimeStartLocal'];
     if( json['editFlight'] != null ) editFlight = json['editFlight'].toString().toLowerCase() == 'true';
-    logit('edit flight = $editFlight');
+    //logit('edit flight = $editFlight');
   }
 
   String get cityPair => this.depart + this.arrive;

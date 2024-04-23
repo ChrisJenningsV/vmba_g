@@ -80,7 +80,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   Widget build(BuildContext context) {
     if (_displayProcessingIndicator && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _displayProcessingText, title: 'Payment');
+        //progressMessagePage(context, _displayProcessingText, title: 'Payment');
         return Container();
       } else {
         return Scaffold(

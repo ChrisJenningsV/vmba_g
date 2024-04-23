@@ -460,6 +460,19 @@ void progressMessagePage(BuildContext context, String msg, {String title=''}){
   });
 }
 
+Widget progressMessagePageWidget(BuildContext context, String msg, {String title=''}){
+  return MessagePage(msg: msg,
+    key: messageGlobalKeyProgress,
+    borderClr: Colors.green,
+    backClr: Colors.green,
+    iconClr: Colors.white,
+    icon: Icons.check,
+    titleBackClr: gblSystemColors.primaryHeaderColor,
+    titleTextClr: gblSystemColors.headerTextColor,
+    displayFormat: '2',
+    title: title,);
+}
+
 
 void setProgressMessage(String msg) {
   try {

@@ -260,6 +260,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   }));
         } else if (outstanding < 0) { // Minus outstanding
           String msg = json.encode(RunVRSCommand(session!, "EMT*R"));
+          gblBookSeatCmd = '';
           _sendVRSCommand(msg).then(
                   (onValue) =>
                   Repository.get().fetchPnr(widget.rloc).then((pnr) {

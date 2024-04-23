@@ -155,6 +155,7 @@ PreferredSizeWidget appBar(BuildContext context, String title,
 }
 
 Widget getSummaryBody(BuildContext context, NewBooking newBooking,  Widget Function(NewBooking newBooking) body, Key key) {
+  logit('gsb:');
   if( gblError != '') {
     return displayMessage(context,'Booking Error', gblError );
   }

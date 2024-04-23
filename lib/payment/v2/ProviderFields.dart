@@ -47,8 +47,8 @@ class VInputFieldState extends State<VInputField> {
           primaryColorDark: Colors.blue,
         );
 
-
-    if ( widget.fieldParams!.ftype == FieldType.country) {
+  try {
+    if (widget.fieldParams!.ftype == FieldType.country) {
       return Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
@@ -57,7 +57,7 @@ class VInputFieldState extends State<VInputField> {
         ),
       );
     }
-    if ( widget.fieldParams!.ftype == FieldType.choice) {
+    if (widget.fieldParams!.ftype == FieldType.choice) {
       return Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
@@ -70,32 +70,32 @@ class VInputFieldState extends State<VInputField> {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
       child: new Theme(
-        data: theme ,
+        data: theme,
         child: TextFormField(
           maxLength: widget.fieldParams!.maxLength,
-          decoration:getDecoration(widget.fieldParams!.label),
+          decoration: getDecoration(widget.fieldParams!.label),
 
           controller: _textEditingController,
           onFieldSubmitted: (value) {
             //widget.passengerDetail.firstName = value;
-            if( gblPayFormVals == null ) {
+            if (gblPayFormVals == null) {
               gblPayFormVals = new Map();
             }
 //            if( gblPayFormVals.containsKey(widget.fieldParams.id)){
-              gblPayFormVals![widget.fieldParams!.id] = value;
+            gblPayFormVals![widget.fieldParams!.id] = value;
           },
 
           textInputAction: TextInputAction.done,
           // keyboardType: TextInputType.text,
           inputFormatters: widget.fieldParams!.inputFormatters,
           validator: (value) {
-            if( widget.fieldParams!.required == false ) return null;
-            return value!.isEmpty ? translate('${widget.fieldParams!.label}') + ' ' + translate('cannot be empty') : null;
-
+            if (widget.fieldParams!.required == false) return null;
+            return value!.isEmpty ? translate('${widget.fieldParams!.label}') +
+                ' ' + translate('cannot be empty') : null;
           },
           onSaved: (value) {
             if (value != null) {
-              if( gblPayFormVals == null ) {
+              if (gblPayFormVals == null) {
                 gblPayFormVals = new Map();
               }
 //            if( gblPayFormVals.containsKey(widget.fieldParams.id)){
@@ -105,6 +105,10 @@ class VInputFieldState extends State<VInputField> {
         ),
       ),
     );
+  } catch(e){
+    logit('PF: ' + e.toString());
+    return Text(e.toString());
+  }
   }
 
   void _showDialog(

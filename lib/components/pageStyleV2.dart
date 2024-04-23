@@ -127,9 +127,10 @@ class V2TextWidget extends StatefulWidget {
   //String title;
   final int? maxLength;
 
-  V2TextWidget({Key key= const Key("t2text_key"), this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
-    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode})
-      : super(key: key);
+  V2TextWidget({//Key key= const Key("t2text_key"),
+    this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
+    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode});
+      //: super(key: key);
 
 
   _V2TextWidgetState createState() => _V2TextWidgetState();

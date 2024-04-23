@@ -28,6 +28,7 @@ import '../components/bottomNav.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
+import '../menu/myAccountPage.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
@@ -594,23 +595,32 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
             .where((aFX) =>
                 aFX.aFXID == "SEAT" && aFX.text.split(' ')[1] == cityPair)
             .forEach((seat) {
-          widgets.add(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                TrText('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
-                Text(formatPrice(seat.cur != '' ? seat.cur : currencyCode, double.parse(seat.amt)) ),
-              ],
-            ),
-          );
+          MP? linkedMP;
+          widget.pnrModel.pNR.mPS.mP.forEach((element){
+            if( element.seg == seat.seg && element.pax == seat.pax && element.mPID =='SSSS' ){
+              linkedMP = element;
+            }
+          });
+          if( linkedMP != null ) {
+            widgets.add(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TrText('Passenger ${seat.pax} - ${seat.seat}  ${seat.name}'),
+                  //Text(formatPrice(seat.cur != '' ? seat.cur : currencyCode,double.parse(seat.amt))),
+                  Text(formatPrice(currencyCode, double.parse(linkedMP!.mPSAmt)) ),
+                ],
+              ),
+            );
+          }
         });
       }
 
       if( gblSettings.wantProducts ) {
         if( widget.pnrModel.pNR.mPS != null && widget.pnrModel.pNR.mPS.mP != null ){
           widget.pnrModel.pNR.mPS.mP.forEach((element) {
-            // this seg ?
-            if( element.seg != null && element.seg.isNotEmpty &&  int.parse(element.seg) == (i+1)){
+            // this seg ? + not seats
+            if( element.seg != null  && element.mPID != 'SSSS' && element.seg.isNotEmpty &&  int.parse(element.seg) == (i+1)){
               widgets.add(
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -695,7 +705,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         msg = '*${widget.mmbBooking!.rloc}';
 
         if( gblPayAction == 'BOOKSEAT' && gblBookSeatCmd != ''){
-          msg += gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^');
+          bool seatBooked = false;
+          if (widget.pnrModel != null) {
+            seatBooked = widget.pnrModel!.isSeatInPnr(gblBookSeatCmd);
+          }
+          if( !seatBooked) {
+            msg += gblBookSeatCmd + (gblBookSeatCmd.endsWith('^') ? '' : '^');
+          }
         }
       }
       widget.mmbBooking!.journeys.journey[widget.mmbBooking!.journeyToChange -
@@ -1145,8 +1161,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     if (_displayProcessingIndicator && gblInRefreshing == false) {
       if(gblLogPayment) { logit('CPM Build processing');}
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _displayProcessingText, title: 'Payment');
-        return Container();
+       // progressMessagePage(context, _displayProcessingText, title: 'Payment');
+        return progressMessagePageWidget(context, _displayProcessingText, title: 'Payment');
+        //return Container();
       } else {
         return Scaffold(
           key: _key,
@@ -1524,39 +1541,47 @@ List<Widget> getPayOptions(String amount, String cur) {
         controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
       ));
     }
-
-      if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) { // this.isMmb &&
-      list.add(ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: gblSystemColors.primaryButtonColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0))),
-        onPressed: () {
-          if(_displayProcessingIndicator == false && gblNoNetwork == false ) {
-            if( gblTimer != null){
-              gblTimer?.cancel();
-              gblTimer = null;
-            }
-            completeBookingNothingtoPay();
-          }
-        },
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      bool bEnabled = true;
+      if(  amount == '0' || (amount != '' && double.parse(amount)==0) ) {
+        Color btnBack = gblSystemColors.primaryButtonColor;
+        if (gblNoNetwork == true ||
+            (gblSettings.wantTandCCheckBox == true &&
+                tandCchecked == false)) {
+          btnBack = Colors.grey.shade400;
+          bEnabled = false;
+        }
+// this.isMmb &&
+          list.add(ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: btnBack,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0))),
+            onPressed: () {
+              if(_displayProcessingIndicator == false && gblNoNetwork == false && bEnabled == true ) {
+                if( gblTimer != null){
+                  gblTimer?.cancel();
+                  gblTimer = null;
+                }
+                completeBookingNothingtoPay();
+              }
+            },
+            child: Column(
               children: <Widget>[
-                ( _displayProcessingIndicator == true) ? CircularProgressIndicator() : Container(),
-                Text(
-                  this.isMmb
-                      ? translate('AGREE AND MAKE CHANGES')
-                      : translate('COMPLETE BOOKING'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ( _displayProcessingIndicator == true) ? CircularProgressIndicator() : Container(),
+                    Text(
+                      this.isMmb
+                          ? translate('AGREE AND MAKE CHANGES')
+                          : translate('COMPLETE BOOKING'),
 
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ));
+          ));
     } else {
         if(gblLogPayment) { logit('render pay buttons');}
         if( gblSettings.wantNewPayment) {
@@ -1571,176 +1596,194 @@ List<Widget> getPayOptions(String amount, String cur) {
 }
 
   Widget renderNewPaymentButtons(String amount) {
-    List<Widget> paymentButtons = [];
-    if( gblProviders != null &&  gblSelectedCurrency == gblLastProviderCurrecy ) {
-      paymentButtons.add(Padding(
-        padding: EdgeInsets.only(top: 8.0),
-      ));
+    try {
+      List<Widget> paymentButtons = [];
+      if (gblProviders != null &&
+          gblSelectedCurrency == gblLastProviderCurrecy) {
+        paymentButtons.add(Padding(
+          padding: EdgeInsets.only(top: 8.0),
+        ));
 
-      gblProviders!.providers.forEach((provider) {
-        logit('provider: ${provider.paymentSchemeName} name: ${provider.paymentSchemeDisplayName} type: ${provider.paymentType.toString()}');
-        bool bShow = false;
+        gblProviders!.providers.forEach((provider) {
+          logit('provider: ${provider.paymentSchemeName} name: ${provider
+              .paymentSchemeDisplayName} type: ${provider.paymentType
+              .toString()}');
+          bool bShow = false;
 
-        switch (provider.paymentType) {
-          case 'ExternalPayment':
-            bShow = true;
-            break;
-          case 'CreditCard':
-            bShow = true;
-            break;
-          case 'FundTransferPayment':
-              if( ! isMmb) {
+          switch (provider.paymentType) {
+            case 'ExternalPayment':
+              bShow = true;
+              break;
+            case 'CreditCard':
+              bShow = true;
+              break;
+            case 'FundTransferPayment':
+              if (!isMmb) {
                 bShow = true;
-            }
-            break;
-          case 'BuyNowPayLater':
-              if( ! isMmb) {
+              }
+              break;
+            case 'BuyNowPayLater':
+              if (!isMmb) {
                 bShow = true;
-            }
-            break;
+              }
+              break;
+          }
 
-        }
-
- /*       if( !provider.paymentSchemeName.contains('VideCard')){
+          /*       if( !provider.paymentSchemeName.contains('VideCard')){
           bShow = false;
         }
 */
 
-        if( bShow){
-        String btnText = '';
-        Color btnBack = Colors.white;
-        if(gblNoNetwork ==  true || ( gblSettings.wantTandCCheckBox == true && tandCchecked== false )   ) btnBack = Colors.grey.shade400;
+          if (bShow) {
+            String btnText = '';
+            Color btnBack = Colors.white;
+            if (gblNoNetwork == true ||
+                (gblSettings.wantTandCCheckBox == true &&
+                    tandCchecked == false)) btnBack = Colors.grey.shade400;
 
-        logit('provider: ${provider.paymentSchemeName} 1');
-        btnText = provider.paymentSchemeDisplayName;
+            logit('provider: ${provider.paymentSchemeName} 1');
+            btnText = provider.paymentSchemeDisplayName;
 
-        paymentButtons.add(ElevatedButton(
-          style: ElevatedButton.styleFrom(
+            paymentButtons.add(ElevatedButton(
+              style: ElevatedButton.styleFrom(
 
 
-              backgroundColor: btnBack,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
-          onPressed: () async {
-            logit('provider: ${provider.paymentSchemeName} A');
+                  backgroundColor: btnBack,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+              onPressed: () async {
+                logit('provider: ${provider.paymentSchemeName} A');
 
-            if ( gblPayBtnDisabled == false && gblNoNetwork ==  false && ( gblSettings.wantTandCCheckBox == false || tandCchecked )) {
-              if(gblLogPayment) { logit('pay pressed');}
-              gblPayBtnDisabled = true;
-              if( gblTimer != null){
-                gblTimer?.cancel();
-                gblTimer = null;
-              }
-              setState(() {
-
-              });
-              gblSettings.creditCardProvider = provider.paymentSchemeName;
-              if (provider.paymentType == 'ExternalPayment') {
-                gblCurrentRloc = widget.pnrModel.pNR.rLOC;
-                gblPaymentMsg = '';
-                if (provider.fields == null ||
-                    provider.fields.paymentFields == null ||
-                    provider.fields.paymentFields.length == 0) {
-                  if (widget.mmbAction == 'CHANGEFLT') {
-                    await changeFlt(
-                        widget.pnrModel, widget.mmbBooking!, context);
+                if (gblPayBtnDisabled == false && gblNoNetwork == false &&
+                    (gblSettings.wantTandCCheckBox == false || tandCchecked)) {
+                  if (gblLogPayment) {
+                    logit('pay pressed');
                   }
-                  _cancelTimer = true;
-                  await Navigator.push(
-                      context,
-                      //SlideTopRoute(page:
-                      CustomPageRoute(
-                          builder: (context) => WebPayPage(
-                    provider.paymentSchemeName,
-                            newBooking: widget.newBooking!,
-                    mmbBooking: widget.mmbBooking,
-                    pnrModel: widget.pnrModel,
-                    isMmb: widget.isMmb,)));
-                  setState(() {});
+                  gblPayBtnDisabled = true;
+                  if (gblTimer != null) {
+                    gblTimer?.cancel();
+                    gblTimer = null;
+                  }
+                  setState(() {
 
-                } else {
-                  if( widget.mmbBooking == null ) widget.mmbBooking = MmbBooking();
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) =>
-                      ProviderFieldsPage(pnrModel: widget.pnrModel,
+                  });
+                  gblSettings.creditCardProvider = provider.paymentSchemeName;
+                  if (provider.paymentType == 'ExternalPayment') {
+                    gblCurrentRloc = widget.pnrModel.pNR.rLOC;
+                    gblPaymentMsg = '';
+                    if (provider.fields == null ||
+                        provider.fields.paymentFields == null ||
+                        provider.fields.paymentFields.length == 0) {
+                      if (widget.mmbAction == 'CHANGEFLT') {
+                        await changeFlt(
+                            widget.pnrModel, widget.mmbBooking!, context);
+                      }
+                      _cancelTimer = true;
+                      await Navigator.push(
+                          context,
+                          SlideTopRoute(page:
+/*
+                          CustomPageRoute(
+                              builder: (context) =>
+*/
+                                  WebPayPage(
+                                    provider.paymentSchemeName,
+                                    newBooking: widget.newBooking!,
+                                    mmbBooking: widget.mmbBooking,
+                                    pnrModel: widget.pnrModel,
+                                    isMmb: widget.isMmb,)));
+                      setState(() {});
+                    } else {
+                      if (widget.mmbBooking == null)
+                        widget.mmbBooking = MmbBooking();
+                      Navigator.push(
+                          context, SlideTopRoute(page: ProviderFieldsPage(pnrModel: widget.pnrModel,
                         provider: provider,
                         isMmb: isMmb,
                         mmbBooking: widget.mmbBooking!,
-                        mmbAction: widget.mmbAction,)));
-                }
-              } else if ( provider.paymentType == 'FundTransferPayment') {
-                endProgressMessage();
-                _displayProcessingIndicator = false;
-                doDelayedPayment(provider);
-              } else if ( provider.paymentType == 'BuyNowPayLater') {
-                endProgressMessage();
-                _displayProcessingIndicator = false;
-                doDelayedPayment(provider);
-
-              } else {
-                if( session == null){
-                  logit('choosePay ses null');
-                  if(gblSession != null){
-                    session = gblSession;
+                        mmbAction: widget.mmbAction,)
+                      ));
+                    }
+                  } else if (provider.paymentType == 'FundTransferPayment') {
+                    endProgressMessage();
+                    _displayProcessingIndicator = false;
+                    doDelayedPayment(provider);
+                  } else if (provider.paymentType == 'BuyNowPayLater') {
+                    endProgressMessage();
+                    _displayProcessingIndicator = false;
+                    doDelayedPayment(provider);
                   } else {
-                    session = Session('', '', '');
+                    if (session == null) {
+                      logit('choosePay ses null');
+                      if (gblSession != null) {
+                        session = gblSession;
+                      } else {
+                        session = Session('', '', '');
+                      }
+                    }
+                    Navigator.push(
+                        context,
+                        //MaterialPageRoute(
+                        CustomPageRoute(
+                            builder: (context) =>
+                                CreditCardPage(pnrModel: widget.pnrModel,
+                                  stopwatch: stopwatch,
+                                  session: session!,
+                                  isMmb: isMmb,
+                                  mmbBooking: widget.mmbBooking,
+                                  mmbAction: widget.mmbAction,)));
                   }
                 }
-                Navigator.push(
-                    context,
-                    //MaterialPageRoute(
-                    CustomPageRoute(
-                        builder: (context) =>
-                    CreditCardPage(pnrModel: widget.pnrModel,
-                      stopwatch: stopwatch,
-                      session: session!,
-                      isMmb: isMmb,
-                      mmbBooking: widget.mmbBooking,
-                      mmbAction: widget.mmbAction,)));
-              }
-            }
-            else if( gblSettings.wantTandCCheckBox == true && tandCchecked == false ) {
-              // check box
-              showDialog(
-                context: context,
-                builder: (BuildContext context)
-              {
-                return msgDialog(context, translate('Warning'),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                        child: TrText('You must accept the terms and conditions before proceeding.')),
-                    ipad: EdgeInsets.all(25)
-                );
-              });
-            }
-          },
-          child: Column(
-            children: <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _getPayButton(btnText, provider.paymentType, provider, amount)
+                else if (gblSettings.wantTandCCheckBox == true &&
+                    tandCchecked == false) {
+                  // check box
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return msgDialog(context, translate('Warning'),
+                            Container(
+                                padding: EdgeInsets.all(10),
+                                child: TrText(
+                                    'You must accept the terms and conditions before proceeding.')),
+                            ipad: EdgeInsets.all(25)
+                        );
+                      });
+                }
+              },
+              child: Column(
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _getPayButton(
+                          btnText, provider.paymentType, provider, amount)
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ));
+          }
+        });
+        logit('provider: 2');
+
+
+        return Column(children: paymentButtons);
+      } else {
+        return DataLoaderWidget(dataType: LoadDataType.providers,
+          newBooking: widget.newBooking!,
+          pnrModel: widget.pnrModel,
+          onComplete: (PnrModel pnrModel) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            if (gblLogPayment) {
+              logit('Load Providers onComplete');
+            }
+            widget.pnrModel = pnrModel;
+            pnrModel = pnrModel;
+            //setState(() {            });
+            startTimer(); //cj temp
+          },);
       }
-      });
-      logit('provider: 2');
-
-
-      return Column(children: paymentButtons);
-    } else {
-      return DataLoaderWidget(dataType: LoadDataType.providers,
-        newBooking: widget.newBooking!,
-        pnrModel: widget.pnrModel,
-        onComplete: (PnrModel pnrModel) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          if(gblLogPayment) {logit('Load Providers onComplete');}
-          widget.pnrModel = pnrModel;
-          pnrModel = pnrModel;
-          //setState(() {            });
-          startTimer();
-        },);
+    } catch(e){
+      logit(e.toString());
+      return Text(e.toString());
     }
   }
   Future<void> doDelayedPayment( Provider provider) async {

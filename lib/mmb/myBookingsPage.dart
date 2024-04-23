@@ -58,7 +58,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
   void onComplete(){
     _loadingInProgress = false;
     setState(() {
-      print('getb setState');
+      //print('getb setState');
       _loadingInProgress = false;
     });
   }

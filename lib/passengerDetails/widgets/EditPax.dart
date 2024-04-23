@@ -18,8 +18,9 @@ import '../../components/pageStyleV2.dart';
 
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
-      {Key key= const Key("editpaxxp_key"), required this.passengerDetail, required this.isAdsBooking, required this.isLeadPassenger, required this.destination, required this.newBooking})
-      : super(key: key);
+      { //Key key= const Key("editpaxxp_key"),
+        required this.passengerDetail, required this.isAdsBooking, required this.isLeadPassenger, required this.destination, required this.newBooking});
+     // : super(key: key);
   final PassengerDetail passengerDetail;
   final bool isAdsBooking;
   final bool isLeadPassenger;

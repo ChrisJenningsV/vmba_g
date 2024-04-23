@@ -61,7 +61,7 @@ String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]
 
 /* logging */
 bool gblLogProducts = false;
-bool gblLogPayment = true;
+bool gblLogPayment = false;
 bool gblLogFQ = false;
 bool gblLogCities = false;
 bool gblLogSummary = false;

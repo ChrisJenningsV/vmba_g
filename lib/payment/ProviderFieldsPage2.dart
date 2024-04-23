@@ -22,8 +22,8 @@ import '../v3pages/cards/v3FormFields.dart';
 
 bool wantrebook = false;
 
-class ProviderFieldsPage extends StatefulWidget {
-  ProviderFieldsPage({    Key key= const Key("provfipa_key"),
+class ProviderFieldsPage2 extends StatefulWidget {
+  ProviderFieldsPage2({    Key key= const Key("provfipa_key"),
      this.newBooking,
     required this.pnrModel,
     this.isMmb=false,
@@ -40,10 +40,10 @@ class ProviderFieldsPage extends StatefulWidget {
   final PaymentProvider.Provider provider;
 
   @override
-  ProviderFieldsPageState createState() => ProviderFieldsPageState();
+  ProviderFieldsPageState2 createState() => ProviderFieldsPageState2();
 }
 
-class ProviderFieldsPageState extends State<ProviderFieldsPage> {
+class ProviderFieldsPageState2 extends State<ProviderFieldsPage2> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
   final formKey = new GlobalKey<FormState>();
 
@@ -75,7 +75,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if( gblError != null && gblError.isNotEmpty) {
+  /*  if( gblError != null && gblError.isNotEmpty) {
       return Scaffold(
         key: _key,
         appBar: appBar(context, 'Payment',
@@ -129,7 +129,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           ),
         ),
       );
-    }
+    }*/
       // no error
       return Scaffold(
         key: _key,
@@ -158,7 +158,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
   List<Widget> _getBody() {
     List <Widget> list = [];
 
-    widget.provider.fields.paymentFields.forEach((element) {
+ /*   widget.provider.fields.paymentFields.forEach((element) {
    //   logit('Add field ${element.paymentFieldName}');
       FieldParams params = FieldParams();
       params.label = element.defaultLabel;
@@ -248,7 +248,9 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
        list.add(VInputField(fieldParams: params, provider: widget.provider, pnrModel: widget.pnrModel, key: Key((element.paymentFieldName as String) + '_key'),));
      }
     });
-
+*/
+    FieldParams params = FieldParams( maxLength: 20);
+    list.add(VInputField(fieldParams: params, provider: widget.provider, pnrModel: widget.pnrModel));
 
     list.add( Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,7 +308,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     }
   }
   void validateAndSubmit() async {
-    if (validate()) {
+  /*  if (validate()) {
       hasDataConnection().then((result) async {
         if (result == true) {
           if(widget.mmbAction == 'CHANGEFLT' ) { // && wantrebook
@@ -336,7 +338,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       setState(() {
 
       });
-    }
+    }*/
   }
 
 

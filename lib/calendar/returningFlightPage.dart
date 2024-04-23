@@ -249,7 +249,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   Widget _buildBody() {
     if (_loadingInProgress && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _loading, title: '');
+        //progressMessagePage(context, _loading, title: '');
         return Container();
       } else {
       return new Center(
