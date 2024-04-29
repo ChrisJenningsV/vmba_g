@@ -32,10 +32,13 @@ class ProductCard extends StatefulWidget {
 class ProductCardState extends State<ProductCard> {
   String title = '';
   bool wantSaveButton = false;
+  bool saveDisabled = false;
 
   @override
   initState() {
     wantSaveButton = false;
+    saveDisabled = true;
+    gblActionBtnDisabled = false;
     widget.productCategory.products.forEach((prod) {
       prod.resetProducts(widget.pnrModel);
     });
@@ -349,7 +352,13 @@ class ProductCardState extends State<ProductCard> {
 */
   }
   void onSave(BuildContext context, dynamic p) {
-    saveProduct(p, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
+    if( saveDisabled == false) {
+      logit('on save');
+      gblActionBtnDisabled = true;
+      saveDisabled = true;
+      saveProduct(
+          p, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
+    }
   }
   void onError(String msg){
     widget.onError!(msg);

@@ -19,9 +19,9 @@ import 'models/providers.dart';
 // initialized in main_XX.dart
 //
 String gblBuildFlavor = 'H4';
-bool gblIsLive = false;
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 110;
+int requiredXmlVersion = 111;
 int requiredApiVersion = 102;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = true;

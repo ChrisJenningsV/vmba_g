@@ -45,6 +45,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
         }
       });
     }*/
+    gblActionBtnDisabled = false;
     widget.product?.resetProducts(widget.pnrModel);
 
     if( widget.isMmb) {
@@ -193,7 +194,9 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     // add button
     list.add(Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),
-        child: saveButton( text: 'SAVE', onPressed: () {validateAndSave();}, icon: Icons.check ),
+        child: saveButton( text: 'SAVE', onPressed: () {
+          validateAndSave();
+          }, icon: Icons.check ),
     )
     );
 
@@ -204,11 +207,18 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     )));
   }
   void validateAndSave() {
-     saveProduct(widget.product!, widget.pnrModel.pNR, onComplete: onComplete, onError: onError);
+    if( gblActionBtnDisabled == false) {
+      logit('on save');
+
+      gblActionBtnDisabled = true;
+      saveProduct(widget.product!, widget.pnrModel.pNR, onComplete: onComplete,
+          onError: onError);
+    }
   }
 
   void onError(String msg){
     widget.onError!(msg);
+    gblActionBtnDisabled = false;
     showAlertDialog(context, 'Error', msg);
 
   }
@@ -216,6 +226,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     void onComplete(PnrModel pnrModel, dynamic p){
     widget.onSaved!(widget.product!);
     try {
+      gblActionBtnDisabled = false;
       Navigator.pop(context, pnrModel);
     } catch (e) {
       print('Error: $e');

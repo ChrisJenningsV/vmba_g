@@ -169,11 +169,15 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
-/*
-    return WillPopScope(
-      onWillPop: _onWillPop,
-*/
-    return
+
+    return PopScope(
+      onPopInvoked: (didPop){
+        if(didPop){
+          gblPayBtnDisabled = false;
+        }
+      },
+      child:
+//    return
       /*CustomWillPopScope(
           action: () {
 
@@ -228,7 +232,7 @@ Page resource error:
         );
       }),
       //  floatingActionButton: favoriteButton(),
-    );
+    ));
   }
 
 

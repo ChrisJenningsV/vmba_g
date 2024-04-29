@@ -22,6 +22,7 @@ class ProductsWidget extends StatefulWidget {
   bool wantTitle;
   bool wantButton;
   bool isMMB;
+  String productsMsg = 'Loading Products';
   final Function(PnrModel pnrModel)? onComplete;
 
   ProductsWidget(
@@ -100,7 +101,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
           body: json.encode(GetProductsMsg('en', currency: gblSelectedCurrency, cityCode: gblOrigin, arrivalCityCode: gblDestination ).toJson()));
 
       //if(_fullLogging) logit('dataLoader load data (${widget.dataType.toString()}) result ${response.statusCode}');
-
+      widget.productsMsg = 'No Products';
       if (response.statusCode == 200) {
         //logit('nearly loaded' );
         gblProducts = ProductCategorys.fromJson(response.body.trim());
@@ -151,7 +152,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
       if( gblProducts!.productCategorys.length > 1) list.add( Divider(height: 200,));
     } else {
       list.add( Divider(height: 50,));
-      list.add(TrText('No Products'));
+      list.add(TrText(widget.productsMsg));
     }
 
   return list;

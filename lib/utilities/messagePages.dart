@@ -87,7 +87,7 @@ class MessagePageState extends State<MessagePage> {
               alignment: Alignment.center,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade200) ,
-                child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+                child: TrText("OK", style: TextStyle(backgroundColor: Colors.black, color: Colors.white),),
                 onPressed: () {
                   //Put your code here which you want to execute on Cancel button click.
                   if( widget.onComplete != null ){
@@ -360,7 +360,7 @@ Widget criticalErrorWidget(BuildContext context, String msg, {String title='', b
           alignment: Alignment.center,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(foregroundColor: Colors.grey.shade200) ,
-            child: TrText("OK", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+            child: TrText("OK", style: TextStyle(backgroundColor: Colors.black, color: Colors.white),),
             onPressed: () {
               //Put your code here which you want to execute on Cancel button click.
               if( onComplete != null ){
