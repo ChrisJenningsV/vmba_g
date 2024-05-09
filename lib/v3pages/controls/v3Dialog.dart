@@ -54,7 +54,7 @@ void v3ShowDialog(BuildContext context,String caption,
     listT.add(Padding(padding: EdgeInsets.all(5)));
   }
   listT.add(Text(caption,
-    style: TextStyle(color: Colors.white),));
+    style: TextStyle(color: gblSystemColors.headerTextColor),));
   Widget titleCaption = Row(
       children: listT
   );
@@ -62,6 +62,7 @@ void v3ShowDialog(BuildContext context,String caption,
 
   Widget title = Container(
       alignment: Alignment.center,
+    //  color: gblSystemColors.primaryHeaderColor,
       decoration: BoxDecoration(
           color: gblSystemColors.primaryHeaderColor,
           borderRadius: BorderRadius.only(
@@ -95,7 +96,7 @@ void v3ShowDialog(BuildContext context,String caption,
                         title: title,
                         content: content,
                         actions: getActions(_formKey, (){
-                          setState((){});
+                          //setState((){});
                         })
 
                     )

@@ -37,11 +37,15 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'mailto:' + email + '?subject=AppFeedback ' + widget.version,
+        'mailto',
+        email ,
         Text(email,
             style: TextStyle(
               decoration: TextDecoration.underline,
-            ))));
+            )),
+            queryParameters: {'subject': 'AppFeedback'+ widget.version}
+    )
+    );
 
     return widgets;
   }

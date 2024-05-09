@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
@@ -32,6 +33,8 @@ import '../menu/myAccountPage.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
+import '../v3pages/cards/v3Card.dart';
+import '../v3pages/homePageHelper.dart';
 import 'ProviderFieldsPage.dart';
 import 'giftVoucher.dart';
 
@@ -1604,6 +1607,8 @@ List<Widget> getPayOptions(String amount, String cur) {
           padding: EdgeInsets.only(top: 8.0),
         ));
 
+        bool bOfflinePaymentAvailable = false;
+        String offlineConfigData = '';
         gblProviders!.providers.forEach((provider) {
           logit('provider: ${provider.paymentSchemeName} name: ${provider
               .paymentSchemeDisplayName} type: ${provider.paymentType
@@ -1627,12 +1632,15 @@ List<Widget> getPayOptions(String amount, String cur) {
                 bShow = true;
               }
               break;
-          }
+            case 'OfflinePayment':
+              bOfflinePaymentAvailable = true;
+              if( provider.merchantDetails != null ){
+                offlineConfigData = provider.merchantDetails!.configJsonData;
+              }
+              bShow = false;
+              break;
 
-          /*       if( !provider.paymentSchemeName.contains('VideCard')){
-          bShow = false;
-        }
-*/
+          }
 
           if (bShow) {
             String btnText = '';
@@ -1764,7 +1772,103 @@ List<Widget> getPayOptions(String amount, String cur) {
         });
         logit('provider: 2');
 
+      if (bOfflinePaymentAvailable && paymentButtons.length < 2) {
+        String txt = '';
+        String linkURL = '';
+        String linkText = '';
+        String linkLabel = '';
+        String phoneText = '';
+        String phoneLink = '';
+        String emailText = '';
+        String emailLink = '';
 
+        if( offlineConfigData != null ){
+          Map map = jsonDecode(offlineConfigData);
+          if( map['OfflineMessage'] != null ){
+            txt = map['OfflineMessage'];
+            txt = txt.replaceAll('[[br/]]', '\n');
+          }
+          if( map['OfflinePhone'] != null && map['OfflinePhoneText'] != null ){
+            phoneText = map['OfflinePhoneText'];
+            phoneLink = map['OfflinePhone'];
+          }
+          if( map['OfflineEmail'] != null && map['OfflineEmailText'] != null ){
+            emailText = map['OfflineEmailText'];
+            emailLink = map['OfflineEmail'];
+          }
+          if( map['OfflineLink'] != null && map['OfflineLinkText'] != null){
+            linkURL = map['OfflineLink'];
+            linkLabel = map['OfflineLinkLabel'];
+            linkText = map['OfflineLinkText'];
+          }
+        }
+        List<Widget> list = [];
+        list.add(Text(txt));
+
+        if( phoneText != '' && phoneLink != '') {
+          list.add(Padding(padding: EdgeInsets.fromLTRB(15,5,15,5),
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              TrText(phoneText + ' ' ),
+              appLinkWidget(
+              'tel',
+              phoneLink,
+              Text(phoneLink,
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  )))
+          ]))
+          );
+        }
+
+        if( emailText != '' && emailLink != '') {
+            list.add(Padding(padding: EdgeInsets.fromLTRB(15,5,15,5),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TrText(emailText + ' ' ),
+                  appLinkWidget(
+                'emailto',
+                emailLink,
+                Text( emailLink,
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ))),
+                ]
+            )));
+          }
+        if( linkText != '' && linkURL != '') {
+              list.add(Padding(padding: EdgeInsets.fromLTRB(15,5,15,5),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TrText(linkLabel),
+                    appLinkWidget(
+                  'https',
+                  linkURL.replaceAll('https//', '').replaceAll('https://', ''),
+                  Text(linkText,
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ))),
+                  ]
+              )))
+              ;
+            }
+        list.add(Padding(padding: EdgeInsets.all(5)));
+        HomeCard card = HomeCard();
+        card.title = CardText('', text: 'Offline Payment');
+        card.icon = Icons.contact_phone_outlined;
+
+
+        return v3ExpanderCard(
+            context,
+            card,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: list
+            ))          ;
+      }
         return Column(children: paymentButtons);
       } else {
         return DataLoaderWidget(dataType: LoadDataType.providers,

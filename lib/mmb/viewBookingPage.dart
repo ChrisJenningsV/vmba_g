@@ -2319,7 +2319,8 @@ class ViewBookingBodyState
               ),
               gblSettings.prohibitedItemsNoticeUrl != null
                   ? appLinkWidget(
-                      gblSettings.prohibitedItemsNoticeUrl,
+                      'https',
+                      gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
                       Text(
                           gblSettings.prohibitedItemsNoticeUrl,
                           style: TextStyle(
@@ -2419,7 +2420,8 @@ class ViewBookingBodyState
                 padding: EdgeInsets.all(4),
               ),
               appLinkWidget(
-                  gblSettings.prohibitedItemsNoticeUrl,
+                  'https',
+                  gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
                   Text(gblSettings.prohibitedItemsNoticeUrl,
                       style: TextStyle(
                         decoration: TextDecoration.underline,

@@ -269,24 +269,24 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         //gotAllDetails = false;
       }
 
-      if (gblSettings.wantGender) {
-        if (passengerDetailRecord!.gender != null &&
-            passengerDetailRecord!.gender.length > 0) {
-          _passengerDetails[paxNo].gender = passengerDetailRecord!.gender;
-        } else {
-          gotAllDetails = false;
-        }
       }
-
-      if( gblSettings.passengerTypes.wantAdultDOB) {
-        if (passengerDetailRecord!.dateOfBirth != null) {
-          _passengerDetails[paxNo].dateOfBirth =
-              passengerDetailRecord!.dateOfBirth;
-        } else {
-          gotAllDetails = false;
-        }
+    if (gblSettings.wantGender) {
+      if (passengerDetailRecord!.gender != null &&
+          passengerDetailRecord!.gender.length > 0) {
+        _passengerDetails[paxNo].gender = passengerDetailRecord!.gender;
+      } else {
+        gotAllDetails = false;
       }
     }
+    if( gblSettings.passengerTypes.wantAdultDOB) {
+      if (passengerDetailRecord!.dateOfBirth != null) {
+        _passengerDetails[paxNo].dateOfBirth =
+            passengerDetailRecord!.dateOfBirth;
+      } else {
+        gotAllDetails = false;
+      }
+    }
+
 
 
     preLoadDetails = true;
@@ -317,7 +317,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    logit('pd');
+    //logit('pd');
     //Show dialog
     //print('build');
     Widget? floatBtn ;

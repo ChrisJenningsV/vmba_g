@@ -18,8 +18,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'H4';
-bool gblIsLive = true;
+String gblBuildFlavor = 'FN';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 111;
 int requiredApiVersion = 102;
@@ -28,6 +28,7 @@ bool gblDoVersionCheck = true;
 bool gblUseCache = false;
 String gblTestFlags = '';
 List<String> gblLogBuffer= [];
+DateTime? startTime;
 
 String gblAppTitle ='';
 String gblLanguage = 'en' ;

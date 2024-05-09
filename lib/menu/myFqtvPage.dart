@@ -1143,7 +1143,7 @@ Widget _getTrans() {
  }
 
 
- void resetPasswordDialog() {
+ void _resetPasswordDialog() {
 
 
    v3ShowDialog(context,translate('Reset Password'),
@@ -1154,8 +1154,8 @@ Widget _getTrans() {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                v3EmailFormField(translate('Email'), _oldPasswordEditingController),
-               /* new TextFormField(
+               // v3EmailFormField(translate('Email'), _oldPasswordEditingController),
+                new TextFormField(
                   decoration: InputDecoration(
                     contentPadding:
                     new EdgeInsets.symmetric(
@@ -1170,7 +1170,7 @@ Widget _getTrans() {
                   keyboardType: TextInputType.emailAddress,
                   //validator: (value) => validateEmail(value.trim()),
                   // keyboardType: TextInputType.text,
-                ),*/
+                ),
                 SizedBox(height: 15,),
               ],
             ),
@@ -1271,4 +1271,79 @@ Widget _getTrans() {
     );
 */
  }
+  void resetPasswordDialog() {
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: EdgeInsets.only(top: 0),
+            title: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.person_pin, color: Colors.red, size: 40,),
+                    title: TrText('Reset Password'),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    height: 4.0,
+                  ),
+                ]),
+
+            content:    Stack(
+              children: <Widget>[
+                Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new TextFormField(
+                        decoration: InputDecoration(
+                          contentPadding:
+                          new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                          labelText: translate('Email'),
+                          fillColor: Colors.white,
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(15.0),
+                            borderSide: new BorderSide(),
+                          ),),
+                        controller: _oldPasswordEditingController,
+                        keyboardType: TextInputType.emailAddress,
+                        //validator: (value) => validateEmail(value.trim()),
+                        // keyboardType: TextInputType.text,
+                      ),
+                      SizedBox(height: 15,),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(foregroundColor: Colors.black,backgroundColor: Colors.grey.shade200) ,
+                child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.grey.shade200, color: Colors.black),),
+                onPressed: () {
+                  //Put your code here which you want to execute on Cancel button click.
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                child: TrText("CONTINUE"),
+                onPressed: () {
+                  var str = validateEmail(_oldPasswordEditingController.text);
+                  if( str == null || str == '' ) {
+                    _fqtvResetPassword();
+                  } else {
+                    _error = str;
+                    _actionCompleted();
+                    _showDialog();
+                  }
+                  //});
+
+                  //Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 }

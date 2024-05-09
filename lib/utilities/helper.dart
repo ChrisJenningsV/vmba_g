@@ -223,15 +223,29 @@ class SlideTopRoute extends PageRouteBuilder {
         );
 }
 
-Widget appLinkWidget(String uri, Widget displayWidget) {
+Widget appLinkWidget(String scheme, String path,  Widget displayWidget,{Map<String, dynamic>? queryParameters}) {
   return GestureDetector(
     onTap: () async {
-      //String uri = 'https://flutter.io';
-      if (await canLaunch(uri)) {
-        await launch(uri);
+    if (queryParameters == null) {
+      queryParameters = {'subject': 'AppEmail'};
+    }
+    Uri uri = new Uri(
+        scheme: scheme, path: path, queryParameters: queryParameters);
+    if (scheme == 'mailto') {
+      // NB mailto does not work on emulator
+      try {
+        await launchUrl(uri);
+      } catch (e) {
+        throw 'Could not launch $uri ${e.toString()}';
+      }
+    } else {
+      if (await canLaunchUrl (uri)  ) {
+        await launchUrl(uri);
       } else {
         throw 'Could not launch $uri';
       }
+}
+
     },
     child: displayWidget,
   );

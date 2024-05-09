@@ -29,6 +29,7 @@ class Provider {
   String paymentSchemeDisplayName='';
   String paymentSchemeID='';
   String displayOrder='';
+  MerchantDetails? merchantDetails;
   PaymentFields fields = PaymentFields();
 
   Provider();
@@ -41,6 +42,7 @@ class Provider {
       if( json['PaymentSchemeDisplayName'] != null )paymentSchemeDisplayName = json['PaymentSchemeDisplayName'];
       if( json['PaymentSchemeID'] != null )paymentSchemeID = json['PaymentSchemeID'];
       if( json['DisplayOrder'] != null )displayOrder = json['DisplayOrder'];
+      if( json['MerchantDetails'] != null ) merchantDetails = MerchantDetails.fromJson( json['MerchantDetails']);
       if( json['Fields'] != null ) fields = PaymentFields.fromJson(json['Fields']);
     } catch(e) {
       logit(e.toString());
@@ -48,6 +50,21 @@ class Provider {
   }
 }
 
+class MerchantDetails {
+  String currency = '';
+  String merchantName = '';
+  String configJsonData = '';
+
+  MerchantDetails.fromJson(Map<String, dynamic> json) {
+    try {
+      if( json['Currency'] != null ) currency = json['Currency'];
+      if( json['MerchantName'] != null ) merchantName = json['MerchantName'];
+      if( json['ConfigJsonData'] != null ) configJsonData = json['ConfigJsonData'];
+    } catch(e) {
+      logit(e.toString());
+    }
+  }
+}
 
 class PaymentFields {
   List<PaymentField> paymentFields = List.from([PaymentField()]);

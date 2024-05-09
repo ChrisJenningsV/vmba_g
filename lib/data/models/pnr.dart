@@ -1424,7 +1424,8 @@ class SegmentFS {
     if( json['Tax1'] != null )tax1 = json['Tax1'];
     if( json['Tax2'] != null )tax2 = json['Tax2'];
     if( json['Tax3'] != null )tax3 = json['Tax3'];
-    if( json['iles'] != null )miles = json['miles'];
+    if( json['miles'] != null )miles = json['miles'];
+    if( json['disc'] != null )disc = json['disc'];
     if( json['HandWt'] != null )handWt = json['HandWt'];
     if( json['HoldPcs'] != null )holdPcs = json['HoldPcs'];
     if( json['HoldWt'] != null )holdWt = json['HoldWt'];

@@ -23,7 +23,8 @@ class ContactUs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'https:loganair.co.uk/contact-3/customer-relations/feedback-form/',
+        'https',
+        '//loganair.co.uk/contact-3/customer-relations/feedback-form/',
         Text('feedback form',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -36,14 +37,16 @@ class ContactUs extends StatelessWidget {
       Wrap(children: renderOne()),
       Padding(padding: EdgeInsets.all(8)),
       appLinkWidget(
-          'mailto:customercare@blueislands.com?subject=enquire',
+          'mailto',
+          'customercare@blueislands.com?subject=enquire',
           Text('customercare@blueislands.com',
               style: TextStyle(
                 decoration: TextDecoration.underline,
               ))),
       Padding(padding: EdgeInsets.all(8)),
       appLinkWidget(
-          'tel:01234 589200',
+          'tel',
+          ':01234 589200',
           Text('01234 589200',
               style: TextStyle(
                 decoration: TextDecoration.underline,

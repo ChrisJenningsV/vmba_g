@@ -316,7 +316,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
       setError(e.toString());
       return null;
     });
-    if( data == null ){
+    if( data == null || data == '' ){
       if( gblError == '') {
         setError('Booking Failed');
       }

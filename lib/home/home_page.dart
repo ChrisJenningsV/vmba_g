@@ -64,7 +64,6 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     //initGmtTimer();
 
     if( gblVerbose) logit('init HomeState');
-
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
       _netState = source;
@@ -122,6 +121,13 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     _displayProcessingIndicator = true;
     WidgetsBinding.instance.addObserver(this);
     waitAndThenHideProcessingIndicator();
+    if( startTime != null) {
+      var difference = DateTime
+          .now()
+          .difference(startTime!)
+          .inMilliseconds;
+      logit('Load Time $difference ms');
+    }
   }
 
   void refresh(){

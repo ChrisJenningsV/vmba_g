@@ -106,7 +106,8 @@ class Faqs extends StatelessWidget {
     });
 
     widgets.add(appLinkWidget(
-        'tel:0344 800 2855',
+        'tel',
+        '0344 800 2855',
         Text('0344 800 2855',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -125,7 +126,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'https://loganair.co.uk/claim-missing-clan-points/',
+        'https',
+          '//loganair.co.uk/claim-missing-clan-points/',
         Text('loganair.co.uk/claim-missing-clan-points/',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -153,7 +155,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel:0344-800-2855',
+        'tel',
+          '0344-800-2855',
         Text('0344 800 2855',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -178,7 +181,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'https://loganair.co.uk',
+        'https',
+          '//loganair.co.uk',
         Text('loganair.co.uk',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -189,7 +193,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel;0344-800-2855',
+        'tel',
+      '0344-800-2855',
         Text('0344 800 2855',
             style: TextStyle(
               decoration: TextDecoration.underline,

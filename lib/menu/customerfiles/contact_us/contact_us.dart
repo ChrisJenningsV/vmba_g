@@ -12,22 +12,28 @@ class ContactUs extends StatelessWidget {
     });
     //widgets.add(appLink('tel:+44 344 800 2855', '0344 800 2855'));
     widgets.add(appLinkWidget(
-        'tel:0344-800-2855',
+        'tel',
+        '0344-800-2855',
         Text('0344 800 2855',
             style: TextStyle(
               decoration: TextDecoration.underline,
             ))));
     widgets.add(Text(' or email '));
     widgets.add(appLinkWidget(
-        'mailto:bookings@loganair.co.uk?subject=bookings',
+        'mailto',
+        'bookings@loganair.co.uk',
         Text('bookings@loganair.co.uk',
             style: TextStyle(
               decoration: TextDecoration.underline,
-            ))));
+            )),
+      queryParameters: {'subject': 'bookings'}
+    )
+    );
     widgets.add(Text('. '));
     widgets.add(Text('If calling from outside the UK, call '));
     widgets.add(appLinkWidget(
-        'tel:+44-141-642-9407',
+        'tel',
+        '+44-141-642-9407',
         Text('+44 141 642 9407',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -46,7 +52,8 @@ class ContactUs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'https:loganair.co.uk/contact-3/customer-relations/feedback-form/',
+        'https',
+        '//loganair.co.uk/contact-3/customer-relations/feedback-form/',
         Text('feedback form',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -63,7 +70,8 @@ class ContactUs extends StatelessWidget {
           children: <Widget>[
             Text('If you have a group booking enquiry, please email'),
             appLinkWidget(
-                'mailto:groups@loganair.co.uk?subject=groups',
+                'mailto',
+                'groups@loganair.co.uk?subject=groups',
                 Text('groups@loganair.co.uk',
                     style: TextStyle(
                       decoration: TextDecoration.underline,
@@ -77,7 +85,8 @@ class ContactUs extends StatelessWidget {
       Wrap(children: <Widget>[
         Text('If you are enquiring about a refund, please email '),
         appLinkWidget(
-            'mailto:refunds@loganair.co.uk?subject=refunds',
+            'mailto',
+            'refunds@loganair.co.uk?subject=refunds',
             Text('refunds@loganair.co.uk',
                 style: TextStyle(
                   decoration: TextDecoration.underline,

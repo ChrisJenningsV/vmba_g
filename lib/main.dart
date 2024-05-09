@@ -55,6 +55,7 @@ void main() async {
 
 
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
+  startTime = DateTime.now();
 
 
   if (gblAppTitle == null || gblAppTitle ==''){
@@ -135,6 +136,7 @@ bool bFirstTime = true;
   @override
   void initState() {
     super.initState();
+    startTime = DateTime.now();
     _initLangs();
 
     if( gblLangFileLoaded == false ) {

@@ -95,7 +95,8 @@ class Faqs extends StatelessWidget {
     });
 
     widgets.add(appLinkWidget(
-        'tel:01234 589200',
+        'tel',
+        '01234 589200',
         Text('01234 589200',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -142,7 +143,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel:01234 589200',
+        'tel',
+        '01234 589200',
         Text('01234 589200',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -167,7 +169,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'https://blueislands.com',
+        'https',
+          '//blueislands.com',
         Text('www.blueislands.com',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -178,7 +181,8 @@ class Faqs extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel;01234 589200',
+        'tel',
+        '01234 589200',
         Text('01234 589200',
             style: TextStyle(
               decoration: TextDecoration.underline,

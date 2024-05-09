@@ -16,7 +16,8 @@ class SpecialAssistancePage extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel:0344-000-0000',
+        'tel',
+        '0344-000-0000',
         Text('0344 000 0000 ',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -26,7 +27,8 @@ class SpecialAssistancePage extends StatelessWidget {
     });
 
     widgets.add(appLinkWidget(
-        'mailto:customercare@videcom.com?subject=assistance',
+        'mailto',
+        'customercare@videcom.com?subject=assistance',
         Text('customercare@videcom.com',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -54,7 +56,8 @@ class SpecialAssistancePage extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel:01234-589200',
+        'tel',
+          '01234-589200',
         Text('01234 589200 ',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -64,11 +67,14 @@ class SpecialAssistancePage extends StatelessWidget {
     });
 
     widgets.add(appLinkWidget(
-        'mailto:customercare@blueislands.com?subject=assistance',
+        'mailto',
+          'customercare@blueislands.com',
         Text('customercare@blueislands.com',
             style: TextStyle(
               decoration: TextDecoration.underline,
-            ))));
+            )),
+      queryParameters: {'subject':'assistance'}
+    ));
 
     return widgets;
   }
@@ -83,7 +89,8 @@ class SpecialAssistancePage extends StatelessWidget {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
-        'tel:0344-800-2855',
+        'tel',
+        '0344-800-2855',
         Text('0344 800 2855 ',
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -93,11 +100,15 @@ class SpecialAssistancePage extends StatelessWidget {
     });
 
     widgets.add(appLinkWidget(
-        'mailto:bookings@loganair.co.uk?subject=assistance',
+        'mailto',
+        'bookings@loganair.co.uk',
         Text('bookings@loganair.co.uk',
             style: TextStyle(
               decoration: TextDecoration.underline,
-            ))));
+            )),
+      queryParameters: {'subject':'assistance'}
+    )
+    );
     return widgets;
   }
 

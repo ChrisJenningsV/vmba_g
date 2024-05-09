@@ -1660,7 +1660,7 @@ Future<String> runVrsCommand(String cmd) async {
       throw er;
       //return new ParsedResponse(noFlights, null);
     }
-    if (response.body.contains('ERROR:')) {
+    if (response.body.contains('ERROR:') || response.body.contains('ERROR -')) {
       Map map = jsonDecode(response.body
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
           .replaceAll('<string xmlns="http://videcom.com/">', '')

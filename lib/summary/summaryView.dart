@@ -257,6 +257,7 @@ double sepTax () {
                   .split(',')
                   .forEach((disc) => total += double.tryParse(disc) as double);
               // total += double.tryParse(d.disc ?? 0.0);
+
             }
           }
         });
