@@ -82,7 +82,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         // mainAxisAlignment: MainAxisAlignment.start,
         children: [
           new Column(
-            //mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               new GestureDetector(
@@ -133,15 +133,27 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
       fw = FontWeight.w400;
     }
 
-    return FittedBox(
-        fit: BoxFit.contain,
-        child: TrText(
+    return Container(
+    //   color: Colors.red,
+  width: MediaQuery.of(context).size.width - 40,
+/*
+        child: FittedBox(
+        fit: BoxFit.fitWidth,
+*/
+        child:
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+        TrText(
       translate(airportName),
       noTrans: true,
       style: new TextStyle(
           fontWeight: fw,
           color: c,
-      fontSize: fSize))
+      fontSize: fSize)),
+          Icon(Icons.keyboard_arrow_down_outlined)
+      ] )
+    //)
     );
     //,
     //fontSize: fSize)
@@ -186,6 +198,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
 
     } else {
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         (gblSettings.wantCitySwap && departureCode.isNotEmpty &&
@@ -232,6 +246,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
 
     } else {
       return new Column(
+          mainAxisSize: MainAxisSize.max,
         // mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

@@ -759,8 +759,9 @@ Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBe
         list.add(Text(
           calenderPrice(item.cur, item.amt, item.miles),
           //textScaleFactor: 1.0,
+          textScaler: TextScaler.linear(1.2),
           style: TextStyle(
-              fontSize: 14,
+              //fontSize: 14,
               color: txtColor),
         ));
       }
@@ -1175,14 +1176,18 @@ bool isJourneyAvailableForCb(List<Flt> flts, int cbIndex) {
 Widget getCalDate(String sDate, Color? txtColor){
 
   if( gblSettings.wantMonthOnCalendar == true) {
-   return Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),style: TextStyle(
-       fontSize: 14,
+   return Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),
+       textScaler: TextScaler.linear(1.2),
+       style: TextStyle(
+       //fontSize: 14,
        fontWeight: wantPageV2() ? FontWeight.bold : FontWeight.normal,
        color: txtColor)
   );
   } else {
-    return Text(getIntlDate('EEE dd', DateTime.parse(sDate)),style: TextStyle(
-        fontSize: 14,
+    return Text(getIntlDate('EEE dd', DateTime.parse(sDate)),
+        textScaler: TextScaler.linear(1.2),
+        style: TextStyle(
+        //fontSize: 14,
         fontWeight: wantPageV2() ? FontWeight.bold : FontWeight.normal,
         color: txtColor)
     );

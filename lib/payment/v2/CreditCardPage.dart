@@ -25,6 +25,7 @@ import '../../Helpers/bookingHelper.dart';
 import '../../Helpers/networkHelper.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 
+import '../../calendar/bookingFunctions.dart';
 import '../../components/bottomNav.dart';
 import '../../components/vidButtons.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
@@ -1291,6 +1292,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
     //buffer.write('MK($creditCardProviderProduction)');
     double am = 0.0;
     String currency='';
+
+    if( widget.isMmb){
+      buffer.write( buildAppEditVersionCmd());
+    }
+
     if (gblRedeemingAirmiles && widget.pnrModel.pNR.basket.outstandingairmiles.airmiles != '0') {
       if (gblPassengerDetail != null &&
           gblPassengerDetail!.fqtv != null &&

@@ -37,12 +37,19 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
     decoration: InputDecoration(
     border: InputBorder.none, hintText: translate('Enter your code')),
     style: new TextStyle(
-    fontSize: 20.0,
+    //fontSize: 20.0,
     fontWeight: FontWeight.w300,
     color: Colors.grey,
     )));
           } else {
+      double screenWidth = MediaQuery.of(context).size.width;
 
+      double fSize;
+      if( screenWidth < 380 ) {
+        fSize = 14.0;
+      } else {
+        fSize = 18.0;
+      }
     return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -54,7 +61,7 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
     decoration: InputDecoration(
     border: InputBorder.none, hintText: translate('Enter your code')),
     style: new TextStyle(
-    fontSize: 20.0,
+   // fontSize: fSize,
     fontWeight: FontWeight.w300,
     color: Colors.grey,
     ),

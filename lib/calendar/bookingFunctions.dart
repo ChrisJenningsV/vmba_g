@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../Helpers/stringHelpers.dart';
@@ -269,6 +270,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
   msg += buildAddContactsCmd(newBooking);
   msg += buildADSCmd(newBooking);
   msg += buildFQTVCmd(newBooking);
+  msg += buildAppVersionCmd(newBooking);
   newBooking.outboundflight.forEach((flt) {
     msg += flt + '^';
   });
@@ -640,6 +642,21 @@ String buildAddContactsCmd(NewBooking newBooking) {
 
   return sb.toString();
 }
+
+String buildAppVersionCmd(NewBooking newBooking){
+  StringBuffer sb = new StringBuffer();
+
+    sb.write('5** AppVersion $gblVersion  ${gblIsIos ? 'iOS' : 'Android'} ^');
+    return sb.toString();
+  }
+
+String buildAppEditVersionCmd(){
+  StringBuffer sb = new StringBuffer();
+
+  sb.write('5* EDITED BY AppVersion $gblVersion  ${gblIsIos ? 'iOS' : 'Android'} ^');
+  return sb.toString();
+}
+
 
 String buildFQTVCmd(NewBooking newBooking) {
   StringBuffer sb = new StringBuffer();

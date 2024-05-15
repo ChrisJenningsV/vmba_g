@@ -768,11 +768,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                   onPressed: () {
                     hasDataConnection().then((result) async {
                       if (result == true) {
-/*
-                        if( gblSettings.wantNewPayment) {
-                          await saveChanges(context);
-                        }
-*/
+
                         logit('fss gotopayopts');
                         gblPaymentMsg = '';
                         Navigator.push(

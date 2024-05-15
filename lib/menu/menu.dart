@@ -324,10 +324,12 @@ class DrawerMenu extends StatefulWidget {
                 builder: (BuildContext context)
                 {
                   return msgDialog(context, translate('Log Buffer'),
-                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                  child: new Column(crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: list), ipad: EdgeInsets.zero, wide: true);
+                          children: list)), ipad: EdgeInsets.zero, wide: true);
                 }
             );
           }));

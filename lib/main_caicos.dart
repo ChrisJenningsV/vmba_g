@@ -43,6 +43,8 @@ void config9Q() {
     home2ButtonColor: Colors.white,
     home1ButtonTextColor: Colors.white,
     home2ButtonTextColor: Color.fromRGBO(0X2E, 0x31, 0x92, 1),
+    inputFillColor: Colors.white,
+      backgroundColor: Colors.grey.shade400,
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
@@ -74,7 +76,7 @@ void config9Q() {
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: '9Q',
     termsAndConditionsUrl: '', //'''{"en": "https://hisky.aero/en/terms-and-conditions", "ro": "https://hisky.aero/termeni-si-conditii"}',
-    privacyPolicyUrl:  '', //'''{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
+    privacyPolicyUrl:  'https://www.turksandcaicosflights.com/caicos-flights-privacy', //'''{"en": "https://hisky.aero/en/data-protection","ro": "https://hisky.aero/protectia-datelor-personale" }',
     //prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
     //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
@@ -164,13 +166,15 @@ void config9Q() {
     wantNotificationEdit: false,
     wantRefund: false,
     wantNewPayment: true,
-    wantCountry: false,
+    wantCountry: true,
+    wantWeight: true,
     useSmartPay: false,
 
     wantFQTVNumber: false,
     apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',
     maxNumberOfPax: 8,
     hideFareRules: false,
+      styleVersion: 3,
 
   );
   gblSettings.setDefaults();

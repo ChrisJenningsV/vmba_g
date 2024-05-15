@@ -236,13 +236,16 @@ Widget appLinkWidget(String scheme, String path,  Widget displayWidget,{Map<Stri
       try {
         await launchUrl(uri);
       } catch (e) {
-        throw 'Could not launch $uri ${e.toString()}';
+        logit('Could not launch $uri ');
+        logit('${e.toString()}');
+       // throw 'Could not launch $uri ${e.toString()}';
       }
     } else {
       if (await canLaunchUrl (uri)  ) {
         await launchUrl(uri);
       } else {
-        throw 'Could not launch $uri';
+        logit( 'Could not launch $uri');
+        //throw 'Could not launch $uri';
       }
 }
 
@@ -467,7 +470,7 @@ InputDecoration getDecoration(String label, {String hintText='', Widget? prefixI
 
   //if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(
-      fillColor: Colors.grey.shade100,
+      fillColor: gblSystemColors.inputFillColor,
       filled: true,
       //counter: Container(),
       counterText: '',

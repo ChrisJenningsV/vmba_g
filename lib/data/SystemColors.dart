@@ -30,6 +30,8 @@ class SystemColors {
    Color? textEditIconColor;
    Color? tabUnderlineColor;
    Color? v3TitleColor;
+   Color?  inputFillColor;
+   Color? backgroundColor;
 
    Brightness statusBar = Brightness.light;
 
@@ -80,6 +82,8 @@ class SystemColors {
     this.seatPlanColorRestricted,
     this.promoBackColor ,
     this.v3TitleColor = Colors.black,
+    this.inputFillColor ,
+    this.backgroundColor,
   });
 
   void setDefaults() {
@@ -106,6 +110,8 @@ class SystemColors {
     if( progressColor == null ) progressColor =  primaryHeaderColor;
     if( textEditBorderColor == null ) textEditBorderColor = Colors.grey.shade300;
     if( textEditIconColor == null ) textEditIconColor =Colors.grey.shade500;
+    if( inputFillColor == null ) inputFillColor = Colors.grey.shade100;
+    if( backgroundColor == null ) backgroundColor = Colors.grey.shade100;
 
   }
 }

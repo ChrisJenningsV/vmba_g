@@ -15,6 +15,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
 import '../utilities/widgets/appBarWidget.dart';
+import '../v3pages/fields/Pax.dart';
 
 //ignore: must_be_immutable
 class MyAccountPage extends StatefulWidget {
@@ -356,7 +357,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
     ));
 
     // first name
-    widgets.add(
+    widgets.add(paxGetFirstName(
+    _firstNameTextEditingController,
+    onFieldSubmitted: (value){
+      widget.passengerDetail!.firstName  = value;      },
+    onSaved: (value){
+      widget.passengerDetail!.firstName  = value;
+    },
+    ));
+ /*   widgets.add(
       Padding(
         padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
@@ -383,11 +392,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
         ),
       ),
-    );
+    );*/
 
     // middle name
     if( gblSettings.wantMiddleName ) {
-      widgets.add(
+     /* widgets.add(
         Padding(
           padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
           child: new Theme(
@@ -414,12 +423,24 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ),
           ),
         ),
-      );
+      );*/
+      widgets.add( paxGetMiddleName(_middleNameTextEditingController,
+      onFieldSubmitted: (value){
+        widget.passengerDetail!.middleName = value;      },
+        onSaved: (value){
+        widget.passengerDetail!.middleName = value;}
+      ));
     }
 
 
     // last name
-    widgets.add(Padding(
+    widgets.add(paxGetLastName(_lastNameTextEditingController,
+        onFieldSubmitted: (value){
+          widget.passengerDetail!.lastName = value;      },
+        onSaved: (value){
+          widget.passengerDetail!.lastName = value;}
+    ));
+ /*   widgets.add(Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
       child: new Theme(
         data: _theme,
@@ -444,7 +465,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ),
     ));
-
+*/
     // phone
     if( gblSettings.wantInternatDialCode) {
 
@@ -475,7 +496,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
           initialPhoneNumber: _phoneNumberTextEditingController.text,
         ));
      } else {
-      widgets.add(Padding(
+        widgets.add(paxGetPhoneNumber(_phoneNumberTextEditingController,
+            onFieldSubmitted: (value){
+              widget.passengerDetail!.phonenumber = value;      },
+            onSaved: (value){
+              widget.passengerDetail!.phonenumber = value;}
+        ));
+ /*     widgets.add(Padding(
         padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
         child: new Theme(
             data: _theme,
@@ -496,11 +523,22 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 }
               },
             )),
-      ));
+      ));*/
     }
 
     // email
-    widgets.add(Padding(
+    widgets.add(paxGetEmail(_emailTextEditingController,
+      onFieldSubmitted: (value) {
+        widget.passengerDetail!.email = value;
+      },
+      onSaved: (value) {
+        if (value != null) {
+          widget.passengerDetail!.email = value.trim();
+        }
+      },
+    ));
+
+ /*   widgets.add(Padding(
       padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
       child: new Theme(
         data: _theme,
@@ -528,7 +566,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ),
     ));
-
+*/
  //   return widgets;
 
     // DOB

@@ -686,7 +686,7 @@ Row airMiles() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(desc1),
+              TrText(desc1),
               Text(formatPrice(currencyCode,sepTax1)),
 
             ],

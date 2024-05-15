@@ -273,15 +273,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         } else {
           String msg;
           int noSeats = 0;
-          if (gblSettings.wantNewPayment) {
+         // if (gblSettings.wantNewPayment) {
             // build undo
             noSeats = gblPnrModel!.pNR.seatCount();
 
             // was E*R,
             msg = json.encode(RunVRSCommand(session!, "*R~x"));
-          } else {
+ /*         } else {
             msg = json.encode(RunVRSCommand(session!, "*${widget.rloc}~x"));
-          }
+          }*/
           _sendVRSCommand(msg).then((pnrJson) {
             pnrJson =
                 pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')

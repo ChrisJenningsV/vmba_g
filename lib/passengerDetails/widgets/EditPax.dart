@@ -15,6 +15,7 @@ import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
+import '../../v3pages/fields/Pax.dart';
 
 class EditPaxWidget extends StatefulWidget {
   EditPaxWidget(
@@ -194,7 +195,7 @@ return SafeArea(
 
   }
 
-Widget _getTitle(){
+/*Widget _getTitle(){
     if( wantPageV2()) {
       return v2BorderBox(context,  ' ' + translate('Title'),
         TextFormField(
@@ -226,54 +227,19 @@ Widget _getTitle(){
   },
   );
   }
-}
+}*/
 
 Widget getFirstname() {
- /* if( wantPageV2()) {
-    return V2TextWidget(
-      title: 'First name (as Passport)',
-      validator: (value) => value.isEmpty ? translate('First name cannot be empty') : null,
-      textInputAction:  TextInputAction.done,
-        controller: _firstNameTextEditingController,
-        onFieldSubmitted: (value) {
+
+  return paxGetFirstName(
+        _firstNameTextEditingController,
+        onFieldSubmitted: (value){
+        widget.passengerDetail.firstName = value;      },
+        onSaved: (value){
           widget.passengerDetail.firstName = value;
         },
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-      ],
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.firstName = value.trim();
-          }
-        }
-    );
-
-
-
-
-  return v2BorderBox(context,  ' ' + translate('First name (as Passport)'),
-      TextFormField(
-          decoration: v2Decoration(),
-        controller: _firstNameTextEditingController,
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.firstName = value;
-        },
-        textInputAction: TextInputAction.done,
-        // keyboardType: TextInputType.text,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-        ],
-        validator: (value) =>
-        value.isEmpty ? translate('First name cannot be empty') : null,
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.firstName = value.trim();
-          }
-        },
-      ),
-      padding: EdgeInsets.only(left: 10, right: 10),
-    );
-          } else {*/
+  );
+/*
     return V2TextWidget(
       maxLength: 50,
       decoration: getDecoration('First name (as Passport)'),
@@ -294,31 +260,19 @@ Widget getFirstname() {
         }
       },
     );
+*/
   //}
 }
 
   Widget getLastname() {
- /* if( wantPageV2()){
-    return V2TextWidget(
-        title: 'Last name (as Passport)',
-      maxLength: 50,
-      controller: _lastNameTextEditingController,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-      ],
-      onFieldSubmitted: (value) {
-        widget.passengerDetail.lastName = value;
-      },
-      validator: (value) =>
-      value.isEmpty ? translate('Last name cannot be empty') : null,
-      onSaved: (value) {
-        if (value != null) {
-          widget.passengerDetail.lastName = value.trim();
-        }
-      },
+
+    return paxGetLastName(_lastNameTextEditingController,
+        onFieldSubmitted: (value){
+          widget.passengerDetail.lastName = value;      },
+        onSaved: (value){
+          widget.passengerDetail.lastName = value;}
     );
-  } else {*/
-    return   V2TextWidget(
+    /*return   V2TextWidget(
       maxLength: 50,
       decoration: getDecoration('Last name (as Passport)'),
       controller: _lastNameTextEditingController,
@@ -335,34 +289,18 @@ Widget getFirstname() {
           widget.passengerDetail.lastName = value.trim();
         }
       },
-    );
+    );*/
  //}
   }
 
   Widget getMiddlename() {
-   /* if( wantPageV2()){
-      return V2TextWidget(
-          title: 'Middle name (or NONE)',
-        controller: _middleNameTextEditingController,
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.middleName = value;
-        },
-        textInputAction: TextInputAction.done,
-        // keyboardType: TextInputType.text,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-        ],
-        validator: (value) =>
-        value.isEmpty ? translate(
-            'Middle name cannot be empty - type NONE if none') : null,
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.middleName = value.trim();
-          }
-        },
-      );
-    } else {*/
-      return V2TextWidget(
+    return paxGetMiddleName(_middleNameTextEditingController,
+        onFieldSubmitted: (value){
+          widget.passengerDetail.middleName = value;      },
+        onSaved: (value){
+          widget.passengerDetail.middleName = value;}
+    );
+    /*return V2TextWidget(
         maxLength: 50,
         decoration: getDecoration('Middle name (or NONE)'),
         controller: _middleNameTextEditingController,
@@ -382,7 +320,7 @@ Widget getFirstname() {
             widget.passengerDetail.middleName = value.trim();
           }
         },
-      );
+      );*/
     //}
   }
 
@@ -432,24 +370,13 @@ Widget getFirstname() {
         //  }
   }
   Widget getPhoneNumber() {
-   /* if( wantPageV2()) {
-      return V2TextWidget(
-        title:'Phone Number',
-        maxLength: 50,
-        controller: _phoneTextEditingController,
-        keyboardType: TextInputType.number,
-        validator: (value) =>
-        value.isEmpty ? translate('Phone Number cannot be empty') : null,
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.phonenumber = value;
-        },
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.phonenumber = value.trim();
-          }
-        },
+      return paxGetPhoneNumber(_phoneTextEditingController,
+          onFieldSubmitted: (value){
+            widget.passengerDetail.phonenumber = value;      },
+          onSaved: (value){
+            widget.passengerDetail.phonenumber = value;}
       );
-    } else {*/
+/*
       return V2TextWidget(
         maxLength: 50,
         decoration: getDecoration('Phone Number'),
@@ -466,8 +393,8 @@ Widget getFirstname() {
           }
         },
       );
-    //}
-  }
+*/
+    }
 
  List <Widget> renderFields() {
     List <Widget> list = [];
@@ -482,26 +409,7 @@ Widget getFirstname() {
     list.add(Padding(padding: EdgeInsets.all(5)));
     list.add(Padding(
       padding: _padding,
-      child: InkWell(
-        onTap: () {
-          //formSave();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: new TrText('Salutation'),
-                content: new Container(
-                  width: double.maxFinite,
-                  child: optionListView(),
-                ),
-              );
-            },
-          );
-        },
-        child: IgnorePointer(
-          child: _getTitle(),
-        ),
-      ),
+      child: paxGetTitle(context, _titleTextEditingController,_updateTitle)
     ));
 
     // first name
@@ -721,21 +629,7 @@ Widget getFirstname() {
         padding: _padding,
         child: new Theme(
           data: theme,
-          child: V2TextWidget(
-            maxLength: 50,
-            decoration: getDecoration('Email'),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            controller: _emailTextEditingController,
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
-            ],
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-                String er = validateEmail(value!.trim());
-                if(er != '' ) return er;
-                return null;
-
-            },
+          child: paxGetEmail(_emailTextEditingController,
             onFieldSubmitted: (value) {
               widget.passengerDetail.email = value;
             },
@@ -1029,19 +923,6 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   }
 
 
-  ListView optionListView() {
-    List<Widget> widgets = [];
-    //new List<Widget>();
-    gblTitles.forEach((title) => widgets.add(ListTile(
-        title: TrText(title),
-        onTap: () {
-          Navigator.pop(context, title);
-          _updateTitle(title);
-        })));
-    return new ListView(
-      children: widgets,
-    );
-  }
 
   void _updateTitle(String value) {
     setState(() {

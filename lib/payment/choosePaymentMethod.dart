@@ -25,6 +25,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../Helpers/bookingHelper.dart';
 import '../Helpers/stringHelpers.dart';
+import '../calendar/bookingFunctions.dart';
 import '../components/bottomNav.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
@@ -752,6 +753,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       msg += '^';
       msg += addFg(widget.mmbBooking!.currency, true);
       msg += addFareStore(true);
+      if( widget.isMmb){
+        msg += buildAppEditVersionCmd();
+      }
     }
     msg += 'e*r~x';
     logit('CMP msg:$msg');
@@ -1587,11 +1591,13 @@ List<Widget> getPayOptions(String amount, String cur) {
           ));
     } else {
         if(gblLogPayment) { logit('render pay buttons');}
-        if( gblSettings.wantNewPayment) {
+//        if( gblSettings.wantNewPayment) {
           list.add(  renderNewPaymentButtons(amount));
+/*
         } else {
           list.add(  renderPaymentButtons(amount));
         }
+*/
     }
 
 
@@ -1829,7 +1835,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                 children: [
                   TrText(emailText + ' ' ),
                   appLinkWidget(
-                'emailto',
+                'mailto',
                 emailLink,
                 Text( emailLink,
                     style: TextStyle(
@@ -1977,6 +1983,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   }
 
 
+/*
 
   Widget renderPaymentButtons(String amount) {
     List<Widget> paymentButtons = [];
@@ -2049,6 +2056,7 @@ List<Widget> getPayOptions(String amount, String cur) {
 
       return Column(children: paymentButtons);
   }
+*/
 
  // int _start = 10;
 

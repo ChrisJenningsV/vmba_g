@@ -97,6 +97,7 @@ class Settings {
   bool wantInternatDialCode=false;
   bool wantCovidWarning = false;
   bool wantCountry = false;
+  bool wantWeight = false;
   bool wantClassBandImages = false;
   bool wantStatusLine = false ;
   bool wantTallPageImage = false;
@@ -130,6 +131,7 @@ class Settings {
   bool wantEnglishDates;
   bool wantTandCCheckBox;
   bool saveChangeBookingBeforePay;
+  bool wantSaveSettings;
 
   String productFormat;
   String homePageStyle;
@@ -151,6 +153,7 @@ class Settings {
   String stopMessage='';
   String locale = 'en-EN';
   int bookingLeadTime = 60;
+  int styleVersion;
   bool webCheckinNoSeatCharge;
   String vrsGuid='';
   String previousVrsGuid='';
@@ -168,6 +171,7 @@ class Settings {
   String customMenu3='';
   String pageImageMap='';
   String productImageMap='';
+  String paxWeight='';
   String skyFlyToken='';
 
  // String hostBaseUrl;
@@ -272,6 +276,7 @@ bool bpShowFastTrack;
     this.defaultCountryCode ='',
     this.wantCovidWarning = false,
     this.wantCountry = false,
+    this.wantWeight = false,
     this.wantClassBandImages = false,
     this.wantTallPageImage = false,
     this.wantStatusLine = false,
@@ -302,6 +307,7 @@ bool bpShowFastTrack;
     this.wantPriceCalendar = false,
     this.wantPriceCalendarRounding = false,
     this.wantMonthOnCalendar = false,
+    this.wantSaveSettings = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
@@ -311,6 +317,7 @@ bool bpShowFastTrack;
     this.homePageStyle='V1',
     this.homePageFilename = '',
     this.pageStyle = 'V1',
+    this.styleVersion = 1,
 
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,
@@ -355,6 +362,7 @@ bool bpShowFastTrack;
     this.testServerFiles='',
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
+    this.paxWeight = '{"lb": "lb(s)", "kg": "kg(s)"}',
     this.skyFlyToken = '',
 
     this.fqtvName = '',

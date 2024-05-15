@@ -124,12 +124,15 @@ class V2TextWidget extends StatefulWidget {
    TextInputType? keyboardType;
    InputDecoration? decoration;
    AutovalidateMode? autovalidateMode;
+   int styleVer;
   //String title;
   final int? maxLength;
 
   V2TextWidget({//Key key= const Key("t2text_key"),
     this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,
-    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode});
+    this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode,
+    this.styleVer = 1,
+  });
       //: super(key: key);
 
 
@@ -145,7 +148,7 @@ class _V2TextWidgetState extends State<V2TextWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if( wantPageV2()) {
+    if( wantPageV2() || widget.styleVer == 2) {
       return v2BorderBox(context, ' ' + translate(widget.decoration?.labelText as String),
         TextFormField(
           decoration: v2Decoration(),

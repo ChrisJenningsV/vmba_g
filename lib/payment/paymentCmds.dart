@@ -13,6 +13,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../calendar/bookingFunctions.dart';
 
 
 
@@ -21,6 +22,7 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   Intl.defaultLocale = 'en';
   String cmd = '';
   cmd = '*${mmbBooking.rloc}^';
+  //cmd += buildAppEditVersionCmd();
   mmbBooking.journeys.journey[mmbBooking.journeyToChange - 1]
       .itin.reversed
       .forEach((f) => cmd += 'X${f.line}^');
