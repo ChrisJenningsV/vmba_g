@@ -14,6 +14,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/fields/Pax.dart';
 
@@ -49,6 +50,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
   TextEditingController _disabilityTextEditingController = TextEditingController();
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
+  TextEditingController _weightTextEditingController = TextEditingController();
+  String weightUnit = 'lb';
+
   int _curGenderIndex =0;
   List <String> genderList = ['Male', 'Female', 'Undisclosed'];
 
@@ -141,6 +145,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     _emailTextEditingController.text = widget.passengerDetail!.email;
     _phoneNumberTextEditingController.text = widget.passengerDetail!.phonenumber;
     oldNotify =  widget.passengerDetail!.wantNotifications;
+    _weightTextEditingController.text = 'lb';
 
     //_dateOfBirthTextEditingController.text = widget.passengerDetail.dateOfBirth.toString();
     if( widget.passengerDetail!.dateOfBirth != null ) {
@@ -158,6 +163,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     _seniorIDTextEditingController.text = widget.passengerDetail!.seniorID;
     _knownTravellerNoTextEditingController.text = widget.passengerDetail!.knowTravellerNo;
     _redressNoTextEditingController.text = widget.passengerDetail!.redressNo;
+    _weightTextEditingController.text = widget.passengerDetail!.weight.replaceAll('lb', '').replaceAll('kg', '');
 
   }
 
@@ -184,6 +190,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     _seniorIDTextEditingController.clear();
     _knownTravellerNoTextEditingController.clear();
     _redressNoTextEditingController.clear();
+    _weightTextEditingController.clear();
 
   }
 
@@ -252,6 +259,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
       _knownTravellerNoTextEditingController.text = gblPassengerDetail!.knowTravellerNo;
     }
 
+    if (_weightTextEditingController .text == null ||
+        _weightTextEditingController.text.isEmpty) {
+      _weightTextEditingController.text = gblPassengerDetail!.weight;
+    }
+
 
   }
 
@@ -281,6 +293,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       );
     } else {
       return Scaffold(
+        backgroundColor: v2PageBackgroundColor(),
         appBar: AppBar(
           leading: getAppBarLeft(),
           backgroundColor: gblSystemColors.primaryHeaderColor,
@@ -295,23 +308,29 @@ class _MyAccountPageState extends State<MyAccountPage> {
             )
           ],
         ),
-        body: new Form(
+        body:
+        Container(
+          margin: v2FormPadding(),
+          decoration: v2FormDecoration(),
+        child: new Form(
           key: formKey,
           child: new SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 5.0),
               child: Column(
                 children: _getWidgets(),
               ),
             ),
           ),
         ),
+        )
       );
     }
   }
 
   List<Widget> _getWidgets() {
+    EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 4, 0, 10);
     List<Widget> widgets = [];
     ThemeData _theme =    new ThemeData(
       primaryColor: Colors.blueAccent,
@@ -321,109 +340,27 @@ class _MyAccountPageState extends State<MyAccountPage> {
     //logit('title a = ${widget.passengerDetail!.title}');
     // title
     widgets.add(Padding(
-      padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
-      child: InkWell(
-        onTap: () {
-          formSave();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: new TrText('Salutation'),
-                content: new Container(
-                  width: double.maxFinite,
-                  child: optionListView(),
-                ),
-              );
-            },
-          );
-        },
-        child: IgnorePointer(
-          child: TextFormField(
-            decoration: _getDecoration('Title'),
-            controller: _titleTextEditingController,
-            // TextEditingController(text: widget.passengerDetail.title ),
-            validator: (value) =>
-                value!.isEmpty ? translate('Title cannot be empty') : null,
-            onSaved: (value) {
-              if (value != null) {
-               // widget.passengerDetail.title = value.trim();
-              //  _titleTextEditingController.text =translate(widget.passengerDetail.title);
-              }
-            },
-          ),
-        ),
-      ),
+      padding: _padding,
+      child:
+        paxGetTitle(context, _titleTextEditingController,_updateTitle)
+
     ));
 
     // first name
-    widgets.add(paxGetFirstName(
+    widgets.add(Padding( padding: _padding,
+        child: paxGetFirstName(
     _firstNameTextEditingController,
     onFieldSubmitted: (value){
       widget.passengerDetail!.firstName  = value;      },
     onSaved: (value){
       widget.passengerDetail!.firstName  = value;
-    },
+    },)
     ));
- /*   widgets.add(
-      Padding(
-        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: new Theme(
-          data: _theme,
-          child: TextFormField(
-            maxLength: 50,
-            decoration: _getDecoration('First name (as Passport)'),
-            controller: _firstNameTextEditingController,
-            onFieldSubmitted: (value) {
-              widget.passengerDetail!.firstName = value;
-            },
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.text,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-            ],
-            validator: (value) =>
-                value!.isEmpty ? translate('First name cannot be empty') : null,
-            onSaved: (value) {
-              if (value != null) {
-                widget.passengerDetail!.firstName = value.trim();
-              }
-            },
-          ),
-        ),
-      ),
-    );*/
+
 
     // middle name
     if( gblSettings.wantMiddleName ) {
-     /* widgets.add(
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-          child: new Theme(
-            data: _theme,
-            child: TextFormField(
-              maxLength: 50,
-              decoration: _getDecoration('Middle name (or NONE)'),
-              controller: _middleNameTextEditingController,
-              onFieldSubmitted: (value) {
-                widget.passengerDetail!.middleName = value;
-              },
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.text,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-              ],
-              validator: (value) =>
-              value!.isEmpty ? translate('Middle name cannot be empty') : null,
-              onSaved: (value) {
-                if (value != null) {
-                  widget.passengerDetail!.middleName = value.trim();
-                }
-              },
-            ),
-          ),
-        ),
-      );*/
+
       widgets.add( paxGetMiddleName(_middleNameTextEditingController,
       onFieldSubmitted: (value){
         widget.passengerDetail!.middleName = value;      },
@@ -440,38 +377,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
         onSaved: (value){
           widget.passengerDetail!.lastName = value;}
     ));
- /*   widgets.add(Padding(
-      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-      child: new Theme(
-        data: _theme,
-        child: TextFormField(
-          maxLength: 50,
-          decoration: _getDecoration('Last name (as Passport)'),
-          keyboardType: TextInputType.text,
-          controller: _lastNameTextEditingController,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z-]"))
-          ],
-          onFieldSubmitted: (value) {
-            widget.passengerDetail!.lastName = value;
-          },
-          validator: (value) =>
-              value!.isEmpty ? translate('Last name cannot be empty') : null,
-          onSaved: (value) {
-            if (value != null) {
-              widget.passengerDetail!.lastName = value.trim();
-            }
-          },
-        ),
-      ),
-    ));
-*/
+
     // phone
     if( gblSettings.wantInternatDialCode) {
 
 
         widgets.add(InternationalPhoneInput(
-          padding:const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+          padding:_padding,
           popupTitle: translate('Select phone country'),
           controller: _phoneNumberTextEditingController,
           codeController: _phoneCodeTextEditingController,
@@ -496,34 +408,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
           initialPhoneNumber: _phoneNumberTextEditingController.text,
         ));
      } else {
-        widgets.add(paxGetPhoneNumber(_phoneNumberTextEditingController,
+        widgets.add(
+          Padding( padding: _padding,
+            child: paxGetPhoneNumber(_phoneNumberTextEditingController,
             onFieldSubmitted: (value){
               widget.passengerDetail!.phonenumber = value;      },
             onSaved: (value){
               widget.passengerDetail!.phonenumber = value;}
+            )
         ));
- /*     widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-        child: new Theme(
-            data: _theme,
-            child: new TextFormField(
-              maxLength: 30,
-              decoration: _getDecoration('Phone Number'),
-              controller: _phoneNumberTextEditingController,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              validator: (value) =>
-              value!.isEmpty ? translate('Phone Number cannot be empty') : null,
-              onSaved: (value) {
-                if (value != null) {
-                  //.contactInfomation.phonenumber = value.trim()
-                  widget.passengerDetail!.phonenumber = value.trim();
-                }
-              },
-            )),
-      ));*/
+
     }
 
     // email
@@ -538,43 +432,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
       },
     ));
 
- /*   widgets.add(Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
-      child: new Theme(
-        data: _theme,
-        child: new TextFormField(
-          maxLength: 100,
-          controller: _emailTextEditingController,
-          decoration: _getDecoration('Email'),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
-          ],
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          keyboardType: TextInputType.emailAddress,
-          validator: (value) {
-            String er = validateEmail(value!.trim());
-            if( er != '' ) return er;
-            return null;
-          },
-            //value.isEmpty ? translate('Email cannot be empty') : null,
-
-          onSaved: (value) {
-            if (value!.isNotEmpty) {
-              widget.passengerDetail!.email = value.trim();
-            }
-          },
-        ),
-      ),
-    ));
-*/
- //   return widgets;
-
-    // DOB
+     // DOB
     if( (widget.passengerDetail!.paxType == PaxType.adult && gblSettings.passengerTypes.wantAdultDOB ) ||
       widget.passengerDetail!.paxType != PaxType.adult &&
         widget.passengerDetail!.paxType != null ) {
       widgets.add(Padding(
-        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child:  InkWell(
           onTap: () {
             _showCalenderDialog(widget.passengerDetail!.paxType);
@@ -605,10 +468,34 @@ class _MyAccountPageState extends State<MyAccountPage> {
     // gender
     if( gblSettings.wantGender) {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
-          child: genderPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), _theme),
+          child: genderPicker(_padding, _theme),
+        ),
+      ));
+    }
+
+    if( gblSettings.wantWeight) {
+      widgets.add(Padding(
+          padding: _padding,
+          child: paxGetWeight(context, _weightTextEditingController, weightUnit, (newUnit) {
+            setState(() {
+              weightUnit = newUnit;
+            });
+          }, (newVal){
+            widget.passengerDetail!.weight = newVal;
+          })
+      ));
+    }
+
+    // Country
+    if( gblSettings.wantCountry) {
+      widgets.add(Padding(
+        padding: _padding,
+        child: new Theme(
+          data: _theme,
+          child: countryPicker(EdgeInsets.all(0), _theme, widget.passengerDetail!.country, _onCountryChanged) as Widget,
         ),
       ));
     }
@@ -630,7 +517,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     // fqtv
     if (gblSettings.wantFQTV == true || gblSettings.wantFQTVNumber == true) {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
             data: _theme,
             child: new TextFormField(
@@ -654,7 +541,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
     if (gblSettings.wantFQTV == true) {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
             data: _theme,
             child: new TextFormField(
@@ -677,7 +564,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     // ADS for LM
     if (gblSettings.aircode == 'LM') {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -707,7 +594,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ));
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -726,7 +613,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     } // end LM
     if (gblSettings.aircode == 'T6') {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -744,7 +631,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ));
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -765,7 +652,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
     if (gblSettings.wantRedressNo) {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -785,7 +672,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
     if (gblSettings.wantKnownTravNo) {
       widgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        padding: _padding,
         child: new Theme(
           data: _theme,
           child: new TextFormField(
@@ -844,6 +731,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
     return widgets;
   }
 
+  void _onCountryChanged(String value){
+    setState(() {
+      logit('Value = ' + value.toString());
+      widget.passengerDetail!.country = value;
+    });
+
+  }
+
+
   void _deleteAccount(dynamic context) {
     showDialog(
       context: context,
@@ -889,7 +785,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     });
   }
 
-  ListView optionListView() {
+ /* ListView optionListView() {
     List<Widget> widgets = [];
     //new List<Widget>();
     gblTitles.forEach((title) => widgets.add(ListTile(
@@ -902,7 +798,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       children: widgets,
     );
   }
-
+*/
 
   Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     var index = 0;

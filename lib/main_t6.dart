@@ -41,6 +41,8 @@ void configT6() {
       primaryHeaderColor: Colors.white,//Color.fromRGBO(12, 59, 111, 1),
       headerTextColor: Colors.black,
       progressTextColor: Colors.grey,
+      inputFillColor: Colors.white,
+      tabUnderlineColor: Color.fromRGBO(52, 23, 73, 1),
       statusBar: Brightness.light);
 
   _systemColors.setDefaults();
@@ -49,11 +51,12 @@ void configT6() {
   gblAppTitle = 'airswift';
   gblBuildFlavor = 'T6';
   gblTitles = <String>['Mr','Mrs','Ms','Miss','Mstr','Dr'  ];
+  gblRememberMe = true;
 
   gblSettings = Settings (
       latestBuildiOS: '105',
       latestBuildAndroid: '108',
-    wantRememberMe: false,
+//    wantRememberMe: true,
     wantHomeFQTVButton: true,
     wantFQTV:  true,
     wantMyAccount: true,
@@ -68,7 +71,7 @@ void configT6() {
     //contactUsUrl: 'https://www.easyjet.com/en/flight-tracker/EZY308 ',
     termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
     privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
-    prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/ ',
+    prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/',
     //customMenu1: 'AirSWIFT Picks, AirSWIFT Picks, http://www.airswiftpicks.com',
     customMenu1: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
 
@@ -105,7 +108,7 @@ void configT6() {
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
     useWebApiforVrs: true,
     wantEnglishTranslation: true,
-    progressFactor: -15, //-30,
+    progressFactor: -25, //-30,
     blockedUrls: '',
 
 
@@ -143,12 +146,12 @@ void configT6() {
     //testPayPage: 'http://10.0.2.2:50311/MobilePaymentStart.aspx',
  // testXmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/airswift/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-  //  testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
   //  testApiUrl:      'http://10.0.2.2:5000/api',
- testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-
+  testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 

@@ -152,7 +152,8 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
         Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: TrText(_returningText,
+              child:
+              TrText(_returningText,
                   style: new TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15.0)),
             ))
@@ -211,20 +212,22 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
         )
         );
       } else {
-        list.add(Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+        list.add(
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
-              child: TrText(_displayText,
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TrText(_displayText,
                   style: new TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w300,
                     color: Colors.grey,
                   )),
-            ),
-          ],
-        ));
+                Icon(Icons.keyboard_arrow_down_outlined)
+              ])
+          )
+        );
       }
     }
     return list;

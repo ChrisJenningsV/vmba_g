@@ -226,7 +226,7 @@ class SlideTopRoute extends PageRouteBuilder {
 Widget appLinkWidget(String scheme, String path,  Widget displayWidget,{Map<String, dynamic>? queryParameters}) {
   return GestureDetector(
     onTap: () async {
-    if (queryParameters == null) {
+    if (queryParameters == null && scheme == 'mailto') {
       queryParameters = {'subject': 'AppEmail'};
     }
     Uri uri = new Uri(
@@ -470,6 +470,7 @@ InputDecoration getDecoration(String label, {String hintText='', Widget? prefixI
 
   //if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(
+      contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       fillColor: gblSystemColors.inputFillColor,
       filled: true,
       //counter: Container(),
@@ -481,6 +482,9 @@ InputDecoration getDecoration(String label, {String hintText='', Widget? prefixI
       //    contentPadding:
       //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
       labelText: translate(label),
+      enabledBorder:UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
 
 //        fillColor: Colors.white,
     );

@@ -130,11 +130,13 @@ class PassengerDetail {
   String fqtv = '';
   String fqtvPassword = '';
   String country = '';
+  String weight = '';
   String gender = '';
   String seniorID = '';
   String disabilityID = '';
   String redressNo = '';
   String knowTravellerNo = '';
+  String joiningDate ='';
   bool wantNotifications = true;
 
   PassengerDetail({this.title ='',
@@ -248,6 +250,8 @@ class PassengerDetail {
     data['knowTravellerNo'] = this.knowTravellerNo;
     data['gender'] = this.gender;
     data['dateOfBirth'] = this.dateOfBirth.toString();
+    data['country'] = this.country.toString();
+    data['weight'] = this.weight.toString();
 
     return data;
   }
@@ -310,6 +314,8 @@ class PassengerDetail {
     if (json['dateOfBirth'] != null &&  json['dateOfBirth'] != 'null') {
       dateOfBirth = DateTime.parse(json['dateOfBirth']);
     }
+    if(json['country']!= null ) country = json['country'];
+    if(json['weight']!= null ) weight = json['weight'];
   }
 }
 
@@ -513,21 +519,50 @@ class ApiResponseStatus {
   }
 }
 
+class FQTVMemberTransactions {
+  late List<ApiFQTVMemberTransaction> trans;
+
+  FQTVMemberTransactions();
+
+  FQTVMemberTransactions.fromJson(List<dynamic> json) {
+    trans = [];
+
+    if (json is List) {
+      json.forEach((v) {
+        trans.add(new ApiFQTVMemberTransaction.fromJson(v));
+      } );
+    } else {
+     // trans.add(new ApiFQTVMemberTransaction.fromJson(json));
+    }
+  }
+}
+
 class ApiFQTVMemberTransaction {
-  String pnr;
-  String flightNumber;
-  String flightDate;
-  String transactionDateTime;
-  String departureCityCode;
-  String arrivalCityCode;
-  String airMiles;
-  String description;
+  String pnr = '';
+  String flightNumber = '';
+  String flightDate = '';
+  String transactionDateTime = '';
+  String departureCityCode = '';
+  String arrivalCityCode = '';
+  String airMiles = '';
+  String description = '';
 
   ApiFQTVMemberTransaction(this.pnr, this.flightNumber,
       this.flightDate,
       this.transactionDateTime,
       this.departureCityCode, this.arrivalCityCode,
        this.airMiles, this.description);
+
+  ApiFQTVMemberTransaction.fromJson(Map<String, dynamic> json) {
+      if( json['RLOC'] != null ) pnr = json['RLOC'];
+      if( json['FlightNumber'] != null ) flightNumber = json['FlightNumber'];
+      if( json['FlightDate'] != null ) flightDate = json['FlightDate'];
+      if( json['TransactionDateTime'] != null ) transactionDateTime = json['TransactionDateTime'];
+      if( json['DepartureCityCode'] != null ) departureCityCode = json['DepartureCityCode'];
+      if( json['DrrivalCityCode'] != null ) arrivalCityCode = json['ArrivalCityCode'];
+      if( json['AirMiles'] != null ) airMiles = json['AirMiles'].toString();
+      if( json['Description'] != null ) description = json['Description'];
+  }
 }
 
 class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {

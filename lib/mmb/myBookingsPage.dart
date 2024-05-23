@@ -19,6 +19,7 @@ import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../controllers/vrsCommands.dart';
 import '../v3pages/cards/typogrify.dart';
@@ -184,7 +185,10 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       if( gblSettings.displayErrorPnr) {
         tabeViews.add(new Container(child: myTrips('O')));
       }
-      tabeViews.add(new Container(child: addBooking()));
+      tabeViews.add(new Container(
+          margin: v2FormPadding(),
+          decoration: v2FormDecoration(),
+          child: addBooking()));
 
       if( gblSettings.wantFQTV && gblSettings.wantFindBookings) {
         tabs.add(TrText('Import Bookings'));
@@ -192,6 +196,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       }
 
       return Scaffold(
+        backgroundColor: v2PageBackgroundColor(),
           appBar: appBar(context, "My Bookings",
           bottom:  new PreferredSize(
           preferredSize: new Size.fromHeight(30.0),

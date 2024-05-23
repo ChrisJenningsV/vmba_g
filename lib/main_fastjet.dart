@@ -40,6 +40,7 @@ void configFN() {
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
+    inputFillColor: Colors.white,
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;

@@ -14,10 +14,12 @@ import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
+import '../Helpers/settingsHelper.dart';
 import '../components/vidButtons.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/smartApi.dart';
+import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3FormFields.dart';
@@ -32,7 +34,7 @@ class MyFqtvPage extends StatefulWidget {
   _MyFqtvPageState createState() => _MyFqtvPageState();
 
   PassengerDetail? passengerDetail;
-  String joiningDate='';
+  //String joiningDate='';
   final bool isAdsBooking ;
   final bool isLeadPassenger;
 
@@ -236,6 +238,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     gblShowRedeemingAirmiles = true;
 
     return Scaffold(
+        backgroundColor: v2PageBackgroundColor(),
       appBar: AppBar(
         leading: getAppBarLeft(),
         backgroundColor:
@@ -260,20 +263,34 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         child: new SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Column(
+    padding: v2FormPadding(),
+    child: Card(
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0),
+    ),
+
+    clipBehavior: Clip.antiAlias,
+      child: Padding(
+          padding: EdgeInsets.fromLTRB(15.0, 10, 15, 15),
+
+    child: Column(
+
               children:  _getWidgets()
               ,
             ),
-          ),
+          )),
         ),
       ),
+    )
     );
     // });
   }
 
     contentBox(context){
     return
+      SizedBox(
+          width: MediaQuery.of(context).size.width,
+        child:
         Stack(
           children: <Widget>[ Column(
             mainAxisSize: MainAxisSize.min,
@@ -317,6 +334,17 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   resetPasswordDialog();
                 },
               ),
+              gblSettings.wantRememberMe ?
+              CheckboxListTile(
+                title: TrText("Remember me"),
+                value: gblRememberMe,
+                onChanged: (newValue) {
+                  setState(() {
+                    gblRememberMe = newValue!;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+              ) : Container(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -350,7 +378,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                           _isButtonDisabled = true;
                           _loadingInProgress = true;
                           setState(() {});
-                          _fqtvLogin();
+                          _fqtvLogin('Login');
                         } else {
                           _error = "Please complete both fields";
                           _loadingInProgress = false;
@@ -368,7 +396,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               )
             ],
           )],
-        );
+        )
+      );
   }
   /*
   void _togglePasswordView() {
@@ -382,7 +411,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     String name = '';
     String email = '';
     String fqtv = '';
-    String joining = widget.joiningDate ;
+    String joining = widget.passengerDetail!.joiningDate ;
     if( joining == null) joining = '';
     if( joining.length > 11) joining = joining.substring(0,11);
 
@@ -405,9 +434,9 @@ if ( memberDetails != null ) {
   email = memberDetails!.member!.email;
 
 }
-if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
+if( widget.passengerDetail!.joiningDate != null && widget.passengerDetail!.joiningDate.isNotEmpty) {
   try {
-  joining = DateFormat('dd MMM yyyy').format(DateTime.parse(widget.joiningDate));
+  joining = DateFormat('dd MMM yyyy').format(DateTime.parse(widget.passengerDetail!.joiningDate));
   } catch(e) {
 
   }
@@ -530,7 +559,7 @@ if( widget.joiningDate != null && widget.joiningDate.isNotEmpty) {
   }
 
   void _reloadPoints(BuildContext context, dynamic p) {
-    _fqtvLogin();
+    _fqtvLogin('Refreshing');
   }
 
   void _logout(BuildContext context, dynamic p) {
@@ -681,6 +710,7 @@ Widget _getTrans() {
     String msg = json.encode(ApiFqtvResetPasswordRequest(
         _oldPasswordEditingController.text).toJson());
     String method = 'ResetPassword';
+    _oldPasswordEditingController.text = '';
 
     //print(msg);
     _sendVRSCommand(msg, method).then((result){
@@ -759,8 +789,8 @@ Widget _getTrans() {
     });
   }
 
-  void _fqtvLogin() async {
-    progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
+  void _fqtvLogin(String msgText) async {
+    progressMessagePage(context, translate(msgText), title:  '${gblSettings.fqtvName}');
     gblRedeemingAirmiles = false;
     try {
       String pw = Uri.encodeComponent(_passwordEditingController.text);
@@ -777,9 +807,11 @@ Widget _getTrans() {
         Map<String, dynamic> map = json.decode(reply);
         FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
 
-        if( gblPassengerDetail == null ) {
+        PaxManager.populateFromFqtvMember(fqtvLoginReply, fqtvNo, fqtvPass);
+/*        if( gblPassengerDetail == null ) {
           gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
         }
+
         gblFqtvLoggedIn = true;
         gblPassengerDetail!.fqtv = fqtvNo;
         gblPassengerDetail!.fqtvPassword = fqtvPass;
@@ -791,6 +823,12 @@ Widget _getTrans() {
         gblPassengerDetail!.lastName = fqtvLoginReply.surname;
         widget.passengerDetail!.firstName = fqtvLoginReply.firstname;
         widget.passengerDetail!.lastName = fqtvLoginReply.surname;
+        if( fqtvLoginReply.dOB != null &&  fqtvLoginReply.dOB != ''){
+          widget.passengerDetail!.dateOfBirth = DateTime.parse(fqtvLoginReply.dOB);
+        }
+        if(fqtvLoginReply.member != null && fqtvLoginReply.member!.country != '') {
+          widget.passengerDetail!.country = fqtvLoginReply.member!.country;
+        }
 
         gblPassengerDetail!.phonenumber = fqtvLoginReply.phoneMobile;
         if (gblPassengerDetail!.phonenumber == null ||
@@ -801,8 +839,9 @@ Widget _getTrans() {
 
         gblPassengerDetail!.email =fqtvLoginReply.email;
         widget.passengerDetail!.email = fqtvLoginReply.email;
-        widget.joiningDate = fqtvLoginReply.joiningDate;
+        widget.joiningDate = fqtvLoginReply.joiningDate;*/
         //DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate))
+        widget.passengerDetail = gblPassengerDetail;
         gblError ='';
         _error = '';
         _isButtonDisabled = false;
@@ -954,9 +993,14 @@ Widget _getTrans() {
           title = 'Pending Transactions';
           transactions = resp.transactions;
           if( transactions != null && transactions!.length > 0) {
+            // sort into ascending flight date order
             transactions?.sort((a, b) {
-              return b.transactionDateTime.compareTo(a.transactionDateTime);
+              return a.flightDate.compareTo(b.flightDate);
             } );
+
+            // remove duplicates
+            final ids = Set();
+            transactions!.retainWhere((x) => ids.add(x.pnr));
           }
           setState(() {});
         }
@@ -1143,7 +1187,7 @@ Widget _getTrans() {
  }
 
 
- void _resetPasswordDialog() {
+ /*void _resetPasswordDialog() {
 
 
    v3ShowDialog(context,translate('Reset Password'),
@@ -1184,7 +1228,7 @@ Widget _getTrans() {
      }
    );
 
-/*
+*//*
    showDialog(
        context: context,
        builder: (BuildContext context)
@@ -1269,8 +1313,8 @@ Widget _getTrans() {
          });
    }
     );
-*/
- }
+*//*
+ }*/
   void resetPasswordDialog() {
 
     showDialog(
@@ -1327,10 +1371,16 @@ Widget _getTrans() {
                 },
               ),
               ElevatedButton(
-                child: TrText("CONTINUE"),
+                  child: gblActionBtnDisabled ? Row(children: [
+                    CircularProgressIndicator(),
+                      TrText("CONTINUE")
+                  ],)
+                    : TrText("CONTINUE"),
                 onPressed: () {
+                if( gblActionBtnDisabled == false ) {
                   var str = validateEmail(_oldPasswordEditingController.text);
-                  if( str == null || str == '' ) {
+                  if (str == null || str == '') {
+                    gblActionBtnDisabled = true;
                     _fqtvResetPassword();
                   } else {
                     _error = str;
@@ -1338,7 +1388,7 @@ Widget _getTrans() {
                     _showDialog();
                   }
                   //});
-
+                }
                   //Navigator.of(context).pop();
                 },
               ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -646,7 +648,7 @@ String buildAddContactsCmd(NewBooking newBooking) {
 String buildAppVersionCmd(NewBooking newBooking){
   StringBuffer sb = new StringBuffer();
 
-    sb.write('5** AppVersion $gblVersion  ${gblIsIos ? 'iOS' : 'Android'} ^');
+    sb.write('5** AppVersion $gblVersion  ${gblIsIos ? 'iOS' : 'Android'} ${Platform.localeName}^');
     return sb.toString();
   }
 
@@ -743,7 +745,13 @@ String buildAddPaxCmd(NewBooking newBooking) {
           sb.write('ZDSEN-${pax.paxNumber}/${pax.seniorID}^');
         }
       }
-
+    } else {
+      if( pax.country != null && pax.country != '' ){
+        sb.write('3-${pax.paxNumber}FCNTY${pax.country}^');
+      }
+    }
+    if( pax.weight != null && pax.weight != '' ){
+      sb.write('3-${pax.paxNumber}FPWGT${pax.weight}^');
     }
 
     if( pax.dateOfBirth != null && (pax.paxType == PaxType.adult || pax.paxType == PaxType.senior)){

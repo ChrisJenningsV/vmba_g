@@ -132,6 +132,7 @@ class Settings {
   bool wantTandCCheckBox;
   bool saveChangeBookingBeforePay;
   bool wantSaveSettings;
+  bool wantShadows;
 
   String productFormat;
   String homePageStyle;
@@ -308,6 +309,7 @@ bool bpShowFastTrack;
     this.wantPriceCalendarRounding = false,
     this.wantMonthOnCalendar = false,
     this.wantSaveSettings = false,
+    this.wantShadows = true,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

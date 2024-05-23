@@ -172,6 +172,8 @@ class SeatCardState extends State<SeatCard> {
                   paxlist: paxlist,
                   isMmb: false,
                   ischeckinOpen: false,
+                  flt: gblPnrModel!.pNR.itinerary.itin[journeyNo].airID + ' ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].fltNo + ' ' +
+                      gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '-' + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive,
                   seatplan:
                   'ls${gblPnrModel!.pNR.itinerary.itin[journeyNo].airID +
                       gblPnrModel!.pNR.itinerary.itin[journeyNo]

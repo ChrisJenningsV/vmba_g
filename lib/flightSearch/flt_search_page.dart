@@ -39,6 +39,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     gblUndoCommand = '';
     booking.currency = gblSettings.currency;
     gblSelectedCurrency = gblSettings.currency;
+    gblBookingCurrency = gblSelectedCurrency;
     adsTermsAccepted = false;
     gblCurrentRloc = '';
 
@@ -96,7 +97,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     final List<String>? args = ModalRoute.of(context)?.settings.arguments as List<String>?;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     String helpText ='';
-    EdgeInsets pad = EdgeInsets.all(16.0);
+    EdgeInsets pad = EdgeInsets.all(0.0);
     if( wantPageV2()) {
       pad = EdgeInsets.all(15.0);
     }
@@ -109,6 +110,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     }
     firstBuild = false;
     return new Scaffold(
+        //backgroundColor: v2PageBackgroundColor(),
+
         appBar:
         appBar(context, widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search'),
         endDrawer: DrawerMenu(),
@@ -121,7 +124,18 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         bottomNavigationBar: getBottomNav(context, helpText:  helpText),
         body: SingleChildScrollView(
           padding: pad,
-          child: Column(
+          child:  Padding(
+    padding: v2FormPadding(),
+    child: Card(
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0),
+    ),
+
+    clipBehavior: Clip.antiAlias,
+    child: Padding(
+      padding: EdgeInsets.all(10),
+      child:
+    Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -187,7 +201,9 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               ) : Container(),
             ],
           ),
-        ));
+        ))
+    ))
+    );
   }
 
   Widget _currencyPicker() {

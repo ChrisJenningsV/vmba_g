@@ -94,12 +94,16 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       units = ' ' + translate('Per') + ' ' + widget.product!.unitOfMeasure;
     }
     if( gblSettings.productImageMode != '' && gblSettings.productImageMode != 'none') {
-      NetworkImage? img = getProductImage(widget.product!);
+      Image? img = getProductImage(widget.product!, 40);
       if (img != null) {
+/*
         rowList.add(Image(image: img,
           fit: BoxFit.fill,
           height: 40,
           width: 40,));
+*/
+        rowList.add(img,);
+
       }
     }
 
@@ -392,12 +396,15 @@ Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, 
 }
 Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
     List<Widget> widgets = [];
-      NetworkImage? img = getProductImage(prod);
+      Image? img = getProductImage(prod, 40);
       if( img != null ) {
+/*
         widgets.add(Image(image: img as NetworkImage,
           fit: BoxFit.fill,
           height: 40,
           width: 40,),);
+*/
+        widgets.add(img);
       }
 
     widgets.add(Align(alignment: Alignment.centerLeft,

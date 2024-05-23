@@ -273,37 +273,37 @@ class MessagePageState extends State<MessagePage> {
         Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Container(
+                width: 210,
+                height: 200,
+              child:
               Stack(
                 children:  [
                   Positioned(
-                      left: offset,
-                      top: offset,
+                      left: 38 + offset,
+                      top: 22 + offset,
                       child:
                       CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: radius,
                           child: Image.asset('lib/assets/$gblAppTitle/images/loader.png') //Icon(Icons.check),
                       )),
-                  /*SizedBox(
-          width: 100,
-          height: 100,
-          child: CircularProgressIndicator(
-            color: Colors.grey,
-           // value: 1,
-          ),
-        ),*/
+                  Positioned(
+                    left: 20,
+                    top: 10,
+                    child:
                   SizedBox(
-                    width: 150,
-                    height: 150,
+                    width: 180,
+                    height: 180,
                     child: CircularProgressIndicator(
                       color: gblSystemColors.progressColor,
                       strokeWidth: 10,
-                      backgroundColor: Colors.grey.shade100,
+                      backgroundColor: Colors.grey.shade100, //shade 100
                       // value: .5, // Change this value to update the progress
                     ),
-                  ),
+                  )),
                 ],
-              ),
+              )),
               Padding(padding: EdgeInsets.all(10.0)),
               TrText('' + _msg),
             ])

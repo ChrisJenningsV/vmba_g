@@ -278,6 +278,23 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         gotAllDetails = false;
       }
     }
+    if( gblSettings.wantCountry){
+      if( passengerDetailRecord!.country != null && passengerDetailRecord!.country.length > 0) {
+        _passengerDetails[paxNo].country =  passengerDetailRecord!.country;
+      } else {
+        gotAllDetails = false;
+      }
+    }
+    if( gblSettings.wantWeight){
+      if( passengerDetailRecord!.weight != null && passengerDetailRecord!.weight.length > 0) {
+        _passengerDetails[paxNo].weight =  passengerDetailRecord!.weight;
+      } else {
+        gotAllDetails = false;
+      }
+
+    }
+
+
     if( gblSettings.passengerTypes.wantAdultDOB) {
       if (passengerDetailRecord!.dateOfBirth != null) {
         _passengerDetails[paxNo].dateOfBirth =

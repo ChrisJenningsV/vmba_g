@@ -56,6 +56,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   TextEditingController _seniorIDTextEditingController = TextEditingController();
   TextEditingController _redressNoTextEditingController = TextEditingController();
   TextEditingController _knownTravellerNoTextEditingController = TextEditingController();
+  TextEditingController _weightTextEditingController = TextEditingController();
+  String weightUnit = 'lb';
 
   String phoneNumber ='';
   String phoneIsoCode ='';
@@ -97,6 +99,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
     _phoneTextEditingController.text = widget.passengerDetail.phonenumber;
     _emailTextEditingController.text = widget.passengerDetail.email;
+
     phoneNumber = widget.passengerDetail.phonenumber;
     if( phoneNumber == null || phoneNumber.isEmpty) {
       phoneIsoCode = gblSettings.defaultCountryCode;
@@ -110,6 +113,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     _disabilityIDTextEditingController.text = widget.passengerDetail.disabilityID;
     _redressNoTextEditingController.text = widget.passengerDetail.redressNo;
     _knownTravellerNoTextEditingController.text = widget.passengerDetail.knowTravellerNo;
+     _weightTextEditingController.text = widget.passengerDetail.weight.replaceAll('lb', '').replaceAll('kg', '');
+
 
 //    _countryList = getCountrylist() as Countrylist;
     gblRememberMe = false;
@@ -120,6 +125,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
     return
 
       new Scaffold(
+        backgroundColor: v2PageBackgroundColor(),
       appBar: appBar(context, 'Passenger Detail',
         newBooking: widget.newBooking,
         curStep: 4,
@@ -164,8 +170,11 @@ return SafeArea(
         key: formKey,
     child: SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: v2FormPadding(),
       child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
 
       clipBehavior: Clip.antiAlias,
     child: Column(
@@ -173,7 +182,8 @@ return SafeArea(
     ListTile(
       tileColor: gblSystemColors.primaryHeaderColor ,
     leading: Icon(Icons.person, size: 50.0, color: gblSystemColors.headerTextColor   ,),
-    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + translate(paxTypeName) + ')'  , style: TextStyle(color: gblSystemColors.headerTextColor),),
+    title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + translate(paxTypeName) + ')'  ,
+      style: TextStyle(color: gblSystemColors.headerTextColor, fontWeight: FontWeight.bold),),
 /*    subtitle: Text(
     'Secondary Text',
     style: TextStyle(color: Colors.black.withOpacity(0.6)),
@@ -195,39 +205,6 @@ return SafeArea(
 
   }
 
-/*Widget _getTitle(){
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Title'),
-        TextFormField(
-    decoration: v2Decoration(),
-
-  controller: _titleTextEditingController,
-  validator: (value) =>
-  value!.isEmpty ? translate('Title cannot be empty') : null,
-  onSaved: (value) {
-  if (value != null) {
-  }
-  },
-  ),
-        padding: EdgeInsets.only(left: 10, right: 10),
-      );
-        } else {
-  return TextFormField(
-  decoration: getDecoration('Title'),
-  // initialValue: translate(widget.passengerDetail.title),
-
-  controller: _titleTextEditingController,
-  validator: (value) =>
-  value!.isEmpty ? translate('Title cannot be empty') : null,
-  onSaved: (value) {
-  if (value != null) {
-  //widget.passengerDetail.title = value.trim();
-  //_titleTextEditingController.text =translate(widget.passengerDetail.title);
-  }
-  },
-  );
-  }
-}*/
 
 Widget getFirstname() {
 
@@ -239,29 +216,6 @@ Widget getFirstname() {
           widget.passengerDetail.firstName = value;
         },
   );
-/*
-    return V2TextWidget(
-      maxLength: 50,
-      decoration: getDecoration('First name (as Passport)'),
-      controller: _firstNameTextEditingController,
-      onFieldSubmitted: (value) {
-        widget.passengerDetail.firstName = value;
-      },
-      textInputAction: TextInputAction.done,
-      // keyboardType: TextInputType.text,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-      ],
-      validator: (value) =>
-      value!.isEmpty ? translate('First name cannot be empty') : null,
-      onSaved: (value) {
-        if (value != null) {
-          widget.passengerDetail.firstName = value.trim();
-        }
-      },
-    );
-*/
-  //}
 }
 
   Widget getLastname() {
@@ -272,25 +226,7 @@ Widget getFirstname() {
         onSaved: (value){
           widget.passengerDetail.lastName = value;}
     );
-    /*return   V2TextWidget(
-      maxLength: 50,
-      decoration: getDecoration('Last name (as Passport)'),
-      controller: _lastNameTextEditingController,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-      ],
-      onFieldSubmitted: (value) {
-        widget.passengerDetail.lastName = value;
-      },
-      validator: (value) =>
-      value!.isEmpty ? translate('Last name cannot be empty') : null,
-      onSaved: (value) {
-        if (value != null) {
-          widget.passengerDetail.lastName = value.trim();
-        }
-      },
-    );*/
- //}
+
   }
 
   Widget getMiddlename() {
@@ -300,28 +236,7 @@ Widget getFirstname() {
         onSaved: (value){
           widget.passengerDetail.middleName = value;}
     );
-    /*return V2TextWidget(
-        maxLength: 50,
-        decoration: getDecoration('Middle name (or NONE)'),
-        controller: _middleNameTextEditingController,
-        onFieldSubmitted: (value) {
-          widget.passengerDetail.middleName = value;
-        },
-        textInputAction: TextInputAction.done,
-        // keyboardType: TextInputType.text,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
-        ],
-        validator: (value) =>
-        value!.isEmpty ? translate(
-            'Middle name cannot be empty - type NONE if none') : null,
-        onSaved: (value) {
-          if (value != null) {
-            widget.passengerDetail.middleName = value.trim();
-          }
-        },
-      );*/
-    //}
+
   }
 
   Widget getFqtv() {
@@ -406,7 +321,7 @@ Widget getFirstname() {
 
     //return Column(children: <Widget>[
     //logit('title = ${widget.passengerDetail.title}');
-    list.add(Padding(padding: EdgeInsets.all(5)));
+    list.add(Padding(padding: EdgeInsets.all(1)));
     list.add(Padding(
       padding: _padding,
       child: paxGetTitle(context, _titleTextEditingController,_updateTitle)
@@ -479,33 +394,8 @@ Widget getFirstname() {
     if( wantDOB) {
       list.add(Padding(
         padding: _padding,
-        child: InkWell(
-          onTap: () {
-            _showCalenderDialog(widget.passengerDetail.paxType);
-          },
-          child: IgnorePointer(
-            child: TextFormField(
-              decoration: getDecoration('Date of Birth'),
-              //initialValue: field.value,
-              controller: _dateOfBirthTextEditingController,
-              validator: (value) =>
-              value!.isEmpty ? translate('Date of Birth is required') : null,
-              onSaved: (value) {
-                if (value != '') {
-                  var date = value!.split('-')[2] +
-                      ' ' +
-                      value.split('-')[1] +
-                      ' ' +
-                      value.split('-')[0];
-                  DateFormat format = new DateFormat("yyyy MMM dd");
-                  widget.passengerDetail.dateOfBirth = format.parse(date);
-                }
-              },
+        child: paxGetDOB(context, _dateOfBirthTextEditingController, widget.passengerDetail.paxType, _updateDateOfBirth, formSave, setState)
 
-              // DateFormat format = new DateFormat("yyyy MMM dd"); DateTime.parse(value),  //value.trim(),
-            ),
-          ),
-        ),
       ));
     }
     if( widget.passengerDetail.paxType == PaxType.adult &&
@@ -654,7 +544,18 @@ Widget getFirstname() {
      ));
    }
 
-
+   if( gblSettings.wantWeight) {
+     list.add(Padding(
+         padding: _padding,
+         child: paxGetWeight(context, _weightTextEditingController, weightUnit, (newUnit) {
+           setState(() {
+             weightUnit = newUnit;
+           });
+         }, (newVal){
+           widget.passengerDetail!.weight = newVal + ' ' + weightUnit;
+         })
+     ));
+   }
    // redress number
    if ( gblSettings.wantRedressNo ) {
      list.add(Padding(
@@ -712,7 +613,7 @@ Widget getFirstname() {
        padding: _padding,
        child: new Theme(
          data: theme,
-         child: countryPicker(_padding, theme) as Widget,
+         child: countryPicker(_padding, theme, widget.passengerDetail.country, _onCountryChanged) as Widget,
        ),
      ));
    }
@@ -799,7 +700,7 @@ Widget getFirstname() {
    ));
 
    list.add(Padding(
-     padding: new EdgeInsets.only(top: 10.0),
+     padding: new EdgeInsets.only(top: 1.0),
    ));
 
 
@@ -821,6 +722,16 @@ Widget getFirstname() {
    return list;
 
   }
+
+ void _onCountryChanged(String value){
+    setState(() {
+        logit('Value = ' + value.toString());
+        widget.passengerDetail.country = value;
+//        logit('sel country = ' + widget.passengerDetail.country);
+        // _ratingController = value;
+      });
+
+ }
 
 Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
   var index = 0;
@@ -857,6 +768,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
 }
 
 
+/*
   Widget? countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
     // get current country index
 
@@ -914,6 +826,7 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
           return Container();
         });
   }
+*/
 
  String trimCountry(String name) {
     if( name.length > 15) {
@@ -998,157 +911,17 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
     );
   }
 
-  _showCalenderDialog(PaxType paxType) {
-    DateTime dateTime = DateTime.now();
-    DateTime _maximumDate;
-    DateTime _minimumDate;
-    DateTime _initialDateTime;
-    int _minimumYear;
-    int _maximumYear;
-    formSave();
-
-    // VRS uses todays date - not date of travel, code here to use date of travel if required
-    DateTime lastFltDate = DateTime.now();
-//    DateTime lastFltDate = widget.newBooking.departureDate;
-//    if( widget.newBooking.returnDate != null ){
-//      lastFltDate = widget.newBooking.returnDate;
-//    }
-
-//    logit('dep dt: ' + widget.newBooking.departureDate.toString());
-//    logit('ret dt: ' + widget.newBooking.returnDate.toString());
-
-    switch (paxType) {
-      case PaxType.infant:
-        {
-          _initialDateTime = DateTime.now();
-          _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2 -1 )));
-        }
-        break;
-      case PaxType.child:
-        {
-          _initialDateTime = DateTime.now().subtract(Duration(days: 731));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
-        }
-        break;
-      case PaxType.youth:
-        {
-          _initialDateTime = DateTime( lastFltDate.year - gblSettings.passengerTypes.youthMinAge, lastFltDate.month, lastFltDate.day );
-          _minimumDate = DateTime( lastFltDate.year - gblSettings.passengerTypes.youthMaxAge, lastFltDate.month, lastFltDate.day );
-          logit('init $_initialDateTime' );
-          logit('min $_minimumDate' );
-          //_initialDateTime =DateTime.now().subtract(new Duration(days: (4015)));
-          //_minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
-        }
-        break;
-/*      case PaxType.student:
-        {
-          _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
-        }
-        break;
-      case PaxType.senior:
-        {
-          _initialDateTime =
-              DateTime.now().subtract(new Duration(days: (4015)));
-          _minimumDate = DateTime.now().subtract(new Duration(days: (5840)));
-        }
-        break;
-
- */
-      case PaxType.adult:
-        {
-          _initialDateTime = DateTime.now();
-          _minimumDate = DateTime( 110, 0, 0 );
-        }
-        break;
-      default:
-        {
-          _initialDateTime = DateTime.now();
-          _minimumDate = DateTime( 110, 0, 0 );
-        }
-        break;
-    }
-    _maximumDate = _initialDateTime;
-    _minimumYear = _minimumDate.year;
-    _maximumYear = _initialDateTime.year;
-    dateTime = _initialDateTime;
-
-    _updateDateOfBirth(_initialDateTime);
-
-    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
-    bool isDark = brightnessValue == Brightness.dark;
-    Color bgColour = Colors.white;
-    Color txtColor = Colors.black;
-    if (isDark) {
-      bgColour = Colors.black;
-      txtColor = Colors.white;
-    }
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          backgroundColor: bgColour,
-          title: new TrText('Date of Birth', style: TextStyle(color: txtColor),),
-          content: SizedBox(
-            //padding: EdgeInsets.all(1),
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              child: CupertinoTheme(
-                data: CupertinoThemeData(
-                  brightness: brightnessValue,
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      fontSize: 16,
-                    ),
-
-                  ),
-                ),
-                child: CupertinoDatePicker(
-                  backgroundColor: bgColour,
-                  initialDateTime: _initialDateTime,
-                  onDateTimeChanged: (DateTime newValue) {
-                    setState(() {
-                     // print(newValue);
-                      dateTime = newValue;
-                    });
-                  },
-                  use24hFormat: true,
-                  maximumDate: _maximumDate,
-                  minimumYear: _minimumYear,
-                  maximumYear: _maximumYear,
-                  minimumDate: _minimumDate,
-                  mode: CupertinoDatePickerMode.date,
-                ),
-              )),
-          actions: <Widget>[
-            new TextButton(
-              style: TextButton.styleFrom(
-                  backgroundColor:bgColour ,
-                  side: BorderSide(color:  txtColor, width: 1),
-                  foregroundColor:txtColor),
-              child: new TrText("OK", style: TextStyle(color: txtColor),
-              ),
-              onPressed: () {
-                Navigator.pop(context, dateTime);
-                _updateDateOfBirth(dateTime );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _updateDateOfBirth(DateTime dateOfBirth) {
+    DateFormat format = new DateFormat("yyyy MMM dd");
+    widget.passengerDetail.dateOfBirth = dateOfBirth;
+
     setState(() {
       _dateOfBirthTextEditingController.text =
           DateFormat('dd-MMM-yyyy').format(dateOfBirth);
       FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
+
 
   bool validateAndSave() {
     final form = formKey.currentState;

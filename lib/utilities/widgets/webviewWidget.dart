@@ -80,13 +80,13 @@ Page resource error:
 
     return Scaffold(
       appBar: AppBar(
-        title: TrText(widget.title),
+        title: TrText(widget.title, style: TextStyle(color: gblSystemColors.headerTextColor),),
         backgroundColor: gblSystemColors.primaryHeaderColor,
         automaticallyImplyLeading: false,
        
         actions: (widget.canNotClose != null) ? <Widget>[Text(' ')] :  <Widget>[
-          IconButton(icon: Icon(Icons.close
-          ),
+          IconButton(icon: Icon(Icons.close, color: gblSystemColors.headerTextColor,
+          ) ,
           onPressed: () => Navigator.pop(context),
           )
         ],

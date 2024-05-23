@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/models.dart';
@@ -16,11 +17,13 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../controllers/vrsCommands.dart';
 import '../../data/smartApi.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
+import '../../v3pages/fields/typography.dart';
 
 enum SeatType { regular, emergency }
 
@@ -37,6 +40,7 @@ class SeatPlanWidget extends StatefulWidget {
       this.rloc ='',
       this.journeyNo = '',
       this.cabin = '',
+        this.flt='',
       this.selectedpaxNo = 1,
       this.isMmb = false,
       this.ischeckinOpen = false})
@@ -45,6 +49,7 @@ class SeatPlanWidget extends StatefulWidget {
   final List<Pax>? paxlist;
   final String seatplan;
   final String cabin;
+  final String flt;
   final String rloc;
   final String journeyNo;
   final int selectedpaxNo;
@@ -589,6 +594,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       return Column(
         children: <Widget>[
+          Padding(padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+          child:
+          Align(alignment: Alignment.centerLeft,
+              child: V2Heading2Text(translate('Flight') + ' ' + widget.flt,
+/*
+                textScaler: v2H2Scale(),
+                style: TextStyle(fontWeight: FontWeight.bold),))
+*/
+          ))),
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             height: showkey ? 75.0 : 0,

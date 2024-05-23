@@ -2320,7 +2320,7 @@ class ViewBookingBodyState
               gblSettings.prohibitedItemsNoticeUrl != null
                   ? appLinkWidget(
                       'https',
-                      gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
+                      gblSettings.prohibitedItemsNoticeUrl.replaceAll('https:', '').replaceAll('https', '').trimLeft().trimRight(),
                       Text(
                           gblSettings.prohibitedItemsNoticeUrl,
                           style: TextStyle(
@@ -2647,6 +2647,8 @@ class ViewBookingBodyState
             paxlist: paxlist,
             isMmb: true,
             ischeckinOpen: checkinOpen,
+            flt: pnr.pNR.itinerary.itin[journeyNo].airID + ' ' + pnr.pNR.itinerary.itin[journeyNo].fltNo + ' ' +
+            pnr.pNR.itinerary.itin[journeyNo].depart + '-' + pnr.pNR.itinerary.itin[journeyNo].arrive,
             seatplan:
                 'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,

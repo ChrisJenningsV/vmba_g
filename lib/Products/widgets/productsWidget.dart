@@ -88,6 +88,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
 
   _loadData() async {
     //String currency = widget.pnrModel.pNR.basket.outstanding.cur;
+    if(gblBookingCurrency == '') gblBookingCurrency = gblSelectedCurrency;
 
     if (gblProducts == null || gblBookingCurrency != gblLastCurrecy || gblProductCacheDeparts != gblOrigin || gblProductCacheArrives != gblDestination){
       //gblBookingCurrency =currency;

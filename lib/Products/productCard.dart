@@ -122,12 +122,17 @@ class ProductCardState extends State<ProductCard> {
  //   }
 
     if( /*gblSettings.productImageMode != null &&*/ gblSettings.productImageMode != 'none') {
-      NetworkImage? img = getProductImage(prod);
+      Image? img = getProductImage(prod, 70);
+
       if( img != null ) {
+/*
         widgets.add(Image(image: img,
           fit: BoxFit.fitWidth,
           //height: 40,
           width: 70,),);
+*/
+        widgets.add(img,);
+
       }
     }
     String route = '';

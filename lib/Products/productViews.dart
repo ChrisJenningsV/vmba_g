@@ -108,7 +108,7 @@ class ProductCardState extends State<ProductCard> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Image(image: getProductImage(prod) as NetworkImage),
+          Image(image: getProductImage(prod, null as double) as NetworkImage),
           Align(alignment: Alignment.centerLeft,
               child: TrText(prod.productName)),
 

@@ -193,15 +193,25 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
                 },
               ),
               ElevatedButton(
-                child: TrText("CONTINUE"),
+                child: gblActionBtnDisabled ? Row(children: [
+                  CircularProgressIndicator(),
+                   TrText("CONTINUE")
+                ],)
+                    : TrText("CONTINUE"),
                 onPressed: () {
-                  var str = validateEmail(_oldPasswordEditingController.text);
-                  if (str == null || str == '') {
-                    _fqtvResetPassword();
-                  } else {
-                    _error = str;
-                    _actionCompleted();
-                    showAlertDialog(context, 'Error', _error);
+                  if( gblActionBtnDisabled == false ) {
+                    var str = validateEmail(_oldPasswordEditingController.text);
+                    if (str == null || str == '') {
+                      gblActionBtnDisabled = true;
+                      setState(() {
+
+                      });
+                      _fqtvResetPassword();
+                    } else {
+                      _error = str;
+                      _actionCompleted();
+                      showAlertDialog(context, 'Error', _error);
+                    }
                   }
                   //});
 

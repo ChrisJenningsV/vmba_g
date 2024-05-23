@@ -251,7 +251,9 @@ class FqtvLoginReply {
   String email ='';
   String balance ='';
   String joiningDate ='';
-
+  String dOB ='';
+  FQTVMember? member;
+  FQTVMemberTransactions? transactions;
   FqtvLoginReply(this.reply);
 
   FqtvLoginReply.fromJson(Map<String, dynamic> json) {
@@ -263,9 +265,66 @@ class FqtvLoginReply {
      if( json['phoneHome'] != null )phoneHome = json['phoneHome'];
      if( json['email']!= null )email = json['email'];
      if( json['balance'] != null )balance = json['balance'];
-     if( json['joiningDate'] != null )joiningDate = json['joiningDate'];
+     if( json['joiningDate'] != null ) joiningDate = json['joiningDate'];
+     if( json['dob'] != null ) dOB = json['dob'];
+
+     if( json['member'] != null ) member = FQTVMember.fromJson(json['member']);
+     if( json['Transactions'] != null ) transactions = FQTVMemberTransactions.fromJson(json['Transactions']);
   }
 }
+
+
+
+class FQTVMember {
+  String username ='';
+  String password ='';
+  String title ='';
+  String firstname ='';
+  String surname ='';
+  String address1 ='';
+  String address2 ='';
+  String address3 ='';
+  String address4 ='';
+  String postcode ='';
+  String country ='';
+  String email ='';
+  String phoneHome ='';
+  String phoneWork ='';
+  String phoneMobile ='';
+  String phoneMobile2 ='';
+  String phoneHomeCountryCode ='';
+  String phoneWorkCountryCode ='';
+  String phoneMobileCountryCode ='';
+  String phoneMobileCountryCode2 ='';
+  String dOB ='';
+  String securityQuestion ='';
+  String securityQuestionAnswer ='';
+  String issueDate ='';
+
+  FQTVMember();
+
+FQTVMember.fromJson(Map<String, dynamic> json) {
+//reply = json['reply'];
+  if( json['Title'] != null ) title = json['Title'];
+  if( json['Firstname'] != null ) firstname = json['Firstname'];
+  if( json['Surname'] != null ) surname = json['Surname'];
+  if(json['PhoneMobile'] != null ) phoneMobile = json['PhoneMobile'];
+  if( json['PhoneHome'] != null ) phoneHome = json['PhoneHome'];
+  if( json['Email']!= null ) email = json['Email'];
+  if( json['IssueDate'] != null ) issueDate = json['IssueDate'];
+  if( json['Country']!= null ) country = json['Country'];
+  if( json['PhoneWork']!= null ) phoneWork = json['PhoneWork'];
+  if( json['PhoneMobile2']!= null ) phoneMobile2 = json['PhoneMobile2'];
+  if( json['PhoneHomeCountryCode']!= null ) phoneHomeCountryCode = json['PhoneHomeCountryCode'];
+  if( json['PhoneWorkCountryCode']!= null ) phoneWorkCountryCode = json['PhoneWorkCountryCode'];
+  if( json['PhoneMobileCountryCode']!= null ) phoneMobileCountryCode = json['PhoneMobileCountryCode'];
+  if( json['PhoneMobileCountryCode2']!= null ) phoneMobileCountryCode2 = json['PhoneMobileCountryCode2'];
+  if( json['DOB']!= null ) dOB  = json['DOB'];
+}
+
+}
+
+
 
 class FareRuleRequest {
   FareRuleRequest(this.IDs);

@@ -10,7 +10,7 @@ import '../data/globals.dart';
 import '../data/models/products.dart';
 import '../utilities/helper.dart';
 
-NetworkImage? getProductImage(Product product){
+Image? getProductImage(Product product, double width){
   try {
     String name;
     if( gblSettings.productImageMode == 'index') {
@@ -58,13 +58,19 @@ NetworkImage? getProductImage(Product product){
 
     if( name.contains('http')){
 
-        return NetworkImage(name);
+        return Image.network(name, width: width,
+          errorBuilder: (BuildContext context,Object obj,  StackTrace? stackTrace) {
+            return Text('Image Error.', style: TextStyle(color: Colors.red));
+          });
  /*     return Image.network(name, errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
         return Text('');
       },);*/
       } else {
-        return NetworkImage(
-            '${gblSettings.gblServerFiles}/productImages/$pageImage.png');
+        return Image.network(
+            '${gblSettings.gblServerFiles}/productImages/$pageImage.png', width: width,
+            errorBuilder: (BuildContext context,Object obj,  StackTrace? stackTrace) {
+          return Text('Image Error.', style: TextStyle(color: Colors.red),);
+        });
  /*     return Image.network('${gblSettings.gblServerFiles}/productImages/$pageImage.png', errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
         return Text('');
       },);

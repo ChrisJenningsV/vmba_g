@@ -18,10 +18,10 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'SI';
+String gblBuildFlavor = 'T6';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 111;
+int requiredXmlVersion = 113;
 int requiredApiVersion = 102;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = true;
@@ -102,6 +102,7 @@ bool gblDebugMode = false;
 bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
+FQTVMemberTransactions? gblUpcomingFlights;
 //bool  gblUseWebApiforVrs = false;
 
 enum LoadDataType {settings, routes, cities, products, language, providers, calprices}

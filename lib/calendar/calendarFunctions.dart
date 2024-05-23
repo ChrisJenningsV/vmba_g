@@ -1078,6 +1078,9 @@ List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bo
     if( element.fltav.fav![index] == '0'){
       noAv = 0;
     }
+    if( element.fltav.av![index] == '0' || element.fltav.av![index] == ''){
+      noAv = 0;
+    }
     });
 
 

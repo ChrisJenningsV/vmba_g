@@ -55,6 +55,39 @@ Color v2BorderColor(){
   return gblSystemColors.borderColor;
   //return Colors.grey.withOpacity(0.5);
 }
+EdgeInsets v2FormPadding(){
+  return EdgeInsets.all(5);
+}
+
+BoxDecoration v2FormDecoration() {
+  BoxShadow box;
+  if( gblSettings.wantShadows) {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey,
+          //  gblSystemColors.primaryHeaderColor.withOpacity(0.5), //Colors.blue.withOpacity(0.5),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 9), // changes position of shadow
+        ),
+      ],
+    );
+  } else {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    );
+
+  }
+}
+
+Color v2PageBackgroundColor(){
+  return Colors.grey.shade400;
+  //return Colors.grey.withOpacity(0.5);
+}
 
 double v2BorderWidth() {
   return 0;

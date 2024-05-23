@@ -178,11 +178,13 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
   }
 
   Row amountOutstanding() {
+    double out = widget.pnrModel.amountOutstanding();
+    if ( out < 0) out = 0;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, widget.pnrModel.amountOutstanding()),
+            formatPrice(widget.pnrModel.pNR.basket.outstanding.cur, out),
 /*
                 NumberFormat.simpleCurrency(
                     locale: gblSettings.locale,
@@ -555,7 +557,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(desc1),
+              TrText(desc1),
               Text(formatPrice(currencyCode, sepTax1) ),
 /*
               Text(NumberFormat.simpleCurrency(
@@ -1448,19 +1450,22 @@ List<Widget> getPayOptions(String amount, String cur) {
           discountTotal(),
           Divider(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               TrText(
                 'Amount outstanding',
                 style: TextStyle(
                     fontWeight: FontWeight.w700),
               ),
+              amountOutstanding()
             ],
           ),
+/*
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[amountOutstanding()],
           ),
+*/
           Padding(
             padding: EdgeInsets.only(top: 5),
           )
