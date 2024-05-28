@@ -273,7 +273,8 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
 
-    if( gblSettings.homePageStyle == 'V3'){
+    if( gblSettings.homePageStyle == 'V3' ||
+        (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){
       return new V3HomePage();
     }
 

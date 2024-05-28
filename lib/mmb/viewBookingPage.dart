@@ -236,6 +236,8 @@ Future <void> doRefresh() async{
 
 
   Future<bool> _onWillPop() async {
+    // not this page!
+    return true;
     if (double.parse(gblPnrModel!.pNR.basket.outstanding.amount) == 0) {
       return true;
     } else {

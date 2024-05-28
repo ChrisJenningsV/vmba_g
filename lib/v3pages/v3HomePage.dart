@@ -81,7 +81,7 @@ class V3HomePageState extends State<V3HomePage>{
 
       }
     }
-return  getCustomScaffoldPage(context, 'home', (){
+return  getCustomScaffoldPage(context, gblFqtvLoggedIn ? 'fqtvhome' : 'home', (){
   setState(() {
 });
 });

@@ -1327,10 +1327,15 @@ Widget getMiniItem(BuildContext context , PnrDBCopy document) {
   );
 }
 Widget minFlight(String strDate, String strTime, String fromCode, bool isReturn, String toCode ){
-  return Row(
+  return Expanded(
+      child: Row(
     crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Padding(padding: EdgeInsets.all(2),),
+    Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.all(2),),
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -1348,10 +1353,11 @@ Widget minFlight(String strDate, String strTime, String fromCode, bool isReturn,
   children: [
     Text(toCode, textScaler: TextScaler.linear(1.6),style: TextStyle(fontWeight: FontWeight.bold),),
     labelText(cityCodetoAirport(toCode)),
-  ]),
-
+  ]),]),
+      Padding(padding: EdgeInsets.fromLTRB(20, 1, 40, 1),),
+      Icon(Icons.arrow_forward)
     ],
-  );
+  ));
 }
 Widget originDestination(String city, String code, String dt, String tim ){
   return SizedBox(

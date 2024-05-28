@@ -144,6 +144,7 @@ flutter:
     - lib/assets/airswift/images/loader.png
     - lib/assets/airswift/images/app.png
     - lib/assets/airswift/json/countries.json
+    - lib/assets/airswift/json/home.json
     - lib/assets/airleap/images/appBar.png
     - lib/assets/airleap/images/logo.png
     - lib/assets/airleap/lang/en.json

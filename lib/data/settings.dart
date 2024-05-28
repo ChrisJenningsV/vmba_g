@@ -133,6 +133,8 @@ class Settings {
   bool saveChangeBookingBeforePay;
   bool wantSaveSettings;
   bool wantShadows;
+  bool wantFqtvAutologin;
+  bool wantFqtvHomepage;
 
   String productFormat;
   String homePageStyle;
@@ -310,6 +312,8 @@ bool bpShowFastTrack;
     this.wantMonthOnCalendar = false,
     this.wantSaveSettings = false,
     this.wantShadows = true,
+    this.wantFqtvAutologin = false,
+    this.wantFqtvHomepage = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

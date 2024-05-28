@@ -1,0 +1,375 @@
+{
+  "version": "1",
+  "pages": {
+    "home": {
+      "pageName": "home",
+      "title": {
+        "text": "Lets get Flying",
+        "fontSize": "40",
+        "fontWeight": "bold",
+        "color": "White"
+      },
+      "topPadding": "100",
+      "bottomPadding": "10",
+      "backgroundColor": "Red",
+      "cards": [
+        {
+          "card_type": "FlightSearch",
+          "title": {
+            "text": "Flight Search",
+            "backgroundColor": "#930819",
+            "color": "white"
+          },
+          "icon": "Search",
+          "expanded": "false"
+        },
+        {
+          "card_type": "MyBookings",
+          "title": "My Bookings",
+          "icon": "Pnr"
+        },
+        {
+          "card_type": "LinkList",
+          "icon": "home",
+          "expanded": "true",
+          "title": {
+            "text": "Other Homepages",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "iconLink",
+              "title": "Clan Logan",
+              "action": {
+                "function": "loadCustomPage",
+                "fileName": "Clanlogan.json"
+              },
+              "icon": "home"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Basic",
+              "action": {
+                "function": "loadCustomPage",
+                "fileName": "basic.json"
+              },
+              "icon": "home"
+            }
+          ]
+        },
+        {
+          "card_type": "CardSlider",
+          "icon": "city",
+          "title": {
+            "text": "Our Destinations",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "Birmingham",
+                "color": "#F8C832"
+              },
+              "links": [
+                {
+                  "title": "Book",
+                  "destination": "BHX"
+                }
+              ],
+              "image": "destinations/birmingham.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Bristol",
+              "image": "destinations/bristol.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Dublin",
+              "image": "destinations/dublin.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Guernsey",
+              "image": "destinations/guernsey.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Southampton",
+              "fontSize": "18",
+              "image": "destinations/southampton.jpg"
+            }
+          ]
+        },
+        {
+          "card_type": "CardSlider",
+          "title": "Meet the Team",
+          "icon": "people",
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": "Audrey",
+              "image": "team/audrey.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-audrey"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Claire",
+              "image": "team/claire.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-claire"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Nischal",
+              "image": "team/nischal.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-nischal"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Ritchie",
+              "image": "team/ritchie.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-ritchie"
+            }
+          ]
+        },
+        {
+          "card_type": "CardSlider",
+          "title": "Cabit Features",
+          "icon": "people",
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "first Class",
+                "color": "BlueGrey"
+              },
+              "image": "links/firstClass.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-audrey"
+            },
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "business Class",
+                "color": "BlueGrey"
+              },
+              "image": "links/businessClass.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-claire"
+            },
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "Economy",
+                "color": "BlueGrey"
+              },
+              "image": "links/economy.png",
+              "url": "https://www.loganair.co.uk/campaign/your-journey-our-joy/our-people-nischal"
+            }
+          ]
+        },
+        {
+          "card_type": "photoLink",
+          "title": {
+            "text": "Magazine",
+            "color": "purple"
+          },
+          "image": "links/magazine.jpeg",
+          "url": "https://hisky.aero/en/HiSky-Magazine"
+        },
+        {
+          "card_type": "photoLink",
+          "title": "Jobs",
+          "image": "links/jobs.jpg",
+          "height": "200",
+          "url": "https://www.blueislands.com/careers/current-vacancies/"
+        },
+        {
+          "card_type": "photoLink",
+          "title": "NEWS",
+          "image": "links/news.jpg",
+          "height": "200",
+          "url": "https://www.instagram.com/flyloganair/p/C0O4ZIsthlg/?img_index=1"
+        }
+      ]
+    },
+    "menu": {
+      "pageName": "menu",
+      "title": {
+        "text": "Some more menu items",
+        "fontSize": "20",
+        "fontWeight": "bold",
+        "color": "Red"
+      },
+      "topPadding": "20",
+      "bottomPadding": "10",
+      "cards": [
+        {
+          "card_type": "LinkList",
+          "icon": "info",
+          "expanded": "true",
+          "title": {
+            "text": "Airline Information",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "iconLink",
+              "icon": "plane",
+              "action": {
+                "function": "",
+                "url": "https://wwws.airfrance.co.uk/flight-status"
+              },
+              "title": {
+                "text": "Flight Schedule"
+              }
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Destinations",
+              "icon": "bus"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Lost Baggage",
+              "icon": "bag"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "FAQ",
+              "icon": "question"
+            },
+            {
+              "card_type": "iconLink",
+              "title": "Contact Us",
+              "action": {
+                "function": "customPage",
+                "pageName": "ContactUs"
+              },
+              "icon": "phone"
+            }
+          ]
+        }
+      ]
+    },
+    "ContactUs": {
+      "pageName": "ContactUs",
+      "title": {
+        "text": "Contact Us",
+        "fontSize": "20",
+        "fontWeight": "bold",
+        "color": "Red"
+      },
+      "topPadding": "20",
+      "bottomPadding": "10",
+      "cards": [
+        {
+          "card_type": "LinkList",
+          "icon": "info",
+          "expanded": "true",
+          "title": {
+            "text": "Airline Information",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "iconLink",
+              "icon": "phone",
+              "title": {
+                "text": "UK +44 123 4567"
+              }
+            },
+            {
+              "card_type": "iconLink",
+              "icon": "phone",
+              "title": {
+                "text": "FR +33 123 4567 88"
+              }
+            }
+
+          ]
+        }
+      ]
+    },
+    "fqtvhome": {
+      "pageName": "fqtvhome",
+      "title": {
+        "text": "My SWIFT Rewards Club",
+        "fontSize": "30",
+        "fontWeight": "bold",
+        "color": "White"
+      },
+      "topPadding": "20",
+      "bottomPadding": "10",
+      "backgroundColor": "Blue",
+      "cards": [
+        {
+          "card_type": "FlightSearch",
+          "title": {
+            "text": "Flight Search",
+            "backgroundColor": "#930819",
+            "color": "white"
+          },
+          "icon": "Search",
+          "expanded": "false"
+        },
+        {
+          "card_type": "MyBookings",
+          "title": "My Bookings",
+          "icon": "Pnr"
+        },
+        {
+          "card_type": "CardSlider",
+          "icon": "city",
+          "expanded": "false",
+          "title": {
+            "text": "Our Destinations",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "Birmingham",
+                "color": "#F8C832"
+              },
+              "links": [
+                {
+                  "title": "Book",
+                  "destination": "BHX"
+                }
+              ],
+              "image": "destinations/birmingham.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Bristol",
+              "image": "destinations/bristol.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Dublin",
+              "image": "destinations/dublin.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Guernsey",
+              "image": "destinations/guernsey.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Southampton",
+              "fontSize": "18",
+              "image": "destinations/southampton.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+
+}

@@ -1,11 +1,16 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:vmba/components/pageStyleV2.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
+
+//ADS40 00 00 02 09 095
+//Pin: 9831
+
 
 class Constants{
   Constants._();
@@ -64,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   contentBox(context) {
-    return Stack(
+    return Padding(padding: EdgeInsets.all(10),
+        child: Stack(
       children: <Widget>[
         Container(
           child: Column(
@@ -73,9 +79,12 @@ class _LoginPageState extends State<LoginPage> {
               Text(title,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
               SizedBox(height: 15,),
-              new TextFormField(
+          v2BorderBox(context,  ' ' + translate('Number'), TextFormField(
                 maxLength: 20,
+                decoration: v2Decoration(),
+/*
                 decoration: InputDecoration(
+                  counterText: '',
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
                   labelText: 'Number',
@@ -85,49 +94,27 @@ class _LoginPageState extends State<LoginPage> {
                     borderSide: new BorderSide(),
                   ),
                 ),
+*/
                 controller: _adsNumberTextEditingController,
                 keyboardType: TextInputType.streetAddress,
-
-                // do not force phone no here
-                /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
-
-   */
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
                   }
                 },
-              ),
+              )),
               SizedBox(height: 15,),
-              new TextFormField(
+              v2BorderBox(context,  ' ' + translate('Pin'), TextFormField(
                 maxLength: 4,
                 controller: _adsPinTextEditingController,
-                decoration: InputDecoration(
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Pin',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
+                decoration:v2Decoration(),
                 keyboardType: TextInputType.number,
-
-                // do not force phone no here
-                /*              validator: (value) => value.isEmpty
-                    ? 'Phone number can\'t be empty'
-                    : null,
-
-   */
                 onSaved: (value) {
                   if (value != null) {
                     //.contactInfomation.phonenumber = value.trim()
                   }
                 },
-              ),
+              )),
               SizedBox(height: 22,),
               Align(
                 alignment: Alignment.center,
@@ -151,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         */
       ],
+    )
     );
   }
 
