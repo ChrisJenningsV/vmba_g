@@ -383,7 +383,7 @@ class Repository {
                   case 'lowestValidBuildAndroid':
                     gblSettings.lowestValidBuildAndroid = item['value'];
                     // check that this build is valid
-                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                    if( gblVersion.isNotEmpty && gblVersion != "" && gblSettings.lowestValidBuildAndroid != ''){
                       if( int.parse(gblSettings.lowestValidBuildAndroid) > int.parse(gblVersion.split('.')[3])) {
                         if( !gblIsIos) {
                           gblAction = "STOP";
@@ -393,7 +393,7 @@ class Repository {
                     break;
                   case 'lowestValidBuildiOS':
                     gblSettings.lowestValidBuildiOS = item['value'];
-                    if( gblVersion.isNotEmpty && gblVersion != "" ){
+                    if( gblVersion.isNotEmpty && gblVersion != "" && gblSettings.lowestValidBuildiOS != ''){
                       if( int.parse(gblSettings.lowestValidBuildiOS) != int.parse(gblVersion.split('.')[3])) {
                         if( gblIsIos) {
                           gblAction = "STOP";
