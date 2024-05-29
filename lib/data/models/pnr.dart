@@ -33,8 +33,11 @@ class PnrModel {
   }
 
   String getBookingCurrency() {
-    if( this.pNR.payments != null && this.pNR.payments.fOP != null &&
-        this.pNR.payments.fOP.length > 0  ) {
+
+    if (this.pNR.fareQuote != null && this.pNR.fareQuote.fQItin.length > 0 ) {
+      return this.pNR.fareQuote.fQItin[0].cur;
+    } else if( this.pNR.payments != null && this.pNR.payments.fOP != null &&
+        this.pNR.payments.fOP.length > 0  && this.pNR.payments.fOP[0].payCur != 'ZZZ') {
       return this.pNR.payments.fOP[0].payCur;
     }
 

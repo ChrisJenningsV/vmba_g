@@ -77,7 +77,7 @@ void configT6() {
 
     aircode: 'T6',
       currency: 'PHP',
-
+      currencyDecimalPlaces: 0,
       locale: 'en-EN',
       bookingLeadTime: 60,
       webCheckinNoSeatCharge: false,
@@ -124,6 +124,7 @@ void configT6() {
       wantSeniorDOB: true,
       wantStudentDOB: true,
       wantYouthDOB: true,
+      seniorMinAge: 70,
   ),
 
 //Production setttings

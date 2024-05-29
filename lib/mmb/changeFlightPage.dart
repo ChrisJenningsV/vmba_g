@@ -531,7 +531,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                             ),
                             //new Text(item.cur + item.amt)
                             new Text(
-                              calenderPrice(item.cur, item.amt, item.miles),
+                              calenderPrice(item.cur, formatDayPrice(item.amt), item.miles),
                               style: TextStyle(
                                   color: isSearchDate(
                                           DateTime.parse(item.daylcl),

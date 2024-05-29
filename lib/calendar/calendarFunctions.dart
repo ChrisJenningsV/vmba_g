@@ -715,6 +715,17 @@ Widget noFlightsFound(){
         ],
       ));
 }
+
+String formatDayPrice(String amt){
+  if( amt == '') return amt;
+  try {
+    return double.parse(amt).toStringAsFixed(gblSettings.currencyDecimalPlaces);
+  } catch(e) {
+    logit('formatDayPrice $e');
+    return '';
+  }
+}
+
 Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBeforeDate, {void Function()? onPressed} ) {
   List <Widget> list = [];
   bool showNoFlightIcon = false;
@@ -757,7 +768,7 @@ Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBe
         ));
 
         list.add(Text(
-          calenderPrice(item.cur, item.amt, item.miles),
+          calenderPrice(item.cur, formatDayPrice(item.amt), item.miles),
           //textScaleFactor: 1.0,
           textScaler: TextScaler.linear(1.2),
           style: TextStyle(
@@ -950,7 +961,7 @@ Widget getPriceRow(List<Flt> item, int index){
     if( newVal != null )    val +=  newVal as double;
   });
 
-  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(2), item[0].fltav.miles![index]),
+  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), item[0].fltav.miles![index]),
     style: new TextStyle(
       color: gblSystemColors
           .primaryButtonTextColor,
@@ -996,7 +1007,7 @@ Widget getPromoPriceRow(List<Flt> item, int index){
   return  new Text(
     calenderPrice(
         item[0].fltav.cur![index],
-        pri.toStringAsFixed(2),
+        pri.toStringAsFixed(gblSettings.currencyDecimalPlaces),
         item[0].fltav.miles![index]),
     style: new TextStyle(
       color: gblSystemColors
@@ -1037,7 +1048,7 @@ Widget getWasPriceRow(List<Flt> item, int index){
     if( newVal != null )    val +=  newVal as double;
   });
 
-  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(2), item[0].fltav.miles![index]),
+  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), item[0].fltav.miles![index]),
     style: new TextStyle(
       color: gblSystemColors.oldPriceColor,
       decoration: TextDecoration.lineThrough,

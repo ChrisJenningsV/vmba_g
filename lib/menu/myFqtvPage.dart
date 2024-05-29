@@ -196,6 +196,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       }
 
 //      return v3ShowDialog(context,Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'),   )
+      String sTitle = translate('${gblSettings.fqtvName} ') + translate('LOGIN');
+      if( sTitle.length > 20 ) sTitle = translate('LOGIN');
 
       return  Scaffold(
        /*   appBar: AppBar(
@@ -220,7 +222,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                   color: titleBackClr,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
               padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-              child: Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'),
+              child: Text(sTitle ,
                 style: TextStyle(color: Colors.white),)
         ),
         content: contentBox(context),
@@ -1397,3 +1399,27 @@ Widget _getTrans() {
         });
   }
 }
+
+
+class FqtvSummaryBox extends StatefulWidget {
+  String joiningDate='';
+
+  FqtvSummaryBox();
+
+  @override
+  State<StatefulWidget> createState() => new FqtvSummaryBoxState();
+}
+
+class FqtvSummaryBoxState extends State<FqtvSummaryBox> {
+  @override void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> list = [];
+    return Text('Fqtv Summary');
+  }
+
+  }

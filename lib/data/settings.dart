@@ -197,6 +197,7 @@ class Settings {
   String apiKey;
   String creditCardProvider;
   String currency;
+  int currencyDecimalPlaces;
   String gblLanguages ;
   String currencies;
   String gblServerFiles;
@@ -361,6 +362,7 @@ bool bpShowFastTrack;
     this.eVoucher=false,
     required this.passengerTypes,
     this.currency='GBP',
+    this.currencyDecimalPlaces = 2,
     this.gblLanguages='',
     this.covidText='',
     this.currencies='',

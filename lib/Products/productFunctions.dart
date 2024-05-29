@@ -60,7 +60,7 @@ Image? getProductImage(Product product, double width){
 
         return Image.network(name, width: width,
           errorBuilder: (BuildContext context,Object obj,  StackTrace? stackTrace) {
-            return Text('Image Error.', style: TextStyle(color: Colors.red));
+            return Text('', style: TextStyle(color: Colors.red)); // Image Error.
           });
  /*     return Image.network(name, errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
         return Text('');
@@ -69,7 +69,7 @@ Image? getProductImage(Product product, double width){
         return Image.network(
             '${gblSettings.gblServerFiles}/productImages/$pageImage.png', width: width,
             errorBuilder: (BuildContext context,Object obj,  StackTrace? stackTrace) {
-          return Text('Image Error.', style: TextStyle(color: Colors.red),);
+          return Text('', style: TextStyle(color: Colors.red),); // Image Error.
         });
  /*     return Image.network('${gblSettings.gblServerFiles}/productImages/$pageImage.png', errorBuilder: (BuildContext context, Object ex, StackTrace? st ){
         return Text('');

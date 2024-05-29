@@ -350,11 +350,12 @@ class ViewBookingBodyState
               pnr.pNR.names.pAX.where((pax) => pax.paxType == 'IN').length;
 
           // save currency
-          if( pnr.pNR.payments != null && pnr.pNR.payments.fOP.length > 0 ){
-            gblSelectedCurrency =   pnr.pNR.payments.fOP[0].payCur;
+          gblSelectedCurrency = pnr.getBookingCurrency();
+        /*  if( pnr.pNR.payments != null && pnr.pNR.payments.fOP.length > 0 && pnr.pNR.payments.fOP[0].payCur != 'ZZZ'){
+              gblSelectedCurrency = pnr.pNR.payments.fOP[0].payCur;
           } else if (pnr.pNR.fareQuote != null && pnr.pNR.fareQuote.fQItin.length > 0 ) {
             gblSelectedCurrency =pnr.pNR.fareQuote.fQItin[0].cur;
-          }
+          }*/
 
           widget.onLoad(context);
           // setState(() {
