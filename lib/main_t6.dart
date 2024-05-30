@@ -84,7 +84,7 @@ void configT6() {
       vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
       autoSeatOption: true,
  //     hostBaseUrl:  'https://customertest.videcom.com/airswift/VARS/public',
-      iOSAppId: '1457545908',
+      iOSAppId: '1571286915', // CHECk THIS
       androidAppId: 'com.airswift.reservations',
       fqtvName: 'My SWIFT Rewards Club',
       appFeedbackEmail: 'appfeedback@air-swift.com',
@@ -166,6 +166,7 @@ void configT6() {
     wantSeatsWithProducts: true,
     wantFqtvAutologin: true,
     wantFqtvHomepage: true ,
+    wantUnlock:true,
 
 
     wantLeftLogo: false,

@@ -88,7 +88,7 @@ void configH4() {
     autoSeatOption: true,
     useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
-    iOSAppId: '1457545908',
+    iOSAppId: '6443831646',
     androidAppId: 'aero.hisky.reservations',
     fqtvName: '',
     appFeedbackEmail: 'appfeedback@hisky.md',

@@ -88,7 +88,7 @@ void configU5() {
     autoSeatOption: false,
     useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
-    iOSAppId: '1457545908',
+    iOSAppId: '6474322749',
     androidAppId: 'com.UnitedNigeria.reservations',
     fqtvName: 'Club',
     appFeedbackEmail: 'appfeedback@flyunitednigeria.com',

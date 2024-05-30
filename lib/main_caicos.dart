@@ -87,7 +87,7 @@ void config9Q() {
     autoSeatOption: true,
     useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
-    iOSAppId: '1457545908',
+    iOSAppId: '', // NEED TO GET THIS - NOT READY YET
     androidAppId: 'com.caicosexpressairways.reservations',
     fqtvName: 'Club',
     appFeedbackEmail: 'appfeedback@turksandcaicosflights.com',
