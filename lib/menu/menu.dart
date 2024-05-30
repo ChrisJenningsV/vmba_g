@@ -12,6 +12,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
 import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
+import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../home/home_page.dart';
@@ -156,6 +157,19 @@ class DrawerMenu extends StatefulWidget {
         },
       ));
     }
+
+    if(gblSettings.wantUnlock && gblIsLive == false) {
+      list.add(ListTile(
+        dense: dense,
+        title: _getMenuItem(Icons.lock, 'Unlock'),
+        onTap: () {
+          Navigator.push(
+              context, SlideTopRoute(page: UnlockPage()
+          ));
+        },
+      ));
+    }
+
 
     // My Account
     if(gblSettings != null &&  gblSettings.wantMyAccount != null && gblSettings.wantMyAccount) {

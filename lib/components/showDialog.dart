@@ -288,7 +288,9 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
                         color: gblSystemColors.textButtonTextColor, width: 1),
                     foregroundColor: gblSystemColors.primaryButtonTextColor),
                 onPressed: () {
-                  LaunchReview.launch();
+                  LaunchReview.launch( androidAppId: gblSettings.androidAppId,
+                      iOSAppId: gblSettings.iOSAppId);
+
                 },
               ),
             ]);

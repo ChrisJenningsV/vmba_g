@@ -18,7 +18,7 @@ Widget paxGetFirstName(TextEditingController firstNameTextEditingController, {re
   return V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,
-    decoration: _getDecoration('First name (as Passport)'),
+    decoration: getDecoration('First name (as Passport)'),
     controller: firstNameTextEditingController,
     onFieldSubmitted: (value) { onFieldSubmitted(value);
     },
@@ -41,7 +41,7 @@ Widget paxGetMiddleName(TextEditingController middleNameTextEditingController, {
   return V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,
-    decoration: _getDecoration('Middle name (or NONE)'),
+    decoration: getDecoration('Middle name (or NONE)'),
     controller: middleNameTextEditingController,
     onFieldSubmitted: (value) {
       onFieldSubmitted(value);
@@ -66,7 +66,7 @@ Widget paxGetLastName(TextEditingController lastNameTextEditingController, {requ
   return   V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,
-    decoration: _getDecoration('Last name (as Passport)'),
+    decoration: getDecoration('Last name (as Passport)'),
     controller: lastNameTextEditingController,
     inputFormatters: [
       FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
@@ -84,13 +84,15 @@ Widget paxGetLastName(TextEditingController lastNameTextEditingController, {requ
   );
 }
 
-Widget paxGetEmail(TextEditingController emailTextEditingController, {required void Function(String) onFieldSubmitted,required void Function(String) onSaved}) {
+Widget paxGetEmail(TextEditingController emailTextEditingController, {required void Function(String) onFieldSubmitted,
+    required void Function(String) onSaved, bool autofocus = false}) {
   return V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,
-    decoration: _getDecoration('Email'),
+    decoration: getDecoration('Email'),
     autovalidateMode: AutovalidateMode.onUserInteraction,
     controller: emailTextEditingController,
+    autofocus: autofocus,
     inputFormatters: [
       FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
     ],
@@ -101,8 +103,7 @@ Widget paxGetEmail(TextEditingController emailTextEditingController, {required v
       return null;
 
     },
-    onFieldSubmitted: (value) {
-      onFieldSubmitted( value);
+    onFieldSubmitted: (value) {onFieldSubmitted( value);
     },
     onSaved: (value) {
       if (value != null) {
@@ -112,11 +113,62 @@ Widget paxGetEmail(TextEditingController emailTextEditingController, {required v
   );
 }
 
+
+Widget pax2faNumber(BuildContext context, List<TextEditingController> emailTextEditingController, {required void Function(String) onFieldSubmitted,
+  required void Function(String) onSaved, bool autofocus = false,
+  FocusNode? focusNode})
+{
+  List<Widget> cellList = [];
+  for( int i = 0 ; i < 6 ; i++) {
+    cellList.add( Expanded(
+                child:
+                    Padding(padding: EdgeInsets.all(4),
+                child:
+                V2TextWidget(
+                  maxLength: 1,
+                  styleVer: gblSettings.styleVersion,
+                  decoration: getDecoration('', borderColor: Colors.grey),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: emailTextEditingController[i],
+                  autofocus: i== 0 ? true: false,
+                  //focusNode: i== 0 ? focusNode : null ,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: i < 5 ? TextInputAction.next : TextInputAction.done,
+                    onChanged: (value) {
+                      if( value!.length >=1 ){
+                        FocusScope.of(context).nextFocus();
+                      }
+                    },
+                  validator: (value) {
+                    if( value!.length >=1 ){
+//                      FocusScope.of(context).nextFocus();
+                    }
+                  },
+/*
+                  onFieldSubmitted: (value) {
+                    onFieldSubmitted(value);
+                  },
+                  onSaved: (value) {
+                    if (value != null) {
+                      onSaved(value.trim());
+                    }
+                  },
+*/
+                )
+            ))
+    );
+  }
+      return
+      Row(      children: cellList      );
+}
+
+
 Widget paxGetPhoneNumber(TextEditingController phoneTextEditingController, {required void Function(String) onFieldSubmitted,required void Function(String) onSaved}){
   return V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,
-    decoration: _getDecoration('Phone Number'),
+    decoration: getDecoration('Phone Number'),
     controller: phoneTextEditingController,
     keyboardType: TextInputType.number,
     validator: (value) =>
@@ -152,7 +204,7 @@ Widget paxGetWeight(BuildContext context,TextEditingController weightTextEditing
               V2TextWidget(
                 maxLength: 5,
                 styleVer: gblSettings.styleVersion,
-                decoration: _getDecoration('Weight'),
+                decoration: getDecoration('Weight'),
                 controller: weightTextEditingController,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp("[0-9]"))
@@ -403,26 +455,6 @@ ListView optionListView(BuildContext context, void Function (String) updateTitle
 
 
 
-InputDecoration _getDecoration( String label){
- /*
-  if( gblSettings.styleVersion  == 3){
-    Color labelColor = Colors.grey;
-    if( gblSystemColors.primaryHeaderColor != Colors.white){
-      labelColor = gblSystemColors.primaryHeaderColor;
-    }
-      return InputDecoration(
-        fillColor: Colors.white,
-        filled: true,
-        counterText: '',
-        hintText: label,
-        //prefixIcon: prefixIcon,
-
-        labelStyle: TextStyle(color: labelColor),
-        labelText: translate(label),
-      );
-  }*/
-  return getDecoration(label);
-}
 
 
 _showCalenderDialog(BuildContext context, PaxType paxType, void Function(DateTime) updateDateOfBirth, void Function() formSave,

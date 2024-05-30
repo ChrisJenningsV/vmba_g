@@ -337,4 +337,17 @@ class FareRuleRequest {
   }
 }
 
+class ValidateEmailRequest{
+  String email ='';
+  String pin ='';
+
+  ValidateEmailRequest({ this.email='', this.pin=''});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['email'] = email;
+    map['pin'] = pin;
+    return map;
+  }
+}
 

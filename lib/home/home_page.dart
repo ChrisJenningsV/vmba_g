@@ -730,7 +730,7 @@ Widget _getLogo(){
 
     if(gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV &&
         gblSettings.wantHomeFQTVButton && gblSettings.fqtvName.isNotEmpty ) {
-      print('home FQTV name [${gblSettings.fqtvName}]');
+    //  print('home FQTV name [${gblSettings.fqtvName}]');
 
       list.add(Row(
         children: <Widget>[

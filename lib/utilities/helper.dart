@@ -465,8 +465,9 @@ Widget warningBox(String txt ) {
 }
 
 
-InputDecoration getDecoration(String label, {String hintText='', Widget? prefixIcon}) {
+InputDecoration getDecoration(String label, {String hintText='', Widget? prefixIcon, Color? borderColor }) {
   //var borderRadius = 10.0;
+  Color? bColor = (borderColor == null) ? Colors.grey.shade300 : borderColor;
 
   //if ( gblSettings.wantMaterialControls == true ) {
     return InputDecoration(
@@ -483,7 +484,7 @@ InputDecoration getDecoration(String label, {String hintText='', Widget? prefixI
       //      new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
       labelText: translate(label),
       enabledBorder:UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey.shade300),
+        borderSide: BorderSide(color: bColor),
       ),
 
 //        fillColor: Colors.white,

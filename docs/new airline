@@ -1,5 +1,7 @@
  create main_<airline>.dart
 
+You can get your iOS app id from http://itunes.apple.com/lookup?bundleId=YOUR_BUNDLE_ID then look for trackId
+
 add flavor to android/app/build.gradle
 add images to pubspec.yaml
 create launch_icons_<airline>.yaml

@@ -40,7 +40,9 @@ class StopPageWeb extends StatelessWidget {
                             color: gblSystemColors.textButtonTextColor, width: 1),
                         foregroundColor: gblSystemColors.primaryButtonTextColor),
                     onPressed: () {
-                      LaunchReview.launch();
+                      LaunchReview.launch( androidAppId: gblSettings.androidAppId,
+                          iOSAppId: gblSettings.iOSAppId);
+
                     },
                   ),
 

@@ -69,6 +69,7 @@ class Settings {
   bool wantLeftLogo = false;
   bool wantMyAccount =true;
   bool wantProfileList = false;
+  bool wantUnlock = false;
   bool wantFQTV = false;
   bool wantFindBookings = false;
   bool wantFQTVNumber = false;
@@ -315,6 +316,7 @@ bool bpShowFastTrack;
     this.wantShadows = true,
     this.wantFqtvAutologin = false,
     this.wantFqtvHomepage = false,
+    this.wantUnlock = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,
