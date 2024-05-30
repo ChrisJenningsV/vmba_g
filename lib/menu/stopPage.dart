@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/components/trText.dart';
@@ -40,9 +41,14 @@ class StopPageWeb extends StatelessWidget {
                             color: gblSystemColors.textButtonTextColor, width: 1),
                         foregroundColor: gblSystemColors.primaryButtonTextColor),
                     onPressed: () {
-                      LaunchReview.launch( androidAppId: gblSettings.androidAppId,
+                      if( gblIsIos) {
+                        launchUrl(Uri.parse('https://apps.apple.com/app/id${gblSettings.iOSAppId}'));
+                      } else {
+                        launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=' +gblSettings.androidAppId));
+                      }
+ /*                     LaunchReview.launch( androidAppId: gblSettings.androidAppId,
                           iOSAppId: gblSettings.iOSAppId);
-
+*/
                     },
                   ),
 
