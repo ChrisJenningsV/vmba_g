@@ -86,7 +86,7 @@ void configFN() {
     autoSeatOption: false,
     useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
-    iOSAppId: '1457545908',
+    iOSAppId: '6443695568',
     androidAppId: 'com.fastjet.reservations',
     fqtvName: 'Club',
     appFeedbackEmail: 'appfeedback@fastjet.com',
