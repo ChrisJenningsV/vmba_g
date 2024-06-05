@@ -202,7 +202,7 @@ Widget paxGetWeight(BuildContext context,TextEditingController weightTextEditing
             Expanded(
               child:
               V2TextWidget(
-                maxLength: 5,
+                maxLength: 3,
                 styleVer: gblSettings.styleVersion,
                 decoration: getDecoration('Weight'),
                 controller: weightTextEditingController,

@@ -120,6 +120,7 @@ class Settings {
   bool useSmartPay;
   bool wantAllColorButtons;
   bool wantBpLogo;
+  bool useAppBarImeonBP;
   bool wantCanFacs;
   bool wantTerminal;
   bool wantMaterial3;
@@ -300,6 +301,7 @@ bool bpShowFastTrack;
     this.wantButtonIcons = true,
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
+    this.useAppBarImeonBP = false,
     this.wantCanFacs = true,
     this.canGoBackFromPaxPage = false,
     this.canGoBackFromOptionsPage = false,

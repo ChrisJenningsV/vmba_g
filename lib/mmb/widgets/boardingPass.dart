@@ -907,8 +907,12 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
   Widget _airlineName() {
     if( gblSettings.wantBpLogo == null || gblSettings.wantBpLogo == true  ) {
-      //return Image.asset('lib/assets/$gblAppTitle/images/appBar.png', width: 80);
-      return Image.asset('lib/assets/$gblAppTitle/images/logo.png', width: 160);
+      if( gblSettings.useAppBarImeonBP) {
+        return Image.asset('lib/assets/$gblAppTitle/images/appBar.png', width: 160);
+      } else {
+        return Image.asset(
+            'lib/assets/$gblAppTitle/images/logo.png', width: 160);
+      }
     }
     return Padding(
       padding: EdgeInsets.only(top: 10),

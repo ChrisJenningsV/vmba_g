@@ -92,7 +92,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         // if null, old format saved bookings
         if( gblSettings.updateMessage == null || gblSettings.updateMessage.isEmpty) {
           updateMsg =
-          'Your app has been updated. The format of a booking has been improved so saved bookings will need reloading.';
+          'Your app has been updated.'; // The format of a booking has been improved so saved bookings will need reloading.';
         } else {
           updateMsg =gblSettings.updateMessage;
         }

@@ -27,7 +27,7 @@ class ApisModel {
       sb.write("<sections>");
       this.apis.sections.section.forEach((section) {
         sb.write(
-            "<section sectionname=\"${section.sectionname}\" required=\"${section.required}\" displayable=\"${section.displayable}\">");
+            "<section sectionname=\"${section.sectionname}\" required=\"${section.required}\" displayable=\"${section.displayable}\" countrycode=\"${section.countrycode}\">");
         sb.write("<fields>");
         section.fields.field.forEach((field) {
           sb.write(
@@ -129,6 +129,7 @@ class Section {
   String sectionname = '';
   String required = '';
   String displayable = '';
+  String countrycode = '';
   Fields fields = Fields();
 
   Section();
@@ -137,6 +138,7 @@ class Section {
     sectionname = json['sectionname'];
     required = json['required'];
     displayable = json['displayable'];
+    if( json['countrycode'] != null ) countrycode = json['countrycode'];
     if( json['fields'] != null) fields = Fields.fromJson(json['fields']) ;
   }
 
@@ -145,6 +147,7 @@ class Section {
     data['sectionname'] = this.sectionname;
     data['displayable'] = this.displayable;
     data['required'] = this.required;
+    data['countrycode'] = this.countrycode;
 
     if (this.fields != null) {
       data['fields'] = this.fields.toJson();

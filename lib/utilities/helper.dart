@@ -306,7 +306,7 @@ bool isSearchDate(DateTime itemDate, DateTime searchDate) {
   }
 }
 
-String formatPrice(String currency, double price) {
+String formatPrice(String currency, double price, {int places = 2}) {
   String _currencySymbol = currency;
   //var formatCurrency = new NumberFormat.simpleCurrency();
 
@@ -314,9 +314,9 @@ String formatPrice(String currency, double price) {
     _currencySymbol = simpleCurrencySymbols[currency] ?? currency;
   }
   if( wantRtl() && gblSettings.wantEnglishDates == false) {
-    return translateNo(price.toStringAsFixed(2)) + ' ' + translate(_currencySymbol)  ;
+    return translateNo(price.toStringAsFixed(places)) + ' ' + translate(_currencySymbol)  ;
   }
-  return _currencySymbol + price.toStringAsFixed(2);
+  return _currencySymbol + price.toStringAsFixed(places);
  // return _currencySymbol + formatCurrency.format(price);
 }
 

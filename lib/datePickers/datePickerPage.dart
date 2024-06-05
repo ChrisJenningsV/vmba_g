@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
@@ -44,16 +45,42 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
             style: TextStyle(letterSpacing: 1.15),
           ),
         ),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+        body: gblSettings.wantPriceCalendar ?
+            Align(alignment: Alignment.topCenter,
+            child:
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 25, 5, 5),
+    child:
+        Container(
+           /* decoration: BoxDecoration(
+              color: Colors.red, //grey.shade300,
+              //shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              border: Border.all(width: 5, color: Colors.white)
+            ),*/
+        //Row(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          //children: <Widget>[
+          child:
             DayPickerPage(
                 firstDate: DateTime.now(),
                 departureDate: widget.departureDate,
                 lastDate: DateTime.now().add(new Duration(days: 365)),
                 onChanged: _handleDateChanged),
+          //],
+        ))
+            )
+        : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          DayPickerPage(
+              firstDate: DateTime.now(),
+              departureDate: widget.departureDate,
+              lastDate: DateTime.now().add(new Duration(days: 365)),
+              onChanged: _handleDateChanged),
           ],
-        ),
+        )
+        ,
         floatingActionButton: vidWideActionButton(context,'Done', onPressed, icon: Icons.check, offset: 35.0 ) );
 
   }
