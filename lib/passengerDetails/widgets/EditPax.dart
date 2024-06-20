@@ -279,7 +279,8 @@ Widget getFirstname() {
           validator: (value) => null, // value.isEmpty ? null, val,
           onSaved: (value) {
           if (value != null) {
-          widget.passengerDetail.fqtv = value.trim();
+            widget.passengerDetail.fqtv = value.trim();
+            logit('Saved $value');
           }
           },
           );

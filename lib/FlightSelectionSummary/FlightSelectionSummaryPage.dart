@@ -704,7 +704,9 @@ Row airMiles() {
     return Container(
         decoration: containerDecoration( location: 'middle') ,
         margin: containerMargins(location: 'middle') ,
+/*
         padding:(wantHomePageV3()) ? null : EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
+*/
         child: Column(
       children: widgets,
     )

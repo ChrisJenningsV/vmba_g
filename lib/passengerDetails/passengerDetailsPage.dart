@@ -703,21 +703,6 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               });
 
               if( gblSettings.wantProducts) {
-/*
-                setState(() {
-
-                });
-*/
-/*
-                gblError = '';
-                gblPnrModel = await makeBooking(widget.newBooking).catchError((e) {
-                  setState(() {
-
-                  });
-                });
-*/
-
-
                 if( gblError == '') {
                   refreshStatusBar();
                   Navigator.push(
@@ -780,6 +765,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     {
       // flutter defined function
       if (error != null) {
+        logit('displayError $error');
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -794,6 +781,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   child: new TrText("OK"),
                   onPressed: () {
                     // _error = '';
+                    gblError = '';
                     Navigator.of(context).pop();
                   },
                 ),

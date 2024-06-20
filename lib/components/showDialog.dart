@@ -97,6 +97,8 @@ child: Text(msg),
 
 void showAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete  }) {
   // flutter defined function
+  logit('showAlertDialog $msg');
+
   showDialog(
     context: context,
     builder: (BuildContext context) {

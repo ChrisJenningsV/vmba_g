@@ -45,6 +45,7 @@ Future<bool> onWillPop(BuildContext context) async {
               await callSmartApi('CANCELPAYMENT', "");
               //print(reply);
             } catch(e) {
+              logit(e.toString());
             }
 
             if (gblPnrModel != null && ( pnrCompleted() ||  pnrHasTTL())) {

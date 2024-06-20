@@ -1015,13 +1015,45 @@ Widget _getTrans() {
     _oldPasswordEditingController.text = '';
     _newPasswordEditingController.text = '';
 
-    v3ShowDialog(context,translate('Change Password'),
+ /*   v3ShowDialog(context,translate('Change Password'),
     icon: Icons.person_pin,
       wantCancel: true,
       actionButtonText: 'Continue',
       onComplete: (c, refreshFunction){
         _fqtvChangePassword(refresh: refreshFunction);
-      },
+      },*/
+    List<Widget> actions = [];
+      actions.add(vidCancelButton(context, "CANCEL", (context) {
+        Navigator.of(context).pop();
+      },),);
+    actions.add(
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: gblSystemColors.primaryButtonColor,),
+            child:
+            (gblActionBtnDisabled) ? new Transform.scale(scale: 0.5,
+                child: CircularProgressIndicator(color: Colors.white)) :
+            TrText('Continue'),
+            onPressed: () {
+              if (gblActionBtnDisabled == false) {
+                if (formKey!.currentState!.validate()) {
+                  gblActionBtnDisabled = true;
+                  _fqtvChangePassword();
+                }
+                //});
+              }
+            }
+        )
+    );
+
+
+    showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+          actions: actions,
+        shape: alertShape(),
+        titlePadding: alertTitlePadding(),
+        title: alertTitle(translate('Change Password'), gblSystemColors.headerTextColor!, gblSystemColors.primaryHeaderColor),
     content: Stack(
     children: <Widget>[
     Container(
@@ -1074,7 +1106,7 @@ Widget _getTrans() {
     ),
     ],
     )
-    );
+    ));
 
 
 

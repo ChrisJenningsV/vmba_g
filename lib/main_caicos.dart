@@ -103,9 +103,9 @@ void config9Q() {
     searchDateBack: 6,
     wantApis: true,
     wantMmbProducts: true,
-    wantProducts: true,
+    wantProducts: false,
     wantStatusLine: true,
-    wantSeatsWithProducts: true,
+    wantSeatsWithProducts: false,
     wantGiftVouchers: false,
 
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 //import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -74,7 +75,9 @@ class _DayPickerPageState extends State<DayPickerPage> {
   }
 
   _initData(DateTime dt) {
-    LoadCalendarData(context, dt, onCompleteLoad);
+    if( wantHomePageV3()) {
+      LoadCalendarData(context, dt, onCompleteLoad);
+    }
   }
   void onCompleteLoad()
   {
