@@ -354,7 +354,9 @@ showSnackBar(String message,BuildContext context,{String label= 'Undo' }) {
 }
 
 
-void logit(String msg) {
+void logit(String msg, {bool verboseMsg = false}) {
+  if( verboseMsg == true && gblVerbose == false) return;
+
   var now = DateTime.now();
 
 
@@ -400,6 +402,7 @@ showSnackbarMessage(String msg){
 }
 
 hideSnackBarMessage() {
+  logit('hideSnackBarMessage gblSnackBarShowing=$gblSnackBarShowing', verboseMsg: true);
   if(gblSnackBarShowing == true){
     ScaffoldMessenger.of(NavigationService.navigatorKey.currentContext as BuildContext).hideCurrentSnackBar();
   }
@@ -652,12 +655,12 @@ networkStateChange(Map netState) {
   switch(netState.keys.toList()[0]){
     case ConnectivityResult.mobile:
     // 'Mobile: Online';
-      logit('Mobile: Online');
+      logit('Mobile: Online', verboseMsg: true);
       networkOnline();
       break;
     case ConnectivityResult.wifi:
     // 'WiFi: Online';
-      logit('WiFi: Online');
+      logit('WiFi: Online', verboseMsg: true);
       networkOnline();
       break;
     case ConnectivityResult.none:

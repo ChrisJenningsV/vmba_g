@@ -28,6 +28,7 @@ import 'package:vmba/components/showDialog.dart';
 
 import '../payment/choosePaymentMethod.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 
 class PassengerDetailsWidget extends StatefulWidget {
@@ -361,7 +362,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           onWillPop: true,
         child: Scaffold(
       key: _key,
-      appBar: appBar(context, 'Passengers Details',
+      appBar: appBar(context, 'Passengers Details', PageEnum.passengerDetails,
           curStep: 4,
           newBooking: widget.newBooking,
           imageName:  gblSettings.wantPageImages ? 'paxDetails': '' ),

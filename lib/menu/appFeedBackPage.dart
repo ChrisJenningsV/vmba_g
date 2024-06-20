@@ -500,31 +500,33 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
         Map map = json.decode(str);
         //String settingsString = map["zua"];
         Map settingsMap = map["zua"]; // List <dynamic> settingsJson
-        Map sineMap = settingsMap['sineresult'];
+        if( settingsMap['sineresult'] != null ) {
+          Map sineMap = settingsMap['sineresult'];
 
-        if (sineMap['securitylevel'] =='' || sineMap['securitylevel'] == '0') {
-          setError( 'not found or bad password');
-          return gblError;
+          if (sineMap['securitylevel'] == '' ||
+              sineMap['securitylevel'] == '0') {
+            setError('not found or bad password');
+            return gblError;
+          }
+          if (sineMap['agentsuspended']
+              .toString()
+              .isEmpty || sineMap['agentsuspended'] == '1') {
+            // failed,
+            setError('SUSPENDED');
+            return gblError;
+          }
+          if (sineMap['Restricted']
+              .toString()
+              .isNotEmpty && sineMap['Restricted'] != '0') {
+            // failed,
+            setError('RESTRICTED');
+            return gblError;
+          }
+          gblSecurityLevel = int.parse(sineMap['securitylevel'].toString());
         }
-        if (sineMap['agentsuspended']
-            .toString()
-            .isEmpty || sineMap['agentsuspended'] == '1') {
-          // failed,
-          setError( 'SUSPENDED');
-          return gblError;
-        }
-        if (sineMap['Restricted']
-            .toString()
-            .isNotEmpty && sineMap['Restricted'] != '0') {
-          // failed,
-          setError( 'RESTRICTED');
-          return gblError;
-        }
-
 
         gblSine = sine;
         //gblMobileFlags = sineMap['mobileflags'];
-        gblSecurityLevel = int.parse(sineMap['securitylevel'].toString());
         if( gblVerbose == true ) {print('successful login'); }
         return 'OK';
       } catch (e) {

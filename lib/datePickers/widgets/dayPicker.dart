@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+//import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
 //import '../../calendar/fareCalendar/fareDatePicker.dart';
 import '../../calendar/fareCalendar/fareDatePicker.dart';
+import '../../calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/dataLoader.dart';
+import './dayBuilder.dart';
 
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
@@ -16,13 +18,14 @@ class DayPickerPage extends StatefulWidget {
       required this.departureDate,
       required this.lastDate,
       required this.firstDate,
-      required this.onChanged})
+      required this.onChanged,})
       : super(key: key);
 
   final DateTime departureDate;
   final DateTime lastDate;
   final DateTime firstDate;
   final ValueChanged<FlightDates> onChanged;
+
   @override
   State<StatefulWidget> createState() => _DayPickerPageState();
 }
@@ -71,7 +74,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
   }
 
   _initData(DateTime dt) {
-    LoadCalendarData(dt, onCompleteLoad);
+    LoadCalendarData(context, dt, onCompleteLoad);
   }
   void onCompleteLoad()
   {
@@ -94,10 +97,11 @@ class _DayPickerPageState extends State<DayPickerPage> {
         .width;
 
     if (gblSettings.wantPriceCalendar == true && gblIsLive == false ) {
-      CalendarDatePicker2Config config = CalendarDatePicker2Config(
+      FareCalendarDatePickerConfig config = FareCalendarDatePickerConfig(
         firstDate: _firstDate,
         lastDate: _lastDate,
         dayBuilder: _dayBuilder,
+        monthChange: _monthChange,
         weekdayLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         controlsTextStyle: TextStyle(fontWeight: FontWeight.bold),
         weekdayLabelTextStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -108,12 +112,12 @@ class _DayPickerPageState extends State<DayPickerPage> {
       List<DateTime?> _singleDatePickerValueWithDefaultValue = [
         _selectedDate,
       ];
+      Color backColor = Colors.grey.shade300;
+      if( gblV3Theme != null ) backColor = gblV3Theme!.calendar.backColor;
       return
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) ,
-            color: Colors.grey.shade300,),
-          //  color: Colors.grey.shade200,
-          // margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 60),
+            color: backColor),
             width:  width - 50,
             height: 400,
             child:
@@ -157,6 +161,11 @@ class _DayPickerPageState extends State<DayPickerPage> {
     });
   }
 
+  void _monthChange(DateTime newMonth){
+    logit('MonthChange event',verboseMsg: false);
+    // load this months data
+    LoadCalendarData(context, newMonth, onCompleteLoad);
+  }
 
   Widget? _dayBuilder({required DateTime date,
     TextStyle? textStyle,
@@ -164,125 +173,12 @@ class _DayPickerPageState extends State<DayPickerPage> {
     bool? isSelected ,
     bool? isDisabled ,
     bool? isToday,}) {
-
-    decoration = BoxDecoration(color: Colors.grey.shade500,
-      borderRadius: BorderRadius.circular(1),
-     // border: Border.fromBorderSide()
-        );
-    Widget lineTwo = Text('');
-    //(isDisabled == null || isDisabled== true)?Text(''): Text('£129', textScaleFactor: 0.75,)
-    Color textColor = Colors.black;
-    if(isSelected != null && isSelected == true){
-      textColor = Colors.white;
-    }
-
-
-    if(isToday != null && isToday == true ){
-      textStyle = TextStyle( color: Colors.red, fontWeight: FontWeight.bold);
-      decoration = BoxDecoration( );
-     lineTwo = RotatedBox(
-          quarterTurns: 1,
-          child: new Icon(
-            Icons.airplanemode_active,
-            color: Colors.red,
-            size: 15.0,
-          ));
-    } else if( isDisabled != null && isDisabled== false){
-    /*  lineTwo = RotatedBox(
-          quarterTurns: 1,
-          child: new Icon(
-            Icons.airplanemode_active,
-            color: Colors.black,
-            size: 15.0,
-          ));*/
-
-    }
-    if( gblFlightPrices != null ) {
-      // check for this date
-      gblFlightPrices!.flightPrices.forEach((flightPrice) {
- //       logit( ' match ${flightPrice.FlightDate} to ${date.toString().substring(0,10)}');
-        if( flightPrice.FlightDate != '' && flightPrice.FlightDate== date.toString().substring(0,10)){
-          if( flightPrice.Selectable == false){
-           // logit( ' match no sel  ${flightPrice.FlightDate}');
-        //    if ( textStyle != null ) {
-              textStyle = TextStyle( color: Colors.red, fontWeight: FontWeight.bold);
-          //  }
-          }
-          //logit('${flightPrice.FlightDate} ${flightPrice.CssClass}');
-          if( flightPrice.CssClass.contains('flight-has-price' )) {
-            if(flightPrice.Price == '') {
-              lineTwo = RotatedBox(
-                  quarterTurns: 1,
-                  child: new Icon(
-                    Icons.airplanemode_active,
-                    color: isToday == true ? Colors.red : Colors.black,
-                    size: 15.0,
-                  ));
-            } else {
-              lineTwo = Text(formatPrice(flightPrice.Currency, flightPrice.Price,places: 0),
-                  textScaler: TextScaler.linear(0.8),
-                   style: TextStyle(color: textColor),);
-            }
-            textStyle = TextStyle( color: Colors.black, fontWeight: FontWeight.bold);
-          } else if( flightPrice.CssClass.contains('not-available')){
-            isDisabled = true;
-            textStyle = TextStyle( color: Colors.grey.shade400, fontWeight: FontWeight.bold);
-            lineTwo =  Text('-', style: TextStyle(color: textColor),);
-          } else if( flightPrice.CssClass.contains('no-price')){
-            isDisabled = true;
-            textStyle = TextStyle( color: Colors.grey.shade400, fontWeight: FontWeight.bold);
-            lineTwo =  Text('-', style: TextStyle(color: textColor),);
-          }
-
-          if(isSelected != null && isSelected == true){
-            textStyle = TextStyle( color: Colors.white, fontWeight: FontWeight.bold);
-            decoration = BoxDecoration(color: Colors.red,
-                borderRadius: BorderRadius.circular(1));
-          }
-
-        }
-      });
-    }
-    return Container(
-      margin:  EdgeInsets.fromLTRB(1, 0, 1, 0),
-      //padding: EdgeInsets.fromLTRB(1, 0, 1, 0),
-      decoration: decoration,
-      child: Center(
-        child: Stack(
-          alignment: AlignmentDirectional.topCenter,
-          children: [
-            Text(
-              MaterialLocalizations.of(context).formatDecimal(date.day),
-              style: textStyle,
-              textScaleFactor: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18),
-              child: Container(
-                child: lineTwo,
- /*               height: 4,
-                width: 4,*/
-/*
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: isSelected == true
-                      ? Colors.white
-                      : Colors.grey[500],
-                ),
-*/
-              ),
-            ),
-          ],
-        ),
-      ),
-
-
-    );
+    return dayBuilder(context, date,textStyle,decoration ,isSelected ,isDisabled ,isToday,);
   }
-  void checkDataUpdate(){
+    void checkDataUpdate(){
     if( gblFlightPrices == null ){
       // first load
-      _initData(widget.departureDate);
+//      _initData(widget.departureDate);
     }
   }
 }

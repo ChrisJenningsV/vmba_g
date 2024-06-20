@@ -6,6 +6,7 @@ import 'package:vmba/utilities/widgets/webviewWidget.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../utilities/widgets/appBarWidget.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 class StopPageWeb extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class StopPageWeb extends StatelessWidget {
       ]);
     } else {
       return  Scaffold(
-          appBar: appBar(context, (gblSettings.stopTitle != null) ? gblSettings.stopTitle :'App Suspended',),
+          appBar: appBar(context, (gblSettings.stopTitle != null) ? gblSettings.stopTitle :'App Suspended', PageEnum.stopPage,),
           body: Container(
             color: Colors.white, constraints: BoxConstraints.expand(),
             child: Center(

@@ -18,6 +18,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 import '../controllers/vrsCommands.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../v3pages/cards/v3FormFields.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 
 bool wantrebook = false;
@@ -133,7 +134,7 @@ class ProviderFieldsPageState2 extends State<ProviderFieldsPage2> {
       // no error
       return Scaffold(
         key: _key,
-        appBar: appBar(context, 'Payment',
+        appBar: appBar(context, 'Payment', PageEnum.providerFields,
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',) ,

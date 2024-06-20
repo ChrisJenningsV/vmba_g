@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:vmba/datePickers/widgets/dayBuilder.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
+import '../data/globals.dart';
 
 
 class RangePickerWidget extends StatefulWidget {
@@ -41,12 +43,15 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
   void _handleDateChanged(FlightDates newValue) {
     startOfPeriod = newValue.departureDate;
     endOfPeriod = newValue.returnDate!;
+    setState(() {
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: gblSystemColors.primaryHeaderColor,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
@@ -59,40 +64,24 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
             style: TextStyle(letterSpacing: 1.15),
           ),
         ),
-        body: RangePickerPage(
+        body:
+    gblSettings.wantPriceCalendar ?
+    wrapCal(
+        RangePickerPage(
             departureDate: widget.departureDate,
             returnDate: widget.returnDate,
-            onChanged: _handleDateChanged),
+            onChanged: _handleDateChanged,
+          ),
+            (){ setState(() { });},
+            true, startOfPeriod, endOfPeriod)
+        :         RangePickerPage(
+        departureDate: widget.departureDate,
+        returnDate: widget.returnDate,
+        onChanged: _handleDateChanged,
+      ),
+
         floatingActionButton: vidWideActionButton(context,'Done', onPressed, icon: Icons.check, offset: 35.0 ) );
-/*
-        Padding(
-            padding: EdgeInsets.only(left: 35.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new FloatingActionButton.extended(
-                    elevation: 0.0,
-                    isExtended: true,
-                    label: TrText('Done',style: TextStyle(color: gblSystemColors
-                              .primaryButtonTextColor),),
-                    icon: Icon(Icons.check, color: gblSystemColors
-                              .primaryButtonTextColor,),
-                    backgroundColor: gblSystemColors
-                              .primaryButtonColor,//new Color(0xFF000000),
-                    onPressed: () {
-                      Navigator.pop(
-                          context,
-                          FlightDates(
-                              DateTime.parse(
-                                  DateFormat('y-MM-dd').format(startOfPeriod) +
-                                      ' 00:00:00'),
-                              DateTime.parse(
-                                  DateFormat('y-MM-dd').format(endOfPeriod) +
-                                      ' 00:00:00')));
-                    }),
-              ],
-            )));
-*/
+
   }
   void onPressed( BuildContext context, dynamic p) {
     Navigator.pop(

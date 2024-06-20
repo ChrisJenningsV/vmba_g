@@ -14,6 +14,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 import 'package:vmba/utilities/widgets/buttons.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 
 import '../controllers/vrsCommands.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
@@ -78,7 +79,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     if( gblError != null && gblError.isNotEmpty) {
       return Scaffold(
         key: _key,
-        appBar: appBar(context, 'Payment',
+        appBar: appBar(context, 'Payment',PageEnum.providerFields,
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
@@ -133,7 +134,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       // no error
       return Scaffold(
         key: _key,
-        appBar: appBar(context, 'Payment',
+        appBar: appBar(context, 'Payment', PageEnum.providerFields,
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',) ,

@@ -25,6 +25,7 @@ import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/colourHelper.dart';
+import '../v3pages/controls/V3Constants.dart';
 import 'bookingFunctions.dart';
 import 'calendarFunctions.dart';
 
@@ -63,7 +64,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     _noInternet = false;
     _loadData();
     _departureDate = DateTime.parse(
-        DateFormat('y-MM-dd').format(widget.newBooking.departureDate));
+        DateFormat('y-MM-dd').format(widget.newBooking.departureDate as DateTime));
 
     if(widget.newBooking.returnDate!= null )    _returnDate = DateTime.parse(DateFormat('y-MM-dd').format(widget.newBooking.returnDate!));
   }
@@ -98,7 +99,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
     buffer.write(',SingleSeg=r');
     // add outbound details
-    String outDate = DateFormat('ddMMMyyyy').format(this.widget.newBooking.departureDate).toString().toUpperCase();
+    String outDate = DateFormat('ddMMMyyyy').format(this.widget.newBooking.departureDate as DateTime).toString().toUpperCase();
     String arrDate = DateFormat('ddMMMyyyy').format(DateTime.parse(widget.outboundFlight.time.adaylcl)).toString().toUpperCase();
     buffer.write(',RFAD=$arrDate,DEPART=$outDate');
     //}
@@ -131,7 +132,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(getPaxTypeCounts(this.widget.newBooking.passengers ));
 
     buffer.write(
-        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(this.widget.newBooking.departureDate)}]');
+        ',EarliestDate=${DateFormat('dd/MM/yyyy kk:mm:ss').format(this.widget.newBooking.departureDate as DateTime)}]');
 
     String msg =buffer.toString();
     logit('getAvCommand ret: ' + msg);
@@ -240,7 +241,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _key,
-      appBar: appBar(context,"Returning Flight"),
+      appBar: appBar(context,"Returning Flight", PageEnum.returningFlight),
         endDrawer: DrawerMenu(),
       body: _buildBody(),
     );
@@ -295,11 +296,17 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   flightSelection() {
+    EdgeInsets mar = EdgeInsets.symmetric(vertical: 1.0);
+    if( wantHomePageV3()){
+      mar = EdgeInsets.fromLTRB(10, 10, 0, 10);
+    }
+
+
     if (!_returnDate.isBefore(_departureDate)) {
       return new Column(
         children: <Widget>[
           new Container(
-            margin: EdgeInsets.symmetric(vertical: 1.0),
+            margin: mar,
             constraints: new BoxConstraints(
               minHeight: 60.0,
               maxHeight: 80.0,
@@ -446,7 +453,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Widget flightItem( AvItin item) {
-    if( wantPageV2() ) {
+    if( wantHomePageV3() ) {
       int seatCount = widget.newBooking.passengers.adults +
           widget.newBooking.passengers.youths +
           widget.newBooking.passengers.seniors +

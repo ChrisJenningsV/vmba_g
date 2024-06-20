@@ -113,6 +113,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
     return Scaffold(
         extendBodyBehindAppBar: true,
+        extendBody: true,
         appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0,
         ),
         endDrawer: new DrawerMenu(),
@@ -129,7 +130,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
             SingleChildScrollView(
                 child: Container(
                   margin: EdgeInsets.only(top: 24),
-                  padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
 
                   decoration: BoxDecoration(
                       image: DecorationImage(
@@ -284,6 +285,44 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
   Widget getSlide(BuildContext context, HomeCard card, bool topLevel) {
     if (card.title!.color == null) card.title!.color = Colors.white;
+
+    if( card.format != '' && card.format.toLowerCase() == 'fill'){
+      return InkWell(
+          onTap: () {
+            if (card.url != null && card.url != '') {
+              Navigator.push(context,
+                  SlideTopRoute(page: CustomPageWeb(card.title!.text, card.url)));
+            }
+          },
+
+              child: Container(
+          width: MediaQuery.of(context).size.width,
+         // height: 400,
+          child:Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,  // add this
+                    children: <Widget>[
+/*
+                ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                topRight: Radius.circular(0),
+              ),
+        child:
+*/
+        Image.network(
+            'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}',
+            // width: 300,
+           // height: 150,
+            fit:BoxFit.fill
+
+        ),
+      //)
+        ],
+      )
+          )
+      );
+    }
+
     return Card(
       child: InkWell(
         onTap: () {
@@ -300,13 +339,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
             //color: gblSystemColors.seatPlanColorUnavailable,
             borderRadius:
             new BorderRadius.all(new Radius.circular(5.0)),
-            image: DecorationImage(
-              image: NetworkImage(
-                  'https://customertest.videcom.com/LoganAir/AppFiles/${card
-                      .image}'),
-              fit: (topLevel) ? BoxFit.fitWidth : BoxFit.fitHeight,
-              alignment: Alignment.topCenter,
-            ),
+            image: _getImage(card, topLevel),
           ),
           alignment: Alignment.bottomCenter,
           child:
@@ -314,6 +347,15 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
         ),
       ),
 
+    );
+  }
+
+  DecorationImage? _getImage(HomeCard card, bool topLevel){
+    return DecorationImage(
+      image: NetworkImage(
+          'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}'),
+      fit: BoxFit.none, // (topLevel) ? BoxFit.fitWidth : BoxFit.fitWidth, // BoxFit.fitHeight,
+      alignment: Alignment.topCenter,
     );
   }
 

@@ -33,12 +33,13 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
   bool _displayProcessingIndicatorR=false;
   bool _displayFinalError=false;
   bool _dataLoaded = false;
+  bool _dataLoading = false;
   String _displayProcessingText='';
 
   @override
   void initState() {
     super.initState();
-    logit('init RootPageState');
+    logit('init RootPageState', verboseMsg: true);
     gblCurPage = 'ROOTPAGE';
     //showAlert('init root');
 
@@ -55,7 +56,8 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
         setState(() => _source = source);
       }
       if (_source.keys.toList()[0] != ConnectivityResult.none) {
-        if( _dataLoaded == false ) {
+        if( _dataLoaded == false && _dataLoading == false ) {
+          _dataLoading = true;
           loadData();
         }
       } else {
@@ -81,7 +83,8 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
       if( _source.keys.toList()[0] != ConnectivityResult.none ){
-        if( _dataLoaded == false ) {
+        if( _dataLoaded == false && _dataLoading == false) {
+          _dataLoading = true;
           loadData();
         }
       } else {
@@ -92,6 +95,8 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
 
   loadData() async {
     logit('loadData');
+    await Repository.initFqtv();
+
     _dataLoaded = true;
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
@@ -104,6 +109,7 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
         setState(() {
           _displayProcessingIndicatorS = false;
           _dataLoaded = true;
+          _dataLoading = true;
         });
       }
       ).catchError((e) {
@@ -113,10 +119,11 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
           _displayFinalError = true;
           _displayProcessingIndicatorS = false;
           _dataLoaded = false;
+          _dataLoading = true;
         });
         return;
       });
-      Repository.get().initFqtv();
+//      Repository.get().initFqtv();
     }
       );
         String loading = 'Cities';

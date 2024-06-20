@@ -11,6 +11,7 @@ import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
 import '../controllers/vrsCommands.dart';
 import '../main.dart';
+import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
 import 'models/cities.dart';
@@ -81,11 +82,12 @@ class Repository {
   }
 
 
-    initFqtv() async {
+    static initFqtv() async {
     if( gblSettings.wantFQTV == false ){
       return null;
     }
-    database.getNamedUserProfile('PAX1').then((profile) {
+    UserProfileRecord profile = await AppDatabase.get().getNamedUserProfile('PAX1');
+    if(profile != null) {
       if (profile != null && profile.value != '') {
 
         try {
@@ -103,7 +105,7 @@ class Repository {
           print(e);
         }
       }
-    });
+    };
   }
 
 
@@ -254,7 +256,8 @@ class Repository {
       if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession as Session, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
-            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion)); // '{VrsApiRequest: ' + + '}' ;
+            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion,
+            email: PaxManager.getPaxEmail())); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
         print('login_uri = ${gblSettings.xmlUrl}');
 
@@ -349,7 +352,7 @@ class Repository {
                     break;
                   case 'fqtvName':
                     gblSettings.fqtvName = item['value'];
-                    logit('load FQTV name [${gblSettings.fqtvName}]');
+                    logit('load FQTV name [${gblSettings.fqtvName}]', verboseMsg: true);
                     break;
                   case 'updateMessage':
                     gblSettings.updateMessage = item['value'];

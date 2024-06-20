@@ -11,6 +11,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 
 import '../../utilities/helper.dart';
 
@@ -70,7 +71,8 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: appBar(context, 'Edit Details',automaticallyImplyLeading: false,
+      appBar: appBar(context, 'Edit Details', PageEnum.editPax,
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),

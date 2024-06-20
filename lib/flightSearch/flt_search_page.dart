@@ -16,6 +16,7 @@ import 'package:vmba/components/trText.dart';
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../utilities/helper.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads = false});
@@ -113,7 +114,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         //backgroundColor: v2PageBackgroundColor(),
 
         appBar:
-        appBar(context, widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search'),
+        appBar(context, widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search', PageEnum.flightSearch),
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(

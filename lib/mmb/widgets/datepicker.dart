@@ -79,6 +79,9 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
 
   void _handleDateChanged(FlightDates newValue) {
     departureDate = newValue.departureDate;
+    setState(() {
+
+    });
     //widget.mmbBooking.departureDate = departureDate;
   }
 
@@ -102,7 +105,8 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
               //firstDate: firstDate,
               // departureDate: departureDate,
               //lastDate: lastDate,
-              onChanged: _handleDateChanged),
+              onChanged: _handleDateChanged,
+          ),
         ]),
         floatingActionButton: Padding(
             padding: EdgeInsets.only(left: 35.0),

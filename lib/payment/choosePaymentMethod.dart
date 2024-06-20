@@ -35,6 +35,7 @@ import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../v3pages/cards/v3Card.dart';
+import '../v3pages/controls/V3Constants.dart';
 import '../v3pages/homePageHelper.dart';
 import 'ProviderFieldsPage.dart';
 import 'giftVoucher.dart';
@@ -1176,7 +1177,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       } else {
         return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Payment',
+          appBar: appBar(context, 'Payment', PageEnum.choosePayment,
             newBooking: widget.newBooking,
             curStep: 5,
             imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
@@ -1265,7 +1266,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 Widget _body() {
     return Scaffold(
       key: _key,
-      appBar: appBar(context, 'Payment',
+      appBar: appBar(context, 'Payment',PageEnum.choosePayment,
         newBooking: widget.newBooking,
         curStep: 5,
         imageName: gblSettings.wantPageImages ? 'paymentpage' : '',) ,

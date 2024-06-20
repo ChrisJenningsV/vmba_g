@@ -117,7 +117,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   Widget _getAirportText(String airportName, String code) {
     Color c;
     FontWeight fw;
-    double fSize;
+    double? fSize;
     double screenWidth = MediaQuery.of(context).size.width;
 
     if( screenWidth < 380 &&  airportName.length > 20 ) {
@@ -132,6 +132,10 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
       c = Colors.black;
       fw = FontWeight.w400;
     }
+   /* if( wantHomePageV3()  ){
+      fw = FontWeight.normal;
+      fSize = null;
+    }*/
 
     return Container(
     //   color: Colors.red,
@@ -147,7 +151,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         TrText(
       translate(airportName),
       noTrans: true,
-      style: new TextStyle(
+      style: wantHomePageV3() ? TextStyle() : TextStyle(
           fontWeight: fw,
           color: c,
       fontSize: fSize)),

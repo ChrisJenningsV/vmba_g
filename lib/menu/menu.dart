@@ -17,6 +17,7 @@ import 'package:vmba/v3pages/v3UnlockPage.dart';
 import '../Helpers/settingsHelper.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/navigation.dart';
 
 
 class DrawerMenu extends StatefulWidget {
@@ -58,10 +59,11 @@ class DrawerMenu extends StatefulWidget {
         onTap: () {
           // Update the state of the app
           // ...
+          navToHomepage(context) ;
+/*
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/HomePage', (Route<dynamic> route) => false);
-
-          //Navigator.pop(context);
+*/
         },
       ));
 
@@ -73,8 +75,11 @@ class DrawerMenu extends StatefulWidget {
           // Update the state of the app
           // ...
           gblCurPage = 'FLIGHTSEARCH';
+          navToFlightSearchPage(context);
+/*
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/FlightSearchPage', (Route<dynamic> route) => false);
+*/
           //Navigator.pop(context);
         },
       ));

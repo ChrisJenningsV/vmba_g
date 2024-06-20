@@ -11,6 +11,7 @@ import '../data/repository.dart';
 import '../data/smartApi.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/navigation.dart';
 
 Future<bool> onWillPop(BuildContext context) async {
   return (await showDialog(
@@ -52,15 +53,21 @@ Future<bool> onWillPop(BuildContext context) async {
                 resetPnrContent(gblPnrModel!.pNR.rLOC);
               } catch(e) {}
                 // return to choose flights
+                navToHomepage(context);
+/*
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/HomePage', (Route<dynamic> route) => false);
+*/
             } else {
 
               // delete PNR contents
               deletePnrContent().then((x) {
                 // return to choose flights
+                navToFlightSearchPage(context);
+/*
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/FlightSearchPage', (Route<dynamic> route) => false);
+*/
               });
               //Navigator.of(context).pop(true);
             }

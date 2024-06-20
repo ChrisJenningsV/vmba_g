@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../Helpers/stringHelpers.dart';
@@ -416,34 +418,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                   color:
                   gblSystemColors.headerTextColor)),
         ),
-        floatingActionButton: Padding(
-            padding: EdgeInsets.only(left: 35.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new FloatingActionButton.extended(
-                    elevation: 0.0,
-                    isExtended: true,
-                    label: TrText(
-                      'Done',
-                      style: TextStyle(
-                          color: gblSystemColors
-                              .primaryButtonTextColor),
-                    ),
-                    icon: Icon(Icons.check,
-                        color: gblSystemColors
-                            .primaryButtonTextColor),
-                    backgroundColor: widget.systemColors!
-                        .primaryButtonColor, //new Color(0xFF000000),
-                    onPressed: () {
-                      if ( passengers.totalPassengers() > 0) {
-                        Navigator.pop(context, passengers);
-                      } else {
-                        showAlertDialog(context, 'Alert', 'Please select who is travelling');
-                      }
-                    }),
-              ],
-            )),
+        floatingActionButton: doneButton(),
         body: new Container(
             padding: EdgeInsets.all(16.0),
             child: new Form(
@@ -487,6 +462,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         ),
                       ],
                     ),
+                    wantHomePageV3() ? V3Divider(): Container(),
+
                     gblSettings.passengerTypes.youths
                         ? new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -531,6 +508,8 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         : Padding(
                             padding: EdgeInsets.all(0),
                           ),
+                    (wantHomePageV3() && gblSettings.passengerTypes.youths) ? V3Divider(): Container(),
+
                     gblSettings.passengerTypes.senior
                         ? new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -574,6 +553,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         : Padding(
                       padding: EdgeInsets.all(0),
                     ),
+                    (wantHomePageV3() && gblSettings.passengerTypes.senior) ? V3Divider(): Container(),
 
                     gblSettings.passengerTypes.student
                         ? new Row(
@@ -618,6 +598,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         : Padding(
                       padding: EdgeInsets.all(0),
                     ),
+                    (wantHomePageV3() && gblSettings.passengerTypes.student) ? V3Divider(): Container(),
 
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -656,6 +637,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                         ),
                       ],
                     ),
+                    wantHomePageV3() ? V3Divider(): Container(),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -695,5 +677,45 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                     ),
                   ]),
             )));
+  }
+  Widget doneButton() {
+    if( wantHomePageV3()){
+      return vidWideActionButton(context, 'Done',
+              (p0, p1) {
+                if ( passengers.totalPassengers() > 0) {
+                  Navigator.pop(context, passengers);
+                } else {
+                  showAlertDialog(context, 'Alert', 'Please select who is travelling');
+                }
+              }, offset: 35);
+    }
+    return Padding(
+        padding: EdgeInsets.only(left: 35.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new FloatingActionButton.extended(
+                elevation: 0.0,
+                isExtended: true,
+                label: TrText(
+                  'Done',
+                  style: TextStyle(
+                      color: gblSystemColors
+                          .primaryButtonTextColor),
+                ),
+                icon: Icon(Icons.check,
+                    color: gblSystemColors
+                        .primaryButtonTextColor),
+                backgroundColor: widget.systemColors!
+                    .primaryButtonColor, //new Color(0xFF000000),
+                onPressed: () {
+                  if ( passengers.totalPassengers() > 0) {
+                    Navigator.pop(context, passengers);
+                  } else {
+                    showAlertDialog(context, 'Alert', 'Please select who is travelling');
+                  }
+                }),
+          ],
+        ));
   }
 }

@@ -137,6 +137,7 @@ class Settings {
   bool wantShadows;
   bool wantFqtvAutologin;
   bool wantFqtvHomepage;
+  bool wantCustomHomepage;
 
   String productFormat;
   String homePageStyle;
@@ -318,6 +319,7 @@ bool bpShowFastTrack;
     this.wantShadows = true,
     this.wantFqtvAutologin = false,
     this.wantFqtvHomepage = false,
+    this.wantCustomHomepage = false,
     this.wantUnlock = false,
 
     this.useWebApiforVrs: false,

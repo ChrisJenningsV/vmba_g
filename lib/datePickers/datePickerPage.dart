@@ -1,11 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/datePickers/widgets/dayBuilder.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
+import '../v3pages/v3Theme.dart';
 
 class DatePickerWidget extends StatefulWidget {
   DatePickerWidget({Key key= const Key("datepi_key"), required this.departureDate }) : super(key: key);
@@ -27,12 +32,19 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
 
   void _handleDateChanged(FlightDates newValue) {
     departureDate = newValue.departureDate;
+    setState(() {
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        appBar: V3AppBar(PageEnum.dayPicker,
+        /*  systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: gblSystemColors.primaryHeaderColor,
+          ),*/
+          backgroundColor: gblSystemColors.primaryHeaderColor,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
@@ -46,30 +58,15 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
           ),
         ),
         body: gblSettings.wantPriceCalendar ?
-            Align(alignment: Alignment.topCenter,
-            child:
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 25, 5, 5),
-    child:
-        Container(
-           /* decoration: BoxDecoration(
-              color: Colors.red, //grey.shade300,
-              //shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              border: Border.all(width: 5, color: Colors.white)
-            ),*/
-        //Row(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          //children: <Widget>[
-          child:
-            DayPickerPage(
+            wrapCal(
+           DayPickerPage(
                 firstDate: DateTime.now(),
                 departureDate: widget.departureDate,
                 lastDate: DateTime.now().add(new Duration(days: 365)),
-                onChanged: _handleDateChanged),
-          //],
-        ))
-            )
+                onChanged: _handleDateChanged,
+              ),
+                (){ setState(() {},);},
+                false, departureDate, null)
         : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -77,7 +74,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
               firstDate: DateTime.now(),
               departureDate: widget.departureDate,
               lastDate: DateTime.now().add(new Duration(days: 365)),
-              onChanged: _handleDateChanged),
+              onChanged: _handleDateChanged,
+          ),
           ],
         )
         ,

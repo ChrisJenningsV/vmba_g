@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../utilities/helper.dart';
 
@@ -340,13 +342,25 @@ class _ArrivalsState extends State<Arrivals> {
   //    }
 
     return
-      new ListView.builder(
+ /*     new ListView.separated(
+          separatorBuilder: (context, index) => wantHomePageV3() ? V3Divider() : Container(),*/
+        ListView.builder(
           shrinkWrap: true,
           itemCount: routes == null ? 0 : routes!.length ,
           itemBuilder: (BuildContext context, i) {
             return new ListTile(
-                title: Text(
-                  translate('${routes![i]}'.split('|')[1]),
+                //minVerticalPadding: 0,
+                dense: false,
+                visualDensity: VisualDensity(vertical: -2),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  i==0 ? Padding(padding: EdgeInsets.all(3) ): Container(),
+                  Text(translate('${routes![i]}'.split('|')[1])),
+                  Padding(padding: EdgeInsets.all(3) ),
+                  wantHomePageV3() ? V3Divider() : Container(),
+                ]
                 ),
                 onTap: () {
                   Navigator.pop(context, '${routes![i]}');

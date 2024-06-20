@@ -202,8 +202,7 @@ extension Section on ViewBookingBodyState {
       return Container();
     }
 
-    if (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.aircode &&
-        (pnr.pNR.itinerary.itin[journeyNo].airID != gblSettings.altAircode ) ) {
+    if ( pnr.isOtherAirline(journeyNo) ) {
       logit('other airline');
       return Text(''
         // 'Please check in at the airport',
@@ -211,15 +210,7 @@ extension Section on ViewBookingBodyState {
       //return new Text('No information for flight');
     }
 
-    if (pnr.pNR.tickets != null &&
-        pnr.pNR.tickets.tKT
-            .where((t) =>
-        t.pax == (paxNo + 1).toString() &&
-            t.segNo == (journeyNo + 1).toString().padLeft(2, '0') &&
-            t.tktFor != 'MPD' &&
-            t.tKTID == 'ELFT')
-            .length >
-            0) {
+    if ( pnr.apisRequired(paxNo,  journeyNo)) {
       //  Future<bool> hasDownloadedBoardingPass =
       //  Repository.get()
       //   .hasDownloadedBoardingPass(
@@ -229,12 +220,11 @@ extension Section on ViewBookingBodyState {
       //       paxNo);
 
       // check APIS done
-      if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
+      if (apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) &&
+          _hasApisInfoForPax(journeyNo, paxNo) == false) {
         logit('apis required');
         return Container();
       }
-
-
 
       bool hasDownloadedBoardingPass = true;
       //return new TextButton(
@@ -341,19 +331,9 @@ extension Section on ViewBookingBodyState {
 
         now = getGmtTime();
 
-        // logit('now:${now.toString()}');
-/*
-        bool isBeforeClosed = now.difference(checkinClosed).inMinutes <0;
-        bool isAfterClosed = now.difference(checkinClosed).inMinutes >0;
-        bool isAfterOpens = checkinOpens.difference(now).inMinutes < 0;
-*/
         bool isBeforeClosed = is1After2( checkinClosed, now); // now.difference(checkinClosed).inMinutes <0;
-        //bool isAfterClosed = is1After2( now, checkinClosed); // now.difference(checkinClosed).inMinutes >0;
         bool isAfterOpens =  is1After2( now, checkinOpens); // checkinOpens.difference(now).inMinutes > 0;
 
-
-
-        //checkinOpen = (now.isBefore(checkinClosed) && now.isAfter(checkinOpens))
         checkinOpen = (isBeforeClosed && isAfterOpens)
             ? true
             : false;

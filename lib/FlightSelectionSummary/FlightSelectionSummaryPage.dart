@@ -20,7 +20,10 @@ import 'package:vmba/controllers/vrsCommands.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/utilities/messagePages.dart';
 
+import '../utilities/navigation.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
+import '../v3pages/controls/V3Constants.dart';
+import '../v3pages/v3Theme.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
 //  FlightSelectionSummaryWidget({Key key = GlobalKey(), this.newBooking }) : super(key: key);
@@ -604,6 +607,7 @@ Row airMiles() {
           ],
         ),
       );
+      widgets.add(Padding(padding: EdgeInsets.all(5)));
       widgets.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -695,12 +699,12 @@ Row airMiles() {
       }
 
 
-      widgets.add(Divider());
+      widgets.add(V3Divider());
     }
     return Container(
         decoration: containerDecoration( location: 'middle') ,
         margin: containerMargins(location: 'middle') ,
-        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
+        padding:(wantHomePageV3()) ? null : EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
         child: Column(
       children: widgets,
     )
@@ -716,7 +720,7 @@ Row airMiles() {
         return Container();
       } else {
         return Scaffold(
-          appBar: appBar(context, 'Summary',
+          appBar: appBar(context, 'Summary', PageEnum.summary,
             newBooking: widget.newBooking,
             curStep: 3,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
@@ -770,7 +774,7 @@ Row airMiles() {
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary',
+          appBar: appBar(context, 'Summary',PageEnum.summary,
             curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
@@ -809,8 +813,11 @@ Row airMiles() {
                           borderRadius: BorderRadius.circular(30.0)),
                       foregroundColor: Colors.black),
                   onPressed: () {
+                    navToFlightSearchPage(context);
+/*
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/FlightSearchPage', (Route<dynamic> route) => false);
+*/
                   },
                   child: TrText('Restart booking',
                     style: new TextStyle(color: Colors.white),
@@ -825,7 +832,7 @@ Row airMiles() {
 
       return new Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary',
+          appBar: appBar(context, 'Summary',PageEnum.summary,
             curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',) ,
@@ -833,7 +840,7 @@ Row airMiles() {
           endDrawer: DrawerMenu(),
           bottomNavigationBar: getBottomNav(context),
           body: _getBody(),
-          floatingActionButton: wantPageV2() ? vidWideActionButton(context,'Continue', onCompletePressed, icon: Icons.check, offset: 35.0 ) : null,
+          floatingActionButton: (wantPageV2() || wantHomePageV3()) ? vidWideActionButton(context,'Continue', onCompletePressed, icon: Icons.check, offset: 35.0 ) : null,
       );
 
     }
@@ -1034,7 +1041,7 @@ Row airMiles() {
               : Padding(
             padding: EdgeInsets.zero,
           ),
-          Divider(),
+          V3Divider(),
           flightSegementSummary(),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -1045,13 +1052,14 @@ Row airMiles() {
               ),
             ],
           ),
+              Padding(padding: EdgeInsets.all(5)),
           ( gblRedeemingAirmiles == true ) ?
           airMiles() : netFareTotal(),
           taxTotal(),
           ( gblRedeemingAirmiles != true ) ?
           grandTotal() : Column(),
           discountTotal(),
-          Divider(),
+          V3Divider(),
           ( gblRedeemingAirmiles != true ) ? Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -1065,7 +1073,7 @@ Row airMiles() {
           Padding(
             padding: EdgeInsets.only(top: 5),
           ),
-          Divider(),
+          V3Divider(),
           gblSettings.hideFareRules
               ? Padding(
             padding: EdgeInsets.only(top: 0),
@@ -1075,7 +1083,7 @@ Row airMiles() {
             children: <Widget>[
               TrText('Fare Rules'),
               IconButton(
-                icon: Icon(Icons.keyboard_arrow_down),
+                icon: Icon(Icons.keyboard_arrow_right),
                 onPressed: () {
                   if( gblNoNetwork == false ) {
                     Navigator.push(
@@ -1091,6 +1099,7 @@ Row airMiles() {
               )
             ],
           ),
+          ( wantHomePageV3()) ? Container() :
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 //foregroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
@@ -1137,7 +1146,7 @@ Widget bookingSummary() {
   ( gblRedeemingAirmiles != true ) ?
   grandTotal() : Column(),
   discountTotal(),
-  Divider(),
+        V3Divider(),
   ( gblRedeemingAirmiles != true ) ? Row(
   mainAxisAlignment: MainAxisAlignment.start,
   children: <Widget>[

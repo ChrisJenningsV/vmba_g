@@ -968,6 +968,11 @@ class ViewBookingBodyState
       return Container();
     }
 
+    // check if any pax checked in this journey
+    if( pnr.anyPaxCheckedin(journeyToChange)){
+      return Container();
+    }
+
 
     if( gblSettings.wantRefund &&
         objPNR!.canRefund(journeyToChange)
@@ -2361,8 +2366,7 @@ class ViewBookingBodyState
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor:
-                  gblSystemColors.primaryButtonColor),
+                  backgroundColor: gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
                 style: new TextStyle(
@@ -2456,8 +2460,7 @@ class ViewBookingBodyState
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  foregroundColor:
-                  gblSystemColors.primaryButtonColor),
+                  backgroundColor: gblSystemColors.primaryButtonColor),
               child: new Text(
                 "Accept",
                 style: new TextStyle(

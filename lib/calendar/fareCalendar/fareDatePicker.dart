@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:vmba/calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
 
 part 'widgets/_calendar_view.dart';
 part 'widgets/_date_picker_mode_toggle_button.dart';
@@ -66,7 +67,7 @@ class FareCalendarDatePicker extends StatefulWidget {
   }
 
   /// The calendar UI related configurations
-  final CalendarDatePicker2Config config;
+  final FareCalendarDatePickerConfig config;
 
   /// The selected [DateTime]s that the picker should display.
   final List<DateTime?> value;
@@ -179,6 +180,11 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
   }
 
   void _handleMonthChanged(DateTime date, {bool fromYearPicker = false}) {
+
+    if( widget.config.monthChange != null  ){
+      widget.config!.monthChange!(date);
+    }
+
     setState(() {
       final currentDisplayedMonthDate = DateTime(
         _currentDisplayedMonthDate.year,
@@ -236,11 +242,11 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
 
       final calendarType = widget.config.calendarType;
       switch (calendarType) {
-        case CalendarDatePicker2Type.single:
+        case FareCalendarDatePickerType.single:
           selectedDates = [value];
           break;
 
-        case CalendarDatePicker2Type.multi:
+        case FareCalendarDatePickerType.multi:
           final index =
           selectedDates.indexWhere((d) => DateUtils.isSameDay(d, value));
           if (index != -1) {
@@ -250,7 +256,7 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
           }
           break;
 
-        case CalendarDatePicker2Type.range:
+        case FareCalendarDatePickerType.range:
           if (selectedDates.isEmpty) {
             selectedDates.add(value);
             break;

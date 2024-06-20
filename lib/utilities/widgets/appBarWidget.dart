@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/models/models.dart';
+import 'package:vmba/v3pages/controls/V3AppBar.dart';
 import '../../Products/productFunctions.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../components/vidAppBar.dart';
@@ -10,13 +11,14 @@ import '../../data/models/pnr.dart';
 import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';
 import '../../summary/vidFlightTimeline.dart';
+import '../../v3pages/controls/V3Constants.dart';
 import '../helper.dart';
 import 'package:vmba/components/showDialog.dart';
 
 
 
 //class CustomWidget {
-PreferredSizeWidget appBar(BuildContext context, String title,
+PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum,
     {Widget? leading,
       bool automaticallyImplyLeading=false, List<Widget>? actions,
         Color? backgroundColor,
@@ -71,8 +73,10 @@ PreferredSizeWidget appBar(BuildContext context, String title,
       pageImage = 'blank';
     }
 
-
-    backgroundImage = NetworkImage('${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
+    if( pageImage != 'blank' && gblSettings.homePageStyle != 'V3') {
+      backgroundImage = NetworkImage(
+          '${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
+    }
     if( backgroundImage != null ) {
       flexibleSpace = Image(
         image:
@@ -84,7 +88,7 @@ PreferredSizeWidget appBar(BuildContext context, String title,
 
       return PreferredSize(
           preferredSize: Size.fromHeight(height),
-          child:  AppBar(
+          child:  V3AppBar( pageEnum,
             leading: leading,
             bottom: bottom,
             //toolbarHeight: toolbarHeight,
@@ -113,7 +117,7 @@ PreferredSizeWidget appBar(BuildContext context, String title,
 
   if( gblSettings.wantLeftLogo && (leading == null || leading == false)) {
 
-    return AppBar(
+    return V3AppBar(pageEnum,
       flexibleSpace: flexibleSpace,
       centerTitle: gblCentreTitle,
       toolbarHeight: toolbarHeight,
@@ -131,7 +135,7 @@ PreferredSizeWidget appBar(BuildContext context, String title,
     );
 
   } else {
-    PreferredSizeWidget ab = AppBar(
+    PreferredSizeWidget ab = V3AppBar(pageEnum,
       leading: leading,
       bottom: bottom,
       toolbarHeight: toolbarHeight,

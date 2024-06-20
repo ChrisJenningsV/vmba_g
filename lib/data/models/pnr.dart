@@ -43,6 +43,41 @@ class PnrModel {
 
     return gblSettings.currency;
   }
+  bool anyPaxCheckedin(int journeyNo) {
+    if(
+    this.pNR.tickets != null &&
+        this.pNR.tickets.tKT.where((t) =>
+            t.segNo == (journeyNo ).toString().padLeft(2, '0') &&
+            t.tktFor != 'MPD' &&
+            t.tKTID == 'ELFT')
+            .length >
+            0) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isOtherAirline(int journeyNo){
+    if(this.pNR.itinerary.itin[journeyNo].airID != gblSettings.aircode &&
+        (this.pNR.itinerary.itin[journeyNo].airID != gblSettings.altAircode ) ) {
+      return true;
+    }
+    return false;
+  }
+  bool apisRequired(int paxNo, int journeyNo){
+    if(
+    this.pNR.tickets != null &&
+        this.pNR.tickets.tKT.where((t) =>
+        t.pax == (paxNo + 1).toString() &&
+            t.segNo == (journeyNo + 1).toString().padLeft(2, '0') &&
+            t.tktFor != 'MPD' &&
+            t.tKTID == 'ELFT')
+            .length >
+            0) {
+      return true;
+    }
+    return false;
+  }
 
   List<Pax> getBookedPaxList(int journey) {
     List<Pax> paxlist = [];

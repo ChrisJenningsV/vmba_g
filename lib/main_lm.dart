@@ -31,8 +31,10 @@ void configLM() {
       textButtonTextColor: Colors.black54,
       primaryButtonTextColor: Colors.white,
       primaryHeaderColor: Colors.red,
-      borderColor: Colors.red,
+      calInRangeColor: Color.fromRGBO(169, 169, 169, 1),
+      borderColor: Color.fromRGBO(230, 230, 230, 1),
       headerTextColor: Colors.white,
+      classBandIconColor: Colors.black,
       statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
     seatPlanColorAvailable: Colors.blue, //Colors.green
@@ -49,13 +51,21 @@ void configLM() {
   gblCurrentRloc = '';
 
   gblSettings = Settings (
+ //   homePageFilename: 'customPages.json',
+    homePageStyle: 'V3',
+    wantCustomHomepage:false,
+    wantPriceCalendar: true ,
+    wantPriceCalendarRounding: false,
+    wantUnlock:true,
+    wantProducts: true,
+    wantStatusLine: true,
+    wantSeatsWithProducts: true,
+
    // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
     wantMaterial3: false,
-    wantPriceCalendar: true ,
-    wantPriceCalendarRounding: false,
     canGoBackFromPaxPage: true,
     wantGiftVouchers: false,
     //pageStyle: 'V2',
@@ -125,8 +135,8 @@ void configLM() {
 
  */
 
-//    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
-   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
+//   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
@@ -144,9 +154,9 @@ void configLM() {
 
   //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-//////    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
- //   testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+
+ //  testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
@@ -183,9 +193,6 @@ void configLM() {
 
     useWebApiforVrs: true,
     wantMmbProducts: false,
-    wantProducts: false,
-    wantStatusLine: true,
-    wantSeatsWithProducts: false,
 
   );
   gblSettings.setDefaults();

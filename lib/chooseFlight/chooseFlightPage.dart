@@ -4,6 +4,7 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../calendar/widgets/langConstants.dart';
@@ -30,6 +31,7 @@ class ChooseFlight extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           //brightness: gblSystemColors.statusBar,
+          centerTitle: true,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -69,7 +71,7 @@ class ChooseFlight extends StatelessWidget {
   Widget classBands(context) {
     List <Widget> list = [];
 
-    if( wantPageV2()) {
+ /*   if( wantPageV2()) {
       String _currencySymbol = '';
       if( gblSettings.wantCurrencySymbols == true ) {
         _currencySymbol = (simpleCurrencySymbols[currency] ?? currency as String);
@@ -92,9 +94,9 @@ class ChooseFlight extends StatelessWidget {
         ],
       ),);
       list.add(new Row(children: [Padding(padding: EdgeInsets.all(5))]));
-    } else {
+    } else {*/
       list.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           TrText(
             //this.classband.cbdisplayname.toUpperCase()
@@ -107,7 +109,9 @@ class ChooseFlight extends StatelessWidget {
                   fontWeight: FontWeight.w700))
         ],
       ),);
-    }
+   // }
+    list.add(V3Divider());
+
     if( gblSettings.wantClassBandImages) {
       //list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png')));
       list.add(Image.network(
@@ -192,7 +196,8 @@ class ChooseFlight extends StatelessWidget {
               .map((item) => Column(
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           new Column(
                             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,6 +245,10 @@ class ChooseFlight extends StatelessWidget {
     str = str.replaceAll('<LI>', '');
     str = str.replaceAll('</li>', ''); //'''\n');
     str = str.replaceAll('</LI>', '');
+
+
+    str = str.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ');
+
 
 return str;
 

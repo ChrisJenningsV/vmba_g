@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
 import '../home/searchParams.dart';
 import '../v3pages/homePageHelper.dart';
+import '../v3pages/v3Theme.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
@@ -18,8 +19,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 //
-String gblBuildFlavor = 'LM';
-bool gblIsLive = false;
+String gblBuildFlavor = '9Q';
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 113;
 int requiredApiVersion = 102;
@@ -137,6 +138,7 @@ FlightPrices? gblFlightPrices;
 String gblBookingCurrency='';
 NotificationStore? gblNotifications;
 PageListHolder? gblHomeCardList;
+V3Theme? gblV3Theme;
 
 TextStyle? gblTitleStyle;
 List<String> gblTitles = <String>[

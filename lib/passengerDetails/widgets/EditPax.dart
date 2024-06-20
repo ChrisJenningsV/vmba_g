@@ -12,6 +12,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
@@ -126,7 +127,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
         backgroundColor: v2PageBackgroundColor(),
-      appBar: appBar(context, 'Passenger Detail',
+      appBar: appBar(context, 'Passenger Detail', PageEnum.editPax,
         newBooking: widget.newBooking,
         curStep: 4,
         imageName: gblSettings.wantPageImages ? 'editPax' : '',

@@ -10,6 +10,7 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/payment/paymentCmds.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart' as inapp;
 
@@ -187,7 +188,8 @@ Page resource error:
           onWillPop: true,
         child:*/
         Scaffold(
-      appBar: appBar(context,  'Payment Page', automaticallyImplyLeading: false,
+      appBar: appBar(context,  'Payment Page',PageEnum.webPayment,
+          automaticallyImplyLeading: false,
           actions:<Widget> [ new IconButton(
       icon:  new Icon(Icons.close),
       onPressed: () async {

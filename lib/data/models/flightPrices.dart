@@ -8,6 +8,7 @@ class FlightSearchRequest
   String departCity='';
   String arrivalCity='';
  String flightDateStart ='';
+ String flightAvailabilityStartDate = '';
  String flightDateEnd = '';
  int isReturnJourney = 0;
   String selectedCurrency='';
@@ -15,6 +16,7 @@ class FlightSearchRequest
  bool? showFlightPrices=null;
 
   FlightSearchRequest({this.departCity='', this.arrivalCity='', this.flightDateEnd='', this.flightDateStart='',
+      this.flightAvailabilityStartDate='',
       this.isADS=false, this.isReturnJourney=0, this.selectedCurrency='GBP', this.showFlightPrices});
 
   Map toJson() {
@@ -22,6 +24,7 @@ class FlightSearchRequest
     map['departCity'] = departCity;
     map['arrivalCity'] = arrivalCity;
     map['flightDateStart'] = flightDateStart;
+    map['flightAvailabilityStartDate'] = flightAvailabilityStartDate;
     map['flightDateEnd'] = flightDateEnd;
     map['isReturnJourney'] = isReturnJourney;
     map['selectedCurrency'] = selectedCurrency;
@@ -34,6 +37,9 @@ class FlightSearchRequest
 
 class FlightPrices {
   List<FlightPrice> flightPrices = List.from([FlightPrice()]);
+  List<bool> months = [false,false,false,false,false,false,false,false,false,false,false,false,];
+  String from = '';
+  String to = '';
 
   FlightPrices.fromJson(String str) {
     try {

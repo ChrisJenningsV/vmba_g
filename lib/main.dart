@@ -1,4 +1,6 @@
 //import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:convert';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/CustomError.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/v3pages/homePageHelper.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
@@ -138,6 +141,8 @@ bool bFirstTime = true;
     super.initState();
     startTime = DateTime.now();
     _initLangs();
+    _intiTheme();
+    setLiveTest();
 
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
@@ -148,7 +153,7 @@ bool bFirstTime = true;
       });
 
     }
-    if( gblSettings.homePageStyle == 'V3'){
+    if( gblSettings.homePageFilename != ''){
       initHomePage(gblSettings.homePageFilename);
     }
 /*
@@ -209,9 +214,11 @@ bool bFirstTime = true;
           builder: (context, provider, child) =>
               MaterialApp(
                 builder: (BuildContext context, Widget? widget) {
+/*
                   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
                     return CustomError(errorDetails: errorDetails);
                   };
+*/
                   // Retrieve the MediaQueryData from the current context.
                   final mediaQueryData = MediaQuery.of(context);
 
@@ -298,6 +305,25 @@ bool bFirstTime = true;
        )
       ));
   }
+
+  void _intiTheme() async {
+    if( gblSettings.wantPriceCalendar == true || gblSettings.pageStyle == 'V2'){
+      loadTheme();
+  /*    try {
+        // load theme from json file (Asset or server)
+        String jsonString = await rootBundle.loadString(
+            'lib/assets/$gblAppTitle/json/theme.json');
+
+        final Map<String, dynamic> map = json.decode(jsonString);
+        gblV3Theme = V3Theme.fromJson(map);
+      } catch(e) {
+        // use defaults
+        gblV3Theme = new V3Theme();
+      }
+*/
+    }
+  }
+
   void _initLangs() async {
     try {
       var prefs = await SharedPreferences.getInstance();

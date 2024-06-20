@@ -6,6 +6,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/bullet_widget.dart';
+import '../../v3pages/v3Theme.dart';
 
 class FlightRulesWidget extends StatefulWidget {
   final List<FQItin> fQItin;
@@ -113,7 +114,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
       fareRulesPerSegment.asMap().forEach((index, list) {
         rulesWidget.add(
           Padding(
-            padding: const EdgeInsets.only(bottom: 0),
+            padding: const EdgeInsets.only(top: 10,bottom: 5),
             child: Text(
                 'Journey ${index + 1}: ${widget.itin[index].depart} ${widget
                     .itin[index].arrive} (${widget.itin[index]
@@ -122,6 +123,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
                 new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
           ),
         );
+        rulesWidget.add(V3Divider());
         //list.forEach((element) {
         List<String> copyList = [];
         list.forEach((element) {
@@ -177,6 +179,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
       return Scaffold(
           appBar: AppBar(
             //brightness: gblSystemColors.statusBar,
+            centerTitle: true,
             backgroundColor:
             gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
@@ -209,6 +212,7 @@ class _FlightRulesState extends State<FlightRulesWidget> {
       return Scaffold(
         appBar: AppBar(
           //brightness: gblSystemColors.statusBar,
+          centerTitle: true,
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(

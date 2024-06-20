@@ -9,6 +9,7 @@ import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../components/showDialog.dart';
 import '../utilities/helper.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 //ignore: must_be_immutable
 class DangerousGoodsWidget extends StatefulWidget {
@@ -41,7 +42,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
     return new Scaffold(
       appBar: appBar(
         context,
-        'Dangerous Goods',
+        'Dangerous Goods', PageEnum.dangerousGoods,
       ),
       //endDrawer: DrawerMenu(),
       body: SingleChildScrollView( child:_body()),

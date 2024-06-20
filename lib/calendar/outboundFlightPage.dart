@@ -25,6 +25,7 @@ import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/colourHelper.dart';
+import '../v3pages/controls/V3Constants.dart';
 import 'bookingFunctions.dart';
 
 class FlightSeletionPage extends StatefulWidget {
@@ -69,6 +70,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     });
   }
 
+  int seatCount() {
+    return widget.newBooking.passengers.adults +
+        widget.newBooking.passengers.youths +
+        widget.newBooking.passengers.seniors +
+        widget.newBooking.passengers.students +
+        widget.newBooking.passengers.children;
+  }
+
   String getAvCommand(bool bRaw) {
     bRaw=true;
     var buffer = new StringBuffer();
@@ -79,9 +88,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
     buffer.write('A');
     buffer.write(
-        new DateFormat('dd').format(this.widget.newBooking.departureDate));
+        new DateFormat('dd').format(this.widget.newBooking.departureDate as DateTime));
     buffer.write(
-        new DateFormat('MMM').format(this.widget.newBooking.departureDate));
+        new DateFormat('MMM').format(this.widget.newBooking.departureDate as DateTime));
     buffer.write(this.widget.newBooking.departure);
     buffer.write(this.widget.newBooking.arrival);
     // [
@@ -237,7 +246,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     // check days, removing any with no flights
     objAv.availability.cal!.day.forEach((element) {
       //print('check day ${element.daylcl}');
-      if( DateFormat('yyyy-MM-dd').format(this.widget.newBooking.departureDate) == element.daylcl){
+      if( DateFormat('yyyy-MM-dd').format(this.widget.newBooking.departureDate as DateTime) == element.daylcl){
         if( objAv.availability.itin == null || objAv.availability.itin?.length == 0){
           element.amt = '';
         }
@@ -256,7 +265,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     int calenderWidgetSelectedItem;
     double animateTo = 250;
     DateTime _departureDate = DateTime.parse(
-        DateFormat('y-MM-dd').format(widget.newBooking.departureDate));
+        DateFormat('y-MM-dd').format(widget.newBooking.departureDate as DateTime));
     DateTime _currentDate =
         DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime()));
 
@@ -306,7 +315,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
     return new Scaffold(
       key: _key,
-      appBar: appBar(context,  "Outbound Flight", leading: new IconButton(
+      appBar: appBar(context,  "Outbound Flight",PageEnum.outboundFlight,
+          leading: new IconButton(
         icon: new Icon(Icons.arrow_back),
         onPressed: () async {
           Navigator.pop(context, widget.newBooking);
@@ -380,7 +390,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
           children: objAv.availability.cal!.day
               .map(
                 (item) =>
-                    getCalDay(item, 'out', widget.newBooking.departureDate, DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime())),
+                    getCalDay(item, 'out', widget.newBooking.departureDate as DateTime, DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime())),
                         onPressed:() => {
                     hasDataConnection().then((result) {
                     if (result == true) {
@@ -400,12 +410,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   Widget flightAvailability() {
     if (objAv != null && objAv.availability.itin != null && objAv.availability.itin!.length > 0) {
-      return new ListView(
+      return new
+      ListView(
           scrollDirection: Axis.vertical,
           children: (objAv.availability.itin!
               .map(
-                (item) => flightItem( item),
-
+                (item) =>  flightItem( item),
               )
               .toList()));
     } else {
@@ -414,13 +424,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget flightItem(AvItin item){
-      if( wantPageV2() ) {
+      if( wantHomePageV3()  ) {
         int seatCount = widget.newBooking.passengers.adults +
             widget.newBooking.passengers.youths +
             widget.newBooking.passengers.seniors +
             widget.newBooking.passengers.students +
             widget.newBooking.passengers.children;
-        return CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected ,seatCount: seatCount,); //  calFlightItem(context,widget.newBooking, objAv, item);
+        return
+             CalFlightItemWidget( newBooking: widget.newBooking, objAv:  objAv, item: item, flightSelected: flightSelected ,seatCount: seatCount,); //  calFlightItem(context,widget.newBooking, objAv, item);
       } else {
         return Container(
             margin: EdgeInsets.only(bottom: 10.0),
@@ -438,7 +449,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                   padding: EdgeInsets.all(0),
                 ),
                 new Divider(),
-                pricebuttons(item,item.flt),
+                  _pricebuttons(item, item.flt),
               ],
             ),
             decoration: BoxDecoration(
@@ -456,10 +467,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   flightSelection() {
+    EdgeInsets mar = EdgeInsets.symmetric(vertical: 1.0);
+    if( wantHomePageV3()){
+      mar = EdgeInsets.fromLTRB(10, 10, 0, 10);
+    }
+
     return new Column(
       children: <Widget>[
         new Container(
-          margin: EdgeInsets.symmetric(vertical: 1.0),
+          //margin: EdgeInsets.symmetric(vertical: 1.0),
+          margin: mar,
           //height: 70.0,
           constraints: new BoxConstraints(
             minHeight: 65.0,
@@ -605,7 +622,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
 
-  Widget pricebuttons(AvItin avItem, List<Flt> item) {
+  Widget _pricebuttons(AvItin avItem, List<Flt> item) {
      if (item[0].fltav.pri!.length > 3) {
       return Wrap(
           spacing: 8.0, //gap between adjacent chips

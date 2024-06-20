@@ -20,54 +20,7 @@ class SearchButtonWidget extends StatelessWidget {
 
   List<String> errors = [];
   // new List<String>();
-  _validate(NewBooking newBooking) {
-    errors.clear();
-    bool isValid = true;
-    if (newBooking.departure == null || newBooking.departure == '') {
-      errors.add(translate('Departure airport is missing.'));
-      isValid = false;
-    }
 
-    if (newBooking.arrival == null || newBooking.arrival == '') {
-      errors.add(translate('Arrival airport is missing.'));
-      isValid = false;
-    }
-
-    if (newBooking.departureDate == null) {
-      errors.add(translate('Departure date is missing.'));
-      isValid = false;
-    }
-
-    if (newBooking.isReturn && (newBooking.returnDate == null)) {
-      errors.add(translate('Return date is missing.'));
-      isValid = false;
-    }
-
-    if (newBooking.passengers.adults +
-            newBooking.passengers.youths +
-            newBooking.passengers.seniors +
-          newBooking.passengers.students +
-        newBooking.passengers.children >
-        gblSettings.maxNumberOfPax) {
-      String email = gblSettings.groupsBookingsEmail != null
-          ? gblSettings.groupsBookingsEmail
-          : 'groups@videcom.com';
-      errors.add(translate('If booking more than')  + ' '+
-          gblSettings.maxNumberOfPax.toString() + ' ' +
-          translate('passengers, please contact') + ' ' +
-          email +
-          '.');
-      // 'If booking more than 8 passengers, please contact groups@loganair.co.uk.');
-      isValid = false;
-    }
-
-    if (newBooking.passengers.infants > newBooking.passengers.adults) {
-      errors.add(
-          translate('The number of infants cannot be greater than the number of adult passengers.'));
-      isValid = false;
-    }
-    return isValid;
-  }
 
   _clearNewBookingObject() {
     newBooking.clear();
@@ -96,9 +49,56 @@ class SearchButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
- return vidWideActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check, offset: 35.0 );
+      return vidWideActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check, offset: 35.0 , disabled:  !_validate(newBooking));
   }
+  _validate(NewBooking newBooking) {
+    errors.clear();
+    bool isValid = true;
+    if (newBooking.departure == null || newBooking.departure == '') {
+      errors.add(translate('Departure airport is missing.'));
+      isValid = false;
+    }
 
+    if (newBooking.arrival == null || newBooking.arrival == '') {
+      errors.add(translate('Arrival airport is missing.'));
+      isValid = false;
+    }
+
+    if (newBooking.departureDate == null) {
+      errors.add(translate('Departure date is missing.'));
+      isValid = false;
+    }
+
+    if (newBooking.isReturn && (newBooking.returnDate == null)) {
+      errors.add(translate('Return date is missing.'));
+      isValid = false;
+    }
+
+    if (newBooking.passengers.adults +
+        newBooking.passengers.youths +
+        newBooking.passengers.seniors +
+        newBooking.passengers.students +
+        newBooking.passengers.children >
+        gblSettings.maxNumberOfPax) {
+      String email = gblSettings.groupsBookingsEmail != null
+          ? gblSettings.groupsBookingsEmail
+          : 'groups@videcom.com';
+      errors.add(translate('If booking more than')  + ' '+
+          gblSettings.maxNumberOfPax.toString() + ' ' +
+          translate('passengers, please contact') + ' ' +
+          email +
+          '.');
+      // 'If booking more than 8 passengers, please contact groups@loganair.co.uk.');
+      isValid = false;
+    }
+
+    if (newBooking.passengers.infants > newBooking.passengers.adults) {
+      errors.add(
+          translate('The number of infants cannot be greater than the number of adult passengers.'));
+      isValid = false;
+    }
+    return isValid;
+  }
 void _onPressed(BuildContext context, dynamic p ) {
   {
     _clearNewBookingObject();

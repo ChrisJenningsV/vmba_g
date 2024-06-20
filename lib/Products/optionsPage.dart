@@ -12,6 +12,7 @@ import '../payment/choosePaymentMethod.dart';
 import '../utilities/helper.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/appBarWidget.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 class OptionsPageWidget extends StatefulWidget {
   OptionsPageWidget({Key key= const Key("opt_key"), required this.newBooking}) : super(key: key);
@@ -55,7 +56,7 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
           onWillPop: true,
         child:  Scaffold(
         key: _key,
-        appBar: appBar(context, 'Options',
+        appBar: appBar(context, 'Options',PageEnum.products,
             curStep: 4,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'options' : ''),

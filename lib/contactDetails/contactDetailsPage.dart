@@ -19,7 +19,9 @@ import 'package:vmba/data/repository.dart';
 import '../Helpers/networkHelper.dart';
 import '../components/vidButtons.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/navigation.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 class ContactDetailsWidget extends StatefulWidget {
   ContactDetailsWidget(
@@ -85,7 +87,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       } else {
         return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Payment',
+          appBar: appBar(context, 'Payment',  PageEnum.contactDetails,
             curStep: 5,
             imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
 
@@ -134,8 +136,11 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
               new TextButton(
                 child: new TrText("Restart booking"),
                 onPressed: () {
+                  navToFlightSearchPage(context);
+/*
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/FlightSearchPage', (Route<dynamic> route) => false);
+*/
                 },
               ),
             ],

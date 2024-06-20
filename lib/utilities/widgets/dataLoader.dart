@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 //import 'dart:async';
@@ -304,13 +306,36 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
   }
 
 
-  Future<void> LoadCalendarData(DateTime dt, Function() onComplete) async
+  Future<void> LoadCalendarData(BuildContext context, DateTime dt, Function() onComplete) async
   {
     DateTime startDate = DateTime(dt.year,dt.month, 1 );
     DateTime endDate = DateTime(dt.year,dt.month+1, 1 );
 
+    // do we have this month already ?
+    if( gblFlightPrices != null && gblFlightPrices!.months[dt.month] == true ){
+      return ;
+    }
+
+    // same route ?
+    if( gblFlightPrices != null && (gblFlightPrices!.from != gblOrigin || gblFlightPrices!.to != gblDestination) ){
+      // clear old cache
+      gblFlightPrices = null;
+    }
+
+
+    try {
+      gblSnackBarShowing = true;
+      Timer(Duration(milliseconds: 10), () {
+        showSnackBar('Loading ...', context, label: 'X');
+      });
+    } catch(e) {
+
+    }
+
     String _url = '${gblSettings.apiUrl}/flightcalendar/GetFlightPrices';
-  String           _msg = json.encode(FlightSearchRequest(departCity: gblOrigin,arrivalCity: gblDestination, flightDateStart: DateFormat('yyyy-MM-dd').format(startDate), //'2023-11-01'
+  String           _msg = json.encode(FlightSearchRequest(departCity: gblOrigin,arrivalCity: gblDestination,
+      flightDateStart: DateFormat('yyyy-MM-dd').format(startDate), //'2023-11-01'
+      flightAvailabilityStartDate: DateFormat('yyyy-MM-dd').format(startDate), //'2023-11-01'
       flightDateEnd: DateFormat('yyyy-MM-dd').format(endDate),    isReturnJourney: 0,  selectedCurrency: gblSelectedCurrency,
       isADS: false, showFlightPrices: true).toJson());  // , arrivalCityCode: gblDestination
 
@@ -324,12 +349,32 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       logit('message send successfully 3: $_msg' );
       try {
         String data = response.body;
-        gblFlightPrices = FlightPrices.fromJson(data);
+
+        FlightPrices fp = FlightPrices.fromJson(data);
+        if( gblFlightPrices == null ) {
+          gblFlightPrices = fp;
+        } else {
+          // add to existing
+          fp.flightPrices.forEach((element) { 
+            DateTime dt = DateTime.parse(element.FlightDate);
+            if( dt.isAfter(startDate.add(Duration(days: -1))) && dt.isBefore(endDate.add(Duration(days: 1))) ) {
+              gblFlightPrices!.flightPrices.add(element);
+            }
+          });
+        }
+        // mark this date loaded
+        gblFlightPrices!.months[dt.month] = true;
+
+
         if(gblLogPayment) logit('loaded flight prices ' + data );
         onComplete();
       } catch(e) {
         logit(e.toString());
       }
+      Timer(Duration(milliseconds: 500), ()
+      {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
     } else {
       if(response.body.startsWith('{')){
         try {
@@ -344,7 +389,10 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       try{
         print (response.body);
       } catch(e){}
-
+      Timer(Duration(milliseconds: 500), ()
+      {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
     }
 
   }

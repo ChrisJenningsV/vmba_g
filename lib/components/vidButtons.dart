@@ -12,6 +12,8 @@ Widget vidWideTextButton(BuildContext context, String caption, void Function({in
 
 Widget vidTextButton(BuildContext context, String caption, void Function({int? p1}) onPressed, {IconData? icon, int iconRotation=0,int? p1 } ) {
   Widget iconWidget = Container();
+
+
   if( icon != null) {
     if( iconRotation != null && iconRotation > 0 ) {
       iconWidget = RotatedBox(
@@ -63,6 +65,9 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
 
 BorderRadius getButtonRadius() {
   BorderRadius radius = BorderRadius.circular(30.0);
+  if( gblV3Theme != null && gblV3Theme!.generic != null && gblV3Theme!.generic!.actionButtonRadius != null ){
+    return BorderRadius.circular(gblV3Theme!.generic!.actionButtonRadius as double);
+  }
   if(wantPageV2() ){
     radius = BorderRadius.circular(5.0);
   }
@@ -73,13 +78,27 @@ BorderRadius getButtonRadius() {
   NEXT button at the bottom of most pages
  */
 Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, 
-    {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true, bool availableOffline = false} ) {
+    {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true, bool availableOffline = false, bool disabled = false} ) {
 
   List<Widget> list = [];
+  EdgeInsets buttonPad = EdgeInsets.all(0);
+  bool wantShadows = true;
+
+  if( gblV3Theme != null && gblV3Theme!.generic != null  ){
+    if( gblV3Theme!.generic!.actionButtonIcons != null) {
+      wantIcon = gblV3Theme!.generic!.actionButtonIcons as bool;
+    }
+    if( gblV3Theme!.generic!.actionButtonPadding != null ){
+      buttonPad = EdgeInsets.all(gblV3Theme!.generic!.actionButtonPadding as double);
+    }
+    if( gblV3Theme!.generic!.actionButtonShadow != null ){
+      wantShadows = gblV3Theme!.generic!.actionButtonShadow;
+    }
+  }
   if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
     list.add(Icon(
       Icons.check,
-      color: Colors.white,
+      color: disabled ? actionButtonDisabledTextColor() : Colors.white,
     ));
   }
   if( gblActionBtnDisabled ){
@@ -91,7 +110,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   }
   list.add(TrText(
   caption,
-  style: TextStyle(color: Colors.white),
+  style: TextStyle(color: disabled ? actionButtonDisabledTextColor() : Colors.white),
   ));
 
   EdgeInsets padding = EdgeInsets.only(left: offset);
@@ -106,14 +125,23 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   child:
     ElevatedButton(
     onPressed: () {
-      if(gblActionBtnDisabled == false &&  availableOffline == true || gblNoNetwork == false) {
+      if(gblActionBtnDisabled == false &&  disabled == false && availableOffline == true || gblNoNetwork == false) {
         onPressed(context, param1);
       }
     },
+
     style: ElevatedButton.styleFrom(
-        backgroundColor: actionButtonColor( availableOffline: availableOffline),
+        elevation: wantShadows ? null :0,
+        backgroundColor: disabled ? actionButtonDisabledColor() :  actionButtonColor( availableOffline: availableOffline),
+        foregroundColor: disabled ? actionButtonDisabledTextColor() : null,
+        side: BorderSide(
+          width: disabled ? 2.0 : 0,
+          color: disabled ? actionButtonDisabledTextColor() : Colors.white,
+        ),
         shape: RoundedRectangleBorder(
             borderRadius: getButtonRadius())),
+    child: Padding(
+      padding: buttonPad,
     child: Row(
       //mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,6 +149,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
 ,
     ),
   )
+    )
     );
 //  return Expanded( child: vidActionButton( context, caption, onPressed,icon: icon, iconRotation: iconRotation ));
 }

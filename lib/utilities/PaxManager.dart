@@ -62,5 +62,12 @@ class PaxManager {
     gblUpcomingFlights = fqtvLoginReply.transactions;
   }
 
+  static String getPaxEmail(){
+    if( gblPassengerDetail != null ){
+      return gblPassengerDetail!.email;
+    }
+    return '';
+  }
+
 }
 

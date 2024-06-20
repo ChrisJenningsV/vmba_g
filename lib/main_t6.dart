@@ -166,8 +166,6 @@ void configT6() {
     wantSeatsWithProducts: true,
     wantFqtvAutologin: true,
     wantFqtvHomepage: true ,
-    wantUnlock:false,
-
 
     wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',

@@ -37,7 +37,7 @@ bool wantRtl() {
 }
 
 bool wantPageV2() {
-  if( gblSettings.pageStyle == 'V2') {
+  if( gblSettings.pageStyle == 'V2' ) {
     return true;
   } else {
     return false;
@@ -49,6 +49,17 @@ bool wantHomePageV2() {
   } else {
     return false;
   }
+}
+
+bool wantHomePageV3() {
+  if( gblSettings.homePageStyle == 'V3') {
+    return true;
+  } else {
+    return false;
+  }
+}
+bool wantCustomHome(){
+  return gblSettings.wantCustomHomepage;
 }
 
 Color v2BorderColor(){
@@ -90,6 +101,6 @@ Color v2PageBackgroundColor(){
 }
 
 double v2BorderWidth() {
-  return 0;
+  return 1;
 }
 

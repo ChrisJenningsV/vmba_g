@@ -22,7 +22,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
   static Color selectedBackground = Colors.black;
   static Color selectedText = Colors.white;
   static Color unselectedBackground = Colors.white;
-  static Color unselectedText = Colors.black;
+  static Color unselectedText = wantHomePageV3() ? Colors.grey : Colors.black;
 
   void _toggleJourneyType(bool _isReturn) {
     widget.onChanged!(_isReturn);
@@ -36,18 +36,19 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
   @override
   Widget build(BuildContext context) {
 
-  /*if( wantPageV2()) {
+  if( wantHomePageV3()) {
     return Container(
       width: double.infinity,
       child: getButtons(),
     );
-  }*/
+  }
     return getButtons();
 
   }
   Widget getButtons() {
     EdgeInsets retPadding = EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 5.0);
     EdgeInsets owPadding =  EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 5.0);
+
     BorderRadius retRadius =  BorderRadius.only(topLeft: const Radius.circular(7.0),bottomLeft: const Radius.circular(7.0));
     BorderRadius owRadius =  BorderRadius.only( topRight: const Radius.circular(7.0),bottomRight: const Radius.circular(7.0));
 
@@ -55,15 +56,22 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
       retRadius = BorderRadius.only( topRight: const Radius.circular(7.0),bottomRight: const Radius.circular(7.0));
       owRadius =   BorderRadius.only(topLeft: const Radius.circular(7.0),bottomLeft: const Radius.circular(7.0));
     }
+    if( wantHomePageV3()  ){
+      retRadius = BorderRadius.all( Radius.circular(5.0));
+      owRadius =   BorderRadius.all(Radius.circular(5.0));
+      retPadding = EdgeInsets.fromLTRB(45.0, 10.0, 45.0, 10.0);
+      owPadding =  EdgeInsets.fromLTRB(45.0, 10.0, 45.0, 10.0);
+    }
+
     return
     Container(
-      decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.grey,
+      decoration: wantHomePageV3() ? null : BoxDecoration(boxShadow: [BoxShadow(color: Colors.grey,
           blurRadius: 2.0,
           offset: Offset(0.5, 0.75))]),
     child:
       Row(
       mainAxisSize:  MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: wantHomePageV3() ? MainAxisAlignment.start : MainAxisAlignment.center,
         children: [
         new GestureDetector(
         child: new Container(
@@ -82,6 +90,7 @@ class _JourneyTypeWidgetState extends State<JourneyTypeWidget> {
     ),
     onTap: () => _toggleJourneyType(true),
     ),
+    wantHomePageV3() ? Padding(padding: EdgeInsets.all(2)) : Container(),
     new GestureDetector(
     child: new Container(
 

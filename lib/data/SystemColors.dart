@@ -21,6 +21,7 @@ class SystemColors {
 
   Color borderColor;
    Color primaryHeaderColor ;
+   Color? calInRangeColor;
    Color? progressBackColor;
    Color? progressTextColor;
    Color? headerTextColor;
@@ -64,6 +65,7 @@ class SystemColors {
     this.progressBackColor,
     this.progressTextColor,
     required this.primaryHeaderColor,
+    this.calInRangeColor = Colors.pink,
     this.headerTextColor,
     this.statusBar =Brightness.light,
     this.textEditBorderColor = Colors.grey,

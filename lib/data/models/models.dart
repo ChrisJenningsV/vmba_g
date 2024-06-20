@@ -41,8 +41,8 @@ class NewBooking {
   String departure = '';
   String arrival = '';
   String currency = '';
-  DateTime departureDate = DateTime.now();
-  DateTime? returnDate = DateTime.now();
+  DateTime? departureDate; // = DateTime.now();
+  DateTime? returnDate; // = DateTime.now();
   Passengers passengers = new Passengers(1, 0, 0, 0, 0, 0, 0);
   List<String> outboundflight = [];
   List<Flt> outboundflts = [];

@@ -11,6 +11,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 import '../../components/vidButtons.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/appBarWidget.dart';
+import '../../v3pages/controls/V3Constants.dart';
 import '../productFunctions.dart';
 
 class ComplextProductWidget extends StatefulWidget {
@@ -69,6 +70,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       appBar: appBar(
         context,
         widget.product!.productName,
+          PageEnum.product,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),

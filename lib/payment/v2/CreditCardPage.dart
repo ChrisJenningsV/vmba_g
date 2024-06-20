@@ -29,6 +29,7 @@ import '../../calendar/bookingFunctions.dart';
 import '../../components/bottomNav.dart';
 import '../../components/vidButtons.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
+import '../../v3pages/controls/V3Constants.dart';
 import '../choosePaymentMethod.dart';
 import '../paymentCmds.dart';
 
@@ -115,7 +116,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         key: _key,
         appBar: appBar(
           context,
-          'Payment',
+          'Payment', PageEnum.creditCard,
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',
@@ -173,7 +174,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       key: _key,
       appBar: appBar(
         context,
-        'Payment',
+        'Payment', PageEnum.creditCard,
         newBooking: widget.newBooking,
         curStep: 5,
         imageName: gblSettings.wantPageImages ? 'paymentPage' : '',

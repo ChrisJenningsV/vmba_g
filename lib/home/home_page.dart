@@ -20,6 +20,7 @@ import '../components/vidAppBar.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/navigation.dart';
 import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import 'package:vmba/v3pages/v3HomePage.dart';
@@ -62,7 +63,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     super.initState();
     commonPageInit('HOME');
     //initGmtTimer();
-
+    setLiveTest();
     if( gblVerbose) logit('init HomeState');
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
@@ -87,6 +88,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           buildNo = '${packageInfo.buildNumber}'
           );
     }
+    bool newInstall = true;
     getSetting('savedVersion').then((value) {
       if(value == null || value == '' ){
         // if null, old format saved bookings
@@ -97,6 +99,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           updateMsg =gblSettings.updateMessage;
         }
       } else {
+        newInstall == false;
         if( value.split('.').length == 4) {
           if (int.parse(gblVersion.split('.')[3]) > int.parse(value.split('.')[3])) {
             if( gblSettings.updateMessage != null && gblSettings.updateMessage.isNotEmpty) {
@@ -273,7 +276,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
 
-    if( gblSettings.homePageStyle == 'V3' ||
+    if( (wantHomePageV3() && wantCustomHome()) ||
         (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){
       return new V3HomePage();
     }
@@ -606,10 +609,14 @@ Widget _getLogo(){
                       backgroundColor: b1Clr),
                   onPressed: () {
                     if( gblNoNetwork == false) {
+                      navToFlightSearchPage(context);
+
+/*
                       Navigator.of(context)
                           .pushNamedAndRemoveUntil(
                           '/FlightSearchPage',
                               (Route<dynamic> route) => false);
+*/
                     }
                   },
                   child: Container(

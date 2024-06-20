@@ -3,6 +3,8 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../utilities/navigation.dart';
+
 class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,12 @@ class ErrorPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: ElevatedButton(
                   onPressed: () {
+                    navToFlightSearchPage(context);
+
+/*
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/FlightSearchPage', (Route<dynamic> route) => false);
+*/
                   },
                   style: ElevatedButton.styleFrom(
                       foregroundColor:

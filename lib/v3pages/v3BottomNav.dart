@@ -49,6 +49,8 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
   return
     BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
+
+      backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
       items:   <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -77,7 +79,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
       ],
       currentIndex: 0,
       selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.black,
+      unselectedItemColor: Colors.white,
       onTap: (value) async {
         switch (value){
           case 0:

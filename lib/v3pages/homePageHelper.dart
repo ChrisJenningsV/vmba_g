@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 Future getHomepage() async {
   logit('getHomepage');
   if( gblHomeCardList == null ) {
-    String jsonString = await await rootBundle.loadString('lib/assets/$gblAppTitle/json/home.json');
+    String jsonString =  await rootBundle.loadString('lib/assets/$gblAppTitle/json/home.json');
 
     final Map<String, dynamic> map = json.decode(jsonString);
     gblHomeCardList = new PageListHolder.fromJson(map);
@@ -78,6 +78,7 @@ class HomeCard extends HomeCardLink  {
 
   IconData? icon;
   String image='';
+  String format='';
   double height = 0;
   double fontSize = 0;
   bool expanded = true;
@@ -100,6 +101,7 @@ class HomeCard extends HomeCardLink  {
       }
     }*/
     if( json['expanded'] != null ) expanded = parseBool(json['expanded']);
+    if( json['format'] != null ) format = json['format'];
     if( json['icon'] != null && json['icon'] != '' &&  json['icon'] != 'none') {
       icon = getIconFromName(json['icon'].toString());
     }
@@ -274,6 +276,14 @@ class CardText {
 }
 
 Color lookUpColor(String colorName){
+  if( colorName.startsWith('#')){
+    // hex color, format #F0F0F0 (#<red><green><blue>
+    int r = int.parse(colorName.substring(1,3),radix: 16);
+    int g = int.parse(colorName.substring(3,5),radix: 16);
+    int b = int.parse(colorName.substring(5,7),radix: 16);
+    return Color.fromRGBO(r, g, b, 1);
+  }
+
   switch (colorName.toUpperCase()){
     case 'TRANSPARENT':
       return Colors.transparent;
@@ -393,6 +403,7 @@ extension ColorExtension on String {
 }
 
 Future<void> initHomePage(String fileName) async {
+    logit('Open homepage ${gblSettings.gblServerFiles}$fileName');
     final jsonString = await http.get(Uri.parse('${gblSettings.gblServerFiles}$fileName'), headers: {HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptEncodingHeader: 'gzip,deflate,br'}); // , HttpHeaders.acceptCharsetHeader: "utf-8"
 

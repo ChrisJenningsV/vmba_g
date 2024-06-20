@@ -16,6 +16,7 @@ class VrsApiRequest extends Session {
   String appVersion ='';
   String undoCmd ='';
   String smartApiVersion = '';
+  String email = '';
 
   VrsApiRequest(
       Session session,
@@ -24,7 +25,7 @@ class VrsApiRequest extends Session {
   {this.appFile='',this.vrsGuid='', this.appVersion='', this.brandId='',
     this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='',
     this.data='',
-    this.smartApiVersion='1.1',
+    this.smartApiVersion='1.2', this.email='',
 
   }
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
@@ -47,6 +48,8 @@ class VrsApiRequest extends Session {
     map['undoCmd'] = undoCmd;
     map['appVersion'] = appVersion;
     map['smartApiVersion'] = smartApiVersion;
+    map['email'] = email;
+
     return map;
   }
 }
