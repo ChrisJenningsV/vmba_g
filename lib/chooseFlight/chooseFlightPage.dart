@@ -11,6 +11,7 @@ import '../calendar/widgets/langConstants.dart';
 import '../components/vidButtons.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
+import '../v3pages/cards/typogrify.dart';
 
 class ChooseFlight extends StatelessWidget {
   ChooseFlight(
@@ -95,6 +96,11 @@ class ChooseFlight extends StatelessWidget {
       ),);
       list.add(new Row(children: [Padding(padding: EdgeInsets.all(5))]));
     } else {*/
+      list.add(inPageTitleText(this.classband?.cbdisplayname == 'Fly Flex Plus'
+          ? 'Fly Flex +'
+          : this.classband?.cbdisplayname as String));
+
+/*
       list.add(new Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -111,6 +117,7 @@ class ChooseFlight extends StatelessWidget {
       ),);
    // }
     list.add(V3Divider());
+*/
 
     if( gblSettings.wantClassBandImages) {
       //list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png')));

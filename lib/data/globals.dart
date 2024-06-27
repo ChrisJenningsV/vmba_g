@@ -20,7 +20,7 @@ import 'models/providers.dart';
 // initialized in main_XX.dart
 //
 String gblBuildFlavor = 'LM';
-bool gblIsLive = false;
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 113;
 int requiredApiVersion = 102;

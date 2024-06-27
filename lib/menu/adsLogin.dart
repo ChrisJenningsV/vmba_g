@@ -8,6 +8,13 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../Helpers/settingsHelper.dart';
+import '../components/vidButtons.dart';
+import '../v3pages/cards/typogrify.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
+import '../v3pages/v3Theme.dart';
+
 //ADS40 00 00 02 09 095
 //Pin: 9831
 
@@ -54,17 +61,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        //brightness: gblSystemColors.statusBar,
+      appBar: V3AppBar( PageEnum.dayPicker,
         backgroundColor: gblSystemColors.primaryHeaderColor,
+/*
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),
+*/
         title: new TrText('ADS / Island Resident Scheme',
             style: TextStyle(
                 color:
                 gblSystemColors.headerTextColor)),
       ),
       body: contentBox(context),
+        floatingActionButton:  wantHomePageV3() ? vidWideActionButton(context,'Log in', _doAdsLogin , offset: 35.0 ) : null,
     );
   }
 
@@ -76,25 +85,17 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              inPageTitleText(title),
+/*
               Text(title,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+*/
               SizedBox(height: 15,),
-          v2BorderBox(context,  ' ' + translate('Number'), TextFormField(
+          v2BorderBox(context,  ' ' + translate('Number'),
+              TextFormField(
                 maxLength: 20,
                 decoration: v2Decoration(),
-/*
-                decoration: InputDecoration(
-                  counterText: '',
-                  contentPadding:
-                  new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                  labelText: 'Number',
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    borderSide: new BorderSide(),
-                  ),
-                ),
-*/
+
                 controller: _adsNumberTextEditingController,
                 keyboardType: TextInputType.streetAddress,
                 onSaved: (value) {
@@ -104,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                 },
               )),
               SizedBox(height: 15,),
-              v2BorderBox(context,  ' ' + translate('Pin'), TextFormField(
+              v2BorderBox(context,  ' ' + translate('Pin'),
+                  TextFormField(
                 maxLength: 4,
                 controller: _adsPinTextEditingController,
                 decoration:v2Decoration(),
@@ -116,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
               )),
               SizedBox(height: 22,),
-              Align(
+              wantHomePageV3() ? Container() : Align(
                 alignment: Alignment.center,
                 child: _getOkButton(),
               ),
@@ -176,6 +178,11 @@ class _LoginPageState extends State<LoginPage> {
       style: new TextStyle(color: Colors.white),));
     return Row( mainAxisAlignment: MainAxisAlignment.center, children: list,);
   }
+
+  void _doAdsLogin(BuildContext p1, dynamic p2){
+    _checkAdsLogin();
+  }
+
 
   Future _checkAdsLogin() async {
 

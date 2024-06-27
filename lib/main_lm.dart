@@ -52,7 +52,8 @@ void configLM() {
 
   gblSettings = Settings (
  //   homePageFilename: 'customPages.json',
- /*   homePageStyle: 'V3',
+    // start new bits
+   /* homePageStyle: 'V3',
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
     wantPriceCalendarRounding: false,
@@ -60,6 +61,7 @@ void configLM() {
     wantProducts: true,
     wantStatusLine: true,
     wantSeatsWithProducts: true,*/
+  // end new bits
 
    // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
     wantRememberMe: false,

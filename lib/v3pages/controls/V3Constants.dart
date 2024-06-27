@@ -22,4 +22,5 @@ enum PageEnum {
   webPayment,
   stopPage,
   myNotifications,
+  adsLogin,
 }

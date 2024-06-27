@@ -61,7 +61,7 @@ void config9Q() {
     buttonStyle: 'RO3',
     wantRememberMe: false,
     wantHomeFQTVButton: false,
-    gblLanguages: 'en,English',
+//    gblLanguages: 'en,English',
 //    currencies: 'eu,EUR,us,USD,ro,RON,gb,GBP,md,MDL',
     currency: 'USD',
     wantCurrencyPicker: false,
