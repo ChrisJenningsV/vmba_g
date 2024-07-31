@@ -96,6 +96,9 @@ BoxDecoration v2FormDecoration() {
 }
 
 Color v2PageBackgroundColor(){
+  if( gblSystemColors.backgroundColor != null ) {
+    return gblSystemColors!.backgroundColor as Color;
+  }
   return Colors.grey.shade400;
   //return Colors.grey.withOpacity(0.5);
 }

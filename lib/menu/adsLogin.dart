@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: V3AppBar( PageEnum.dayPicker,
-        backgroundColor: gblSystemColors.primaryHeaderColor,
+        //backgroundColor: gblSystemColors.primaryHeaderColor,
 /*
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

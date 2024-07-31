@@ -8,8 +8,9 @@ import 'V3Constants.dart';
 
 class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
   SystemUiOverlayStyle? systemOverlayStyle;
-  final Color? backgroundColor;
+//  final Color? backgroundColor;
   final bool automaticallyImplyLeading;
+  final bool hasBackgroundImage;
   final Widget? title;
   final List<Widget>? actions;
   final Widget? leading;
@@ -34,8 +35,8 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
         this.actionsIconTheme,
         this.toolbarHeight,
 
-        this.backgroundColor,
         this.automaticallyImplyLeading = true,
+        this.hasBackgroundImage = false,
         this.actions,
         this.systemOverlayStyle,
       }): preferredSize = Size.fromHeight(kToolbarHeight), super();
@@ -53,30 +54,30 @@ class _V3AppBarState extends State<V3AppBar>{
 
   @override
   Widget build(BuildContext context) {
-    bool wantShadow = true;
+ //   bool wantShadow = true;
     if( gblV3Theme != null ) {
       if (widget.systemOverlayStyle == null) {
         if( gblV3Theme!.generic != null && gblV3Theme!.generic.setStatusBarColor) {
           widget.systemOverlayStyle = SystemUiOverlayStyle(
-            statusBarColor: widget.backgroundColor,
+            statusBarColor: widget.hasBackgroundImage ? Colors.transparent : gblSystemColors.primaryHeaderColor,//widget.backgroundColor,
           );
         }
       }
       if( gblV3Theme!.generic != null && gblV3Theme!.generic.centerTitleText) {
         widget.centerTitle = gblV3Theme!.generic.centerTitleText;
       }
-      wantShadow = false;
+//      wantShadow = false;
 
     }
     return AppBar(title: widget.title, 
-        backgroundColor: widget.backgroundColor,
+        backgroundColor: gblSystemColors.primaryHeaderColor,// widget.backgroundColor,
         //bottomOpacity: wantShadow ? null : 0.0 ,
         automaticallyImplyLeading: widget.automaticallyImplyLeading,
         flexibleSpace: widget.flexibleSpace,
         actions: widget.actions,
         leading: widget.leading,
         bottom: widget.bottom,
-        elevation: wantShadow ? widget.elevation : 0,
+        elevation: gblSettings.wantShadows ? widget.elevation : 0,
         actionsIconTheme: widget.actionsIconTheme,
         iconTheme: widget.iconTheme,
         centerTitle: widget.centerTitle,

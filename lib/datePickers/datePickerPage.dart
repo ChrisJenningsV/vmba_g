@@ -44,7 +44,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
         /*  systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: gblSystemColors.primaryHeaderColor,
           ),*/
-          backgroundColor: gblSystemColors.primaryHeaderColor,
+          //backgroundColor: gblSystemColors.primaryHeaderColor,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(

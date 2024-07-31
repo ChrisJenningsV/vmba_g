@@ -44,6 +44,8 @@ import '../menu/contact_us_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/colourHelper.dart';
 import '../utilities/widgets/dataLoader.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
 part 'viewBookingPagePax.dart';
 
 enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
@@ -120,10 +122,10 @@ class ViewBookingPageState extends State<ViewBookingPage> {
           child: Scaffold(
 
               key: _key,
-              appBar: AppBar(
+              appBar: V3AppBar(
+                PageEnum.myBookings,
                 //brightness: gblSystemColors.statusBar,
-                backgroundColor:
-                gblSystemColors.primaryHeaderColor,
+                //backgroundColor:gblSystemColors.primaryHeaderColor,
                 actions: [
                   Builder(
                     builder: (context) =>
@@ -1436,8 +1438,9 @@ class ViewBookingBodyState
       // nb DateTime isBefore and isAfter do not work accurateley !!!
     //  logit('Checkin Op:$checkinOpens Cl:$checkinClosed now:$now');
 
-
-      if (itin.secRLoc != '') {
+      if( itin.mMBCheckinAllowed == 'False' || gblSettings.wantSeats == false){
+        response = translate('No online Check-in ');
+      } else if (itin.secRLoc != '') {
         response = translate('Check-in with other airline ');
       } else if( itin.mMBCheckinAllowed != null &&  itin.mMBCheckinAllowed == 'False') {
         if( widget.isBeforeOpens ) {
@@ -1997,7 +2000,7 @@ class ViewBookingBodyState
       bool checkinOpen, bool chargeForPreferredSeating) {
     String btnText = '';
     if(checkinOpen) {
-
+      if( gblSettings.wantSeats ==  false ) return Container();
       // apis button required and yet to be done ?
       if(apisPnrStatus != null && apisPnrStatus!.apisRequired(journeyNo) && _hasApisInfoForPax(journeyNo, paxNo) == false){
         logit('APIS required');
@@ -2007,6 +2010,7 @@ class ViewBookingBodyState
       btnText = 'Check-in';
     } else {
         if( widget.isAfterClosed) return Container();
+        if( gblSettings.wantSeats ==  false ) return Container();
         if(paxlist
           .firstWhere((p) => p.id == paxNo + 1)
           .seat == null ||

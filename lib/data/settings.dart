@@ -90,6 +90,7 @@ class Settings {
   bool wantCitySwap = true;
   bool wantPageImages = false;
   bool wantProducts = false;
+  bool wantSeats = true;
   bool wantGiftVouchers;
   bool wantSeatsWithProducts = false;
   bool wantMmbProducts = false;
@@ -135,9 +136,12 @@ class Settings {
   bool saveChangeBookingBeforePay;
   bool wantSaveSettings;
   bool wantShadows;
+  bool wantTransapentHomebar;
+  bool wantVericalFaresCalendar;
   bool wantFqtvAutologin;
   bool wantFqtvHomepage;
   bool wantCustomHomepage;
+  bool useLogin2;
 
   String productFormat;
   String homePageStyle;
@@ -274,6 +278,7 @@ bool bpShowFastTrack;
     this.wantCitySwap = false,
     this.wantPageImages = false,
     this.wantProducts = false,
+    this.wantSeats = true,
     this.wantGiftVouchers = false,
     this.wantSeatsWithProducts = false,
     this.wantMmbProducts = false,
@@ -317,9 +322,12 @@ bool bpShowFastTrack;
     this.wantMonthOnCalendar = false,
     this.wantSaveSettings = false,
     this.wantShadows = true,
+    this.wantTransapentHomebar = false,
+    this.wantVericalFaresCalendar = false,
     this.wantFqtvAutologin = false,
     this.wantFqtvHomepage = false,
     this.wantCustomHomepage = false,
+    this.useLogin2 = false,
     this.wantUnlock = false,
 
     this.useWebApiforVrs: false,

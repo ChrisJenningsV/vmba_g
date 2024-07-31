@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
+
+import '../v3pages/controls/V3AppBar.dart';
 
 class CompletedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String>? args = ModalRoute.of(context)!.settings.arguments as List<String>?;;
     return Scaffold(
-        appBar: AppBar(
+        appBar: V3AppBar(
+          PageEnum.paymentComplete,
           //brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
+          //backgroundColor:          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: TrText("Payment Completed",

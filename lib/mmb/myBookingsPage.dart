@@ -17,6 +17,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
+import 'package:vmba/v3pages/controls/V3AppBar.dart';
 import 'package:vmba/v3pages/controls/V3Constants.dart';
 
 import '../Helpers/networkHelper.dart';
@@ -198,7 +199,13 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
       return Scaffold(
         backgroundColor: v2PageBackgroundColor(),
-          appBar: appBar(context, "My Bookings", PageEnum.myBookings,
+          appBar: V3AppBar(
+            PageEnum.myBookings,
+            //backgroundColor: gblSystemColors.primaryHeaderColor,
+            title: TrText("MyBookings",
+                style: TextStyle(
+                    color:
+                    gblSystemColors.headerTextColor)),
           bottom:  new PreferredSize(
           preferredSize: new Size.fromHeight(30.0),
     child: new Container(

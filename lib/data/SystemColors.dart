@@ -7,10 +7,10 @@ class SystemColors {
   final Color? primaryButtonTextColor;
   final Color? otherButtonTextColor;
   Color accentButtonColor = Colors.cyan;
-  final Color? home1ButtonColor;
-  final Color? home2ButtonColor;
-  final Color? home1ButtonTextColor;
-  final Color? home2ButtonTextColor;
+  Color? home1ButtonColor;
+  Color? home2ButtonColor;
+  Color? home1ButtonTextColor;
+  Color? home2ButtonTextColor;
 
   //final Color buttonColor; // = Color.fromRGBO(243, 135, 57, 1);
   final Color primaryColor; // = Colors.white;
@@ -113,7 +113,7 @@ class SystemColors {
     if( textEditBorderColor == null ) textEditBorderColor = Colors.grey.shade300;
     if( textEditIconColor == null ) textEditIconColor =Colors.grey.shade500;
     if( inputFillColor == null ) inputFillColor = Colors.grey.shade100;
-    if( backgroundColor == null ) backgroundColor = Colors.grey.shade100;
+    if( backgroundColor == null ) backgroundColor = Colors.grey.shade400;
 
   }
 }

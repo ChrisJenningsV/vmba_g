@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/FlightSelectionSummary/FlightSelectionSummaryPage.dart';
 import 'package:vmba/calendar/returningFlightPage.dart';
+import 'package:vmba/calendar/verticalFaresCalendar.dart';
 import 'package:vmba/calendar/widgets/cannedFact.dart';
 import 'package:vmba/chooseFlight/chooseFlightPage.dart';
 import 'dart:async';
@@ -182,6 +183,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 
   Future _loadData() async {
     // clear out any current booking
+    _loadingInProgress = true;
     await runVrsCommand('I');
 
 
@@ -254,13 +256,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     });
 
   }
-/*
-  showSnackBar(String message) {
-    final _snackbar = snackbar(message);
-    ScaffoldMessenger.of(context).showSnackBar(_snackbar);
-    //_key.currentState.showSnackBar(_snackbar);
-  }
-*/
+
   void _dataLoaded() {
     int calenderWidgetSelectedItem;
     double animateTo = 250;
@@ -377,6 +373,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         ),
       );
     } else {
+      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv, newBooking:  widget.newBooking, loadData: _loadData,);
       return flightSelection();
     }
   }

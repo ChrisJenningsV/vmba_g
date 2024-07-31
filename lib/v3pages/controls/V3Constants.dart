@@ -23,4 +23,10 @@ enum PageEnum {
   stopPage,
   myNotifications,
   adsLogin,
+  paymentComplete,
+  chooseSeat,
+  chooseAirport,
+  travelDates,
+  progress,
+  chooseFare,
 }

@@ -96,7 +96,8 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
             elevation: elevalion,
             automaticallyImplyLeading: automaticallyImplyLeading,
             centerTitle: gblCentreTitle,
-            backgroundColor: Colors.transparent,
+            //backgroundColor: Colors.transparent,
+            hasBackgroundImage: true,
 
             iconTheme: IconThemeData(
                 color: Colors.white),
@@ -123,7 +124,7 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
       toolbarHeight: toolbarHeight,
       elevation: elevalion,
       leading: getAppBarLeft(),
-      backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
+      //backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
       title: new TrText(title,
@@ -143,7 +144,7 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
       elevation: elevalion,
       automaticallyImplyLeading: automaticallyImplyLeading,
       centerTitle: gblCentreTitle,
-      backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
+      //backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
 
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),

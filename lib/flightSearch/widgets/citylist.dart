@@ -8,9 +8,11 @@ import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../utilities/helper.dart';
+import '../../v3pages/controls/V3AppBar.dart';
 
 TextEditingController _searchEditingController =   TextEditingController();
 
@@ -431,9 +433,10 @@ class CitiesScreenState  extends State<CitiesScreen> {
       fillColor = Colors.grey.withOpacity(0.5);
     }
     return new Scaffold(
-      appBar: new AppBar(
+      appBar: new V3AppBar(
           //brightness: gblSystemColors.statusBar,
-          backgroundColor: gblSystemColors.primaryHeaderColor,
+          PageEnum.chooseAirport,
+          //backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: TextFormField(

@@ -742,37 +742,7 @@ Row airMiles() {
           ),
         );
       }
-/*    } else if (_noInternet) {
-      return Scaffold(
-          key: _key,
-          appBar: appBar(context, 'Summary',
-            curStep: 3,
-            newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',) ,
-          extendBodyBehindAppBar: gblSettings.wantPageImages,
-          endDrawer: DrawerMenu(),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TrText('Please check your internet connection'),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      primary: Colors.black),
-                  onPressed: () => retryBooking(),
-                  child: Text(
-                    'Retry booking',
-                    style: new TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            ),
-          ));*/
+
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,

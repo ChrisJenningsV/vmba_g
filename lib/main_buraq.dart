@@ -181,6 +181,7 @@ void configUZ() {
   wantCountry: false,
   useWebApiforVrs: true,
 //  disableBookings: true,
+  wantSeats: false,
 
   wantFQTVNumber: false,
   apiKey: 'c7137da1854e4e3f9e5d58f6e78616ee',

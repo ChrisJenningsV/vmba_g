@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 
 class RangePickerWidget extends StatefulWidget {
@@ -50,8 +52,9 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: gblSystemColors.primaryHeaderColor,
+        appBar: V3AppBar(
+          PageEnum.travelDates,
+         // backgroundColor: gblSystemColors.primaryHeaderColor,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(

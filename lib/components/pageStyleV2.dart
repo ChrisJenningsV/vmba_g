@@ -111,6 +111,7 @@ InputDecoration v2Decoration() {
         borderSide: BorderSide(color: Colors.blue),
       ),
     counterText: '',
+    fillColor: gblSystemColors.inputFillColor,
   );
 }
 

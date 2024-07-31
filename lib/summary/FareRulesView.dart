@@ -102,7 +102,14 @@ class _FareRulesState extends State<FareRulesView> {
               List<String> list = [];
               fareRulesPerSegment.add(list);
             }
-            fareRulesPerSegment[seg -1].addAll(result.body!);
+            List<String> str = result.body!;
+            List<String> str2=[];
+            str.forEach((element) {
+              List<String> strArr = element.split('<br>');
+              str2.addAll(strArr);
+            });
+
+            fareRulesPerSegment[seg -1].addAll(str2);
       });
 
          /* .then((_) {

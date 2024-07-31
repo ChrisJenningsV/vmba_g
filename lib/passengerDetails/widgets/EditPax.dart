@@ -174,6 +174,7 @@ return SafeArea(
         padding: v2FormPadding(),
       child: Card(
           shape: RoundedRectangleBorder(
+            side: BorderSide(color: v2BorderColor()),
             borderRadius: BorderRadius.circular(10.0),
           ),
 

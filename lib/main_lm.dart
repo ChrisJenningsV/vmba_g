@@ -50,18 +50,28 @@ void configLM() {
   gblBuildFlavor = 'LM';
   gblCurrentRloc = '';
 
+
+/*
+  gblSystemColors.inputFillColor = Color.fromRGBO(250, 250, 250, 1);
+  gblSystemColors.backgroundColor = Colors.white;
+*/
+
   gblSettings = Settings (
  //   homePageFilename: 'customPages.json',
     // start new bits
-   /* homePageStyle: 'V3',
+/*
+    homePageStyle: 'V3',
+    wantShadows: false,
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
     wantPriceCalendarRounding: false,
     wantUnlock:true,
     wantProducts: true,
     wantStatusLine: true,
-    wantSeatsWithProducts: true,*/
-  // end new bits
+    wantSeatsWithProducts: true,
+*/
+
+    // end new bits
 
    // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
     wantRememberMe: false,

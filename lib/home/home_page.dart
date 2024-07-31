@@ -291,7 +291,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     Color headerClr = gblSystemColors.primaryHeaderColor;
        bool extendBodyBehindAppBar =  false;
 
-    if( wantPageV2()) {
+    if( wantPageV2() || gblSettings.wantTransapentHomebar) {
       headerClr = Colors.transparent;
       elevation = 0;
       extendBodyBehindAppBar =  true;
@@ -373,7 +373,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
             //brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
-            backgroundColor: headerClr,
+            backgroundColor: gblSettings.wantTransapentHomebar ? Colors.transparent : headerClr,
             title:_getLogo() ,
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
 
@@ -454,13 +454,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         appBar: new vidAppBar(
           elevation: elevation,
             centerTitle: gblCentreTitle,
-            //brightness: gblSystemColors.statusBar,
-            //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
-            backgroundColor:headerClr,
+            backgroundColor: gblSettings.wantTransapentHomebar ? Colors.black.withOpacity(0.05) : headerClr,
             title:_getLogo() ,
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
-
-          //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
             ),
         body: Stack(
           children: _getBackImage(buttonShape, buttonHeight),
@@ -586,12 +582,13 @@ Widget _getLogo(){
     FontWeight fw = FontWeight.bold;
     double tsf = 1.0;
 
-    if( wantHomePageV2()) {
+    if( wantHomePageV2() || wantHomePageV3() ) {
       b1Clr = gblSystemColors.home1ButtonColor!;
       b2Clr = gblSystemColors.home2ButtonColor!;
       b1TextClr = gblSystemColors.home1ButtonTextColor!;
       b2TextClr = gblSystemColors.home2ButtonTextColor!;
       fw = FontWeight.normal;
+      buttonHeight = 35.0;
       tsf = 1.25;
     }
 
@@ -601,7 +598,7 @@ Widget _getLogo(){
         children: <Widget>[
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(8.0),
               child: Center(
                 child: TextButton(
                   style: TextButton.styleFrom(
@@ -610,13 +607,6 @@ Widget _getLogo(){
                   onPressed: () {
                     if( gblNoNetwork == false) {
                       navToFlightSearchPage(context);
-
-/*
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil(
-                          '/FlightSearchPage',
-                              (Route<dynamic> route) => false);
-*/
                     }
                   },
                   child: Container(
@@ -659,8 +649,7 @@ Widget _getLogo(){
                 child: TextButton(
                   style: TextButton.styleFrom(
                       shape: buttonShape,
-                      backgroundColor: gblSystemColors
-                          .primaryButtonColor),
+                      backgroundColor: wantHomePageV3() ? b2Clr : gblSystemColors.primaryButtonColor),
                   onPressed: () =>
                       Navigator.of(context)
                           .pushNamedAndRemoveUntil('/AdsPage',
@@ -681,7 +670,7 @@ Widget _getLogo(){
                         TrText(
                           'Book an ADS / Island Resident ',
                           textScaleFactor: tsf,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: wantHomePageV3() ? b2TextClr: Colors.white),
                         ),
                       ],
                     ),

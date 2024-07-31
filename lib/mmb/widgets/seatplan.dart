@@ -16,6 +16,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/v3pages/controls/V3Constants.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
@@ -23,6 +24,7 @@ import '../../controllers/vrsCommands.dart';
 import '../../data/smartApi.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
+import '../../v3pages/controls/V3AppBar.dart';
 import '../../v3pages/fields/typography.dart';
 
 enum SeatType { regular, emergency }
@@ -478,10 +480,13 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: _key,
-        appBar: new AppBar(
+        appBar: new V3AppBar(
+          PageEnum.chooseSeat,
           //brightness: gblSystemColors.statusBar,
+/*
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
+*/
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),

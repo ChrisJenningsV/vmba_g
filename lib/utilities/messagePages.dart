@@ -9,6 +9,8 @@ import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../home/home_page.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 
 class MessagePage extends StatefulWidget {
@@ -100,11 +102,11 @@ class MessagePageState extends State<MessagePage> {
       }
       return Scaffold(
           key: _key,
-          appBar: new AppBar(
+          appBar: new V3AppBar(
+            PageEnum.progress,
             automaticallyImplyLeading: false,
             //brightness: gblSystemColors.statusBar,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
+            //backgroundColor:gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
             title: new TrText('',
@@ -119,11 +121,11 @@ class MessagePageState extends State<MessagePage> {
     else if( widget.displayFormat == '2') {
       return Scaffold(
           key: _key,
-          appBar: new AppBar(
+          appBar: new V3AppBar(
             //brightness: gblSystemColors.statusBar,
+            PageEnum.progress,
             automaticallyImplyLeading: false,
-            backgroundColor:
-            gblSystemColors.primaryHeaderColor,
+            // backgroundColor:            gblSystemColors.primaryHeaderColor,
             iconTheme: IconThemeData(
                 color: gblSystemColors.headerTextColor),
             title: new TrText('',

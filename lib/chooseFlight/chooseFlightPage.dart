@@ -12,6 +12,8 @@ import '../components/vidButtons.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import '../v3pages/cards/typogrify.dart';
+import '../v3pages/controls/V3AppBar.dart';
+import '../v3pages/controls/V3Constants.dart';
 
 class ChooseFlight extends StatelessWidget {
   ChooseFlight(
@@ -30,11 +32,11 @@ class ChooseFlight extends StatelessWidget {
   Widget build(BuildContext context) {
     gblCurPage = 'CHOOSEFLIGHT';
     return Scaffold(
-        appBar: AppBar(
+        appBar: V3AppBar(
+          PageEnum.chooseFare,
           //brightness: gblSystemColors.statusBar,
           centerTitle: true,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
+          // backgroundColor:          gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: TrText("Choose Flight",
@@ -208,13 +210,14 @@ class ChooseFlight extends StatelessWidget {
                         children: <Widget>[
                           new Column(
                             //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[iconWidget(item.id)],
+                            children: (item.icon == '') ? <Widget>[Container()] : <Widget>[iconWidget(item.icon )],
                           ),
                           new Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: (item.icon == '') ? EdgeInsets.only(left: 1) : EdgeInsets.only(left: 15),
                           ),
                           new Flexible(
-                            child: TrText(cleanText(item.text)),
+                            child: TrText(cleanText(item.text),
+                                style: item.text.toLowerCase().contains('<b>') ? TextStyle(fontWeight: FontWeight.bold) : null,),
                           ),
                         ],
                       ),
@@ -261,27 +264,156 @@ return str;
 
   }
 
-  Icon iconWidget(String id) {
+  Icon iconWidget(String? icon) {
     Color iconClr = Colors.green;
     if( gblSystemColors.classBandIconColor != null) {
       iconClr = gblSystemColors.classBandIconColor as Color;
     }
-    switch (id) {
-      case '90':
-        return Icon(null);
+    if( icon == null ) icon = 'default';
+    IconData iconData = Icons.check_circle;
+
+    switch (icon) {
+      case 'fa-adjust':
+        iconData = Icons.adjust;
         break;
-      case '61':
-        return Icon(null);
+      case 'fa-money':
+        iconData = Icons.money;
         break;
-      case '94':
-        return Icon(null);
+      case 'fa-binoculars':
+        iconData = Icons.maps_ugc_rounded;
         break;
-      case '91':
-        return Icon(null);
+      case 'fa-camera-retro':
+        iconData = Icons.camera_alt;
         break;
+      case 'fa-certificate':
+        iconData = Icons.document_scanner_outlined;
+        break;
+      case 'fa-diamond':
+        iconData = Icons.diamond_outlined;
+        break;
+      case 'fa-fighter-jet':
+        iconData = Icons.airplanemode_active;
+        break;
+      case 'fa-file':
+        iconData = Icons.file_copy_outlined;
+        break;
+      case 'fa-fort-awesome':
+        iconData = Icons.font_download;
+        break;
+      case 'fa-forward':
+        iconData = Icons.forward;
+        break;
+      case 'fa-phone':
+        iconData = Icons.phone_android;
+        break;
+      case 'fa-photo':
+        iconData = Icons.photo;
+        break;
+      case 'fa-star':
+        iconData = Icons.star;
+        break;
+
+      case 'fa-asterisk':
+        iconData = Icons.star;
+        break;
+      case 'fa-ban':
+        iconData = Icons.comment_bank;
+        break;
+      case 'fa-book':
+        iconData = Icons.book;
+        break;
+      case 'fa-check-circle':
+        iconData = Icons.check_circle_outline;
+        break;
+      case 'fa-flag':
+        iconData = Icons.flag;
+        break;
+      case 'fa-flag-o':
+        iconData = Icons.flag_outlined;
+        break;
+      case 'fa-flash':
+        iconData = Icons.flash_on;
+        break;
+      case 'fa-gears':
+        iconData = Icons.circle_outlined;
+        break;
+
+      case 'fa-backward':
+        iconData = Icons.fast_rewind;
+        break;
+      case 'fa-clock-o':
+        iconData = Icons.lock_clock;
+        break;
+      case 'fa-desktop':
+        iconData = Icons.desktop_mac;
+        break;
+      case 'fa-leaf':
+        iconData = Icons.energy_savings_leaf_outlined;
+        break;
+      case 'fa-shield':
+        iconData = Icons.shield_outlined;
+        break;
+      case 'fa-skyatlas':
+        iconData = Icons.cloud_done_outlined;
+        break;
+
+      case 'fa-anchor':
+        iconData = Icons.anchor;
+        break;
+      case 'fa-coffee':
+        iconData = Icons.coffee;
+        break;
+      case 'fa-exchange':
+        iconData = Icons.swap_horiz;
+        break;
+      case 'fa-fast-forward':
+        iconData = Icons.fast_forward;
+        break;
+      case 'fa-ticket':
+        iconData = Icons.airplane_ticket_outlined;
+        break;
+
+      case 'fa-briefcase':
+        iconData = Icons.card_travel;
+        break;
+      case 'fa-check':
+        iconData = Icons.check;
+        break;
+      case 'fa-check-square':
+        iconData = Icons.check_box;
+        break;
+      case 'fa-exchange':
+        iconData = Icons.swap_horiz_outlined;
+        break;
+      case 'fa-exclamation':
+        iconData = Icons.info_outline;
+        break;
+      case 'fa-hourglass':
+        iconData = Icons.hourglass_full;
+        break;
+      case 'fa-hourglass-start':
+        iconData = Icons.hourglass_bottom;
+        break;
+      case 'fa-paper-plane':
+        iconData = Icons.airplane_ticket_outlined;
+        break;
+      case 'fa-plane':
+        iconData = Icons.airplanemode_active;
+        break;
+      case 'fa-plus-square':
+        iconData = Icons.add_box_outlined;
+        break;
+      case 'fa-suitcase':
+        iconData = Icons.shopping_bag;
+        break;
+      case 'fa-thumbs-up':
+        iconData = Icons.thumb_up_alt_outlined;
+        break;
+
       default:
-        return Icon(Icons.check_circle, color: iconClr,);
+        iconData = Icons.check_circle;
         break;
     }
+    return Icon(iconData, color: iconClr,);
   }
 }

@@ -53,7 +53,7 @@ void configGR() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    wantDangerousGoods: true ,
+    wantDangerousGoods: false,
 
     airlineName: "Aurigny",
     gblServerFiles: 'https://customer3.videcom.com/aurignyairservices/AppFiles/',
