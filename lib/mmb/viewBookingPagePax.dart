@@ -8,57 +8,11 @@ extension Section on ViewBookingBodyState {
   List<Widget> getPassengerViewWidgets(PnrModel pnr, int journey) {
     List<Widget> list = [];
 
-/*
-  // code not used
-    if (pnr.pNR.aPFAX != null) {
-      bool found = false;
-      pnr.pNR.aPFAX.aFX.forEach((element) {
-        if( found == false && element.aFXID =='DISC'){
-          _mmbBooking.eVoucher = element;
-          found=true;
-        }
-      });
-    } else {
-    }
-*/
-
     //TODO:
     //Remove from list if pax checked in
     List<Pax> paxlist =  pnr.getBookedPaxList(journey);
     // new List<Pax>();
-    /*for (var pax = 0; pax <= pnr.pNR.names.pAX.length - 1; pax++) {
-      if (pnr.pNR.names.pAX[pax].paxType != 'IN') {
-        paxlist.add(Pax(
-            pnr.pNR.names.pAX[pax].firstName +
-                ' ' +
-                pnr.pNR.names.pAX[pax].surname,
-            pnr.pNR.aPFAX != null
-                ? pnr.pNR.aPFAX.aFX
-                .firstWhere(
-                    (aFX) =>
-                aFX.aFXID == "SEAT" &&
-                    aFX.pax == pnr.pNR.names.pAX[pax].paxNo &&
-                    aFX.seg == (journey + 1).toString(),
-                orElse: () => new AFX())
-                .seat
-                : '',
-            pax == 0 ? true : false,
-            pax + 1,
-            pnr.pNR.aPFAX != null
-                ? pnr.pNR.aPFAX.aFX
-                .firstWhere(
-                    (aFX) =>
-                aFX.aFXID == "SEAT" &&
-                    aFX.pax == pnr.pNR.names.pAX[pax].paxNo &&
-                    aFX.seg == (journey + 1).toString(),
-                orElse: () => new AFX())
-                .seat
-                : '',
-            pnr.pNR.names.pAX[pax].paxType));
-      }
-    }*/
-
-    for (var i = 0; i <= pnr.pNR.names.pAX.length - 1; i++) {
+     for (var i = 0; i <= pnr.pNR.names.pAX.length - 1; i++) {
       String seatNo = '';
       if( pnr.pNR.aPFAX != null && pnr.pNR.aPFAX.aFX != null) {
         AFX? seatAfx ;
@@ -177,6 +131,66 @@ extension Section on ViewBookingBodyState {
     return list;
   }
 
+  Future<void> undoCheckin({int? p1, int? p2}) async {
+    // get ticket no and coupon no
+    String ticketNo = '';
+    String couponNo = '';
+    try {
+      gblPnrModel!.pNR.tickets.tKT.forEach((ticket) {
+        if (ticket.tKTID == 'ELFT' && ticket.segNo != null && ticket.segNo != '' &&  int.parse(ticket.segNo) == (p1! + 1) && int.parse(ticket.pax) == (p2!+1)) {
+          // strip spaces
+          ticketNo = ticket.tktNo.replaceAll(' ', '');
+          // get coupon without leading zero
+          couponNo = int.parse(ticket.coupon).toString();
+        }
+      });
+      logit('t=$ticketNo c=$couponNo');
+      if (ticketNo == '') {
+        // not found
+        gblActionBtnDisabled = false;
+        showAlertDialog(context, 'Error', 'Ticket not found');
+      } else {
+        // get server to do unload
+        gblActionBtnDisabled = true;
+        gblPayAction = 'UNDOCHECKIN';
+        CheckinRequest cr = new CheckinRequest();
+        cr.rloc = gblPnrModel!.pNR.rLOC;
+        cr.ticketNo = ticketNo;
+        cr.couponNo = couponNo;
+
+        String data = json.encode(cr);
+
+
+        try {
+          // let server do the work
+          String reply = await callSmartApi('UNDOCHECKIN', data);
+          Map<String, dynamic> map = json.decode(reply);
+          CheckinReply checkinRs = new CheckinReply.fromJson(map);
+          if (checkinRs.reply != null && checkinRs.reply != '') {
+            showstatusMessage(translate('Check-in undone.'), context);
+            //gblPnrModel!.loadFromString(seatRs.reply);
+            await Repository.get().fetchPnr(widget.rloc);
+            objPNR = gblPnrModel;
+            // ok
+            setState(() {});
+          }
+        } catch (e) {
+          showAlertDialog(context, 'Error', e.toString(), onComplete:() {
+            setError('');
+            setState(() {});
+          });
+          print(e.toString());
+        }
+        gblActionBtnDisabled = false;
+      }
+    } catch (e) {
+      gblActionBtnDisabled = false;
+      print(e.toString());
+    }
+
+    }
+
+
   List <Widget> getButtons(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
     List <Widget> list = [];
 
@@ -226,53 +240,24 @@ extension Section on ViewBookingBodyState {
         return Container();
       }
 
-      bool hasDownloadedBoardingPass = true;
       //return new TextButton(
-      return new TextButton(
-        onPressed: () {
-          hasDownloadedBoardingPass
-              ? Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BoardingPassWidget(
-                  pnr: pnr,
-                  journeyNo: journeyNo,
-                  paxNo: paxNo,
-                ),
-              ))
-          // ignore: unnecessary_statements
-              : () => {};
-        },
-        style: TextButton.styleFrom(
-            side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-            foregroundColor: gblSystemColors.textButtonTextColor),
-        child: Row(
-          children: <Widget>[
-            TrText(
-              'Boarding Pass',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.textButtonTextColor),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5.0),
-            ),
-            hasDownloadedBoardingPass != null
-                ? Icon(
-              Icons.confirmation_number,
-              size: 20.0,
-              color:
-              Colors.grey,
-            )
-                : Icon(
-              Icons.file_download,
-              size: 20.0,
-              color:
-              Colors.grey,
-            )
-          ],
-        ),
-      );
+      if( gblSettings.canUndoCheckin) {
+        if(pnr.canCheckOut(paxNo+1, journeyNo+1)) {
+          return Column(
+            children: [
+              vidTextButton(
+                  context, 'Undo Check-in', undoCheckin, icon: Icons.close,
+                  p1: journeyNo,
+                  p2: paxNo),
+              BoardingPassButton(pnr, paxNo, journeyNo, paxlist),
+            ],
+          );
+        } else {
+          return BoardingPassButton(pnr, paxNo, journeyNo, paxlist);
+        }
+      } else {
+        return BoardingPassButton(pnr, paxNo, journeyNo, paxlist);
+      }
     }
 
     //get apis state for the booking DSP/AATQ4T
@@ -343,7 +328,7 @@ extension Section on ViewBookingBodyState {
         }
         if( (pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != null || pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed != '' ) &&
             pnr.pNR.itinerary.itin[journeyNo].mMBCheckinAllowed == 'False' ) {
-          logit('mMBCheckinAllowed false');
+          //logit('mMBCheckinAllowed false');
           checkinOpen = false;
         }
       }
@@ -407,7 +392,24 @@ extension Section on ViewBookingBodyState {
 
 
           //Checkin Button
-          return new TextButton(
+          return vidTextButton(context, 'Check-in',
+                  ({p1, p2}) {
+                    if( gblSettings.wantDangerousGoods == true ){
+                      Navigator.push(
+                          context,
+                          SlideTopRoute(
+                              page: DangerousGoodsWidget( pnr: pnr, journeyNo: journeyNo, paxNo: paxNo, ))).then((continuePass) {
+                        if( continuePass != null &&  continuePass) {
+                          _displayCheckingDialog(pnr, journeyNo, paxNo);
+
+                        }
+                      });
+                    } else {
+                      _displayCheckingDialog(pnr, journeyNo, paxNo);
+                    }
+                  }
+          );
+         /* return new TextButton(
             onPressed: () {
               if( gblSettings.wantDangerousGoods == true ){
                 Navigator.push(
@@ -446,7 +448,7 @@ extension Section on ViewBookingBodyState {
                 )
               ],
             ),
-          );
+          );*/
         } else {
           if (pnr.pNR.itinerary.itin[journeyNo].secID != '') {
             return Text('');
@@ -551,4 +553,53 @@ extension Section on ViewBookingBodyState {
             : [new Text('')]);
   }
 
+  Widget BoardingPassButton(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+    bool hasDownloadedBoardingPass = true;
+
+    return new TextButton(
+      onPressed: () {
+        hasDownloadedBoardingPass
+            ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BoardingPassWidget(
+                pnr: pnr,
+                journeyNo: journeyNo,
+                paxNo: paxNo,
+              ),
+            ))
+        // ignore: unnecessary_statements
+            : () => {};
+      },
+      style: TextButton.styleFrom(
+          side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+          foregroundColor: gblSystemColors.textButtonTextColor),
+      child: Row(
+        children: <Widget>[
+          TrText(
+            'Boarding Pass',
+            style: TextStyle(
+                color:
+                gblSystemColors.textButtonTextColor),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 5.0),
+          ),
+          hasDownloadedBoardingPass != null
+              ? Icon(
+            Icons.airplane_ticket,
+            size: 20.0,
+            color:
+            Colors.grey,
+          )
+              : Icon(
+            Icons.file_download,
+            size: 20.0,
+            color:
+            Colors.grey,
+          )
+        ],
+      ),
+    );
+  }
 }

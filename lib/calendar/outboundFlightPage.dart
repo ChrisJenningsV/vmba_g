@@ -283,7 +283,8 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     } else if (calenderWidgetSelectedItem == 2) {
       animateTo = 150;
     }
-    endProgressMessage();
+    //endProgressMessage();
+    _loadingInProgress = false;
     setState(() {
       _loadingInProgress = false;
     });
@@ -333,8 +334,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, _loading, title: '');
-        return Container();
+        return getProgressMessage(_loading, '');
       } else {
         return new Center(
           child: Column(

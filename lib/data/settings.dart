@@ -131,6 +131,7 @@ class Settings {
   bool canGoBackFromPaxPage;
   bool canGoBackFromOptionsPage;
   bool canChangeCancelledFlight;
+  bool canUndoCheckin;
   bool wantEnglishDates;
   bool wantTandCCheckBox;
   bool saveChangeBookingBeforePay;
@@ -312,6 +313,7 @@ bool bpShowFastTrack;
     this.canGoBackFromPaxPage = false,
     this.canGoBackFromOptionsPage = false,
     this.canChangeCancelledFlight = true,
+    this.canUndoCheckin = true,
     this.wantEnglishDates = false,
     this.wantTandCCheckBox = false,
     this.saveChangeBookingBeforePay = false,

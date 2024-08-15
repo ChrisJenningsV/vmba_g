@@ -717,9 +717,7 @@ Row airMiles() {
   Widget build(BuildContext context) {
     if (_loadingInProgress && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(
-            context, 'Calculating your price...', title: 'Summary');
-        return Container();
+        return getProgressMessage('Calculating your price...', 'Summary');
       } else {
         return Scaffold(
           appBar: appBar(context, 'Summary', PageEnum.summary,

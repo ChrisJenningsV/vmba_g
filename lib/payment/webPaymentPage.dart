@@ -59,6 +59,7 @@ class _WebViewWidgetState extends State<WebPayPage> {
         NavigationDelegate(
           onProgress: (int progress) {
             debugPrint('WebView is loading (progress : $progress%) url $_url');
+            logit('WebView is loading (progress : $progress%) url $_url');
             setState(() {
               _percentLoaded = progress;
             });
@@ -442,6 +443,7 @@ Page resource error:
       });
     }
 
+    logit('PayURL =$url');
     return url;
   }
 

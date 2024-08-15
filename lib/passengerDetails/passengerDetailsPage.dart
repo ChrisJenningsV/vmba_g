@@ -32,7 +32,7 @@ import '../v3pages/controls/V3Constants.dart';
 
 
 class PassengerDetailsWidget extends StatefulWidget {
-  PassengerDetailsWidget({Key key= const Key("paxdetailswid_key"), required this.newBooking, this.pnrModel}) : super(key: key);
+  PassengerDetailsWidget({/*Key key= const Key("paxdetailswid_key"),*/ required this.newBooking, this.pnrModel}) /*: super(key: key)*/;
   final NewBooking newBooking;
   final PnrModel? pnrModel;
 
@@ -42,7 +42,7 @@ class PassengerDetailsWidget extends StatefulWidget {
 class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   List<PassengerDetail> _passengerDetails = [];
   // List<PassengerDetail>();
-  GlobalKey<ScaffoldState> _key = GlobalKey();
+  //GlobalKey<ScaffoldState> _key = GlobalKey();
   final formKey = new GlobalKey<FormState>();
   bool allPaxDetailsCompleted = false;
   bool preLoadDetails = false;
@@ -361,7 +361,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           },
           onWillPop: true,
         child: Scaffold(
-      key: _key,
+      //key: _key,
       appBar: appBar(context, 'Passengers Details', PageEnum.passengerDetails,
           curStep: 4,
           newBooking: widget.newBooking,
@@ -583,7 +583,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     _passengerDetails[paxNo - 1].paxType = paxType;
     _passengerDetails[paxNo - 1].paxNumber = paxNo.toString();
     if (_passengerDetails[paxNo - 1].firstName != '' && _passengerDetails[paxNo - 1].firstName != null) {
-      return Row(
+      // validate this pax
+      gblWarning = '';
+      _passengerDetails[paxNo - 1].isComplete();
+
+      return Column(
+          children: [
+            Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
@@ -621,7 +627,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
             iconSize: 20,
           )
         ],
-      );
+        ),
+        gblWarning == '' ? Container() : Align(alignment:  Alignment.centerLeft , child:  Text( gblWarning, style: TextStyle(color: Colors.red)),),
+        ]);
+
     } else {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

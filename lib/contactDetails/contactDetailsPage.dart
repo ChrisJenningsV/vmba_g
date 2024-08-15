@@ -82,7 +82,6 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   Widget build(BuildContext context) {
     if (_displayProcessingIndicator && gblInRefreshing == false) {
       if( gblSettings.wantCustomProgress) {
-        //progressMessagePage(context, _displayProcessingText, title: 'Payment');
         return Container();
       } else {
         return Scaffold(
@@ -296,7 +295,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     //_key.currentState.showSnackBar(_snackbar);
   }
 
-  void validateAndSubmit({int? p1}) async {
+  void validateAndSubmit({int? p1, int? p2}) async {
     if (validateAndSave()) {
       setState(() {
         _displayProcessingIndicator = true;

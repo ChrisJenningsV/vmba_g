@@ -185,6 +185,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
             },
             onAdd: (int paxNo, int segNo) {
               int max = widget.product!.maxQuantity ;
+              if( max == 0 ) max = 10;
               if (widget.product!.getCount(paxNo, segNo) < max) {
                 setState(() {
                   widget.product!.incProduct(paxNo, segNo);
@@ -329,6 +330,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
                 },
                 onAdd: (int paxNo, int segNo) {
                   int max = widget.product.maxQuantity ;
+                  if( max == 0 ) max = 10;
                   if (widget.product.getCount(paxNo, segNo) < max) {
                     widget.product.incProduct(paxNo, segNo);
                     widget.stateChange!();
@@ -349,7 +351,9 @@ class ProductFlightCardState extends State<ProductFlightCard> {
           });
         }},
         onAdd: (int paxNo, int segNo) {
-          if( widget.product.getCount(paxNo, segNo) < widget.product.maxQuantity) {
+          int max = widget.product!.maxQuantity ;
+          if( max == 0 ) max = 10;
+          if( widget.product.getCount(paxNo, segNo) < max) {
             setState(() {
               widget.product.incProduct(paxNo, segNo);
               widget.stateChange!();
@@ -365,6 +369,8 @@ class ProductFlightCardState extends State<ProductFlightCard> {
 
 Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
   List<Widget> widgets = [];
+  int max = prod!.maxQuantity ;
+  if( max == 0 ) max = 10;
 
   widgets.add(Align(alignment: Alignment.centerLeft,
       child: Text(pax.firstName + ' ' + pax.surname)),);
@@ -385,7 +391,8 @@ Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, 
               style: TextStyle(fontSize: 20)),
 
         vidAddButton(context,
-            disabled: prod.getCount(int.parse(pax.paxNo), segNo) >= prod.maxQuantity,
+
+            disabled: prod.getCount(int.parse(pax.paxNo), segNo) >= max,
             onPressed: (context) {
           onAdd!(int.parse(pax.paxNo), lineNo);
         }),
@@ -413,8 +420,10 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
         child: TrText(prod.productName)),);
 
     widgets.add(Spacer(),);
+    int max = prod!.maxQuantity ;
+    if( max == 0 ) max = 10;
 
-    if(  prod.maxQuantity > 0 ) {
+    if(  max > 0 ) {
       widgets.add(Align(alignment: Alignment.centerRight,
           child: Row(children: [new IconButton(
             icon: Icon(Icons.remove_circle_outline,
@@ -426,7 +435,7 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
             new Text(prod.count(segNo).toString(),
                 style: TextStyle(fontSize: 20)),
             new IconButton(icon: Icon(Icons.add_circle_outline,
-                color: (prod.count(segNo) < prod.maxQuantity) ? Colors.black : Colors
+                color: (prod.count(segNo) < max) ? Colors.black : Colors
                     .grey.shade300),
               onPressed: () {
                 onAdd!(0, segNo);

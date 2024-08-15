@@ -58,7 +58,7 @@ void configFN() {
     wantApis: true,
 //    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
-    currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZIG',
+    currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWG',
     currency: 'ZAR',
     wantCurrencyPicker: true,
     wantCentreTitle: true,

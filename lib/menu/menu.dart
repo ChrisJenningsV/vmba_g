@@ -18,6 +18,7 @@ import '../Helpers/settingsHelper.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
+import '../v3pages/cards/v3CustomPage.dart';
 
 
 class DrawerMenu extends StatefulWidget {
@@ -322,6 +323,21 @@ class DrawerMenu extends StatefulWidget {
           logit(e.toString());
         }
       }
+    }
+
+    if(gblSecurityLevel > 90 ){
+      list.add(ListTile(
+          dense: dense,
+          title: _getMenuItem(Icons.web, 'Debugging Page'),
+          onTap: () {
+/*
+            Navigator.push(context,
+                SlideTopRoute(page: CustomPageWeb(pageText, url)));
+*/
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) =>
+                    V3CustomPage(name: 'menu')));
+          }));
     }
     
     if( gblIsLive == false && gblWantLogBuffer) {

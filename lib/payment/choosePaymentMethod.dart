@@ -1171,9 +1171,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     if (_displayProcessingIndicator && gblInRefreshing == false) {
       if(gblLogPayment) { logit('CPM Build processing');}
       if( gblSettings.wantCustomProgress) {
-       // progressMessagePage(context, _displayProcessingText, title: 'Payment');
         return progressMessagePageWidget(context, _displayProcessingText, title: 'Payment');
-        //return Container();
       } else {
         return Scaffold(
           key: _key,
@@ -1938,6 +1936,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               msg = msg.replaceAll('[[mbtotalfare]]', objPnr.pNR.zpay.mbtotalfare);
               msg = msg.replaceAll('[[mbtotaltax]]', objPnr.pNR.zpay.mbtotaltax);
               msg = msg.replaceAll('[[ttl]]', objPnr.pNR.zpay.ttl);
+              msg = msg.replaceAll('[[airline]]', gblAppTitle);
               msg = msg.replaceAll('[[reference]]', '<b>' + objPnr.pNR.zpay.reference + '</b>') ;
               isHtml = true;
             } else {

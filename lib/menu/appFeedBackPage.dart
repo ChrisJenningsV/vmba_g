@@ -251,23 +251,6 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   },
                 ),
 
-                TextButton(
-                  style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      foregroundColor: gblSystemColors.textButtonTextColor),
-                  child: TrText('Progress msg'),
-                  onPressed: () {
-                    progressMessagePage(context, 'this is a progress message', title: 'loading');
-
-                    Timer(Duration(seconds: 3), () {
-                      setProgressMessage('3 seconds');
-                    });
-                    Timer(Duration(seconds: 10), () {
-                      endProgressMessage();
-                    });
-                  },
-                ),
-
               ],
             ),
 

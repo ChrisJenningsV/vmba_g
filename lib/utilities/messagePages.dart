@@ -15,7 +15,7 @@ import '../v3pages/controls/V3Constants.dart';
 
 class MessagePage extends StatefulWidget {
   MessagePage({
-    Key key= const Key("msgpage_key"),
+    Key? key,
     this.action='',
     this.actions,
     this.msg='',
@@ -30,7 +30,7 @@ class MessagePage extends StatefulWidget {
     this.displayFormat='',
     this.onOk,
     this.doublePop=false,
-  }) : super(key: key);
+  }) /*: super(key: key)*/;
 
   final String action;
   List<Widget>? actions;
@@ -120,7 +120,6 @@ class MessagePageState extends State<MessagePage> {
     }
     else if( widget.displayFormat == '2') {
       return Scaffold(
-          key: _key,
           appBar: new V3AppBar(
             //brightness: gblSystemColors.statusBar,
             PageEnum.progress,
@@ -332,7 +331,9 @@ Widget messageWidget() {
 }*/
 Widget criticalErrorPageWidget(BuildContext context, String msg, {String title='', bool wantButtons=false, void Function(dynamic p)? onComplete}) {
   return Scaffold(
-    //key: _key,
+/*
+    key: _key,
+*/
       appBar: new AppBar(
         automaticallyImplyLeading: false,
         //brightness: gblSystemColors.statusBar,
@@ -639,4 +640,18 @@ Widget alertTitle(String title, Color titleTextClr, Color  titleBackClr) {
 }
 EdgeInsets alertTitlePadding() {
   return const EdgeInsets.all(0);
+}
+
+Widget getProgressMessage(String msg, String title) {
+  return MessagePage(msg: msg,
+      //key: messageGlobalKeyProgress,
+      borderClr: Colors.green,
+      backClr: Colors.green,
+      iconClr: Colors.white,
+      icon: Icons.check,
+      titleBackClr: gblSystemColors.primaryHeaderColor,
+      titleTextClr: gblSystemColors.headerTextColor,
+      displayFormat: '2',
+      title: title);
+
 }

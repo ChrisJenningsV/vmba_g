@@ -363,21 +363,21 @@ class AppDatabase {
 
   Future updateBoardingPass(BoardingPass boardingPass) async {
     var db = await _getDb();
-    await db.rawInsert('INSERT OR REPLACE INTO '
-        '$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass
-        .dbFltno}, ${BoardingPass.dbDepart}, '
-        '${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass
-        .dbPaxname}, ${BoardingPass.dbBarcodedata}, '
-        '${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass
-        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand},'
-        '${BoardingPass.dbFastTrack}, ${BoardingPass.dbLoungeAccess}, ${BoardingPass.dbBoardingTime})'
-        ' VALUES("${boardingPass.rloc}", "${boardingPass
-        .fltno}", "${boardingPass.depart}", "${boardingPass.arrive}", '
-        '"${boardingPass.depdate}","${boardingPass.paxname}", "${boardingPass
-        .barcodedata}", "${boardingPass.paxno}", '
-        '"${boardingPass.gate}", "${boardingPass.boarding}", "${boardingPass
-        .seat}", "${boardingPass.classBand}", "${boardingPass.fastTrack}", "${boardingPass.loungeAccess}",'
-        '"${boardingPass.boardingTime}" )');
+    await db.rawInsert("INSERT OR REPLACE INTO "
+        "$tableNameBoardingPasses (${BoardingPass.dbRloc}, ${BoardingPass
+        .dbFltno}, ${BoardingPass.dbDepart}, "
+        "${BoardingPass.dbArrive}, ${BoardingPass.dbDepdate}, ${BoardingPass
+        .dbPaxname}, ${BoardingPass.dbBarcodedata}, "
+        "${BoardingPass.dbPaxno}, ${BoardingPass.dbGate}, ${BoardingPass
+        .dbBoarding}, ${BoardingPass.dbSeat}, ${BoardingPass.dbClassBand},"
+        "${BoardingPass.dbFastTrack}, ${BoardingPass.dbLoungeAccess}, ${BoardingPass.dbBoardingTime})"
+        " VALUES('${boardingPass.rloc}', '${boardingPass
+        .fltno}', '${boardingPass.depart}', '${boardingPass.arrive}', "
+        "'${boardingPass.depdate}','${boardingPass.paxname}', '${boardingPass
+        .barcodedata}', '${boardingPass.paxno}', "
+        "'${boardingPass.gate}', '${boardingPass.boarding}', '${boardingPass
+        .seat}', '${boardingPass.classBand}', '${boardingPass.fastTrack}', '${boardingPass.loungeAccess}',"
+        "'${boardingPass.boardingTime}' )");
   }
 
   Future<List<BoardingPass>> getBoardingPasses(String fltno,

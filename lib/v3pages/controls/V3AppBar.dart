@@ -18,7 +18,7 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final double? elevation;
   final IconThemeData? actionsIconTheme;
-  final IconThemeData? iconTheme;
+  IconThemeData? iconTheme;
   bool? centerTitle;
   final double? toolbarHeight;
 
@@ -55,6 +55,10 @@ class _V3AppBarState extends State<V3AppBar>{
   @override
   Widget build(BuildContext context) {
  //   bool wantShadow = true;
+    if( widget.iconTheme == null ){
+      widget.iconTheme = IconThemeData(color: gblSystemColors.headerTextColor);
+    }
+
     if( gblV3Theme != null ) {
       if (widget.systemOverlayStyle == null) {
         if( gblV3Theme!.generic != null && gblV3Theme!.generic.setStatusBarColor) {

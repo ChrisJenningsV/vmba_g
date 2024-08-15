@@ -80,6 +80,8 @@ class SeatRequest{
   bool webCheckinNoSeatCharge=false;
   String rloc ='';
   int journeyNo=1;
+  String afxNo = "0";
+
   List<Pax>? paxlist; // = List.from([Pax]);
 
   SeatRequest();
@@ -89,6 +91,7 @@ Map  toJson() {
     map['webCheckinNoSeatCharge'] = webCheckinNoSeatCharge;
     map['rloc'] = rloc;
     map['journeyNo'] = journeyNo;
+    map['afxNo'] = afxNo;
 
     if (this.paxlist != null) {
       map['paxlist'] = this.paxlist!.map((v) => v.toJson()).toList();
@@ -113,6 +116,35 @@ class SeatReply {
     if( json['bookSeatCmd'] != null ) bookSeatCmd = json['bookSeatCmd'];
   }
 }
+
+class CheckinRequest{
+  String rloc ='';
+  String ticketNo = '';
+  String couponNo = '';
+
+  CheckinRequest();
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+    map['ticketNo'] = ticketNo;
+    map['couponNo'] = couponNo;
+
+    return map;
+  }
+}
+
+class CheckinReply {
+  String reply ='';
+
+  CheckinReply(this.reply);
+
+
+  CheckinReply.fromJson(Map<String, dynamic> json) {
+    if( json['reply'] != null )reply = json['reply'];
+  }
+}
+
 
 
 class AddProductRequest{

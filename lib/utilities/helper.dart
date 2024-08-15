@@ -21,6 +21,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/widgets/langConstants.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/buttons.dart';
+import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../controllers/vrsCommands.dart';
@@ -351,6 +352,12 @@ showSnackBar(String message,BuildContext context,{String label= 'Undo' }) {
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar,);
+}
+
+showstatusMessage(String message, BuildContext context) {
+  final _snackbar = snackbar(message);
+  ScaffoldMessenger.of(context).showSnackBar(_snackbar);
+  //_key.currentState.showSnackBar(_snackbar);
 }
 
 

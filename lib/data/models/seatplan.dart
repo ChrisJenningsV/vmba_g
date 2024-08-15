@@ -18,6 +18,53 @@ class Seatplan {
     return data;
   }
 
+  void simplifyPlan() {
+    logit('simplifying plan');
+
+    // remove first col if markers only
+    bool canRemove = true;
+    this.seats.seat.forEach((s) {
+      if( s.sCol == 1){
+        if( s.sCellDescription == 'Wing Middle' || s.sCellDescription == 'Wing End' || s.sCellDescription == 'Wing Start') {
+
+        } else {
+          logit('col=${s.sCol} d=${s.sCellDescription}');
+          canRemove = false;
+        }
+      }
+
+    });
+    if( canRemove == true) {
+      // delete all col 1
+      this.seats.seat.removeWhere((item) => item.sCol == 1);
+    }
+
+    // what is last col ?
+    int maxCol = 1;
+    this.seats.seat.forEach((s) {
+      if (s.sCol > maxCol) {
+        maxCol = s.sCol;
+      }
+    });
+    this.seats.seat.forEach((s) {
+      if( s.sCol == maxCol){
+        if( s.sCellDescription == 'Wing Middle' || s.sCellDescription == 'Wing End' || s.sCellDescription == 'Wing Start') {
+
+        } else {
+          logit('col=${s.sCol} d=${s.sCellDescription}');
+          canRemove = false;
+        }
+      }
+
+    });
+    if( canRemove == true) {
+      // delete all col 1
+      this.seats.seat.removeWhere((item) => item.sCol == maxCol);
+    }
+
+  }
+
+
   bool hasSeatsAvailable() {
     if (this
             .seats

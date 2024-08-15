@@ -269,7 +269,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
 
   }
   void _fqtvLogin() async {
-    progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
+    //progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
     gblRedeemingAirmiles = false;
     try {
       String pw = Uri.encodeComponent(_passwordEditingController.text);
@@ -319,8 +319,6 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
 
         setState(() {});
 
-        endProgressMessage();
-//      setState(() {});
       } catch (e) {
         fqtvNo = '';
         fqtvPass = '';
@@ -329,7 +327,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
         _isButtonDisabled = false;
         _loadingInProgress = false;
         //_actionCompleted();
-        endProgressMessage();
+        //endProgressMessage();
         criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true, doublePop: true);
         //Navigator.of(context).pop();
         print(gblError);
@@ -346,7 +344,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
       _loadingInProgress = false;
       //_actionCompleted();
       //_showDialog();
-      endProgressMessage();
+      //endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true);
       //Navigator.of(context).pop();
       return;

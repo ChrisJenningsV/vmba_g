@@ -261,8 +261,10 @@ class Repository {
         print('msg = $msg');
         print('login_uri = ${gblSettings.xmlUrl}');
 
+        String url = gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') +  "Login?req=$msg";
+        if( gblSettings.useLogin2  ) url =  gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') +  "Login2?req=$msg";
         response = await http.get(
-            Uri.parse(gblSettings.xmlUrl.replaceFirst('PostVRSCommand?', '') + "Login?req=$msg"),
+            Uri.parse(url),
                 headers: getXmlHeaders(),
              );
 
@@ -471,6 +473,9 @@ class Repository {
                     break;
                   case 'wantProducts':
                     gblSettings.wantProducts = parseBool(item['value']);
+                    break;
+                  case 'wantSeats':
+                    gblSettings.wantSeats = parseBool(item['value']);
                     break;
                   case 'wantCitySwap':
                     gblSettings.wantCitySwap = parseBool(item['value']);
@@ -1110,7 +1115,7 @@ class Repository {
     Future<PnrDBCopy?> fetchPnr(String rloc) async {
       String data;
       try {
-        data = await runVrsCommand('*$rloc~x');
+        data = await runVrsCommand('*$rloc[MMB]~x');
       } catch(e) {
         logit('catch ${e.toString()}');
         throw (e);
@@ -1132,7 +1137,7 @@ class Repository {
     Map<String, dynamic> map = json.decode(pnrJson);
     print('Fetch PNR');
     PnrModel pnrModel = new PnrModel.fromJson(map);
-
+    gblPnrModel = pnrModel;
       // {"RLOC":
 
       PnrDBCopy pnrDBCopy = new PnrDBCopy(

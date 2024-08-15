@@ -150,6 +150,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
   Widget build(BuildContext context) {
    // gblActionBtnDisabled = false;
     if (_loadingInProgress) {
+      return getProgressMessage('Checking details...', '');
       return Scaffold(
         body: new Center(
           child: Column(
@@ -172,7 +173,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         titleBackClr = gblSystemColors.primaryButtonColor;
       }
       try {
-        endProgressMessage();
+        //endProgressMessage();
       } catch(e) {
 
       }
@@ -792,7 +793,7 @@ Widget _getTrans() {
   }
 
   void _fqtvLogin(String msgText) async {
-    progressMessagePage(context, translate(msgText), title:  '${gblSettings.fqtvName}');
+    //progressMessagePage(context, translate(msgText), title:  '${gblSettings.fqtvName}');
     gblRedeemingAirmiles = false;
     try {
       String pw = Uri.encodeComponent(_passwordEditingController.text);
@@ -852,7 +853,7 @@ Widget _getTrans() {
 
         setState(() {});
 
-        endProgressMessage();
+        //endProgressMessage();
 //      setState(() {});
       } catch (e) {
         fqtvNo = '';
@@ -892,7 +893,7 @@ Widget _getTrans() {
       _loadingInProgress = false;
       //_actionCompleted();
       //_showDialog();
-      endProgressMessage();
+      //endProgressMessage();
       criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true);
 
       _loadingInProgress = false;

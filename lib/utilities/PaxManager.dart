@@ -66,6 +66,7 @@ class PaxManager {
     if( gblPassengerDetail != null ){
       return gblPassengerDetail!.email;
     }
+    if( gblIsLive) return '';
     return '';
   }
 

@@ -419,8 +419,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       if( gblSettings.wantCustomProgress) {
-        progressMessagePage(context, 'Searching for Flights', title: ' ');
-        return Container();
+        return getProgressMessage('Searching for Flights', '');
       } else {
         return new Center(
           child: Column(

@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -7,8 +9,12 @@ import 'package:vmba/utilities/timeHelper.dart';
 import '../../Helpers/settingsHelper.dart';
 import '../../Helpers/stringHelpers.dart';
 import '../../components/trText.dart';
+import '../../controllers/vrsCommands.dart';
+import '../repository.dart';
+//import 'apis_pnr.dart';
 import 'models.dart';
 
+typedef VoidCallback = void Function();
 
 bool logPnrErrors = false;
 class PnrModel {
@@ -433,6 +439,13 @@ class PnrModel {
     return validateTickets;
   }
 
+  void loadFromString( String data){
+    Map<String, dynamic> map = json.decode(data);
+    PnrModel pnrModel = new PnrModel.fromJson(map);
+    gblPnrModel = pnrModel;
+  }
+
+
   double amountOutstanding() {
     if( pNR != null && pNR.basket != null ){
       if( pNR.basket.outstanding != null ){
@@ -449,6 +462,19 @@ class PnrModel {
     return 0;
   }
 
+  bool canCheckOut(int paxNo, int segNo) {
+    if (this.pNR.tickets != null && this.pNR.tickets.tKT != null && this.pNR.tickets.tKT.length > 0 && this.pNR.tickets.tKT[0].tKTID != '') {
+      bool bFound = false;
+      this.pNR.tickets.tKT.forEach((tkt) {
+        if( int.parse(tkt.pax) == paxNo && tkt.segNo != '' && int.parse(tkt.segNo) == segNo && tkt.WebCheckOut == true && tkt.tktFor != 'MPD' ){
+          bFound = true;
+        }
+      });
+      return bFound;
+    } else {
+      return false;
+    }
+  }
   bool hasTickets(Tickets tickets) {
     bool hasTickets = false;
     if (tickets != null && tickets.tKT != null && tickets.tKT.length > 0 && tickets.tKT[0].tKTID != '') {
@@ -506,6 +532,106 @@ class PnrModel {
     }
     return validatePayment;
   }
+
+  void reloadAndSave(String rlocIn, MmbBooking _mmbBooking, void Function( ) setState){
+    logit('reloadAndSave');
+    try {
+      Repository.get().fetchPnr(rlocIn).then((pnrDb) {
+        if (pnrDb != null) {
+          if (pnrDb.success == false) {
+            logit(pnrDb.data);
+            setError(pnrDb.data);
+            return;
+          }
+
+          if (pnrDb.success) {
+            logit('success');
+            Map<String, dynamic> map = jsonDecode(pnrDb.data);
+            PnrModel pnr = new PnrModel.fromJson(map);
+            gblPnrModel = pnr;
+            _mmbBooking.journeys.journey = [];
+            logit('journeys');
+            loadJourneys(gblPnrModel!, _mmbBooking);
+            setState();
+          } else {}
+        } else {
+          setState();
+          return;
+        }
+      }).then((onValue) {
+        if (gblPnrModel != null) {
+          setState();
+          //GET APIS STATUS
+/*          Repository.get()
+              .getPnrApisStatus(rlocIn)
+              .then((record) {
+            if (record.data != null && record.data.isNotEmpty) {
+              Map<String, dynamic> map = jsonDecode(record.data);
+              ApisPnrStatusModel _apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
+             // apisPnrStatus = _apisPnrStatus;
+            }
+            setState(() {});
+          })
+              .then((onValue){
+            String val = gblPnrModel!.validate();
+
+            setState(() {
+              //_loadingInProgress = false;
+              //_displayProcessingText = '';
+              if( val == '') {
+                if( gblPnrModel != null ) {
+                  if (gblPnrModel!.isFundTransferPayment()) {
+                    setError( '');
+                  }
+                  //objPNR = gblPnrModel!;
+                }
+
+              } else {
+                if( val == 'No Flights'){
+                  setError( 'Cancelled');
+                } else {
+                  setError(val);
+                }
+              }
+            });
+
+          });*/
+        }
+      }
+      ).catchError((e) {
+        setError( e.toString());
+        logit(e.toString());
+        //_loadingInProgress = false;
+        setState();
+      }
+      );
+    } catch(e) {
+      logit(e.toString());
+      setError(e.toString());
+      //_loadingInProgress = false;
+      setState();
+    }
+  }
+
+  loadJourneys(PnrModel pnrModel, MmbBooking _mmbBooking) {
+  // reset list
+  //_mmbBooking.journeys.journey = [];
+    logit('loadJourneys');
+
+  if( pnrModel.pNR != null && pnrModel.pNR.itinerary != null && pnrModel.pNR.itinerary.itin != null ) {
+  int journeyCount = 0;
+  pnrModel.pNR.itinerary.itin.forEach((flt) {
+  if (_mmbBooking.journeys.journey.length == journeyCount) {
+  _mmbBooking.journeys.journey.add(Journey([])); //List<Itin>()));
+  }
+  _mmbBooking.journeys.journey[journeyCount].itin.add(flt);
+  if (flt.nostop != 'X') {
+  journeyCount++;
+  }
+  });
+  }
+  }
+
 }
 
 class PNR {

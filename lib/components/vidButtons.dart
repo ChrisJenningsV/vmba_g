@@ -6,11 +6,11 @@ import 'package:vmba/utilities/widgets/colourHelper.dart';
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 
-Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
+Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1, int? p2}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
 }
 
-Widget vidTextButton(BuildContext context, String caption, void Function({int? p1}) onPressed, {IconData? icon, int iconRotation=0,int? p1 } ) {
+Widget vidTextButton(BuildContext context, String caption, void Function({int? p1, int? p2}) onPressed, {IconData? icon, int iconRotation=0,int? p1,int? p2 } ) {
   Widget iconWidget = Container();
 
 
@@ -38,7 +38,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
       onPressed: () {
         if( gblActionBtnDisabled == false ) {
           gblActionBtnDisabled = true;
-          onPressed(p1: p1);
+          onPressed(p1: p1, p2: p2);
         }
       } ,
       style: TextButton.styleFrom(
@@ -244,15 +244,18 @@ Widget vidAddButton(BuildContext? context, {void Function(BuildContext?)? onPres
   //return vidRoundButton(context, Icons.add_circle_outline, onPressed, btnClr: Colors.white);
 }
 
-Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false}){
-  Color clr = gblSystemColors.primaryButtonColor;
+Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false,
+    Color? clrIn, IconData? icon, double? size }){
+
+  Color clr = clrIn == null ? gblSystemColors.primaryButtonColor : clrIn;
       if( disabled != null && disabled) {
         clr = Colors.grey;
       }
   return IconButton(
     icon: Icon(
-      Icons.remove_circle,
+      icon == null ? Icons.remove_circle : icon,
       color: clr,
+      size: size,
     ),
     onPressed: () {
       if( context != null ) {
@@ -263,6 +266,34 @@ Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, 
     },
   ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
 }
+
+
+Widget vidIconButton(BuildContext? context, {void Function(BuildContext, int, int)? onPressed, int paxNo = 0, int segNo = 0, bool disabled = false,
+  Color? clrIn, IconData? icon, double? size }){
+
+  Color clr = clrIn == null ? gblSystemColors.primaryButtonColor : clrIn;
+  if( disabled != null && disabled) {
+    clr = Colors.grey;
+  }
+  return IconButton(
+    constraints: BoxConstraints(maxWidth: 30),
+    padding: EdgeInsets.fromLTRB(0, 7, 0, 5),
+    visualDensity: VisualDensity.compact,
+    icon: Icon(
+      icon == null ? Icons.remove_circle : icon,
+      color: clr,
+      size: size,
+    ),
+    onPressed: () {
+      if( context != null ) {
+        if (disabled == null || disabled == false) {
+          onPressed!(context as BuildContext, paxNo, segNo,);
+        }
+      }
+    },
+  ); // return vidRoundButton(context, Icons.remove_circle_outline, onPressed, btnClr: Colors.white);
+}
+
 
 Widget vidRightButton(BuildContext context, {void Function(BuildContext)? onPressed}){
   return IconButton(

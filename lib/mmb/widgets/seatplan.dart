@@ -173,6 +173,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
       if (rs.isOk()) {
         objSeatplan = rs.body;
+
+        if( objSeatplan != null ) objSeatplan!.simplifyPlan();
+
         if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
           setState(() {
             _loadingInProgress = false;
@@ -207,12 +210,24 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   void _handleBookSeats(List<Pax> paxValue) {
    // _bookSeats();
     setError( '');
-    smartBookSeats();
-    setState(() {
-      paxlist = paxValue;
-      _loadingInProgress = true;
-      _displayProcessingText = translate('Booking your seat selection...');
+    // check is any seats selects
+    int seatsSelected = 0;
+    paxlist!.forEach((seat) {
+      if(seat.seat != '' && seat.seat != seat.savedSeat){
+        seatsSelected++;
+      }
     });
+    if( seatsSelected ==  0){
+      showAlertDialog(context, 'Error', 'Select Seats First');
+
+    } else {
+      smartBookSeats();
+      setState(() {
+        paxlist = paxValue;
+        _loadingInProgress = true;
+        _displayProcessingText = translate('Booking your seat selection...');
+      });
+    }
   }
 
   smartBookSeats() async {
@@ -490,7 +505,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context, gblPnrModel);
+              }
             )
           ],
           iconTheme: IconThemeData(
@@ -587,7 +604,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   foregroundColor: Colors.black),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                      Navigator.pop(context);
+                      },
               child: TrText(
                 'OK',
                 style: new TextStyle(color: Colors.white),
@@ -698,7 +717,20 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             ),
           ),
           SeatPlanPassengersWidget(
-              paxList: paxlist),
+              paxList: paxlist, segNo: widget.journeyNo,
+              loadingData: (msg){
+                _displayProcessingText = msg;
+                _loadingInProgress = true;
+                setState(() {
+                });
+              },
+            dataLoaded: () {
+                _loadingInProgress = false;
+                setState(() {
+
+                });
+            },
+          ),
           Padding(
             padding: EdgeInsets.only(top: 10.0),
           ),
@@ -924,20 +956,6 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     this.widget.seatplan.seats.seat.sort((a, b) => a.sCol.compareTo(b.sCol));
    // List<int> arrayColumn = [];
 
-
-/*
-    this
-        .widget
-        .seatplan
-        .seats
-        .seat
-        .where((a) => a.sRow == 1)
-        .toList()
-        .forEach((f) {
-      var temp = f.sCol;
-      arrayColumn.add(temp);
-    });
-*/
 
     if( rows <= 0 || minCol == -1 || maxCol <2 ){
       return Container( child: buildMessage('SeatPlan error', 'No Columns', onComplete: () {

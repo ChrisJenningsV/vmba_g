@@ -32,6 +32,7 @@ import 'package:vmba/data/models/vrsRequest.dart';
 
 import '../Helpers/dateTimeHelper.dart';
 import '../Helpers/networkHelper.dart';
+import '../calendar/bookingFunctions.dart';
 import '../components/pageStyleV2.dart';
 import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
@@ -106,11 +107,11 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   Widget build(BuildContext context) {
     gblCurrentRloc = widget.rloc;
 
-    Color menuColor = Colors.white;
-    if (gblPnrModel != null &&
+    Color menuColor = gblSystemColors.headerTextColor as Color;
+ /*   if (gblPnrModel != null &&
         double.parse(gblPnrModel!.pNR.basket.outstanding.amount) > 0) {
       menuColor = Colors.red;
-    }
+    }*/
 
   //  int noSeats = gblPnrModel!.pNR.seatCount();
 
@@ -512,13 +513,60 @@ class ViewBookingBodyState
     return ListView(children: getBookingViewWidgets(objPNR!));
   }
 
+  void setState1(){
+    logit('setState1');
+    setState((){});
+  }
+
+  reloadApis(String rloc) {
+    Repository.get()
+        .getPnrApisStatus(rloc)
+        .then((record) {
+      if (record.data != null && record.data.isNotEmpty) {
+        Map<String, dynamic> map = jsonDecode(record.data);
+        ApisPnrStatusModel _apisPnrStatus = new ApisPnrStatusModel.fromJson(map);
+        // apisPnrStatus = _apisPnrStatus;
+      }
+      setState(() {});
+    })
+        .then((onValue){
+      String val = gblPnrModel!.validate();
+
+      setState(() {
+        //_loadingInProgress = false;
+        //_displayProcessingText = '';
+        if( val == '') {
+          if( gblPnrModel != null ) {
+            if (gblPnrModel!.isFundTransferPayment()) {
+              setError( '');
+            }
+            //objPNR = gblPnrModel!;
+          }
+
+        } else {
+          if( val == 'No Flights'){
+            setError( 'Cancelled');
+          } else {
+            setError(val);
+          }
+        }
+      });
+
+    });
+  }
+
+
   _refreshBooking() {
+    reloadApis(widget.rloc);
     setState(() {
       _loadingInProgress = true;
     });
 
     //PnrModel pnr;
     gblCurrentRloc = widget.rloc;
+/*    gblPnrModel!.reloadAndSave(widget.rloc, _mmbBooking, setState1 );
+    return;*/
+    
     try {
       Repository.get().fetchPnr(widget.rloc).then((pnrDb) {
         if (pnrDb != null) {
@@ -543,6 +591,7 @@ class ViewBookingBodyState
           return;
         }
       }).then((onValue) {
+        gblActionBtnDisabled = false;
         if (objPNR != null) {
           //GET APIS STATUS
           Repository.get()
@@ -1027,7 +1076,7 @@ class ViewBookingBodyState
     }
   }
 
-  void _onPressedRefund({int? p1}) async {
+  void _onPressedRefund({int? p1, int? p2}) async {
     RefundRequest rfund = new RefundRequest();
     rfund.rloc = widget.rloc;
     rfund.journeyNo = p1!;
@@ -1048,7 +1097,7 @@ class ViewBookingBodyState
       logit(e.toString());
     }
   }
-  void _onPressedChangeFlt({int? p1}) {
+  void _onPressedChangeFlt({int? p1, int? p2}) {
 
     if( objPNR!.pNR.isFQTVBooking()) {
       gblRedeemingAirmiles = true;
@@ -2058,8 +2107,10 @@ class ViewBookingBodyState
             checkinOpen) {
           autoSeatingSelection(
               paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
+          gblActionBtnDisabled = false;
         } else {
           preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
+          gblActionBtnDisabled = false;
         }
       } , isRectangular: true, icon: Icons.event_seat );
 
@@ -2068,6 +2119,7 @@ class ViewBookingBodyState
 
         onPressed: () {
           if( ! gblPnrModel!.hasContactDetails()) {
+            gblActionBtnDisabled = false;
             return addContactDetails();
           }
 
@@ -2081,8 +2133,10 @@ class ViewBookingBodyState
               checkinOpen) {
             autoSeatingSelection(
                 paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
+            gblActionBtnDisabled = false;
           } else {
             preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
+            gblActionBtnDisabled = false;
           }
         },
         style: TextButton.styleFrom(
@@ -2363,6 +2417,7 @@ class ViewBookingBodyState
               child: new TrText("Decline",
                   style: new TextStyle(color: Colors.black)),
               onPressed: () {
+                gblActionBtnDisabled = false;
                 Navigator.of(context).pop();
               },
             ),
@@ -2380,6 +2435,7 @@ class ViewBookingBodyState
               onPressed: () {
                 _checkin(
                     'EW${pnr.pNR.rLOC + pnr.pNR.names.pAX[paxNo].paxNo}:${pnr.pNR.itinerary.itin[journeyNo].depart}:${pnr.pNR.itinerary.itin[journeyNo].arrive}');
+                gblActionBtnDisabled = false;
                 Navigator.of(context).pop();
               },
             ),
@@ -2670,6 +2726,10 @@ class ViewBookingBodyState
           if( pnrModel != null ) {
             // pnrModel null if page closed
             _handleSeatChanged(pnrModel);
+          } else if (gblPnrModel != null ) {
+            setState(() {
+              objPNR = gblPnrModel;
+            });
           }
       // Navigator.of(context).pop();
     });

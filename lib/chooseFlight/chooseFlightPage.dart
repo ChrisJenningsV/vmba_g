@@ -48,7 +48,7 @@ class ChooseFlight extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                    endProgressMessage();
+                    //endProgressMessage();
                     Navigator.pop(context);
                 }
               ),
@@ -407,6 +407,7 @@ return str;
         iconData = Icons.shopping_bag;
         break;
       case 'fa-thumbs-up':
+      case 'fa-thumbs-o-up':
         iconData = Icons.thumb_up_alt_outlined;
         break;
 

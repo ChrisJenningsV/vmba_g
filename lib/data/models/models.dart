@@ -187,6 +187,11 @@ class PassengerDetail {
       gblWarning = '${gblSettings.fqtvName}' + translate( ' number required');
           return false;
     }
+    if( gblSettings.wantCountry && (country == null || country == '') ){
+      gblWarning = translate( 'Country is required');
+      return false;
+
+    }
 
     return true;
   }

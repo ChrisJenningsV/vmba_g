@@ -193,18 +193,21 @@ class Cbtextrecords {
 class Cbtext {
   String text ='';
   String id ='';
+  String? icon ;
 
-  Cbtext({this.text ='', this.id = ''});
+  Cbtext({this.text ='', this.id = '', this.icon });
 
   Cbtext.fromJson(Map<String, dynamic> json) {
-    text = json['text'];
-    id = json['id'];
+    if( json['text'] != null )text = json['text'];
+    if( json['id'] != null )id = json['id'];
+    if( json['icon'] != null )icon = json['icon'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['text'] = this.text;
     data['id'] = this.id;
+    data['icon'] = this.icon;
     return data;
   }
 }

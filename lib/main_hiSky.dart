@@ -105,7 +105,7 @@ void configH4() {
     wantProducts: true,
     wantStatusLine: true,
     wantSeatsWithProducts: true,
-    wantEnglishTranslation: true,
+    wantEnglishTranslation: false,
     wantTandCCheckBox: true,
 
     passengerTypes: PassengerTypes(
@@ -136,8 +136,8 @@ void configH4() {
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 
-//    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
-    testPayPage: 'https://customertest.videcom.com/hisky/VARS/Public/MobilePaymentStart.aspx',
+    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
+//    testPayPage: 'https://customertest.videcom.com/hisky/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/hisky/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",

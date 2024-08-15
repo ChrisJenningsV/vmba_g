@@ -75,7 +75,7 @@ class CannedFactWidget extends StatelessWidget {
   Widget additionalInfoWidget(String? textIn) {
     String text = '';
     if (textIn != null ) text = textIn as String;
-
+ 
     if (text.contains('<')) {
         Widget w = Container(
           height: 200,
@@ -164,7 +164,9 @@ class CannedFactWidget extends StatelessWidget {
 
         return w;
     } else {
-      return Text(text);
+      return Padding( padding: EdgeInsets.all(10),
+          child: Text(text)
+      );
     }
   }
 }

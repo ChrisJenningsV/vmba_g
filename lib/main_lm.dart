@@ -147,8 +147,8 @@ void configLM() {
 
  */
 
-    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
-//   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
+//    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
+   testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
 //    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
@@ -168,7 +168,7 @@ void configLM() {
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
    testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
- //   testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',

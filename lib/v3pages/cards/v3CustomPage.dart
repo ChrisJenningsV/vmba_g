@@ -81,6 +81,7 @@ class V3CustomPageState extends State<V3CustomPage> {
     });
   }
 }
+
 Widget getCustomScaffoldPage(BuildContext context, String pageName, void Function() doCallback) {
   if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
     if (gblHomeCardList!.pages![pageName] == null) {

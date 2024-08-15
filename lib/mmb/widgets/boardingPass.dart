@@ -56,27 +56,6 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
     load();
 
-    // .then((value) {
-    //   if (value != null) {
-    //   } else {
-    //     final df = new DateFormat('ddMMMyyyy');
-    //         String cmd = "BPP" +
-    //     fltno +
-    //     ":" +
-    //     df.format(DateTime.parse(
-    //         widget.pnr.pNR.itinerary.itin[widget.journeyNo].depDate)) +
-    //     ":" +
-    //     widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart +
-    //     ":" +
-    //     widget.pnr.pNR.itinerary.itin[widget.journeyNo].arrive +
-    //     ":" +
-    //     widget.pnr.pNR.rLOC +
-    //     (widget.paxNo + 1).toString() +
-    //     "[MOBILE]";
-    // //getVRSMobileBP(cmd, _boardingPass);
-    //   }
-    // }).then((completed) => _boardingPassLoaded());
-
     String fltno = widget.pnr.pNR.itinerary.itin[widget.journeyNo].airID +
         widget.pnr.pNR.itinerary.itin[widget.journeyNo].fltNo;
 
@@ -119,22 +98,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     dcsStatus();
     setBarcodeToDisplayAsDefault();
 
-    // final df = new DateFormat('ddMMMyyyy');
 
-    // String cmd = "BPP" +
-    //     fltno +
-    //     ":" +
-    //     df.format(DateTime.parse(
-    //         widget.pnr.pNR.itinerary.itin[widget.journeyNo].depDate)) +
-    //     ":" +
-    //     widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart +
-    //     ":" +
-    //     widget.pnr.pNR.itinerary.itin[widget.journeyNo].arrive +
-    //     ":" +
-    //     widget.pnr.pNR.rLOC +
-    //     (widget.paxNo + 1).toString() +
-    //     "[MOBILE]";
-    // Repository.get().getVRSMobileBP(cmd);
   }
 
   load() {
@@ -182,25 +146,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       }
     });
 
-    // Repository.get()
-    //     .getBoardingPass(
-    //         widget.pnr.pNR.itinerary.itin[widget.journeyNo].airID +
-    //             widget.pnr.pNR.itinerary.itin[widget.journeyNo].fltNo,
-    //         widget.pnr.pNR.rLOC,
-    //         widget.paxNo)
-    //     .then((boardingPass) {
-    //   if (boardingPass == null) {
-    //     _boardingPass = Repository.get().getVRSMobileBP(cmd) as BoardingPass;
-    //   } else {
-    //     _boardingPass = boardingPass;
-    //   //  refreshBP = false;
-    //   }
-    //   _boardingPassLoaded();
-    //   if (refreshBP) {
-    //     getVRSMobileBP(cmd);
-    //   }
-    // });
-    //return boardingPass;
+
   }
 
   void _boardingPassLoaded() {
@@ -279,7 +225,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
 
       VrsApiResponse rs = VrsApiResponse.fromJson(map);
       logit('Server IP ${map['serverIP']}');
-      if( rs.data == null ) {
+      if( rs.data == null  || rs.data == '') {
         throw 'no data returned';
       }
       data = rs.data;
@@ -289,7 +235,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       String message = gblSettings.xmlUrl +
           gblSettings.xmlToken +
           cmd;
-      print(message);
+      //print(message);
 
       Uri apiUrl = Uri.parse(message);
 
@@ -306,12 +252,12 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       }
     }
 
-    print(data);
+    //print(data);
     int indexOfGate = data.indexOf('Gate:'); //data.allMatches('Gate:');
     int indexOfIn = data.indexOf('IN:');
 
     String gateNo = '';
-    if( data != null && data != '' ) data.substring(indexOfGate + 5, indexOfIn).trim();
+    if( data != null && data != '' ) gateNo = data.substring(indexOfGate + 5, indexOfIn).trim();
     int indexOfBoardingTime = -1;
     if( data != null && data != '' ) indexOfBoardingTime= data.indexOf('Boarding Time:');
     int indexOfPUB1 = -1;
@@ -513,8 +459,9 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
   }
 
   _contentWidget() {
-    logit('_content Widget barcode data=${_boardingPass!.barcodedata}');
-    logit('_barCodeScanError = $_barCodeScanError');
+//    logit('_content Widget barcode data=${_boardingPass!.barcodedata}');
+//    logit('_barCodeScanError = $_barCodeScanError');
+    logit('gate ${_boardingPass!.gate}');
 
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).viewInsets.bottom;
@@ -545,9 +492,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   TrText("FLIGHT", //snapshot.data['passengers'][i],
-                                      style: new TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w200)),
+                                      style: Theme.of(context).textTheme.labelSmall),
                                   Text(_boardingPass!.fltno,
                                       style: new TextStyle(
                                           fontSize: 16.0,
@@ -559,9 +504,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 TrText("DATE", //snapshot.data['passengers'][i],
-                                    style: new TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w200)),
+                                    style: Theme.of(context).textTheme.labelSmall),
                                 Text(
                                     DateFormat('dd MMM')
                                         .format(_boardingPass!.depdate!)
@@ -635,11 +578,10 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 new TrText("PASSENGER",
-                    style: new TextStyle(
-                        fontSize: 12.0, fontWeight: FontWeight.w200)),
+                    style: Theme.of(context).textTheme.labelSmall/* new TextStyle(
+                        fontSize: 12.0, fontWeight: FontWeight.w200)*/),
                 new TrText('CLASS',
-                    style: new TextStyle(
-                        fontSize: 12.0, fontWeight: FontWeight.w200))
+                    style: Theme.of(context).textTheme.labelSmall)
               ],
             ),
             new Row(
@@ -669,8 +611,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new TrText('SEAT',
-                        style: new TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                        style: Theme.of(context).textTheme.labelSmall),
                     new Text(_boardingPass!.seat,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700))
@@ -680,8 +621,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     new TrText("GATE ",
-                        style: new TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                        style: Theme.of(context).textTheme.labelSmall),
                     new Text((_boardingPass!.gate==null) ?'':_boardingPass!.gate,
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700)),
@@ -691,8 +631,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     new TrText("BOARDING TIME", //snapshot.data['passengers'][i],
-                        style: new TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                        style: Theme.of(context).textTheme.labelSmall),
                     new Text((_boardingPass!.boardingTime == null ) ? '' : _boardingPass!.boardingTime
                         /*DateFormat('HH:mm')
                             .format(_boardingPass!.depdate.subtract(
@@ -706,8 +645,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     new TrText("DEPARTS", //snapshot.data['passengers'][i],
-                        style: new TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.w200)),
+                        style: Theme.of(context).textTheme.labelSmall),
                     new Text((_boardingPass!.departTime == null ) ? '' : _boardingPass!.departTime
                         /*DateFormat('HH:mm')
                             .format(_boardingPass!.depdate)
@@ -728,8 +666,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   //                 gbl_settings.bpShowFastTrack                    ? ... : Text('')
                   children: <Widget>[ new TrText('FAST TRACK',
-                                style: new TextStyle(
-                                    fontSize: 12.0, fontWeight: FontWeight.w200)),
+                                style: Theme.of(context).textTheme.labelSmall),
                             new Text(
                                 _boardingPass!.fastTrack.toLowerCase() == 'true'
                                     ? translate("YES")

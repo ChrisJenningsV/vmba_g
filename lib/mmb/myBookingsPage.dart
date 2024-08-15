@@ -206,10 +206,11 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                 style: TextStyle(
                     color:
                     gblSystemColors.headerTextColor)),
+          toolbarHeight: 60,
           bottom:  new PreferredSize(
           preferredSize: new Size.fromHeight(30.0),
     child: new Container(
-    height: 30.0, child:        TabBar(
+    height: 20.0, child:        TabBar(
 
           indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.amberAccent : gblSystemColors.tabUnderlineColor,
           isScrollable: true,
