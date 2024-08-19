@@ -308,6 +308,9 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
 
   Future<void> LoadCalendarData(BuildContext context, DateTime dt, Function() onComplete) async
   {
+    if( gblSettings.wantPriceCalendar== false) {
+      return ;
+    }
     DateTime startDate = DateTime(dt.year,dt.month, 1 );
     DateTime endDate = DateTime(dt.year,dt.month+1, 1 );
 

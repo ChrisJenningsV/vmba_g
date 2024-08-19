@@ -81,6 +81,7 @@ void configLM() {
     canGoBackFromPaxPage: true,
     wantGiftVouchers: false,
     //pageStyle: 'V2',
+    wantCityDividers: true,
 
     airlineName: "Loganair",
   gblServerFiles: 'https://booking.loganair.co.uk/AppFiles/',

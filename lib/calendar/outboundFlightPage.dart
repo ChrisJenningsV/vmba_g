@@ -305,6 +305,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   @override
   Widget build(BuildContext context) {
     logit('obf b _loadingInProgress=$_loadingInProgress');
+    if (_loadingInProgress) {
+        return getProgressMessage(_loading, '');
+    }
+
+
   if ( gblError!= null && gblError.isNotEmpty  ){
     return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete, wantButtons: true);
 
@@ -332,24 +337,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget _buildBody() {
-    if (_loadingInProgress) {
-      if( gblSettings.wantCustomProgress) {
-        return getProgressMessage(_loading, '');
-      } else {
-        return new Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TrText(_loading),
-              )
-            ],
-          ),
-        );
-      }
-    } else if (_noInternet ) {
+    if (_noInternet ) {
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

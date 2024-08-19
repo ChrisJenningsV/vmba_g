@@ -399,6 +399,9 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loadingInProgress) {
+        return getProgressMessage('Searching for Flights', '');
+    }
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
@@ -417,24 +420,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
   }
 
   Widget _buildBody() {
-    if (_loadingInProgress) {
-      if( gblSettings.wantCustomProgress) {
-        return getProgressMessage('Searching for Flights', '');
-      } else {
-        return new Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TrText('Searching for Flights'),
-              )
-            ],
-          ),
-        );
-      }
-    } else if (_noInternet) {
+    if (_noInternet) {
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

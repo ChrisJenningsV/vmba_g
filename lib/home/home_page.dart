@@ -25,6 +25,8 @@ import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import 'package:vmba/v3pages/v3HomePage.dart';
 
+import '../v3pages/v3Theme.dart';
+
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
 GlobalKey<StatusBarState> statusGlobalKeyPax = new GlobalKey<StatusBarState>();
 GlobalKey<ViewBookingBodyState> mmbGlobalKeyBooking = new GlobalKey<ViewBookingBodyState>();
@@ -275,6 +277,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    initThemes(context);
 
     if( (wantHomePageV3() && wantCustomHome()) ||
         (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){

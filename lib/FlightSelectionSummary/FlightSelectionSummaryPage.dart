@@ -348,7 +348,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     double sepTax1 = 0.0;
 
 
-    List <Row> rows = [];
+    List <Widget> rows = [];
 
    // if (this.pnrModel.pNR.fareQuote.fareTax != null) {
       this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
@@ -359,37 +359,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         }
       });
     //}
-    rows.add(Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        TrText('Total Tax: '),
-        Text(formatPrice(currencyCode,tax)),
-/*
-        Text(NumberFormat.simpleCurrency(
-            locale: gblSettings.locale,
-            name: currencyCode)
-            .format(tax)),
-
- */
-      ],
-    ));
+    rows.add( V3ItemPriceRow('Total Tax: ', currencyCode,tax) );
 
     if( sepTax1 > 0) {
-
-      rows.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          TrText('Additional Item(s) '),
-          Text(formatPrice(currencyCode,sepTax1)),
-/*
-          Text(NumberFormat.simpleCurrency(
-              locale: gblSettings.locale,
-              name: currencyCode)
-              .format(sepTax1)),
-
- */
-        ],
-      ));
+      rows.add(V3ItemPriceRow('Additional Item(s) ',currencyCode,sepTax1));
     }
 
     return Column(
@@ -397,9 +370,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     );
   }
 Row airMiles() {
-
-
-
     return  Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -430,20 +400,7 @@ Row airMiles() {
 
     double netFareTotal = total - tax;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        TrText('Net Fare:'),
-        Text(formatPrice(currencyCode,netFareTotal)),
-/*
-        Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
-            .format(netFareTotal)),
-
- */
-      ],
-    );
+    return V3ItemPriceRow('Net Fare:',currencyCode,netFareTotal);
   }
 
   Row grandTotal() {
@@ -474,21 +431,7 @@ Row airMiles() {
       }
     });
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        TrText('Flights Total: '),
-        Text(formatPrice(currencyCode,total)),
-/*
-        Text(NumberFormat.simpleCurrency(
-                locale: gblSettings.locale,
-                name: currencyCode)
-            .format(total))
-
- */
-        // (double.tryParse(fareStore.total) ?? 0.0))),
-      ],
-    );
+    return V3ItemPriceRow('Flights Total: ',currencyCode,total);
   }
 
   Row discountTotal() {
@@ -608,42 +551,19 @@ Row airMiles() {
         ),
       );
       widgets.add(Padding(padding: EdgeInsets.all(5)));
-      widgets.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            TrText('Flight No:'),
-            Text(
-                '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}')
-          ],
-        ),
-      );
+      widgets.add(V3ItemRow('Flight No:','${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}'));
 
-      widgets.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            TrText('Departure Time:'),
-            Text(getIntlDate('dd MMM kk:mm',DateTime.parse(
-                pnrModel.pNR.itinerary.itin[i].depDate +
-                    ' ' +
-                    pnrModel.pNR.itinerary.itin[i].depTime)))
-          ],
-        ),
-      );
+      widgets.add(V3ItemRow('Departure Time:',
+            getIntlDate('dd MMM kk:mm',DateTime.parse(
+                pnrModel.pNR.itinerary.itin[i].depDate + ' ' +
+                    pnrModel.pNR.itinerary.itin[i].depTime))));
 
-      widgets.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            TrText('Fare Type:'),
-            Text(pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
+      widgets.add(V3ItemRow('Fare Type:',
+          pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
                     'Fly Flex Plus'
                 ? 'Fly Flex +'
-                : translate(pnrModel.pNR.itinerary.itin[i].classBandDisplayName))
-          ],
-        ),
-      );
+                : translate(pnrModel.pNR.itinerary.itin[i].classBandDisplayName)));
+
       double taxTotal = 0.0;
 
  //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
@@ -661,15 +581,7 @@ Row airMiles() {
         });
   //    }
       if (taxTotal != 0.0) {
-        widgets.add(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TrText('Tax:'),
-              Text(formatPrice(currencyCode,taxTotal)),
-            ],
-          ),
-        );
+        widgets.add(V3ItemPriceRow('Tax:',currencyCode,taxTotal));
       }
 
       double sepTax1 = 0.0;
@@ -686,16 +598,7 @@ Row airMiles() {
         });
  //     }
       if (sepTax1 != 0.0) {
-        widgets.add(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TrText(desc1),
-              Text(formatPrice(currencyCode,sepTax1)),
-
-            ],
-          ),
-        );
+        widgets.add(V3ItemPriceRow(desc1,currencyCode,sepTax1));
       }
 
 
@@ -810,7 +713,7 @@ Row airMiles() {
           endDrawer: DrawerMenu(),
           bottomNavigationBar: getBottomNav(context),
           body: _getBody(),
-          floatingActionButton: (wantPageV2() || wantHomePageV3()) ? vidWideActionButton(context,'Continue', onCompletePressed, icon: Icons.check, offset: 35.0 ) : null,
+          floatingActionButton: /*(wantPageV2() || wantHomePageV3()) ? */vidWideActionButton(context,'Continue', onCompletePressed, icon: Icons.check, offset: 35.0 ) /*: null*/,
       );
 
     }
@@ -1069,7 +972,7 @@ Row airMiles() {
               )
             ],
           ),
-          ( wantHomePageV3()) ? Container() :
+      /*    ( wantHomePageV3()) ? Container() :
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 //foregroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
@@ -1090,7 +993,7 @@ Row airMiles() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: list,
             ),
-          ),
+          ),*/
         ]));
   }
 

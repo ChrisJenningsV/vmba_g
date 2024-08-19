@@ -13,6 +13,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 
+import '../../utilities/messagePages.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
@@ -516,6 +517,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   @override
   Widget build(BuildContext context) {
     if (_loadingInProgress) {
+      return getProgressMessage('Calculating your price...', 'Summary');
       return Scaffold(
         appBar: new AppBar(
           //brightness: gblSystemColors.statusBar,

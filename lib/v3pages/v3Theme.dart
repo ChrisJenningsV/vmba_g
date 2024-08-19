@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../components/trText.dart';
 import '../data/globals.dart';
+import '../utilities/helper.dart';
 import 'homePageHelper.dart';
 
 class V3Theme {
@@ -128,6 +130,63 @@ Future<void> loadNetTheme(String fileName) async {
   }
 }
 
+Widget V3CityDivider(){
+  if( gblSettings.wantCityDividers == false ) return Container();
+  return Divider(height: 15, thickness: 1,);
+}
 Widget V3Divider(){
   return Divider(height: 15, thickness: 1,);
+}
+
+Row V3ItemPriceRow(String title, String code, double amount){
+  return V3ItemRow(title, formatPrice(code, amount));
+}
+Row V3ItemRow(String title, String text){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      TrText(title),
+      Text(text),
+    ],
+  );
+}
+late TextStyle  _displayLarge;
+late TextStyle  _displayMedium;
+late TextStyle  _displaySmall;
+late TextStyle  _headlineMedium;
+late TextStyle  _headlineLarge;
+late TextStyle  _headlineSmall;
+late TextStyle  _titleLarge;
+late TextStyle  _titleMedium;
+late TextStyle  _titleSmall;
+late TextStyle  _labelLarge;
+late TextStyle  _labelMedium;
+late TextStyle  _labelSmall;
+late TextStyle  _bodyMedium;
+late TextStyle  _bodyLarge;
+late TextStyle  _bodySmall;
+bool _thimesInited = false;
+void initThemes(BuildContext context) {
+  if( _thimesInited == true ) return;
+  _thimesInited = true;
+
+  _displayLarge = Theme.of(context).textTheme.displayLarge!;
+  _displayMedium = Theme.of(context).textTheme.displayMedium!;
+  _displaySmall = Theme.of(context).textTheme.displaySmall!;
+  _headlineLarge = Theme.of(context).textTheme.headlineLarge!;
+  _headlineMedium = Theme.of(context).textTheme.headlineMedium!;
+  _headlineSmall = Theme.of(context).textTheme.headlineSmall!;
+  _titleLarge = Theme.of(context).textTheme.titleLarge!;
+  _titleMedium = Theme.of(context).textTheme.titleMedium!;
+  _titleSmall = Theme.of(context).textTheme.titleSmall!;
+  _labelLarge = Theme.of(context).textTheme.labelLarge!;
+  _labelMedium = Theme.of(context).textTheme.labelMedium!;
+  _labelSmall = Theme.of(context).textTheme.labelSmall!;
+  _bodyLarge = Theme.of(context).textTheme.bodyLarge!;
+  _bodyMedium = Theme.of(context).textTheme.bodyMedium!;
+  _bodySmall = Theme.of(context).textTheme.bodySmall!;
+}
+
+TextStyle v3LabelSmall(){
+  return _labelSmall;
 }

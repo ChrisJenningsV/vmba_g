@@ -244,13 +244,6 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       children: <Widget>[
         TrText('Total Tax: '),
        Text(formatPrice(currencyCode, tax) ),
-/*
-        Text(NumberFormat.simpleCurrency(
-            locale: gblSettings.locale,
-            name: currencyCode)
-            .format(tax)),
-
- */
       ],
     ));
 

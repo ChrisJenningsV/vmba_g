@@ -239,7 +239,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    if (_loadingInProgress && gblInRefreshing == false) {
+        return getProgressMessage(_loading, '');
+    }
+
+        return new Scaffold(
       key: _key,
       appBar: appBar(context,"Returning Flight", PageEnum.returningFlight),
         endDrawer: DrawerMenu(),
@@ -248,24 +252,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
   }
 
   Widget _buildBody() {
-    if (_loadingInProgress && gblInRefreshing == false) {
-      if( gblSettings.wantCustomProgress) {
-        return getProgressMessage(_loading, '');
-      } else {
-      return new Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TrText(_loading),
-            )
-          ],
-        ),
-      );
-      }
-    } else if (_noInternet) {
+    if (_noInternet) {
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -75,7 +75,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
   }
 
   _initData(DateTime dt) {
-    if( wantHomePageV3()) {
+    if( gblSettings.wantPriceCalendar) {
       LoadCalendarData(context, dt, onCompleteLoad);
     }
   }

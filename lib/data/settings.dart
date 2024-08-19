@@ -143,6 +143,8 @@ class Settings {
   bool wantFqtvHomepage;
   bool wantCustomHomepage;
   bool useLogin2;
+  // new gui opts
+  bool wantCityDividers;
 
   String productFormat;
   String homePageStyle;
@@ -331,6 +333,9 @@ bool bpShowFastTrack;
     this.wantCustomHomepage = false,
     this.useLogin2 = false,
     this.wantUnlock = false,
+
+    // new Gui
+    this.wantCityDividers = false,
 
     this.useWebApiforVrs: false,
     this.youthIsAdult = false,

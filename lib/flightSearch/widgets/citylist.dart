@@ -218,7 +218,7 @@ class DepartureListState extends State<DepartureList> {
             shrinkWrap: true,
           itemCount: routes == null ? 0 : routes!.length ,
           itemBuilder: (BuildContext context, i) {
-            //return new ListTile(title: Text('${routes[i].org}'.split('|')[1],),
+/*
             return new ListTile(
               //dense: true,
                 title: Text(
@@ -226,6 +226,24 @@ class DepartureListState extends State<DepartureList> {
                 ),
                 onTap: () {
                   //Navigator.pop(context, '${routes[i].org}');
+                  Navigator.pop(context, '${routes![i]}');
+                });
+*/
+            return new ListTile(
+              //minVerticalPadding: 0,
+                dense: false,
+                visualDensity: VisualDensity(vertical: -2),
+                title: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      i==0 ? Padding(padding: EdgeInsets.all(3) ): Container(),
+                      Text(translate('${routes![i]}'.split('|')[1])),
+                      Padding(padding: EdgeInsets.all(3) ),
+                      /*wantHomePageV3() ?*/ V3CityDivider() /*: Container()*/,
+                    ]
+                ),
+                onTap: () {
                   Navigator.pop(context, '${routes![i]}');
                 });
           }
@@ -361,7 +379,7 @@ class _ArrivalsState extends State<Arrivals> {
                   i==0 ? Padding(padding: EdgeInsets.all(3) ): Container(),
                   Text(translate('${routes![i]}'.split('|')[1])),
                   Padding(padding: EdgeInsets.all(3) ),
-                  wantHomePageV3() ? V3Divider() : Container(),
+                  /*wantHomePageV3() ?*/ V3CityDivider() /*: Container()*/,
                 ]
                 ),
                 onTap: () {
