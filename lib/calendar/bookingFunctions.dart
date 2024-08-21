@@ -188,10 +188,6 @@ String buildADSCmd(NewBooking newBooking) {
 }
 
 setAmountPayable(PnrModel pnrModel) {
-  if( pnrModel == null || pnrModel.pNR == null ) {
-    gblPayable = '';
-    return;
-  }
   FareStore fareStore = pnrModel
       .pNR
       .fareQuote
@@ -318,7 +314,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
     String data = await runVrsCommand(msg).catchError((e) {
       //noInternetSnackBar(context);
       setError(e.toString());
-      return null;
+      return '';
     });
     if( data == null || data == '' ){
       if( gblError == '') {
@@ -374,7 +370,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 
 //            if (response == null) {
               setError('Network error');
-              return null;
+              return '';
             });
 
             //If there was an error return an empty list
@@ -537,12 +533,6 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
                 headers: getXmlHeaders())
                 .catchError((resp) {});
             if (response == null) {
-/*
-              setState(() {
-                _displayProcessingIndicator = false;
-              });
-              noInternetSnackBar(context);
-*/
               setError('Network error');
               return null;
             }
@@ -550,12 +540,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
             //If there was an error return an empty list
             if (response.statusCode < 200 || response.statusCode >= 300) {
               setError('Network error ${response.statusCode}');
-             /* setState(() {
-                _displayProcessingIndicator = false;
-              });
-              //showSnackBar(translate('Please, check your internet connection'));
-              noInternetSnackBar(context); */
-              return null;
+               return null;
             } else if (response.body.contains('ERROR - ') ||
                 response.body.contains('ERROR:')) {
               setError(response.body

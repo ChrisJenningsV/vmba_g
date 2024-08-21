@@ -190,3 +190,86 @@ void initThemes(BuildContext context) {
 TextStyle v3LabelSmall(){
   return _labelSmall;
 }
+
+enum TextSize { small, medium, large }
+
+
+class VBodyText extends Text {
+  TextSize size;
+
+  VBodyText(super.data, {this.size = TextSize.medium});
+
+  build(BuildContext context){
+    TextStyle style;
+
+    switch( this.size){
+      case TextSize.small:
+        style = _bodySmall;
+        break;
+      case TextSize.large:
+        style = _bodyLarge;
+        break;
+
+      default:
+        style = _bodyMedium;
+        break;
+    }
+    return Text(data!, style: style,);
+  }
+}
+class VHeadlineText extends Text {
+  TextSize size;
+  Color? color;
+  bool wantTranslate;
+  VHeadlineText(super.data, {this.size = TextSize.medium, this.color, this.wantTranslate = true});
+
+  build(BuildContext context){
+    TextStyle style;
+    String text = data as String ;
+    if( wantTranslate) text = translate(text);
+
+    switch( this.size){
+      case TextSize.small:
+        style = _headlineSmall;
+        break;
+      case TextSize.large:
+        style = _headlineLarge;
+        break;
+
+      default:
+        style = _headlineMedium;
+        break;
+    }
+    if(color != null  ) {
+      style = style.copyWith(color: color);
+    }
+    return Text(text, style: style,);
+  }
+}
+class VTitleText extends Text {
+  TextSize size;
+  Color? color;
+
+  VTitleText(super.data, {this.size = TextSize.medium, this.color});
+
+  build(BuildContext context){
+    TextStyle style;
+
+    switch( this.size){
+      case TextSize.small:
+        style = _titleSmall;
+        break;
+      case TextSize.large:
+        style = _titleLarge;
+        break;
+
+      default:
+        style = _titleMedium;
+        break;
+    }
+    if(color != null  ) {
+      style = style.copyWith(color: color);
+    }
+    return Text(data!, style: style,);
+  }
+}

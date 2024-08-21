@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/FlightSelectionSummary/widgets/flightRules.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
@@ -9,6 +10,7 @@ import '../calendar/flightPageUtils.dart';
 import '../components/bottomNav.dart';
 import '../components/pageStyleV2.dart';
 import '../components/vidButtons.dart';
+import '../components/vidTextFormatting.dart';
 import '../data/models/models.dart';
 import 'dart:async';
 import '../data/models/pnr.dart';
@@ -607,6 +609,7 @@ Row airMiles() {
     return Container(
         decoration: containerDecoration( location: 'middle') ,
         margin: containerMargins(location: 'middle') ,
+      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
 /*
         padding:(wantHomePageV3()) ? null : EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
 */
@@ -744,83 +747,37 @@ Row airMiles() {
         style: TextStyle(color: Colors.white),
       ));
 
-    if( wantPageV2()) {
+    List<Widget> paxTypeList = [];
+    widget.newBooking.passengers.getPax(paxTypeList);
+    /*if(widget.newBooking.passengers.adults != 0) {
+      paxTypeList.add(tableRow(translate('No of ') + translate('Adults') + ': ',translateNo(widget.newBooking.passengers.adults.toString())));
+    }
+    if( widget.newBooking.passengers.youths != 0) {
+      paxTypeList.add(tableRow(translate('No of ') + translate('Youths') + ': ',translateNo(widget.newBooking.passengers.youths.toString())));
+    }
+    if( widget.newBooking.passengers.students != 0){
+      paxTypeList.add(tableRow(translate('No of ') + translate('Students') + ': ',translateNo(widget.newBooking.passengers.students.toString())));
+    }
+    if(widget.newBooking.passengers.seniors != 0){
+      paxTypeList.add(tableRow(translate('No of ') + translate('Seniors') + ': ',translateNo(widget.newBooking.passengers.seniors.toString())));
+    }
+    if(widget.newBooking.passengers.children != 0) {
+      paxTypeList.add(tableRow(translate('No of ') + translate('children') + ': ',translateNo(widget.newBooking.passengers.children.toString())));
+    }
+    if(widget.newBooking.passengers.infants != 0) {
+      paxTypeList.add(tableRow(translate('No of ') + translate('Infants') + ': ',translateNo(widget.newBooking.passengers.infants.toString())));
+    }
+*/
+ //   if( wantPageV2()) {
         Widget peopleList ;
+
         peopleList =
             Container(
                 decoration: containerDecoration( location: 'top') ,
                 margin: containerMargins(location: 'top') ,
                 padding: EdgeInsets.all(16.0),
                 child: Column(
-                    children: [
-              widget.newBooking.passengers.adults != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(translate('No of ') + translate('Adults') + ': '),
-                  Text(translateNo(widget.newBooking.passengers.adults.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-              widget.newBooking.passengers.youths != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(translate('No of ') + translate('Youths') + ': '),
-                  Text(translateNo(widget.newBooking.passengers.youths.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-              widget.newBooking.passengers.students != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(translate('No of ') + translate('Students') + ': '),
-                  Text(translateNo(widget.newBooking.passengers.students.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-              widget.newBooking.passengers.seniors != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(translate('No of ') + translate('Seniors') + ': '),
-                  Text(translateNo(widget.newBooking.passengers.seniors.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-              widget.newBooking.passengers.children != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TrText('No of children: '),
-                  Text(
-                      translateNo(widget.newBooking.passengers.children.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-              widget.newBooking.passengers.infants != 0
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(translate('No of ') + translate('Infants') +': '),
-                  Text(translateNo(widget.newBooking.passengers.infants.toString())),
-                ],
-              )
-                  : Padding(
-                padding: EdgeInsets.zero,
-              ),
-            ]
+                    children: paxTypeList
             )
             );
               //Divider(),
@@ -829,6 +786,7 @@ Row airMiles() {
       return ListView(
         children: [
             peopleList,
+            Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: V3Divider()),
             flightSegementSummary(),
           bookingSummary(),
           Padding(padding: EdgeInsets.all(35)),
@@ -838,163 +796,15 @@ Row airMiles() {
         ]
         ,
       );
-    }
+ //   }
 
 
 
-    return new Container(
+  /*  return new Container(
         decoration: containerDecoration() ,
         margin: containerMargins() ,
         padding: EdgeInsets.all(16.0),
-        child: new ListView(children: [
-          widget.newBooking.passengers.adults != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(translate('No of ') + translate('Adults') + ': '),
-              Text(translateNo(widget.newBooking.passengers.adults.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          widget.newBooking.passengers.youths != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(translate('No of ') + translate('Youths') + ': '),
-              Text(translateNo(widget.newBooking.passengers.youths.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          widget.newBooking.passengers.students != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(translate('No of ') + translate('Students') + ': '),
-              Text(translateNo(widget.newBooking.passengers.students.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          widget.newBooking.passengers.seniors != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(translate('No of ') + translate('Seniors') + ': '),
-              Text(translateNo(widget.newBooking.passengers.seniors.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          widget.newBooking.passengers.children != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TrText('No of children: '),
-              Text(
-                  translateNo(widget.newBooking.passengers.children.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          widget.newBooking.passengers.infants != 0
-              ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(translate('No of ') + translate('Infants') +': '),
-              Text(translateNo(widget.newBooking.passengers.infants.toString())),
-            ],
-          )
-              : Padding(
-            padding: EdgeInsets.zero,
-          ),
-          V3Divider(),
-          flightSegementSummary(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              TrText(
-                'Summary',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ],
-          ),
-              Padding(padding: EdgeInsets.all(5)),
-          ( gblRedeemingAirmiles == true ) ?
-          airMiles() : netFareTotal(),
-          taxTotal(),
-          ( gblRedeemingAirmiles != true ) ?
-          grandTotal() : Column(),
-          discountTotal(),
-          V3Divider(),
-          ( gblRedeemingAirmiles != true ) ? Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              TrText(
-                'Amount payable',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ],
-          ) : Column(),
-          ( gblRedeemingAirmiles != true ) ? amountPayable() : Column(),
-          Padding(
-            padding: EdgeInsets.only(top: 5),
-          ),
-          V3Divider(),
-          gblSettings.hideFareRules
-              ? Padding(
-            padding: EdgeInsets.only(top: 0),
-          )
-              : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TrText('Fare Rules'),
-              IconButton(
-                icon: Icon(Icons.keyboard_arrow_right),
-                onPressed: () {
-                  if( gblNoNetwork == false ) {
-                    Navigator.push(
-                        context,
-                        SlideTopRoute(
-                            page: FlightRulesWidget(
-                              fQItin: pnrModel.pNR.fareQuote.fQItin,
-                              itin: pnrModel.pNR.itinerary.itin,
-                            )));
-                  }
-
-                }
-              )
-            ],
-          ),
-      /*    ( wantHomePageV3()) ? Container() :
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                //foregroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
-                backgroundColor: gblSystemColors.primaryButtonColor, //Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: getButtonRadius())),
-            onPressed: () {
-                if (gblNoNetwork == false) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PassengerDetailsWidget(
-                              newBooking: widget.newBooking)));
-                }
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: list,
-            ),
-          ),*/
-        ]));
+        child: new ListView(children: paxTypeList));*/
   }
 
 Widget bookingSummary() {

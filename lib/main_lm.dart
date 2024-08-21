@@ -77,7 +77,7 @@ void configLM() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    wantMaterial3: false,
+    wantMaterialFonts: false,
     canGoBackFromPaxPage: true,
     wantGiftVouchers: false,
     //pageStyle: 'V2',

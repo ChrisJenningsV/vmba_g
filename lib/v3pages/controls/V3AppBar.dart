@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../components/trText.dart';
+import '../v3Theme.dart';
 import 'V3Constants.dart';
 
 class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -12,6 +14,7 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
   final bool hasBackgroundImage;
   final Widget? title;
+  final String? titleText;
   final List<Widget>? actions;
   final Widget? leading;
   final Widget? flexibleSpace;
@@ -26,6 +29,7 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
       PageEnum pageName,
       {
         this.title,
+        this.titleText,
         this.leading,
         this.flexibleSpace,
         this.bottom,
@@ -73,7 +77,18 @@ class _V3AppBarState extends State<V3AppBar>{
 //      wantShadow = false;
 
     }
-    return AppBar(title: widget.title, 
+    Widget? title = widget.title;
+    if(title == null ){
+      if( gblSettings.wantMaterialFonts) {
+        title = VHeadlineText(widget.titleText as String, size: TextSize.small,
+          color: gblSystemColors.headerTextColor,);
+      } else {
+        title = Text( translate(widget.titleText as String),style: TextStyle(
+                color: gblSystemColors.headerTextColor));
+      }
+    }
+
+    return AppBar(title: title,
         backgroundColor: gblSystemColors.primaryHeaderColor,// widget.backgroundColor,
         //bottomOpacity: wantShadow ? null : 0.0 ,
         automaticallyImplyLeading: widget.automaticallyImplyLeading,

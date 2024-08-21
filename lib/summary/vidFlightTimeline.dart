@@ -13,7 +13,8 @@ import '../utilities/helper.dart';
 
 
 class TimelineDelivery extends StatelessWidget {
-  TimelineDelivery({Key key= const Key("timedel_key"), required this.newBooking,required  this.isReturn}) : super(key: key);
+ // TimelineDelivery({Key key= const Key("timedel_key"), required this.newBooking,required  this.isReturn}) : super(key: key);
+  TimelineDelivery({required this.newBooking,required  this.isReturn}) ;
 
   final NewBooking newBooking;
   final bool isReturn;
@@ -93,7 +94,7 @@ class TimelineDelivery extends StatelessWidget {
 
   Widget startTile(Flt flt, String className) {
     return VidTimelineTile(
-      key: const Key('starttime_key'),
+//      key: const Key('starttime_key'),
       alignment: VidTimelineAlign.manual,
       lineXY: 0.1,
       isFirst: true,
@@ -176,7 +177,7 @@ class TimelineDelivery extends StatelessWidget {
 
 class _RightChild extends StatelessWidget {
   const _RightChild({
-    Key key= const Key("right_key"),
+ //   Key key= const Key("right_key"),
 //    this.asset,
     required this.title,
     this.message = '',
@@ -184,7 +185,7 @@ class _RightChild extends StatelessWidget {
     this.message3 = '',
     this.first = true,
     this.disabled = false,
-  }) : super(key: key);
+  });// : super(key: key);
 
 //  final String asset;
   final Widget title;

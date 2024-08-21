@@ -10,7 +10,8 @@ import 'package:vmba/components/trText.dart';
 
 
 class SummaryView extends StatelessWidget {
-  SummaryView({Key key= const Key("sumview_key"), required this.newBooking}) : super(key: key);
+ // SummaryView({Key key= const Key("sumview_key"), required this.newBooking}) : super(key: key);
+  SummaryView({required this.newBooking});
   final NewBooking newBooking;
   //final PnrModel pnrModel;
 
@@ -23,7 +24,7 @@ class SummaryView extends StatelessWidget {
     setCurrencyCode();
 
     List <Widget> list = [];
-    getPax(list);
+    newBooking.passengers.getPax(list);
     list.add(Divider(),);
     list.add(flightSegementSummary());
 
@@ -122,7 +123,7 @@ class SummaryView extends StatelessWidget {
     );
   }
 
-  void getPax(list) {
+ /* void getPax(list) {
     if (newBooking.passengers.adults != 0) {
       list.add(tableRow(translate('No of ') + translate('Adults') + ': ',
           translateNo(newBooking.passengers.adults.toString())));
@@ -144,7 +145,7 @@ class SummaryView extends StatelessWidget {
         list.add(tableRow(translate('No of ') + translate('Infants') + ': ',translateNo(newBooking.passengers.infants.toString())));
       }
 
-  }
+  }*/
 
   Widget taxTotal() {
     if (gblLogSummary) logit('add tax');

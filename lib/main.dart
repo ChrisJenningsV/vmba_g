@@ -260,8 +260,8 @@ bool bFirstTime = true;
 */
         primaryColor: gblSystemColors.primaryColor,
         secondaryHeaderColor: gblSystemColors.accentColor,
-        useMaterial3: gblSettings.wantMaterial3,
-        colorScheme: gblSettings.wantMaterial3 ? null : ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
+        useMaterial3: false, //gblSettings.wantMaterial3,
+        colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
         dividerTheme: DividerThemeData(color: Colors.grey.shade300),
         //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary,)
       ),
@@ -269,7 +269,7 @@ bool bFirstTime = true;
         //brightness: Brightness.dark,
  //       scaffoldBackgroundColor: gblSystemColors.backgroundColor,
         primaryColor: gblSystemColors.primaryColor,
-        useMaterial3: gblSettings.wantMaterial3,
+        useMaterial3: false,
         colorScheme: ColorScheme.light(primary: Colors.black).copyWith(secondary: gblSystemColors.accentColor),
         dividerTheme: DividerThemeData(color: Colors.grey.shade300),
       ),

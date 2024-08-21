@@ -80,7 +80,7 @@ class ProductsWidgetState extends State<ProductsWidget> {
 
     if( errorMsg != '' && errorMsg.isNotEmpty){
 
-        ScaffoldMessenger.of(context).showSnackBar(snackbar(errorMsg));
+       // ScaffoldMessenger.of(context).showSnackBar(snackbar(errorMsg));
     }
     return Column(children: list,);
   }
@@ -106,6 +106,8 @@ class ProductsWidgetState extends State<ProductsWidget> {
       if (response.statusCode == 200) {
         //logit('nearly loaded' );
         gblProducts = ProductCategorys.fromJson(response.body.trim());
+
+
         //logit('loaded' );
         setState(() {
 
@@ -139,8 +141,12 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
     // add  bag products
     if(gblProducts != null && gblProducts!.productCategorys.length > 0 ) {
       gblProducts!.productCategorys.forEach((pc) {
+        
         if( gblLogProducts ) {logit('products: add category ${pc.productCategoryName} ${pc.products.length} items');}
 
+        if(  pc.excludeAllProducts(widget.pnrModel)) {
+          logit('exclude cat ${pc.productCategoryName}');
+        } else {
         list.add(new ProductCard( productCategory: pc, pnrModel: widget.pnrModel, savedPnr: savedPnr, isMmb: widget.isMMB, onComplete: widget.onComplete,
         onError: (msg)
         {
@@ -148,6 +154,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
           logit('add category error:$msg');
         }
         ));
+        }
       }
       );
       if( gblProducts!.productCategorys.length > 1) list.add( Divider(height: 200,));

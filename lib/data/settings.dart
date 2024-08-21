@@ -124,7 +124,7 @@ class Settings {
   bool useAppBarImeonBP;
   bool wantCanFacs;
   bool wantTerminal;
-  bool wantMaterial3;
+  bool wantMaterialFonts;
   bool wantPriceCalendar;
   bool wantPriceCalendarRounding;
   bool wantMonthOnCalendar;
@@ -320,7 +320,7 @@ bool bpShowFastTrack;
     this.wantTandCCheckBox = false,
     this.saveChangeBookingBeforePay = false,
     this.wantTerminal = true,
-    this.wantMaterial3 = false,
+    this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
     this.wantPriceCalendarRounding = false,
     this.wantMonthOnCalendar = false,

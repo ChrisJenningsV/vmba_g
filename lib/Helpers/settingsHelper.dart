@@ -71,7 +71,6 @@ EdgeInsets v2FormPadding(){
 }
 
 BoxDecoration v2FormDecoration() {
-  BoxShadow box;
   if( gblSettings.wantShadows) {
     return BoxDecoration(
       color: Colors.white,
@@ -97,7 +96,7 @@ BoxDecoration v2FormDecoration() {
 
 Color v2PageBackgroundColor(){
   if( gblSystemColors.backgroundColor != null ) {
-    return gblSystemColors!.backgroundColor as Color;
+    return gblSystemColors.backgroundColor as Color;
   }
   return Colors.grey.shade400;
   //return Colors.grey.withOpacity(0.5);

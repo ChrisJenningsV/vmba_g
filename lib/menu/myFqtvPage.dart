@@ -862,21 +862,14 @@ Widget _getTrans() {
         setError( e.toString());
         _isButtonDisabled = false;
         _loadingInProgress = false;
-        //_actionCompleted();
-       // endProgressMessage();
-        //showAlertDialog(context, 'Login Error', gblError);
 
-        //criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true); // , doublePop: true
-        //setState(() {});
-        //Navigator.of(context).pop();
         print(gblError);
         _error = gblError;
-        //_showDialog();
         _loadingInProgress = false;
-        //_actionCompleted();
-        Navigator.of(context).pop();
-        //_showDialog();
+//        Navigator.of(context).pop();
         showAlertDialog(context, 'Information', _error, onComplete: () {
+          gblError = '';
+          //Navigator.of(context).pop();
           setState(() {
             setError( '');
           });

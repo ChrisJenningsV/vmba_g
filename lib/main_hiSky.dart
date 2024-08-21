@@ -136,8 +136,8 @@ void configH4() {
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
 
-    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
-//    testPayPage: 'https://customertest.videcom.com/hisky/VARS/Public/MobilePaymentStart.aspx',
+//    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
+    testPayPage: 'https://customertest.videcom.com/hisky/VARS/Public/MobilePaymentStart.aspx',
 
 //    testXmlUrl:      "http://10.0.2.2:63954/webservices/VrsApi.asmx/PostVRSCommand?",
     testXmlUrl:      "https://customertest.videcom.com/hisky/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
@@ -145,7 +145,7 @@ void configH4() {
     testSmartApiUrl:      "https://customertest.videcom.com/hisky/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/hisky/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/hisky/VARS/webApiv2/api/',
-//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+ //   testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 
     creditCardProvider: '3DS_videcard',

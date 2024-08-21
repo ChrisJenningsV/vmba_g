@@ -142,6 +142,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: TextField(
+              readOnly: true,
               decoration: InputDecoration(
                 hintText: msg,
                 border: InputBorder.none,

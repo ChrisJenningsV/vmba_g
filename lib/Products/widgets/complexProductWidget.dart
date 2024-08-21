@@ -224,7 +224,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
   }
 
   void onError(String msg){
-    widget.onError!(msg);
+    //widget.onError!(msg);
     gblActionBtnDisabled = false;
     showAlertDialog(context, 'Error', msg);
 
@@ -351,7 +351,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
           });
         }},
         onAdd: (int paxNo, int segNo) {
-          int max = widget.product!.maxQuantity ;
+          int max = widget.product.maxQuantity ;
           if( max == 0 ) max = 10;
           if( widget.product.getCount(paxNo, segNo) < max) {
             setState(() {
@@ -369,7 +369,7 @@ class ProductFlightCardState extends State<ProductFlightCard> {
 
 Widget getProductPaxRow(BuildContext context, Product prod, PAX pax, int segNo, int lineNo, bool disable, { void Function(int paxNo, int segNo)? onDelete, void Function(int paxNo, int segNo)? onAdd}) {
   List<Widget> widgets = [];
-  int max = prod!.maxQuantity ;
+  int max = prod.maxQuantity ;
   if( max == 0 ) max = 10;
 
   widgets.add(Align(alignment: Alignment.centerLeft,
@@ -420,7 +420,7 @@ Row getProductRow(Product prod, int segNo, { void Function(int paxNo, int segNo)
         child: TrText(prod.productName)),);
 
     widgets.add(Spacer(),);
-    int max = prod!.maxQuantity ;
+    int max = prod.maxQuantity ;
     if( max == 0 ) max = 10;
 
     if(  max > 0 ) {

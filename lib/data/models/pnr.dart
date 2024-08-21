@@ -49,6 +49,10 @@ class PnrModel {
 
     return gblSettings.currency;
   }
+
+
+
+
   bool anyPaxCheckedin(int journeyNo) {
     if(
     this.pNR.tickets != null &&
@@ -179,8 +183,8 @@ class PnrModel {
 
   bool isFundTransferPayment() {
     if (this.pNR != null &&
-        this.pNR.zpay != null &&
-        this.pNR.timeLimits != null &&
+        (this.pNR.zpay != null && this.pNR.zpay.mbamount != '' ) &&
+        (this.pNR.timeLimits != null && this.pNR.timeLimits.tTL.tTLID != '' ) &&
         this.pNR.basket.outstanding != null &&
         this.pNR.basket.outstanding.amount.isNotEmpty &&
         double.parse(this.pNR.basket.outstanding.amount) > 0  ) {
@@ -750,6 +754,14 @@ class PNR {
     });
     return noSeats;
   }
+bool hasAmountOutstanding(){
+   if( double.parse(this.basket.outstanding.amount) >0 ||
+       double.parse(this.basket.outstandingairmiles.amount) >0){
+     return true;
+   }
+
+    return false;
+}
 
   void dumpProducts(String from ) {
     if( gblLogProducts ) { logit('Products dump: $from');}

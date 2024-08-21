@@ -164,8 +164,8 @@ void configT6() {
     productImageMode: 'index',
     wantStatusLine: true,
     wantSeatsWithProducts: true,
-    wantFqtvAutologin: true,
-    wantFqtvHomepage: true ,
+    wantFqtvAutologin: false,
+    wantFqtvHomepage: false ,
 
     wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',

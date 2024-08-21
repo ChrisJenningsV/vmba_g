@@ -96,6 +96,9 @@ class ProductCardState extends State<ProductCard> {
     if( title.toLowerCase().contains('transfer') || title.contains('bus')) {
       return Icons.directions_bus;
     }
+    if( title.toLowerCase().contains('meal') || title.contains('food')) {
+      return Icons.restaurant;
+    }
 
 // default
     return Icons.luggage;
@@ -240,56 +243,52 @@ class ProductCardState extends State<ProductCard> {
       ));
 
     } else {
-      Product? savedProd = new Product();
-/*
- //     if( widget.isMmb){
-        //
-        if( savedProd == null ) {
-          savedProd =
-        }
-        savedProd.productCode = prod.productCode;
-        savedProd.resetProducts(widget.savedPnr);
-   //   }
-*/
+      // check if excluded
+      if( prod.excludeAllLegs(widget.pnrModel)){
+        // do not add this one
+        logit('exclude product ${prod.productID} ${prod.productName}');
+        return Container();
+      } else {
+        Product? savedProd = new Product();
+        // more button
+        widgets.add(vidRightButton(context, onPressed: (context) {
+          if (gblNoNetwork == false) {
+            Navigator.push(
+                context,
+                SlideTopRoute(
+                    page: ComplextProductWidget(
+                      key: Key('prod${index}_${prod.productCode}_key'),
+                      product: prod,
+                      savedProduct: savedProd,
+                      pnrModel: widget.pnrModel,
+                      isMmb: widget.isMmb,
+                      onSaved: (product) {
+                        //saveProduct(product, widget.pnrModel.pNR.rLOC);
+                      },
+                      onError: (msg) {
+                        widget.onError!(msg);
+                      },
+                    ))).then((pnrMod) {
+              if (pnrMod != null && pnrMod.pNR.rLOC != '') {
+                logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
+                widget.pnrModel = pnrMod;
+                logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
+                setState(() {});
+                if (widget.onComplete != null) {
+                  widget.onComplete!(pnrMod);
+                }
+              } else {
+                setState(() {
 
-      // more button
-      widgets.add( vidRightButton(context, onPressed: (context) {
-        if( gblNoNetwork == false) {
-          Navigator.push(
-              context,
-              SlideTopRoute(
-                  page: ComplextProductWidget(
-                    key: Key('prod${index}_${prod.productCode}_key'),
-                    product: prod,
-                    savedProduct: savedProd,
-                    pnrModel: widget.pnrModel,
-                    isMmb: widget.isMmb,
-                    onSaved: (product) {
-                      //saveProduct(product, widget.pnrModel.pNR.rLOC);
-                    },
-                    onError: (msg) {
-                      widget.onError!(msg);
-                    },
-                  ))).then((pnrMod) {
-            if (pnrMod != null && pnrMod.pNR.rLOC != '') {
-              logit('bef rloc=${widget.pnrModel.pNR.rLOC}');
-              widget.pnrModel = pnrMod;
-              logit('aft rloc=${widget.pnrModel.pNR.rLOC}');
-              setState(() {});
-              if (widget.onComplete != null) {
-                widget.onComplete!(pnrMod);
+                });
               }
-            } else {
-              setState(() {
+              //updatePassengerDetails(passengerDetails, paxNo - 1);
+            });
+          }
+        },),
 
-              });
-            }
-            //updatePassengerDetails(passengerDetails, paxNo - 1);
-          });
-        }
-      },),
-
-      );
+        );
+      }
     }
 
   if( widgets1.length > 0 || widgets0.length > 0) {

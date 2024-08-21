@@ -163,6 +163,7 @@ class SeatCardState extends State<SeatCard> {
   onFltPressed(BuildContext context, int journeyNo) {
     if( gblPnrModel != null  && gblNoNetwork == false ) {
       List<Pax> paxlist = getPaxlist(gblPnrModel as PnrModel, journeyNo);
+      String cabin = gblPnrModel!.pNR.itinerary.itin[journeyNo].cabin;
 
       Navigator.push(
           context,
@@ -171,6 +172,7 @@ class SeatCardState extends State<SeatCard> {
                 SeatPlanWidget(
                   paxlist: paxlist,
                   isMmb: false,
+                  cabin: cabin,
                   ischeckinOpen: false,
                   flt: gblPnrModel!.pNR.itinerary.itin[journeyNo].airID + ' ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].fltNo + ' ' +
                       gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '-' + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive,

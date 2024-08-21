@@ -75,6 +75,16 @@ class ProductCategory {
     }
   }
 
+  bool excludeAllProducts(PnrModel pnrModel){
+    bool excludeAll = true;
+    this.products.forEach((prod) {
+      if( prod.excludeAllLegs(pnrModel)) {} else {
+        excludeAll = false;
+      }
+    });
+    return excludeAll;
+  }
+
   List <Product> _getProducts(List<dynamic> data ) {
     List <Product> products = [];
     if( data == null) return products;
@@ -164,6 +174,7 @@ class Product {
   int displayOrder=0;
   int productImageIndex=0;
   bool displayOnwebsite=false;
+  String excludeRoutes='';
 
 //int count
 
@@ -199,12 +210,27 @@ List<prodCount>? curProducts; //= List.from([Product()]) ;
   return false;
   }
 
+  bool excludeAllLegs(PnrModel pnrModel){
+    bool excludeAll = true;
+
+    pnrModel.pNR.itinerary.itin.forEach((flt) {
+      String route = '${flt.depart}/${flt.arrive}';
+      if( this.applyToClasses == '' || this.applyToClasses.contains(flt.xclass) ) {
+        if (this.excludeRoutes.contains(route)) {} else {
+          excludeAll = false;
+        }
+      }
+    });
+
+    return excludeAll;
+  }
+
   void resetProducts(PnrModel pnrModel) {
     curProducts = [];
 
     if( pnrModel != null && pnrModel.pNR != null && pnrModel.pNR.mPS != null && pnrModel.pNR.mPS.mP != null ){
       pnrModel.pNR.mPS.mP.forEach((element) {
-        if( element.mPID == productCode){
+        if( element.mPID!= '' &&  element.mPID == productCode){
           incProduct(int.parse(element.pax), int.parse(element.seg));
           //curProducts!.add(prodCount(getID(int.parse(element.pax), int.parse(element.seg)),1));
         }
@@ -381,6 +407,7 @@ List<prodCount>? curProducts; //= List.from([Product()]) ;
           displayOnwebsite = parseBool(json['displayOnwebsite']);
 
         if (json['displayOrder'] != null) displayOrder = json['displayOrder'];
+        if( json['excludeRoutes'] != null ) excludeRoutes = json['excludeRoutes'];
         //logit('end Product.fromJ');
       }
       catch(e){

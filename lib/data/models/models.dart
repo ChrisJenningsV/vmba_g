@@ -4,7 +4,9 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../Helpers/stringHelpers.dart';
 import '../../components/trText.dart';
+import '../../components/vidTextFormatting.dart';
 import '../../home/searchParams.dart';
 import '../../utilities/helper.dart';
 
@@ -28,6 +30,29 @@ class Passengers {
 
   int totalPassengers() {
     return this.adults + this.children + this.youths + this.infants  + this.students + this.seniors + this.teachers;
+  }
+  void getPax(list) {
+    if (this.adults != 0) {
+      list.add(tableRow(translate('No of ') + translate('Adults') + ': ',
+          translateNo(this.adults.toString())));
+    }
+    if (this.youths != 0) {
+      list.add(tableRow(translate('No of ') + translate('Youths') + ': ', translateNo(this.youths.toString())));
+    }
+    if (this.students != 0) {
+      list.add(tableRow(translate('No of ') + translate('Students') + ': ',translateNo(this.students.toString())));
+    }
+    if (this.seniors != 0) {
+      list.add(tableRow(translate('No of ') + translate('Seniors') + ': ',translateNo(this.seniors.toString())));
+    }
+    if (this.children != 0) {
+      list.add(tableRow(translate('No of children: '),translateNo(this.children.toString())));
+    }
+
+    if (this.infants != 0) {
+      list.add(tableRow(translate('No of ') + translate('Infants') + ': ',translateNo(this.infants.toString())));
+    }
+
   }
 }
 

@@ -24,7 +24,7 @@ class CannedFactWidget extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return msgDialog(context, translate('Additional Info'),
-                        additionalInfoWidget(flt?.first.fltdet.canfac?.fac.trim()) );
+                        additionalInfoWidget(flt! ));
 
 /*
                       return AlertDialog(
@@ -72,10 +72,28 @@ class CannedFactWidget extends StatelessWidget {
     }
   }
 
-  Widget additionalInfoWidget(String? textIn) {
+  Widget additionalInfoWidget(List<Flt> flts) {
+
     String text = '';
-    if (textIn != null ) text = textIn as String;
- 
+    flts.forEach((flt) {
+      if(flt.fltdet.canfac != null && flt.fltdet.canfac?.fac != null){
+/*
+        if(text.length > 0) {
+          text += '\n\n';
+        }
+*/
+        List<String> strs =flt.fltdet.canfac!.fac.trim().split('\n');
+        strs.forEach((element) {
+          text += element.trim() + '\n\n';
+        });
+      }
+    });
+    if(text.endsWith('\n\n')){
+      text = text.substring(0, text.length-4);
+    }
+    //flt?.first.fltdet.canfac?.fac.trim())
+
+
     if (text.contains('<')) {
         Widget w = Container(
           height: 200,

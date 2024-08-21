@@ -152,10 +152,13 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                 ],
                 iconTheme: IconThemeData(
                     color: gblSystemColors.headerTextColor),
+                titleText: "My Booking",
+/*
                 title: TrText("My Booking",
                     style: TextStyle(
                         color: gblSystemColors
                             .headerTextColor)),
+*/
               ),
               endDrawer: DrawerMenu(),
               body: new Container(
@@ -1270,8 +1273,7 @@ class ViewBookingBodyState
     if (apisPnrStatus != null &&
       apisPnrStatus!.apisRequired(currentJourneyNo) &&
         !apisPnrStatus!.apisInfoEnteredAll(currentJourneyNo)) {
-      widget.showSnackBar(
-          'Can\'t check in all passengers as APIS information not complete');
+      //widget.showSnackBar(          'Can\'t check in all passengers as APIS information not complete');
     } else {
       _displayCheckingAllDialog(_objPNR, currentJourneyNo);
     }
@@ -1279,7 +1281,7 @@ class ViewBookingBodyState
 
   _showError(String err) {
     print(err);
-    widget.showSnackBar(err.trim());
+    //widget.showSnackBar(err.trim());
   }
 
   _handleApisInfoChanged(ApisPnrStatusModel apisPnrStatusModel) {
@@ -1742,11 +1744,12 @@ class ViewBookingBodyState
 
         // outstanding ?
         if( pnr.isFundTransferPayment() == false &&
-            double.parse(pnr.pNR.basket.outstanding.amount) >0) {
+            pnr.pNR.hasAmountOutstanding()
+            ){
             list.add(Row(
                 children: <Widget>[
                   Expanded(child: payOutstandingButton(
-                      pnr, objPNR!.pNR.basket.outstanding.amount))
+                      pnr, objPNR!.pNR.basket.outstanding.amount != '0' ? objPNR!.pNR.basket.outstanding.amount : objPNR!.pNR.basket.outstandingairmiles.amount))
                 ]));
         }
 
@@ -2323,7 +2326,7 @@ class ViewBookingBodyState
       if (pnrDb != null) {
         if (pnrDb.success == false) {
           setError( pnrDb.data);
-          showSnackBar(gblError, context);
+          //showSnackBar(gblError, context);
           return;
         }
 
@@ -2433,8 +2436,9 @@ class ViewBookingBodyState
                         .primaryButtonTextColor),
               ),
               onPressed: () {
-                _checkin(
-                    'EW${pnr.pNR.rLOC + pnr.pNR.names.pAX[paxNo].paxNo}:${pnr.pNR.itinerary.itin[journeyNo].depart}:${pnr.pNR.itinerary.itin[journeyNo].arrive}');
+                _doPaxCheckin(pnr, journeyNo, paxNo);
+;                /*_checkin(
+                    'EW${pnr.pNR.rLOC + pnr.pNR.names.pAX[paxNo].paxNo}:${pnr.pNR.itinerary.itin[journeyNo].depart}:${pnr.pNR.itinerary.itin[journeyNo].arrive}');*/
                 gblActionBtnDisabled = false;
                 Navigator.of(context).pop();
               },
@@ -2443,6 +2447,24 @@ class ViewBookingBodyState
         );
       },
     );
+  }
+
+  _doPaxCheckin(PnrModel pnr,int journeyNo, int paxNo){
+    // if pax 1 include infants
+    // EWZZZMBU1:ENI:MNL|ZZZMBU3:ENI:MNL
+    String route = ':${pnr.pNR.itinerary.itin[journeyNo].depart}:${pnr.pNR.itinerary.itin[journeyNo].arrive}';
+    String cmd = 'EW${pnr.pNR.rLOC}${pnr.pNR.names.pAX[paxNo].paxNo}'+ route;
+    if( paxNo == 0){
+      // look for infants
+      pnr.pNR.names.pAX.forEach((pax) {
+        if(pax.paxType == 'IN'){
+          cmd += '|${pnr.pNR.rLOC}${pax.paxNo}' + route;
+        }
+      });
+    }
+    logit('do checkin cmd $cmd');
+    _checkin(cmd);
+
   }
 
   _displayCheckingAllDialog(PnrModel pnr, int journeyNo) {

@@ -73,6 +73,7 @@ void configU5() {
     xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
     aircode: 'U5',
+    altAircode: 'UN',
     termsAndConditionsUrl: 'https://flyunitednigeria.com/condition-for-carraige/',
     privacyPolicyUrl:  'https://flyunitednigeria.com/private_policy/',
     prohibitedItemsNoticeUrl:  'https://flyunitednigeria.com/baggage-declaration-dangerous-goods/',

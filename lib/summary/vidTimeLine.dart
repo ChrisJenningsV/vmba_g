@@ -38,7 +38,7 @@ enum VidTimelineAlign {
 /// A tile that renders a timeline format.
 class VidTimelineTile extends StatelessWidget {
   const VidTimelineTile({
-    Key key= const Key("timeline_key"),
+    //Key key= const Key("timeline_key"),
     this.axis = TimelineAxis.vertical,
     this.alignment = VidTimelineAlign.start,
     this.startChild,
@@ -60,8 +60,8 @@ class VidTimelineTile extends StatelessWidget {
         alignment != VidTimelineAlign.manual ||
             (lineXY != null && lineXY >= 0.0 && lineXY <= 1.0),
         'The lineX must be provided when aligning manually, '
-            'and must be a value between 0.0 and 1.0 inclusive'),
-        super(key: key);
+            'and must be a value between 0.0 and 1.0 inclusive')
+        /*super(key: key)*/;
 
   /// The axis used on the tile. See [TimelineAxis].
   /// It defaults to [TimelineAxis.vertical]

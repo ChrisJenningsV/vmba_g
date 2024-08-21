@@ -82,7 +82,7 @@ void configM1() {
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: false,
-    wantMaterial3: false,
+    wantMaterialFonts: true,
     canGoBackFromPaxPage: true,
     wantGiftVouchers: false,
     //pageStyle: 'V2',

@@ -202,10 +202,11 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
           appBar: V3AppBar(
             PageEnum.myBookings,
             //backgroundColor: gblSystemColors.primaryHeaderColor,
-            title: TrText("MyBookings",
+            titleText: "My Bookings",
+ /*           title: TrText("My Bookings",
                 style: TextStyle(
                     color:
-                    gblSystemColors.headerTextColor)),
+                    gblSystemColors.headerTextColor)),*/
           toolbarHeight: 60,
           bottom:  new PreferredSize(
           preferredSize: new Size.fromHeight(30.0),
