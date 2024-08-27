@@ -13,8 +13,10 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/controllers/vrsCommands.dart';
 
+import '../../components/pageStyleV2.dart';
 import '../../utilities/messagePages.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
+import '../../v3pages/v3Theme.dart';
 
 class FlightSelectionSummaryWidget extends StatefulWidget {
   FlightSelectionSummaryWidget(
@@ -627,8 +629,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
             ),
           ));
     } else {
-      List<Widget> paxList = [];
-      widget.mmbBooking.passengers.getPax(paxList);
 
       return new Scaffold(
           key: _key,
@@ -644,9 +644,139 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
                         .headerTextColor)),
           ),
           endDrawer: DrawerMenu(),
-          body: new Container(
+          body: body()/*new Container(
               padding: EdgeInsets.all(16.0),
-              child: new ListView(children:paxList)));
+              child: new ListView(children:paxList))*/);
     }
+  }
+  Widget body() {
+    List<Widget> paxList = [];
+    widget.mmbBooking.passengers.getPax(paxList);
+
+    Widget peopleList =
+        Container(
+            decoration: containerDecoration(location: 'top'),
+            margin: containerMargins(location: 'top'),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+                children: paxList
+            )
+        );
+    //Divider(),
+
+
+    return ListView(
+      children: [
+        peopleList,
+        Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: V3Divider()),
+        Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: flightSegementSummary()),
+        Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: bookingSummary()),
+        Padding(padding: EdgeInsets.all(35)),
+      ]
+      ,
+    );
+  }
+
+  Widget bookingSummary() {
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            TrText(
+              'Summary',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+        netFareTotal(),
+        taxTotal(),
+        grandTotal(),
+        discountTotal(),
+        Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            TrText(
+              'Amount payable',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+        amountPayable(),
+        Padding(
+          padding: EdgeInsets.only(top: 5),
+        ),
+        Divider(),
+        gblSettings.hideFareRules
+            ? Padding(
+          padding: EdgeInsets.only(top: 0),
+        )
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            TrText('Fare Rules'),
+            IconButton(
+              icon: Icon(Icons.keyboard_arrow_down),
+              onPressed: () => Navigator.push(
+                  context,
+                  SlideTopRoute(
+                      page: FlightRulesWidget(
+                        fQItin: pnrModel.pNR.fareQuote.fQItin,
+                        itin: pnrModel.pNR.itinerary.itin,
+                      ))),
+            )
+          ],
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor:
+              gblSystemColors.primaryButtonColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0))),
+          onPressed: () {
+            hasDataConnection().then((result) async {
+              if (result == true) {
+
+                logit('fss gotopayopts');
+                gblPaymentMsg = '';
+                Navigator.push(
+                    context,
+                    //MaterialPageRoute(
+                    CustomPageRoute(
+                        builder: (context) => ChoosePaymenMethodWidget(
+                          mmbBooking: widget.mmbBooking,
+                          pnrModel: pnrModel,
+                          isMmb: true,
+                          mmbAction: 'CHANGEFLT',
+                          mmbCmd: '',
+                        )));
+              } else {
+                //noInternetSnackBar(context);
+              }
+            });
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.check,
+                color: gblSystemColors
+                    .primaryButtonTextColor,
+              ),
+              TrText(
+                'CONFIRM CHANGES',
+                style: TextStyle(
+                  color: gblSystemColors
+                      .primaryButtonTextColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]
+    );
   }
 }

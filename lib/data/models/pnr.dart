@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -49,7 +50,6 @@ class PnrModel {
 
     return gblSettings.currency;
   }
-
 
 
 

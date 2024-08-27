@@ -42,6 +42,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   PnrModel pnrModel = PnrModel();
   bool _loadingInProgress = false;
   String currencyCode = '';
+
   //bool _noInternet = false;
   bool _eVoucherNotValid = false;
   bool _tooManyUmnr = false;
@@ -81,38 +82,38 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildAddPaxCmd() {
     StringBuffer sb = new StringBuffer();
 
-    if( gblSettings.useWebApiforVrs) {
-     sb.write('I^');
+    if (gblSettings.useWebApiforVrs) {
+      sb.write('I^');
     }
 
     for (var adults = 1;
-        adults < widget.newBooking.passengers.adults + 1;
-        adults++) {
+    adults < widget.newBooking.passengers.adults + 1;
+    adults++) {
       sb.write("-TTTT${convertNumberIntoWord(adults)}/AdultMr^");
     }
     for (var youths = 1;
-        youths < widget.newBooking.passengers.youths + 1;
-        youths++) {
+    youths < widget.newBooking.passengers.youths + 1;
+    youths++) {
       sb.write("-TTTT${convertNumberIntoWord(youths)}/YouthMr.TH15^");
     }
     for (var seniors = 1;
-        seniors < widget.newBooking.passengers.seniors + 1;
-        seniors++) {
+    seniors < widget.newBooking.passengers.seniors + 1;
+    seniors++) {
       sb.write("-TTTT${convertNumberIntoWord(seniors)}/SeniorMr.CD^");
     }
     for (var students = 1;
-          students < widget.newBooking.passengers.students + 1;
-          students++) {
+    students < widget.newBooking.passengers.students + 1;
+    students++) {
       sb.write("-TTTT${convertNumberIntoWord(students)}/StudentMr.SD^");
     }
     for (var child = 1;
-        child < widget.newBooking.passengers.children + 1;
-        child++) {
+    child < widget.newBooking.passengers.children + 1;
+    child++) {
       sb.write("-TTTT${convertNumberIntoWord(child)}/ChildMr.CH10^");
     }
     for (var infant = 1;
-        infant < widget.newBooking.passengers.infants + 1;
-        infant++) {
+    infant < widget.newBooking.passengers.infants + 1;
+    infant++) {
       sb.write("-TTTT${convertNumberIntoWord(infant)}/infantMr.IN09^");
     }
 
@@ -122,9 +123,11 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildADSCmd() {
     StringBuffer sb = new StringBuffer();
     String paxNo = '1';
-    if (this.widget.newBooking.ads.pin != ''  && this.widget.newBooking.ads.number != '') {
+    if (this.widget.newBooking.ads.pin != '' &&
+        this.widget.newBooking.ads.number != '') {
       sb.write(
-          '4-${paxNo}FADSU/${this.widget.newBooking.ads.number}/${this.widget.newBooking.ads.pin}^');
+          '4-${paxNo}FADSU/${this.widget.newBooking.ads.number}/${this.widget
+              .newBooking.ads.pin}^');
     }
     return sb.toString();
   }
@@ -180,7 +183,8 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     cmd += buildADSCmd();
     widget.newBooking.outboundflight.forEach((flt) {
       int index = flt.indexOf('/');
-      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      String bkFlt = flt.substring(0, index - 3) + 'QQ' +
+          flt.substring(index - 1);
       print(bkFlt);
       cmd += bkFlt + '^';
       //print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
@@ -189,11 +193,12 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     widget.newBooking.returningflight.forEach((flt) {
       int index = flt.indexOf('/');
-      String bkFlt = flt.substring(0, index-3) + 'QQ' + flt.substring(index-1);
+      String bkFlt = flt.substring(0, index - 3) + 'QQ' +
+          flt.substring(index - 1);
       print(bkFlt);
       cmd += bkFlt + '^';
-   //   print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
-   //   cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
+      //   print(flt.substring(0, 21) + 'QQ' + flt.substring(23));
+      //   cmd += flt.substring(0, 21) + 'QQ' + flt.substring(23) + '^';
     });
 
     //Add connecting indicators for outbound and return flights
@@ -206,10 +211,10 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     if (widget.newBooking.returningflight.length > 1) {
       for (var i = widget.newBooking.outboundflight.length + 1;
-          i <
-              widget.newBooking.outboundflight.length +
-                  widget.newBooking.returningflight.length;
-          i++) {
+      i <
+          widget.newBooking.outboundflight.length +
+              widget.newBooking.returningflight.length;
+      i++) {
         print('.${i}x^');
         cmd += '.${i}x^';
       }
@@ -252,7 +257,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
               'You do not have enough ${gblSettings
                   .fQTVpointsName} to pay for this booking\nBalance = $gblFqtvBalance, \n${gblSettings
                   .fQTVpointsName} required = $miles';
-              setError( _error);
+              setError(_error);
               gblErrorTitle = 'Booking Error';
             });
           }
@@ -266,7 +271,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         setState(() {
           _loadingInProgress = false;
           endProgressMessage();
-
         });
       } else {
         setState(() {
@@ -290,7 +294,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
             _eVoucherNotValid = true;
           });
-        } else if(_error.contains('TOO MANY UMNR ')) {
+        } else if (_error.contains('TOO MANY UMNR ')) {
           setState(() {
             _tooManyUmnr = true;
             _eVoucherNotValid = true;
@@ -352,57 +356,58 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
 
     List <Widget> rows = [];
 
-   // if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-        if(  paxTax.separate == 'true'){
-            sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
-        } else {
-          tax += (double.tryParse(paxTax.amnt) ?? 0.0);
-        }
-      });
+    // if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+    this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+      if (paxTax.separate == 'true') {
+        sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
+      } else {
+        tax += (double.tryParse(paxTax.amnt) ?? 0.0);
+      }
+    });
     //}
-    rows.add( V3ItemPriceRow('Total Tax: ', currencyCode,tax) );
+    rows.add(V3ItemPriceRow('Total Tax: ', currencyCode, tax));
 
-    if( sepTax1 > 0) {
-      rows.add(V3ItemPriceRow('Additional Item(s) ',currencyCode,sepTax1));
+    if (sepTax1 > 0) {
+      rows.add(V3ItemPriceRow('Additional Item(s) ', currencyCode, sepTax1));
     }
 
     return Column(
       children: rows,
     );
   }
-Row airMiles() {
-    return  Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Text('${gblSettings.fqtvName}' + translate( ' Required points')),
-      Text('$miles'),
-    ],
-  );
-}
+
+  Row airMiles() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text('${gblSettings.fqtvName}' + translate(' Required points')),
+        Text('$miles'),
+      ],
+    );
+  }
 
   Row netFareTotal() {
     double total = 0.0;
     total = (double.tryParse(this
-            .pnrModel
-            .pNR
-            .fareQuote
-            .fareStore
-            .where((fareStore) => fareStore.fSID == 'Total')
-            .first
-            .total) ??
+        .pnrModel
+        .pNR
+        .fareQuote
+        .fareStore
+        .where((fareStore) => fareStore.fSID == 'Total')
+        .first
+        .total) ??
         0.0);
     double tax = 0.0;
 
- //   if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-        tax += (double.tryParse(paxTax.amnt) ?? 0.0);
-      });
-   // }
+    //   if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+    this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+      tax += (double.tryParse(paxTax.amnt) ?? 0.0);
+    });
+    // }
 
     double netFareTotal = total - tax;
 
-    return V3ItemPriceRow('Net Fare:',currencyCode,netFareTotal);
+    return V3ItemPriceRow('Net Fare:', currencyCode, netFareTotal);
   }
 
   Row grandTotal() {
@@ -415,25 +420,23 @@ Row airMiles() {
           total += double.tryParse(d.tax1) as double;
           total += double.tryParse(d.tax2) as double;
           total += double.tryParse(d.tax3) as double;
-            if( d.disc != '' ) {
-              d.disc
-                  .split(',')
-                  .forEach((disc) {
-                    if( disc != '' ) {
-                      total += double.tryParse(disc) as double;
-                    }
-                  }
-              );
-
-              // total += double.tryParse(d.disc ?? 0.0);
+          if (d.disc != '') {
+            d.disc
+                .split(',')
+                .forEach((disc) {
+              if (disc != '') {
+                total += double.tryParse(disc) as double;
+              }
             }
+            );
 
+            // total += double.tryParse(d.disc ?? 0.0);
+          }
         });
-
       }
     });
 
-    return V3ItemPriceRow('Flights Total: ',currencyCode,total);
+    return V3ItemPriceRow('Flights Total: ', currencyCode, total);
   }
 
   Row discountTotal() {
@@ -442,7 +445,7 @@ Row airMiles() {
     this.pnrModel.pNR.fareQuote.fareStore.forEach((f) {
       if (f.fSID == 'FQC') {
         f.segmentFS.forEach((d) {
-          if( d.disc != '') {
+          if (d.disc != '') {
             d.disc
                 .split(',')
                 .forEach((disc) => total += double.tryParse(disc) as double);
@@ -461,7 +464,7 @@ Row airMiles() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TrText('Discount: '),
-          Text(formatPrice(currencyCode,total)),
+          Text(formatPrice(currencyCode, total)),
           /*
           Text(NumberFormat.simpleCurrency(
                   locale: gblSettings.locale,
@@ -476,19 +479,19 @@ Row airMiles() {
 
   Row amountPayable() {
     FareStore fareStore = this
-          .pnrModel
-          .pNR
-          .fareQuote
-          .fareStore
-          .where((fareStore) => fareStore.fSID == 'Total')
-          .first;
+        .pnrModel
+        .pNR
+        .fareQuote
+        .fareStore
+        .where((fareStore) => fareStore.fSID == 'Total')
+        .first;
 
     var amount = fareStore.total;
-    if( double.parse(amount) <= 0 ) {
+    if (double.parse(amount) <= 0) {
       amount = "0";
     }
-    String price = formatPrice(currencyCode,double.tryParse(amount) ?? 0.0);
-    if( gblPayable != price) {
+    String price = formatPrice(currencyCode, double.tryParse(amount) ?? 0.0);
+    if (gblPayable != price) {
       gblPayable = price;
       setState(() {
 
@@ -515,7 +518,8 @@ Row airMiles() {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(cityCodetoAirport(deCode),style: TextStyle(fontWeight: FontWeight.w700) ),
+            Text(cityCodetoAirport(deCode),
+                style: TextStyle(fontWeight: FontWeight.w700)),
             /*FutureBuilder(
               future: cityCodeToName(
                 deCode,
@@ -532,7 +536,8 @@ Row airMiles() {
               ' ' + translate('to') + ' ',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-            Text(cityCodetoAirport(arCode),style: TextStyle(fontWeight: FontWeight.w700) ),
+            Text(cityCodetoAirport(arCode),
+                style: TextStyle(fontWeight: FontWeight.w700)),
 /*
             FutureBuilder(
               future: cityCodeToName(
@@ -553,76 +558,79 @@ Row airMiles() {
         ),
       );
       widgets.add(Padding(padding: EdgeInsets.all(5)));
-      widgets.add(V3ItemRow('Flight No:','${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary.itin[i].fltNo}'));
+      widgets.add(V3ItemRow('Flight No:',
+          '${pnrModel.pNR.itinerary.itin[i].airID}${pnrModel.pNR.itinerary
+              .itin[i].fltNo}'));
 
       widgets.add(V3ItemRow('Departure Time:',
-            getIntlDate('dd MMM kk:mm',DateTime.parse(
-                pnrModel.pNR.itinerary.itin[i].depDate + ' ' +
-                    pnrModel.pNR.itinerary.itin[i].depTime))));
+          getIntlDate('dd MMM kk:mm', DateTime.parse(
+              pnrModel.pNR.itinerary.itin[i].depDate + ' ' +
+                  pnrModel.pNR.itinerary.itin[i].depTime))));
 
       widgets.add(V3ItemRow('Fare Type:',
           pnrModel.pNR.itinerary.itin[i].classBandDisplayName ==
-                    'Fly Flex Plus'
-                ? 'Fly Flex +'
-                : translate(pnrModel.pNR.itinerary.itin[i].classBandDisplayName)));
+              'Fly Flex Plus'
+              ? 'Fly Flex +'
+              : translate(
+              pnrModel.pNR.itinerary.itin[i].classBandDisplayName)));
 
       double taxTotal = 0.0;
 
- //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-        this
-            .pnrModel
-            .pNR
-            .fareQuote
-            .fareTax[0]
-            .paxTax
-            .where((paxTax) => paxTax.seg == (i + 1).toString())
-            .forEach((paxTax) {
-              if( paxTax.separate == 'false' ) {
-                taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
-              }
-        });
-  //    }
+      //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+      this
+          .pnrModel
+          .pNR
+          .fareQuote
+          .fareTax[0]
+          .paxTax
+          .where((paxTax) => paxTax.seg == (i + 1).toString())
+          .forEach((paxTax) {
+        if (paxTax.separate == 'false') {
+          taxTotal += (double.tryParse(paxTax.amnt) ?? 0.0);
+        }
+      });
+      //    }
       if (taxTotal != 0.0) {
-        widgets.add(V3ItemPriceRow('Tax:',currencyCode,taxTotal));
+        widgets.add(V3ItemPriceRow('Tax:', currencyCode, taxTotal));
       }
 
       double sepTax1 = 0.0;
       String desc1 = '';
 
- //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
-        this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
-          if(  paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()){ //
-            if( desc1 == '' || desc1 == paxTax.desc) {
-              desc1 = paxTax.desc;
-              sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
-            }
+      //     if (this.pnrModel.pNR.fareQuote.fareTax != null) {
+      this.pnrModel.pNR.fareQuote.fareTax[0].paxTax.forEach((paxTax) {
+        if (paxTax.separate == 'true' && paxTax.seg == (i + 1).toString()) { //
+          if (desc1 == '' || desc1 == paxTax.desc) {
+            desc1 = paxTax.desc;
+            sepTax1 += (double.tryParse(paxTax.amnt) ?? 0.0);
           }
-        });
- //     }
+        }
+      });
+      //     }
       if (sepTax1 != 0.0) {
-        widgets.add(V3ItemPriceRow(desc1,currencyCode,sepTax1));
+        widgets.add(V3ItemPriceRow(desc1, currencyCode, sepTax1));
       }
 
 
       widgets.add(V3Divider());
     }
     return Container(
-        decoration: containerDecoration( location: 'middle') ,
-        margin: containerMargins(location: 'middle') ,
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
+        decoration: containerDecoration(location: 'middle'),
+        margin: containerMargins(location: 'middle'),
+        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
 /*
         padding:(wantHomePageV3()) ? null : EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
 */
         child: Column(
-      children: widgets,
-    )
+          children: widgets,
+        )
     );
   }
 
   @override
   Widget build(BuildContext context) {
     if (_loadingInProgress && gblInRefreshing == false) {
-      if( gblSettings.wantCustomProgress) {
+      if (gblSettings.wantCustomProgress) {
         return getProgressMessage('Calculating your price...', 'Summary');
       } else {
         return Scaffold(
@@ -646,11 +654,10 @@ Row airMiles() {
           ),
         );
       }
-
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary',PageEnum.summary,
+          appBar: appBar(context, 'Summary', PageEnum.summary,
             curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
@@ -703,175 +710,159 @@ Row airMiles() {
             ),
           ));
     } else if (_error != '' && _error.isNotEmpty) {
-      return criticalErrorPageWidget( context, _error,title: 'Booking Error', onComplete:  onComplete);
+      return criticalErrorPageWidget(
+          context, _error, title: 'Booking Error', onComplete: onComplete);
     } else {
-
       return new Scaffold(
-          key: _key,
-          appBar: appBar(context, 'Summary',PageEnum.summary,
-            curStep: 3,
-            newBooking: widget.newBooking,
-            imageName: gblSettings.wantPageImages ? 'flightSummary' : '',) ,
-          //extendBodyBehindAppBar: gblSettings.wantCityImages,
-          endDrawer: DrawerMenu(),
-          bottomNavigationBar: getBottomNav(context),
-          body: _getBody(),
-          floatingActionButton: /*(wantPageV2() || wantHomePageV3()) ? */vidWideActionButton(context,'Continue', onCompletePressed, icon: Icons.check, offset: 35.0 ) /*: null*/,
+        key: _key,
+        appBar: appBar(context, 'Summary', PageEnum.summary,
+          curStep: 3,
+          newBooking: widget.newBooking,
+          imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
+        //extendBodyBehindAppBar: gblSettings.wantCityImages,
+        endDrawer: DrawerMenu(),
+        bottomNavigationBar: getBottomNav(context),
+        body: _getBody(),
+        floatingActionButton: /*(wantPageV2() || wantHomePageV3()) ? */vidWideActionButton(
+            context, 'Continue', onCompletePressed, icon: Icons.check,
+            offset: 35.0) /*: null*/,
       );
-
     }
   }
+
   onCompletePressed(BuildContext context, dynamic p) {
     //hasDataConnection().then((result) {
-      if (gblNoNetwork == false) {
-        Navigator.push(
-            context,
-           // MaterialPageRoute(
-            CustomPageRoute(
-                builder: (context) => PassengerDetailsWidget(
-                    newBooking: widget.newBooking)));
-      }
+    if (gblNoNetwork == false) {
+      Navigator.push(
+          context,
+          // MaterialPageRoute(
+          CustomPageRoute(
+              builder: (context) =>
+                  PassengerDetailsWidget(
+                      newBooking: widget.newBooking)));
+    }
   }
 
   Widget _getBody() {
     List<Widget> list = [];
 
-    if(gblSettings.wantButtonIcons) {
+    if (gblSettings.wantButtonIcons) {
       list.add(Icon(
         Icons.check,
         color: Colors.white,
       ));
     }
-      list.add(TrText(
-        'CONTINUE',
-        style: TextStyle(color: Colors.white),
-      ));
+    list.add(TrText(
+      'CONTINUE',
+      style: TextStyle(color: Colors.white),
+    ));
 
     List<Widget> paxTypeList = [];
     widget.newBooking.passengers.getPax(paxTypeList);
-    /*if(widget.newBooking.passengers.adults != 0) {
-      paxTypeList.add(tableRow(translate('No of ') + translate('Adults') + ': ',translateNo(widget.newBooking.passengers.adults.toString())));
-    }
-    if( widget.newBooking.passengers.youths != 0) {
-      paxTypeList.add(tableRow(translate('No of ') + translate('Youths') + ': ',translateNo(widget.newBooking.passengers.youths.toString())));
-    }
-    if( widget.newBooking.passengers.students != 0){
-      paxTypeList.add(tableRow(translate('No of ') + translate('Students') + ': ',translateNo(widget.newBooking.passengers.students.toString())));
-    }
-    if(widget.newBooking.passengers.seniors != 0){
-      paxTypeList.add(tableRow(translate('No of ') + translate('Seniors') + ': ',translateNo(widget.newBooking.passengers.seniors.toString())));
-    }
-    if(widget.newBooking.passengers.children != 0) {
-      paxTypeList.add(tableRow(translate('No of ') + translate('children') + ': ',translateNo(widget.newBooking.passengers.children.toString())));
-    }
-    if(widget.newBooking.passengers.infants != 0) {
-      paxTypeList.add(tableRow(translate('No of ') + translate('Infants') + ': ',translateNo(widget.newBooking.passengers.infants.toString())));
-    }
-*/
- //   if( wantPageV2()) {
-        Widget peopleList ;
 
-        peopleList =
-            Container(
-                decoration: containerDecoration( location: 'top') ,
-                margin: containerMargins(location: 'top') ,
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                    children: paxTypeList
+    Widget peopleList;
+
+    peopleList =
+        Container(
+            decoration: containerDecoration(location: 'top'),
+            margin: containerMargins(location: 'top'),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+                children: paxTypeList
             )
-            );
-              //Divider(),
+        );
+    //Divider(),
 
 
-      return ListView(
-        children: [
-            peopleList,
-            Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: V3Divider()),
-            flightSegementSummary(),
-          bookingSummary(),
-          Padding(padding: EdgeInsets.all(35)),
-     //     Container(height: 30,),
-    //     Spacer(),
-    //      Divider(height: 2.0, thickness: 2.0, color: Colors.blue,),
-        ]
-        ,
-      );
- //   }
+    return ListView(
+      children: [
+        peopleList,
+        Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 0), child: V3Divider()),
+        flightSegementSummary(),
+        bookingSummary(),
+        Padding(padding: EdgeInsets.all(35)),
+        //     Container(height: 30,),
+        //     Spacer(),
+        //      Divider(height: 2.0, thickness: 2.0, color: Colors.blue,),
+      ]
+      ,
+    );
+    //   }
 
 
-
-  /*  return new Container(
+    /*  return new Container(
         decoration: containerDecoration() ,
         margin: containerMargins() ,
         padding: EdgeInsets.all(16.0),
         child: new ListView(children: paxTypeList));*/
   }
 
-Widget bookingSummary() {
+  void onComplete(dynamic p) {
+    _error = '';
+    setState(() {});
+    Navigator.of(context).pop();
+  }
+
+  Widget bookingSummary() {
     return Container(
-        decoration: containerDecoration( location: 'middle') ,
-        margin: containerMargins(location: 'middle') ,
+        decoration: containerDecoration(location: 'middle'),
+        margin: containerMargins(location: 'middle'),
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
         child: Column(
-      children: [
-        Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        TrText(
-          'Summary',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-      ],
-    ),
-  ( gblRedeemingAirmiles == true ) ?
-  airMiles() : netFareTotal(),
-  taxTotal(),
-  ( gblRedeemingAirmiles != true ) ?
-  grandTotal() : Column(),
-  discountTotal(),
-        V3Divider(),
-  ( gblRedeemingAirmiles != true ) ? Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: <Widget>[
-  TrText(
-  'Amount payable',
-  style: TextStyle(fontWeight: FontWeight.w700),
-  ),
-  ],
-  ) : Column(),
-  ( gblRedeemingAirmiles != true ) ? amountPayable() : Column(),
-  /*Padding(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  TrText(
+                    'Summary',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              (gblRedeemingAirmiles == true) ?
+              airMiles() : netFareTotal(),
+              taxTotal(),
+              (gblRedeemingAirmiles != true) ?
+              grandTotal() : Column(),
+              discountTotal(),
+              V3Divider(),
+              (gblRedeemingAirmiles != true) ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  TrText(
+                    'Amount payable',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ) : Column(),
+              (gblRedeemingAirmiles != true) ? amountPayable() : Column(),
+              /*Padding(
   padding: EdgeInsets.only(top: 5),
   ),
   Divider(),*/
-  gblSettings.hideFareRules
-  ? Padding(
-  padding: EdgeInsets.only(top: 0),
-  )
-      : Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: <Widget>[
-  TrText('Fare Rules'),
-  IconButton(
-  icon: Icon(Icons.keyboard_arrow_down),
-  onPressed: () => Navigator.push(
-  context,
-  SlideTopRoute(
-  page: FlightRulesWidget(
-  fQItin: pnrModel.pNR.fareQuote.fQItin,
-  itin: pnrModel.pNR.itinerary.itin,
-  ))),
-  )
-  ],
-  )
-  ]
-  )
+              gblSettings.hideFareRules
+                  ? Padding(
+                padding: EdgeInsets.only(top: 0),
+              )
+                  : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TrText('Fare Rules'),
+                  IconButton(
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    onPressed: () =>
+                        Navigator.push(
+                            context,
+                            SlideTopRoute(
+                                page: FlightRulesWidget(
+                                  fQItin: pnrModel.pNR.fareQuote.fQItin,
+                                  itin: pnrModel.pNR.itinerary.itin,
+                                ))),
+                  )
+                ],
+              )
+            ]
+        )
     );
-}
-
-  void onComplete (dynamic p) {
-      _error = '';
-      setState(() {});
-      Navigator.of(context).pop();
   }
 }
