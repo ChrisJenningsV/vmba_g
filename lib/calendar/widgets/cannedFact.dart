@@ -89,7 +89,7 @@ class CannedFactWidget extends StatelessWidget {
       }
     });
     if(text.endsWith('\n\n')){
-      text = text.substring(0, text.length-4);
+      text = text.substring(0, text.length-2);
     }
     //flt?.first.fltdet.canfac?.fac.trim())
 

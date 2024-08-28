@@ -157,7 +157,7 @@ Widget v3EmailFormField(String label, TextEditingController controller, {void Fu
     },
   );
 }
-Widget v3FqtvPasswordFormField(String label, TextEditingController controller, {void Function(String?)? onSaved}){
+Widget v3FqtvPasswordFormField(String label, TextEditingController controller, {void Function(String?)? onSaved, bool validate = true}){
   return V3TextFormField(
     label,
     controller,
@@ -171,6 +171,7 @@ Widget v3FqtvPasswordFormField(String label, TextEditingController controller, {
     maxLength: 100,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     validator: (value)  {
+      if( validate == false) return '';
       return validateFqtvPassword(value);
     },
 

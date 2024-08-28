@@ -121,7 +121,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
                           _isButtonDisabled = true;
                           _loadingInProgress = true;
                           //setState(() {});
-                          _fqtvLogin();
+                          fqtvLogin();
                         } else {
                           _error = "Please complete both fields";
                           _loadingInProgress = false;
@@ -268,7 +268,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
     });
 
   }
-  void _fqtvLogin() async {
+  void fqtvLogin() async {
     //progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
     gblRedeemingAirmiles = false;
     try {

@@ -671,6 +671,9 @@ class Repository {
                   case 'youthMinAge':
                     gblSettings.passengerTypes.youthMinAge = parseInt(item['value']);
                     break;
+                  case 'adultMinAge':
+                    gblSettings.passengerTypes.adultMinAge = parseInt(item['value']);
+                    break;
 
                   case 'bookingLeadTime':
                     gblSettings.bookingLeadTime = parseInt(item['value']);

@@ -105,7 +105,7 @@ void configH4() {
     wantProducts: true,
     wantStatusLine: true,
     wantSeatsWithProducts: true,
-    wantEnglishTranslation: false,
+    wantEnglishTranslation: true,
     wantTandCCheckBox: true,
 
     passengerTypes: PassengerTypes(
@@ -115,6 +115,7 @@ void configH4() {
       youths: false,
       wantYouthDOB: true,
       wantAdultDOB: true,
+      adultMinAge: 12,
 
     ),
 

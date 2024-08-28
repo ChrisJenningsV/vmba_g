@@ -17,7 +17,6 @@ buildRelease\airswift.bat
 buildRelease\fastjet.bat
 buildRelease\buraq.bat
 buildRelease\caicos.bat
-buildRelease\hisky.bat
 buildRelease\medsky.bat
 buildRelease\logan.bat
 buildRelease\blueislands.bat

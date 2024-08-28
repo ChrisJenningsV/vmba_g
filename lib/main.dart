@@ -62,7 +62,7 @@ void main() async {
 
 
   if (gblAppTitle == null || gblAppTitle ==''){
-    switch(gblBuildFlavor){
+    switch(gblBuildFlavor.toUpperCase()){
       case 'AG':
         configAG();
         break;
@@ -107,6 +107,9 @@ void main() async {
         configUZ();
         break;
       case 'U5':
+        configU5();
+        break;
+      case 'UN':
         configU5();
         break;
       default:

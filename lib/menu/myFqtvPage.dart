@@ -1055,7 +1055,7 @@ Widget _getTrans() {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      v3FqtvPasswordFormField('Old password', _oldPasswordEditingController),
+      v3FqtvPasswordFormField('Old password', _oldPasswordEditingController, validate: false ),
 /*
     new TextFormField(
     decoration: getDecoration('Old password'),

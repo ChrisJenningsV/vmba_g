@@ -72,8 +72,7 @@ void configT6() {
     termsAndConditionsUrl: 'https://air-swift.com/full-terms-conditions/',
     privacyPolicyUrl:  'https://air-swift.com/privacy-policy/',
     prohibitedItemsNoticeUrl:  'https://air-swift.com/restricted-items/',
-    //customMenu1: 'AirSWIFT Picks, AirSWIFT Picks, http://www.airswiftpicks.com',
-    customMenu1: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
+    //customMenu1: 'SWIFT Rewards Registration , SWIFT Rewards Registration ,https://booking.air-swift.com/vars/Public/FQTV/FqtvRegisterBS.aspx',
 
     aircode: 'T6',
       currency: 'PHP',
@@ -131,6 +130,7 @@ void configT6() {
   liveXmlUrl:      "https://booking.air-swift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.air-swift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.air-swift.com/VARS/webApiv2/api/',
+  //  liveApiUrl:      'http://10.0.2.2:5000/api',
     livePayPage: 'https://booking.air-swift.com/VARS/Public/MobilePaymentStart.aspx',
     liveSmartApiUrl:  "https://booking.air-swift.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
   liveCreditCardProvider: 'worldpaydirect',

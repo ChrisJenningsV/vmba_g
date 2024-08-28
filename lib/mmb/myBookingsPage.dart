@@ -24,6 +24,9 @@ import '../Helpers/networkHelper.dart';
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../controllers/vrsCommands.dart';
+import '../data/models/vrsRequest.dart';
+import '../data/smartApi.dart';
+import '../utilities/messagePages.dart';
 import '../v3pages/cards/typogrify.dart';
 import '../v3pages/v3Constants.dart';
 
@@ -331,7 +334,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                               _passwordEditingController.text.isNotEmpty) {
                             _isButtonDisabled = true;
                             _loadingInProgress = true;
-                             _fqtvLogin();
+                             fqtvLogin();
 
                             setState(() {});
                           } else {
@@ -356,7 +359,90 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
   }
       //actions: <Widget>[)    ]
 
+  void fqtvLogin() async {
+    //progressMessagePage(context, translate('Login'), title:  '${gblSettings.fqtvName}');
+    gblRedeemingAirmiles = false;
+    try {
+      String pw = Uri.encodeComponent(_passwordEditingController.text);
+      //String pw = _passwordEditingController.text;
+      FqtvLoginRequest rq = new FqtvLoginRequest( user: _fqtvTextEditingController.text,
+          password: pw);
+      fqtvNo = _fqtvTextEditingController.text;
+      fqtvPass = _passwordEditingController.text;
 
+      String data = json.encode(rq);
+      try {
+        String reply = await callSmartApi('FQTVLOGIN', data);
+        Map<String, dynamic> map = json.decode(reply);
+        FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
+
+        if( gblPassengerDetail == null ) {
+          gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
+        }
+        gblFqtvLoggedIn = true;
+        gblPassengerDetail!.fqtv = fqtvNo;
+        gblPassengerDetail!.fqtvPassword = fqtvPass;
+       // widget.passengerDetail!.fqtv = fqtvNo;
+        //widget.passengerDetail!.fqtvPassword = fqtvPass;
+
+        gblPassengerDetail!.title = fqtvLoginReply.title;
+        gblPassengerDetail!.firstName = fqtvLoginReply.firstname;
+        gblPassengerDetail!.lastName = fqtvLoginReply.surname;
+        //widget.passengerDetail!.firstName = fqtvLoginReply.firstname;
+        //widget.passengerDetail!.lastName = fqtvLoginReply.surname;
+
+        gblPassengerDetail!.phonenumber = fqtvLoginReply.phoneMobile;
+        if (gblPassengerDetail!.phonenumber == null ||
+            gblPassengerDetail!.phonenumber.isEmpty) {
+          gblPassengerDetail!.phonenumber =              fqtvLoginReply.phoneHome;
+        }
+        gblFqtvBalance = int.parse(fqtvLoginReply.balance);
+
+        gblPassengerDetail!.email =fqtvLoginReply.email;
+        //widget.passengerDetail!.email = fqtvLoginReply.email;
+        //widget.joiningDate = fqtvLoginReply.joiningDate;
+        //DateFormat('dd MMM yyyy').format(DateTime.parse(memberDetails.member.issueDate))
+        gblError ='';
+        _error = '';
+        _isButtonDisabled = false;
+        _loadingInProgress = false;
+        _actionCompleted();
+        _loadTransactions();
+
+        setState(() {});
+
+      } catch (e) {
+        fqtvNo = '';
+        fqtvPass = '';
+
+        setError( e.toString());
+        _isButtonDisabled = false;
+        _loadingInProgress = false;
+        //_actionCompleted();
+        //endProgressMessage();
+        criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true, doublePop: true);
+        //Navigator.of(context).pop();
+        print(gblError);
+        _error = gblError;
+        //_showDialog();
+      }
+    } catch(e){
+      fqtvNo = '';
+      fqtvPass = '';
+
+      _error = e.toString();
+      setError( _error);
+      _isButtonDisabled = false;
+      _loadingInProgress = false;
+      //_actionCompleted();
+      //_showDialog();
+      //endProgressMessage();
+      criticalErrorPage(context, gblError, title: 'Login Error', wantButtons: true);
+      //Navigator.of(context).pop();
+      return;
+    }
+
+  }
   void _fqtvLogin() async {
     if ( gblSession == null || gblSession!.isTimedOut()) {
       await login().then((result) {

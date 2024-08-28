@@ -14,6 +14,7 @@ class PassengerTypes {
   bool wantSeniorDOB =false;
   bool wantStudentDOB =false;
 
+  int adultMinAge=16;
   int infantMinAge=0;
   int childMinAge =0;
   int youthMinAge=0;
@@ -34,6 +35,7 @@ class PassengerTypes {
     this.wantYouthDOB=false,
     this.wantStudentDOB=false,
     this.wantSeniorDOB=false,
+    this.adultMinAge=16,
     this.infantMinAge=0,
     this.childMinAge=0,
     this.youthMinAge=12,

@@ -522,7 +522,11 @@ _showCalenderDialog(BuildContext context, PaxType paxType, void Function(DateTim
 
     case PaxType.adult:
       {
-        _initialDateTime = DateTime.now();
+        int minAge  = (gblSettings.passengerTypes.adultMinAge * 365.25).round();
+        _initialDateTime =
+            DateTime.now().subtract(new Duration(days: (minAge -1)));
+
+//        _initialDateTime = DateTime.now();
         _minimumDate = DateTime( 110, 0, 0 );
       }
       break;

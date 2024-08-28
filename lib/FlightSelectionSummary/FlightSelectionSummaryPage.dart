@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/FlightSelectionSummary/widgets/flightRules.dart';
-import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/passengerDetailsPage.dart';
 import 'package:vmba/utilities/helper.dart';
-import '../Helpers/stringHelpers.dart';
 import '../calendar/flightPageUtils.dart';
 import '../components/bottomNav.dart';
 import '../components/pageStyleV2.dart';
 import '../components/vidButtons.dart';
-import '../components/vidTextFormatting.dart';
 import '../data/models/models.dart';
 import 'dart:async';
 import '../data/models/pnr.dart';
