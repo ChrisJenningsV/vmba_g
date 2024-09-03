@@ -132,7 +132,7 @@ class ChooseFlight extends StatelessWidget {
     }
 
     list.add( new Padding(padding: EdgeInsets.only(bottom: 15.0),    ));
-    list.add(classbandText());
+    list.add(classbandText(classband!));
 
     if( wantPageV2()){
       return Container(
@@ -195,12 +195,13 @@ class ChooseFlight extends StatelessWidget {
     }
     return msg;
   }
-
-  Widget classbandText() {
+}
+  Widget classbandText(Band classband) {
     if (classband?.cbtextrecords != null) {
       Cbtextrecords cbt = classband?.cbtextrecords as Cbtextrecords;
 
       return Column(
+        mainAxisSize: MainAxisSize.min,
           children: cbt.cbtext
               .map((item) => Column(
                     children: [
@@ -417,4 +418,4 @@ return str;
     }
     return Icon(iconData, color: iconClr,);
   }
-}
+

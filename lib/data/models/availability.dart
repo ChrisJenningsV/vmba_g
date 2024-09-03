@@ -271,6 +271,42 @@ class AvItin {
     }
   }
 
+  bool getLowestPrice( double price, int miles, String currency ){
+    try {
+      double minPrice = 0;
+      int minMiles = 0;
+
+      return true;
+
+    } catch(e) {
+      return false;
+    }
+
+  }
+
+  Prices getPrices(  int curFare){
+    Prices prices = new Prices();
+    try {
+      prices.currency = flt[0].fltav.cur![0];
+
+      flt.forEach((element) {
+        String newStr = element.fltav.pri![curFare];
+        double? newVal = double.tryParse(newStr);
+        if (newVal != null) prices.price += newVal as double;
+        newVal = double.tryParse(element.fltav.tax![curFare]);
+        if (newVal != null) prices.price += newVal as double;
+        String newMiles = element.fltav.miles![curFare];
+        int? newMileVal = int.tryParse(newMiles);
+        if (newMileVal != null) prices.miles += newMileVal as int;
+      });
+      prices.success = true;
+      return prices;
+
+    } catch(e) {
+      return prices;
+    }
+  }
+
   String journeyDuration() {
     DateTime firstDeparture = DateTime.parse(
         this.flt.first.time.ddaygmt + ' ' + this.flt.first.time.dtimgmt);
@@ -293,7 +329,13 @@ class AvItin {
     return '${hours}h. ${min}min';
   }
 }
+class Prices {
+  double price = 0;
+  int miles = 0;
+  String currency = '';
+  bool success = false;
 
+}
 class Flt {
   String dep ='';
   String arr ='';

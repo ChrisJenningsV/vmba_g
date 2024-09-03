@@ -331,8 +331,8 @@ class Repository {
               for (var item in settingsJson) {
                 String param =item['parameter'];
                 switch (param.trim()) {
-                  case 'creditCardProvider':
-                    gblSettings.creditCardProvider = item['value'];
+                  case 'homePageMessage':
+                    gblSettings.homePageMessage = item['value'];
                     break;
                   case 'appLive':
                     gblIsLive = parseBool(item['value']);

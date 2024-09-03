@@ -146,6 +146,7 @@ class Settings {
   // new gui opts
   bool wantCityDividers;
 
+  String homePageMessage;
   String productFormat;
   String homePageStyle;
   String homePageFilename;
@@ -166,6 +167,7 @@ class Settings {
   String stopMessage='';
   String locale = 'en-EN';
   int bookingLeadTime = 60;
+  int smartApiVersion = 1;
   int styleVersion;
   bool webCheckinNoSeatCharge;
   String vrsGuid='';
@@ -265,6 +267,7 @@ bool bpShowFastTrack;
     this.brandID ='',
     this.airlineName ='',
     this.creditCardProvider ='',
+    this.homePageMessage = '',
     this.displayErrorPnr = false,
     this.wantLeftLogo = false,
     this.needTicketsToImport = false,
@@ -361,6 +364,7 @@ bool bpShowFastTrack;
     this.specialAssistanceUrl='',
     this.locale = 'en-EN',
     this.bookingLeadTime =60,
+    this.smartApiVersion = 1,
     this.webCheckinNoSeatCharge = false,
     this.vrsGuid='',
     this.previousVrsGuid='',

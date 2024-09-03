@@ -1,6 +1,7 @@
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../Helpers/networkHelper.dart';
 import '../utilities/helper.dart';
 import 'globals.dart';
 import 'models/models.dart';
@@ -19,13 +20,27 @@ Future<String> callSmartApi(String action, String data) async {
   )); // '{VrsApiRequest: ' + + '}' ;
 
   print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg');
+  http.Response? response;
 
-  http.Response response = await http
-      .get(Uri.parse(
-      "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg"))
-      .catchError((resp) {
-    logit(resp);
-  });
+  if( gblSettings.smartApiVersion == 2) {
+    response = await http
+        .post(
+          Uri.parse("${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}"), //?VarsSessionID=${gblSession!.varsSessionId}"),
+          headers: getXmlHeaders(),
+          body: { "req": msg }
+        )
+        .catchError((resp) {
+      logit(resp);
+    });
+  } else {
+    response = await http
+        .get(Uri.parse(
+        "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!
+            .varsSessionId}&req=$msg"))
+        .catchError((resp) {
+      logit(resp);
+    });
+  }
   if (response == null) {
     throw 'No Internet';
     //return new ParsedResponse(noInterent, null);

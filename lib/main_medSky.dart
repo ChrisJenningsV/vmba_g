@@ -42,6 +42,7 @@ void configM1() {
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
+    fareColors: [Colors.white, Color.fromRGBO(251, 233, 232, 1),Color.fromRGBO(248, 212, 210, 1), ],
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
@@ -63,6 +64,7 @@ void configM1() {
     //   homePageFilename: 'customPages.json',
     // start new bits
     homePageStyle: 'V3',
+    smartApiVersion: 2,
     wantShadows: false,
     wantTransapentHomebar: true,
     wantVericalFaresCalendar: true,
@@ -75,6 +77,7 @@ void configM1() {
     wantStatusLine: true,
     wantSeatsWithProducts: true,
     useLogin2: true,
+    homePageMessage: 'Hello, where can we take you today?',
 
     // end new bits
 
@@ -85,6 +88,7 @@ void configM1() {
     wantMaterialFonts: true,
     canGoBackFromPaxPage: true,
     wantGiftVouchers: false,
+    wantCityDividers: true,
     //pageStyle: 'V2',
 
     airlineName: "Loganair",
@@ -169,8 +173,8 @@ void configM1() {
     testApiUrl:      'https://customertest.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
 */
 
-    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
-    //testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    //testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     //testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",

@@ -957,16 +957,19 @@ Widget getNoSeatsRow() {
 }
 Widget getPriceRow(List<Flt> item, int index){
   double val = 0.0;
+  int miles = 0;
 
   item.forEach((element) {
     String newStr = element.fltav.pri![index];
+    String newMiles = element.fltav.miles![index];
     double? newVal = double.tryParse(newStr)  ;
     if( newVal != null )    val +=  newVal as double;
+    if( newMiles != null && newMiles != '')    miles +=  int.parse(newMiles);
     newVal = double.tryParse(element.fltav.tax![index]);
     if( newVal != null )    val +=  newVal as double;
   });
 
-  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), item[0].fltav.miles![index]),
+  return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), miles.toString()), //item[0].fltav.miles![index]),
     style: new TextStyle(
       color: gblSystemColors
           .primaryButtonTextColor,

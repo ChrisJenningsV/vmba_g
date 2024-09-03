@@ -130,6 +130,8 @@ void configGR() {
     testSmartApiUrl:      "https://customertest.videcom.com/aurignyairservices/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/aurignyairservices/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/aurignyairservices/VARS/webApiv2/api/',
+//    testApiUrl:      'http://192.168.100.98/aurignyairservices/VARS/webApiv2/api/',
+
 //   testApiUrl:      'http://10.0.2.2:5000/api',  // local
 
 

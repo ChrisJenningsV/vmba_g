@@ -131,7 +131,7 @@ extension Section on ViewBookingBodyState {
     return list;
   }
 
-  Future<void> undoCheckin({int? p1, int? p2}) async {
+  Future<void> undoCheckin({int? p1, int? p2, String? p3}) async {
     // get ticket no and coupon no
     String ticketNo = '';
     String couponNo = '';
@@ -393,7 +393,7 @@ extension Section on ViewBookingBodyState {
 
           //Checkin Button
           return vidTextButton(context, 'Check-in',
-                  ({p1, p2}) {
+                  ({p1, p2, String? p3}) {
                     if( gblSettings.wantDangerousGoods == true ){
                       Navigator.push(
                           context,

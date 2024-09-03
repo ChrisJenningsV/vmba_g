@@ -8,6 +8,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../Helpers/settingsHelper.dart';
 import '../../components/vidButtons.dart';
 
 // ignore: must_be_immutable
@@ -48,8 +49,11 @@ class SearchButtonWidget extends StatelessWidget {
   //final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
-
-      return vidWideActionButton(context,'SEARCH FLIGHTS', _onPressed, icon: Icons.check, offset: 35.0 , disabled:  !_validate(newBooking));
+      String text ='SEARCH FLIGHTS';
+      if( wantHomePageV2() || wantHomePageV3() ) {
+        text ='Show flights';
+      }
+      return vidWideActionButton(context,text, _onPressed, icon: Icons.check, offset: 35.0 , disabled:  !_validate(newBooking));
   }
   _validate(NewBooking newBooking) {
     errors.clear();

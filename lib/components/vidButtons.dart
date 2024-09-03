@@ -2,15 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 
-Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1, int? p2}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
+Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
 }
 
-Widget vidTextButton(BuildContext context, String caption, void Function({int? p1, int? p2}) onPressed, {IconData? icon, int iconRotation=0,int? p1,int? p2 } ) {
+Widget vidTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed, {IconData? icon, int iconRotation=0,int? p1,int? p2, String? p3 } ) {
   Widget iconWidget = Container();
 
 
@@ -38,7 +39,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
       onPressed: () {
         if( gblActionBtnDisabled == false ) {
           gblActionBtnDisabled = true;
-          onPressed(p1: p1, p2: p2);
+          onPressed(p1: p1, p2: p2, p3: p3);
         }
       } ,
       style: TextButton.styleFrom(
@@ -108,10 +109,12 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
     ));
     list.add(Padding(padding: EdgeInsets.all(2)));
   }
-  list.add(TrText(
-  caption,
-  style: TextStyle(color: disabled ? actionButtonDisabledTextColor() : Colors.white),
-  ));
+  if( wantHomePageV2() || wantHomePageV3() ) {
+    list.add(VButtonText(caption, color: disabled ? actionButtonDisabledTextColor() : Colors.white));
+  } else {
+    list.add(TrText(caption,style: TextStyle(color: disabled ? actionButtonDisabledTextColor() : Colors.white),
+    ));
+  }
 
   EdgeInsets padding = EdgeInsets.only(left: offset);
   if( wantRtl()) {

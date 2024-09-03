@@ -258,13 +258,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         _sendVRSCommand(msg).then(
                 (onValue) {
                   //Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                  Map<String, dynamic> map = json.decode(onValue);
-                  PnrModel pnrModel = new PnrModel.fromJson(map);
-                  gblPnrModel = pnrModel;
-                  refreshStatusBar();
-                  //showSnackBar(translate("Seat(s) allocated"));
-                  Navigator.pop(context, pnrModel);
-                  //            })
+                  if (onValue.toString().contains('ERROR')) {
+                    _dataLoadedFailed(onValue.toString());
+                  } else {
+                    Map<String, dynamic> map = json.decode(onValue);
+                    PnrModel pnrModel = new PnrModel.fromJson(map);
+                    gblPnrModel = pnrModel;
+                    refreshStatusBar();
+                    //showSnackBar(translate("Seat(s) allocated"));
+                    Navigator.pop(context, pnrModel);
+                    //            })
+                  }
                 }
             );
       } else {
@@ -743,6 +747,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
             onScrollCallbackShowKey: _handleScrollChanged,
             displaySeatPrices: true,
           ),
+          Padding(padding: EdgeInsets.all(10)),
         ],
       );
     }

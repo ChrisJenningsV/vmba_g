@@ -1079,7 +1079,7 @@ class ViewBookingBodyState
     }
   }
 
-  void _onPressedRefund({int? p1, int? p2}) async {
+  void _onPressedRefund({int? p1, int? p2, String? p3}) async {
     RefundRequest rfund = new RefundRequest();
     rfund.rloc = widget.rloc;
     rfund.journeyNo = p1!;
@@ -1100,7 +1100,7 @@ class ViewBookingBodyState
       logit(e.toString());
     }
   }
-  void _onPressedChangeFlt({int? p1, int? p2}) {
+  void _onPressedChangeFlt({int? p1, int? p2, String? p3}) {
 
     if( objPNR!.pNR.isFQTVBooking()) {
       gblRedeemingAirmiles = true;

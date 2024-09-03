@@ -1604,8 +1604,7 @@ List<Widget> getPayOptions(String amount, String cur) {
   Widget renderNewPaymentButtons(String amount) {
     try {
       List<Widget> paymentButtons = [];
-      if (gblProviders != null &&
-          gblSelectedCurrency == gblLastProviderCurrecy) {
+      if (gblProviders != null && gblSelectedCurrency == gblLastProviderCurrecy) {
         paymentButtons.add(Padding(
           padding: EdgeInsets.only(top: 8.0),
         ));

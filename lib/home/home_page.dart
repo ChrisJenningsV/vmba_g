@@ -584,6 +584,13 @@ Widget _getLogo(){
     Color b2TextClr = Colors.white;
     FontWeight fw = FontWeight.bold;
     double tsf = 1.0;
+    Widget b1Text = TrText(
+      'Book a flight',
+      textScaleFactor: tsf,
+      style: TextStyle(
+          color: b1TextClr,
+          fontWeight: fw),
+    );
 
     if( wantHomePageV2() || wantHomePageV3() ) {
       b1Clr = gblSystemColors.home1ButtonColor!;
@@ -593,8 +600,13 @@ Widget _getLogo(){
       fw = FontWeight.normal;
       buttonHeight = 35.0;
       tsf = 1.25;
+      b1Text = VButtonText('Book a flight', color: b1TextClr,);
     }
 
+    if(gblSettings.homePageMessage != '' ){
+      list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          child: VHeadlineText(gblSettings.homePageMessage, size: TextSize.medium,color: gblSystemColors.headerTextColor,)));
+    }
 
     if (gblNoNetwork == false && gblSettings.disableBookings == false) {
       list.add(Row(
@@ -624,13 +636,7 @@ Widget _getLogo(){
                             color: Colors.white,
                           ),
                         ) : Container() ,
-                        TrText(
-                          'Book a flight',
-                          textScaleFactor: tsf,
-                          style: TextStyle(
-                              color: b1TextClr,
-                              fontWeight: fw),
-                        ),
+                        b1Text
                       ],
                     ),
                   ),

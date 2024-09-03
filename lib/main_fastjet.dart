@@ -61,6 +61,7 @@ void configFN() {
     currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWG',
     currency: 'ZAR',
     wantCurrencyPicker: true,
+    smartApiVersion: 2,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',

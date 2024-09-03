@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../components/trText.dart';
 import '../data/globals.dart';
 import '../utilities/helper.dart';
@@ -138,6 +139,25 @@ Widget V3Divider(){
   return Divider(height: 15, thickness: 1,);
 }
 
+Widget V3VertDivider() {
+  return SizedBox(
+    //height: 50,
+    child: Center(
+      child: Container(
+        height: 50,
+        margin: EdgeInsetsDirectional.only(start: 3, end: 3),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(color: Colors.black, width: v2BorderWidth()),
+            //left: BorderSide(color: v2BorderColor(), width: v2BorderWidth()),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
 Row V3ItemPriceRow(String title, String code, double amount){
   return V3ItemRow(title, formatPrice(code, amount));
 }
@@ -196,8 +216,9 @@ enum TextSize { small, medium, large }
 
 class VBodyText extends Text {
   TextSize size;
+  Color? color;
 
-  VBodyText(super.data, {this.size = TextSize.medium});
+  VBodyText(super.data, {this.size = TextSize.medium, this.color});
 
   build(BuildContext context){
     TextStyle style;
@@ -213,6 +234,9 @@ class VBodyText extends Text {
       default:
         style = _bodyMedium;
         break;
+    }
+    if(color != null  ) {
+      style = style.copyWith(color: color);
     }
     return Text(data!, style: style,);
   }
@@ -271,5 +295,22 @@ class VTitleText extends Text {
       style = style.copyWith(color: color);
     }
     return Text(data!, style: style,);
+  }
+}
+class VButtonText extends Text {
+  Color? color;
+  bool wantTranslate;
+  VButtonText(super.data, { this.color, this.wantTranslate = true});
+
+  build(BuildContext context){
+    TextStyle style;
+    String text = data as String ;
+    if( wantTranslate) text = translate(text);
+
+    style = _titleMedium;
+    if(color != null  ) {
+      style = style.copyWith(color: color);
+    }
+    return Text(text, style: style,);
   }
 }

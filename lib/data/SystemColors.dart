@@ -47,6 +47,14 @@ class SystemColors {
    Color? seatPlanColorUnavailable;
    Color? seatPlanColorRestricted;
 
+   // new av colors
+  Color? selectedFlt;
+  Color? unselectedFlt;
+  Color? fltText;
+  Color? selectedFare;
+  List<Color>? fareColors;
+
+
   SystemColors({
     required this.primaryButtonColor,
     required this.accentButtonColor,
@@ -86,6 +94,11 @@ class SystemColors {
     this.v3TitleColor = Colors.black,
     this.inputFillColor ,
     this.backgroundColor,
+    this.selectedFlt = Colors.black,
+    this.unselectedFlt = Colors.grey,
+    this.fltText = Colors.white,
+    this.fareColors,
+    this.selectedFare = Colors.red,
   });
 
   void setDefaults() {
