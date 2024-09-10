@@ -139,7 +139,8 @@ Widget V3Divider(){
   return Divider(height: 15, thickness: 1,);
 }
 
-Widget V3VertDivider() {
+Widget V3VertDivider({Color? color}) {
+
   return SizedBox(
     //height: 50,
     child: Center(
@@ -148,7 +149,9 @@ Widget V3VertDivider() {
         margin: EdgeInsetsDirectional.only(start: 3, end: 3),
         decoration: BoxDecoration(
           border: Border(
-            left: BorderSide(color: Colors.black, width: v2BorderWidth()),
+            left: BorderSide(color: color == null ? Colors.black: color ,
+                width: v2BorderWidth(),
+            ),
             //left: BorderSide(color: v2BorderColor(), width: v2BorderWidth()),
           ),
         ),
@@ -273,8 +276,9 @@ class VHeadlineText extends Text {
 class VTitleText extends Text {
   TextSize size;
   Color? color;
+  bool translate;
 
-  VTitleText(super.data, {this.size = TextSize.medium, this.color});
+  VTitleText(super.data, {this.size = TextSize.medium, this.color, this.translate = false});
 
   build(BuildContext context){
     TextStyle style;

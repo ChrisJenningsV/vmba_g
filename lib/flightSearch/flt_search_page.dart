@@ -44,6 +44,9 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     adsTermsAccepted = false;
     gblCurrentRloc = '';
 
+    // init search settings
+    gblSearchParams.isReturn = true;
+
     if (widget.ads) {
       if(gblPassengerDetail != null && gblPassengerDetail!.adsNumber != null && gblPassengerDetail!.adsNumber.isNotEmpty &&
           gblPassengerDetail!.adsPin != null && gblPassengerDetail!.adsPin.isNotEmpty
@@ -64,9 +67,11 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
   Passengers pax = new Passengers(1, 0, 0, 0, 0, 0, 0);
   bool _isReturn = true;
 
+
   void _handleReturnToggleChanged(bool newValue) {
     setState(() {
       _isReturn = newValue;
+      gblSearchParams.isReturn = newValue;
       booking.isReturn = newValue;
     });
   }

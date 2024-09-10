@@ -86,7 +86,7 @@ void configH4() {
     webCheckinNoSeatCharge: false,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '6443831646',
     androidAppId: 'aero.hisky.reservations',

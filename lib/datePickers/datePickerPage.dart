@@ -62,7 +62,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
            DayPickerPage(
                 firstDate: DateTime.now(),
                 departureDate: widget.departureDate,
-                lastDate: DateTime.now().add(new Duration(days: 365)),
+                lastDate: DateTime.now().add(new Duration(days: 51 * 7)),
                 onChanged: _handleDateChanged,
               ),
                 (){ setState(() {},);},
@@ -73,7 +73,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
           DayPickerPage(
               firstDate: DateTime.now(),
               departureDate: widget.departureDate,
-              lastDate: DateTime.now().add(new Duration(days: 365)),
+              lastDate: DateTime.now().add(new Duration(days: 51 * 7)),
               onChanged: _handleDateChanged,
           ),
           ],

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vmba/FlightSelectionSummary/FlightSelectionSummaryPage.dart';
+import 'package:vmba/calendar/verticalFaresCalendar.dart';
 import 'package:vmba/calendar/widgets/cannedFact.dart';
 import 'package:vmba/chooseFlight/chooseFlightPage.dart';
 import 'package:vmba/data/models/availability.dart';
@@ -62,7 +63,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     _scrollController = new ScrollController();
     _loadingInProgress = true;
     _noInternet = false;
-    _loadData();
+    _loadData(false);
     _departureDate = DateTime.parse(
         DateFormat('y-MM-dd').format(widget.newBooking.departureDate as DateTime));
 
@@ -80,7 +81,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     buffer.write(this.widget.newBooking.departure);
 
     buffer.write('[SalesCity=${this.widget.newBooking.arrival},Vars=True');
-    if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
+    if(  this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
       buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode.trim()}');
     }
 
@@ -148,8 +149,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         .replaceAll(']', '%5D');
   }
 
-  Future _loadData() async {
-    Repository.get().getAv(getAvReturnCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
+  Future _loadData(bool doStatState ) async {
+    _loadingInProgress = true;
+    if( doStatState) setState(() {});
+    Repository.get().getAv(getAvReturnCommand(/*gblSettings.useWebApiforVrs == false*/false )).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body;
         removeDepartedFlights();
@@ -168,7 +171,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     setState(() {
       _loadingInProgress = true;
       _noInternet = false;
-      _loadData();
+      _loadData(false);
     });
   }
 
@@ -226,6 +229,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     setState(() {
       _loadingInProgress = false;
     });
+    // scroll control for cal day bar
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         _scrollController.animateTo(animateTo,
             duration: new Duration(microseconds: 1), curve: Curves.ease));
@@ -277,9 +281,17 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         ),
       );
     } else {
+      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv! , newBooking:  widget.newBooking, loadData: _loadData,isReturnFlight: true, showProgress: showProgress,);
       return flightSelection();
     }
   }
+  void showProgress() {
+    _loadingInProgress = true;
+    setState(() {
+
+    });
+  }
+
 
   flightSelection() {
     EdgeInsets mar = EdgeInsets.symmetric(vertical: 1.0);
@@ -781,7 +793,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       _returnDate = DateTime.parse(DateFormat('y-MM-dd').format(newDate));
       this.widget.newBooking.returnDate = newDate;
       _loadingInProgress = true;
-      _loadData();
+      _loadData(false);
     });
   }
 

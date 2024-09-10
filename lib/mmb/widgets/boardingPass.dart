@@ -190,7 +190,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
     String _depart = widget.pnr.pNR.itinerary.itin[widget.journeyNo].depart;
     String data = '';
 
-    if( gblSettings.useWebApiforVrs) {
+  //  if( gblSettings.useWebApiforVrs) {
       String cmd = 'DF/$_fltNo/$_date/$_depart';
       String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
           gblSettings.xmlToken.replaceFirst('token=', ''),
@@ -230,7 +230,8 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
       }
       data = rs.data;
 
-    } else {
+//    }
+    /*else {
       String cmd = '&Command=DF/$_fltNo/$_date/$_depart';
       String message = gblSettings.xmlUrl +
           gblSettings.xmlToken +
@@ -250,7 +251,7 @@ class BoardingPassWidgetState extends State<BoardingPassWidget> {
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
       }
-    }
+    }*/
 
     //print(data);
     int indexOfGate = data.indexOf('Gate:'); //data.allMatches('Gate:');

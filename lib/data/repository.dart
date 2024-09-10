@@ -253,7 +253,7 @@ class Repository {
       logit('getSettingsFromApi - login');
       http.Response response ;
 
-      if( gblSettings.useWebApiforVrs) {
+//      if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
         String msg =  json.encode(VrsApiRequest(gblSession as Session, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
             vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion,
@@ -268,6 +268,7 @@ class Repository {
                 headers: getXmlHeaders(),
              );
 
+/*
       } else {
         print('login_uri = ${gblSettings.apiUrl + "/login"}');
         print('login_headers = $headers');
@@ -277,9 +278,10 @@ class Repository {
             headers: headers,
             body: JsonEncoder().convert(body));
       }
+*/
       if (response.statusCode == 200) {
         String data = response.body;
-        if( gblSettings.useWebApiforVrs) {
+        /*if( gblSettings.useWebApiforVrs) {*/
             data = data
                 .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                 .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -287,15 +289,19 @@ class Repository {
 
 //            VrsApiResponse rs = VrsApiResponse.fromJson(map);
   //          data = rs.data;
+/*
         }
+*/
 
         Map<String, dynamic> map = json.decode(data);
+          //
+
         if ( map != null && map['isSuccessful']  == true) {
           String settingsString = map["mobileSettingsJson"];
           String langFileModifyString = map["appFileModifyTime"];
           String xmlVersion = map["version"];
           if( map["gmt"] != null && map["gmt"] != '') {
-              setGMT( map['gmt']);
+            setGMT( map['gmt']);
           }
 
 
@@ -305,16 +311,22 @@ class Repository {
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
             gblLangFileModTime = langFileModifyString;
           }
+          if( map['cities'] != null ){
+            Map<String, dynamic> json = jsonDecode(map['cities']);
+            gblCityList = Cities.fromJson(json);
 
-          if( gblSettings.useWebApiforVrs) {
-            gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-            logit('gs Server IP ${map['serverIP']}');
-          } else {
-            gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
           }
-          //
-
-          List <dynamic>? settingsJson;
+/*
+          if( gblSettings.useWebApiforVrs) {
+*/
+          gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+          logit('gs Server IP ${map['serverIP']}');
+/*
+        } else {
+          gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
+        }
+*/
+        List <dynamic>? settingsJson;
           if (settingsString != null && settingsString.isNotEmpty) {
             settingsJson = json.decode(settingsString);
           }
@@ -560,8 +572,8 @@ class Repository {
                     break;
                   case 'bpShowAddPassToWalletButton':
                     gblSettings.bpShowAddPassToWalletButton = parseBool(item['value']);
-                    break;	
-					
+                    break;
+
                   case 'HideFareRules':
                     gblSettings.hideFareRules = parseBool(item['value']);
                     break;
@@ -718,17 +730,17 @@ class Repository {
             } else if ( mainMatchVersioAction.isNotEmpty){
               gblAction =mainMatchVersioAction;
             }
-            if( gblSettings.useWebApiforVrs) {
+            //if( gblSettings.useWebApiforVrs) {
               logit('website version $xmlVersion required XML version $requiredXmlVersion' );
-            } else {
-              logit('API version $xmlVersion');
-            }
-            if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || (gblSettings.useWebApiforVrs) ? int.parse(xmlVersion) < requiredXmlVersion : int.parse(xmlVersion) < requiredApiVersion  )) {
-              if( gblSettings.useWebApiforVrs) {
+            //} else {
+//              logit('API version $xmlVersion');
+  //          }
+            if(gblDoVersionCheck && ( xmlVersion == null || xmlVersion == '' || /*(gblSettings.useWebApiforVrs) ?*/ int.parse(xmlVersion) < requiredXmlVersion /*: int.parse(xmlVersion) < requiredApiVersion */ )) {
+    //          if( gblSettings.useWebApiforVrs) {
                 setError('WebService needs update');
-              } else {
-                setError('WebApi needs update');
-              }
+      //        } else {
+        //        setError('WebApi needs update');
+          //    }
               print(gblError);
               criticalErrorPage(NavigationService.navigatorKey.currentContext!,gblError,title: 'Login', wantButtons: false );
               //throw(gblError);
@@ -1263,7 +1275,7 @@ class Repository {
 
   Future<ParsedResponse<AvailabilityModel>> getAv(String avCmd) async {
     AvailabilityModel objAv = AvailabilityModel();
-    if(gblSettings.useWebApiforVrs) {
+ //   if(gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(avCmd);
       Map<String, dynamic> map    = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1272,7 +1284,11 @@ class Repository {
 
       objAv = new AvailabilityModel.fromJson(map);
       return new ParsedResponse(200, objAv);
+/*
     } else {
+
+
+
       String msg = json.encode(RunVRSCommand(gblSession!, avCmd));
 
       final http.Response response = await http.post(
@@ -1280,12 +1296,6 @@ class Repository {
           headers: getApiHeaders(),
           body: msg);
 
-/*
-    http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$avCmd"))
-        .catchError((resp) {});
-*/
       if (response == null) {
         return new ParsedResponse(noInterent, null);
       }
@@ -1317,13 +1327,14 @@ class Repository {
 
         objAv = new AvailabilityModel.fromJson(map);
       }
+
       return new ParsedResponse(response.statusCode, objAv);
-    }
+    }*/
   }
 
   Future<ParsedResponse<PnrModel>> getFareQuote(String cmd) async {
     PnrModel pnrModel = PnrModel();
-    if( gblSettings.useWebApiforVrs) {
+ //   if( gblSettings.useWebApiforVrs) {
       String data = await runVrsCommand(cmd);
       if( data.contains('ERROR')){
         return new ParsedResponse(0, null, error: data);
@@ -1340,7 +1351,7 @@ class Repository {
         refreshStatusBar();
       }
       return new ParsedResponse(200, pnrModel);
-    } else {
+    //} /*else {
         http.Response response = await http
         .get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
@@ -1380,7 +1391,7 @@ class Repository {
         pnrModel = new PnrModel.fromJson(map);
       }
       return new ParsedResponse(response.statusCode, pnrModel);
-    }
+//    }*/
   }
 
   Future<ParsedResponse<Seatplan>> getSeatPlan(String seatPlanCmd) async {
@@ -1630,7 +1641,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 Future<String> runVrsCommand(String cmd) async {
   gblError ='';
   logit('runVrsCommand $cmd');
-  if( gblSettings.useWebApiforVrs) {
+ // if( gblSettings.useWebApiforVrs) {
 
     String msg =  json.encode(VrsApiRequest(gblSession!, cmd,
         gblSettings.xmlToken.replaceFirst('token=', ''),
@@ -1689,10 +1700,12 @@ Future<String> runVrsCommand(String cmd) async {
     }
 
     //String jsn = response.body;
-    Map<String, dynamic> map = jsonDecode(response.body
+    String body = response.body
         .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
         .replaceAll('<string xmlns="http://videcom.com/">', '')
-        .replaceAll('</string>', ''));
+        .replaceAll('</string>', '');
+    body = body.trim();
+    Map<String, dynamic> map = jsonDecode(body);
 
     VrsApiResponse rs = VrsApiResponse.fromJson(map);
     if(gblSession != null  ) {
@@ -1716,7 +1729,9 @@ Future<String> runVrsCommand(String cmd) async {
       throw 'no data returned';
     }
     return rs.data;
-  } else {
+ // }
+/*
+  else {
     String url = "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd";
     if( gblSettings.wantPushNoticications && gblCurrentRloc != null ) {
       url += "&notToken=$gblNotifyToken&phone=$gblDeviceId&rloc=$gblCurrentRloc";
@@ -1740,6 +1755,7 @@ Future<String> runVrsCommand(String cmd) async {
       }
     return response.body;
   }
+*/
  }
 
 RemoteMessage? convertMsg(NotificationMessage msg)

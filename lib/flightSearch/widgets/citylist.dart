@@ -117,6 +117,17 @@ class _DeparturesState extends State<Departures> {
     }
   }
   Future _loadData(void Function() onComplete) async {
+    if( gblSettings.useLogin2 && gblCityList != null) {
+      // build routes
+      // ABZ|Aberdeen (ABZ)
+      _cityData = [];
+      gblCityList!.cities!.forEach((city) {
+        _cityData!.add('${city.code}|${city.name} (${city.code})');
+      });
+      return ;
+    }
+
+
     //Repository.get().getAllDepartures().then((cityData) {
     if( _cityData == null ) {
       _cityData = await Repository.get().getAllDepartures(onComplete);
@@ -280,6 +291,24 @@ class _ArrivalsState extends State<Arrivals> {
 
   Future _loadData() async {
     //Repository.get().getAllDepartures().then((cityData) {
+    if( gblSettings.useLogin2 && gblCityList != null) {
+      // build routes
+      // ABZ|Aberdeen (ABZ)
+      if ( _departCityData == null || _departCityData == '') {
+        _departCityData = [];
+        gblCityList!.cities!.forEach((city) {
+          if( city.code == departCityCode){
+            city.destinations.forEach((city) {
+              _departCityData!.add('${city.code}|${city.name} (${city.code})');
+
+            });
+          }
+        });
+      }
+      return ;
+    }
+
+
     if ( _departCityData == null || _departCityData == '') {
       _departCityData = await Repository.get().getDestinations(departCityCode);
     }
@@ -488,18 +517,5 @@ class CitiesScreenState  extends State<CitiesScreen> {
               : Departures()),
     );
   }
-/*
-  void filterCities(String filter){
-    routes = [];
-    _cityData.forEach((route) {
-      String code = route.split('|')[0].toUpperCase();
-      String name = route.split('|')[1].toUpperCase();
 
-      if(code.startsWith(filter.toUpperCase()) || name.startsWith(filter.toUpperCase())){
-        routes.add(route);
-      }
-    });
-  }
-
- */
 }

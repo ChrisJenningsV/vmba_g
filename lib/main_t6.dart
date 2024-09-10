@@ -105,7 +105,7 @@ void configT6() {
     wantTallPageImage: true,
     //pageStyle: 'V2',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
     wantEnglishTranslation: true,
     progressFactor: -25, //-30,
     blockedUrls: '',

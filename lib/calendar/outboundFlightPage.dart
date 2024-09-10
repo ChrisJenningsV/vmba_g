@@ -60,14 +60,14 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     _noInternet = false;
     gblBookingState = BookingState.newBooking;
 
-    _loadData();
+    _loadData(false);
   }
 
   retrySearch() {
     setState(() {
       _loadingInProgress = true;
       _noInternet = false;
-      _loadData();
+      _loadData(false);
     });
   }
 
@@ -181,13 +181,18 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         .replaceAll(']', '%5D');
   }
 
-  Future _loadData() async {
+  Future _loadData(bool doStatState) async {
     // clear out any current booking
     _loadingInProgress = true;
+    if(doStatState) {
+      setState(() {
+
+      });
+    }
     await runVrsCommand('I');
 
 
-      Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) async {
+      Repository.get().getAv(getAvCommand(/*gblSettings.useWebApiforVrs == false*/false)).then((rs) async {
       if (rs.isOk()) {
         objAv = rs.body!;
         removeDepartedFlights();
@@ -215,7 +220,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         }
       } else if(rs.statusCode == notSinedIn)  {
         await login().then((result) {});
-        Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
+        Repository.get().getAv(getAvCommand(/*gblSettings.useWebApiforVrs == false*/false)).then((rs) {
           objAv = rs.body!;
 
           removeDepartedFlights();
@@ -288,6 +293,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     setState(() {
       _loadingInProgress = false;
     });
+    // scroll control for cal day bar
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         _scrollController.animateTo(animateTo,
             duration: new Duration(microseconds: 1), curve: Curves.ease));
@@ -298,13 +304,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     setState(() {
       this.widget.newBooking.departureDate = newDate;
       _loadingInProgress = true;
-      _loadData();
+      _loadData(false);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    logit('obf b _loadingInProgress=$_loadingInProgress');
+    //logit('obf b _loadingInProgress=$_loadingInProgress');
     if (_loadingInProgress) {
         return getProgressMessage(_loading, '');
     }
@@ -361,9 +367,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         ),
       );
     } else {
-      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv, newBooking:  widget.newBooking, loadData: _loadData,);
+      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv, newBooking:  widget.newBooking, loadData: _loadData, showProgress: showProgress,);
       return flightSelection();
     }
+  }
+
+  void showProgress() {
+    _loadingInProgress = true;
+    setState(() {
+
+    });
   }
 
   Widget getCalenderWidget() {

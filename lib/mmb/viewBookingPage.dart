@@ -1192,7 +1192,7 @@ class ViewBookingBodyState
 
   Future _sendVrsCheckinCommand(String cmd) async {
     String msg = '';
-    if( gblSettings.useWebApiforVrs) {
+ //   if( gblSettings.useWebApiforVrs) {
       if (gblSession == null) gblSession = new Session('0', '', '0');
        msg = json.encode(
               VrsApiRequest(
@@ -1206,8 +1206,8 @@ class ViewBookingBodyState
               )
           );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
-    }
-    else {
+ //   }
+/*    else {
        msg = gblSettings.xmlUrl +
           gblSettings.xmlToken +
           '&Command=' + cmd;
@@ -1241,7 +1241,7 @@ class ViewBookingBodyState
       }
     } else {
       _actionCompleted();
-    }
+    }*/
   }
 
   _checkinCompleted(PnrDBCopy pnrDBCopy) {
@@ -2575,7 +2575,7 @@ class ViewBookingBodyState
 
   _sendAutoseatCommand(String cmd) async {
     String msg = '';
-    if( gblSettings.useWebApiforVrs) {
+    //if( gblSettings.useWebApiforVrs) {
       if (gblSession == null) gblSession = new Session('0', '', '0');
       msg = json.encode(
           VrsApiRequest(
@@ -2589,13 +2589,13 @@ class ViewBookingBodyState
           )
       );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
-    }
-    else {
+    //}
+  /*  else {
       msg = gblSettings.xmlUrl +
           gblSettings.xmlToken +
           '&Command=' +
           cmd;
-    }
+    }*/
 
     print('_sendAutoseatCommand::$msg');
     //final response = await

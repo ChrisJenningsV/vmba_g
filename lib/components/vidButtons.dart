@@ -11,9 +11,12 @@ Widget vidWideTextButton(BuildContext context, String caption, void Function({in
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
 }
 
-Widget vidTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed, {IconData? icon, int iconRotation=0,int? p1,int? p2, String? p3 } ) {
-  Widget iconWidget = Container();
+Widget vidTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed,
+    {IconData? icon, int iconRotation=0,int? p1,int? p2, String? p3, Color? color, bool minHeight = false } ) {
 
+  Widget iconWidget = Container();
+  Color textClr = gblSystemColors.textButtonTextColor;
+  if( color != null ) textClr = color;
 
   if( icon != null) {
     if( iconRotation != null && iconRotation > 0 ) {
@@ -33,6 +36,14 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
     }
   }
 
+  ButtonStyle style =  TextButton.styleFrom(side: BorderSide(color:  textClr, width: 1),foregroundColor: textClr);
+  if( minHeight){
+    style =  TextButton.styleFrom(side: BorderSide(color:  textClr, width: 1),
+        foregroundColor: textClr,
+        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        minimumSize: Size.zero,
+    );
+  }
 
   return
      TextButton(
@@ -42,17 +53,13 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
           onPressed(p1: p1, p2: p2, p3: p3);
         }
       } ,
-      style: TextButton.styleFrom(
-          side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-          foregroundColor: gblSystemColors.textButtonTextColor),
+      style: style,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TrText(
             caption,
-            style: TextStyle(
-                color: gblSystemColors
-                    .textButtonTextColor),
+            style: TextStyle(color: textClr),
           ),
           Padding(
             padding: EdgeInsets.only(left: 5.0),

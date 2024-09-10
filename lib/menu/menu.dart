@@ -19,6 +19,7 @@ import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../v3pages/cards/v3CustomPage.dart';
+import 'debug.dart';
 
 
 class DrawerMenu extends StatefulWidget {
@@ -330,13 +331,8 @@ class DrawerMenu extends StatefulWidget {
           dense: dense,
           title: _getMenuItem(Icons.web, 'Debugging Page'),
           onTap: () {
-/*
             Navigator.push(context,
-                SlideTopRoute(page: CustomPageWeb(pageText, url)));
-*/
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) =>
-                    V3CustomPage(name: 'menu')));
+                SlideTopRoute(page: DebugPage()));
           }));
     }
     

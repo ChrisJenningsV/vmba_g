@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/repository.dart';
@@ -543,13 +544,13 @@ if( widget.passengerDetail!.joiningDate != null && widget.passengerDetail!.joini
     ),);
 
 
-    widgets.add(vidWideActionButton(context, 'Show Transactions', _showTransactions, wantIcon: false));
-    widgets.add(vidWideActionButton(context, 'Refresh Points', _reloadPoints, wantIcon: false));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Show Transactions', _showTransactions, wantIcon: false)));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Refresh Points', _reloadPoints, wantIcon: false)));
 
-    widgets.add(vidWideActionButton(context, 'Show Pending Transactions', _showPendingTransactions, wantIcon: false));
-    widgets.add(vidWideActionButton(context, 'Change Password', _changePasswordDialog, wantIcon: false));
-    widgets.add(vidWideActionButton(context, 'Book a flight', _bookAFlight, wantIcon: false));
-    widgets.add(vidWideActionButton(context, 'Logout', _logout, wantIcon: false));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Show Pending Transactions', _showPendingTransactions, wantIcon: false)));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Change Password', _changePasswordDialog, wantIcon: false)));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Book a flight', _bookAFlight, wantIcon: false)));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Logout', _logout, wantIcon: false)));
 
     if(_error != null && _error.isNotEmpty){
       widgets.add(Text(_error));

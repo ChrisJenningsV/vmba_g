@@ -53,7 +53,7 @@ void configSI() {
 
   gblSettings = Settings(
       wantLeftLogo:  true,
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
     wantRememberMe: false,
     wantApis: true,
     wantHomeFQTVButton: true,

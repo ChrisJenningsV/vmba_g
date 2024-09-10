@@ -35,6 +35,26 @@ class Cities {
   }
 }
 
+// "destinations":[{"code":"BHD","name":"Belfast City","Info":"Direct"}
+
+class Destination {
+  String code = '';
+  String name = '';
+  String info = '';
+
+  Destination({ this.name='', this.code='', this.info=''});
+
+  Destination.fromJson(Map<String, dynamic> json) {
+    try {
+      if (json['code'] != null) code = json['code'];
+      if (json['name'] != null) name = json['name'];
+      if (json['info'] != null) info = json['info'];
+    } catch (e) {
+
+    }
+  }
+}
+
 class City {
   static final dbCode = "code";
   static final dbName = "name";
@@ -47,7 +67,8 @@ class City {
 
   String code='', name='', shortName='', mobileBarcodeType ='';
   int webCheckinEnabled =0, webCheckinStart =0, webCheckinEnd =0;
-  double minimumConnectMins =60;
+  int minimumConnectMins =60;
+  List<Destination> destinations= [];
 
   City({
     required this.code,
@@ -72,18 +93,6 @@ class City {
     if( json['minimumConnectMins'] != null ) minimumConnectMins = json['minimumConnectMins'];
 
   }
-/*
-      : this(
-          code: map[dbCode]== null ? '' : map[dbCode],
-          name: map[dbName]== null ? '' : map[dbName],
-          shortName: map[dbShortName]== null ? '' : map[dbShortName],
-          webCheckinEnabled: map[dbWebCheckinEnabled]== null ? '' :  map[dbWebCheckinEnabled],
-          webCheckinStart: map[dbWebCheckinStart]== null ? '' : map[dbWebCheckinStart],
-          webCheckinEnd: map[dbWebCheckinEnd]== null ? '' : map[dbWebCheckinEnd],
-          mobileBarcodeType: map[dbMobileBarcodeType]== null ? '' : map[dbMobileBarcodeType],
-      minimumConnectMins: map[dbMinimumConnectMins]== null ? '' : map[dbMinimumConnectMins]
-        );
-*/
 
   // Currently not used
   Map<String, dynamic> toMap() {
@@ -100,16 +109,36 @@ class City {
   }
 
   City.fromJson(Map<String, dynamic> json) {
-    if( json['cityCode'] != null ) code = json['cityCode'];
-    if( json['airportName'] != null ) name = json['airportName'];
-    if( json['shortAirportName'] != null )shortName = json['shortAirportName'];
-    if( json['webCheckinEnabled'] != null ) webCheckinEnabled = (json['webCheckinEnabled'] == true || json['webCheckinEnabled'] == 'true')? 1: 0;
+    try {
+      if (json['cityCode'] != null) code = json['cityCode'];
+      if (json['airportName'] != null) name = json['airportName'];
+      if (json['shortAirportName'] != null)        shortName = json['shortAirportName'];
+      if (json['webCheckinEnabled'] != null) webCheckinEnabled =
+      (json['webCheckinEnabled'] == 1 || json['webCheckinEnabled'] == true || json['webCheckinEnabled'] == 'true')
+          ? 1
+          : 0;
 
-      if(  json['webCheckinStart'] != null ) webCheckinStart = json['webCheckinStart'];
-      if( json['webCheckinEnd'] != null ) webCheckinEnd = json['webCheckinEnd'];
-      if( json['mobileBarcodeType'] != null ) mobileBarcodeType = json['mobileBarcodeType'];
-      if( json['minimumConnectMins'] != null ) minimumConnectMins = json['minimumConnectMins'];
+      if (json['webCheckinStart'] != null)
+        webCheckinStart = json['webCheckinStart'];
+      if (json['webCheckinEnd'] != null) webCheckinEnd = json['webCheckinEnd'];
+      if (json['mobileBarcodeType'] != null)
+        mobileBarcodeType = json['mobileBarcodeType'];
+      if (json['minimumConnectMins'] != null)
+        minimumConnectMins = json['minimumConnectMins'];
 
+      if( json['destinations'] != null ){
+        json['destinations'].forEach((v) {
+          if( v != null ) {
+            //logit(v.toString());
+            destinations.add(new Destination.fromJson(v));
+          }
+        });
+
+      }
+
+    } catch(e) {
+      logit(e.toString());
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -79,9 +79,9 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   String buildAddPaxCmd() {
     StringBuffer sb = new StringBuffer();
 
-    if (gblSettings.useWebApiforVrs) {
+//    if (gblSettings.useWebApiforVrs) {
       sb.write('I^');
-    }
+//    }
 
     for (var adults = 1;
     adults < widget.newBooking.passengers.adults + 1;

@@ -53,13 +53,13 @@ class _DayPickerPageState extends State<DayPickerPage> {
     if (widget.firstDate != null) {
       _firstDate = widget.firstDate;
     } else {
-      _lastDate = DateTime.now().add(Duration(days: 364));
+      _lastDate = DateTime.now().add(Duration(days: 51 * 7));
     }
 
     if (widget.lastDate != null) {
       _lastDate = widget.lastDate;
     } else {
-      _lastDate = DateTime.now().add(Duration(days: 364));
+      _lastDate = DateTime.now().add(Duration(days: 51 * 7));
     }
     _initData(widget.departureDate);
   }

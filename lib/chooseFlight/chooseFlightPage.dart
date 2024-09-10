@@ -4,13 +4,10 @@ import 'package:vmba/data/models/availability.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
-import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../Helpers/settingsHelper.dart';
-import '../calendar/widgets/langConstants.dart';
 import '../components/vidButtons.dart';
 import '../utilities/helper.dart';
-import '../utilities/messagePages.dart';
 import '../v3pages/cards/typogrify.dart';
 import '../v3pages/controls/V3AppBar.dart';
 import '../v3pages/controls/V3Constants.dart';
@@ -197,8 +194,8 @@ class ChooseFlight extends StatelessWidget {
   }
 }
   Widget classbandText(Band classband) {
-    if (classband?.cbtextrecords != null) {
-      Cbtextrecords cbt = classband?.cbtextrecords as Cbtextrecords;
+    if (classband.cbtextrecords != null) {
+      Cbtextrecords cbt = classband.cbtextrecords as Cbtextrecords;
 
       return Column(
         mainAxisSize: MainAxisSize.min,

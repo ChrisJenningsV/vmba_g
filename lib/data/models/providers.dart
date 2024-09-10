@@ -19,6 +19,25 @@ class Providers {
       logit(e.toString());
     }
   }
+  Providers.fromJson2(String str) {
+    try {
+      List<dynamic> j = json.decode(str);
+
+/*
+      List<Provider> provs = List<Provider>.from(
+          json.decode(j['paymentProviderList']).map((x) => Provider.fromJson(x)));
+*/
+      List<Provider> trans = [];
+
+        j.forEach((v) {
+          trans.add(new Provider.fromJson(v));
+        } );
+
+      providers = trans;
+    } catch (e) {
+      logit(e.toString());
+    }
+  }
 }
 
 

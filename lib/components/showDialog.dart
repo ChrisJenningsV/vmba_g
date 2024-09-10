@@ -93,9 +93,13 @@ child: Text(msg),
 ));
 }
 
+enum DialogType{
+  Error,
+  Warning,
+  Information
+}
 
-
-void showAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete  }) {
+void showAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete, DialogType type= DialogType.Information  }) {
   // flutter defined function
   logit('showAlertDialog $msg');
 
@@ -103,18 +107,63 @@ void showAlertDialog(BuildContext context, String title, String msg, {void Funct
     context: context,
     builder: (BuildContext context) {
       // return object of type Dialog
-            return getAlertDialog(context, title, msg, onComplete: onComplete);
+            return getAlertDialog(context, title, msg, onComplete: onComplete, type: type);
     },
   );
 }
 
-AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete}) {
+AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete, DialogType type= DialogType.Information}) {
   logit('getAlertDialog');
+
+  IconData icon = Icons.error_outline;
+  Color titleTextClr=  gblSystemColors.headerTextColor!;
+  Color? titleBackClr=  gblSystemColors.headerTextColor!;
+
+  switch (type) {
+    case DialogType.Information:
+      titleTextClr = Colors.blue;
+      titleBackClr = Colors.blue[100];
+      icon = Icons.info_outline;
+      break;
+    case DialogType.Error:
+      titleTextClr = Colors.red;
+      titleBackClr = Colors.red[100];
+      icon = Icons.close;
+      break;
+    case DialogType.Warning:
+      titleTextClr = Colors.yellow;
+      titleBackClr = Colors.yellow[100];
+      icon = Icons.warning_amber;
+
+      break;
+  }
+
+
+  Widget dlgTitle =  Container(
+  alignment: Alignment.topLeft,
+  decoration: BoxDecoration(
+  color: titleBackClr, //titleBkClr,
+      border: Border(
+        bottom: BorderSide(width: 1, color: titleTextClr),
+      ),
+  borderRadius: BorderRadius.only(
+  topLeft: Radius.circular(10.0),
+  topRight: Radius.circular(10.0),)),
+  padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+  child: Row(
+      children: [
+        Icon(icon, color: titleTextClr),
+        Padding(padding: EdgeInsets.all(3),),
+        Text(title,  style: TextStyle(color: Colors.black),)
+  ]
+  ));
 
   return AlertDialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0))),
     contentPadding: EdgeInsets.only(top: 10.0),
+    title: dlgTitle,
+    titlePadding: const EdgeInsets.all(0),
     content: Container(
       width: 300.0,
       child: Column(
@@ -122,7 +171,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Row(
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -138,7 +187,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
           Divider(
             color: Colors.grey,
             height: 4.0,
-          ),
+          ),*/
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: TextField(

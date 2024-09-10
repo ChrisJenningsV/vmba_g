@@ -333,8 +333,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     String msg = '';
     // if using VRS sessions/AAA clear out temp booking
 
-    print('makeBooking gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
-    if(gblSettings.useWebApiforVrs ) msg = 'I^';
+//    print('makeBooking gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
+    /*if(gblSettings.useWebApiforVrs )*/ msg = 'I^';
 
     msg += buildAddPaxCmd();
     msg += buildAddContactsCmd();
@@ -380,7 +380,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
 
     logit('makeBooking: $msg');
 
-    if( gblSettings.useWebApiforVrs) {
+ //   if( gblSettings.useWebApiforVrs) {
       print('Calling VRS with Cmd = $msg');
       String data = await runVrsCommand(msg).catchError((e) {
         //noInternetSnackBar(context);
@@ -514,8 +514,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         _showDialog();
       }
 
-    } else {
-        print("Calling ${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg");
+//    } else {
+ /*       print("Calling ${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg");
 
         http.Response response = await http.get(Uri.parse(
             "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
@@ -668,8 +668,8 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
           print(_error);
           _dataLoaded();
           _showDialog();
-        }
-    }
+        }*/
+  //  }
   }
 
   void gotoChoosePaymentPage() {

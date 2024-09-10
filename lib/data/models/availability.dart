@@ -3,6 +3,7 @@ import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
 import 'package:vmba/data/globals.dart';
 
+import '../../calendar/flightPageUtils.dart';
 import '../../components/trText.dart';
 
 class AvailabilityModel {
@@ -271,15 +272,33 @@ class AvItin {
     }
   }
 
-  bool getLowestPrice( double price, int miles, String currency ){
+  Prices getLowestPrice(  ){
+    Prices prices = new Prices();
     try {
       double minPrice = 0;
       int minMiles = 0;
-
-      return true;
+      int index =0;
+      int noFares = 0;
+      String cur = '';
+      if( flt.length > 0 && flt[0].fltav.pri != null ) {
+        noFares = flt[0].fltav.pri!.length;
+      }
+      for( index = 0; index < noFares; index++){
+        Prices thisPrices = getPrices(index);
+        if( thisPrices.success){
+          if( minPrice == 0 || (thisPrices.price != 0 && thisPrices.price < minPrice)) minPrice = thisPrices.price;
+          if( minMiles == 0 || (thisPrices.miles != 0 && thisPrices.miles < minMiles)) minMiles = thisPrices.miles;
+          cur = thisPrices.currency;
+        }
+      }
+      prices.success = true;
+      prices.price = minPrice;
+      prices.miles = minMiles;
+      prices.currency = cur;
+      return prices;
 
     } catch(e) {
-      return false;
+      return prices;
     }
 
   }
@@ -287,7 +306,9 @@ class AvItin {
   Prices getPrices(  int curFare){
     Prices prices = new Prices();
     try {
-      prices.currency = flt[0].fltav.cur![0];
+      if( flt.length > 0 && flt[0].fltav.cur != null && flt[0].fltav.cur!.length > 0) {
+        prices.currency = flt[0].fltav.cur![0];
+      }
 
       flt.forEach((element) {
         String newStr = element.fltav.pri![curFare];
@@ -305,6 +326,21 @@ class AvItin {
     } catch(e) {
       return prices;
     }
+  }
+String departureDateLocalLong() {
+  return getIntlDate('EEE dd MMM', departureDateLocal());
+}
+  String arrivalDateLocalLong() {
+    return getIntlDate('EEE dd MMM', arrivalDateLocal());
+  }
+
+  DateTime departureDateLocal(){
+    return DateTime.parse(
+        this.flt.first.time.ddaylcl + ' ' + this.flt.first.time.dtimlcl);
+  }
+  DateTime arrivalDateLocal(){
+    return DateTime.parse(
+        this.flt.last.time.adaylcl + ' ' + this.flt.last.time.atimlcl);
   }
 
   String journeyDuration() {

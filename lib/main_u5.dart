@@ -87,7 +87,7 @@ void configU5() {
     webCheckinNoSeatCharge: true,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: false,
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '6474322749',
     androidAppId: 'com.UnitedNigeria.reservations',

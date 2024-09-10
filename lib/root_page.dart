@@ -126,41 +126,55 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
 //      Repository.get().initFqtv();
     }
       );
-        String loading = 'Cities';
-        Repository.get().initCities().then((_) {
-          _displayProcessingIndicatorC = false;
-            if( gblNoNetwork == true) {
-              setState(() {
-                _dataLoaded = false;
-              });
-              return;
-            }
-              loading = 'Routes';
-              Repository.get()
-                  .initRoutes()
-                  .then((_) => setState(() {
-                        _displayProcessingIndicatorR = false;
-                      }))
-                  .catchError((e) {
-                setState(() {
-                  _displayProcessingIndicatorR = false;
-                  _dataLoaded = false;
-                });
-              }).then((_) {});
-              setState(() {
-                _displayProcessingText = 'Loading routes...';
 
-              });
-            }).catchError((e) {
-              setState(() {
-                _displayProcessingText = 'Error loading $loading: ' + e.toString() ;
-                gblError= 'Error loading routes: ' + e.toString() ;
-                print(_displayProcessingText);
-                _displayFinalError = true;
-                _displayProcessingIndicatorR = false;
-                _dataLoaded = false;
-              });
+    if( gblSettings.useLogin2) {
+      setState(() {
+        _displayProcessingIndicatorC = false;
+        _displayProcessingIndicatorR = false;
+        _displayProcessingIndicatorS = false;
+        _dataLoaded = true;
+      });
+        return;
+    }
+      // if new login we're done
+
+
+
+    String loading = 'Cities';
+    Repository.get().initCities().then((_) {
+      _displayProcessingIndicatorC = false;
+        if( gblNoNetwork == true) {
+          setState(() {
+            _dataLoaded = false;
+          });
+          return;
+        }
+          loading = 'Routes';
+          Repository.get()
+              .initRoutes()
+              .then((_) => setState(() {
+                    _displayProcessingIndicatorR = false;
+                  }))
+              .catchError((e) {
+            setState(() {
+              _displayProcessingIndicatorR = false;
+              _dataLoaded = false;
             });
+          }).then((_) {});
+          setState(() {
+            _displayProcessingText = 'Loading routes...';
+
+          });
+        }).catchError((e) {
+          setState(() {
+            _displayProcessingText = 'Error loading $loading: ' + e.toString() ;
+            gblError= 'Error loading routes: ' + e.toString() ;
+            print(_displayProcessingText);
+            _displayFinalError = true;
+            _displayProcessingIndicatorR = false;
+            _dataLoaded = false;
+          });
+        });
 
     //Repository.get().initFqtv();
   }

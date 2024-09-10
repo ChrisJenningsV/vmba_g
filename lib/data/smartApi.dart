@@ -22,7 +22,7 @@ Future<String> callSmartApi(String action, String data) async {
   print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg');
   http.Response? response;
 
-  if( gblSettings.smartApiVersion == 2) {
+  //if( gblSettings.smartApiVersion == 2) {
     response = await http
         .post(
           Uri.parse("${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}"), //?VarsSessionID=${gblSession!.varsSessionId}"),
@@ -32,6 +32,7 @@ Future<String> callSmartApi(String action, String data) async {
         .catchError((resp) {
       logit(resp);
     });
+/*
   } else {
     response = await http
         .get(Uri.parse(
@@ -41,6 +42,7 @@ Future<String> callSmartApi(String action, String data) async {
       logit(resp);
     });
   }
+*/
   if (response == null) {
     throw 'No Internet';
     //return new ParsedResponse(noInterent, null);

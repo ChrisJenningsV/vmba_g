@@ -179,7 +179,7 @@ void configUZ() {
   wantRefund: false,
   wantNewPayment: true,
   wantCountry: false,
-  useWebApiforVrs: true,
+  //useWebApiforVrs: true,
 //  disableBookings: true,
   wantSeats: false,
 

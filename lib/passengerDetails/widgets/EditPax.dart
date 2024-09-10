@@ -72,6 +72,8 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
   @override
   initState() {
     super.initState();
+    logit('i editPax');
+
     gblActionBtnDisabled = false;
     if( gblSettings.wantPageImages) {
    //   _loadBgCityImage();
@@ -123,6 +125,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
   @override
   Widget build(BuildContext context) {
+    logit('b editPax');
     return
 
       new Scaffold(

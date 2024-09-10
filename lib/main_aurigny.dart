@@ -72,7 +72,7 @@ void configGR() {
     webCheckinNoSeatCharge: false,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: false,
-    useWebApiforVrs: true,
+//    useWebApiforVrs: true,
     iOSAppId: '1457545908',
     androidAppId: 'com.aurigny.reservations',
     fqtvName: 'Frequent Flyer',

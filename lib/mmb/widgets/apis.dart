@@ -55,7 +55,7 @@ class _ApisWidgetState extends State<ApisWidget> {
   Future _loadData(String cmd) async {
     String msg = '';
     _error = '';
-    if( gblSettings.useWebApiforVrs) {
+ //   if( gblSettings.useWebApiforVrs) {
       if (gblSession == null) gblSession = new Session('0', '', '0');
       msg = json.encode(
           VrsApiRequest(
@@ -69,12 +69,15 @@ class _ApisWidgetState extends State<ApisWidget> {
           )
       );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
-    } else {
+  //  }
+/*
+    else {
       msg = gblSettings.xmlUrl +
           gblSettings.xmlToken +
           '&Command=' +
           cmd;
     }
+*/
     print(msg);
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
     late Map<String, dynamic> map;
@@ -90,7 +93,7 @@ class _ApisWidgetState extends State<ApisWidget> {
       }
 
       if( gblVerbose) print('Loaded APIS fields');
-      if(gblSettings.useWebApiforVrs && response.statusCode == 200  ) {
+  //    if(gblSettings.useWebApiforVrs && response.statusCode == 200  ) {
         VrsApiResponse rs = VrsApiResponse.fromJson(map);
         if( rs.errorMsg != null && rs.errorMsg.isNotEmpty) {
           _error = rs.errorMsg;
@@ -101,7 +104,9 @@ class _ApisWidgetState extends State<ApisWidget> {
           apisForm = new ApisModel.fromJson(map);
         }
         _dataLoaded();
-      } else {
+     // }
+/*
+      else {
         try {
           apisForm = new ApisModel.fromJson(map);
 //        logit('loaded');
@@ -110,6 +115,7 @@ class _ApisWidgetState extends State<ApisWidget> {
           logit(e.toString());
         }
       }
+*/
     } else {
       // If that response was not OK, throw an error.
       _dataLoaded();
@@ -123,7 +129,7 @@ class _ApisWidgetState extends State<ApisWidget> {
 
     Response? response;
         String cmd = '';
-    if( gblSettings.useWebApiforVrs) {
+ //   if( gblSettings.useWebApiforVrs) {
       cmd = 'DAX/' + apisForm!.toXmlString();
       if (gblSession == null) gblSession = new Session('0', '', '0');
       String msg = json.encode(
@@ -146,14 +152,14 @@ class _ApisWidgetState extends State<ApisWidget> {
             'req': msg,
             'FormData': apisForm!.toXmlString()
           });
-    } else {
+ /*   } else {
       cmd = 'DAX/';
       await http.post(Uri.parse(url), body: {
         'token': gblSettings.xmlTokenPost,
         'Command': cmd,
         'FormData': apisForm!.toXmlString()
       });
-    }
+    }*/
 
     if (response != null && response.statusCode == 200) {
       try {
@@ -163,11 +169,11 @@ class _ApisWidgetState extends State<ApisWidget> {
             .replaceAll('<string xmlns="http://videcom.com/">', '')
             .replaceAll('</string>', '');
         print(result);
-        if( gblSettings.useWebApiforVrs) {
+//        if( gblSettings.useWebApiforVrs) {
           Map<String, dynamic> map = json.decode(result);
           VrsApiResponse rs = VrsApiResponse.fromJson(map);
           result = rs.data;
-        }
+  //      }
         if (result.trim() == 'OK') {
           Repository.get().fetchApisStatus(widget.rloc).then((w) {
             Map<String, dynamic> map = json.decode(w!.data);

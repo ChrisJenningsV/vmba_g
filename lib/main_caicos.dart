@@ -85,7 +85,7 @@ void config9Q() {
     webCheckinNoSeatCharge: false,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: true,
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '', // NEED TO GET THIS - NOT READY YET
     androidAppId: 'com.caicosexpressairways.reservations',

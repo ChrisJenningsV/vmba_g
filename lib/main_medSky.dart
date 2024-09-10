@@ -70,6 +70,7 @@ void configM1() {
     wantVericalFaresCalendar: true,
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
+    wantUpgradePrices: true,
     wantButtonIcons: false,
     wantPriceCalendarRounding: false,
     wantUnlock:true,
@@ -177,7 +178,7 @@ void configM1() {
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-    //testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+  //  testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
@@ -212,7 +213,7 @@ void configM1() {
     maxNumberOfPax: 8,
     hideFareRules: false,
 
-    useWebApiforVrs: true,
+    //useWebApiforVrs: true,
     wantMmbProducts: false,
 
   );

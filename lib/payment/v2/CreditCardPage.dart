@@ -226,14 +226,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
                     logit('payCallBack');
                     hasDataConnection().then((result) async {
                       if (result == true) {
-                        if( gblSettings.useWebApiforVrs) {
+//                        if( gblSettings.useWebApiforVrs) {
                           logit('CCP MakePaymentVars');
                           makePaymentVars();
-                        } else {
+  /*                      } else {
                           logit('CCP MakePayment');
                           makePayment();
                         }
-                        //  signin().then((_) => makePayment());
+*/                        //  signin().then((_) => makePayment());
                       } else {
                         logit('No Internet');
                         setState(() {

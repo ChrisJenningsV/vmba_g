@@ -115,7 +115,7 @@ class Settings {
   bool wantNewPayment;
   bool useScrollWebViewiOS;
   bool wantButtonIcons;
-  bool useWebApiforVrs;
+//  bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
   bool useSmartPay;
@@ -126,6 +126,7 @@ class Settings {
   bool wantTerminal;
   bool wantMaterialFonts;
   bool wantPriceCalendar;
+  bool wantUpgradePrices;
   bool wantPriceCalendarRounding;
   bool wantMonthOnCalendar;
   bool canGoBackFromPaxPage;
@@ -325,6 +326,7 @@ bool bpShowFastTrack;
     this.wantTerminal = true,
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
+    this.wantUpgradePrices = false,
     this.wantPriceCalendarRounding = false,
     this.wantMonthOnCalendar = false,
     this.wantSaveSettings = false,
@@ -340,7 +342,7 @@ bool bpShowFastTrack;
     // new Gui
     this.wantCityDividers = false,
 
-    this.useWebApiforVrs: false,
+//    this.useWebApiforVrs: false,
     this.youthIsAdult = false,
     this.disableBookings = false,
     this.useSmartPay = false,

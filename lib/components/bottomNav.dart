@@ -45,7 +45,7 @@ Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText=
         list.add(popButton);
       }
       //Text('Demo Mode'),
-      if( helpText != null && helpText.isNotEmpty) {
+      if( helpText.isNotEmpty) {
       list.add(VidBlinkingButton(title: 'Demo mode', color: Colors.lightBlue.shade400, onClick: (c) {
         demoDialog(context, helpText: helpText);
         },));

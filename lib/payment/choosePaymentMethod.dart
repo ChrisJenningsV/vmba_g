@@ -90,6 +90,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
     if( widget.newBooking == null ) widget.newBooking = NewBooking();
     commonPageInit('CHOOSEPAY');
 
+    _loadData();
     gblPnrModel = widget.pnrModel;
     logit(gblCurPage);
     //widget.newBooking.paymentDetails = new PaymentDetails();
@@ -794,8 +795,9 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       _displayProcessingIndicator = true;
     });
 
-    if( gblSettings.useWebApiforVrs && isMmb) {
+//    if( gblSettings.useWebApiforVrs && isMmb) {
       return completeBookingNothingtoPayVRS();
+/*
     } else {
       //New code
       String msg = '';
@@ -979,6 +981,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
         return null;
       }
     }
+*/
   }
 
   Future<void> pullTicketControl(Tickets tickets) async {
@@ -1873,19 +1876,23 @@ List<Widget> getPayOptions(String amount, String cur) {
       }
         return Column(children: paymentButtons);
       } else {
-        return DataLoaderWidget(dataType: LoadDataType.providers,
-          newBooking: widget.newBooking!,
-          pnrModel: widget.pnrModel,
-          onComplete: (PnrModel pnrModel) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            if (gblLogPayment) {
-              logit('Load Providers onComplete');
-            }
-            widget.pnrModel = pnrModel;
-            pnrModel = pnrModel;
-            //setState(() {            });
-            startTimer(); //cj temp
-          },);
+        if (gblSettings.smartApiVersion < 2){
+    return DataLoaderWidget(dataType: LoadDataType.providers,
+    newBooking: widget.newBooking!,
+    pnrModel: widget.pnrModel,
+    onComplete: (PnrModel pnrModel) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    if (gblLogPayment) {
+    logit('Load Providers onComplete');
+    }
+    widget.pnrModel = pnrModel;
+    pnrModel = pnrModel;
+    //setState(() {            });
+    startTimer(); //cj temp
+    },);
+    } else {
+          return Container(child:Text('Loading...'));
+        }
       }
     } catch(e){
       logit(e.toString());
@@ -2130,7 +2137,32 @@ List<Widget> getPayOptions(String amount, String cur) {
     return list;
 
   }
+ Future<void> _loadData() async {
+    if( gblSettings.smartApiVersion == 2)
+     try {
+       GetProvidersRequest rq = new GetProvidersRequest( );
+       rq.user = "BSIA9992AW/EB";
+       rq.currency = gblSelectedCurrency;
+       String data = json.encode(rq);
+
+       String reply = await callSmartApi('GETPROVIDERS', data);
+       //_loadingInProgress = false;
+      // reply = reply.replaceAll('"', '\"');
+       //reply = '{"paymentProviderList":"' + reply + '}';
+       gblProviders = Providers.fromJson2(reply);
+       logit('providers loaded');
+       if( gblProviders != null && gblProviders!.providers.length > 0) {
+         gblLastProviderCurrecy = gblSelectedCurrency;
+         setState(() {
+
+         });
+       }
+    } catch(e) {
+       logit('cpm: ' + e.toString());
+     }
+   }
 }
+// end class
 
 
 class TimerText extends StatefulWidget {

@@ -125,7 +125,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
                   value: _rangeDatePickerValueWithDefaultValue,
                   onValueChanged: (dates) {
                     setState(() {
-                      logit('pick ${dates.length} dates');
+                      //logit('pick ${dates.length} dates');
                       _rangeDatePickerValueWithDefaultValue = dates;
                       _selectedDate = dates[0] as DateTime;
                       if( dates.length > 1) {

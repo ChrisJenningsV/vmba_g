@@ -52,6 +52,8 @@ class SystemColors {
   Color? unselectedFlt;
   Color? fltText;
   Color? selectedFare;
+  Color? defaultFaretext;
+  Color? selectedFareText;
   List<Color>? fareColors;
 
 
@@ -97,8 +99,11 @@ class SystemColors {
     this.selectedFlt = Colors.black,
     this.unselectedFlt = Colors.grey,
     this.fltText = Colors.white,
+    this.defaultFaretext = Colors.black,
+
     this.fareColors,
     this.selectedFare = Colors.red,
+    this.selectedFareText = Colors.white,
   });
 
   void setDefaults() {

@@ -6,7 +6,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/products.dart';
-import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../../Helpers/networkHelper.dart';
 import '../../payment/choosePaymentMethod.dart';

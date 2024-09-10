@@ -228,7 +228,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     await await runVrsCommand(cmd);
 
 
-    Repository.get().getAv(getAvCommand(gblSettings.useWebApiforVrs == false)).then((rs) {
+    Repository.get().getAv(getAvCommand(/*gblSettings.useWebApiforVrs == false*/ false )).then((rs) {
       if (rs.isOk()) {
         objAv = rs.body!;
         removeDepartedFlights();

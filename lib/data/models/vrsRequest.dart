@@ -261,6 +261,19 @@ class PaymentReply {
   }
 }
 
+class GetProvidersRequest {
+  String user = '';
+  String currency = '';
+
+  Map  toJson() {
+    Map map = new Map();
+    map['user'] = user;
+    map['currency'] = currency;
+    return map;
+  }
+}
+
+
 class FqtvLoginRequest{
   String user ='';
   String password ='';

@@ -1,15 +1,13 @@
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
-import '../Helpers/networkHelper.dart';
 import '../Helpers/stringHelpers.dart';
 import '../components/trText.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
+import '../data/models/availability.dart';
 import '../data/models/models.dart';
 import '../data/models/pax.dart';
 import '../data/models/pnr.dart';
@@ -33,11 +31,7 @@ Future searchSaveBooking(NewBooking newBooking) async {
                 pnrModel.pNR.basket.outstandingairmiles.airmiles) ??
                 0;
         if (gblFqtvBalance < miles) {
-          /* setState(() {
-              _loadingInProgress = false;
-              _eVoucherNotValid = false;
-              _tooManyUmnr = false;
-              _hasError = true;*/
+
           setError(
           'You do not have enough ${gblSettings
               .fQTVpointsName} to pay for this booking\n Balance = $gblFqtvBalance, ${gblSettings
@@ -52,18 +46,9 @@ Future searchSaveBooking(NewBooking newBooking) async {
     } else if (rs.statusCode == 0) {
       setError( rs.error);
       throw(gblError);
-      /* _hasError = true;
-        setState(() {
-          _loadingInProgress = false;
-        });*/
     } else {
 
-      /*setState(() {
-          _loadingInProgress = false;
-          _noInternet = true;
-        });*/
     }
-
 }
 
 String setCurrencyCode(PnrModel pnrModel) {
@@ -139,9 +124,9 @@ String buildCmd(NewBooking newBooking) {
 String buildDummyAddPaxCmd(NewBooking newBooking) {
   StringBuffer sb = new StringBuffer();
 
-  if( gblSettings.useWebApiforVrs) {
+//  if( gblSettings.useWebApiforVrs) {
     sb.write('I^');
-  }
+//  }
 
   for (var adults = 1;
   adults < newBooking.passengers.adults + 1;
@@ -261,8 +246,8 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
   /*PnrModel pnrModel;*/
   // if using VRS sessions/AAA clear out temp booking
 
-  print('gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
-  if(gblSettings.useWebApiforVrs ) msg = 'I^';
+//  print('gblSettings.useWebApiforVrs=${gblSettings.useWebApiforVrs}');
+  /*if(gblSettings.useWebApiforVrs )*/ msg = 'I^';
 
   msg += buildAddPaxCmd(newBooking);
   msg += buildAddContactsCmd(newBooking);
@@ -309,7 +294,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 
   logit('makeBooking: $msg');
 
-  if( gblSettings.useWebApiforVrs) {
+  //if( gblSettings.useWebApiforVrs) {
     print('Calling VRS with Cmd = $msg');
     String data = await runVrsCommand(msg).catchError((e) {
       //noInternetSnackBar(context);
@@ -333,18 +318,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
             .replaceAll('</string>', '')
             .replaceAll('ERROR - ', '')
             .trim()); // 'Please check your details';
-
-       /* if (data.contains('TOO MANY UMNR')) {
-        *//*  setState(() {
-            _displayProcessingIndicator = false;
-            _tooManyUmnr = true;
-          });*//*
-          return null;
-        }*/
-       // _dataLoaded();
         print('makeBooking $gblError');
-
-        //_gotoPreviousPage();
         return;
       } else {
         String pnrJson =data
@@ -455,8 +429,10 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 */
     }
 
+/*
   } else {
-    print("Calling ${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg");
+*/
+  /*  print("Calling ${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg");
 
     http.Response response = await http.get(Uri.parse(
         "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$msg"),
@@ -464,30 +440,20 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
         .catchError((resp) {});
 
     if (response == null) {
-/*
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      noInternetSnackBar(context);
-*/
+
       setError('Network error');
       return null;
     }
 
     //If there was an error return an empty list
     if (response.statusCode < 200 || response.statusCode >= 300) {
-/*
-      setState(() {
-        _displayProcessingIndicator = false;
-      });
-      noInternetSnackBar(context);
-*/
+
       setError( 'Network error');
       return null;
       // return new ParsedResponse(response.statusCode, []);
-    }
+    }*/
 
-    try {
+   /* try {
       bool flightsConfirmed = true;
       if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
         setError( response.body
@@ -497,15 +463,6 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
             .replaceAll('ERROR - ', '')
             .trim()); // 'Please check your details';
 
-/*
-        if (response.body.contains('TOO MANY UMNR')) {
-          setState(() {
-            _displayProcessingIndicator = false;
-            _tooManyUmnr = true;
-          });
-          return null;
-        }
-*/
         //_dataLoaded();
         print('makeBooking $gblError');
         //_gotoPreviousPage();
@@ -549,10 +506,10 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
                   .replaceAll('</string>', '')
                   .replaceAll('ERROR - ', '')
                   .trim()); // 'Please check your details';
-/*
+*//*
               _dataLoaded();
               _gotoPreviousPage();
-*/
+*//*
               return;
             } else {
               String pnrJson = response.body
@@ -579,19 +536,19 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 
       if (flightsConfirmed) {
         return pnrModel;
-/*
+*//*
         _dataLoaded();
         gotoChoosePaymentPage();
-*/
+*//*
       } else {
-/*        setState(() {
+*//*        setState(() {
           _displayProcessingIndicator = false;
-        });*/
+        });*//*
         setError( translate('Unable to confirm partner airlines flights.'));
         //showSnackBar();
         logit('Unable to confirm partner airlines flights.');
-/*        Navigator.pop(context, _error);
-        return null;*/
+*//*        Navigator.pop(context, _error);
+        return null;*//*
       }
     } catch (e) {
       setError( response.body
@@ -599,12 +556,12 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
           .replaceAll('<string xmlns="http://videcom.com/">', '')
           .replaceAll('</string>', ''));
       print(gblError);
-/*
+*//*
       _dataLoaded();
       _showDialog();
-*/
+*//*
     }
-  }
+  }*/
   return null;
 }
 
@@ -778,7 +735,7 @@ void reloadMmbBooking(String rloc) {
 }
 void refreshStatusBar() {
   try {
-
+  // logit('rfsh');
   if( statusGlobalKeyOptions != null && statusGlobalKeyOptions.currentState != null ) {
     statusGlobalKeyOptions.currentState?.refresh();
   }
@@ -795,4 +752,28 @@ print(e.toString());
 }
 
 
+}
+List<String> buildfltRequestMsg(    List<Flt> flts, String? classBandName, String? cabin, int cb, int seats ) {
+  List<String> msg = []; // List<String>();
+
+//0LM0571Q18DEC18NWIMANQQ1/06550800(CAB=Y)[CB=FLY]^
+//0LM0592L18DEC18MANINVQQ1/08401005(CAB=Y)[CB=FLY]^
+//0LM0591L23DEC18INVMANQQ1/14301545(CAB=Y)[CB=FLY]^
+//0LM0578L23DEC18MANNWIQQ1/18552000(CAB=Y)[CB=FLY]^
+//0LM0032 14Dec12ABZKOINN1/08550950(CAB=Y)[CB=Fly]]
+  for (var f in flts) {
+    String _date =
+    DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaylcl));
+//      DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaygmt));
+    String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
+    String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
+
+    if( f.fltav.id![cb - 1] == ''){
+      logit('not class ID');
+    }
+
+    msg.add(
+        '0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![cb - 1] + _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=$cabin)[CB=$classBandName]');
+  }
+  return msg;
 }

@@ -90,25 +90,6 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
     }*/
     }
     CustomPage homePage = gblHomeCardList!.pages![pageName];
-    ImageProvider image = Image.asset('lib/assets/images/bg.png').image;
-    if( homePage.backgroundImage != ''){
-      if( homePage.backgroundImage.contains('http')){
-        NetworkImage backgroundImage = NetworkImage(
-            '${homePage.backgroundImage}');
-        image = Image(
-          image:
-          backgroundImage,
-          fit: BoxFit.cover,).image;
-
-      }else {
-        NetworkImage backgroundImage = NetworkImage(
-            '${gblSettings.gblServerFiles}/${homePage.backgroundImage}');
-        image = Image(
-          image:
-          backgroundImage,
-          fit: BoxFit.cover,).image;
-
-      }
 
     }
 
@@ -120,41 +101,64 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
         endDrawer: new DrawerMenu(),
         bottomNavigationBar: getV3BottomNav(context),
         //drawer: DrawerMenu(),
-        body: Container(
-          //          margin: EdgeInsets.only(top: 24),
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            child:
-
-            SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.only(top: 24),
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: image, //mainBackGroundImage,
-                          fit: BoxFit.fitWidth,
-                          alignment: Alignment.topLeft),
-                    color: homePage!.backgroundColor,
-                  ),
-
-                  child: Column(
-                    children:
-                    getCustomPage(context, pageName, doCallback),
-
-                  ),
-                ))
-        )
+        body: getCustomPageBody(context, pageName, doCallback)
     );
   }
-  else {
-    return Text(' Page $pageName not found');
+
+
+Widget getCustomPageBody(BuildContext context, String pageName, void Function() doCallback) {
+  ImageProvider image = Image
+      .asset('lib/assets/images/bg.png')
+      .image;
+ /* if (homePage.backgroundImage != '') {
+    if (homePage.backgroundImage.contains('http')) {
+      NetworkImage backgroundImage = NetworkImage(
+          '${homePage.backgroundImage}');
+      image = Image(
+        image:
+        backgroundImage,
+        fit: BoxFit.cover,).image;
+    } else {
+      NetworkImage backgroundImage = NetworkImage(
+          '${gblSettings.gblServerFiles}/${homePage.backgroundImage}');
+      image = Image(
+        image:
+        backgroundImage,
+        fit: BoxFit.cover,).image;
+    }
+  }*/
+
+    return Container(
+      //          margin: EdgeInsets.only(top: 24),
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        child:
+
+        SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.only(top: 24),
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: image, //mainBackGroundImage,
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topLeft),
+                //color: homePage!.backgroundColor,
+              ),
+
+              child: Column(
+                children:
+                getCustomPage(context, pageName, doCallback),
+
+              ),
+            ))
+    );
   }
 
-}
+
 
   List<Widget> getCustomPage(BuildContext context, String pageName,
       void Function() doCallback) {

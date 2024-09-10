@@ -54,6 +54,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   @override
   initState() {
     super.initState();
+    // logit('i paxDet');
     if( gblCurPage != 'CHOOSEFLIGHT') {
       backPressed = true;
     }
@@ -78,15 +79,17 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     //.then((result) result == true ? loadProfileIntoPaxDetails: {});
 
     if(isUserProfileComplete()) {
+      // logit('i paxDet 1');
       if( loadProfileIntoPaxDetails()) {
         showContinueButton();
       }
     } else {
+      // logit('i paxDet 2');
       Repository.get()
           .getNamedUserProfile('PAX1')
           .then((profile) {
         try {
-          if( profile == null ) {
+          if( profile == null || profile.name == 'Error' ) {
             print('profile null ');
             return;
           }
@@ -335,6 +338,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    logit('b paxDet');
     //logit('pd');
     //Show dialog
     //print('build');

@@ -36,15 +36,15 @@ Future changeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context)
   cmd += addFg(mmbBooking.currency, true);
   cmd += addFareStore(true);
 
-  if( gblSettings.useWebApiforVrs) {
+ // if( gblSettings.useWebApiforVrs) {
     cmd += '*r~x';
-  } else {
+ /* } else {
     if( gblSettings.saveChangeBookingBeforePay) {
       cmd += 'E*r~x';
     } else {
       cmd += '*r~x';
     }
-  }
+  }*/
   logit('change flt $cmd');
   await runVrsCommand(cmd);
 

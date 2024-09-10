@@ -10,6 +10,7 @@ import '../v3pages/v3Theme.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
+import 'models/cities.dart';
 import 'models/flightPrices.dart';
 import 'models/notifyMsgs.dart';
 import 'models/pnr.dart';
@@ -19,8 +20,8 @@ import 'models/providers.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 // m1 = LM new stuff
-String gblBuildFlavor = 'FN';
-bool gblIsLive = true;
+String gblBuildFlavor = 'M1';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 115;
 int requiredApiVersion = 105;
@@ -140,6 +141,7 @@ String gblBookingCurrency='';
 NotificationStore? gblNotifications;
 PageListHolder? gblHomeCardList;
 V3Theme? gblV3Theme;
+Cities? gblCityList;
 
 TextStyle? gblTitleStyle;
 List<String> gblTitles = <String>[
