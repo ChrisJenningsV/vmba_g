@@ -1,6 +1,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/models/pax.dart';
 import 'package:vmba/mmb/widgets/apis.dart';
@@ -152,13 +153,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
                 ],
                 iconTheme: IconThemeData(
                     color: gblSystemColors.headerTextColor),
-                titleText: "My Booking",
-/*
-                title: TrText("My Booking",
-                    style: TextStyle(
-                        color: gblSystemColors
-                            .headerTextColor)),
-*/
+                titleText: gblSettings.wantNewMMB ? 'Manage My Booking' : "My Booking",
               ),
               endDrawer: DrawerMenu(),
               body: new Container(
@@ -422,7 +417,7 @@ class ViewBookingBodyState
 
 
 
-  void loadCities(List<Itin> itin) {}
+//  void loadCities(List<Itin> itin) {}
 
 
   loadJourneys(PnrModel pnrModel) {
@@ -1206,13 +1201,13 @@ class ViewBookingBodyState
               )
           );
       msg = "${gblSettings.xmlUrl}VarsSessionID=${gblSession!.varsSessionId}&req=$msg";
- //   }
-/*    else {
+   // }
+ /*   else {
        msg = gblSettings.xmlUrl +
           gblSettings.xmlToken +
           '&Command=' + cmd;
     }
-
+*/
     print("_sendVrsCheckinCommand::$msg");
 
     final response = await http.get(Uri.parse(msg),headers: getXmlHeaders());
@@ -1241,7 +1236,7 @@ class ViewBookingBodyState
       }
     } else {
       _actionCompleted();
-    }*/
+    }
   }
 
   _checkinCompleted(PnrDBCopy pnrDBCopy) {
@@ -1303,10 +1298,11 @@ class ViewBookingBodyState
   bool isFltPassedDate(Itin journey, int offset) {
     //DateTime now = DateTime.now();
     DateTime now = getGmtTime();
-    var fltDate;
+    DateTime fltDate;
     bool result = false;
 
     fltDate = DateTime.parse(journey.ddaygmt + ' ' + journey.dtimgmt);
+    fltDate = fltDate.add(Duration(hours: gblSettings.hideBookingHours));
         //.add(Duration(hours: offset));
     if (now.isAfter(fltDate)) {
       result = true;
@@ -1545,10 +1541,11 @@ class ViewBookingBodyState
     bool isFltPassedDate(Itin journey, int offset) {
       //DateTime now = DateTime.now();
       DateTime now = getGmtTime();
-      var fltDate;
+      DateTime fltDate;
       bool result = false;
 
       fltDate = DateTime.parse(journey.ddaygmt + ' ' + journey.dtimgmt);
+      fltDate = fltDate.add(Duration(hours: gblSettings.hideBookingHours));
           //.add(Duration(hours: offset));
       if (now.isAfter(fltDate)) {
         result = true;
@@ -2196,10 +2193,10 @@ class ViewBookingBodyState
       );
     }
   }
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
   addContactDetails(){
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _phoneController = TextEditingController();
 
     if( gblPnrModel!.pNR.contacts != null && gblPnrModel!.pNR.contacts.cTC.length > 0) {
       gblPnrModel!.pNR.contacts.cTC.forEach((element) {
@@ -2221,18 +2218,19 @@ class ViewBookingBodyState
           titlePadding: const EdgeInsets.all(0),
           title: alertTitle(
               translate('Add Contact details'), gblSystemColors.headerTextColor!, gblSystemColors.primaryHeaderColor),
-          content: Form(
+          content: /*Form(
           key: widget.formKey,
-          child: Column(
+          child: */Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-            V2TextWidget(
+              TextField(
             maxLength: 50,
+  //          autovalidateMode: AutovalidateMode.disabled,
             decoration: getDecoration('Phone Number'),
             controller: _phoneController,
             keyboardType: TextInputType.number,
-            validator: (value) =>
-            value!.isEmpty ? translate('Phone Number cannot be empty') : null,
+            //validator: (value) =>            value!.isEmpty ? translate('Phone Number cannot be empty') : null,
+/*
             onFieldSubmitted: (value) {
               //widget.passengerDetail.phonenumber = value;
             },
@@ -2241,13 +2239,15 @@ class ViewBookingBodyState
                // widget.passengerDetail.phonenumber = value.trim();
               }
             },
+*/
           ),
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              V2TextWidget(
+              TextFormField(
                 maxLength: 50,
                 decoration: getDecoration('Email'),
+                autovalidateMode: AutovalidateMode.disabled,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -2269,7 +2269,9 @@ class ViewBookingBodyState
                   ),
 
                   ],
-                  )),
+        //          )
+        ),
+
                   actions: <Widget>[
                   // usually buttons at the bottom of the dialog
                   new TextButton(
@@ -2292,9 +2294,10 @@ class ViewBookingBodyState
                         .primaryButtonTextColor),
               ),
               onPressed: () {
-                final form = widget.formKey.currentState;
-                if (form!.validate()) {
-                  form.save();
+//                final form = widget.formKey.currentState;
+  //              if (form!.validate()) {
+//                  form.save();
+              if( _emailController.text != '' && _phoneController.text != '' && validateEmail(_emailController.text) == ''){
 // add ctc to PNR
                   saveContactDetails(_emailController.text, _phoneController.text);
                   // save
@@ -2317,6 +2320,7 @@ class ViewBookingBodyState
   saveContactDetails(String email, String phone) async {
     StringBuffer sb = new StringBuffer();
     // remove old contact
+    sb.write('*$gblCurrentRloc^');
     sb.write('9X1^9X1^');
     sb.write('9M*$phone^');
     sb.write('9E*$email^E*R');

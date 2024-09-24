@@ -252,11 +252,6 @@ bool bFirstTime = true;
        debugShowCheckedModeBanner: false,
       title: gblAppTitle,
       theme: ThemeData(
-//        scaffoldBackgroundColor: gblSystemColors.backgroundColor,
-/*
-        useMaterial3: gblSettings.wantMeterial3,
-        colorSchemeSeed: gblSettings.wantMeterial3 ? gblSystemColors.primaryButtonColor : null,
-*/
         brightness: Brightness.light,
 /*
         primaryColor: gblSettings.wantMeterial3 ? null : gblSystemColors.primaryColor,

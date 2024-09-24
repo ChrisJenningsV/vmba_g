@@ -197,7 +197,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     int calenderWidgetSelectedItem = 0;
     double animateTo = 250;
 
-    if( objAv!.availability.cal?.day != null ) {
+    if (objAv!.availability.cal?.day != null) {
       for (var f in (objAv!.availability.cal?.day as List<Day>)) {
         if (DateTime.parse(f.daylcl).isAfter(_departureDate)) {
           calenderWidgetSelectedItem += 1;
@@ -230,9 +230,11 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
       _loadingInProgress = false;
     });
     // scroll control for cal day bar
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _scrollController.animateTo(animateTo,
-            duration: new Duration(microseconds: 1), curve: Curves.ease));
+    if (gblSettings.wantVericalFaresCalendar == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          _scrollController.animateTo(animateTo,
+              duration: new Duration(microseconds: 1), curve: Curves.ease));
+    }
   }
 
   showSnackBar(String message) {

@@ -294,9 +294,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       _loadingInProgress = false;
     });
     // scroll control for cal day bar
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _scrollController.animateTo(animateTo,
-            duration: new Duration(microseconds: 1), curve: Curves.ease));
+    if (gblSettings.wantVericalFaresCalendar == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          _scrollController.animateTo(animateTo,
+              duration: new Duration(microseconds: 1), curve: Curves.ease));
+    }
   }
 
   _changeSearchDate(DateTime newDate) {
@@ -316,7 +318,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
 
 
-  if ( gblError!= null && gblError.isNotEmpty  ){
+  if (  gblError.isNotEmpty  ){
     return criticalErrorPageWidget( context, gblError,title: gblErrorTitle, onComplete:  onComplete, wantButtons: true);
 
 

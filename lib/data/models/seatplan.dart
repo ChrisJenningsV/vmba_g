@@ -1,4 +1,6 @@
 
+import 'package:vmba/data/globals.dart';
+
 import '../../utilities/helper.dart';
 
 class Seatplan {
@@ -17,6 +19,59 @@ class Seatplan {
     }
     return data;
   }
+
+  SeatPlanDefinition? getPlanDataTable(){
+    SeatPlanDefinition def = new SeatPlanDefinition();
+
+
+    // build a table of seats
+    def.noRows = this.seats.seat.last.sRow;
+
+    int minCol = -1;
+    int maxCol = -1;
+    this.seats.seat.forEach((s) {
+      if(minCol == -1 || minCol > s.sCol ){
+        minCol = s.sCol;
+      }
+      if(s.sCol > maxCol ) {
+        maxCol = s.sCol;
+      }
+    });
+    def.minCol = minCol;
+    def.maxCol = maxCol;
+
+    int cols = this.seats.seat.last.sRow;
+    // step through rows
+    for (var indexRow = 1; indexRow <= def.noRows; indexRow++) {
+      List<Seat> seats = this.seats.seat.where((a) => a.sRow == indexRow).toList();
+
+      SeatPlanRow sRow = new SeatPlanRow();
+      sRow.rowNo = indexRow;
+      // add something for each column
+      for ( var indexCol = 0; indexCol <= def.maxCol ; indexCol++){
+        Seat? seat  = seats.where((a) => a.sCol == indexCol).firstOrNull;
+
+        // add this seat (or null ) to map
+        sRow.cols[indexCol] = seat;
+      }
+      def.table.add(sRow);
+    }
+
+    // aisel
+    def.colTypes = [];
+    for (var colRow = 0; colRow <= def.maxCol; colRow++) {
+      List<Seat>? colSeats = seats.seat.where((a) => a.sCol == colRow && a.sCode != '').toList();
+      if(colSeats == null ||  colSeats.length == 0) {
+        def.colTypes.add('A');
+      } else {
+        def.colTypes.add( 'S');
+      }
+    }
+
+
+      return def;
+  }
+
 
   void simplifyPlan() {
     logit('simplifying plan');
@@ -48,7 +103,9 @@ class Seatplan {
     });
     this.seats.seat.forEach((s) {
       if( s.sCol == maxCol){
-        if( s.sCellDescription == 'Wing Middle' || s.sCellDescription == 'Wing End' || s.sCellDescription == 'Wing Start') {
+        if( s.sCellDescription == 'Wing Middle' || s.sCellDescription == 'Wing End'
+            || s.sCellDescription == 'Wing Start' || s.sCellDescription == 'DoorUp'
+            || s.sCellDescription == 'DoorDown') {
 
         } else {
           logit('col=${s.sCol} d=${s.sCellDescription}');
@@ -62,8 +119,36 @@ class Seatplan {
       this.seats.seat.removeWhere((item) => item.sCol == maxCol);
     }
 
-  }
+    if( gblSettings.wantNewSeats) {
+      canRemove = true;
+      bool canRemoveA = true;
+      this.seats.seat.forEach((s) {
+        if( s.sRow == 3) logit(' s r=${s.sRow} c=${s.sCol} d=${s.sCellDescription} n=${s.sCode}');
 
+        if (s.sRow == 2) {
+          if (s.sCellDescription != 'Aisle') {
+            canRemoveA = false;
+          }
+        }
+        if (s.sRow == 1) {
+          if (s.sCellDescription.length == 1 || s.sCellDescription.length == 0) {
+          } else {
+            logit('col=${s.sCol} d=${s.sCellDescription}');
+            canRemove = false;
+          }
+        }
+      });
+      if (canRemove == true) {
+        // delete all col 1
+        this.seats.seat.removeWhere((item) => item.sRow == 1);
+      }
+      if( canRemoveA == true){
+        // delete all col 2
+        this.seats.seat.removeWhere((item) => item.sRow == 2);
+      }
+    }
+
+  }
 
   bool hasSeatsAvailable() {
     if (this
@@ -101,6 +186,43 @@ class Seatplan {
       return false;
     }
   }
+}
+
+class SeatPlanRow {
+  int rowNo = 0;
+  Map cols = new Map();
+
+}
+// 'logical' breakdown of VRS seat plan
+class SeatPlanDefinition{
+  // table of seats by row / col
+  List<SeatPlanRow> table = [];
+
+  int noRows = 0;
+  int minCol = 0;
+  int maxCol = 0;
+
+  // type of col - used to set width
+  // Seat, Aisel
+  List<String> colTypes = [];
+
+  Seat? getSeatAt(int row, int col){
+    Seat? retSeat = null;
+    if( row < noRows) {
+      if( col < maxCol ){
+        table.forEach((tr) {
+          if( tr.rowNo == row){
+           // SeatPlanRow seatPlanRow = table[row];
+            retSeat  = tr.cols[col];
+          }
+        });
+      }
+    }
+    return retSeat;
+  }
+  // cabins
+
+  // prices
 }
 
 class Seats {
@@ -248,7 +370,7 @@ class Seat {
   bool noInfantSeat=false;
   bool pRMSeat=false;
 
-  Seat();
+  Seat({this.sCellDescription = '', this.sCode='', this.noInfantSeat = false});
 
   Seat.fromJson(Map<String, dynamic> json) {
     try {

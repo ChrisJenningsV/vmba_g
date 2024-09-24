@@ -265,7 +265,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
             borderRadius: BorderRadius.circular(5))),
       ),
 
-    );;
+    );
   }
 
   Widget getFareList(AvItin item, int fltNo) {

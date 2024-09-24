@@ -1278,6 +1278,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
 
   bool validateRlocWithName(List<PAX> passengers) {
     for (PAX pAX in passengers) {
+      logit('Pax ${pAX.paxNo} ${pAX.firstName} ${pAX.surname}');
       if (pAX.surname == _surname.toUpperCase()) {
         return true;
       }
@@ -1310,7 +1311,7 @@ getmybookings(void Function() onComplete )  {
 //        logit('Loading ${_pnr.pNR.rLOC}');
       _error = _pnr.validate();
       //logit('Loading ${_pnr.pNR.rLOC}  $_error');
-      if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(0)) {
+      if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(1)) {
         thispnrs.add(_pnrs);
       } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {
         thisOldpnrs.add(_pnrs);

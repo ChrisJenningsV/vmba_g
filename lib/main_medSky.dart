@@ -37,11 +37,17 @@ void configM1() {
     headerTextColor: Colors.white,
     classBandIconColor: Colors.black,
     statusBar: Brightness.dark,
-    seatPlanColorEmergency: Colors.red, //Colors.yellow
-    seatPlanColorAvailable: Colors.blue, //Colors.green
-    seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
-    seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
+    seatPlanColorEmergency: Colors.amber, //Colors.yellow
+    seatPlanColorAvailable: Colors.green, //Colors.green
+    seatPlanColorSelected: Colors.red, //Colors.grey.shade600
+    seatPlanColorUnavailable:      Colors.grey.shade400, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
+    seatPlanTextColorSelected: Colors.white,
+    seatPlanTextColorEmergency: Colors.black,
+    seatPlanTextColorAvailable: Colors.white,
+    seatPlanTextColorUnavailable: Colors.black,
+    seatPlanTextColorRestricted: Colors.black,
+
     fareColors: [Colors.white, Color.fromRGBO(251, 233, 232, 1),Color.fromRGBO(248, 212, 210, 1), ],
   );
   _systemColors.setDefaults();
@@ -70,6 +76,8 @@ void configM1() {
     wantVericalFaresCalendar: true,
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
+    wantNewMMB: true,
+    wantNewSeats: true,
     wantUpgradePrices: true,
     wantButtonIcons: false,
     wantPriceCalendarRounding: false,

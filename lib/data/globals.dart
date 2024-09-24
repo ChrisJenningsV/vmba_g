@@ -16,11 +16,12 @@ import 'models/notifyMsgs.dart';
 import 'models/pnr.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
+import 'models/seatplan.dart';
 
 // variable shared to whole app
 // initialized in main_XX.dart
-// m1 = LM new stuff
-String gblBuildFlavor = 'M1';
+// M1 = LM new stuff
+String gblBuildFlavor = 'SI';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 115;
@@ -106,6 +107,8 @@ bool gblDebugMode = false;
 bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
+SeatPlanDefinition? gblSetplanDef;
+int gblCurJourney = 0;
 FQTVMemberTransactions? gblUpcomingFlights;
 //bool  gblUseWebApiforVrs = false;
 

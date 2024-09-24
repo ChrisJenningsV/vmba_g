@@ -6,6 +6,7 @@ import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pax.dart';
 
+import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../components/trText.dart';
 import '../../data/globals.dart';
@@ -56,57 +57,108 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return gblSettings.wantNewSeats ? NewPaxObj() :
+     Wrap(
       children: renderPax(),
     );
+  }
+  Widget NewPaxObj() {
+    int height = 100;
+    if(paxlist!.length < 3 ) height = paxlist!.length * 40;
+    return
+      Container(
+          margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+          height: 100,
+          width: 400,
+          decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: v2BorderWidth()),
+          borderRadius: BorderRadius.all(
+          Radius.circular(10.0)),
+          ),
+          child: Scrollbar(child:
+    ListView.builder(
+      padding: EdgeInsets.all(0),
+      itemCount: paxlist!.length,
+      itemBuilder: (context, pax) {
+        String name = paxlist![pax].name;
+        return ListTile(
+          selectedColor: selectedBackground,
+          textColor: Colors.black,
+          selectedTileColor: selectedText,
+          selected: paxlist![pax].selected,
+          title:
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              name,
+              //textScaler: TextScaler.linear(.90),
+              style: TextStyle(
+                  color: Colors.black),
+            ),
+            Padding(padding: EdgeInsets.all(5)),
+            seatButton(pax),
+          ],
+        ),
+        dense: true,);
+      }
+        ),
+          )
+    );
+  }
+
+  Widget seatButton(int pax){
+    return  Container(
+
+        width: 55,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black)
+        ),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(padding: EdgeInsets.all(1)),
+            Text(
+              paxlist![pax].seat == null || paxlist![pax].seat == ''
+                  ? '' /*translate('Select')*/
+                  : paxlist![pax].seat,
+              //textScaler: TextScaler.linear(1.25),
+              style: TextStyle(color: Colors.black),
+/*
+                color: paxlist![pax].selected == true
+                    ? selectedText
+                    : unselectedText),
+*/
+            ),
+            (paxlist![pax].seat == null || paxlist![pax].seat == '')
+                ? Container()
+                :
+            Align(alignment: Alignment.topRight,
+                child: vidIconButton(context, paxNo: pax,
+                    segNo: int.parse(widget.segNo) ,
+                    onPressed: (context, paxNo, segNo) {
+                      logit('removeSeat pax$paxNo seg$segNo');
+                      smartRemoveSeat(paxNo, segNo);
+                    },
+                    clrIn: Colors.red,
+                    icon: Icons.close,
+                    size: 20
+                ))
+          ],
+        ))
+    ;
   }
 
   List<Widget> renderPax() {
     List<Widget> paxWidgets = [];
     // List<Widget>();
     for (var pax = 0; pax < paxlist!.length; pax++) {
-      Widget seatNoButton = Container(
-        // padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        //color: Colors.white,
-          width: 55,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black)
-          ),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(padding: EdgeInsets.all(1)),
-              Text(
-                paxlist![pax].seat == null || paxlist![pax].seat == ''
-                    ? '' /*translate('Select')*/
-                    : paxlist![pax].seat,
-                //textScaler: TextScaler.linear(1.25),
-                style: TextStyle(color: Colors.black),
-/*
-                color: paxlist![pax].selected == true
-                    ? selectedText
-                    : unselectedText),
-*/
-              ),
-              (paxlist![pax].seat == null || paxlist![pax].seat == '')
-                  ? Container()
-                  :
-              Align(alignment: Alignment.topRight,
-                  child: vidIconButton(context, paxNo: pax,
-                      segNo: int.parse(widget.segNo) ,
-                      onPressed: (context, paxNo, segNo) {
-                        logit('removeSeat pax$paxNo seg$segNo');
-                        smartRemoveSeat(paxNo, segNo);
-                      },
-                      clrIn: Colors.red,
-                      icon: Icons.close,
-                      size: 20
-                  ))
-            ],
-          ))
-      ;
+      Widget seatNoButton = seatButton(pax);
 
       String name = paxlist![pax].name;
       if (name.length > 16) name = name.substring(0, 16) + '..';

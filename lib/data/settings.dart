@@ -126,6 +126,8 @@ class Settings {
   bool wantTerminal;
   bool wantMaterialFonts;
   bool wantPriceCalendar;
+  bool wantNewMMB;
+  bool wantNewSeats;
   bool wantUpgradePrices;
   bool wantPriceCalendarRounding;
   bool wantMonthOnCalendar;
@@ -254,6 +256,7 @@ class Settings {
   int searchDateOut;
   int searchDateBack;
   int payTimeout;
+  int hideBookingHours;
   int passportLayoutStyle;
   double progressFactor;
   String blockedUrls;
@@ -326,6 +329,8 @@ bool bpShowFastTrack;
     this.wantTerminal = true,
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
+    this.wantNewSeats = false,
+    this.wantNewMMB = false,
     this.wantUpgradePrices = false,
     this.wantPriceCalendarRounding = false,
     this.wantMonthOnCalendar = false,
@@ -420,6 +425,7 @@ bool bpShowFastTrack;
     this.reqUpdateMsg ='',
     this.optUpdateMsg = '',
     this.payTimeout = 10,
+    this.hideBookingHours = 36,
 
     //this.testPayUrl,
     this.testPayPage ='',

@@ -46,6 +46,11 @@ class SystemColors {
    Color? seatPlanColorAvailable;
    Color? seatPlanColorUnavailable;
    Color? seatPlanColorRestricted;
+  Color? seatPlanTextColorSelected;
+  Color? seatPlanTextColorEmergency;
+  Color? seatPlanTextColorAvailable;
+  Color? seatPlanTextColorUnavailable;
+  Color? seatPlanTextColorRestricted;
 
    // new av colors
   Color? selectedFlt;
@@ -92,6 +97,12 @@ class SystemColors {
     this.seatPlanColorAvailable,
     this.seatPlanColorUnavailable,
     this.seatPlanColorRestricted,
+    this.seatPlanTextColorSelected,
+    this.seatPlanTextColorEmergency,
+    this.seatPlanTextColorAvailable,
+    this.seatPlanTextColorUnavailable,
+    this.seatPlanTextColorRestricted,
+
     this.promoBackColor ,
     this.v3TitleColor = Colors.black,
     this.inputFillColor ,

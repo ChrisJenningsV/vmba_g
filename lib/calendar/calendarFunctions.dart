@@ -288,16 +288,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
             borderRadius: BorderRadius.all(
                 Radius.circular(10.0)),
             color: Colors.white,
-  /*          boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 3,
-                blurRadius: 3,
-                offset: Offset(0, 4), // changes position of shadow
-              ),
-            ]*/
-
-        ),
+         ),
 
         margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 10, right: 10),
         padding: EdgeInsets.only(

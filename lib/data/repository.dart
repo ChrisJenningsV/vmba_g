@@ -311,10 +311,13 @@ class Repository {
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
             gblLangFileModTime = langFileModifyString;
           }
-          if( map['cities'] != null ){
-            Map<String, dynamic> json = jsonDecode(map['cities']);
-            gblCityList = Cities.fromJson(json);
-
+          try {
+            if (map['cities'] != null) {
+              Map<String, dynamic> json = jsonDecode(map['cities']);
+              gblCityList = Cities.fromJson(json);
+            }
+          } catch(e) {
+            logit('Error loading cities ${e.toString()}');
           }
 /*
           if( gblSettings.useWebApiforVrs) {

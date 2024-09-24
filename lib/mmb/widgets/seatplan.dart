@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -8,6 +9,9 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/mmb/widgets/seatComponents/flights.dart';
+import 'package:vmba/mmb/widgets/seatComponents/plan.dart';
+import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:vmba/mmb/widgets/seatPlanPassengers.dart';
@@ -17,6 +21,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/v3pages/controls/V3Constants.dart';
+import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
@@ -27,7 +32,15 @@ import '../../utilities/widgets/colourHelper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
 import '../../v3pages/fields/typography.dart';
 
-enum SeatType { regular, emergency }
+//enum SeatType { regular, emergency }
+enum SeatType{
+  selected,
+  emergency,
+  available,
+  availableRestricted,
+  occupied,
+  blank,
+}
 
 double cellSize = 36.0; //28.0;
 double cellFontSize = 13.0;
@@ -71,6 +84,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   //bool _noInternet = false;
   bool _noSeats = false;
   Session? session;
+  ExpansionTileController  _controller = new ExpansionTileController();
 
   @override
   void initState() {
@@ -167,23 +181,44 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
 
   }
-*/
 
+ */
+  String _getSeatPlanCommand( int journeyNo) {
+    if( journeyNo <= gblPnrModel!.pNR.itinerary.itin.length) {
+      Itin itin = gblPnrModel!.pNR.itinerary.itin[journeyNo];
+      String cur = gblPnrModel!.pNR.fareQuote.fQItin[0].cur;
+
+      //  lsLM0085/25SepABZBHD[CB=FLY][CUR=GBP][MMB=True]~x
+      String depDate = '${new DateFormat('ddMMM').format(DateTime.parse(itin.depDate + ' ' + itin.depTime))}';
+
+      String cmd = 'ls${itin.airID}${itin.fltNo}/${depDate}${itin.depart}${itin.arrive}[CB=${itin.classBand}][CUR=$cur][MMB=True]~x';
+
+      return cmd;
+    }
+    return '';
+  }
+
+
+  //  lsLM0085/25SepABZBHD[CB=FLY][CUR=GBP][MMB=True]~x
   Future _loadData(String seatPlanCmd) async {
+    logit('load seat plan $seatPlanCmd');
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
       if (rs.isOk()) {
         objSeatplan = rs.body;
 
-        if( objSeatplan != null ) objSeatplan!.simplifyPlan();
-
-        if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
-          setState(() {
-            _loadingInProgress = false;
-            _noSeats = true;
-          });
-        } else {
-          _dataLoaded();
+        if( objSeatplan != null ) {
+          objSeatplan!.simplifyPlan();
+          gblSetplanDef = objSeatplan!.getPlanDataTable();
         }
+
+          if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
+            setState(() {
+              _loadingInProgress = false;
+              _noSeats = true;
+            });
+          } else {
+            _dataLoaded();
+          }
       } else {
         setError( rs.error);
         setState(() {
@@ -343,109 +378,6 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   }
 
-/*
-
-  _bookSeats() async {
-    StringBuffer cmd = new StringBuffer();
-    cmd.write('*${widget.rloc}^');
-    gblBookingState = BookingState.bookSeat;
-    if (!gblSettings.webCheckinNoSeatCharge) {
-      paxlist!.forEach((f) {
-        if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat) {
-          if(f.savedSeat != null && f.savedSeat != '') {
-            gblBookingState = BookingState.changeSeat;
-          }
-
-            cmd.write(f.savedSeat == null || f.savedSeat == ''
-                ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}^'
-                : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f
-                .seat}[replace=${f.savedSeat}]^');
-          }
-      });
-      cmd.write('FSM^');
-    } else {
-      paxlist!.forEach((f) {
-        if ((f.seat != null && f.seat != '') && f.seat != f.savedSeat)
-          if(f.savedSeat != null && f.savedSeat != '') {
-            gblBookingState = BookingState.changeSeat;
-          }
-
-          cmd.write(f.savedSeat == null || f.savedSeat == ''
-              ? '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^'
-              : '4-${f.id}S${int.parse(widget.journeyNo) + 1}FRQST${f.seat}[replace=${f.savedSeat}][MmbFreeSeat=${gblSettings.webCheckinNoSeatCharge}]^');
-      });
-    }
-
-    cmd.write('MB');
-    //Session session = Session('', '');
-    if ( gblSession == null ) {
-      await login().then((result) {
-        session =
-            Session(result.sessionId, result.varsSessionId, result.vrsServerNo);
-        gblSession = session;
-      });
-
-    } else {
-      session = gblSession;
-    }
-    String msg;
-    if (gblSettings.useWebApiforVrs) {
-      msg = cmd.toString();
-    } else {
-      msg = json
-          .encode(
-          RunVRSCommandList(session, cmd.toString().split('^')).toJson());
-    }
-    logit(msg);
-
-    _sendVRSCommandList(msg).then((result) {
-      logit(result);
-      if (result == 'No Amount Outstanding' ) { // zero outstanding
-          msg = json.encode(RunVRSCommand(session, "E"));
-          _sendVRSCommand(msg).then(
-                  (onValue) =>
-                  Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                    Map map = json.decode(pnr.data);
-                    PnrModel pnrModel = new PnrModel.fromJson(map);
-                    Navigator.pop(context, pnrModel);
-                  }));
-        } else if ( result.contains('-')) { // Minus outstanding
-          msg = json.encode(RunVRSCommand(session, "EMT*R"));
-          _sendVRSCommand(msg).then(
-                  (onValue) => Repository.get().fetchPnr(widget.rloc).then((pnr) {
-                Map map = json.decode(pnr.data);
-                PnrModel pnrModel = new PnrModel.fromJson(map);
-                Navigator.pop(context, pnrModel);
-              }));
-        } else if (result.toString().toLowerCase().startsWith('error')) {
-        print(result.toString());
-
-        // _showError('Seating failed');
-        _dataLoadedFailed(result);
-        //  showSnackBar(result);
-      } else {
-        if( gblSettings.wantNewPayment) {
-          msg = json.encode(RunVRSCommand(session, "E*R~x"));
-        } else {
-          msg = json.encode(RunVRSCommand(session, "*R~x"));
-        }
-        _sendVRSCommand(msg).then((pnrJson) {
-          Map map = json.decode(pnrJson);
-
-          PnrModel pnrModel = new PnrModel.fromJson(map);
-          _navigate(context, pnrModel, session);
-          //  Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => ChoosePaymenMethodWidget(
-          //             pnrModel: pnrModel, isMmb: true, session: session)));
-          _resetloadingProgress();
-        });
-      }
-    });
-  }
-
-*/
   _navigate(BuildContext context, PnrModel pnrModel, Session session) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
@@ -620,107 +552,39 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         ),
       );
     } else {
+      Itin itin = gblPnrModel!.pNR.itinerary.itin[int.parse(widget.journeyNo)];
+      DateTime deps = DateTime.parse(itin.depDate + ' ' + itin.depTime);
+      Widget fltTitle = V2Heading2Text(translate('Flight') + ' ' + widget.flt+ ' ' +  DateFormat('dd MMM').format(deps) );
+
       return Column(
         children: <Widget>[
-          Padding(padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
-          child:
+          Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+          child: gblSettings.wantNewSeats ? getFlightSelector(context, (){
+            _loadData(_getSeatPlanCommand(gblCurJourney));
+            setState(() {
+
+            });
+          }) :
           Align(alignment: Alignment.centerLeft,
-              child: V2Heading2Text(translate('Flight') + ' ' + widget.flt,
-/*
-                textScaler: v2H2Scale(),
-                style: TextStyle(fontWeight: FontWeight.bold),))
-*/
-          ))),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            height: showkey ? 75.0 : 0,
-            padding:
-                EdgeInsets.only(top: 10.0, left: 3.0, right: 3.0, bottom: 10.0),
-            child: SingleChildScrollView(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  // selected
-                  Column(
-                    children: <Widget>[
-                      getSeat(null, gblSystemColors.seatPlanColorSelected!),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: TrText("Selected",
-                            style: TextStyle(
-                              fontSize: cellFontSize,
-                            )),
-                      )
-                    ],
-                  ),
-                  // end selected
-                  Column(
-                    children: <Widget>[
-                      getSeat(null, gblSystemColors.seatPlanColorAvailable!),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: TrText("Available",
-                            style: TextStyle(
-                              fontSize: cellFontSize,
-                            )),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                    getSeat(null,gblSystemColors.seatPlanColorEmergency!),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: TrText("Emergency",
-                            style: TextStyle(
-                              fontSize: cellFontSize,
-                            )),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      getSeat(null,gblSystemColors.seatPlanColorRestricted!),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: TrText("Restricted",
-                            style: TextStyle(
-                              fontSize: cellFontSize,
-                            )),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        width: cellSize,
-                        height: cellSize,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: gblSystemColors.seatPlanColorUnavailable,
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(5.0))),
-                        child: Center(
-                            child: Icon(
-                          Icons.person,
-                          size: cellSize,
-                          color: Colors.white,
-                        )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: TrText("Unavailable",
-                            style: TextStyle(
-                              fontSize: cellFontSize,
-                            )),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          SeatPlanPassengersWidget(
+              child: fltTitle ,
+          )),
+          gblSettings.wantNewSeats ? SeatPlanPassengersWidget(
+            paxList: paxlist, segNo: widget.journeyNo,
+            loadingData: (msg){
+              _displayProcessingText = msg;
+              _loadingInProgress = true;
+              setState(() {
+              });
+            },
+            dataLoaded: () {
+              _loadingInProgress = false;
+              setState(() {
+
+              });
+            },
+          ) : Container(),
+          gblSettings.wantNewSeats ? getSeatKey2() : getSeatKey(),
+          gblSettings.wantNewSeats ? Container() : SeatPlanPassengersWidget(
               paxList: paxlist, segNo: widget.journeyNo,
               loadingData: (msg){
                 _displayProcessingText = msg;
@@ -738,6 +602,18 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           Padding(
             padding: EdgeInsets.only(top: 10.0),
           ),
+          gblSettings.wantNewSeats ? getSeatplanTitle() : Container(),
+          gblSettings.wantNewSeats ?
+              RenderSeatPlan2(
+                    seatplan: objSeatplan!,
+                    pax: paxlist!,
+                    rloc: widget.rloc,
+                    cabin: widget.cabin,
+                    onChanged: _handleSeatChanged,
+                    onScrollCallbackShowKey: _handleScrollChanged,
+                    displaySeatPrices: true,
+          )
+              :
           RenderSeatPlan(
             seatplan: objSeatplan!,
             pax: paxlist!,
@@ -751,6 +627,235 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         ],
       );
     }
+  }
+    /*Widget seat2(String seatNo,  SeatType seatType ) {
+      Color? seatClr = Colors.grey;
+      Color? seatTxtColor = Colors.black;
+
+      switch ( seatType) {
+        case SeatType.availableRestricted:
+          seatClr = gblSystemColors.seatPlanColorRestricted;
+          if( gblSystemColors.seatPlanTextColorRestricted != null ) seatTxtColor = gblSystemColors.seatPlanTextColorRestricted;
+          break;
+        case SeatType.selected:
+          seatClr = gblSystemColors.seatPlanColorSelected;
+          if( gblSystemColors.seatPlanTextColorSelected != null ) seatTxtColor = gblSystemColors.seatPlanTextColorSelected;
+          break;
+        case SeatType.available:
+          seatClr = gblSystemColors.seatPlanColorAvailable;
+          if( gblSystemColors.seatPlanTextColorAvailable != null ) seatTxtColor = gblSystemColors.seatPlanTextColorAvailable;
+          break;
+        case SeatType.occupied:
+          seatClr = gblSystemColors.seatPlanColorUnavailable;
+          if( gblSystemColors.seatPlanTextColorUnavailable != null ) seatTxtColor = gblSystemColors.seatPlanTextColorUnavailable;
+          break;
+        case SeatType.emergency:
+          seatClr = gblSystemColors.seatPlanColorEmergency;
+          if( gblSystemColors.seatPlanTextColorEmergency != null ) seatTxtColor = gblSystemColors.seatPlanTextColorEmergency;
+          break;
+      }
+
+      Widget body =  VTitleText(seatNo,size:  TextSize.small,color: seatTxtColor);
+      if( seatType == SeatType.occupied){
+        body = Stack( children: [
+          Icon(Icons.person, size: 20,color: Colors.grey.shade100,),
+          Positioned(
+            left: 0,
+              top: 0,
+              child: CustomPaint(painter: LinePainter())
+          ),
+          VTitleText(seatNo,size:  TextSize.small, color: seatTxtColor,),
+        ],);
+      }
+
+      return Container(
+        //color: seatClr,
+        padding: EdgeInsets.all(0),
+        alignment: Alignment.center,
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 1),
+          borderRadius: BorderRadius.all(
+              Radius.circular(5.0)),
+          color: seatClr,
+        ),
+        child: body,
+      );
+    }*/
+
+  /*Widget seatRow(String seatNo,  SeatType seatType, String text  ){
+    return Padding( padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+      child: Row( children: [ seat2(seatNo, seatType ),
+        Padding(padding: EdgeInsets.all(5)),
+        VTitleText(text, size: TextSize.small,)]
+      )
+    );
+  }*/
+
+/*
+  Widget getSeatKey2() {
+    List<Widget> seatList = [];
+    seatList.add(seatRow('1X',  SeatType.selected, 'Selected Seat'));
+
+    seatList.add(seatRow('1X',  SeatType.emergency , 'Emergency Seat'));
+    seatList.add(seatRow('1X',  SeatType.available, 'Available Seat (suitable for infants)' ));
+    seatList.add(seatRow('1X',  SeatType.availableRestricted, 'Available Seat (unsuitable for infants)' ));
+    seatList.add(seatRow('1X',  SeatType.occupied, 'Occupied Seat' ));
+
+
+    return Card(
+      margin: EdgeInsets.fromLTRB(10, 15, 10, 20),
+      color: Colors.black,
+      shadowColor: Colors.transparent,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
+      child: ClipPath(
+        child: Container(
+          decoration: BoxDecoration(
+            //color: Colors.white,
+              //borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          //           height: 100,
+          width: double.infinity,
+          child:
+          Container(
+            color: Colors.black,
+            child:
+          ExpansionTile(
+              //backgroundColor: Colors.white,
+              iconColor: gblSystemColors.fltText,
+              collapsedIconColor: gblSystemColors.fltText,
+              controller: _controller,
+              onExpansionChanged: (selected) {
+                if (selected == true) {
+                } else {
+                  setState(() {
+
+                  });
+                }
+              },
+              //backgroundColor: Colors.grey.shade200,
+              //tilePadding: EdgeInsets.all(0),
+              childrenPadding: EdgeInsets.all(0),
+//        backgroundColor:  Colors.blue,
+              initiallyExpanded: true,
+              title: VTitleText('What it all means...', color: Colors.white, translate: true, size: TextSize.large,),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    //borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border(
+                      top: BorderSide(color: Colors.grey.shade200, width: 0),
+                      left: BorderSide(color: Colors.grey, width: 2),
+                      right: BorderSide(color: Colors.grey, width: 2),
+                      bottom: BorderSide(color: Colors.grey, width: 2),
+                    ),
+                    color: Colors.white,
+                  ),
+                child: Column(children: seatList)
+              )],
+          ))
+        ),
+        clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5))),
+      ),
+    );
+  }
+*/
+
+  Widget getSeatKey() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: showkey ? 75.0 : 0,
+      padding:
+      EdgeInsets.only(top: 10.0, left: 3.0, right: 3.0, bottom: 10.0),
+      child: SingleChildScrollView(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            // selected
+            Column(
+              children: <Widget>[
+                getSeat(null, gblSystemColors.seatPlanColorSelected!),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: TrText("Selected",
+                      style: TextStyle(
+                        fontSize: cellFontSize,
+                      )),
+                )
+              ],
+            ),
+            // end selected
+            Column(
+              children: <Widget>[
+                getSeat(null, gblSystemColors.seatPlanColorAvailable!),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: TrText("Available",
+                      style: TextStyle(
+                        fontSize: cellFontSize,
+                      )),
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                getSeat(null, gblSystemColors.seatPlanColorEmergency!),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: TrText("Emergency",
+                      style: TextStyle(
+                        fontSize: cellFontSize,
+                      )),
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                getSeat(null, gblSystemColors.seatPlanColorRestricted!),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: TrText("Restricted",
+                      style: TextStyle(
+                        fontSize: cellFontSize,
+                      )),
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Container(
+                  width: cellSize,
+                  height: cellSize,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: gblSystemColors.seatPlanColorUnavailable,
+                      borderRadius:
+                      new BorderRadius.all(new Radius.circular(5.0))),
+                  child: Center(
+                      child: Icon(
+                        Icons.person,
+                        size: cellSize,
+                        color: Colors.white,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: TrText("Unavailable",
+                      style: TextStyle(
+                        fontSize: cellFontSize,
+                      )),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -864,6 +969,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
       },
     );
   }
+
 
   prmSeatSelection(BuildContext context, Seat selectedSeat) {
     String acceptTermsText =
@@ -1235,6 +1341,7 @@ class _RenderSeatPlanSeatState extends State<RenderSeatPlan> {
     return obj;
   }
 }
+
 Widget getSeat(Seat? seat, Color color) {
   return Column(
   children: [
@@ -1300,4 +1407,19 @@ Widget getSeat(Seat? seat, Color color) {
     ),
 
   ]);
+}
+class LinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    final p1 = Offset(23 ,23 );
+    final p2 = Offset(-5, -5);
+    final paint = Paint()
+      ..color = Colors.black38
+      ..strokeWidth = 2;
+    canvas.drawLine(p1, p2, paint);
+  }
+
+  @override
+  bool shouldRepaint(LinePainter oldDelegate) => false;
 }

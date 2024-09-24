@@ -528,8 +528,41 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       padding: new EdgeInsets.only(top: 60.0),
     ));
 
+    // test button
+    if( gblIsLive == false && pax.totalPassengers() > 1 ){
+      paxWidgets.add(vidDemoButton((context), 'Populate with test PAX', (p0) {
+        _populatePax();
+      }));
+    }
+
     //print('end renderPax');
     return paxWidgets;
+  }
+  void _populatePax() {
+    int index =0;
+    List<String> firstNames = ['Alexander', 'Cassandra', 'Dan',   'Ed','Frederik', 'George', 'Harry', 'Ingrid', 'Jess','Kerry'];
+    List<String> titles =     ['Mr',        'Mrs',      'Mr',   'Mr', 'Mr',       'Mr',     'Mrs','Mr','Mrs','Mrs','Mrs','Mr'];
+    List <String> genderList = ['Male',     'Female',   'Male', 'Male','Male',    'Male',    'Female','Male','Female','Female','Female','Male',];
+    String seedName = 'TEST';
+
+    _passengerDetails.forEach((pax) {
+      if(pax.lastName == '' ){
+        pax.lastName = seedName;
+        pax.title = titles[index];
+        pax.firstName = firstNames[index];
+        pax.gender = genderList[index];
+        // DOB ?
+
+      } else if (index == 0){
+        // use surname as seed
+        seedName = pax.lastName;
+      }
+     index++;
+    });
+    allPaxDetailsCompleted = true;
+    setState(() {
+
+    });
   }
 
   Widget paxTypeEntry(PaxType paxType, int count, int paxNo){
@@ -596,8 +629,13 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
             Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          //Wrap( children:[
           Text(
-              '${_passengerDetails[paxNo - 1].title} ${_passengerDetails[paxNo - 1].firstName} ${_passengerDetails[paxNo - 1].lastName}'),
+              '${_passengerDetails[paxNo - 1].title} ${_passengerDetails[paxNo - 1].firstName} ${_passengerDetails[paxNo - 1].lastName}',
+                maxLines: 2,
+                softWrap:  true ,
+              ),
+                    //]                ),
           IconButton(
             onPressed: () {
               if (gblSettings.wantNewEditPax) {
