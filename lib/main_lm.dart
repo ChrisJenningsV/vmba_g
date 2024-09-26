@@ -109,6 +109,7 @@ void configLM() {
   groupsBookingsEmail: 'groups@loganair.co.uk',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers"}',
     wantClassBandImages: false,
+    wantDangerousGoods: true ,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     bpShowAddPassToWalletButton: false,

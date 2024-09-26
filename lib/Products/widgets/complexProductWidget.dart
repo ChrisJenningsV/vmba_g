@@ -144,9 +144,15 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
     int segNo = 0;
     if (widget.product!.segmentRelate) {
       widget.pnrModel.pNR.itinerary.itin.forEach((itin) {
-        if( widget.product!.applyToClasses == '' ||
+        String route = '${itin.depart}/${itin.arrive}';
+        bool exclude = false;
+        if (widget.product!.excludeRoutes.contains(route)){
+          exclude = true;
+        }
+
+          if( exclude == false && (widget.product!.applyToClasses == '' ||
             widget.product!.applyToClasses.isEmpty ||
-            widget.product!.applyToClasses.contains( itin.xclass)) {
+            widget.product!.applyToClasses.contains( itin.xclass))) {
           if (isThisProductValid(widget.pnrModel, widget.product!, segNo)) {
             list.add(ProductFlightCard( key: Key('flt_card${list.length}'),
               pnrModel: widget.pnrModel,

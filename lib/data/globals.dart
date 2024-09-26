@@ -21,7 +21,7 @@ import 'models/seatplan.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 // M1 = LM new stuff
-String gblBuildFlavor = 'SI';
+String gblBuildFlavor = 'H4';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 115;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/SystemColors.dart';
@@ -36,11 +37,13 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
   static Color unselectedText = Colors.black;
 
   List<Pax>? paxlist;
+  List<List<Pax>>? paxFltList;
 
   @override
   initState() {
     super.initState();
     paxlist = widget.paxList;
+//    paxFltList = getPaxlist(gblPnrModel as PnrModel, journeyNo);
     selectedBackground = gblSystemColors.primaryButtonColor;
     selectedText = gblSystemColors.primaryButtonTextColor!;
   }
@@ -63,32 +66,56 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
     );
   }
   Widget NewPaxObj() {
-    int height = 100;
-    if(paxlist!.length < 3 ) height = paxlist!.length * 40;
+    double height = 80;
+    if(paxlist!.length < 3 ) height = paxlist!.length * 40 - 15;
     return
       Container(
           margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-          height: 100,
+          padding: EdgeInsets.all(0), //EdgeInsets.fromLTRB(15, 10, 15, 10),
+          height: height,
           width: 400,
           decoration: BoxDecoration(
+            color: Colors.grey,
           border: Border.all(color: Colors.black, width: v2BorderWidth()),
           borderRadius: BorderRadius.all(
           Radius.circular(10.0)),
           ),
-          child: Scrollbar(child:
+          child: Scrollbar(
+            thumbVisibility: true,
+            trackVisibility: true,
+            thickness: 15,
+            child:
     ListView.builder(
       padding: EdgeInsets.all(0),
+      shrinkWrap: true,
       itemCount: paxlist!.length,
       itemBuilder: (context, pax) {
         String name = paxlist![pax].name;
+        if( paxlist![pax].selected == true) name += ' s';
         return ListTile(
-          selectedColor: selectedBackground,
-          textColor: Colors.black,
+          minVerticalPadding: 0,
+          onTap: () {
+            for(int i=0; i< paxlist!.length; i++) {
+              paxlist![i].selected = false;
+            };
+            paxlist![pax].selected = true;
+            setState(() {
+
+            });
+          },
+         //tileColor: paxlist![pax].selected ? Colors.black : Colors.white,
+         // selectedColor: selectedBackground,
+         // textColor: paxlist![pax].selected ? Colors.white :Colors.black,
           selectedTileColor: selectedText,
           selected: paxlist![pax].selected,
+          contentPadding: EdgeInsets.all(0),
           title:
-        Row(
+        Container(
+          height: 30,
+          margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+          color: paxlist![pax].selected ? Colors.black : Colors.white,
+          child:Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,13 +124,17 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
               name,
               //textScaler: TextScaler.linear(.90),
               style: TextStyle(
-                  color: Colors.black),
+                  color: paxlist![pax].selected ? Colors.white :Colors.black),
             ),
             Padding(padding: EdgeInsets.all(5)),
             seatButton(pax),
           ],
+        )
         ),
-        dense: true,);
+        dense: true,
+
+        visualDensity:VisualDensity(horizontal: 0, vertical: -4),
+        );
       }
         ),
           )
