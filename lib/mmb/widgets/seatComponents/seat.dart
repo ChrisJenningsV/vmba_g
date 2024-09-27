@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/globals.dart';
+import '../../../data/models/seatplan.dart';
 import '../../../utilities/helper.dart';
 import '../../../v3pages/v3Theme.dart';
 import '../seatplan.dart';
@@ -11,12 +12,12 @@ import '../seatplan.dart';
 
 Widget getSeatKey2() {
   List<Widget> seatList = [];
-  seatList.add(seatRow('1X',  SeatType.selected, 'Selected Seat'));
+  seatList.add(seatRow('1X',  SeatType.selected, 'Selected Seat', SeatSize.large));
 
-  seatList.add(seatRow('1X',  SeatType.emergency , 'Emergency Seat'));
-  seatList.add(seatRow('1X',  SeatType.available, 'Available Seat (suitable for infants)' ));
-  seatList.add(seatRow('1X',  SeatType.availableRestricted, 'Available Seat (unsuitable for infants)' ));
-  seatList.add(seatRow('1X',  SeatType.occupied, 'Occupied Seat' ));
+  seatList.add(seatRow('1X',  SeatType.emergency , 'Emergency Seat', SeatSize.large));
+  seatList.add(seatRow('1X',  SeatType.available, 'Available Seat (suitable for infants)', SeatSize.large ));
+  seatList.add(seatRow('1X',  SeatType.availableRestricted, 'Available Seat (unsuitable for infants)', SeatSize.large ));
+  seatList.add(seatRow('1X',  SeatType.occupied, 'Occupied Seat' , SeatSize.large));
 
 
   return Card(
@@ -85,9 +86,9 @@ Widget getSeatKey2() {
 }
 
 
-Widget seatRow(String seatNo,  SeatType seatType, String text  ){
+Widget seatRow(String seatNo,  SeatType seatType, String text, SeatSize seatSize  ){
   return Padding( padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
-      child: Row( children: [ seat2(seatNo, seatType ),
+      child: Row( children: [ seat2(seatNo, seatType,seatSize ),
         Padding(padding: EdgeInsets.all(5)),
         VTitleText(text, size: TextSize.small,)]
       )
@@ -95,7 +96,7 @@ Widget seatRow(String seatNo,  SeatType seatType, String text  ){
 }
 
 
-Widget seat2(String seatNo,  SeatType seatType ) {
+Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
   Color? seatClr = Colors.grey;
   Color? seatTxtColor = Colors.black;
 //  logit(' seat $seatNo t=$seatType');
@@ -124,6 +125,7 @@ Widget seat2(String seatNo,  SeatType seatType ) {
   }
 
   Widget body =  VTitleText(seatNo,size:  TextSize.small,color: seatTxtColor);
+  if( seatSize == SeatSize.small) body =  VBodyText(seatNo,size:  TextSize.small,color: seatTxtColor);
   if( seatType == SeatType.occupied){
     body = Stack( children: [
       Icon(Icons.person,  size: 30,color: Colors.grey.shade300,),
@@ -140,8 +142,8 @@ Widget seat2(String seatNo,  SeatType seatType ) {
     //color: seatClr,
     padding: EdgeInsets.all(0),
     alignment: Alignment.center,
-    height: 35,
-    width: 35,
+    height: gblSeatPlanDef!.seatWidth,
+    width: gblSeatPlanDef!.seatHeight,
     decoration: BoxDecoration(
       border: Border.all(color: Colors.grey, width: 1),
       borderRadius: BorderRadius.all(

@@ -136,7 +136,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     paxlist = widget.pax;
     paxlist!.forEach((f) => selectedSeats.add(f.seat));
 
-    gblSetplanDef = this.widget.seatplan.getPlanDataTable();
+    gblSeatPlanDef = this.widget.seatplan.getPlanDataTable();
   }
 
   prmSeatSelection(BuildContext context, Seat selectedSeat) {
@@ -215,6 +215,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   @override
   Widget build(BuildContext context) {
 
+
+
     int minCol = -1;
     int maxCol = -1;
     //new List<int>();
@@ -248,7 +250,26 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     Column( children: [
         noFlts > 1 ? title : Container(),
 */
+    if( gblLoadSeatState == VrsCmdState.loading){
+     return Expanded(        child:
+      Container(
+          margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+          height: 2000,
+          width: 400,
+          decoration: BoxDecoration(
+            //border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
+            borderRadius: BorderRadius.all(
+                Radius.circular(10.0)),
+            color: Colors.grey,
+          ),
+        child: TrText('Loading...'),
+      )
+      );
+    }
+
     return
+
       Expanded(        child:
         Container(
           margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -261,13 +282,23 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         Radius.circular(10.0)),
     color: Colors.black,
     ),
-    child:ListView(
+    child: Row(
+      children: [
+      Expanded(
+      flex: 2,
+        child: ListView(
           controller: _controller,
           padding: EdgeInsets.only(left: 5, right: 5),
           children: renderSeats(rows, minCol, maxCol, widget.rloc, widget.cabin),
-        )
+        )),
+    Expanded(
+    flex: 1,
+    child: Text('price', style: TextStyle(color: Colors.red),)
+    ),
+    ]
 //        )
     )
+        )
     );
 /*
     ],
@@ -292,44 +323,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     // get max no cols
 //    int maxCol = 0;
 
-    /*return Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(20.0),
-      child: Table(
 
-        columnWidths: {
-          0: FixedColumnWidth(42),
-          1: FixedColumnWidth(42),
-          2: FlexColumnWidth(1),
-          3: FixedColumnWidth(42),
-          4: FlexColumnWidth(5),
-        },
-        border: TableBorder.all(color: Colors.transparent),
-        children: [
-          TableRow(children: [
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '1A'), false)),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Occupied', sCode: '1B'), false)),
-            Text(''),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '1D', noInfantSeat: true), false)),
-            Text('Price'),
-          ]),
-          TableRow(children: [
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '2A'), false)),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '2B'), false)),
-            Text(''),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '1B'), true)),
-            Text('£100.0'),
-          ]),
-          TableRow(children: [
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '3A'), false)),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Seat', sCode: '3B'), false)),
-            Text(''),
-            Padding( padding: EdgeInsets.all(3), child:_getSeat(new Seat(sCellDescription: 'Occupied', sCode: '1B'), false)),
-            Text(''),
-          ])
-        ],
-      ),
-    );*/
     List<TableRow> tabRows = [];
 
     for (var indexRow = 1; indexRow <= rows; indexRow++) {
@@ -356,7 +350,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
 
       List<Widget> list = [];
       for(int i=minCol; i <= maxCol; i++){
-        Seat? seat = gblSetplanDef!.getSeatAt(indexRow, i);
+        Seat? seat = gblSeatPlanDef!.getSeatAt(indexRow, i);
         bool selected = false;
         if( seat == null ){
 
@@ -368,11 +362,14 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           selected = true;
          // selectableSeat = false;
         }
+        if( seat!= null && cabin != seat.sCabinClass){
+          seat = Seat(sCode: seat.sCode, sCellDescription: 'Occupied');
+        }
         if( seat!= null && seat.sCode == ''){
           list.add(Container());
         } else {
           //if( seat != null ) logit('hookup ${seat!.sCode}');
-          list.add(hookUpSeat(seat, selected, selectableSeat));
+          list.add(hookUpSeat(seat, selected, selectableSeat, gblSeatPlanDef!.seatSize));
         }
       }
       TableRow tableRow = TableRow(children:  list);
@@ -416,6 +413,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       } else {
         //logit( ' row  empty' );
       }
+      row.add(Container()); // space filler (will be price!)
       tabRows.add(tableRow);
     }
     obj.add(new Padding(
@@ -426,23 +424,25 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     Map <int, TableColumnWidth> colWidths = Map();
 
     bool beforSeats = true;
-    for(int i=0; i < maxCol-minCol; i++){
-      if( gblSetplanDef!.colTypes == null || gblSetplanDef!.colTypes.length < i){
+
+    for(int i = 0; i <= maxCol-minCol; i++){
+      if( gblSeatPlanDef!.colTypes == null || gblSeatPlanDef!.colTypes.length < i){
         colWidths[i] = FixedColumnWidth(5);
 
       } else {
-        if (gblSetplanDef!.colTypes[i+minCol] == 'A') {
+        if (gblSeatPlanDef!.colTypes[i+minCol] == 'A') {
           if( beforSeats ) {
             colWidths[i] = FixedColumnWidth(0);
           } else {
-            colWidths[i] = FixedColumnWidth(5);
+            colWidths[i] = FixedColumnWidth(gblSeatPlanDef!.asileWidth);
           }
         } else {
-          colWidths[i] = FixedColumnWidth(40);
+          colWidths[i] = FixedColumnWidth(gblSeatPlanDef!.seatWidth);
           beforSeats = false;
         }
       }
     }
+    colWidths[maxCol-minCol+1] = IntrinsicColumnWidth();
 
 
       obj.add(Table(
@@ -468,11 +468,11 @@ Widget _getSeatPriceInfo(){
  //     VBodyText('price', color: Colors.white,),
     ],));
 }
-Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat) {
+Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat, SeatSize seatSize ) {
   return Padding(
       padding: EdgeInsets.all(cellPadding),
       child: GestureDetector(
-        child: _getSeat(seat,selected),
+        child: _getSeat(seat,selected, seatSize),
         onTap: () {
           if( selectableSeat && !selectedSeats.contains(seat!.sCode)) {
             if( seat!.sCellDescription == 'EmergencySeat' ) {
@@ -486,7 +486,7 @@ Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat) {
       ));
   }
 }
-Widget _getSeat(Seat? seat, bool selected){
+Widget _getSeat(Seat? seat, bool selected, SeatSize seatSize){
   SeatType seatType = SeatType.occupied;
   if( seat == null ){
     return Container();
@@ -516,7 +516,7 @@ Widget _getSeat(Seat? seat, bool selected){
       if( selected ) seatType = SeatType.selected;
       break;
   }
-  return seat2( seat!.sCode,  seatType );
+  return seat2( seat!.sCode,  seatType, seatSize );
 
 }
 

@@ -1404,6 +1404,11 @@ class Repository {
 
     String data = await runVrsCommand(seatPlanCmd);
 
+    if( data.startsWith('ERROR')){
+      setError( data);
+      return new ParsedResponse(0, seatplan, error: data);
+    }
+
     if (!data.contains('<string xmlns="http://videcom.com/" />')) {
       Map<String, dynamic> map = jsonDecode(data
           .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')

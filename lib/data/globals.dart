@@ -22,7 +22,7 @@ import 'models/seatplan.dart';
 // initialized in main_XX.dart
 // M1 = LM new stuff
 String gblBuildFlavor = 'H4';
-bool gblIsLive = false;
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 115;
 int requiredApiVersion = 105;
@@ -107,7 +107,7 @@ bool gblDebugMode = false;
 bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
-SeatPlanDefinition? gblSetplanDef;
+SeatPlanDefinition? gblSeatPlanDef;
 int gblCurJourney = 0;
 FQTVMemberTransactions? gblUpcomingFlights;
 //bool  gblUseWebApiforVrs = false;

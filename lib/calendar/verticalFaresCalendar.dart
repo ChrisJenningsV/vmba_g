@@ -90,10 +90,11 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     } else {
       selectedFlt = 1;
     }
-
-    widget.objAv.availability.itin!.forEach((element) {
-      _controllerList.add(new ExpansionTileController());
-    });
+    if(  widget.objAv != null &&  widget.objAv.availability != null &&  widget.objAv.availability.itin != null ) {
+      widget.objAv.availability.itin!.forEach((element) {
+        _controllerList.add(new ExpansionTileController());
+      });
+    }
   }
 
 //Widget verticalFaresCalendar()
@@ -131,12 +132,13 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
           children: objAv.availability.cal!.day
               .map(
                 (item) =>
-                getCalDay(item, 'out', newBooking.departureDate as DateTime,
+                getCalDay(item, 'out', widget.isReturnFlight ? newBooking.returnDate as DateTime : newBooking.departureDate as DateTime,
                     DateTime.parse(DateFormat('y-MM-dd').format(getGmtTime())),
                     onPressed: () =>
                     {
                       hasDataConnection().then((result) {
                         if (result == true) {
+                          logit('changeSearchDate ${item.daylcl}');
                           _changeSearchDate(DateTime.parse(item.daylcl));
                         } else {
 //                    noInternetSnackBar(context);
@@ -164,9 +166,15 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     } catch (e) {}
 
 
-    print(this.widget.newBooking.departureDate.toString());
     setState(() {
-      this.widget.newBooking.departureDate = newDate;
+      if(widget.isReturnFlight) {
+        this.widget.newBooking.returnDate = newDate;
+        print(this.widget.newBooking.returnDate.toString());
+
+      } else {
+        this.widget.newBooking.departureDate = newDate;
+        print(this.widget.newBooking.departureDate.toString());
+      }
       widget.loadData(true);
     });
   }

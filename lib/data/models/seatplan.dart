@@ -39,6 +39,23 @@ class Seatplan {
     });
     def.minCol = minCol;
     def.maxCol = maxCol;
+    if( maxCol > 10) {
+      logit('mini seats $maxCol');
+      def.seatSize = SeatSize.small;
+      def.seatWidth = 24;
+      def.seatHeight = 24;
+      def.asileWidth = 1;
+    } else if( maxCol > 7) {
+      logit('small seats $maxCol');
+      def.seatSize = SeatSize.medium;
+      def.seatWidth = 35;
+      def.seatHeight = 35;
+      def.asileWidth = 2;
+    } else {
+      def.seatSize = SeatSize.large;
+
+      logit('regular seats $maxCol');
+    }
 
     int cols = this.seats.seat.last.sRow;
     // step through rows
@@ -188,6 +205,12 @@ class Seatplan {
   }
 }
 
+enum SeatSize{
+  small,
+  medium,
+  large
+}
+
 class SeatPlanRow {
   int rowNo = 0;
   Map cols = new Map();
@@ -201,6 +224,14 @@ class SeatPlanDefinition{
   int noRows = 0;
   int minCol = 0;
   int maxCol = 0;
+  double seatWidth = 35;
+  double seatHeight = 35;
+  double asileWidth = 5;
+  SeatSize seatSize = SeatSize.large;
+
+  double getTableRowHeight(){
+    return seatHeight;
+  }
 
   // type of col - used to set width
   // Seat, Aisel
@@ -209,7 +240,7 @@ class SeatPlanDefinition{
   Seat? getSeatAt(int row, int col){
     Seat? retSeat = null;
     if( row < noRows) {
-      if( col < maxCol ){
+      if( col <= maxCol ){
         table.forEach((tr) {
           if( tr.rowNo == row){
            // SeatPlanRow seatPlanRow = table[row];

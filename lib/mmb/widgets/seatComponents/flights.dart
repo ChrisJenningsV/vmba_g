@@ -69,6 +69,7 @@ Widget getFlightSelector(BuildContext context, void Function() onChange){
               //calendarView = newSelection.first;
               //    });
               int ab = 1;
+              gblLoadSeatState = VrsCmdState.loading;
               gblCurJourney = newSelection.first -1;
               outboundOrReturn = newSelection.first;
               onChange();

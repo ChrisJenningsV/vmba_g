@@ -202,13 +202,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   //  lsLM0085/25SepABZBHD[CB=FLY][CUR=GBP][MMB=True]~x
   Future _loadData(String seatPlanCmd) async {
     logit('load seat plan $seatPlanCmd');
+    setState(() {
+
+    });
     Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
       if (rs.isOk()) {
         objSeatplan = rs.body;
 
+        gblLoadSeatState = VrsCmdState.none;
         if( objSeatplan != null ) {
           objSeatplan!.simplifyPlan();
-          gblSetplanDef = objSeatplan!.getPlanDataTable();
+          gblSeatPlanDef = objSeatplan!.getPlanDataTable();
         }
 
           if (!objSeatplan!.hasSeatsAvailable() && objSeatplan!.hasBlockedSeats()) {
