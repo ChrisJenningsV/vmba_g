@@ -1,7 +1,11 @@
 
+import '../components/trText.dart';
+
 class SearchParams {
   String searchOrigin = '';
+  String searchOriginCode = '';
   String searchDestination = '';
+  String searchDestinationCode = '';
   DateTime ? departDate;
   DateTime ? returnDate;
   String VoucherCode = '';
@@ -13,6 +17,14 @@ class SearchParams {
   int seniors = 0;
   int teachers = 0;
   bool isReturn = true;
+
+  void initAirports() {
+    searchOrigin = translate('Select departure airport');
+    searchDestination = translate('Select arrival airport');
+    searchOriginCode = '';
+    searchDestinationCode = '';
+
+  }
 
   void init(){
     searchOrigin = '';

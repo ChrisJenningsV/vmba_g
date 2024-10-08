@@ -2090,9 +2090,11 @@ class ViewBookingBodyState
         }
 
         bool found = false;
+        gblCurPax = 0;
         paxlist.forEach((element) {
           if(found== false &&  (element.id == paxNo+1) && (element.seat == null || element.seat == '' ) ){
             found=true;
+            gblCurPax = paxNo;
           }
         });
 
@@ -2118,6 +2120,7 @@ class ViewBookingBodyState
       return new TextButton(
 
         onPressed: () {
+          gblCurPax = 0;
           if( ! gblPnrModel!.hasContactDetails()) {
             gblActionBtnDisabled = false;
             return addContactDetails();
@@ -2135,6 +2138,7 @@ class ViewBookingBodyState
                 paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
             gblActionBtnDisabled = false;
           } else {
+            gblCurPax = paxNo;
             preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
             gblActionBtnDisabled = false;
           }

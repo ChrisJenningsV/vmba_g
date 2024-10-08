@@ -35,6 +35,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
   static Color selectedText = Colors.green;
   static Color unselectedBackground = Colors.white;
   static Color unselectedText = Colors.black;
+  final ScrollController _controller = ScrollController();
 
   List<Pax>? paxlist;
   List<List<Pax>>? paxFltList;
@@ -46,6 +47,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
 //    paxFltList = getPaxlist(gblPnrModel as PnrModel, journeyNo);
     selectedBackground = gblSystemColors.primaryButtonColor;
     selectedText = gblSystemColors.primaryButtonTextColor!;
+
   }
 
   void _toggleSelectedPax(int _id) {
@@ -57,9 +59,24 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
       widget.onChanged!(paxlist!);
     }
   }
+  void _animateToIndex(int index) {
+    _controller.animateTo(
+      index * 30,
+      duration: Duration(seconds: 2),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    // scroll to pax
+    // scroll to selected
+    if(gblSettings.wantNewSeats && gblCurPax > 0 ) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _animateToIndex(gblCurPax);
+      });
+    }
+
     return gblSettings.wantNewSeats ? NewPaxObj() :
      Wrap(
       children: renderPax(),
@@ -86,6 +103,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
             thickness: 15,
             child:
     ListView.builder(
+      controller: _controller,
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: paxlist!.length,
@@ -99,6 +117,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
               paxlist![i].selected = false;
             };
             paxlist![pax].selected = true;
+            gblCurPax = pax;
             setState(() {
 
             });
@@ -196,6 +215,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
       paxWidgets.add(new GestureDetector(
         child: new Container(
           height: 40,
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           color: paxlist![pax].selected == true
               ? selectedBackground
               : unselectedBackground,

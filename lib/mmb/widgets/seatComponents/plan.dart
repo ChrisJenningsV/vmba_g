@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
 
@@ -13,6 +14,7 @@ import '../../../data/models/pax.dart';
 import '../../../data/models/pnr.dart';
 import '../../../data/models/seatplan.dart';
 import '../../../utilities/helper.dart';
+import '../../../utilities/widgets/snackbarWidget.dart';
 import '../../../v3pages/v3Theme.dart';
 
 double cellSize = 36.0; //28.0;
@@ -200,15 +202,34 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   }
 
   void _seatSelected(String _seatNumber) {
+    int paxIndex = 0;
+    int lastPax = 0;
     setState(() {
       paxlist!.forEach((element) {
         if (element.selected == true) {
           element.seat = _seatNumber;
+          lastPax = paxIndex;
+          gblCurPax = paxIndex;
+          element.selected = false;
         }
+        paxIndex++;
       });
       selectedSeats.clear();
       paxlist!.forEach((f) => selectedSeats.add(f.seat));
     });
+
+    String message = '${translate('Seat')} $_seatNumber ${translate('selected')}';
+    if( (lastPax+1) < paxlist!.length){
+      gblCurPax++;
+      paxlist![gblCurPax].selected = true;
+      message += ' ${translate('select seat for next passenger')}';
+    }
+
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(snackbar(message));
+    } catch(e) {
+    }
+
     widget.onChanged(paxlist!);
   }
 

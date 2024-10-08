@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/contactDetails/contactDetailsPage.dart';
@@ -7,6 +9,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
+import '../Helpers/settingsHelper.dart';
 import '../components/showDialog.dart';
 import '../utilities/helper.dart';
 import '../v3pages/controls/V3Constants.dart';
@@ -55,11 +58,26 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
     list.add(Text(''));
     list.add(TrText('The following is a non-exhaustive list of Prohibited Items'));
 
+    double height = gblIsIos ? 350 : 500;
+    double width = gblIsIos ? 220 : 250;
+    if( gblSettings.dagerousdims != '' ){
+      // format {"iOSw": "220", "iOSh": "350", "aNDw": "400", "aNDh": "500"}
+      Map dimMap = json.decode(gblSettings.dagerousdims.toUpperCase());
+      if( gblIsIos) {
+        height = double.parse(dimMap['IOSH']);
+        width = double.parse(dimMap['IOSW']);
+      } else {
+        height = double.parse(dimMap['ANDH']);
+        width = double.parse(dimMap['ANDW']);
+      }
+    }
+
+
     //list.add(Padding(padding: EdgeInsets.only(top: 60)));
   list.add( Image(
       image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/dangerousgoods.jpg'),
-      height: gblIsIos ? 350 : 500,
-      width: gblIsIos ? 220 : 250,
+      height: height,
+      width: width,
       fit: BoxFit.fill,
     ));
 

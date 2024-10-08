@@ -106,3 +106,12 @@ double v2BorderWidth() {
   return 1;
 }
 
+int parseInt( String str ){
+  if( str == null ) {
+    return 0;
+  }
+  if( str.isEmpty) {
+    return 0;
+  }
+  return int.parse(str);
+}

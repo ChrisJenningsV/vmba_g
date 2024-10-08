@@ -26,29 +26,44 @@ class SelectJourneyWidget extends StatefulWidget {
 }
 
 class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
+/*
   String departureAirport = '';
   String departureCode = '';
   String arrivalAirport = '';
   String arrivalCode = '';
+*/
   late SelectedRoute route;
 
   @override
   initState() {
     super.initState();
     route = new SelectedRoute('', '');
+    gblSearchParams.initAirports();
+/*
     departureAirport = translate('Select departure airport');
     arrivalAirport = translate('Select arrival airport');
+*/
   }
 
   void _handleDeptureSelectionChanged(String newValue) {
     if (newValue != "null") {
       setState(() {
+/*
         departureCode = newValue.split('|')[0];
         gblOrigin =departureCode;
         departureAirport = newValue.split('|')[1];
         arrivalAirport = translate('Select arrival airport');
         route.departure = departureCode;
         route.arrival = arrivalCode;
+*/
+        gblSearchParams.searchOriginCode = newValue.split('|')[0];
+        gblOrigin =gblSearchParams.searchOriginCode;
+        gblSearchParams.searchOrigin = newValue.split('|')[1];
+        gblSearchParams.searchDestination = translate('Select arrival airport');
+        gblSearchParams.searchDestinationCode = '';
+        route.departure = gblSearchParams.searchOriginCode;
+        route.arrival = gblSearchParams.searchDestinationCode;
+
         gblFlightPrices = null;
         logit('clear FlightPrices');
         widget.onChanged!(route);
@@ -60,11 +75,19 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   void _handleArrivalSelectionChanged(String newValue) {
     if (newValue != null && newValue != "null") {
       setState(() {
+/*
         arrivalCode = newValue.split('|')[0];
         gblDestination =arrivalCode;
         arrivalAirport = newValue.split('|')[1];
         route.departure = departureCode;
         route.arrival = arrivalCode;
+*/
+        gblSearchParams.searchDestinationCode = newValue.split('|')[0];
+        gblDestination =gblSearchParams.searchDestinationCode;
+        gblSearchParams.searchDestination = newValue.split('|')[1];
+        route.departure = gblSearchParams.searchOriginCode;
+        route.arrival = gblSearchParams.searchDestinationCode;
+
         widget.onChanged!(route);
         logit('clear FlightPrices');
         gblFlightPrices = null;
@@ -101,7 +124,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
               ),
               new GestureDetector(
                   onTap: () async {
-                    departureCode == 'null' || departureCode == ''
+                    //departureCode == 'null' || departureCode == ''
+                    gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
                         ? print('Pick departure city first')
                         : await arrivalSelection(context);
                   },
@@ -167,7 +191,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CitiesScreen(filterByCitiesCode: departureCode)),
+              CitiesScreen(filterByCitiesCode: gblSearchParams.searchOriginCode)),
     );
     _handleArrivalSelectionChanged('$result');
   }
@@ -197,7 +221,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
           children: <Widget>[
             Icon(PhosphorIcons.airplane_landing, color:  gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
             Padding(padding: EdgeInsets.all(5)),
-            _airport(arrivalAirport), /// Text(departureAirport)
+            ///_airport(arrivalAirport), /// Text(departureAirport)
+            _airport(gblSearchParams.searchDestination), /// Text(departureAirport)
           ]));
 
     } else {
@@ -206,8 +231,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        (gblSettings.wantCitySwap && departureCode.isNotEmpty &&
-            arrivalCode.isNotEmpty) ?
+        //(gblSettings.wantCitySwap && departureCode.isNotEmpty && arrivalCode.isNotEmpty) ?
+        (gblSettings.wantCitySwap && gblSearchParams.searchOriginCode.isNotEmpty && gblSearchParams.searchDestinationCode.isNotEmpty) ?
         Row(children: [
           TrText('Fly to', style: new TextStyle(
               fontWeight: FontWeight.bold, fontSize: 15.0)),
@@ -219,16 +244,24 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
             tooltip: translate('Swap Origin and Destination'),
             onPressed: () {
               setState(() {
+/*
                 var dest = departureAirport;
                 departureAirport = arrivalAirport;
                 arrivalAirport = dest;
+*/
+                var dest = gblSearchParams.searchOrigin;
+                var destCode = gblSearchParams.searchOriginCode;
+                gblSearchParams.searchOrigin = gblSearchParams.searchDestination;
+                gblSearchParams.searchOriginCode = gblSearchParams.searchDestinationCode;
+                gblSearchParams.searchDestinationCode = destCode;
               });
             },)
         ],)
             : new TrText('Fly to',
             style: new TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 15.0)),
-        _getAirportText(arrivalAirport, arrivalCode),
+        //_getAirportText(arrivalAirport, arrivalCode),
+        _getAirportText(gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode),
         new Divider(
           height: 0.0,
         ),
@@ -245,7 +278,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
           children: <Widget>[
             Icon(PhosphorIcons.airplane_takeoff, color: gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
             Padding(padding: EdgeInsets.all(5)),
-            _airport(departureAirport), /// Text(departureAirport)
+            //_airport(departureAirport), /// Text(departureAirport)
+            _airport(gblSearchParams.searchOrigin), /// Text(departureAirport)
           ]));
 
     } else {
@@ -261,7 +295,8 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
                 fontSize: 15.0,
               ),
             ),
-            _getAirportText(departureAirport, departureCode),
+            //_getAirportText(departureAirport, departureCode),
+            _getAirportText(gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode),
             new Divider(
               height: 0.0,
             ),

@@ -21,10 +21,11 @@ import 'models/seatplan.dart';
 // variable shared to whole app
 // initialized in main_XX.dart
 // M1 = LM new stuff
-String gblBuildFlavor = 'H4';
-bool gblIsLive = true;
+// 9Q caicos
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 115;
+int requiredXmlVersion = 117;
 int requiredApiVersion = 105;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = true;
@@ -108,6 +109,7 @@ bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
 SeatPlanDefinition? gblSeatPlanDef;
+int gblCurPax = 0;
 int gblCurJourney = 0;
 FQTVMemberTransactions? gblUpcomingFlights;
 //bool  gblUseWebApiforVrs = false;

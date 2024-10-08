@@ -11,6 +11,7 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
+import '../../data/models/cities.dart';
 import '../../utilities/helper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
 
@@ -197,9 +198,10 @@ class DepartureListState extends State<DepartureList> {
     routes = widget.routes;
   }
 
+
   void filterCities(String filter){
     routes = [];
-    widget.routes!.forEach((route) {
+    _getRoutes(widget.routes)!.forEach((route) {
       String code = route.split('|')[0].toUpperCase();
       String name = route.split('|')[1].toUpperCase();
 
@@ -371,7 +373,7 @@ class _ArrivalsState extends State<Arrivals> {
 
   void filterCities(String filter){
     routes = [];
-    widget.routes!.forEach((route) {
+    _getRoutes(widget.routes)!.forEach((route) {
       String code = route.split('|')[0].toUpperCase();
       String name = route.split('|')[1].toUpperCase();
 
@@ -517,5 +519,23 @@ class CitiesScreenState  extends State<CitiesScreen> {
               : Departures()),
     );
   }
+
+}
+List<String>? _getRoutes(List<String>? routes ){
+  List<String>? domRoutes = [];
+  if( gblSelectedCurrency != null && gblSelectedCurrency != '' &&
+      gblSettings.currencyLimitedToDomesticRoutes != null && gblSettings.currencyLimitedToDomesticRoutes != '' &&
+      gblSettings.domesticCountryCode != null && gblSettings.domesticCountryCode != '' &&
+      gblSettings.currencyLimitedToDomesticRoutes.contains(gblSelectedCurrency)){
+
+    // filter to only domestic cities
+    routes!.forEach((c) {
+      if( isDomesticCity(c)){
+        domRoutes.add(c);
+      }
+    });
+    return domRoutes;
+  }
+  return routes;
 
 }

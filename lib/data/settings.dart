@@ -149,6 +149,9 @@ class Settings {
   // new gui opts
   bool wantCityDividers;
 
+  String dagerousdims;
+  String domesticCountryCode;
+  String currencyLimitedToDomesticRoutes;
   String homePageMessage;
   String productFormat;
   String homePageStyle;
@@ -188,6 +191,8 @@ class Settings {
   String customMenu2='';
   String customMenu3='';
   String pageImageMap='';
+  String homepageImageMap='';
+  int homepageImageDelay=0;
   String productImageMap='';
   String paxWeight='';
   String skyFlyToken='';
@@ -272,6 +277,9 @@ bool bpShowFastTrack;
     this.airlineName ='',
     this.creditCardProvider ='',
     this.homePageMessage = '',
+    this.currencyLimitedToDomesticRoutes = '',
+    this.domesticCountryCode = '',
+    this.dagerousdims = '',
     this.displayErrorPnr = false,
     this.wantLeftLogo = false,
     this.needTicketsToImport = false,
@@ -401,6 +409,8 @@ bool bpShowFastTrack;
     this.gblServerFiles='',
     this.testServerFiles='',
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
+    this.homepageImageMap = '',
+    this.homepageImageDelay = 0,
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
     this.paxWeight = '{"lb": "lb(s)", "kg": "kg(s)"}',
     this.skyFlyToken = '',

@@ -471,11 +471,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                         elevation: 0.0,
                         isExtended: true,
                         label: TrText(
-                          'SELECT SEAT',
+                          gblSettings.wantNewSeats ? 'Save seats' : 'SELECT SEAT',
                           style: TextStyle(
                               color: gblSystemColors.primaryButtonTextColor),
                         ),
-                        icon: Icon(
+                        icon: gblSettings.wantNewSeats ? null : Icon(
                           Icons.check,
                           color: gblSystemColors
                               .primaryButtonTextColor,

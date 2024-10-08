@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   String buildNo = '';
   String updateMsg = '';
   Map _netState = {ConnectivityResult.none: false};
+  Timer? _timer;
+  int _currentIndex = 0;
+  int homePageMapLen = 0;
 
 
   @override
@@ -119,7 +123,25 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
               saveSetting('savedVersion', version);
             }
         });
+      // home page image rotation
+      if( gblSettings.homepageImageMap != '' && gblSettings.homepageImageDelay > 0 ){
+        Map pageMap = json.decode(gblSettings.homepageImageMap.toUpperCase());
+        homePageMapLen = pageMap.length;
+        gotBG = true;
 
+        _timer = Timer.periodic(Duration(seconds: gblSettings.homepageImageDelay ), (timer) async {
+          if (mounted) {
+            setState(() {
+              if (_currentIndex + 1 >= homePageMapLen) {
+                _currentIndex = 0;
+              } else {
+                _currentIndex = _currentIndex + 1;
+              }
+            });
+          }
+        });
+
+      }
     });
 
 
@@ -254,25 +276,53 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
   //Future<Widget> getImage() async {
   Widget getImage() {
-    return Container(
-      //  decoration: BoxDecoration(
-      //               image: DecorationImage(
-      //                   image: mainBackGroundImage, fit: BoxFit.fitWidth))
 
-      child: SingleChildScrollView(
-        // reverse: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          //image: mainBackGroundImage
-          children: <Widget>[
-            Image(
-              image: NetworkImage(gblSettings.backgroundImageUrl),
-              fit: BoxFit.fill,
-            ),
-          ],
+    if( gblSettings.homepageImageDelay > 0 ){
+      Map pageMap = json.decode(gblSettings.homepageImageMap.toUpperCase());
+      String url = pageMap[(_currentIndex+1).toString()] + '.png';
+      url = '${gblSettings.gblServerFiles}/$url';
+
+      return Container(
+        child: SingleChildScrollView(
+          // reverse: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            //image: mainBackGroundImage
+            children: <Widget>[
+              AnimatedSwitcher(
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(child: child, opacity: animation);
+                },
+                duration: const Duration(milliseconds: 1500),
+                child:
+                  Image(
+                    key: ValueKey(_currentIndex),
+                    image: NetworkImage(url),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+
+    } else {
+      return Container(
+        child: SingleChildScrollView(
+          // reverse: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            //image: mainBackGroundImage
+            children: <Widget>[
+              Image(
+                image: NetworkImage(gblSettings.backgroundImageUrl),
+                fit: BoxFit.fill,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   @override

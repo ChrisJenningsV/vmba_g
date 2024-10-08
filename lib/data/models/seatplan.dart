@@ -1,5 +1,6 @@
 
 import 'package:vmba/data/globals.dart';
+import 'package:vmba/data/models/pax.dart';
 
 import '../../utilities/helper.dart';
 
@@ -85,6 +86,7 @@ class Seatplan {
       }
     }
 
+      def.initPaxList();
 
       return def;
   }
@@ -228,9 +230,18 @@ class SeatPlanDefinition{
   double seatHeight = 35;
   double asileWidth = 5;
   SeatSize seatSize = SeatSize.large;
+  List<Pax>? paxlist;
 
   double getTableRowHeight(){
     return seatHeight;
+  }
+
+  void initPaxList() {
+    paxlist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
+  }
+
+  List<Pax>? getPaxList(){
+    return paxlist;
   }
 
   // type of col - used to set width

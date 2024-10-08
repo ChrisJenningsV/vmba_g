@@ -345,36 +345,42 @@ class Repository {
             if (settingsJson != null) {
               for (var item in settingsJson) {
                 String param =item['parameter'];
-                switch (param.trim()) {
-                  case 'homePageMessage':
+                switch (param.trim().toLowerCase()) {
+                  case 'domesticcountrycode':
+                    gblSettings.domesticCountryCode = item['value'];
+                    break;
+                  case 'currencylimitedtodomesticroutes':
+                    gblSettings.currencyLimitedToDomesticRoutes = item['value'];
+                    break;
+                  case 'homepagemessage':
                     gblSettings.homePageMessage = item['value'];
                     break;
-                  case 'appLive':
+                  case 'applive':
                     gblIsLive = parseBool(item['value']);
                     break;
-                  case 'Languages':
+                  case 'languages':
                     gblSettings.gblLanguages = item['value'];
                     break;
                   case 'currencies':
                     gblSettings.currencies = item['value'];
                     break;
-                  case 'ServerFiles':
+                  case 'serverfiles':
                     gblSettings.gblServerFiles = item['value'];
                     break;
-                  case 'homePageFilename':
+                  case 'homepagefilename':
                     gblSettings.homePageFilename = item['value'];
                     break;
                   case 'titles':
                     gblTitles = item['value'].split(',');
                     break;
-                  case 'fqtvName':
+                  case 'fqtvname':
                     gblSettings.fqtvName = item['value'];
                     logit('load FQTV name [${gblSettings.fqtvName}]', verboseMsg: true);
                     break;
-                  case 'updateMessage':
+                  case 'updatemessage':
                     gblSettings.updateMessage = item['value'];
                     break;
-                  case 'latestBuildAndroid':
+                  case 'latestbuildandroid':
                     if( !item['value'].toString().contains('.')) {
                       gblSettings.latestBuildAndroid = item['value'];
                       if (gblVersion.isNotEmpty && gblVersion != "") {
@@ -387,7 +393,7 @@ class Repository {
                       }
                     }
                     break;
-                  case 'latestBuildiOS':
+                  case 'latestbuildios':
                     if( !item['value'].toString().contains('.')) {
                       gblSettings.latestBuildiOS = item['value'];
                       if (gblVersion.isNotEmpty && gblVersion != "") {
@@ -400,7 +406,7 @@ class Repository {
                       }
                     }
                     break;
-                  case 'lowestValidBuildAndroid':
+                  case 'lowestvalidbuildandroid':
                     gblSettings.lowestValidBuildAndroid = item['value'];
                     // check that this build is valid
                     if( gblVersion.isNotEmpty && gblVersion != "" && gblSettings.lowestValidBuildAndroid != ''){
@@ -411,7 +417,7 @@ class Repository {
                       }
                     }
                     break;
-                  case 'lowestValidBuildiOS':
+                  case 'lowestvalidbuildios':
                     gblSettings.lowestValidBuildiOS = item['value'];
                     if( gblVersion.isNotEmpty && gblVersion != "" && gblSettings.lowestValidBuildiOS != ''){
                       if( int.parse(gblSettings.lowestValidBuildiOS) != int.parse(gblVersion.split('.')[3])) {
@@ -421,35 +427,44 @@ class Repository {
                       }
                     }
                     break;
-                  case 'reqUpdateMsg':
+                  case 'requpdatemsg':
                     gblSettings.reqUpdateMsg = item['value'];
                     break;
-                  case 'optUpdateMsg':
+                  case 'optupdatemsg':
                     gblSettings.optUpdateMsg = item['value'];
                     break;
-                  case 'FQTVpointsName':
+                  case 'fqtvpointsname':
                     gblSettings.fQTVpointsName = item['value'];
                     break;
                   case 'currency':
                     gblSettings.currency = item['value'];
                     break;
-                  case 'covidText':
+                  case 'covidtext':
                     gblSettings.covidText = item['value'];
                     break;
-                  case 'pageImageMap':
+                  case 'pageimagemap':
                     gblSettings.pageImageMap = item['value'];
                     break;
-                  case 'payImageMap':
+                  case 'homepageimagemap':
+                    gblSettings.homepageImageMap = item['value'];
+                    break;
+                  case 'dagerousdims':
+                    gblSettings.dagerousdims = item['value'];
+                    break;
+                  case 'homepageimagedelay':
+                    gblSettings.homepageImageDelay = parseInt(item['value']);
+                    break;
+                  case 'payimagemap':
                     if( gblSettings.paySettings == null  ){
                       gblSettings.paySettings = PaySettings();
                     }
                     gblSettings.paySettings!.payImageMap = item['value'];
                     break;
 
-                  case 'productImageMap':
+                  case 'productimagemap':
                     gblSettings.productImageMap = item['value'];
                     break;
-                  case'productImageMode':
+                  case'productimagemode':
                     gblSettings.productImageMode = item['value'];
                     break;
 
@@ -460,45 +475,45 @@ class Repository {
                 //case 'wantLoadingLogo':
                 //gbl_settings.privacyPolicyUrl =item['value'];
                 //break;
-                  case 'disableBookings':
+                  case 'disablebookings':
                     gblSettings.disableBookings = parseBool(item['value']);
                     break;
 
-                  case 'InReview':
+                  case 'inreview':
                     gblInReview = parseBool(item['value']);
                     break;
-                  case 'wantDangerousGoods':
+                  case 'wantdangerousgoods':
                     gblSettings.wantDangerousGoods = parseBool(item['value']);
                     break;
-                  case 'canGoBackFromPaxPage':
+                  case 'cangobackfrompaxpage':
                     gblSettings.canGoBackFromPaxPage = parseBool(item['value']);
                     break;
 
-                  case 'wantYouthDOB':
+                  case 'wantyouthdob':
                     gblSettings.passengerTypes.wantYouthDOB = parseBool(item['value']);
                     break;
-                  case 'wantCityImages': // for back compatibility
+                  case 'wantcityimages': // for back compatibility
                     gblSettings.wantPageImages = parseBool(item['value']);
                     break;
-                  case 'wantLogBuffer': // for back compatibility
+                  case 'wantlogbuffer': // for back compatibility
                     gblWantLogBuffer = parseBool(item['value']);
                     break;
-                  case 'wantPageImages': // was wantCityImages
+                  case 'wantpageimages': // was wantCityImages
                     gblSettings.wantPageImages = parseBool(item['value']);
                     break;
-                  case 'wantProducts':
+                  case 'wantproducts':
                     gblSettings.wantProducts = parseBool(item['value']);
                     break;
-                  case 'wantSeats':
+                  case 'wantseats':
                     gblSettings.wantSeats = parseBool(item['value']);
                     break;
-                  case 'wantCitySwap':
+                  case 'wantcityswap':
                     gblSettings.wantCitySwap = parseBool(item['value']);
                     break;
-                  case 'wantNewPayment':
+                  case 'wantnewpayment':
                     gblSettings.wantNewPayment =  parseBool(item['value']);
                     break;
-                  case 'wantRefund':
+                  case 'wantrefund':
                     gblSettings.wantRefund  = parseBool(item['value']);
                     break;
 /*
@@ -506,116 +521,116 @@ class Repository {
                     gblSettings.wantMaterialControls = parseBool(item['value']);
                     break;
 */
-                  case 'wantProfileList':
+                  case 'wantprofilelist':
                     gblSettings.wantProfileList = parseBool(item['value']);
                     break;
-                  case 'wantRememberMe':
+                  case 'wantrememberme':
                     gblSettings.wantRememberMe = parseBool(item['value']);
                     break;
-                  case 'wantHomeFQTVButton':
+                  case 'wanthomefqtvbutton':
                     gblSettings.wantHomeFQTVButton = parseBool(item['value']);
                     print('wantHomeFQTVButton = ${gblSettings.wantHomeFQTVButton}');
                     break;
-                  case 'want2Dbarcode':
+                  case 'want2dbarcode':
                     gblSettings.want2Dbarcode = parseBool(item['value']);
                     break;
-                  case 'wantMyAccount':
+                  case 'wantmyaccount':
                     gblSettings.wantMyAccount = parseBool(item['value']);
                     break;
-                  case 'wantFQTV2':
+                  case 'wantfqtv2':
                     gblSettings.wantFQTV = parseBool(item['value']);
                     break;
-                  case 'wantEnglishTranslation':
+                  case 'wantenglishtranslation':
                     gblSettings.wantEnglishTranslation = parseBool(item['value']);
                     break;
-                  case 'want24HourClock':
+                  case 'want24hourclock':
                     gblSettings.want24HourClock = parseBool(item['value']);
                     break;
-                  case 'wantFQTVNumber':
+                  case 'wantfqtvnumber':
                     gblSettings.wantFQTVNumber = parseBool(item['value']);
                     break;
-                  case 'wantCurrencyPicker':
+                  case 'wantcurrencypicker':
                     gblSettings.wantCurrencyPicker = parseBool(item['value']);
                     break;
-                  case 'wantPassengerPassport':
+                  case 'wantpassengerpassport':
                     gblSettings.wantPassengerPassport = parseBool(item['value']);
                     break;
-                  case 'webCheckinNoSeatCharge':
+                  case 'webcheckinnoseatcharge':
                     gblSettings.webCheckinNoSeatCharge = parseBool(item['value']);
                     break;
 
-                  case 'wantClassBandImages':
+                  case 'wantclassbandimages':
                     gblSettings.wantClassBandImages = parseBool(item['value']);
                     break;
-                  case 'wantPushNoticications':
+                  case 'wantpushnoticications':
                     gblSettings.wantPushNoticications = parseBool(item['value']);
                     break;
-                  case 'wantNotificationEdit':
+                  case 'wantnotificationedit':
                     gblSettings.wantNotificationEdit = parseBool(item['value']);
                     break;
-                  case 'wantCanFacs':
+                  case 'wantcanfacs':
                     gblSettings.wantCanFacs = parseBool(item['value']);
                     break;
-                  case 'wantTerminal':
+                  case 'wantterminal':
                     gblSettings.wantTerminal = parseBool(item['value']);
                     break;
 
-                  case 'wantMonthOnCalendar':
+                  case 'wantmonthoncalendar':
                     gblSettings.wantMonthOnCalendar = parseBool(item['value']);
                     break;
 
-                  case 'eVoucher':
+                  case 'evoucher':
                     gblSettings.eVoucher = parseBool(item['value']);
                     break;
-                  case 'bpShowFastTrack':
+                  case 'bpshowfasttrack':
                     gblSettings.bpShowFastTrack = parseBool(item['value']);
                     break;
-                  case 'bpShowLoungeAccess':
+                  case 'bpshowloungeaccess':
                     gblSettings.bpShowLoungeAccess = parseBool(item['value']);
                     break;
-                  case 'bpShowAddPassToWalletButton':
+                  case 'bpshowaddpasstowalletbutton':
                     gblSettings.bpShowAddPassToWalletButton = parseBool(item['value']);
                     break;
 
-                  case 'HideFareRules':
+                  case 'hidefarerules':
                     gblSettings.hideFareRules = parseBool(item['value']);
                     break;
 
                   /* custom menu items
 
                    */
-                  case 'customMenu1':
+                  case 'custommenu1':
                     gblSettings.customMenu1 = item['value'];
                     break;
-                  case 'customMenu2':
+                  case 'custommenu2':
                     gblSettings.customMenu2 = item['value'];
                     break;
-                  case 'customMenu3':
+                  case 'custommenu3':
                     gblSettings.customMenu3 = item['value'];
                     break;
-                  case 'iOSDemoBuilds':
+                  case 'iosdemobuilds':
                     gblSettings.iOSDemoBuilds = item['value'];
                     break;
-                  case 'androidDemoBuilds':
+                  case 'androiddemobuilds':
                     gblSettings.androidDemoBuilds = item['value'];
                     break;
-                  case 'demoUser':
+                  case 'demouser':
                     gblSettings.demoUser = item['value'];
                     break;
-                  case 'demoPassword':
+                  case 'demopassword':
                     gblSettings.demoPassword = item['value'];
                     break;
-                  case 'debugUser':
+                  case 'debuguser':
                     gblSettings.debugUser = item['value'];
                     break;
-                  case 'debugPassword':
+                  case 'debugpassword':
                     gblSettings.debugPassword = item['value'];
                     break;
 
-                  case 'oldPriceColor':
+                  case 'oldpricecolor':
                     gblSystemColors.oldPriceColor = item['value'];
                     break;
-                  case 'EmailValidationPattern':
+                  case 'emailvalidationpattern':
                     gblEmailValidationPattern = item['value'];
                     break;
 
@@ -623,41 +638,41 @@ class Repository {
                   URLs
                    */
 
-                  case 'backgroundImageUrl':
+                  case 'backgroundimageurl':
                     gblSettings.backgroundImageUrl = item['value'];
                     print(gblSettings.backgroundImageUrl);
                     break;
-                  case 'adsTermsUrl':
+                  case 'adstermsurl':
                     gblSettings.adsTermsUrl = item['value'];
                     break;
-                  case 'termsAndConditionsUrl':
+                  case 'termsandconditionsurl':
                     gblSettings.termsAndConditionsUrl = item['value'];
                     break;
-                  case 'faqUrl':
+                  case 'faqurl':
                     gblSettings.faqUrl = item['value'];
                     break;
-                  case 'trackerUrl':
+                  case 'trackerurl':
                     gblSettings.trackerUrl = item['value'];
                     break;
-                  case 'privacyPolicyUrl':
+                  case 'privacypolicyurl':
                     gblSettings.privacyPolicyUrl = item['value'];
                     break;
-                  case 'prohibitedItemsNoticeUrl':
+                  case 'prohibiteditemsnoticeurl':
                     gblSettings.prohibitedItemsNoticeUrl = item['value'];
                     break;
-                  case 'specialAssistanceUrl':
+                  case 'specialassistanceurl':
                     gblSettings.specialAssistanceUrl = item['value'];
                     break;
-                  case 'contactUsUrl':
+                  case 'contactusurl':
                     gblSettings.contactUsUrl =  item['value'];
                     break;
-                  case 'stopRedirectUrl':
+                  case 'stopredirecturl':
                     gblSettings.stopUrl = item['value'];
                     break;
-                  case 'stopMessage':
+                  case 'stopmessage':
                     gblSettings.stopMessage = item['value'];
                     break;
-                  case 'stopTitle':
+                  case 'stoptitle':
                     gblSettings.stopTitle =item['value'];
                     break;
                   case 'action':
@@ -671,36 +686,36 @@ class Repository {
                 /*
                   EMAILS
                    */
-                  case 'appFeedbackEmail':
+                  case 'appfeedbackemail':
                     gblSettings.appFeedbackEmail = item['value'];
                     break;
-                  case 'groupsBookingsEmail':
+                  case 'groupsbookingsemail':
                     gblSettings.groupsBookingsEmail = item['value'];
                     break;
                     /*
                     integers
                      */
-                  case 'youthMaxAge':
+                  case 'youthmaxage':
                     gblSettings.passengerTypes.youthMaxAge = parseInt(item['value']);
                     break;
-                  case 'youthMinAge':
+                  case 'youthminage':
                     gblSettings.passengerTypes.youthMinAge = parseInt(item['value']);
                     break;
-                  case 'adultMinAge':
+                  case 'adultminage':
                     gblSettings.passengerTypes.adultMinAge = parseInt(item['value']);
                     break;
 
-                  case 'bookingLeadTime':
+                  case 'bookingleadtime':
                     gblSettings.bookingLeadTime = parseInt(item['value']);
                     break;
-                  case 'maxNumberOfPax':
+                  case 'maxnumberofpax':
                     gblSettings.maxNumberOfPax = parseInt(item['value']);
                     break;
-                  case 'searchDateOut' :
+                  case 'searchdateout' :
                     gblSettings.searchDateOut = parseInt(item['value']);
                     break;
 
-                  case 'searchDateBack':
+                  case 'searchdateback':
                     gblSettings.searchDateBack = parseInt(item['value']);
                     break;
 

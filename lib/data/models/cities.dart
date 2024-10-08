@@ -1,5 +1,6 @@
 
 import 'package:meta/meta.dart';
+import 'package:vmba/data/globals.dart';
 
 import '../../utilities/helper.dart';
 
@@ -41,14 +42,16 @@ class Destination {
   String code = '';
   String name = '';
   String info = '';
+  String countryCode = '';
 
-  Destination({ this.name='', this.code='', this.info=''});
+  Destination({ this.name='', this.code='', this.info='', this.countryCode=''});
 
   Destination.fromJson(Map<String, dynamic> json) {
     try {
       if (json['code'] != null) code = json['code'];
       if (json['name'] != null) name = json['name'];
       if (json['info'] != null) info = json['info'];
+      if (json['CountryCode'] != null ) countryCode =json['CountryCode'];
     } catch (e) {
 
     }
@@ -66,6 +69,8 @@ class City {
   static final dbMinimumConnectMins = "minimumConnectMins";
 
   String code='', name='', shortName='', mobileBarcodeType ='';
+  String countryCode = '';
+
   int webCheckinEnabled =0, webCheckinStart =0, webCheckinEnd =0;
   int minimumConnectMins =60;
   List<Destination> destinations= [];
@@ -125,6 +130,8 @@ class City {
         mobileBarcodeType = json['mobileBarcodeType'];
       if (json['minimumConnectMins'] != null)
         minimumConnectMins = json['minimumConnectMins'];
+      if (json['CountryCode'] != null ) countryCode =json['CountryCode'];
+
 
       if( json['destinations'] != null ){
         json['destinations'].forEach((v) {
@@ -154,4 +161,24 @@ class City {
 
     return data;
   }
+}
+
+bool isDomesticCity(String cityString){
+  bool isDomestic = false;
+  // cityString format 'BUQ|Bulawayo (BUQ)'
+  if(gblSettings.useLogin2 &&  gblSettings.domesticCountryCode != ''){
+    String cityCode = cityString.substring(0,3);
+    // only have country code for login2
+    if( gblCityList != null ){
+      gblCityList!.cities!.forEach((element) {
+        if( element.code == cityCode){
+          if( element.countryCode == gblSettings.domesticCountryCode){
+            isDomestic = true;
+          }
+        }
+      });
+    }
+  }
+
+  return isDomestic;
 }

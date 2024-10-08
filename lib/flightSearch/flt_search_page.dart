@@ -245,8 +245,13 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               value: booking.currency,
               onChanged: (newValue) {
                 setState(() {
+                  gblSearchParams.initAirports();
                   gblSelectedCurrency = newValue as String ;
                   booking.currency = newValue as String;
+                  if(gblSettings.useLogin2 &&  gblSettings.currencyLimitedToDomesticRoutes != ''){
+                    // clear from / to
+                  }
+
                 });
               },
               items: _currencies.map((currency) {
