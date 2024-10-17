@@ -107,7 +107,6 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
         case LoadDataType.products:
           if( widget.newBooking == null ) widget.newBooking = NewBooking();
           return ProductsWidget(newBooking: widget.newBooking!, pnrModel: widget.pnrModel, onComplete: widget.onComplete, wantTitle: true,isMMB: true, );
-          break;
         case LoadDataType.providers:
           //return ProductsWidget(newBooking: widget.newBooking, pnrModel: widget.pnrModel, onComplete: widget.onComplete,  );
           widget.onComplete(widget.pnrModel);

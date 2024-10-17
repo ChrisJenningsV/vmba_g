@@ -22,7 +22,7 @@ import 'models/seatplan.dart';
 // initialized in main_XX.dart
 // M1 = LM new stuff
 // 9Q caicos
-String gblBuildFlavor = 'LM';
+String gblBuildFlavor = 'FN';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117;
@@ -108,6 +108,7 @@ bool gblDebugMode = false;
 bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
+NewBooking? gblNewBooking;
 SeatPlanDefinition? gblSeatPlanDef;
 int gblCurPax = 0;
 int gblCurJourney = 0;

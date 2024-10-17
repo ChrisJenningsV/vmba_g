@@ -573,7 +573,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 refreshStatusBar();
                 // go to options page
                 if (gblError != '') {
-                  showAlertDialog(context, 'Error', gblError, onComplete:() { gblError = ''; setState(() {}); });
+                  showVidDialog(context, 'Error', gblError, onComplete:() { gblError = ''; setState(() {}); });
                 } else {
                   Navigator.push(
                       context,
@@ -586,7 +586,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                 }
               } catch(e){
                 setError( e.toString());
-                showAlertDialog(context, 'Error', gblError);
+                showVidDialog(context, 'Error', gblError);
 
               }
 

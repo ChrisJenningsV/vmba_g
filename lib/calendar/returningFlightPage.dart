@@ -752,7 +752,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
                 this.widget.newBooking);
             // go to options page
             if (gblError != '') {
-              showAlertDialog(context, 'Error', gblError);
+              showVidDialog(context, 'Error', gblError);
             } else {
               Navigator.push(
                   context,
@@ -771,7 +771,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 */            }
             } catch(e){
               setError( e.toString());
-              showAlertDialog(context, 'Error', gblError);
+              showVidDialog(context, 'Error', gblError);
 
             }
           } else {

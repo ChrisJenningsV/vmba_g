@@ -87,7 +87,7 @@ void onApplyPressed(BuildContext p0, dynamic p1) async {
   String reply =  await runVrsCommand(cmd);
   try {
   if( reply.contains('ERROR')){
-    showAlertDialog(context, 'Gift Voucher Error ', reply);
+    showVidDialog(context, 'Gift Voucher Error ', reply);
   } else {
     Map<String, dynamic> map = json.decode(reply);
     Map<String, dynamic> map2 = map['fopvouchers'];

@@ -396,7 +396,7 @@ Widget getBottomNav() {
                     icon: Icon(Icons.delete_outline_rounded),
                     label: Text('Error Dialog'),
                     onPressed: () {
-                      showAlertDialog(context, 'Error', 'Test error dialog', type: DialogType.Error);
+                      showVidDialog(context, 'Error', 'Test error dialog', type: DialogType.Error);
                     }
                     )),
                     PopupMenuItem(
@@ -404,7 +404,7 @@ Widget getBottomNav() {
                             icon: Icon(Icons.delete_outline_rounded),
                             label: Text('Warning Dialog'),
                             onPressed: () {
-                              showAlertDialog(context, 'Warning', 'Test warning dialog', type: DialogType.Warning);
+                              showVidDialog(context, 'Warning', 'Test warning dialog', type: DialogType.Warning);
                             }
                         )),
                     PopupMenuItem(
@@ -412,7 +412,7 @@ Widget getBottomNav() {
                             icon: Icon(Icons.delete_outline_rounded),
                             label: Text('Information Dialog'),
                             onPressed: () {
-                              showAlertDialog(context, 'Information', 'Test information dialog', type: DialogType.Information);
+                              showVidDialog(context, 'Information', 'Test information dialog', type: DialogType.Information);
                             }
                         )),
                   ],

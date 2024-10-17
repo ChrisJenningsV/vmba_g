@@ -185,7 +185,7 @@ class _ApisWidgetState extends State<ApisWidget> {
             Navigator.pop(context, apisPnrStatus);
           });
         } else {
-          showAlertDialog(context, 'Apis Error', result);
+          showVidDialog(context, 'Apis Error', result);
           _dataLoaded();
         }
       } catch (e) {
@@ -236,7 +236,7 @@ class _ApisWidgetState extends State<ApisWidget> {
         _submitApis();
       } catch (e) {
         print('Error: $e');
-        showAlertDialog(context, 'Alert', e.toString());
+        showVidDialog(context, 'Alert', e.toString());
       }
     }
   }

@@ -197,10 +197,6 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
               list.add(v3ExpanderCard(
                   context, card,FlightSearchBox(), ts: ts));
               break;
-/*            case 'FQTVSUMMARY':
-              list.add(v3ExpanderCard(
-                  context, card,FqtvSummaryBox(), ts: ts));*/
-              break;
             case 'FLIGHTSCHEDULE':
               list.add(v3ExpanderCard(
                   context, card,Text('body'), ts: ts));

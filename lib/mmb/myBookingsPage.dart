@@ -342,7 +342,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                             _loadingInProgress = false;
                             _isButtonDisabled = false;
                             // _actionCompleted();
-                            showAlertDialog(context, 'Error', _error);
+                            showVidDialog(context, 'Error', _error);
                           }
                         }
                         //});
@@ -464,7 +464,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         _isButtonDisabled = false;
         _loadingInProgress = false;
         _actionCompleted();
-        showAlertDialog(context, 'Error', _error);
+        showVidDialog(context, 'Error', _error);
         return;
       }
       Map<String, dynamic> map = json.decode(result);
@@ -475,7 +475,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         _error = resp.message;
         _isButtonDisabled = false;
         _actionCompleted();
-        showAlertDialog(context, 'Error', _error);
+        showVidDialog(context, 'Error', _error);
       } else {
         _error ='';
         //widget.passengerDetail.fqtv = _fqtvTextEditingController.text;
@@ -547,7 +547,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         if (resp.statusCode != 'OK') {
           _error = resp.message;
           _actionCompleted();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         } else {
           var transactions = resp.transactions;
           _loadingInProgress = true;
@@ -581,7 +581,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       } catch(e){}
 
       _actionCompleted();
-      showAlertDialog(context, 'Error' , _error);
+      showVidDialog(context, 'Error' , _error);
     }
   }
   void _actionCompleted() {
@@ -875,7 +875,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       setState(() {
         _loadingInProgress = false;
       });
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
     }
 
     }
@@ -1086,7 +1086,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
       });
     } else {
 
-      showAlertDialog(context, 'Alert','No pending bookings');
+      showVidDialog(context, 'Alert','No pending bookings');
 
       Navigator.of(context).pushNamedAndRemoveUntil(
           '/MyBookingsPage', (Route<dynamic> route) => false);
@@ -1105,7 +1105,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     if (data.contains('ERROR - RECORD NOT FOUND -')) {
       _error = 'Please check your details';
       //_pnrLoaded();
-      showAlertDialog(context, 'Alert', _error);
+      showVidDialog(context, 'Alert', _error);
 
     } else {
       pnrJson = data
@@ -1145,7 +1145,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
         _error = 'Please check your details, PNR not found';
         _pnrLoaded();
         //_showDialog();
-        showAlertDialog(context, 'Alert', _error);
+        showVidDialog(context, 'Alert', _error);
       } else {
         pnrJson = data
             .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -1178,14 +1178,14 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
             if (_error == '') {
               _error = translate('name does not match booking');
             }
-            showAlertDialog(context, 'Alert', _error);
+            showVidDialog(context, 'Alert', _error);
 
             logit('did not matched rloc and name');
           }
         } catch (e) {
           _pnrLoaded();
           _error = e.toString();
-          showAlertDialog(context, 'Alert', _error);
+          showVidDialog(context, 'Alert', _error);
           //_showDialog();
           logit('$e');
         }
@@ -1193,7 +1193,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     } catch(e) {
       _pnrLoaded();
       _error = e.toString();
-      showAlertDialog(context, 'Alert', _error);
+      showVidDialog(context, 'Alert', _error);
       //_showDialog();
       logit('$e');
     }
@@ -1228,7 +1228,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
                 }
               });
     } catch (e) {
-      showAlertDialog(context, 'Alert', e.toString());
+      showVidDialog(context, 'Alert', e.toString());
       //_showDialog();
       logit('$e');
     }

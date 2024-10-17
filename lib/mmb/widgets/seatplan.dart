@@ -25,6 +25,7 @@ import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
+import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
 import '../../data/smartApi.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
@@ -37,6 +38,7 @@ enum SeatType{
   selected,
   emergency,
   available,
+  unavailable,
   availableRestricted,
   occupied,
   blank,
@@ -50,7 +52,7 @@ double aisleCellSize = 20.0;
 class SeatPlanWidget extends StatefulWidget {
   SeatPlanWidget(
       {Key key= const Key("seatplanwi_key"),
-      this.paxlist,
+      this.paxlist ,
       this.seatplan ='',
       this.rloc ='',
       this.journeyNo = '',
@@ -70,6 +72,7 @@ class SeatPlanWidget extends StatefulWidget {
   final int selectedpaxNo;
   final bool isMmb;
   final bool ischeckinOpen;
+
   _SeatPlanWidgetState createState() => _SeatPlanWidgetState();
 }
 
@@ -78,7 +81,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   bool _loadingInProgress=false;
   String _displayProcessingText = '';
   Seatplan? objSeatplan;
-  List<Pax>? paxlist;
+  //List<Pax>? paxlist;
+  PaxList? paxlist;
   bool showkey = true;
   String seatplan = '';
   //bool _noInternet = false;
@@ -97,14 +101,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     _displayProcessingText = translate('Loading seat plan...');
     seatplan = widget.seatplan;
     _loadData(widget.seatplan);
-    paxlist = widget.paxlist;
+    paxlist = new PaxList();
+    paxlist!.init(widget.paxlist as List<Pax>);
     session = Session('', '', '');
 
-    paxlist!.forEach((p) => p.selected = false);
+    paxlist!.list!.forEach((p) => p.selected = false);
     if (widget.selectedpaxNo == null) {
-      paxlist!.firstWhere((p) => p.id == 1).selected = true;
+      paxlist!.list!.firstWhere((p) => p.id == 1).selected = true;
     } else {
-      paxlist!.firstWhere((p) => p.id == widget.selectedpaxNo).selected = true;
+      paxlist!.list!.firstWhere((p) => p.id == widget.selectedpaxNo).selected = true;
     }
 
     showkey = true;
@@ -121,7 +126,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     setState(() {
       _loadingInProgress = false;
     });
-    showAlertDialog(context, 'Error booking seats', errorMsg);
+    showVidDialog(context, 'Error booking seats', errorMsg);
     //showSnackBar(errorMsg);
   }
 
@@ -242,38 +247,40 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   void _handleSeatChanged(List<Pax> paxValue) {
     print('_handleSeatChanged');
     setState(() {
-      paxlist = paxValue;
+      paxlist = new PaxList();
+      paxlist!.init(paxValue);
     });
   }
 
-  void _handleBookSeats(List<Pax> paxValue) {
+  void _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true}) {
    // _bookSeats();
     setError( '');
     // check is any seats selects
     int seatsSelected = 0;
-    paxlist!.forEach((seat) {
+    paxlist!.list!.forEach((seat) {
       if(seat.seat != '' && seat.seat != seat.savedSeat){
         seatsSelected++;
       }
     });
     if( seatsSelected ==  0){
-      showAlertDialog(context, 'Error', 'Select Seats First');
+      showVidDialog(context, 'Error', 'Select Seats First');
 
     } else {
-      smartBookSeats();
+      smartBookSeats(gotoPayment: gotoPayment );
       setState(() {
-        paxlist = paxValue;
+        paxlist=new PaxList();
+        paxlist!.init(paxValue);
         _loadingInProgress = true;
         _displayProcessingText = translate('Booking your seat selection...');
       });
     }
   }
 
-  smartBookSeats() async {
+  smartBookSeats({bool gotoPayment = true}) async {
     gblPayAction = 'BOOKSEAT';
     SeatRequest seat = new SeatRequest();
     gblBookSeatCmd = '';
-    seat.paxlist = paxlist!;
+    seat.paxlist = paxlist!.list;
     seat.rloc = widget.rloc;
     seat.journeyNo = int.parse(widget.journeyNo);
     if( widget.isMmb && widget.ischeckinOpen) {
@@ -369,8 +376,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               gblUndoCommand += '^E*R';
             }
             refreshStatusBar();
-            _navigate(context, pnrModel, session!);
-
+            if( gotoPayment) {
+              _navigate(context, pnrModel, session!);
+            }
             _resetloadingProgress();
           });
         }
@@ -452,43 +460,119 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           ],
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
-          title: new TrText('Choose a seat',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.headerTextColor)),
+          title: getTitle(),
         ),
         //endDrawer: DrawerMenu(),
 
         body: body(),
-        floatingActionButton: _loadingInProgress || gblNoNetwork || _noSeats
-            ? null
-            : Padding(
-                padding: EdgeInsets.only(left: 35.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new FloatingActionButton.extended(
-                        elevation: 0.0,
-                        isExtended: true,
-                        label: TrText(
-                          gblSettings.wantNewSeats ? 'Save seats' : 'SELECT SEAT',
-                          style: TextStyle(
-                              color: gblSystemColors.primaryButtonTextColor),
-                        ),
-                        icon: gblSettings.wantNewSeats ? null : Icon(
-                          Icons.check,
-                          color: gblSystemColors
-                              .primaryButtonTextColor,
-                        ),
-                        backgroundColor: actionButtonColor(),
-                        onPressed: () {
-                          if( gblNoNetwork == false) {
-                            _handleBookSeats(paxlist!);
-                          }
-                        }),
-                  ],
-                )));
+        floatingActionButton: getActionButton()
+    );
   }
+
+  Widget? getActionButton() {
+  if(_loadingInProgress || gblNoNetwork || _noSeats) return null;
+
+
+    if(gblSettings.wantNewSeats ) {
+      String caption = 'Save seats and pay';
+      if( (gblCurJourney+1) < gblPnrModel!.pNR.itinerary.itin.length){
+        caption = 'Save seats and next flight';
+      }
+
+      return vidWideActionButton(context, caption, (context, d) {
+        if( (gblCurJourney+1) < gblPnrModel!.pNR.itinerary.itin.length){
+          _handleBookSeats(paxlist!.list!, gotoPayment: false);
+         // go to next flight
+          gblCurJourney+=1;
+          List<Pax> plist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
+          paxlist!.init(plist);
+         _loadData( _getSeatPlanCommand(gblCurJourney));
+
+        } else {
+          _handleBookSeats(paxlist!.list!, gotoPayment: true);
+        }
+      }, icon: Icons.check,
+          offset: 35.0,
+          disabled: paxlist!.allocatedCount() == 0);
+    }
+    return
+         Padding(
+        padding: EdgeInsets.only(left: 35.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new FloatingActionButton.extended(
+                elevation: 0.0,
+                isExtended: true,
+                label: TrText(
+                  gblSettings.wantNewSeats ? 'Save seats' : 'SELECT SEAT',
+                  style: TextStyle(
+                      color: gblSystemColors.primaryButtonTextColor),
+                ),
+                icon: gblSettings.wantNewSeats ? null : Icon(
+                  Icons.check,
+                  color: gblSystemColors
+                      .primaryButtonTextColor,
+                ),
+                backgroundColor: actionButtonColor(),
+                onPressed: () {
+                  if( gblNoNetwork == false) {
+                    _handleBookSeats(paxlist!.list!);
+                  }
+                }),
+          ],
+        ));
+  }
+
+
+Widget getTitle() {
+    if( gblSettings.wantNewSeats ) {
+      String title1 = translate('Choose a seat');
+
+      Itin flt =   gblPnrModel!.pNR.itinerary.itin[gblCurJourney];
+      String route = '${cityCodetoAirport(flt.depart)} - ${cityCodetoAirport(flt.arrive)}';
+      if(paxlist!.list!.length > 1) {
+        title1 = translate('Choose seats');
+      }
+      List<Widget> list = [];
+      for(int i = 0; i < gblPnrModel!.pNR.itinerary.itin.length; i++){
+        if( i == gblCurJourney){
+          list.add(RotatedBox(
+              quarterTurns: 1,
+              child: new Icon(
+                Icons.airplanemode_active,
+                size: 15.0,
+                color: Colors.black,
+              )));
+        } else {
+          list.add(RotatedBox(
+              quarterTurns: 1,
+              child: new Icon(
+                Icons.airplanemode_active,
+                size: 15.0,
+                color: Colors.white,
+              )));
+
+        }
+      }
+      list.add(Padding(padding: EdgeInsets.all(3)));
+      list.add(VTitleText(route, size: TextSize.medium,color:gblSystemColors.headerTextColor));
+
+      Row routeRow = Row(children: list);
+      return Column(
+        children: [
+          VTitleText(title1, size: TextSize.large,color:gblSystemColors.headerTextColor),
+          routeRow,
+        ],
+      );
+
+    } else {
+      return new TrText('Choose a seat',
+          style: TextStyle(
+              color:
+              gblSystemColors.headerTextColor));
+    }
+}
 
   Widget body() {
     if (_loadingInProgress) {
@@ -560,76 +644,69 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       DateTime deps = DateTime.parse(itin.depDate + ' ' + itin.depTime);
       Widget fltTitle = V2Heading2Text(translate('Flight') + ' ' + widget.flt+ ' ' +  DateFormat('dd MMM').format(deps) );
 
-      return Column(
-        children: <Widget>[
-          Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-          child: gblSettings.wantNewSeats ? getFlightSelector(context, (){
-            _loadData(_getSeatPlanCommand(gblCurJourney));
+      List<Widget> list = [];
+      if( gblSettings.wantNewSeats == false) {
+        list.add(Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+            child:             Align(alignment: Alignment.centerLeft,
+              child: fltTitle ,
+            )));
+
+        list.add(getSeatKey());
+        list.add(SeatPlanPassengersWidget(
+          paxList: paxlist!.list, segNo: widget.journeyNo,
+          loadingData: (msg){
+            _displayProcessingText = msg;
+            _loadingInProgress = true;
+            setState(() {
+            });
+          },
+          dataLoaded: () {
+            _loadingInProgress = false;
             setState(() {
 
             });
-          }) :
-          Align(alignment: Alignment.centerLeft,
-              child: fltTitle ,
-          )),
-          gblSettings.wantNewSeats ? SeatPlanPassengersWidget(
-            paxList: paxlist, segNo: widget.journeyNo,
-            loadingData: (msg){
-              _displayProcessingText = msg;
-              _loadingInProgress = true;
-              setState(() {
-              });
-            },
-            dataLoaded: () {
-              _loadingInProgress = false;
-              setState(() {
-
-              });
-            },
-          ) : Container(),
-          gblSettings.wantNewSeats ? getSeatKey2() : getSeatKey(),
-          gblSettings.wantNewSeats ? Container() : SeatPlanPassengersWidget(
-              paxList: paxlist, segNo: widget.journeyNo,
-              loadingData: (msg){
-                _displayProcessingText = msg;
-                _loadingInProgress = true;
-                setState(() {
-                });
-              },
-            dataLoaded: () {
-                _loadingInProgress = false;
-                setState(() {
-
-                });
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-          ),
-          gblSettings.wantNewSeats ? getSeatplanTitle() : Container(),
-          gblSettings.wantNewSeats ?
-              RenderSeatPlan2(
-                    seatplan: objSeatplan!,
-                    pax: paxlist!,
-                    rloc: widget.rloc,
-                    cabin: widget.cabin,
-                    onChanged: _handleSeatChanged,
-                    onScrollCallbackShowKey: _handleScrollChanged,
-                    displaySeatPrices: true,
-          )
-              :
-          RenderSeatPlan(
+          },
+        ),);
+        list.add(Padding(padding: EdgeInsets.only(top: 10.0),),);
+        list.add(RenderSeatPlan(
             seatplan: objSeatplan!,
-            pax: paxlist!,
+            pax: paxlist!.list!,
             rloc: widget.rloc,
             cabin: widget.cabin,
             onChanged: _handleSeatChanged,
             onScrollCallbackShowKey: _handleScrollChanged,
             displaySeatPrices: true,
-          ),
-          Padding(padding: EdgeInsets.all(10)),
-        ],
-      );
+            ));
+        return Column(
+            children: list
+        );
+
+    } else {
+        list.add(getSeatKey2());
+        list.add(Padding(padding: EdgeInsets.only(top: 10.0),),);
+        list.add(        RenderSeatPlan2(
+          seatplan: objSeatplan!,
+          pax: paxlist!.list!,
+          rloc: widget.rloc,
+          cabin: widget.cabin,
+          onChanged: _handleSeatChanged,
+          onScrollCallbackShowKey: _handleScrollChanged,
+          displaySeatPrices: true,
+        )
+        );
+        list.add(Padding(padding: EdgeInsets.all(10)));
+        return Container(
+      //    height: 800,
+            child: SingleChildScrollView(
+        child:
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: list
+        )
+        )
+        );
+      }
+
     }
   }
     /*Widget seat2(String seatNo,  SeatType seatType ) {

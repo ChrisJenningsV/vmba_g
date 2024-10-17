@@ -164,6 +164,7 @@ class SeatCardState extends State<SeatCard> {
     if( gblPnrModel != null  && gblNoNetwork == false ) {
       List<Pax> paxlist = getPaxlist(gblPnrModel as PnrModel, journeyNo);
       String cabin = gblPnrModel!.pNR.itinerary.itin[journeyNo].cabin;
+      gblCurJourney = journeyNo;
 
       Navigator.push(
           context,

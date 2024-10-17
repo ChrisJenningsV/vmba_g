@@ -133,6 +133,7 @@ List<Widget> getBagOptions(NewBooking newBooking, PnrModel pnrModel, PnrModel sa
 
   if( gblSettings.wantSeatsWithProducts && !widget.isMMB){
     gblPnrModel = pnrModel;
+    gblNewBooking = newBooking;
     list.add(new SeatCard(newBooking: newBooking));
   }
 

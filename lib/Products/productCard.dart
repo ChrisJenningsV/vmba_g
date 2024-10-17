@@ -366,7 +366,7 @@ class ProductCardState extends State<ProductCard> {
   }
   void onError(String msg){
     widget.onError!(msg);
-    showAlertDialog(context, 'Error', msg);
+    showVidDialog(context, 'Error', msg);
 
   }
 

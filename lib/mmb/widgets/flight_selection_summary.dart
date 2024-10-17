@@ -520,32 +520,6 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
   Widget build(BuildContext context) {
     if (_loadingInProgress) {
       return getProgressMessage('Calculating your price...', 'Summary');
-      return Scaffold(
-        appBar: new AppBar(
-          //brightness: gblSystemColors.statusBar,
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-          iconTheme: IconThemeData(
-              color: gblSystemColors.headerTextColor),
-          title: new TrText('Summary',
-              style: TextStyle(
-                  color:
-                  gblSystemColors.headerTextColor)),
-        ),
-        endDrawer: DrawerMenu(),
-        body: new Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new TrText("Calculating your price..."),
-              ),
-            ],
-          ),
-        ),
-      );
     } else if (_noInternet) {
       return Scaffold(
           key: _key,

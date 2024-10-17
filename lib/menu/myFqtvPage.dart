@@ -705,7 +705,7 @@ Widget _getTrans() {
   }
 
   void _showDialog() {
-    showAlertDialog(context, 'Error', _error);
+    showVidDialog(context, 'Error', _error);
     return;
     // flutter defined function
   }
@@ -734,7 +734,7 @@ Widget _getTrans() {
         _error = 'Reset email sent';
         Navigator.of(context).pop();
         //_showDialog();
-        showAlertDialog(context, 'Information', _error);
+        showVidDialog(context, 'Information', _error);
       }
     });
 
@@ -868,7 +868,7 @@ Widget _getTrans() {
         _error = gblError;
         _loadingInProgress = false;
 //        Navigator.of(context).pop();
-        showAlertDialog(context, 'Information', _error, onComplete: () {
+        showVidDialog(context, 'Information', _error, onComplete: () {
           gblError = '';
           //Navigator.of(context).pop();
           setState(() {

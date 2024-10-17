@@ -685,7 +685,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                 if ( passengers.totalPassengers() > 0) {
                   Navigator.pop(context, passengers);
                 } else {
-                  showAlertDialog(context, 'Alert', 'Please select who is travelling');
+                  showVidDialog(context, 'Alert', 'Please select who is travelling');
                 }
               }, offset: 35);
     }
@@ -712,7 +712,7 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
                   if ( passengers.totalPassengers() > 0) {
                     Navigator.pop(context, passengers);
                   } else {
-                    showAlertDialog(context, 'Alert', 'Please select who is travelling');
+                    showVidDialog(context, 'Alert', 'Please select who is travelling');
                   }
                 }),
           ],

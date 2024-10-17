@@ -336,6 +336,7 @@ class ViewBookingBodyState
           // PnrModel
           PnrModel pnr = new PnrModel.fromJson(map);
           loadJourneys(pnr);
+          gblPnrModel = pnr;
           gblSelectedCurrency = _mmbBooking.currency;
 
           _mmbBooking.rloc = pnr.pNR.rLOC;
@@ -1087,9 +1088,9 @@ class ViewBookingBodyState
       RefundReply refundRs = new RefundReply.fromJson(map);
       gblActionBtnDisabled = false;
       if( refundRs.success == true ) {
-        showAlertDialog(context, 'Refund', 'Refund successful');
+        showVidDialog(context, 'Refund', 'Refund successful');
       } else {
-        showAlertDialog(context, 'Refund', 'refund failed');
+        showVidDialog(context, 'Refund', 'refund failed');
       }
     } catch(e) {
       logit(e.toString());
@@ -2083,7 +2084,7 @@ class ViewBookingBodyState
           ) {
         btnText += '  ' +  (paxlist.firstWhere((p) => p.id == paxNo + 1).seat);
       }
-      return vidActionButton(context, btnText, (p0){
+      return vidActionButton(context, btnText, (p0, params){
 
         if( gblPnrModel!.hasContactDetails()) {
 
@@ -2139,6 +2140,7 @@ class ViewBookingBodyState
             gblActionBtnDisabled = false;
           } else {
             gblCurPax = paxNo;
+            gblCurJourney = journeyNo;
             preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
             gblActionBtnDisabled = false;
           }

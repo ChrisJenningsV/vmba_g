@@ -694,7 +694,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
 
     }
     if (gblError != '') {
-      showAlertDialog(context, 'Error', gblError, type: DialogType.Error);
+      showVidDialog(context, 'Error', gblError, type: DialogType.Error);
     } else {
       // if single, get fare quote and go to summary page
       if (gblSearchParams.isReturn == true && widget.isReturnFlight == false) {

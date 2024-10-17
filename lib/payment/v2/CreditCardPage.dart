@@ -463,7 +463,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 _error = onValue;
                 _dataLoaded();
                 //_showDialog();
-                showAlertDialog(context, 'Error', _error);
+                showVidDialog(context, 'Error', _error);
                 return;
               }
               if (onValue.toString().contains('Exception:')) {
@@ -473,7 +473,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 }
                 _dataLoaded();
                 //_showDialog();
-                showAlertDialog(context, 'Error', _error);
+                showVidDialog(context, 'Error', _error);
                 return;
               }
               // Server Exception ?
@@ -516,7 +516,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               _error = 'Declined';
             }
             //_showDialog();
-            showAlertDialog(context, 'Error', _error);
+            showVidDialog(context, 'Error', _error);
           }
         };
       } else {
@@ -606,7 +606,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           _error = _response.replaceAll('ERROR - ', '').trim();
           _dataLoaded();
           logit(_error);
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
           //showSnackBar(_error);
           return null;
         } else {
@@ -766,28 +766,28 @@ class _CreditCardPageState extends State<CreditCardPage> {
             _dataLoaded();
             //_showDialog();
             logit(_error);
-            showAlertDialog(context, 'Error', _error);
+            showVidDialog(context, 'Error', _error);
           } else if (result.contains('ERROR')) {
             gblTimerExpired = true;
             _error = result;
             logit(_error);
             _dataLoaded();
             //_showDialog();
-            showAlertDialog(context, 'Error', _error);
+            showVidDialog(context, 'Error', _error);
           } else if (result.contains('Payment not')) {
             gblTimerExpired = true;
             _error = result;
             _dataLoaded();
             logit(_error);
             //_showDialog();
-            showAlertDialog(context, 'Error', _error);
+            showVidDialog(context, 'Error', _error);
           } else {
             gblTimerExpired = true;
             logit(result);
             _error = translate('Declined') + ': ' + result;
             _dataLoaded();
             //_showDialog();
-            showAlertDialog(context, 'Error', _error);
+            showVidDialog(context, 'Error', _error);
           }
         } catch (e, stack) {
           gblTimerExpired = true;
@@ -800,7 +800,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           logit(_error);
           _dataLoaded();
           //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         }
       }
     } catch (e, stack ){
@@ -811,7 +811,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       logit(_error);
       _dataLoaded();
       //_showDialog();
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
     }
   }
 /*bool hasValidTkt(int journeyToChange){
@@ -941,7 +941,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               _error = onValue;
               _dataLoaded();
               //_showDialog();
-              showAlertDialog(context, 'Error', _error);
+              showVidDialog(context, 'Error', _error);
               return;
             }
             if (onValue.toString().contains('Exception:')) {
@@ -951,7 +951,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
               }
               _dataLoaded();
               //_showDialog();
-              showAlertDialog(context, 'Error', _error);
+              showVidDialog(context, 'Error', _error);
               return;
             }
             // Server Exception ?
@@ -990,7 +990,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           _error = result; // translate('Declined');
           _dataLoaded();
           //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         }
       }});
     } else {
@@ -1088,7 +1088,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       if (data.contains('ERROR - ') || !_response.trim().startsWith('{')) {
         _error = _response.replaceAll('ERROR - ', '').trim();
         _dataLoaded();
-        showAlertDialog(context, 'Error', _error);
+        showVidDialog(context, 'Error', _error);
         //showSnackBar(_error);
         return null;
       } else {
@@ -1239,28 +1239,28 @@ class _CreditCardPageState extends State<CreditCardPage> {
           _dataLoaded();
           //_showDialog();
           logit(_error);
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         } else if (result.contains('ERROR')) {
           gblTimerExpired = true;
           _error = result;
           logit(_error);
           _dataLoaded();
           //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         } else if (result.contains('Payment not')) {
           gblTimerExpired = true;
           _error = result;
           _dataLoaded();
           logit(_error);
           //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         } else {
           gblTimerExpired = true;
           logit(result);
           _error = translate('Declined') + ': ' + result;
           _dataLoaded();
           //_showDialog();
-          showAlertDialog(context, 'Error', _error);
+          showVidDialog(context, 'Error', _error);
         }
       } catch (e) {
         gblTimerExpired = true;
@@ -1272,7 +1272,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         logit(_error);
         _dataLoaded();
         //_showDialog();
-        showAlertDialog(context, 'Error', _error);
+        showVidDialog(context, 'Error', _error);
       }
     }
   }
@@ -1510,7 +1510,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       logit(_error);
       _dataLoaded();
       //_showDialog();
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
     }
   }
 

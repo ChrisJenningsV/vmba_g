@@ -196,38 +196,80 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
 }
 
 
+class ButtonClickParams{
+  int i1 = 0;
+  int i2 = 0;
+
+  ButtonClickParams({ this.i1=0, this.i2=0});
+
+}
 
 
+Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext, ButtonClickParams?) onPressed,
+    {IconData? icon, int iconRotation=0, bool isRectangular=false,
+      Color color= Colors.tealAccent,
+      Color bkColor = Colors.tealAccent,
+      Color? lineColor = null,
+      String subCaption = '',
+      ButtonClickParams? params} ) {
 
-Widget vidActionButton(BuildContext context, String caption, void Function(BuildContext) onPressed, {IconData? icon, int iconRotation=0, bool isRectangular=false } ) {
-  ShapeBorder? shape;
-  if( isRectangular == true ){
-    shape = RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(5.0))
-    );
+  double borderWidth = 2;
+  if( color == Colors.tealAccent) color = gblSystemColors.primaryButtonTextColor as Color;
+  if( bkColor == Colors.tealAccent) bkColor = actionButtonColor();
+  if( lineColor == null) {
+    lineColor = Colors.amber;
+    borderWidth = 0;
   }
-  return Padding(
-      padding: EdgeInsets.only(left: 35.0),
-      child:
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        FloatingActionButton.extended(
-            elevation: 0.0,
-            shape: shape,
-            isExtended: true,
-            label: TrText(
-              caption,
-              style: TextStyle(color: gblSystemColors.primaryButtonTextColor),
-            ),
+    ShapeBorder? shape;
 
-            icon: gblSettings.wantButtonIcons ? Icon(Icons.check,
-                color: gblSystemColors.primaryButtonTextColor) : null ,
-            backgroundColor: actionButtonColor() ,
-            onPressed: () {
-              if(gblActionBtnDisabled == false ) {
-                onPressed(context);
-              }
-            })
-      ]));
+    if( isRectangular == true ){
+      shape = RoundedRectangleBorder(
+          side: BorderSide(width: borderWidth,color: lineColor as Color),
+          borderRadius: BorderRadius.all(Radius.circular(5.0),)
+      );
+    }
+    Widget label = TrText(
+      caption,
+      style: TextStyle(color: color),
+    );
+    if( subCaption != '' ){
+      label =  Column(
+        children: [
+          TrText(
+            caption,
+            style: TextStyle(color: color),
+          ),
+          VBodyText(
+            subCaption,
+            color: color,
+            size: TextSize.small,
+          ),
+      ]
+      );
+
+    }
+
+
+    return Padding(
+        padding: EdgeInsets.only(left: 35.0),
+        child:
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          FloatingActionButton.extended(
+              elevation: 0.0,
+              shape: shape,
+              isExtended: true,
+              label: label,
+
+              icon: gblSettings.wantButtonIcons ? Icon(Icons.check,
+                  color: gblSystemColors.primaryButtonTextColor) : null ,
+              backgroundColor: bkColor ,
+              onPressed: () {
+                if(gblActionBtnDisabled == false ) {
+                  onPressed(context, params);
+                }
+              })
+        ]));
+
 }
 
 Widget vidInfoButton(BuildContext context, {void Function(BuildContext)? onPressed}){

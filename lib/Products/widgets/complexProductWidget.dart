@@ -232,7 +232,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
   void onError(String msg){
     //widget.onError!(msg);
     gblActionBtnDisabled = false;
-    showAlertDialog(context, 'Error', msg);
+    showVidDialog(context, 'Error', msg);
 
   }
 

@@ -148,7 +148,7 @@ extension Section on ViewBookingBodyState {
       if (ticketNo == '') {
         // not found
         gblActionBtnDisabled = false;
-        showAlertDialog(context, 'Error', 'Ticket not found');
+        showVidDialog(context, 'Error', 'Ticket not found');
       } else {
         // get server to do unload
         gblActionBtnDisabled = true;
@@ -175,7 +175,7 @@ extension Section on ViewBookingBodyState {
             setState(() {});
           }
         } catch (e) {
-          showAlertDialog(context, 'Error', e.toString(), onComplete:() {
+          showVidDialog(context, 'Error', e.toString(), onComplete:() {
             setError('');
             setState(() {});
           });

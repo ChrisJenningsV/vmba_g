@@ -220,8 +220,9 @@ enum TextSize { small, medium, large }
 class VBodyText extends Text {
   TextSize size;
   Color? color;
+  bool wantTranslate;
 
-  VBodyText(super.data, {this.size = TextSize.medium, this.color});
+  VBodyText(super.data, {this.size = TextSize.medium, this.color, this.wantTranslate = false});
 
   build(BuildContext context){
     TextStyle style;
@@ -241,7 +242,9 @@ class VBodyText extends Text {
     if(color != null  ) {
       style = style.copyWith(color: color);
     }
-    return Text(data!, style: style,);
+    String text = data as String ;
+    if( wantTranslate) text = translate(text);
+    return Text(text, style: style,);
   }
 }
 class VHeadlineText extends Text {

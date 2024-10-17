@@ -103,11 +103,11 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
             logit('has newBooking - go to CDW');
             if( widget.newBooking == null){
               logit('widget.newBooking == null');
-              showAlertDialog(context, 'Alert', 'NB Error in data');
+              showVidDialog(context, 'Alert', 'NB Error in data');
             }
             if( widget.passengerDetailRecord == null ){
               logit('widget.passengerDetailRecord == null');
-              showAlertDialog(context, 'Alert', 'PDR Error in data');
+              showVidDialog(context, 'Alert', 'PDR Error in data');
 
             }
             var _error = await Navigator.push(

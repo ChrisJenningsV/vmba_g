@@ -333,7 +333,6 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
         case 'SUSSPEND':
         case 'STOP':
           return new StopPageWeb();
-          break;
       }
       _connectivity.disposeStream();
 

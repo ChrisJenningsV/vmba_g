@@ -52,7 +52,7 @@ class V3HomePageState extends State<V3HomePage>{
   Widget build(BuildContext context) {
 
     if (gblError != '') {
-      showAlertDialog(context, gblErrorTitle, gblError, onComplete:() {
+      showVidDialog(context, gblErrorTitle, gblError, onComplete:() {
         setError('');
         setState(() {});
       });

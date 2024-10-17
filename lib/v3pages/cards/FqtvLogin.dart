@@ -127,7 +127,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
                           _loadingInProgress = false;
                           _isButtonDisabled = false;
                           // _actionCompleted();
-                          showAlertDialog(context, 'Error', _error);
+                          showVidDialog(context, 'Error', _error);
                         }
                       }
           },
@@ -210,7 +210,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
                     } else {
                       _error = str;
                       _actionCompleted();
-                      showAlertDialog(context, 'Error', _error);
+                      showVidDialog(context, 'Error', _error);
                     }
                   }
                   //});
@@ -255,7 +255,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
       if( resp.statusCode != 'OK') {
         _error = resp.message;
         _actionCompleted();
-        showAlertDialog(context, 'Error', _error);
+        showVidDialog(context, 'Error', _error);
 
       } else {
         _error = resp.message;
@@ -263,7 +263,7 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
         _error = 'Reset email sent';
         Navigator.of(context).pop();
         //_showDialog();
-        showAlertDialog(context, 'Information', _error);
+        showVidDialog(context, 'Information', _error);
       }
     });
 

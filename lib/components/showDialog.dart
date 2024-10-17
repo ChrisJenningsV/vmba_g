@@ -96,23 +96,33 @@ child: Text(msg),
 enum DialogType{
   Error,
   Warning,
-  Information
+  Information,
+  Custom
 }
 
-void showAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete, DialogType type= DialogType.Information  }) {
+void showVidDialog(BuildContext context, String title, String msg,
+    {void Function()? onComplete, DialogType type= DialogType.Information,
+      Widget Function(void Function(void Function()))? getContent}) {
   // flutter defined function
   logit('showAlertDialog $msg');
 
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
-            return getAlertDialog(context, title, msg, onComplete: onComplete, type: type);
-    },
+      return StatefulBuilder(
+        builder: (context, setState)
+      {
+        return getAlertDialog(context, title, msg, setState, onComplete: onComplete,
+            type: type,
+            getContent: getContent);
+      }
+      );
+    }
   );
 }
 
-AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void Function()? onComplete, DialogType type= DialogType.Information}) {
+AlertDialog getAlertDialog(BuildContext context, String title, String msg, void Function(void Function()) setState2,
+    {void Function()? onComplete, DialogType type= DialogType.Information, Widget Function(void Function(void Function()))? getContent}) {
   logit('getAlertDialog');
 
   IconData icon = Icons.error_outline;
@@ -134,8 +144,22 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
       titleTextClr = Colors.yellow;
       titleBackClr = Colors.yellow[100];
       icon = Icons.warning_amber;
-
       break;
+    case DialogType.Custom:
+      titleTextClr = Colors.black87;
+      titleBackClr = Colors.black12;
+      break;
+  }
+
+  Widget dlgTitleContent = Row(
+      children: [
+        Icon(icon, color: titleTextClr),
+        Padding(padding: EdgeInsets.all(3),),
+        Text(title,  style: TextStyle(color: Colors.black),)
+      ]
+  );
+  if( icon == Icons.error_outline){
+    dlgTitleContent = Text(title,  style: TextStyle(color: titleTextClr),);
   }
 
 
@@ -150,13 +174,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
   topLeft: Radius.circular(10.0),
   topRight: Radius.circular(10.0),)),
   padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-  child: Row(
-      children: [
-        Icon(icon, color: titleTextClr),
-        Padding(padding: EdgeInsets.all(3),),
-        Text(title,  style: TextStyle(color: Colors.black),)
-  ]
-  ));
+  child: dlgTitleContent);
 
   return AlertDialog(
     shape: RoundedRectangleBorder(
@@ -164,30 +182,13 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
     contentPadding: EdgeInsets.only(top: 10.0),
     title: dlgTitle,
     titlePadding: const EdgeInsets.all(0),
-    content: Container(
+    content: (getContent != null) ? getContent(setState2) : Container(
       width: 300.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          /*Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                translate(title),
-                style: TextStyle(fontSize: 24.0),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5.0,
-          ),
-          Divider(
-            color: Colors.grey,
-            height: 4.0,
-          ),*/
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: TextField(
@@ -230,7 +231,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, {void
       ),
     ),
       actions: [
-        onComplete == null ?
+        /*onComplete == null ?*/
       ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
 onPressed: () {
@@ -242,7 +243,7 @@ onComplete();
 },
 
 child: TrText
-('OK')) : Container()
+('OK')) /*: Container()*/
 ],
 );
 

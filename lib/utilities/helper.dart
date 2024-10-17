@@ -126,6 +126,13 @@ String cityCodetoAirport(String code){
   if(gblAirportCache!= null && gblAirportCache![code]!= null ) {
     return translate(gblAirportCache![code] as String);
   }
+  if( gblCityList != null ){
+    gblCityList!.cities!.forEach((city) {
+      if( city.code.toUpperCase() == code.toUpperCase()){
+        code = translate(city.name);
+      }
+    });
+  }
   return code;
 }
 

@@ -295,7 +295,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       _dataLoaded();
       //_showDialog();
       logit(_error);
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
 
     } else if (result.contains('ERROR')) {
       gblTimerExpired = true;
@@ -303,7 +303,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       logit(_error);
       _dataLoaded();
       //_showDialog();
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
 
     } else if (result.contains('Payment not')) {
       gblTimerExpired = true;
@@ -311,7 +311,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       _dataLoaded();
       logit(_error);
       //_showDialog();
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
 
     } else {
       gblTimerExpired = true;
@@ -319,7 +319,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
       _error = translate('Declined') + ': ' + result;
       _dataLoaded();
       //_showDialog();
-      showAlertDialog(context, 'Error', _error);
+      showVidDialog(context, 'Error', _error);
 
     }
   } catch (e) {
@@ -332,7 +332,7 @@ Future xchangeFlt(PnrModel pnrModel, MmbBooking mmbBooking, BuildContext context
     logit(_error);
     _dataLoaded();
     //_showDialog();
-    showAlertDialog(context, 'Error', _error);
+    showVidDialog(context, 'Error', _error);
 
   }
 }

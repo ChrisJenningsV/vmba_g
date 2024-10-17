@@ -128,6 +128,7 @@ class Settings {
   bool wantPriceCalendar;
   bool wantNewMMB;
   bool wantNewSeats;
+  bool wantSeatKeyExpanded;
   bool wantUpgradePrices;
   bool wantPriceCalendarRounding;
   bool wantMonthOnCalendar;
@@ -338,6 +339,7 @@ bool bpShowFastTrack;
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
     this.wantNewSeats = false,
+    this.wantSeatKeyExpanded = false,
     this.wantNewMMB = false,
     this.wantUpgradePrices = false,
     this.wantPriceCalendarRounding = false,
