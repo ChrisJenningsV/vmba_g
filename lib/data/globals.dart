@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
+import '../components/vidButtons.dart';
 import '../home/searchParams.dart';
 import '../v3pages/homePageHelper.dart';
 import '../v3pages/v3Theme.dart';
@@ -22,7 +23,7 @@ import 'models/seatplan.dart';
 // initialized in main_XX.dart
 // M1 = LM new stuff
 // 9Q caicos
-String gblBuildFlavor = 'FN';
+String gblBuildFlavor = 'YL';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117;
@@ -148,6 +149,7 @@ NotificationStore? gblNotifications;
 PageListHolder? gblHomeCardList;
 V3Theme? gblV3Theme;
 Cities? gblCityList;
+ButtonClickParams? gblButtonClickParams;
 
 TextStyle? gblTitleStyle;
 List<String> gblTitles = <String>[

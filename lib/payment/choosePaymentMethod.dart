@@ -2150,14 +2150,15 @@ List<Widget> getPayOptions(String amount, String cur) {
       // reply = reply.replaceAll('"', '\"');
        //reply = '{"paymentProviderList":"' + reply + '}';
        gblProviders = Providers.fromJson2(reply);
-       logit('providers loaded');
        if( gblProviders != null && gblProviders!.providers.length > 0) {
+         logit('${gblProviders!.providers.length} providers loaded');
          gblLastProviderCurrecy = gblSelectedCurrency;
          setState(() {
 
          });
        }
     } catch(e) {
+       logit('NO providers loaded');
        logit('cpm: ' + e.toString());
      }
    }

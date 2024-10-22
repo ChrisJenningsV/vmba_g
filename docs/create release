@@ -19,6 +19,8 @@ buildRelease\buraq.bat
 buildRelease\caicos.bat
 buildRelease\medsky.bat
 buildRelease\hisky.bat
+buildRelease\excursions.bat
+buildRelease\libyanwings.bat
 buildRelease\logan.bat
 buildRelease\blueislands.bat
 buildRelease\aurigny.bat

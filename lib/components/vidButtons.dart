@@ -199,8 +199,10 @@ Widget vid3DActionButton(BuildContext context, String caption, void Function(Bui
 class ButtonClickParams{
   int i1 = 0;
   int i2 = 0;
+  String action = '';
 
-  ButtonClickParams({ this.i1=0, this.i2=0});
+
+  ButtonClickParams({ this.i1=0, this.i2=0, this.action=''});
 
 }
 

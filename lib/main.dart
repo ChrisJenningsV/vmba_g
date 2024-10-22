@@ -30,9 +30,11 @@ import 'data/SystemColors.dart';
 import 'main_aurigny.dart';
 import 'main_buraq.dart';
 import 'main_caicos.dart';
+import 'main_excursions.dart';
 import 'main_fastjet.dart';
 import 'main_fl.dart';
 import 'main_hiSky.dart';
+import 'main_libyanWings.dart';
 import 'main_lm.dart';
 import 'main_medSky.dart';
 import 'main_si.dart';
@@ -111,6 +113,12 @@ void main() async {
         break;
       case 'UN':
         configU5();
+        break;
+      case 'X4':
+        configX4();
+        break;
+      case 'YL':
+        configYL();
         break;
       default:
         gblAppTitle='Test Title';

@@ -288,6 +288,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       seat.webCheckinNoSeatCharge = false;
     }
+    logit('SA book seats j=${widget.journeyNo}');
 
     String data =  json.encode(seat);
 
@@ -528,6 +529,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 Widget getTitle() {
     if( gblSettings.wantNewSeats ) {
       String title1 = translate('Choose a seat');
+      if( gblButtonClickParams != null &&  gblButtonClickParams!.action == 'changeseat'){
+        title1 = 'Change seat';
+      }
 
       Itin flt =   gblPnrModel!.pNR.itinerary.itin[gblCurJourney];
       String route = '${cityCodetoAirport(flt.depart)} - ${cityCodetoAirport(flt.arrive)}';

@@ -2048,6 +2048,8 @@ class ViewBookingBodyState
 
   Widget seatButton(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist,
       bool checkinOpen, bool chargeForPreferredSeating) {
+
+    String action = '';
     String btnText = '';
     if(checkinOpen) {
       if( gblSettings.wantSeats ==  false ) return Container();
@@ -2058,6 +2060,7 @@ class ViewBookingBodyState
       }
 
       btnText = 'Check-in';
+      action = 'checkin';
     } else {
         if( widget.isAfterClosed) return Container();
         if( gblSettings.wantSeats ==  false ) return Container();
@@ -2069,10 +2072,13 @@ class ViewBookingBodyState
               .seat ==
               '') {
           btnText = 'Choose Seat';
+          action= 'chooseseat';
         } else {
           btnText = 'Change Seat';
+          action = 'changeseat';
         }
     }
+    ButtonClickParams buttonClickParams = new ButtonClickParams(i1: paxNo, i2: journeyNo, action: action);
 
 
     if( gblSettings.wantAllColorButtons) {
@@ -2112,10 +2118,13 @@ class ViewBookingBodyState
               paxNo, journeyNo, pnr, paxlist, chargeForPreferredSeating);
           gblActionBtnDisabled = false;
         } else {
-          preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
+          preferredSeating(buttonClickParams, pnr, paxlist, checkinOpen);
           gblActionBtnDisabled = false;
         }
-      } , isRectangular: true, icon: Icons.event_seat );
+      } ,
+          isRectangular: true,
+          params: buttonClickParams,
+          icon: Icons.event_seat );
 
     } else {
       return new TextButton(
@@ -2141,7 +2150,7 @@ class ViewBookingBodyState
           } else {
             gblCurPax = paxNo;
             gblCurJourney = journeyNo;
-            preferredSeating(paxNo, journeyNo, pnr, paxlist, checkinOpen);
+            preferredSeating(buttonClickParams, pnr, paxlist, checkinOpen);
             gblActionBtnDisabled = false;
           }
         },
@@ -2734,9 +2743,12 @@ class ViewBookingBodyState
     // );
   }
 
-  preferredSeating(int paxNo, int journeyNo, PnrModel pnr, List<Pax> paxlist, bool checkinOpen) {
+  preferredSeating(ButtonClickParams buttonClickParams, PnrModel pnr, List<Pax> paxlist, bool checkinOpen) {
     gblPnrModel = pnr;
-    logit('seatplan cmd ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x}');
+    gblButtonClickParams = buttonClickParams;
+
+    logit('seatplan cmd ls${pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.i2].depDate +
+        ' ' + pnr.pNR.itinerary.itin[buttonClickParams.i2].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.i2].depart + pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.i2].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x}');
 
     Navigator.push(
         context,
@@ -2745,14 +2757,16 @@ class ViewBookingBodyState
             paxlist: paxlist,
             isMmb: true,
             ischeckinOpen: checkinOpen,
-            flt: pnr.pNR.itinerary.itin[journeyNo].airID + ' ' + pnr.pNR.itinerary.itin[journeyNo].fltNo + ' ' +
-            pnr.pNR.itinerary.itin[journeyNo].depart + '-' + pnr.pNR.itinerary.itin[journeyNo].arrive,
+            flt: pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + ' ' + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo + ' ' +
+            pnr.pNR.itinerary.itin[buttonClickParams.i2].depart + '-' + pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive,
             seatplan:
-                'ls${pnr.pNR.itinerary.itin[journeyNo].airID + pnr.pNR.itinerary.itin[journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[journeyNo].depDate + ' ' + pnr.pNR.itinerary.itin[journeyNo].depTime))}${pnr.pNR.itinerary.itin[journeyNo].depart + pnr.pNR.itinerary.itin[journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
+                'ls${pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.i2].depDate + ' ' +
+                    pnr.pNR.itinerary.itin[buttonClickParams.i2].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.i2].depart +
+                    pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.i2].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,
-            cabin: pnr.pNR.itinerary.itin[journeyNo].cabin,
-            journeyNo: journeyNo.toString(),
-            selectedpaxNo: paxNo + 1,
+            cabin: pnr.pNR.itinerary.itin[buttonClickParams.i2].cabin,
+            journeyNo: buttonClickParams.i2.toString(),
+            selectedpaxNo: buttonClickParams.i1 + 1,
           ),
         )).then((pnrModel) {
           if( pnrModel != null ) {
@@ -2801,7 +2815,7 @@ class ViewBookingBodyState
       ),
       onPressed: () {
         Navigator.of(context).pop();
-        preferredSeating(paxNo, journeyNo, pnr, paxlist,false);
+        preferredSeating( ButtonClickParams(i1: paxNo, i2:journeyNo), pnr, paxlist,false);
       },
     );
 

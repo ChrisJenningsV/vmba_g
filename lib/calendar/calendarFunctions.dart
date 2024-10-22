@@ -1093,49 +1093,58 @@ List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bo
     }
     });
 
-
-      if( cbName.length > 15) cbName = cbName.substring(0,10);
-      list.add(getClassNameRow(cbName, inRow: inRow));
-
- // logit('$cbName: $noAv');
-
-  if(noAv > 0) {
-    if( item[0].fltav.discprice!.length > index &&
-        item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')
-    {
-      list.add(getWasPriceRow(item, index));
-      if( inRow) {
-        rlist.add(getPromoPriceRow(item, index));
-      } else {
-        list.add(getPromoPriceRow(item, index));
-      }
-    } else {
-      if( inRow) {
-        rlist.add(getPriceRow(item, index));
-      } else {
-        list.add(getPriceRow(item, index));
-      }
+    if( cbName.length > 10 && cbName.toLowerCase().contains(' class')) {
+      cbName = cbName.replaceAll(' class', '').replaceAll(' Class', '').replaceAll(' CLASS', '');
     }
+
+  if( cbName.length > 15) {
+    List <String> arName = cbName.split(' ');
+    arName.forEach((element) {
+      list.add(getClassNameRow(element, inRow: inRow));
+    });
+    //cbName = cbName.substring(0, 10);
+
   } else {
-    if( inRow) {
-      rlist.add(getNoSeatsRow());
-    } else {
-      list.add(getNoSeatsRow());
-    }
+    list.add(getClassNameRow(cbName, inRow: inRow));
   }
-if( inRow) {
-  list.add(Row(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: rlist,
-  ));
+      // logit('$cbName: $noAv');
 
-  return list;
-} else {
-  return list;
-}
+      if(noAv > 0) {
+        if( item[0].fltav.discprice!.length > index &&
+            item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')
+        {
+          list.add(getWasPriceRow(item, index));
+          if( inRow) {
+            rlist.add(getPromoPriceRow(item, index));
+          } else {
+            list.add(getPromoPriceRow(item, index));
+          }
+        } else {
+          if( inRow) {
+            rlist.add(getPriceRow(item, index));
+          } else {
+            list.add(getPriceRow(item, index));
+          }
+        }
+      } else {
+        if( inRow) {
+          rlist.add(getNoSeatsRow());
+        } else {
+          list.add(getNoSeatsRow());
+        }
+      }
+      if( inRow) {
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: rlist,
+        ));
 
+        return list;
+      } else {
+        return list;
+      }
+    }
 
-}
 
 class FlightLine extends StatelessWidget {
   @override

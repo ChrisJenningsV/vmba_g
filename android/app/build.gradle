@@ -62,10 +62,20 @@ android {
             resValue "string", "flavored_app_name", "Loganair"
             applicationId "uk.co.loganair.booking"
         }
+        Excursions {
+            dimension "version"
+            resValue "string", "flavored_app_name", "Excursions"
+            applicationId "com.airexcursions"
+        }
         FastJet {
             dimension "version"
             resValue "string", "flavored_app_name", "FastJet"
             applicationId "com.fastjet.reservations"
+        }
+        LibyanWings {
+            dimension "version"
+            resValue "string", "flavored_app_name", "LibyanWings"
+            applicationId "com.libyanwings.bookings"
         }
         HiSky {
             dimension "version"

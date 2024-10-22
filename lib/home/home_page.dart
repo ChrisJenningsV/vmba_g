@@ -106,7 +106,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         }
       } else {
         newInstall == false;
-        if( value.split('.').length == 4) {
+        if( value.split('.').length == 4 && gblVersion != '' && gblVersion.split('.').length == 4)  {
           if (int.parse(gblVersion.split('.')[3]) > int.parse(value.split('.')[3])) {
             if( gblSettings.updateMessage != null && gblSettings.updateMessage.isNotEmpty) {
               updateMsg =gblSettings.updateMessage;
