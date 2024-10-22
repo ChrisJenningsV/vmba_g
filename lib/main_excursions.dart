@@ -57,7 +57,7 @@ void configX4() {
     paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
     wantRememberMe: false,
     wantApis: true,
-    wantNewCalendar: true,
+    wantNewCalendar: false,
 //    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
  //   currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWG',

@@ -96,25 +96,36 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     }
     bool newInstall = true;
     getSetting('savedVersion').then((value) {
-      if(value == null || value == '' ){
-        // if null, old format saved bookings
-        if( gblSettings.updateMessage == null || gblSettings.updateMessage.isEmpty) {
-          updateMsg =
-          'Your app has been updated.'; // The format of a booking has been improved so saved bookings will need reloading.';
+      try {
+        if (value == null || value == '') {
+          // if null, old format saved bookings
+          if (gblSettings.updateMessage == null ||
+              gblSettings.updateMessage.isEmpty) {
+            updateMsg =
+            'Your app has been updated.'; // The format of a booking has been improved so saved bookings will need reloading.';
+          } else {
+            updateMsg = gblSettings.updateMessage;
+          }
         } else {
-          updateMsg =gblSettings.updateMessage;
-        }
-      } else {
-        newInstall == false;
-        if( value.split('.').length == 4 && gblVersion != '' && gblVersion.split('.').length == 4)  {
-          if (int.parse(gblVersion.split('.')[3]) > int.parse(value.split('.')[3])) {
-            if( gblSettings.updateMessage != null && gblSettings.updateMessage.isNotEmpty) {
-              updateMsg =gblSettings.updateMessage;
+          newInstall == false;
+          if (value
+              .split('.')
+              .length == 4 && gblVersion != '' && gblVersion
+              .split('.')
+              .length == 4) {
+            if (int.parse(gblVersion.split('.')[3]) >
+                int.parse(value.split('.')[3])) {
+              if (gblSettings.updateMessage != null &&
+                  gblSettings.updateMessage.isNotEmpty) {
+                updateMsg = gblSettings.updateMessage;
+              }
             }
-
           }
         }
+      } catch (e) {
+        logit('version check ' + e.toString());
       }
+
       PackageInfo.fromPlatform()
           .then((PackageInfo packageInfo) =>
       packageInfo.version + '.' + packageInfo.buildNumber)
