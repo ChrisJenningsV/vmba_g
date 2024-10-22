@@ -83,6 +83,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
 
   }
   void onPressed(BuildContext context, dynamic p) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     Navigator.pop(
         context,
         FlightDates(

@@ -41,6 +41,7 @@ void configX4() {
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
     inputFillColor: Colors.white,
+    calInRangeColor: Color.fromRGBO(0XF0, 0xB3, 0x23, 1),
   );
   _systemColors.setDefaults();
   gblSystemColors =_systemColors;
@@ -56,6 +57,7 @@ void configX4() {
     paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
     wantRememberMe: false,
     wantApis: true,
+    wantNewCalendar: true,
 //    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
  //   currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWG',

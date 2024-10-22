@@ -313,20 +313,8 @@ bool bFirstTime = true;
   }
 
   void _intiTheme() async {
-    if( gblSettings.wantPriceCalendar == true || gblSettings.pageStyle == 'V2'){
+    if( (gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true ) || gblSettings.pageStyle == 'V2'){
       loadTheme();
-  /*    try {
-        // load theme from json file (Asset or server)
-        String jsonString = await rootBundle.loadString(
-            'lib/assets/$gblAppTitle/json/theme.json');
-
-        final Map<String, dynamic> map = json.decode(jsonString);
-        gblV3Theme = V3Theme.fromJson(map);
-      } catch(e) {
-        // use defaults
-        gblV3Theme = new V3Theme();
-      }
-*/
     }
   }
 

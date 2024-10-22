@@ -26,7 +26,8 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
     decoration = BoxDecoration(color: gblV3Theme!.calendar.selectableColor,
       borderRadius: BorderRadius.circular(1),);
   }
-  if( isInRange) {
+  if( isSelected == null ) isSelected = false;
+  if( isInRange || isSelected)  {
     decoration = BoxDecoration(color: gblSystemColors.calInRangeColor,
       borderRadius: BorderRadius.circular(1),);
 

@@ -126,6 +126,7 @@ class Settings {
   bool wantTerminal;
   bool wantMaterialFonts;
   bool wantPriceCalendar;
+  bool wantNewCalendar;
   bool wantNewMMB;
   bool wantNewSeats;
   bool wantSeatKeyExpanded;
@@ -338,6 +339,7 @@ bool bpShowFastTrack;
     this.wantTerminal = true,
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
+    this.wantNewCalendar = false,
     this.wantNewSeats = false,
     this.wantSeatKeyExpanded = false,
     this.wantNewMMB = false,

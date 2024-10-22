@@ -90,7 +90,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
           topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0));
     }
 
-    if (gblSettings.wantPriceCalendar == true && gblIsLive == false) {
+    if ((gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true) && gblIsLive == false) {
       FareCalendarDatePickerConfig config = FareCalendarDatePickerConfig(
         calendarType: FareCalendarDatePickerType.range,
         rangeBidirectional: true,

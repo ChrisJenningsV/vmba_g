@@ -513,6 +513,9 @@ class Repository {
                   case 'wantnewpayment':
                     gblSettings.wantNewPayment =  parseBool(item['value']);
                     break;
+                  case 'wantnewcalendar':
+                    gblSettings.wantNewCalendar =  parseBool(item['value']);
+                    break;
                   case 'wantrefund':
                     gblSettings.wantRefund  = parseBool(item['value']);
                     break;
