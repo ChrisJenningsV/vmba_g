@@ -33,7 +33,7 @@ class CustomError extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.red ,
                   fontWeight: FontWeight.bold,
-                  fontSize: 21),
+                  fontSize: 14),
             ),
             const SizedBox(height: 12),
             Text(

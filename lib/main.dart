@@ -225,11 +225,9 @@ bool bFirstTime = true;
           builder: (context, provider, child) =>
               MaterialApp(
                 builder: (BuildContext context, Widget? widget) {
-/*
                   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
                     return CustomError(errorDetails: errorDetails);
                   };
-*/
                   // Retrieve the MediaQueryData from the current context.
                   final mediaQueryData = MediaQuery.of(context);
 
