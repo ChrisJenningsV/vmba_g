@@ -80,7 +80,7 @@ class SystemColors {
     this.progressBackColor,
     this.progressTextColor,
     required this.primaryHeaderColor,
-    this.calInRangeColor = Colors.pink,
+    this.calInRangeColor = Colors.black54,
     this.headerTextColor,
     this.statusBar =Brightness.light,
     this.textEditBorderColor = Colors.grey,

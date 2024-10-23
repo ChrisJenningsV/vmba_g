@@ -1488,21 +1488,23 @@ class Repository {
 
     database.getRoutesData().then((valueMap) {
       if (gblVerbose) {print('getRoutesData');}
-      valueMap!['Routes'].forEach((item) {
-        //logit(item.toString());
-        departureCities.add(item.values.first['airportCode'] +
-            "|" +
-            item.values.first['airportName'] +
-            " (" +
-            item.values.first['airportCode'] +
-            ")");
-        /*logit(item.values.first['airportCode'] +
+      if( valueMap != null && valueMap!['Routes'] != null ) {
+        valueMap!['Routes'].forEach((item) {
+          //logit(item.toString());
+          departureCities.add(item.values.first['airportCode'] +
+              "|" +
+              item.values.first['airportName'] +
+              " (" +
+              item.values.first['airportCode'] +
+              ")");
+          /*logit(item.values.first['airportCode'] +
             "|" +
             item.values.first['airportName'] +
             " (" +
             item.values.first['airportCode'] +
             ")");*/
-      });
+        });
+      }
       if( departureCities.length==0){
         print("No departures");
       }
