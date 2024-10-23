@@ -152,7 +152,7 @@ bool bFirstTime = true;
     super.initState();
     startTime = DateTime.now();
     _initLangs();
-    _intiTheme();
+//    _initTheme();
     setLiveTest();
 
     if( gblLangFileLoaded == false ) {
@@ -310,9 +310,15 @@ bool bFirstTime = true;
       ));
   }
 
-  void _intiTheme() async {
-    if( (gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true ) || gblSettings.pageStyle == 'V2'){
-      loadTheme();
+  void _initTheme() async {
+    try {
+      if ((gblSettings.wantNewCalendar ||
+          gblSettings.wantPriceCalendar == true) ||
+          gblSettings.pageStyle == 'V2') {
+        loadTheme();
+      }
+    } catch(e) {
+
     }
   }
 
