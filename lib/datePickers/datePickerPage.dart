@@ -28,10 +28,14 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
     super.initState();
 
     departureDate = widget.departureDate;
+    gblDepartDate = departureDate;
+//    gblReturnDate = newValue.returnDate!;
   }
 
   void _handleDateChanged(FlightDates newValue) {
     departureDate = newValue.departureDate;
+    gblDepartDate = newValue.departureDate;
+
     setState(() {
 
     });
@@ -57,7 +61,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
             style: TextStyle(letterSpacing: 1.15),
           ),
         ),
-        body: gblSettings.wantPriceCalendar ?
+        body: gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar ?
             wrapCal(
            DayPickerPage(
                 firstDate: DateTime.now(),

@@ -76,8 +76,8 @@ class V3Calendar {
   // set default colors
   Color backColor = Color.fromRGBO(0XF0, 0xF0, 0xF0, 1);
   Color textColor = Colors.black;
-  Color selectableColor = Color.fromRGBO(0XCA, 0xCA, 0xCA, 1);
-  Color disabledColor = Color.fromRGBO(0XE0, 0xE0, 0xE0, 1);
+  Color selectableColor = Color.fromRGBO(0XCA, 0xCA, 0xCA, 0.5);
+  Color disabledColor = Color.fromRGBO(0XE0, 0xE0, 0xE0, 0.5);
 
   late Color selectedBackColor = Colors.red;
   late Color selectedTextColor = Colors.white;

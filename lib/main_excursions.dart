@@ -41,6 +41,7 @@ void configX4() {
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200], //Colors.grey.shade300
     inputFillColor: Colors.white,
+    calTextColor: Color.fromRGBO(0X00, 0x28, 0x55, 1),
 //   calInRangeColor: Color.fromRGBO(0XF0, 0xB3, 0x23, 1),
   );
   _systemColors.setDefaults();
@@ -52,22 +53,19 @@ void configX4() {
   gblCurrentRloc = '';
 
   gblSettings = Settings (
-//    latestBuildiOS: '1.0.5',
-//    latestBuildAndroid: '1.0.0.98',
     paySettings: PaySettings(payImageMap: '{"Cellulant": "none", "Directpay3g": "visaMC", "Directpay3gSecondary": "none", "CBZ": "none", "ZPGENERIC": "none"}' ),
+
     wantRememberMe: false,
     wantApis: true,
     wantNewCalendar: true,
-//    wantNewDatepicker: true,
     wantHomeFQTVButton: false,
- //   currencies: 'bw,BWP,gb,GBP,eu,EUR,us,USD,za,ZAR,zw,ZWG',
     currency: 'USD',
-  //  wantCurrencyPicker: true,
     smartApiVersion: 2,
     wantCentreTitle: true,
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',
     pageStyle: 'V1',
+
 
     airlineName: "excursions",
     gblServerFiles: 'https://customer.videcom.com/AirExcursions/VARS/AppFiles/',
@@ -80,15 +78,12 @@ void configX4() {
     prohibitedItemsNoticeUrl:  'https://airexcursions.com/hazmat-firearms',
     faqUrl: 'https://airexcursions.com/faq',
     contactUsUrl: 'https://airexcursions.com/contact',
-    //ccUrl: 'https://customertest.videcom.com/loganair/vars/public/MobileStartPage.aspx',
 
     locale: 'en-EN',
     bookingLeadTime: 60,
     webCheckinNoSeatCharge: true,
     vrsGuid: '6e294c5f-df72-4eff-b8f3-1806b247340c',
     autoSeatOption: false,
-    //useWebApiforVrs: true,
-//  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
     iOSAppId: '6443695568',
     androidAppId: 'com.airexcursions',
     fqtvName: 'Club',
@@ -102,9 +97,6 @@ void configX4() {
     searchDateOut: 1,
     searchDateBack: 6,
     useLogin2: true,
-
-
-//    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/ads-terms/',
     passengerTypes: PassengerTypes(
       adults: true,
       child: true,
@@ -115,7 +107,6 @@ void configX4() {
     ),
 
 //Production setttings
-
     liveXmlUrl:      "https://customer.videcom.com/AirExcursions/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://customer.videcom.com/AirExcursions/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://customer.videcom.com/AirExcursions/VARS/webApiv2/api/',
@@ -129,12 +120,6 @@ void configX4() {
     apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
-//Staging setttings
-/*  testXmlUrl:      "https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-  testApisUrl:      'https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-  testApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',  // InHouse
-
- */
 
     //   testPayPage: 'http://10.0.2.2:62559/MobilePaymentStart.aspx',
     testPayPage: 'https://customertest.videcom.com/AirExcursions/VARS/Public/MobilePaymentStart.aspx',
@@ -149,9 +134,9 @@ void configX4() {
 
 
     creditCardProvider: '3DS_videcard',
-    testCreditCardProvider: 'videcard', //'videcard|MX payment,3DS_WorldPay3DS|WorldPay payment',
+    testCreditCardProvider: 'videcard',
 
-    displayErrorPnr: false,    // just for test, to display pnr problems
+    displayErrorPnr: false,
     wantPageImages: true,
     wantLeftLogo: false,
     wantCurrencySymbols: true,
@@ -160,11 +145,9 @@ void configX4() {
     wantInternatDialCode: true,
     wantFindBookings: true,
     wantNewEditPax: true,
-    //wantMaterialControls: true,
     wantCitySwap: true,
     wantPushNoticications: true,
     wantNotificationEdit: false,
-    //wantRefund: true,
     wantNewPayment: true,
     wantCountry: false,
     wantMmbProducts: true,

@@ -20,21 +20,29 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
   {bool isInRange = false  }) {
 
 
+/*
   decoration = BoxDecoration(color: Colors.grey.shade500,
     borderRadius: BorderRadius.circular(1),);
-  if( gblV3Theme != null ){
-    decoration = BoxDecoration(color: gblV3Theme!.calendar.selectableColor,
-      borderRadius: BorderRadius.circular(1),);
-  }
-  if( isSelected == null ) isSelected = false;
-  if( isInRange || isSelected)  {
-    decoration = BoxDecoration(color: gblSystemColors.calInRangeColor,
-      borderRadius: BorderRadius.circular(1),);
-
-  }
+*/
 
   Widget lineTwo = Text('');
-  Color textColor = Colors.black;
+  Color? textColor = gblSystemColors.calTextColor;
+  Color? decorationColor = Colors.grey.shade300.withOpacity(0.5);
+  FontWeight? fontWeight;
+  BoxDecoration? decoration;
+
+/*
+  if( gblV3Theme != null ){
+    decorationColor = gblV3Theme!.calendar.selectableColor;
+  }
+*/
+  if( isSelected == null ) isSelected = false;
+  if( isInRange || isSelected)  {
+    decorationColor = gblSystemColors.calInRangeColor;
+//    if ( date == gblDe)
+  }
+
+
   if(isSelected != null && isSelected == true){
     textColor = Colors.white;
     if( gblV3Theme != null ){
@@ -42,11 +50,20 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
     }
   }
 
+  if( gblDepartDate!= null && date.year == gblDepartDate!.year && date.month == gblDepartDate!.month && date.day == gblDepartDate!.day){
+    decorationColor = gblSystemColors.calDepartColor;
+  } else   if(gblSearchParams.isReturn && gblReturnDate != null &&  date.year == gblReturnDate!.year && date.month == gblReturnDate!.month && date.day == gblReturnDate!.day){
+    decorationColor = gblSystemColors.calReturnColor;
+  }
+
+
 //  logit('day: ${date.day} isSelected: $isSelected isDisabled: $isDisabled' );
 
   if(isToday != null && isToday == true ){
-    textStyle = TextStyle( color: Colors.red, fontWeight: FontWeight.bold);
-    decoration = BoxDecoration( );
+    textColor = gblSystemColors.calTodayTextColor;
+    decorationColor = gblSystemColors.calTodayColor;
+//
+//    decoration = BoxDecoration( );
     lineTwo = RotatedBox(
         quarterTurns: 1,
         child: new Icon(
@@ -54,28 +71,26 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
           color: Colors.red,
           size: 15.0,
         ));
-  } else if( isDisabled != null && isDisabled== false){
-    /*  lineTwo = RotatedBox(
-          quarterTurns: 1,
-          child: new Icon(
-            Icons.airplanemode_active,
-            color: Colors.black,
-            size: 15.0,
-          ));*/
-
+  } else if( isDisabled != null && isDisabled== true) {
+    decorationColor =  gblSystemColors.calDisabledColor;
+    textColor = Colors.black38;
+   /* decoration = BoxDecoration(color: gblSystemColors.calDisabledColor,
+      borderRadius: BorderRadius.circular(1),);*/
+  } else if( isDisabled != null && isDisabled== false) {
+    //textStyle = TextStyle( color: textColor);
   }
+
+  textStyle = TextStyle( color: textColor, fontWeight: fontWeight);
+  decoration = BoxDecoration(color: decorationColor,
+    borderRadius: BorderRadius.circular(1),);
+
   if( gblFlightPrices != null ) {
     // check for this date
     gblFlightPrices!.flightPrices.forEach((flightPrice) {
-      //       logit( ' match ${flightPrice.FlightDate} to ${date.toString().substring(0,10)}');
       if( flightPrice.FlightDate != '' && flightPrice.FlightDate== date.toString().substring(0,10)){
         if( flightPrice.Selectable == false){
-          // logit( ' match no sel  ${flightPrice.FlightDate}');
-          //    if ( textStyle != null ) {
-          textStyle = TextStyle( color: Colors.red, fontWeight: FontWeight.bold);
-          //  }
+//          textStyle = TextStyle( color: Colors.red, fontWeight: FontWeight.bold);
         }
-        //logit('${flightPrice.FlightDate} ${flightPrice.CssClass}');
         if( flightPrice.CssClass.contains('flight-has-price' )) {
           if(flightPrice.Price == '') {
             lineTwo = RotatedBox(
@@ -90,26 +105,33 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
               textScaler: TextScaler.linear(0.8),
               style: TextStyle(color: textColor, fontWeight: FontWeight.bold),);
           }
-          textStyle = TextStyle( color: Colors.black, fontWeight: FontWeight.bold);
+ //         textStyle = TextStyle( color: Colors.black, fontWeight: FontWeight.bold);
         } else if( flightPrice.CssClass.contains('not-available')){
           isDisabled = true;
-          textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
+     //     textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
           lineTwo =  Text('-', style: TextStyle(color: textColor),);
         } else if( flightPrice.CssClass.contains('no-price')){
           isDisabled = true;
-          textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
+   //       textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
           lineTwo =  Text('-', style: TextStyle(color: textColor),);
         }
 
-        if(isSelected != null && isSelected == true){
+   /*     if(isSelected != null && isSelected == true){
           textStyle = TextStyle( color: Colors.white, fontWeight: FontWeight.bold);
+*//*
           decoration = BoxDecoration(color: Colors.red,
               borderRadius: BorderRadius.circular(1));
+*//*
         }
-
+*/
       }
     });
   }
+  TextScaler textScaler =  TextScaler.linear(0.8);
+  if( gblSettings.wantPriceCalendar == false){
+    textScaler =  TextScaler.linear(1.4);
+  }
+
   return Container(
     margin:  EdgeInsets.fromLTRB(1, 0, 1, 0),
     //padding: EdgeInsets.fromLTRB(1, 0, 1, 0),
@@ -121,24 +143,14 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
           Text(
             MaterialLocalizations.of(context).formatDecimal(date.day),
             style: textStyle,
-            textScaleFactor: 1,
+            textScaler: textScaler,
           ),
-          Padding(
+          gblSettings.wantPriceCalendar ? Padding(
             padding: const EdgeInsets.only(top: 18),
             child: Container(
               child: lineTwo,
-              /*               height: 4,
-                width: 4,*/
-/*
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: isSelected == true
-                      ? Colors.white
-                      : Colors.grey[500],
-                ),
-*/
             ),
-          ),
+          ) : Container(),
         ],
       ),
     ),
@@ -170,6 +182,7 @@ Widget wrapCal( Widget child, void Function() callback, bool isReturn, DateTime?
     Padding(padding: EdgeInsets.all(10),),
     child,
   // if test build, allow test of new theme
+/*
   gblIsLive ? Container() :
   Padding(
   padding: const EdgeInsets.all(8.0),
@@ -182,6 +195,7 @@ Widget wrapCal( Widget child, void Function() callback, bool isReturn, DateTime?
   onPressed: () {},
   ),
   ),
+*/
   ]
   )
   )
@@ -191,25 +205,85 @@ Widget wrapCal( Widget child, void Function() callback, bool isReturn, DateTime?
 Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
   List<Widget> list = [];
   List<Widget> rowList = [];
+  bool wantCal2 = true;
 
-  list.add(Text(translate('Departing: '), style: TextStyle(fontWeight: FontWeight.bold),));
-  if( depDate != null ){
-    list.add(Text(DateFormat('dd MMM kk').format(depDate)));
-  }
-  rowList.add(Row(
-    children: list   ,
-  ));
-
-  if( isReturn  ) {
-    List<Widget> list2 = [];
-    list2.add(Text(translate('Returning: '), style: TextStyle(fontWeight: FontWeight.bold),));
-    if( retDate != null ){
-      list2.add(Text(DateFormat('dd MMM kk').format(retDate)));
+  if( wantCal2) {
+    List<Widget> list1 = [];
+    list1.add(Container(
+      decoration: BoxDecoration(
+          color: gblSystemColors.calDepartColor,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white)
+      ),
+      child: RotationTransition(
+          turns: new AlwaysStoppedAnimation(45 / 360),
+          child: Padding(padding: EdgeInsets.all(4),
+              child: Icon(
+            Icons.airplanemode_active,
+            size: 25.0,
+            color: Colors.white,
+          ))),
+    ) );
+    list1.add(Padding(padding: EdgeInsets.all(5)));
+    List<Widget> colList =[];
+    colList.add(Text(translate('Departing: '),
+      style: TextStyle(fontWeight: FontWeight.bold),));
+    if (depDate != null) {
+      colList.add(Text(DateFormat('dd MMM kk').format(depDate)));
+    }
+    list1.add(Column( children: colList,));
+    rowList.add(Row(
+      children: list1,
+    ));
+  } else {
+    list.add(Text(translate('Departing: '),
+      style: TextStyle(fontWeight: FontWeight.bold),));
+    if (depDate != null) {
+      list.add(Text(DateFormat('dd MMM kk').format(depDate)));
     }
     rowList.add(Row(
-      children: list2   ,
+      children: list,
     ));
-
+  }
+  if( isReturn  ) {
+    List<Widget> list2 = [];
+    if( wantCal2) {
+      list2.add(Container(
+        decoration: BoxDecoration(
+            color: gblSystemColors.calReturnColor,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white)
+        ),
+        child: RotationTransition(
+            turns: new AlwaysStoppedAnimation(135 / 360),
+            child: Padding(padding: EdgeInsets.all(4),
+                child: Icon(
+                  Icons.airplanemode_active,
+                  size: 25.0,
+                  color: Colors.white,
+                ))),
+      ) );
+      list2.add(Padding(padding: EdgeInsets.all(5)));
+      List<Widget> colList =[];
+      colList.add(Text(translate('Returning: '),
+        style: TextStyle(fontWeight: FontWeight.bold),));
+      if (depDate != null) {
+        colList.add(Text(DateFormat('dd MMM kk').format(retDate!)));
+      }
+      list2.add(Column( children: colList,));
+      rowList.add(Row(
+        children: list2,
+      ));
+    } else {
+      list2.add(Text(translate('Returning: '),
+        style: TextStyle(fontWeight: FontWeight.bold),));
+      if (retDate != null) {
+        list2.add(Text(DateFormat('dd MMM kk').format(retDate)));
+      }
+      rowList.add(Row(
+        children: list2,
+      ));
+    }
   }
 
   return Padding(

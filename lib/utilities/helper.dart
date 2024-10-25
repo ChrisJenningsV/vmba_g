@@ -422,6 +422,9 @@ hideSnackBarMessage() {
   }
   gblSnackBarShowing = false;
 }
+String getFormattedDate( DateTime dt, String format){
+  return DateFormat('MMM').format(dt);
+}
 
 // convert UK dd/mm/yyyy G
 DateTime parseUkDateTime(String str) {

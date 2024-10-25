@@ -9,7 +9,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+//import 'package:intl/intl.dart';
 import 'package:vmba/calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
+import 'package:vmba/utilities/helper.dart';
 
 part 'widgets/_calendar_view.dart';
 part 'widgets/_date_picker_mode_toggle_button.dart';
@@ -328,6 +330,9 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
     assert(debugCheckHasDirectionality(context));
     return Stack(
       children: <Widget>[
+        Text( getFormattedDate(_currentDisplayedMonthDate, 'MMM') ,
+          textScaler: TextScaler.linear(10),
+          style: TextStyle(color: Colors.blue.shade300, fontWeight: FontWeight.bold),  ),
         SizedBox(
           height: (widget.config.controlsHeight ?? _subHeaderHeight) +
               _maxDayPickerHeight,

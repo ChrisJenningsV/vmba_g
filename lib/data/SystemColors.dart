@@ -22,6 +22,12 @@ class SystemColors {
   Color borderColor;
    Color primaryHeaderColor ;
    Color? calInRangeColor;
+   Color? calDisabledColor;
+   Color? calTextColor;
+   Color? calDepartColor;
+   Color? calReturnColor;
+   Color? calTodayColor;
+   Color? calTodayTextColor;
    Color? progressBackColor;
    Color? progressTextColor;
    Color? headerTextColor;
@@ -81,6 +87,12 @@ class SystemColors {
     this.progressTextColor,
     required this.primaryHeaderColor,
     this.calInRangeColor = Colors.black54,
+    this.calDisabledColor = Colors.transparent,
+    this.calTextColor = Colors.black,
+    this.calDepartColor = Colors.green,
+    this.calReturnColor = Colors.blue,
+    this.calTodayColor = Colors.white,
+    this.calTodayTextColor = Colors.red,
     this.headerTextColor,
     this.statusBar =Brightness.light,
     this.textEditBorderColor = Colors.grey,

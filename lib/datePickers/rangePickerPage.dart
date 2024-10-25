@@ -39,12 +39,17 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
     lastDate = now.add(Duration(days: 364));
 
     startOfPeriod = widget.departureDate; 
-    endOfPeriod = widget.returnDate; 
+    endOfPeriod = widget.returnDate;
+    gblDepartDate = startOfPeriod;
+    gblReturnDate = endOfPeriod;
+
   }
 
   void _handleDateChanged(FlightDates newValue) {
     startOfPeriod = newValue.departureDate;
+    gblDepartDate = newValue.departureDate;
     endOfPeriod = newValue.returnDate!;
+    gblReturnDate = newValue.returnDate!;
     setState(() {
     });
   }
@@ -68,7 +73,7 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
           ),
         ),
         body:
-    gblSettings.wantPriceCalendar ?
+    gblSettings. wantNewCalendar || gblSettings.wantPriceCalendar ?
     wrapCal(
         RangePickerPage(
             departureDate: widget.departureDate,

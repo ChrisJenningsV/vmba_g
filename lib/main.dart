@@ -152,7 +152,7 @@ bool bFirstTime = true;
     super.initState();
     startTime = DateTime.now();
     _initLangs();
-//    _initTheme();
+    _initTheme();
     setLiveTest();
 
     if( gblLangFileLoaded == false ) {
@@ -312,7 +312,7 @@ bool bFirstTime = true;
 
   void _initTheme() async {
     try {
-      if ((gblSettings.wantNewCalendar ||
+      if (( gblSettings.wantNewCalendar == true ||
           gblSettings.wantPriceCalendar == true) ||
           gblSettings.pageStyle == 'V2') {
         loadTheme();
