@@ -137,7 +137,7 @@
         },
         {
           "card_type": "CardSlider",
-          "title": "Cabin Features",
+          "title": "Cabit Features",
           "icon": "people",
           "cards": [
             {
@@ -293,6 +293,83 @@
           ]
         }
       ]
+    },
+    "newinstall": {
+      "pageName": "newinstall",
+      "title": {
+        "text": "Welcome to AirSWIFT",
+        "fontSize": "30",
+        "fontWeight": "bold",
+        "color": "White"
+      },
+      "topPadding": "100",
+      "bottomPadding": "10",
+      "backgroundColor": "Blue",
+      "cards": [
+        {
+          "card_type": "FlightSearch",
+          "title": {
+            "text": "Flight Search",
+            "backgroundColor": "#930819",
+            "color": "white"
+          },
+          "icon": "Search",
+          "expanded": "false"
+        },
+       /* {
+          "card_type": "MyBookings",
+          "title": "My Bookings",
+          "icon": "Pnr"
+        },*/
+        {
+          "card_type": "CardSlider",
+          "icon": "city",
+          "expanded": "false",
+          "title": {
+            "text": "Our Destinations",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "photoLink",
+              "title": {
+                "text": "Birmingham",
+                "color": "#F8C832"
+              },
+              "links": [
+                {
+                  "title": "Book",
+                  "destination": "BHX"
+                }
+              ],
+              "image": "destinations/birmingham.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Bristol",
+              "image": "destinations/bristol.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Dublin",
+              "image": "destinations/dublin.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Guernsey",
+              "image": "destinations/guernsey.jpg"
+            },
+            {
+              "card_type": "photoLink",
+              "title": "Southampton",
+              "fontSize": "18",
+              "image": "destinations/southampton.jpg"
+            }
+          ]
+        }
+      ]
     }
   }
+
 }

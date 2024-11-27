@@ -11,7 +11,6 @@ class ProductCategorys {
 
   ProductCategorys.fromJson(String str) {
    // logit('ProductCategorys.fromJson');
-    int index = 0;
     List<ProductCategory> cats = List<ProductCategory>.from(
        json.decode(str).map((x) => ProductCategory.fromJson(x)));
 
@@ -89,17 +88,12 @@ class ProductCategory {
     List <Product> products = [];
     if( data == null) return products;
 
-    int index = 0;
     data.forEach((p){
       //logit('add ${p.toString()}');
       // if( index < 1)
        products.add(Product.fromJson(p));
-      index ++;
     });
-    /*
-    products = List<Product>.from(
-        json.decode(str).map((x) => Product.fromJson(x)));
-*/
+
     return products;
   }
 
@@ -274,7 +268,6 @@ List<prodCount>? curProducts; //= List.from([Product()]) ;
 
     int index = 0 ;
     int removeAt = -1;
-    bool found = false;
     curProducts!.forEach((element) {
       if( element.key == str){
         if(element.count >1){

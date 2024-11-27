@@ -18,26 +18,30 @@ import 'models/pnr.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
 import 'models/seatplan.dart';
+import 'models/trips.dart';
 
 // variable shared to whole app
 // initialized in main_XX.dart
 // M1 = LM new stuff
 // 9Q caicos
-String gblBuildFlavor = 'X4';
+//  YL lyb wings
+String gblBuildFlavor = 'T6';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 117;
+int requiredXmlVersion = 117; // now 119 for LM NEW
 int requiredApiVersion = 105;
 int apiBuldVersion = 0;
-bool gblDoVersionCheck = true;
+bool gblDoVersionCheck = false;
 
 bool gblUseCache = false;
+bool gblContinueAsGuest = false;
 String gblTestFlags = '';
 List<String> gblLogBuffer= [];
 DateTime? startTime;
 DateTime? gblDepartDate;
 DateTime? gblReturnDate;
 
+String gblValidationPin2='';
 String gblValidationPin='';
 String gblAppTitle ='';
 String gblLanguage = 'en' ;
@@ -65,6 +69,10 @@ String gblCurPage ='';
 String gblUndoCommand ='';
 String gblBookSeatCmd = '';
 String gblPageName = '';
+String gblValidationEmail = '';
+int gblValidationPinTries = 0;
+int gblValidationEmailTries = 0;
+
 //      r'^(([^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+(\.[^<>()[\]#$!%&^*+-=?\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
 String  gblEmailValidationPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
@@ -77,6 +85,7 @@ bool gblLogCities = false;
 bool gblLogSummary = false;
 bool gblLanguageLogging = false;
 bool gblInRefreshing = false;
+bool? gblIsNewInstall;
 
 
 int gblSecurityLevel = 0;
@@ -151,6 +160,7 @@ NotificationStore? gblNotifications;
 PageListHolder? gblHomeCardList;
 V3Theme? gblV3Theme;
 Cities? gblCityList;
+Trips? gblTrips;
 ButtonClickParams? gblButtonClickParams;
 
 TextStyle? gblTitleStyle;

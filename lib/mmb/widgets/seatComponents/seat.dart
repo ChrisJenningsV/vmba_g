@@ -38,28 +38,17 @@ Widget getSeatKey2() {
           width: double.infinity,
           child:
           Container(
-              color: Colors.black,
+              color: gblSystemColors.seatPlanBackColor,
               child:
               ExpansionTile(
                 //backgroundColor: Colors.white,
                 dense: true,
                 iconColor: gblSystemColors.fltText,
                 collapsedIconColor: gblSystemColors.fltText,
-//                controller: _controller,
                 onExpansionChanged: (selected) {
-/*
-                  if (selected == true) {
-                  } else {
-                    setState(() {
 
-                    });
-                  }
-*/
                 },
-                //backgroundColor: Colors.grey.shade200,
-                //tilePadding: EdgeInsets.all(0),
                 childrenPadding: EdgeInsets.all(0),
-//        backgroundColor:  Colors.blue,
                 initiallyExpanded: gblSettings.wantSeatKeyExpanded,
                 tilePadding: EdgeInsets.fromLTRB(10, -10, 10, 0),
                 title: VTitleText('What it all means...', color: Colors.white, translate: true, size: TextSize.large,),

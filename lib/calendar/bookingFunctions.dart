@@ -211,7 +211,7 @@ List<Pax> getPaxlist(PnrModel pnr, int  journey) {
           pnr.pNR.names.pAX[pax].firstName +
               ' ' +
               pnr.pNR.names.pAX[pax].surname,
-          pnr.pNR.aPFAX != null
+          pnr.pNR.aPFAX.aFX.length > 0
               ? pnr.pNR.aPFAX.aFX
               .firstWhere(
                   (aFX) =>
@@ -223,7 +223,7 @@ List<Pax> getPaxlist(PnrModel pnr, int  journey) {
               : '',
           pax == 0 ? true : false,
           pax + 1,
-          pnr.pNR.aPFAX != null
+          pnr.pNR.aPFAX.aFX.length > 0
               ? pnr.pNR.aPFAX.aFX
               .firstWhere(
                   (aFX) =>
@@ -280,11 +280,11 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
   }
 
   //Add voucher code
-  if (newBooking.eVoucherCode != null &&
+  if (newBooking.eVoucherCode != '' &&
       newBooking.eVoucherCode.trim() != '') {
     msg += '4-1FDISC${newBooking.eVoucherCode.trim()}^';
   }
-  if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty){
+  if( gblSettings.brandID.isNotEmpty){
     msg += 'zbrandid=${gblSettings.brandID}^';
   }
   msg += addFg(newBooking.currency, true);
@@ -301,7 +301,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
       setError(e.toString());
       return '';
     });
-    if( data == null || data == '' ){
+    if( data == '' ){
       if( gblError == '') {
         setError('Booking Failed');
       }
@@ -347,18 +347,7 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
               return '';
             });
 
-            //If there was an error return an empty list
-            if(data == null ) { // (response.statusCode < 200 || response.statusCode >= 300) {
-/*
-              setState(() {
-                _displayProcessingIndicator = false;
-              });
-              noInternetSnackBar(context);
-*/
-              setError( 'Network error');
-              return null;
-            //} else if (response.body.contains('ERROR - ') || response.body.contains('ERROR:')) {
-            } else if (data.contains('ERROR - ') || data.contains('ERROR:')) {
+            if (data.contains('ERROR - ') || data.contains('ERROR:')) {
               setError( data
                   .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
                   .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -414,19 +403,6 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
     } catch (e) {
       logit(errExtra + e.toString());
       setError( errExtra + e.toString());
-      if( data != null ) {
-/*
-        setError( data
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('</string>', ''));
-*/
-        print(data);
-      }
-/*
-      _dataLoaded();
-      _showDialog();
-*/
     }
 
 /*
@@ -568,18 +544,18 @@ Future makeBooking(NewBooking newBooking, PnrModel pnrModel) async {
 String buildAddContactsCmd(NewBooking newBooking) {
   StringBuffer sb = new StringBuffer();
   if( gblSettings.wantNewEditPax ) {
-    if( newBooking.passengerDetails[0].phonenumber != null && newBooking.passengerDetails[0].phonenumber.isNotEmpty) {
+    if(  newBooking.passengerDetails[0].phonenumber.isNotEmpty) {
       sb.write('9M*${newBooking.passengerDetails[0].phonenumber}^');
     }
-    if(newBooking.passengerDetails[0].email!= null && newBooking.passengerDetails[0].email.isNotEmpty ) {
+    if(newBooking.passengerDetails[0].email.isNotEmpty ) {
       sb.write('9E*${newBooking.passengerDetails[0].email}^');
     }
 
   } else {
-    if( newBooking.contactInfomation.phonenumber != null && newBooking.contactInfomation.phonenumber.isNotEmpty) {
+    if(  newBooking.contactInfomation.phonenumber.isNotEmpty) {
       sb.write('9M*${newBooking.contactInfomation.phonenumber}^');
     }
-    if(newBooking.contactInfomation.email!= null && newBooking.contactInfomation.email.isNotEmpty ) {
+    if(newBooking.contactInfomation.email.isNotEmpty ) {
       sb.write('9E*${newBooking.contactInfomation.email}^');
     }
   }
@@ -605,10 +581,10 @@ String buildAppEditVersionCmd(){
 String buildFQTVCmd(NewBooking newBooking) {
   StringBuffer sb = new StringBuffer();
   newBooking.passengerDetails.asMap().forEach((index, pax) {
-    if (pax.fqtv != null && pax.fqtv != '') {
+    if (pax.fqtv != '') {
       sb.write('4-${index + 1}FFQTV${pax.fqtv}^');
     } else {
-      if( gblFqtvNumber != null && gblFqtvNumber.isNotEmpty && index == 0) {
+      if( gblFqtvNumber.isNotEmpty && index == 0) {
         sb.write('4-${index + 1}FFQTV$gblFqtvNumber^');
 
       }
@@ -623,7 +599,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
   int paxNo = 1;
   newBooking.passengerDetails.forEach((pax) {
     if (pax.lastName != '') {
-      if( pax.middleName != null && pax.middleName.isNotEmpty && pax.middleName.toUpperCase() != 'NONE') {
+      if( pax.middleName.isNotEmpty && pax.middleName.toUpperCase() != 'NONE') {
         //sb.write('-${pax.paxNumber}${pax.lastName}/${pax.firstName}${pax.middleName}${pax.title}');
         sb.write('-${pax.lastName}/${pax.firstName}${pax.middleName}${pax.title}');
       } else {
@@ -675,24 +651,24 @@ String buildAddPaxCmd(NewBooking newBooking) {
     sb.write('^');
     if( gblSettings.aircode == 'T6') {
       // phlippines specials
-      if( pax.country != null && pax.country.toUpperCase() == 'PHILIPPINES'){
+      if( pax.country != '' && pax.country.toUpperCase() == 'PHILIPPINES'){
         sb.write('3-${pax.paxNumber}FCNTY${pax.country}^');
         // add disability
-        if(  pax.disabilityID != null && pax.disabilityID.isNotEmpty ) {
+        if(  pax.disabilityID != '' && pax.disabilityID.isNotEmpty ) {
           sb.write('ZDPWD-${pax.paxNumber}/${pax.disabilityID}^');
         }
 
         // add senior id
-        if( pax.paxType == PaxType.senior && pax.seniorID != null && pax.seniorID.isNotEmpty ){
+        if( pax.paxType == PaxType.senior && pax.seniorID != '' && pax.seniorID.isNotEmpty ){
           sb.write('ZDSEN-${pax.paxNumber}/${pax.seniorID}^');
         }
       }
     } else {
-      if( pax.country != null && pax.country != '' ){
+      if( pax.country != '' ){
         sb.write('3-${pax.paxNumber}FCNTY${pax.country}^');
       }
     }
-    if( pax.weight != null && pax.weight != '' ){
+    if( pax.weight != '' ){
       sb.write('3-${pax.paxNumber}FPWGT${pax.weight}^');
     }
 
@@ -702,13 +678,13 @@ String buildAddPaxCmd(NewBooking newBooking) {
       sb.write('3-${paxNo}FDOB $_dob^');
 
     }
-    if( pax.gender != null && pax.gender.isNotEmpty ){
+    if( pax.gender.isNotEmpty ){
       sb.write('3-${paxNo}FGNDR${pax.gender}^');
     }
-    if( pax.redressNo != null && pax.redressNo.isNotEmpty ){
+    if( pax.redressNo.isNotEmpty ){
       sb.write('4-${paxNo}FDOCO//R/${pax.redressNo}///USA^');
     }
-    if( pax.knowTravellerNo != null && pax.knowTravellerNo.isNotEmpty ){
+    if( pax.knowTravellerNo.isNotEmpty ){
       sb.write('4-${paxNo}FDOCO//K/${pax.knowTravellerNo}///USA^');
     }
     paxNo +=1 ;
@@ -717,7 +693,7 @@ String buildAddPaxCmd(NewBooking newBooking) {
 }
 void refreshMmbBooking() {
   try {
-    if( mmbGlobalKeyBooking != null && mmbGlobalKeyBooking.currentState != null ) {
+    if( mmbGlobalKeyBooking != '' && mmbGlobalKeyBooking.currentState != null ) {
       mmbGlobalKeyBooking.currentState?.refresh();
     }
   } catch (e) {
@@ -726,7 +702,7 @@ void refreshMmbBooking() {
 }
 void reloadMmbBooking(String rloc) {
   try {
-    if( mmbGlobalKeyBooking != null && mmbGlobalKeyBooking.currentState != null ) {
+    if( mmbGlobalKeyBooking != '' && mmbGlobalKeyBooking.currentState != null ) {
       mmbGlobalKeyBooking.currentState?.reload(rloc);
     }
   } catch (e) {
@@ -736,7 +712,7 @@ void reloadMmbBooking(String rloc) {
 void refreshStatusBar() {
   try {
   // logit('rfsh');
-  if( statusGlobalKeyOptions != null && statusGlobalKeyOptions.currentState != null ) {
+  if( statusGlobalKeyOptions != '' && statusGlobalKeyOptions.currentState != null ) {
     statusGlobalKeyOptions.currentState?.refresh();
   }
   } catch (e) {
@@ -744,7 +720,7 @@ void refreshStatusBar() {
   }
 
   try{
-  if( statusGlobalKeyPax != null && statusGlobalKeyPax.currentState != null ) {
+  if( statusGlobalKeyPax != '' && statusGlobalKeyPax.currentState != null ) {
     statusGlobalKeyPax.currentState?.refresh();
   }
 } catch (e) {

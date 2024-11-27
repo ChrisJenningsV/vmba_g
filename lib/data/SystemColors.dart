@@ -57,6 +57,13 @@ class SystemColors {
   Color? seatPlanTextColorAvailable;
   Color? seatPlanTextColorUnavailable;
   Color? seatPlanTextColorRestricted;
+  Color? seatPlanBackColor;
+  Color? seatPlanFuselageColor;
+  Color? seatPlanWingColor;
+  Color? seatPlanWallColor;
+  Color? seatPriceColor;
+  Color? seatSelectButtonColor;
+  Color? seatSelectTextColor;
 
    // new av colors
   Color? selectedFlt;
@@ -103,6 +110,9 @@ class SystemColors {
  //   this.accentBody,
 //    this.primaryLink,
 //    this.accentLink,
+    this.seatPlanWingColor = Colors.grey,
+    this.seatPlanFuselageColor = Colors.black,
+    this.seatPlanWallColor = Colors.lightBlueAccent,
     this.borderColor = Colors.grey,
     this.seatPlanColorSelected,
     this.seatPlanColorEmergency,
@@ -114,6 +124,10 @@ class SystemColors {
     this.seatPlanTextColorAvailable,
     this.seatPlanTextColorUnavailable,
     this.seatPlanTextColorRestricted,
+    this.seatPlanBackColor,
+    this.seatPriceColor,
+    this.seatSelectButtonColor,
+    this.seatSelectTextColor,
 
     this.promoBackColor ,
     this.v3TitleColor = Colors.black,

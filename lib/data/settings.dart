@@ -1,5 +1,4 @@
 import 'package:vmba/data/repository.dart';
-import 'package:meta/meta.dart';
 import 'models/passengerTypesDisplay.dart';
 import 'dart:convert' as myJson;
 
@@ -127,6 +126,7 @@ class Settings {
   bool wantMaterialFonts;
   bool wantPriceCalendar;
   bool wantNewCalendar;
+  bool wantCalendarBigMonth;
   bool wantNewMMB;
   bool wantNewSeats;
   bool wantSeatKeyExpanded;
@@ -148,6 +148,8 @@ class Settings {
   bool wantFqtvHomepage;
   bool wantCustomHomepage;
   bool useLogin2;
+  bool wantNewInstallPage;
+  bool wantHomeUpcoming;
   // new gui opts
   bool wantCityDividers;
 
@@ -188,6 +190,8 @@ class Settings {
   String demoPassword='';
   String debugUser='';
   String debugPassword='';
+  String seatPlanStyle='';
+  String defaultTraveller;
 
   String customMenu1='';
   String customMenu2='';
@@ -340,6 +344,7 @@ bool bpShowFastTrack;
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
     this.wantNewCalendar = false,
+    this.wantCalendarBigMonth = false,
     this.wantNewSeats = false,
     this.wantSeatKeyExpanded = false,
     this.wantNewMMB = false,
@@ -354,6 +359,8 @@ bool bpShowFastTrack;
     this.wantFqtvHomepage = false,
     this.wantCustomHomepage = false,
     this.useLogin2 = false,
+    this.wantNewInstallPage = false,
+    this.wantHomeUpcoming = false,
     this.wantUnlock = false,
 
     // new Gui
@@ -368,6 +375,8 @@ bool bpShowFastTrack;
     this.homePageFilename = '',
     this.pageStyle = 'V1',
     this.styleVersion = 1,
+    this.seatPlanStyle = '',
+    this.defaultTraveller = 'Traveller',
 
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,

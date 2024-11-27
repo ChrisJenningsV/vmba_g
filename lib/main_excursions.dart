@@ -58,6 +58,7 @@ void configX4() {
     wantRememberMe: false,
     wantApis: true,
     wantNewCalendar: true,
+    wantCalendarBigMonth: true,
     wantHomeFQTVButton: false,
     currency: 'USD',
     smartApiVersion: 2,

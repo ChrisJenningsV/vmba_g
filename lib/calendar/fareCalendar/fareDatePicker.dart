@@ -13,6 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:vmba/calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
 import 'package:vmba/utilities/helper.dart';
 
+import '../../data/globals.dart';
+
 part 'widgets/_calendar_view.dart';
 part 'widgets/_date_picker_mode_toggle_button.dart';
 part 'widgets/_day_picker.dart';
@@ -184,7 +186,7 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
   void _handleMonthChanged(DateTime date, {bool fromYearPicker = false}) {
 
     if( widget.config.monthChange != null  ){
-      widget.config!.monthChange!(date);
+      widget.config.monthChange!(date);
     }
 
     setState(() {
@@ -330,9 +332,9 @@ class _CalendarDatePicker2State extends State<FareCalendarDatePicker> {
     assert(debugCheckHasDirectionality(context));
     return Stack(
       children: <Widget>[
-        Text( getFormattedDate(_currentDisplayedMonthDate, 'MMM') ,
+        gblSettings.wantCalendarBigMonth ? Text( getFormattedDate(_currentDisplayedMonthDate, 'MMM') ,
           textScaler: TextScaler.linear(10),
-          style: TextStyle(color: Colors.blue.shade300, fontWeight: FontWeight.bold),  ),
+          style: TextStyle(color: Colors.blue.shade300, fontWeight: FontWeight.bold),  ) : Container(),
         SizedBox(
           height: (widget.config.controlsHeight ?? _subHeaderHeight) +
               _maxDayPickerHeight,

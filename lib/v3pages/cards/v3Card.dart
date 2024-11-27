@@ -8,13 +8,21 @@ import '../../components/trText.dart';
 import '../../data/globals.dart';
 import '../homePageHelper.dart';
 
-Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body, {   TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
+Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body,
+    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
 
   Color titleColor = Colors.grey.shade200;
   if( card.title != null ) {
     if( card.title!.backgroundColor != null ) {
       titleColor = card.title!.backgroundColor!;
     }
+  }
+  String sTitle = 'No Title';
+  if( card.title != null ) {
+    sTitle = card.title!.text;
+  }
+  if( gblPassengerDetail != null ){
+    sTitle = sTitle.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);
   }
 
   Widget title =       Container(
@@ -26,7 +34,7 @@ Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body, {   Tex
           color: ts.color,
         ),
         Padding(padding: EdgeInsets.all(2)),
-        Text(translate(card.title!.text),  style: ts,)
+        Text(translate(sTitle),  style: ts,)
       ],));
 
 
@@ -52,6 +60,7 @@ Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body, {   Tex
               childrenPadding: EdgeInsets.all(0),
 //        backgroundColor:  Colors.blue,
               initiallyExpanded: card.expanded ,
+                trailing: wantIcon ? null : const SizedBox(),
               title: title,
               children: [ Container(
                 color: Colors.grey.shade200,

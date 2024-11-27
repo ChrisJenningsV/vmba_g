@@ -4,12 +4,74 @@
 //  *************************
 
 
+import 'dart:convert';
+
 import '../data/globals.dart';
 import '../data/models/models.dart';
+import '../data/models/user_profile.dart';
 import '../data/models/vrsRequest.dart';
+import '../data/repository.dart';
 import 'helper.dart';
 
 class PaxManager {
+  static PassengerDetail passengerDetail = new PassengerDetail();
+
+  static populate( String email,
+      { String firstName = '',
+        String lastName = '',
+        String middleName = '',
+        String title = '',
+        String joiningDate ='',
+        String phone = '',
+        String dOB = '',
+        DateTime? dateOfBirth,
+        String country = ','
+      } ) async {
+    passengerDetail = new PassengerDetail(); // gblPassengerDetail;
+
+    passengerDetail.email = email;
+    passengerDetail.title = title;
+    passengerDetail.firstName = firstName;
+    passengerDetail.lastName = lastName;
+    passengerDetail.phonenumber = phone;
+    if( dOB != null &&  dOB != ''){
+      passengerDetail.dateOfBirth = DateTime.parse(dOB);
+    } else if( dateOfBirth != null ){
+      passengerDetail.dateOfBirth = dateOfBirth;
+    }
+    if(country != '') {
+      passengerDetail.country = country;
+
+      if( gblPassengerDetail!.country.length <= 3){
+        Countrylist list = await getCountrylist();
+        if( list != null && list.countries != null  ) {
+          list.countries!.forEach((element) {
+            if( element.alpha2code ==gblPassengerDetail!.country ){
+              gblPassengerDetail!.country = element.enShortName;
+            }
+          });
+        }
+      }
+    }
+
+    passengerDetail.phonenumber = phone;
+    passengerDetail.joiningDate = joiningDate;
+  }
+
+  static save(){
+    List<UserProfileRecord> _userProfileRecordList = [];
+
+
+    UserProfileRecord _profileRecord = new UserProfileRecord(
+        name: 'PAX1',
+        value: json
+            .encode(passengerDetail!.toJson())
+            .replaceAll('"', "'"));
+
+    _userProfileRecordList.add(_profileRecord);
+    Repository.get().updateUserProfile(_userProfileRecordList);
+  }
+
   static  populateFromFqtvMember(FqtvLoginReply fqtvLoginReply, String fqtvNo, String fqtvPass) async {
     if( gblPassengerDetail == null ) {
       gblPassengerDetail = new PassengerDetail( email:  '', phonenumber: '');
@@ -19,8 +81,6 @@ class PaxManager {
     gblPassengerDetail!.fqtv = fqtvNo;
     gblPassengerDetail!.fqtvPassword = fqtvPass;
 
-//    widget.passengerDetail!.fqtv = fqtvNo;
-//    widget.passengerDetail!.fqtvPassword = fqtvPass;
 
     gblPassengerDetail!.title = fqtvLoginReply.title;
     gblPassengerDetail!.firstName = fqtvLoginReply.firstname;
@@ -67,6 +127,10 @@ class PaxManager {
       return gblPassengerDetail!.email;
     }
     if( gblIsLive) return '';
+
+    if( gblSettings.wantNewInstallPage){
+      return gblValidationEmail;
+    }
     return '';
   }
 

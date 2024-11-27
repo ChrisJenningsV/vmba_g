@@ -1,6 +1,4 @@
 
-import 'package:meta/meta.dart';
-
 class DatabaseRecord {
   static final dbRloc = "rloc";
   static final dbData = "data";

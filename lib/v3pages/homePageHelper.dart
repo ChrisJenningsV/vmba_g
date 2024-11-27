@@ -67,7 +67,7 @@ class CustomPage {
       json['cards'].forEach((v) {
         HomeCard c = new HomeCard.fromJson(v);
         if( c.title != null ) {
-          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
+//          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
         }
         cards?.add(c);
       });
@@ -150,7 +150,7 @@ class HomeCardLink {
       if( json['title'] != null ) {
         if( json['title'] is Map) {
           title = CardText.fromJson(card_type, json['title']);
-          logit('ttl ${title!.text} bgclr ${title!.backgroundColor}');
+//          logit('ttl ${title!.text} bgclr ${title!.backgroundColor}');
         } else {
           title = new CardText(card_type, text: json['title']);
         }
@@ -224,14 +224,14 @@ class CardText {
         }
       }
       if( json['backgroundColor'] != null ) {
-        logit('fromJ $text got bgClr ${json['backgroundColor']}');
+        //logit('fromJ $text got bgClr ${json['backgroundColor']}');
 
         if( json['backgroundColor'].toString().startsWith('#')) {
           backgroundColor = json['backgroundColor'].toString().toColor();
         } else {
           backgroundColor = lookUpColor(json['backgroundColor'].toString());
         }
-        logit('fromJ $text got bgClr $backgroundColor');
+        //logit('fromJ $text got bgClr $backgroundColor');
       }
     }
 
@@ -345,6 +345,12 @@ IconData getIconFromName(String name) {
       return Icons.airplanemode_active;
     case 'PEOPLE':
       return Icons.people;
+    case 'PERSON':
+      return Icons.person;
+    case 'PEN':
+      return Icons.edit;
+    case 'EMAIL':
+      return Icons.email_outlined;
     case 'GROUP':
       return Icons.groups_outlined;
     case 'PNR':

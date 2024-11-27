@@ -540,9 +540,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   }
   void _populatePax() {
     int index =0;
-    List<String> firstNames = ['Alexander', 'Cassandra', 'Dan',   'Ed','Frederik', 'George', 'Harry', 'Ingrid', 'Jess','Kerry'];
-    List<String> titles =     ['Mr',        'Mrs',      'Mr',   'Mr', 'Mr',       'Mr',     'Mrs','Mr','Mrs','Mrs','Mrs','Mr'];
-    List <String> genderList = ['Male',     'Female',   'Male', 'Male','Male',    'Male',    'Female','Male','Female','Female','Female','Male',];
+    List<String> firstNames = ['Alexander', 'Briony', 'Cassandra', 'Dan',   'Ed','Frederik', 'George', 'Harry', 'Ingrid', 'Jess','Kerry'];
+    List<String> titles =     ['Mr',        'Mrs',    'Mrs',      'Mr',   'Mr', 'Mr',       'Mr',     'Mrs','Mr','Mrs','Mrs','Mrs','Mr'];
+    List <String> genderList = ['Male',     'Female', 'Female',   'Male', 'Male','Male',    'Male',    'Female','Male','Female','Female','Female','Male',];
+    List <String> countryList = ['United Kingdom', 'United Kingdom', 'United Kingdom','United Kingdom', 'United Kingdom','United Kingdom', 'United Kingdom', 'United Kingdom','United Kingdom','United Kingdom','United Kingdom','United Kingdom','United Kingdom',];
     String seedName = 'TEST';
 
     _passengerDetails.forEach((pax) {
@@ -551,6 +552,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         pax.title = titles[index];
         pax.firstName = firstNames[index];
         pax.gender = genderList[index];
+        pax.country = countryList[index];
         // DOB ?
 
       } else if (index == 0){

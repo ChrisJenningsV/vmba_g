@@ -200,11 +200,13 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
   }
 
   Widget flight(AvItin item, int fltNo) {
+/*
     int seatCount = widget.newBooking.passengers.adults +
         widget.newBooking.passengers.youths +
         widget.newBooking.passengers.seniors +
         widget.newBooking.passengers.students +
         widget.newBooking.passengers.children;
+*/
 
 
     return Card(

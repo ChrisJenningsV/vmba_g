@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import '../../components/trText.dart';
 import '../../data/globals.dart';
 import '../../utilities/helper.dart';
-import '../../v3pages/v3Theme.dart';
 
 
 
@@ -38,7 +37,15 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
 */
   if( isSelected == null ) isSelected = false;
   if( isInRange || isSelected)  {
-    decorationColor = gblSystemColors.calInRangeColor;
+    if( gblSearchParams.isReturn && gblDepartDate != null && gblDepartDate!.isBefore( date)  && date.isBefore(gblReturnDate!)) {
+      decorationColor = gblSystemColors.calInRangeColor;
+    } else {
+      if( !gblSearchParams.isReturn ) {
+        decorationColor = gblSystemColors.calInRangeColor;
+      } else {
+        isSelected = false;
+      }
+    }
 //    if ( date == gblDe)
   }
 

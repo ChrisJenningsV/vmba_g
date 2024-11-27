@@ -28,6 +28,7 @@ import 'package:vmba/utilities/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/notifyMsgs.dart';
+import 'models/trips.dart';
 import 'models/vrsRequest.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
@@ -83,9 +84,9 @@ class Repository {
 
 
     static initFqtv() async {
-    if( gblSettings.wantFQTV == false ){
+   /* if( gblSettings.wantFQTV == false ){
       return null;
-    }
+    }*/
     UserProfileRecord profile = await AppDatabase.get().getNamedUserProfile('PAX1');
     if(profile != null) {
       if (profile != null && profile.value != '') {
@@ -312,10 +313,15 @@ class Repository {
             gblLangFileModTime = langFileModifyString;
           }
           try {
-            if (map['cities'] != null) {
+            if (map['cities'] != null && map['cities'] != '') {
               Map<String, dynamic> json = jsonDecode(map['cities']);
               gblCityList = Cities.fromJson(json);
             }
+            if (map['trips'] != null && map['trips'] != '') {
+              Map<String, dynamic> json = jsonDecode(map['trips']);
+              gblTrips = Trips.fromJson(json);
+            }
+
           } catch(e) {
             logit('Error loading cities ${e.toString()}');
           }
@@ -1372,47 +1378,7 @@ class Repository {
         refreshStatusBar();
       }
       return new ParsedResponse(200, pnrModel);
-    //} /*else {
-        http.Response response = await http
-        .get(Uri.parse(
-            "${gblSettings.xmlUrl}${gblSettings.xmlToken}&command=$cmd"),
-            headers: getXmlHeaders())
-        .catchError((resp) {
-          if(gblLogFQ) {logit('getfareQuote4: ' + resp);}
 
-          return new ParsedResponse(0, null, error: resp);
-        });
-      if (response == null) {
-        if(gblLogFQ) { logit('getfareQuote5: null' ); }
-
-        return new ParsedResponse(noInterent, null);
-      }
-
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        logit('getfareQuote6: error' + response.statusCode.toString());
-
-        return new ParsedResponse(response.statusCode, null);
-      }
-        if(gblLogFQ) {logit('getfareQuote7: ' + response.body);}
-
-        if( response.body.toUpperCase().contains('ERROR' )){
-        String er = response.body.replaceAll('<?xml version=\"1.0\" encoding=\"utf-8\"?>', '')
-          .replaceAll('<string xmlns=\"http://videcom.com/\">', '')
-            .replaceAll('</string>', '');
-        return new ParsedResponse(0, null, error: er);
-      }
-
-      if (!response.body.contains('<string xmlns="http://videcom.com/" />')) {
-        Map<String, dynamic> map = jsonDecode(response.body
-            .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
-            .replaceAll('<string xmlns="http://videcom.com/">', '')
-            .replaceAll('\r\n', '')
-            .replaceAll('</string>', ''));
-
-        pnrModel = new PnrModel.fromJson(map);
-      }
-      return new ParsedResponse(response.statusCode, pnrModel);
-//    }*/
   }
 
   Future<ParsedResponse<Seatplan>> getSeatPlan(String seatPlanCmd) async {

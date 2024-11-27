@@ -1,7 +1,5 @@
 
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/pax.dart';
@@ -262,14 +260,6 @@ class PnrModel {
     if(this.pNR == null || this.pNR.itinerary == null || this.pNR.itinerary.itin == null ){
       return false;
     }
-    DateTime now = DateTime.now();
-/*
-    var fltDate;
-    fltDate = DateTime.parse(this.pNR.itinerary.itin.last.depDate +
-        ' ' +
-        this.pNR.itinerary.itin.last.depTime)
-        .add(Duration(days: days));
-*/
     DateTime fltDate = DateTime.parse(this.pNR.itinerary.itin.last.ddaygmt + ' ' + this.pNR.itinerary.itin.last.dtimgmt);
     fltDate = fltDate.add(Duration(days: days));
     if (getGmtTime().isAfter(fltDate)) {

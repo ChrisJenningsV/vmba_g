@@ -8,6 +8,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/utilities/PaxManager.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';
@@ -712,7 +713,7 @@ Widget getFirstname() {
 
 
 
-    if( gblSettings.wantRememberMe && widget.isLeadPassenger && (widget.passengerDetail.lastName == null || widget.passengerDetail.lastName.isEmpty) ) {
+    if( gblSettings.wantRememberMe && widget.isLeadPassenger  ) {
       // add check box
       list.add(CheckboxListTile(
         title: TrText("Remember me"),
@@ -951,6 +952,17 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
       } else {
         try {
           gblActionBtnDisabled = false;
+          if( gblSettings.wantRememberMe &&  gblRememberMe){
+            PaxManager.populate(widget.passengerDetail.email,
+              firstName: widget.passengerDetail.firstName,
+              lastName: widget.passengerDetail.lastName,
+              title: widget.passengerDetail.title,
+              phone: widget.passengerDetail.phonenumber,
+              country: widget.passengerDetail.country,
+              dateOfBirth: widget.passengerDetail.dateOfBirth
+            );
+            PaxManager.save();
+          }
           Navigator.pop(context, widget.passengerDetail);
         } catch (e) {
           print('Error: $e');

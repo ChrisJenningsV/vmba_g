@@ -113,14 +113,16 @@ class RootPageState extends State<RootPage> with WidgetsBindingObserver {
         });
       }
       ).catchError((e) {
-        setState(() {
-          _displayProcessingText = 'Error loading : ' + e.toString();
-          setError('Error loading : ' + e.toString());
-          _displayFinalError = true;
-          _displayProcessingIndicatorS = false;
-          _dataLoaded = false;
-          _dataLoading = true;
-        });
+        _displayProcessingText = 'Error loading : ' + e.toString();
+        setError('Error loading : ' + e.toString());
+        logit('Error loading : ' + e.toString());
+        _displayFinalError = true;
+        _displayProcessingIndicatorS = false;
+        _dataLoaded = false;
+        _dataLoading = true;
+        try {
+          setState(() {});
+        } catch(e) {}
         return;
       });
 //      Repository.get().initFqtv();

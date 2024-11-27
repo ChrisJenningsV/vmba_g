@@ -10,7 +10,7 @@ import '../data/globals.dart';
 import '../data/models/products.dart';
 import '../utilities/helper.dart';
 
-Image? getProductImage(Product product, double width){
+Image? getProductImage(Product product, double? width){
   try {
     String name;
     if( gblSettings.productImageMode == 'index') {

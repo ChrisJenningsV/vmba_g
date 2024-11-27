@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:path/path.dart' as p;
@@ -12,6 +13,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
+import 'package:vmba/v3pages/homePageHelper.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
@@ -20,12 +22,16 @@ import '../components/showDialog.dart';
 import '../components/vidAppBar.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
+import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import 'package:vmba/v3pages/v3HomePage.dart';
 
+import '../v3pages/cards/v3Card.dart';
+import '../v3pages/loggedInHomePage.dart';
+import '../v3pages/newInstallPage.dart';
 import '../v3pages/v3Theme.dart';
 
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
@@ -60,13 +66,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   int _currentIndex = 0;
   int homePageMapLen = 0;
 
-
-  @override
-
-
   @override
   void initState() {
     super.initState();
+    gblIsNewInstall = true;
     commonPageInit('HOME');
     //initGmtTimer();
     setLiveTest();
@@ -94,9 +97,15 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           buildNo = '${packageInfo.buildNumber}'
           );
     }
-    bool newInstall = true;
+
     getSetting('savedVersion').then((value) {
       try {
+
+        if( gblSettings.wantNewInstallPage && PaxManager.getPaxEmail() == '')
+          {
+            value = null;
+          }
+
         if (value == null || value == '') {
           // if null, old format saved bookings
           if (gblSettings.updateMessage == null ||
@@ -106,8 +115,14 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           } else {
             updateMsg = gblSettings.updateMessage;
           }
+          if( gblSettings.wantNewInstallPage && !gblContinueAsGuest ){
+            gblValidationEmailTries = 0;
+            gblValidationPinTries = 0;
+            navToNewInstallPage(context);
+          }
+
         } else {
-          newInstall == false;
+          gblIsNewInstall == false;
           if (value
               .split('.')
               .length == 4 && gblVersion != '' && gblVersion
@@ -121,6 +136,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
               }
             }
           }
+
         }
       } catch (e) {
         logit('version check ' + e.toString());
@@ -344,6 +360,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){
       return new V3HomePage();
     }
+/*    if( gblIsNewInstall!= null && gblIsNewInstall == true && gblSettings.wantNewInstallPage){
+      return new NewInstallPage();
+    }*/
 
 
     var buttonShape;
@@ -635,7 +654,7 @@ Widget _getLogo(){
     }
     return list;
   }
-}
+
 
   List <Widget> _getButtons(BuildContext context, var buttonShape, var buttonHeight) {
     List <Widget> list = [];
@@ -667,6 +686,30 @@ Widget _getLogo(){
     if(gblSettings.homePageMessage != '' ){
       list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
           child: VHeadlineText(gblSettings.homePageMessage, size: TextSize.medium,color: gblSystemColors.headerTextColor,)));
+    }
+
+    if( gblSettings.wantHomeUpcoming && gblTrips != null && gblTrips!.trips != null && gblTrips!.trips!.length> 0) { //
+      HomeCard card = new HomeCard();
+      String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
+      if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) fltDate = 'Today';
+
+      card.title = CardText('', text: translate('Next Trip' + ': ' + fltDate));
+      card.icon = Icons.airplanemode_active;
+      card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
+      card.title!.color = gblSystemColors.primaryButtonTextColor;
+
+      list.add(
+          GestureDetector(
+            onTap: () {
+              navToMyBookingPage(context, gblTrips!.trips!.first.rloc);
+            },
+            child:
+          v3ExpanderCard(
+          context, card, getUpcoming(context, () {
+            setState(() {});
+          }), wantIcon: false
+        ))
+        );
     }
 
     if (gblNoNetwork == false && gblSettings.disableBookings == false) {
@@ -874,3 +917,6 @@ Widget home() {
     ),
   );
 }
+
+
+  }

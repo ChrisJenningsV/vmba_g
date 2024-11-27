@@ -37,6 +37,11 @@ void configM1() {
     headerTextColor: Colors.white,
     classBandIconColor: Colors.black,
     statusBar: Brightness.dark,
+
+    seatSelectTextColor: Colors.black,
+    seatSelectButtonColor: Colors.amber,
+    seatPriceColor: Colors.white,
+    seatPlanBackColor: Colors.black,
     seatPlanColorEmergency: Colors.amber, //Colors.yellow
     seatPlanColorAvailable: Colors.green, //Colors.green
     seatPlanColorSelected: Colors.red, //Colors.grey.shade600

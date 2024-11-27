@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 
 class UserProfileRecord {
   //static final db_id = "id";

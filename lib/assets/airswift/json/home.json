@@ -294,79 +294,60 @@
         }
       ]
     },
-    "fqtvhome": {
-      "pageName": "fqtvhome",
+    "newinstall": {
+      "pageName": "newinstall",
       "title": {
-        "text": "My SWIFT Rewards Club",
+        "text": "Welcome to AirSWIFT",
+        "fontSize": "30",
+        "fontWeight": "bold",
+        "color": "Blue"
+      },
+      "topPadding": "10",
+      "bottomPadding": "125",
+      "backgroundColor": "Blue",
+      "cards": [
+        {
+          "card_type": "NewUserLogin",
+          "title": {
+            "text": "Register your email",
+            "backgroundColor": "Blue",
+            "color": "white"
+          },
+          "icon": "Pen",
+          "expanded": "true"
+        },
+        {
+          "card_type": "iconLink",
+          "title": "continue as Guest",
+          "action": {
+            "function": "Page",
+            "pageName": "home"
+          },
+          "icon": "home"
+        }
+      ]
+    },
+    "loggedinhome": {
+      "pageName": "loggedinhome",
+      "title": {
+        "text": "Welcome [[firstname]]. Where do you want to go today",
         "fontSize": "30",
         "fontWeight": "bold",
         "color": "White"
       },
-      "topPadding": "20",
-      "bottomPadding": "10",
+      "topPadding": "60",
+      "bottomPadding": "140",
       "backgroundColor": "Blue",
       "cards": [
         {
-          "card_type": "FlightSearch",
+          "card_type": "UPCOMING",
           "title": {
-            "text": "Flight Search",
-            "backgroundColor": "#930819",
+            "text": "Your upcoming journey",
+            "backgroundColor": "Blue",
             "color": "white"
           },
-          "icon": "Search",
-          "expanded": "false"
-        },
-        {
-          "card_type": "MyBookings",
-          "title": "My Bookings",
-          "icon": "Pnr"
-        },
-        {
-          "card_type": "CardSlider",
-          "icon": "city",
-          "expanded": "false",
-          "title": {
-            "text": "Our Destinations",
-            "fontSize": "26",
-            "color": "BlueGrey"
-          },
-          "cards": [
-            {
-              "card_type": "photoLink",
-              "title": {
-                "text": "Birmingham",
-                "color": "#F8C832"
-              },
-              "links": [
-                {
-                  "title": "Book",
-                  "destination": "BHX"
-                }
-              ],
-              "image": "destinations/birmingham.jpg"
-            },
-            {
-              "card_type": "photoLink",
-              "title": "Bristol",
-              "image": "destinations/bristol.jpg"
-            },
-            {
-              "card_type": "photoLink",
-              "title": "Dublin",
-              "image": "destinations/dublin.jpg"
-            },
-            {
-              "card_type": "photoLink",
-              "title": "Guernsey",
-              "image": "destinations/guernsey.jpg"
-            },
-            {
-              "card_type": "photoLink",
-              "title": "Southampton",
-              "fontSize": "18",
-              "image": "destinations/southampton.jpg"
-            }
-          ]
+          "icon": "Pen",
+          "expanded": "true"
         }
       ]
     }

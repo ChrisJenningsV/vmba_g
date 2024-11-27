@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/datePickers/widgets/dayBuilder.dart';
 import 'package:vmba/datePickers/widgets/dayPicker.dart';
@@ -10,7 +9,6 @@ import 'package:vmba/components/trText.dart';
 import '../components/vidButtons.dart';
 import '../v3pages/controls/V3AppBar.dart';
 import '../v3pages/controls/V3Constants.dart';
-import '../v3pages/v3Theme.dart';
 
 class DatePickerWidget extends StatefulWidget {
   DatePickerWidget({Key key= const Key("datepi_key"), required this.departureDate }) : super(key: key);

@@ -133,7 +133,7 @@ Widget pax2faNumber(BuildContext context, List<TextEditingController> emailTextE
                   autofocus: i== 0 ? true: false,
                   //focusNode: i== 0 ? focusNode : null ,
                   textAlign: TextAlign.center,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.number,
                   textInputAction: i < 5 ? TextInputAction.next : TextInputAction.done,
                     onChanged: (value) {
                       if( value!.length >=1 ){

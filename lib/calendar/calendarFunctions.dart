@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/calendar/widgets/cannedFact.dart';
@@ -481,8 +480,8 @@ Widget getTime(String tm) {
 }
 
 Widget getAirport(String code, {double fontSize=16, FontWeight fontWeight=FontWeight.normal}) {
-  if( fontSize == null ) fontSize = 16;
-  if( fontWeight == null ) fontWeight =  FontWeight.w300;
+  //if( fontSize == null ) fontSize = 16;
+  //if( fontWeight == null ) fontWeight =  FontWeight.w300;
 
   return Text(cityCodetoAirport(code),
       style: new TextStyle(fontSize: fontSize,fontWeight: fontWeight)
@@ -517,8 +516,8 @@ Widget getAirport(String code, {double fontSize=16, FontWeight fontWeight=FontWe
 
 String getTerminalString(Flt flt, bool depart){
   if( gblSettings.wantTerminal == false ) return '';
-  if( depart == true &&  (flt.fltdet.depterm == null || flt.fltdet.depterm.isEmpty) ) return '';
-  if( depart == false &&  (flt.fltdet.arrterm == null || flt.fltdet.arrterm.isEmpty)) return '';
+  if( depart == true &&  flt.fltdet.depterm.isEmpty)  return '';
+  if( depart == false &&   flt.fltdet.arrterm.isEmpty) return '';
 
   return  depart ? flt.fltdet.depterm : flt.fltdet.arrterm;
 }
@@ -578,7 +577,7 @@ Widget infoRow(BuildContext context, AvItin item ) {
   );
 }
 Widget getConnections(BuildContext context, AvItin item) {
-  if( item == null || context == null ) return Container();
+  //if( item == null || context == null ) return Container();
   if (item.flt.length > 1) {
     return GestureDetector(
       onTap: () =>
@@ -955,7 +954,7 @@ Widget getPriceRow(List<Flt> item, int index){
     String newMiles = element.fltav.miles![index];
     double? newVal = double.tryParse(newStr)  ;
     if( newVal != null )    val +=  newVal as double;
-    if( newMiles != null && newMiles != '')    miles +=  int.parse(newMiles);
+    if( newMiles != '')    miles +=  int.parse(newMiles);
     newVal = double.tryParse(element.fltav.tax![index]);
     if( newVal != null )    val +=  newVal as double;
   });

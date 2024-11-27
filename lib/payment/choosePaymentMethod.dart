@@ -282,15 +282,17 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 
   Row netFareTotal() {
     double total = 0.0;
-    total = (double.tryParse(widget
-            .pnrModel
-            .pNR
-            .fareQuote
-            .fareStore
-            .where((fareStore) => fareStore.fSID == 'Total')
-            .first
-            .total) ??
-        0.0);
+    if( widget.pnrModel.pNR.fareQuote.fareStore.length > 0) {
+      total = (double.tryParse(widget
+          .pnrModel
+          .pNR
+          .fareQuote
+          .fareStore
+          .where((fareStore) => fareStore.fSID == 'Total')
+          .first
+          .total) ??
+          0.0);
+    }
     double tax = 0.0;
 
     if (widget.pnrModel.pNR.fareQuote.fareTax != null) {

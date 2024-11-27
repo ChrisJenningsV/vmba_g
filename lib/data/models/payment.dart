@@ -1,6 +1,5 @@
 
 import 'dart:core';
-import 'package:meta/meta.dart';
 import 'package:vmba/data/models/models.dart';
 
 class InitPaymentRequest {

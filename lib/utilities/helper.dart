@@ -344,11 +344,12 @@ noInternetSnackBar(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 */
-showSnackBar(String message,BuildContext context,{String label= 'Undo' }) {
+showSnackBar(String message,BuildContext context,{String label= 'Undo', Duration? duration }) {
+  gblSnackBarShowing = true;
   final snackBar = SnackBar(
     content: Text(message),
     dismissDirection: DismissDirection.none,
-    duration: Duration(days: 365),
+    duration: duration ?? Duration(days: 365),
     action: SnackBarAction(
       label: label,
       onPressed: () {

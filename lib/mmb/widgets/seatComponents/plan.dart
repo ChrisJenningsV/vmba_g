@@ -3,10 +3,12 @@
 
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
+import 'package:vmba/mmb/widgets/seatComponents/wing.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
 
 import '../../../calendar/flightPageUtils.dart';
@@ -363,27 +365,31 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: textList,),
                 vidActionButton(context, action,
-                    params: new ButtonClickParams(i1: index),
+                    params: new ButtonClickParams(paxNo: index, action: action),
                     isRectangular: true,
                     subCaption: action == 'Select' ? price : '',
                     color: paxlist!.list![index].seat != ''
-                        ? Colors.blue
-                        : Colors.black,
+                        ? gblSystemColors.seatSelectButtonColor as Color
+                        : gblSystemColors.seatSelectTextColor as Color,
                     bkColor: paxlist!.list![index].seat != ''
                         ? Colors.white
-                        : Colors.amber,
+                        : gblSystemColors.seatSelectButtonColor as Color,
                     lineColor: paxlist!.list![index].seat != ''
-                        ? Colors.amber
+                        ? gblSystemColors.seatSelectButtonColor as Color
                         : null,
                         (p0, params) {
                       // select pax for this seat
 
                       logit(
-                          'set ${paxlist!.list![params!.i1].name} to seat ${seat
+                          'pax ${params!.paxNo} ${params!.action} ${paxlist!.list![params!.paxNo].name} to seat ${seat
                               .sCode}');
-                      paxlist!.releaseSeat(seat.sCode);
-                      paxlist!.list![params!.i1].selected = true;
-                      paxlist!.list![params!.i1].seat = seat.sCode;
+                      if( params!.action.toLowerCase() == 'release' ){
+                        paxlist!.releaseSeat(seat.sCode);
+                      } else {
+                        paxlist!.releaseSeat(seat.sCode);
+                        paxlist!.list![params!.paxNo].selected = true;
+                        paxlist!.list![params!.paxNo].seat = seat.sCode;
+                      }
                       setState2(() {
 
                       });
@@ -399,8 +405,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     double maxVal = 200;
     if (paxes.length > 2) {
       if (paxes.length < 5) {
-        maxVal = paxes.length * 50;
-        setVal = paxes.length * 40;
+        maxVal = paxes.length * 60;
+        setVal = paxes.length * 50;
       } else {
         maxVal = 300;
         setVal = 200;
@@ -510,15 +516,14 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     return Container(
         margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-/*
-        height: 2000,
-        width: 400,
-*/
+
         decoration: BoxDecoration(
           //border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
           borderRadius: BorderRadius.all(
               Radius.circular(10.0)),
-          color: Colors.black,
+          color: gblSettings.seatPlanStyle.contains('I') ? null : gblSystemColors.seatPlanBackColor,
+          image: gblSettings.seatPlanStyle.contains('I') ?
+            DecorationImage(image: AssetImage('lib/assets/images/sky.png') as ImageProvider, fit: BoxFit.fill) : null ,
         ),
         child: Column(children: renderSeats(
             rows, minCol, maxCol, widget.rloc, widget.cabin))
@@ -575,6 +580,10 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     String currencyCode = '';
     String previousSeatPrice = '';
     bool selectableSeat = true;
+    bool hasWings = this.widget.seatplan.hasWings();
+    int leftWingIndex = this.widget.seatplan.getLeftWing();
+    int rightWingIndex = this. widget.seatplan.getRightWing();
+
 
     // get max no cols
 //    int maxCol = 0;
@@ -591,13 +600,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       if (seats == null) {} else {
         seats.sort((a, b) => a.sRow.compareTo(b.sCol));
 
-/*
-        seats.forEach((element) {
-          if (element.sCol != null && element.sCol > maxCol) {
-            maxCol = element.sCol;
-          }
-        });
-*/
       }
       // check for large plane
       if (maxCol > 8) {
@@ -607,18 +609,17 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         cellFontSize = 11;
         print('use small seat size');
       }
+      bool dumpSeats = true;
+      String dumpMsg = '$indexRow ';
+
       row = [];
+      String leftWing = 'f';
+      String rightWing = 'f';
       bool rowHasSeats = false;
       // new List<Widget>();
       for (var indexColumn = minCol;
       indexColumn <= maxCol;
       indexColumn++) {
-/*
-        if( indexRow == 14) {
-          var test = 1;
-        }
-*/
-
         Seat? seat;
         bool found = false;
         seats.forEach((element) {
@@ -642,7 +643,15 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             }
           }
         });
-        if (seat == null && indexRow != 1) {
+
+
+        if( indexColumn == leftWingIndex && (seat == null || seat!.sCellDescription == '') ) {
+//          row.add(getWingPath(context, 'f', 50, 45, true));
+        } else  if( indexColumn == rightWingIndex && (seat == null || seat!.sCellDescription == '') ) {
+  //          row.add(getWingPath(context, 'f', 50, 45, false));
+        } else
+          if (seat == null && indexRow != 1) {
+          dumpMsg += '   ';
           row.add(Padding(
             padding: EdgeInsets.all(cellPadding),
             child: Container(
@@ -652,6 +661,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           ));
         } else if (seat == null && indexRow == 1 ||
             seat!.sCellDescription == 'Aisle') {
+          dumpMsg += ' a ';
           row.add(
             Container(
               child: Text(''),
@@ -659,6 +669,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             ),
           );
         } else if (seat!.sCellDescription.length == 1) {
+          dumpMsg += ' ${seat!.sCellDescription} ';
           row.add(
             Padding(
                 padding: EdgeInsets.all(cellPadding),
@@ -674,16 +685,54 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             seat!.sCellDescription == 'Wing Start' ||
             seat!.sCellDescription == 'Wing Middle' ||
             seat!.sCellDescription == 'Wing End' ||
-            seat!.sCellDescription == 'DoorDown') {
-          row.add(Padding(
+            seat!.sCellDescription == 'DoorDown'||
+            seat!.sCellDescription == 'DoorUp') {
+
+          String seatTxt = '';
+          Widget? pathWidget = null;
+
+          if( gblSettings.seatPlanStyle!= null &&  gblSettings.seatPlanStyle.contains('W') ){
+              switch(seat!.sCellDescription) {
+                case 'SeatPlanWidthMarker':
+                  seatTxt = 'w';
+                  indexColumn < 3 ? leftWing = 'w' : rightWing = 'w';
+                  break;
+                case 'Wing Start':
+                  seatTxt = 's';
+                  indexColumn < 3 ? leftWing = 's' : rightWing = 's';
+                  pathWidget = getWingPath(context, 's', 50, 45, indexColumn < 3);
+                  break;
+                case 'Wing Middle':
+                  pathWidget = getWingPath(context, 'm', 50, 45, indexColumn < 3);
+                  indexColumn < 3 ? leftWing = 'm' : rightWing = 'm';
+                  seatTxt = 'm';
+                  break;
+                case 'Wing End':
+                  pathWidget = getWingPath(context, 'e', 50, 45, indexColumn < 3);
+                  indexColumn < 3 ? leftWing = 'e' : rightWing = 'e';
+                  seatTxt = 'e';
+                  break;
+                case 'DoorDown':
+                  pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                  indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
+                  seatTxt = 'd';
+                  break;
+                case 'DoorUp':
+                  pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                  indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
+                  seatTxt = 'u';
+                  break;
+              }
+          }
+
+          /*row.add(pathWidget ??
+              Padding(
             padding: EdgeInsets.all(cellPadding),
             child: Container(
-              child: Text(''),
-              //width: 10.0,
-              // width: 18,
+              child: Text(seatTxt),
               width: cellSize,
             ),
-          ));
+          ));*/
         } else
         if ((seat!.sRLOC != null && seat!.sRLOC != '' && seat!.sRLOC != rloc) ||
             (seat!.sSeatID != '0' &&
@@ -692,27 +741,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             ((seat!.sCabinClass != widget.cabin) && widget.cabin != '')) {
           rowHasSeats = true;
           row.add(hookUpSeat(seat, false, false, gblSeatPlanDef!.seatSize));
-          /* row.add(
-            Padding(
-                padding: EdgeInsets.all(cellPadding),
-                child: Container(
-                  width: cellSize,
-                  height: cellSize,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: gblSystemColors.seatPlanColorUnavailable, // gblSystemColors.seatPlanColorRestricted,
-                      borderRadius:
-                      new BorderRadius.all(new Radius.circular(5.0))),
-                  child: Center(
-                      child: Icon(
-                        Icons.person,
-                        size: cellSize,
-                        color: Colors.white,
-                      )),
-                )),
-          );*/
 
         } else {
+
           var color;
           switch (seat!.sCellDescription) {
             case 'EmergencySeat':
@@ -744,6 +775,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
               selectedSeats.contains(seat!.sCode)) {
             selected = true;
           }
+
           rowHasSeats = true;
           row.add(hookUpSeat(
               seat, selected, selectableSeat, gblSeatPlanDef!.seatSize));
@@ -775,38 +807,67 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         if (previousSeatPrice != currentSeatPrice) {
           //TODO: Get currency code from object
           rowHasSeats = true;
+          // check if
+
           obj.add(
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                (hasWings && gblSettings.seatPlanStyle.contains('W')) ? getWingPath(context, 'f', 50, 45, true) : Container(),
+              Expanded( child: Container(
+              color: gblSettings.seatPlanStyle.contains('I') ? gblSystemColors.seatPlanBackColor : null,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(padding: EdgeInsets.all(5)),
-            Container(
+             Container(
+               margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(width: 2.0,
-                        color: Colors.white /*Color(0xFFFF000000)*/),
-                    left: BorderSide(width: 2.0, color: Colors.white),
-                    right: BorderSide(width: 2.0, color: Colors.white),
+                        color: gblSystemColors.seatPriceColor as Color),
+                    left: BorderSide(width: 2.0, color: gblSystemColors.seatPriceColor as Color),
+                    right: BorderSide(width: 2.0, color: gblSystemColors.seatPriceColor as Color),
                   )),
               child: Center(
                 child: Text(
                   formatPrice(currencyCode, double.parse(currentSeatPrice)) +
-                      ' ' + currentSeatPriceLabel,
-                  style: TextStyle(color: Colors.white),
+                      '\n ' + currentSeatPriceLabel,
+                  style: TextStyle(color: gblSystemColors.seatPriceColor as Color),
                 ),
                 //' Seat Charge'),
               ),
             ),
-          ])
+          ]))),
+                (hasWings && gblSettings.seatPlanStyle.contains('W')) ? getWingPath(context, 'f', 50, 45, false) : Container(),
+
+              ]
+            )
           );
         }
         previousSeatPrice = currentSeatPrice;
       }
+      if( dumpSeats) {
+        logit(dumpMsg);
+      }
       if( rowHasSeats) {
-        obj.add(new Row(
+        obj.add(
+          Row(
+            children: [
+                gblSettings.seatPlanStyle.contains('W') ? getWingPath(context, leftWing, 50, 45, true) : Container(),
+            Expanded( child:Container(
+              color: gblSettings.seatPlanStyle.contains('I') ? gblSystemColors.seatPlanBackColor : null,
+            child:
+            new Row(
           children: row,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ));
+          ))
+            ),
+            gblSettings.seatPlanStyle.contains('W') ? getWingPath(context, rightWing, 50, 45, false) : Container()
+    ]
+    ));
       }
     }
     obj.add(new Padding(
@@ -815,6 +876,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     return obj;
   }
 
+/*
   List<Widget> renderSeats2(int rows, int minCol, int maxCol, String rloc,
       String cabin) {
     List<Widget> obj = [];
@@ -887,7 +949,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
 
 
       if (gblLogProducts) logit('price $currentSeatPrice r=$indexRow');
-      /* if (widget.displaySeatPrices &&
+      */
+/* if (widget.displaySeatPrices &&
           currentSeatPrice != null &&
           currentSeatPrice != "0") {
         //add row price
@@ -913,7 +976,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           );
         }
         previousSeatPrice = currentSeatPrice;
-      }*/
+      }*//*
+
       row.add(VerticalDivider(width: 2,
         color: Colors.amber,
         indent: 0,
@@ -969,6 +1033,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     obj.add(Padding(padding: EdgeInsets.all(20)));
     return obj;
   }
+*/
 
 
   Widget _getSeatPriceInfo() {

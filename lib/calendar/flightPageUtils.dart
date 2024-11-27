@@ -37,11 +37,13 @@ String calenderPrice(String currency, String price, String miles) {
 }
 
 String getIntlDate(String format, DateTime dt ) {
+/*
   if( dt== null ){
     print('Null passed to getIntlDate');
     return '';
 
   }
+*/
   if( gblSettings.wantEnglishDates == false ) {
     Intl.defaultLocale = gblLanguage;
   }
@@ -58,34 +60,33 @@ String getIntlDate(String format, DateTime dt ) {
 String getPaxTypeCounts(Passengers passengers ) {
   var buffer = new StringBuffer();
 
-  if( passengers.adults != null && passengers.adults > 0 ) {
+  if( passengers.adults > 0 ) {
     buffer.write(',AD=${passengers.adults}');
   }
-  if( passengers.children != null &&  passengers.children > 0 ) {
+  if( passengers.children > 0 ) {
     buffer.write(',CH=${passengers.children}');
   }
-  if( passengers.smallChildren != null &&  passengers.smallChildren > 0 ) {
+  if( passengers.smallChildren > 0 ) {
     buffer.write(',CS=${passengers.smallChildren}');
   }
-  if(  passengers.seatedInfants != null && passengers.seatedInfants > 0 ) {
+  if( passengers.seatedInfants > 0 ) {
     buffer.write(',IS=${passengers.seatedInfants}');
   }
-  if(  passengers.infants != null && passengers.infants > 0 ) {
+  if( passengers.infants > 0 ) {
     buffer.write(',IN=${passengers.infants}');
   }
-  if(  passengers.youths != null && passengers.youths > 0) {
+  if( passengers.youths > 0) {
     buffer.write(',TH=${passengers.youths}');
   }
-  if(  passengers.seniors != null && passengers.seniors > 0 ) {
+  if( passengers.seniors > 0 ) {
     buffer.write(',CD=${passengers.seniors}');
   }
-  if(  passengers.students != null && passengers.students > 0 ) {
+  if( passengers.students > 0 ) {
     buffer.write(',SD=${passengers.students}');
   }
-  if(  passengers.teachers != null && passengers.teachers > 0 ) {
+  if( passengers.teachers > 0 ) {
     buffer.write(',TD=${passengers.teachers}');
   }
 
  return buffer.toString();
-
 }

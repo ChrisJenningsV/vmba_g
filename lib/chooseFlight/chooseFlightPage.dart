@@ -120,7 +120,8 @@ class ChooseFlight extends StatelessWidget {
 
     if( gblSettings.wantClassBandImages) {
       //list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png')));
-      list.add(Image.network(
+      list.add(
+          Image.network(
           '${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png',
           errorBuilder: (BuildContext context,Object obj,  StackTrace? stackTrace) {
             return Text('', style: TextStyle(color: Colors.red),); // Image Error.

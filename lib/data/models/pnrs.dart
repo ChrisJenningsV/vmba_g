@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 
 class PnrDBCopy {
   static final dbRloc = "rloc";

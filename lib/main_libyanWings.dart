@@ -63,6 +63,7 @@ void configYL() {
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',
     pageStyle: 'V1',
+    wantNewCalendar: true,
 
     airlineName: "Libyan Wings",
     gblServerFiles: 'https://booking.libyanwings.ly/VARS/AppFiles/',

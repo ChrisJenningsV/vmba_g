@@ -32,6 +32,11 @@ void configT6() {
       seatPlanColorSelected: Color.fromRGBO(0, 0x67, 0xA0, 1), //Colors.grey.shade600
       seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
       seatPlanColorRestricted: Color.fromRGBO(0x80, 0x80, 0x80, 1),
+      seatPlanBackColor: Colors.grey.shade300, //Colors.grey.shade300
+      seatPriceColor: Color.fromRGBO(0x1C, 0x37, 0x5F, 1),
+      seatSelectButtonColor: Color.fromRGBO(0x1C, 0x37, 0x5F, 1),
+      seatSelectTextColor: Colors.white,
+
       primaryButtonColor: Color.fromRGBO(83, 40, 99, 1),
       accentButtonColor: Color.fromRGBO(83, 40, 99, 1),
          // Color.fromRGBO(73, 201, 245, 1), 
@@ -54,11 +59,22 @@ void configT6() {
   gblRememberMe = true;
 
   gblSettings = Settings (
+/*  new features settings */
+    wantNewCalendar: true,
+    wantCalendarBigMonth: true,
+    wantNewSeats: true,
+    wantTransapentHomebar: true,
+    seatPlanStyle: 'WI',
+    useLogin2: true,
+    wantNewInstallPage: true,
+    wantHomeUpcoming: true,
+    wantRememberMe: true,
+// end new features
+
       latestBuildiOS: '105',
       latestBuildAndroid: '108',
-//    wantRememberMe: true,
-    wantHomeFQTVButton: true,
-    wantFQTV:  true,
+    wantHomeFQTVButton: false,
+    wantFQTV:  false,
     wantMyAccount: true,
 
     airlineName: "AirSWIFT",
@@ -146,14 +162,14 @@ void configT6() {
     testPayPage: 'https://customertest.videcom.com/airswift/VARS/Public/MobilePaymentStart.aspx',
     //testPayPage: 'http://10.0.2.2:50311/MobilePaymentStart.aspx',
  // testXmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/airswift/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-  //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+//    testXmlUrl:      "https://customertest.videcom.com/airswift/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
   testApisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
   //  testApiUrl:      'http://10.0.2.2:5000/api',
   testSmartApiUrl:      "https://customertest.videcom.com/airswift/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-//    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
-    testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
+  //  testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+//    testCreditCardProvider: 'videcard' , //MX payment,3DS_Paynamics|Paynamics payment',
     //payStartUrl: 'http://10.0.2.2:51088/MobilePaymentStart.aspx',
 
     wantPushNoticications: true,

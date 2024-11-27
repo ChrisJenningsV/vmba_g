@@ -186,6 +186,43 @@ class Seatplan {
     }
   }
 
+  bool hasWings() {
+    return (this
+        .seats
+        .seat
+        .where((seat) =>
+    (seat.sCellDescription.contains('Wing')) )
+        .toList()
+        .length >
+        0) ;
+  }
+
+  int getLeftWing() {
+    int min = 10;
+
+    this.seats.seat.forEach((seat) {
+      if(seat.sCellDescription.contains('Wing')){
+          if( seat.sCol != 0 && seat.sCol < min ){
+            min = seat.sCol;
+          }
+        }
+      });
+    return min;
+  }
+
+  int getRightWing() {
+    int max = 0;
+
+    this.seats.seat.forEach((seat) {
+      if(seat.sCellDescription.contains('Wing')){
+        if( seat.sCol != 0 && seat.sCol > max ){
+          max = seat.sCol;
+        }
+      }
+    });
+    return max;
+  }
+
   bool hasBlockedSeats() {
     if (this
             .seats

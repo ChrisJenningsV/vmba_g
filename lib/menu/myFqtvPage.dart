@@ -705,7 +705,7 @@ Widget _getTrans() {
   }
 
   void _showDialog() {
-    showVidDialog(context, 'Error', _error);
+    showVidDialog(context, gblSettings.fqtvName, _error);
     return;
     // flutter defined function
   }

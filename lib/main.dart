@@ -21,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/CustomError.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/v3pages/homePageHelper.dart';
+import 'package:vmba/v3pages/newInstallPage.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import 'Helpers/settingsHelper.dart';
@@ -302,6 +303,7 @@ bool bFirstTime = true;
         '/AdsPage': (BuildContext context) => new AdsPage(),
         '/ErrorPage': (BuildContext context) => new ErrorPage(),
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
+        '/NewInstallPage': (BuildContext context) => new NewInstallPage(),
         '/ViewBookingPage': (BuildContext context) => new ViewBookingPage(),
 /*        '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),*/

@@ -2,11 +2,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/v3pages/cards/v3FormFields.dart';
 
 import '../../components/showDialog.dart';
 import '../../components/trText.dart';
-import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
 import '../../data/globals.dart';
 import '../../data/models/models.dart';
@@ -14,7 +14,7 @@ import '../../data/models/vrsRequest.dart';
 import '../../data/smartApi.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/messagePages.dart';
-
+import '../../utilities/navigation.dart';
 
 class FqtvLoginBox extends StatefulWidget {
   PassengerDetail? passengerDetail;
@@ -136,9 +136,13 @@ class FqtvLoginBoxState extends State<FqtvLoginBox> {
     )
     );
     list.add(Divider( color: Colors.grey, height: 1,));
-    list.add(TextButton(onPressed: (){
-
-    }, child: TrText('Continue as Guest', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),)));
+    list.add(vidTextButton(context,
+      'Continue as Guest',
+        ({p1, p2, p3}){
+        gblContinueAsGuest = true;
+        navToHomepage(context) ;
+    })
+    );
 
     return Column(
       children: list,

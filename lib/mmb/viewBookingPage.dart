@@ -1457,24 +1457,17 @@ class ViewBookingBodyState
     DateTime checkinClosed;
     DateTime departureDateTime;
     DateTime now;
- //   City? city = null ;
 
-    //city = await Repository.get().getCityByCode(itin.depart);
-
-   /* if (city == null)
-    {
-
-
-*/
-     /* checkinOpens = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt )
-          .subtract(new Duration(hours: city.webCheckinStart));
-      checkinClosed = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt)
-          .subtract(new Duration(hours: city.webCheckinEnd));*/
-      checkinOpens = DateTime.parse(
-          itin.onlineCheckinTimeStartGMT);
-
-      checkinClosed = DateTime.parse(
-          itin.onlineCheckinTimeEndGMT);
+    if( itin.onlineCheckinTimeStartGMT != '' ) {
+      checkinOpens = DateTime.parse(itin.onlineCheckinTimeStartGMT);
+    } else {
+      checkinOpens = DateTime.now().add(Duration(days: 100));
+    }
+    if( itin.onlineCheckinTimeEndGMT != '' ) {
+      checkinClosed = DateTime.parse(itin.onlineCheckinTimeEndGMT);
+    } else {
+      checkinClosed = DateTime.now().add(Duration(days: 1));
+    }
 
       departureDateTime = DateTime.parse(itin.ddaygmt + ' ' + itin.dtimgmt);
       now = getGmtTime();
@@ -2078,7 +2071,7 @@ class ViewBookingBodyState
           action = 'changeseat';
         }
     }
-    ButtonClickParams buttonClickParams = new ButtonClickParams(i1: paxNo, i2: journeyNo, action: action);
+    ButtonClickParams buttonClickParams = new ButtonClickParams(paxNo: paxNo, journeyNo: journeyNo, action: action);
 
 
     if( gblSettings.wantAllColorButtons) {
@@ -2747,8 +2740,8 @@ class ViewBookingBodyState
     gblPnrModel = pnr;
     gblButtonClickParams = buttonClickParams;
 
-    logit('seatplan cmd ls${pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.i2].depDate +
-        ' ' + pnr.pNR.itinerary.itin[buttonClickParams.i2].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.i2].depart + pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.i2].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x}');
+    logit('seatplan cmd ls${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].airID + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depDate +
+        ' ' + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depart + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x}');
 
     Navigator.push(
         context,
@@ -2757,16 +2750,16 @@ class ViewBookingBodyState
             paxlist: paxlist,
             isMmb: true,
             ischeckinOpen: checkinOpen,
-            flt: pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + ' ' + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo + ' ' +
-            pnr.pNR.itinerary.itin[buttonClickParams.i2].depart + '-' + pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive,
+            flt: pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].airID + ' ' + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].fltNo + ' ' +
+            pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depart + '-' + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].arrive,
             seatplan:
-                'ls${pnr.pNR.itinerary.itin[buttonClickParams.i2].airID + pnr.pNR.itinerary.itin[buttonClickParams.i2].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.i2].depDate + ' ' +
-                    pnr.pNR.itinerary.itin[buttonClickParams.i2].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.i2].depart +
-                    pnr.pNR.itinerary.itin[buttonClickParams.i2].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.i2].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
+                'ls${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].airID + pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].fltNo}/${new DateFormat('ddMMM').format(DateTime.parse(pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depDate + ' ' +
+                    pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depTime))}${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].depart +
+                    pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].arrive}[CB=${pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].classBand}][CUR=${pnr.pNR.fareQuote.fQItin[0].cur}][MMB=True]~x',
             rloc: pnr.pNR.rLOC,
-            cabin: pnr.pNR.itinerary.itin[buttonClickParams.i2].cabin,
-            journeyNo: buttonClickParams.i2.toString(),
-            selectedpaxNo: buttonClickParams.i1 + 1,
+            cabin: pnr.pNR.itinerary.itin[buttonClickParams.journeyNo].cabin,
+            journeyNo: buttonClickParams.journeyNo.toString(),
+            selectedpaxNo: buttonClickParams.paxNo + 1,
           ),
         )).then((pnrModel) {
           if( pnrModel != null ) {
@@ -2815,7 +2808,7 @@ class ViewBookingBodyState
       ),
       onPressed: () {
         Navigator.of(context).pop();
-        preferredSeating( ButtonClickParams(i1: paxNo, i2:journeyNo), pnr, paxlist,false);
+        preferredSeating( ButtonClickParams(paxNo: paxNo, journeyNo:journeyNo), pnr, paxlist,false);
       },
     );
 

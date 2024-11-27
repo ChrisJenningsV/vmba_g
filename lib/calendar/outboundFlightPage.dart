@@ -97,11 +97,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     // [
     if( bRaw ) {
       buffer.write('[');
-    } else {
+    } /*else {
       buffer.write('%5B');
-    }
+    }*/
     // voucher
-    if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
+    if( this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
       buffer.write('evoucher=${this.widget.newBooking.eVoucherCode.trim()},');
     }
     //SalesCity=ABZ
@@ -113,7 +113,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }
-    if(this.widget.newBooking.currency != null && this.widget.newBooking.currency.isNotEmpty) {
+    if(this.widget.newBooking.currency.isNotEmpty) {
       buffer.write(',QuoteCurrency=${this.widget.newBooking.currency}');
     }
     //&StartCity=ABZ
@@ -172,13 +172,13 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     if( bRaw) {
       return msg;
     }
-    return msg
+    /*return msg
         .replaceAll('=', '%3D')
         .replaceAll(',', '%2C')
         .replaceAll('/', '%2F')
         .replaceAll(':', '%3A')
         .replaceAll('[', '%5B')
-        .replaceAll(']', '%5D');
+        .replaceAll(']', '%5D');*/
   }
 
   Future _loadData(bool doStatState) async {
@@ -201,7 +201,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         // check if invalid voucher
         if( this.widget.newBooking.eVoucherCode != '' && objAv.availability.itin != null ){
           // look for discprice
-          bool bFound = false;
           objAv.availability.itin!.forEach((element) {
             if( element.flt != null ){
               element.flt.forEach((flt) {
@@ -209,7 +208,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                   flt.fltav.discprice!.forEach((discprice) {
                     if( discprice != '' ) {
                       // logit('discp $discprice');
-                      bFound = true;
                     }
                   });
                 }

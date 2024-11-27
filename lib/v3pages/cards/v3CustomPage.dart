@@ -11,8 +11,11 @@ import '../../menu/contact_us_page.dart';
 import '../../menu/menu.dart';
 import '../../mmb/myBookingsPage.dart';
 import '../../utilities/helper.dart';
+import '../../utilities/navigation.dart';
 import '../homePageHelper.dart';
+import '../loggedInHomePage.dart';
 import '../v3BottomNav.dart';
+import '../v3UnlockPage.dart';
 import 'FqtvLogin.dart';
 
 
@@ -110,23 +113,14 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
   ImageProvider image = Image
       .asset('lib/assets/images/bg.png')
       .image;
- /* if (homePage.backgroundImage != '') {
-    if (homePage.backgroundImage.contains('http')) {
+   if (pageName == 'newinstall') {
       NetworkImage backgroundImage = NetworkImage(
-          '${homePage.backgroundImage}');
+          '${gblSettings.gblServerFiles}/pageImages/newinstall.png');
       image = Image(
         image:
         backgroundImage,
         fit: BoxFit.cover,).image;
-    } else {
-      NetworkImage backgroundImage = NetworkImage(
-          '${gblSettings.gblServerFiles}/${homePage.backgroundImage}');
-      image = Image(
-        image:
-        backgroundImage,
-        fit: BoxFit.cover,).image;
-    }
-  }*/
+  }
 
     return Container(
       //          margin: EdgeInsets.only(top: 24),
@@ -179,9 +173,15 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
 
       if (homePage.title != null && homePage.title!.text != '') {
         ts = homePage.title!.getStyle();
+        String sTitle = homePage.title!.text;
+        if( gblPassengerDetail != null ){
+          sTitle = sTitle.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);
+        } else {
+          sTitle = sTitle.replaceAll('[[firstname]]', gblSettings.defaultTraveller);
+        }
 
         list.add(Text(
-          homePage.title!.text,
+          sTitle,
           style: ts,
         ));
       }
@@ -201,6 +201,14 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
               list.add(v3ExpanderCard(
                   context, card,Text('body'), ts: ts));
               break;
+            case 'NEWUSERLOGIN':
+              list.add(v3ExpanderCard(
+                  context, card, getUnlockDlg(context, doCallback, isStep1: true), ts: ts, wantIcon: false));
+              break;
+            case 'UPCOMING':
+              list.add(v3ExpanderCard(
+                  context, card, getUpcoming(context, doCallback), ts: ts));
+              break;
             case 'FQTVLOGIN':
               list.add(v3ExpanderCard(
                   context, card, FqtvLoginBox(), ts: ts));
@@ -217,8 +225,14 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
               list.add(v3ExpanderCard(
                   context, card, getLinks(context, card.cards, doCallback),  ts: ts));
               break;
+            case 'ICONLINK':
+              list.add(getLink(context, card, false, doCallback));
+              break;
             case 'PHOTOLINK':
               list.add(getSlide(context, card, true));
+              break;
+            default:
+              logit('card type ${card.card_type} no found');
               break;
           }
         });
@@ -302,14 +316,6 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
           child:Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,  // add this
                     children: <Widget>[
-/*
-                ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0),
-                topRight: Radius.circular(0),
-              ),
-        child:
-*/
         Image.network(
             'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}',
             // width: 300,
@@ -376,6 +382,15 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
               } else if (card.action!.function != null &&
                   card.action!.function != '') {
                 switch (card.action!.function.toUpperCase()) {
+                  case 'PAGE':
+                    if( card.action!.pageName.toUpperCase() == 'HOME') {
+                      gblIsNewInstall = false;
+                      gblContinueAsGuest = true;
+                      gblIsNewInstall = false;
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/HomePage', (Route<dynamic> route) => false);
+                    }
+                    break;
                   case 'CUSTOMPAGE':
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) =>

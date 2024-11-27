@@ -89,6 +89,9 @@ class vidAppBarState extends State<vidAppBar>  with WidgetsBindingObserver {
       case AppLifecycleState.detached:
         logit("a app in detached");
         break;
+      case AppLifecycleState.hidden:
+        logit("a app in hidden");
+        break;
     }
 
 

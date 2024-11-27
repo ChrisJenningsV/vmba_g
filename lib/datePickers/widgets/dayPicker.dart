@@ -105,6 +105,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
         lastDate: _lastDate,
         dayBuilder: _dayBuilder,
         monthChange: _monthChange,
+        disableModePicker: true,
         weekdayLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         controlsTextStyle: TextStyle(fontWeight: FontWeight.bold),
         weekdayLabelTextStyle: TextStyle(fontWeight: FontWeight.bold),

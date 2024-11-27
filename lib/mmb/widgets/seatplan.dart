@@ -72,6 +72,7 @@ class SeatPlanWidget extends StatefulWidget {
   final int selectedpaxNo;
   final bool isMmb;
   final bool ischeckinOpen;
+  bool pnrLoaded = false;
 
   _SeatPlanWidgetState createState() => _SeatPlanWidgetState();
 }
@@ -252,7 +253,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     });
   }
 
-  void _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true}) {
+  void _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true, int? journeyNo }) {
    // _bookSeats();
     setError( '');
     // check is any seats selects
@@ -266,7 +267,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       showVidDialog(context, 'Error', 'Select Seats First');
 
     } else {
-      smartBookSeats(gotoPayment: gotoPayment );
+      smartBookSeats(gotoPayment: gotoPayment, journeyNo: journeyNo  );
       setState(() {
         paxlist=new PaxList();
         paxlist!.init(paxValue);
@@ -276,13 +277,15 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
   }
 
-  smartBookSeats({bool gotoPayment = true}) async {
+  smartBookSeats({bool gotoPayment = true, int? journeyNo}) async {
     gblPayAction = 'BOOKSEAT';
     SeatRequest seat = new SeatRequest();
     gblBookSeatCmd = '';
+    seat.pnrLoaded = widget.pnrLoaded;
+    widget.pnrLoaded = true;
     seat.paxlist = paxlist!.list;
     seat.rloc = widget.rloc;
-    seat.journeyNo = int.parse(widget.journeyNo);
+    seat.journeyNo = journeyNo ?? int.parse(widget.journeyNo);
     if( widget.isMmb && widget.ischeckinOpen) {
       seat.webCheckinNoSeatCharge = gblSettings.webCheckinNoSeatCharge;
     } else {
@@ -481,8 +484,9 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       }
 
       return vidWideActionButton(context, caption, (context, d) {
+
         if( (gblCurJourney+1) < gblPnrModel!.pNR.itinerary.itin.length){
-          _handleBookSeats(paxlist!.list!, gotoPayment: false);
+          _handleBookSeats(paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
          // go to next flight
           gblCurJourney+=1;
           List<Pax> plist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
@@ -490,7 +494,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
          _loadData( _getSeatPlanCommand(gblCurJourney));
 
         } else {
-          _handleBookSeats(paxlist!.list!, gotoPayment: true);
+          _handleBookSeats(paxlist!.list!, gotoPayment: true, journeyNo: gblCurJourney);
         }
       }, icon: Icons.check,
           offset: 35.0,
@@ -539,6 +543,9 @@ Widget getTitle() {
         title1 = translate('Choose seats');
       }
       List<Widget> list = [];
+      if( objSeatplan!= null && objSeatplan!.seats != null && objSeatplan!.seats.seatsFlt != null ) {
+        list.add(VTitleText(DateFormat('dd MMM').format(DateTime.parse(objSeatplan!.seats.seatsFlt.sFltDate)) , color:gblSystemColors.headerTextColor));
+      }
       for(int i = 0; i < gblPnrModel!.pNR.itinerary.itin.length; i++){
         if( i == gblCurJourney){
           list.add(RotatedBox(
@@ -563,10 +570,23 @@ Widget getTitle() {
       list.add(VTitleText(route, size: TextSize.medium,color:gblSystemColors.headerTextColor));
 
       Row routeRow = Row(children: list);
+      Widget txt1 = Text('');
+      if( objSeatplan!= null && objSeatplan!.seats != null && objSeatplan!.seats.seatsFlt != null ) {
+        String ac = '';
+        if( objSeatplan!.seats.seatsFlt.sRef != '' ){
+          ac = '    Aircraft:' +
+              objSeatplan!.seats.seatsFlt.sRef;
+        }
+        txt1 = Align(
+          alignment: Alignment.centerLeft,
+          child:  VTitleText('FltNo: ' + objSeatplan!.seats.seatsFlt.sFltNo + ac,color:gblSystemColors.headerTextColor)
+        );
+      }
       return Column(
         children: [
           VTitleText(title1, size: TextSize.large,color:gblSystemColors.headerTextColor),
           routeRow,
+          txt1,
         ],
       );
 

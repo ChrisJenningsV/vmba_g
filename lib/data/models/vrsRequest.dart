@@ -80,6 +80,7 @@ class SeatRequest{
   bool webCheckinNoSeatCharge=false;
   String rloc ='';
   int journeyNo=1;
+  bool? pnrLoaded=false;
   String afxNo = "0";
 
   List<Pax>? paxlist; // = List.from([Pax]);
@@ -90,6 +91,7 @@ Map  toJson() {
     Map map = new Map();
     map['webCheckinNoSeatCharge'] = webCheckinNoSeatCharge;
     map['rloc'] = rloc;
+    map['pnrLoaded'] = pnrLoaded;
     map['journeyNo'] = journeyNo;
     map['afxNo'] = afxNo;
 

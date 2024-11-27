@@ -107,9 +107,6 @@ double v2BorderWidth() {
 }
 
 int parseInt( String str ){
-  if( str == null ) {
-    return 0;
-  }
   if( str.isEmpty) {
     return 0;
   }
