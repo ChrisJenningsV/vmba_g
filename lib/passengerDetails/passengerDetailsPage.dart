@@ -29,6 +29,7 @@ import 'package:vmba/components/showDialog.dart';
 import '../payment/choosePaymentMethod.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../v3pages/controls/V3Constants.dart';
+import 'contactListPage.dart';
 
 
 class PassengerDetailsWidget extends StatefulWidget {
@@ -680,6 +681,27 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(translate('Add new') + ' ${paxType.toString().split('.')[1]} ' + translate('passenger')),
+          (gblSettings.wantAddContact && gblContacts != null ) ?
+          IconButton(
+              onPressed: () {
+                  Navigator.push(
+                      context,
+                      SlideTopRoute(
+                          page: ContactListPageWidget()))
+                      .then((paxIndex) {
+                        // pax has been selected
+                        _passengerDetails[paxNo - 1].title = gblContacts!.contacts![paxIndex].title;
+                        _passengerDetails[paxNo - 1].firstName = gblContacts!.contacts![paxIndex].firstname;
+                        _passengerDetails[paxNo - 1].lastName = gblContacts!.contacts![paxIndex].lastname;
+                        showContinueButton();
+                          setState(() {
+
+                          });
+                  });
+              },
+              icon: Icon(Icons.person_add_alt,color: wantPageV2() ? gblSystemColors.primaryHeaderColor : null ),
+              iconSize: 20)
+              : Container(),
           IconButton(
               onPressed: () {
                 if (gblSettings.wantNewEditPax) {

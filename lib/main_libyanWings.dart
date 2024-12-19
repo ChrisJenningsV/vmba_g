@@ -113,6 +113,7 @@ void configYL() {
 //Production setttings
 
     liveXmlUrl:      "https://booking.libyanwings.ly/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    //liveXmlUrl:       "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.libyanwings.ly/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://booking.libyanwings.ly/VARS/webApiv2/api/',
     livePayPage:      'https://booking.libyanwings.ly/VARS/Public/MobilePaymentStart.aspx',

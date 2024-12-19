@@ -21,7 +21,7 @@ class Trips {
           }
         });
       } else {
-        trips!.add(new Trip.fromJson(json['Cities']));
+        trips!.add(new Trip.fromJson(json['trips']));
       }
     }
   }

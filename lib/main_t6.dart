@@ -69,6 +69,7 @@ void configT6() {
     wantNewInstallPage: true,
     wantHomeUpcoming: true,
     wantRememberMe: true,
+    wantAddContact: true,
 // end new features
 
       latestBuildiOS: '105',

@@ -16,6 +16,7 @@ class SystemColors {
   final Color primaryColor; // = Colors.white;
    Color? otherButtonColor;
    Color textButtonTextColor;
+   Color plainTextButtonTextColor;
    Color accentColor; // = Colors.white;
   Color? classBandIconColor;
 
@@ -86,6 +87,7 @@ class SystemColors {
     this.otherButtonTextColor,
     this.primaryButtonTextColor,
     this.textButtonTextColor = Colors.black,
+    this.plainTextButtonTextColor = Colors.blue,
     this.home1ButtonColor,
     this.home2ButtonColor,
     this.home1ButtonTextColor,

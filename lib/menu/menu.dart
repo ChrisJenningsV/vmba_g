@@ -15,6 +15,8 @@ import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../flightStatus/flightStatusPage.dart';
+import '../helpCentre/helpCentrePage.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
@@ -165,6 +167,19 @@ class DrawerMenu extends StatefulWidget {
       ));
     }
 
+
+    if(gblSettings.wantHelpCentre) {
+      list.add(ListTile(
+        dense: dense,
+        title: _getMenuItem(Icons.help_center, 'Help Centre', iconColor: Colors.red),
+        onTap: () {
+          Navigator.push(
+              context, SlideTopRoute(page: HelpCentrePageWidget()
+          ));
+        },
+      ));
+    }
+
     if(gblSettings.wantUnlock && gblIsLive == false) {
       list.add(ListTile(
         dense: dense,
@@ -214,6 +229,18 @@ class DrawerMenu extends StatefulWidget {
         },
       ));
       }
+
+    if( gblSettings != null && gblSettings!.wantFlightStatus){
+      list.add(ListTile(
+        dense: dense,
+        title: _getMenuItem( Icons.airplanemode_inactive, 'Flight Status' ),
+        onTap: () {
+          Navigator.push(
+              context, SlideTopRoute(page: FlightStatusPageWidget(          )
+          ));
+        },
+      ));
+    }
 
     // FAQ
     if(gblNoNetwork == false &&
@@ -478,13 +505,13 @@ class DrawerMenu extends StatefulWidget {
 
 
 
-  Widget _getMenuItem( IconData ico, String txt ) {
+  Widget _getMenuItem( IconData ico, String txt, {Color? iconColor} ) {
     return Row(
       children: <Widget>[
         Padding(
           // padding: EdgeInsets.only(right: 55),
           padding: EdgeInsets.only(right: 15),
-          child: Icon(ico),
+          child: Icon(ico, color: iconColor,),
         ),
         TrText(txt),
       ],

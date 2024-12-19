@@ -196,6 +196,11 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
       if (rs.isOk()) {
         objAv = rs.body!;
         removeDepartedFlights();
+        try{
+          objAv!.availability.MarkLowestFare();
+        } catch(e) {
+
+        }
         _dataLoaded();
 
         // check if invalid voucher

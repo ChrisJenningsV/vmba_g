@@ -45,6 +45,34 @@ class Availability {
 
     cal = json['cal'] != null ? new Cal.fromJson(json['cal']) : null;
   }
+
+  void MarkLowestFare() {
+    if( itin != null && itin!.length > 1){
+      double lowestfare = 0;
+      int lowestfareCount = 0;
+      int lowestfareRow = 0;
+      for( int i=0; i < itin!.length; i++){
+        itin![i].flt[0].fltav.pri!.forEach((price) {
+            double pri = double.parse(price);
+            if( ( lowestfare == 0 && pri > 0) ||
+                (lowestfare > 0 && pri > 0 && pri < lowestfare) ) {
+              lowestfareCount = 1;
+              lowestfare = pri;
+              lowestfareRow = i;
+            } else if( pri == lowestfare && lowestfare != 0) {
+              lowestfareCount++;
+              lowestfareRow = i;
+            }
+        });
+      }
+      if(lowestfareCount == 1 && lowestfare > 0 ) {
+        itin![lowestfareRow].flt[0].fltav.isLowestFareForThatDay = true;
+      }
+
+    }
+
+  }
+
 }
 
 class Classbands {
@@ -546,6 +574,7 @@ class Fltav {
   List<String>? fid;
   List<String>? finf;
   List<String>? discprice;
+  bool? isLowestFareForThatDay;
 
   Fltav(
       {this.cb,

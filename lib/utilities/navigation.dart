@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../forms/genericFormPage.dart';
 import '../mmb/viewBookingPage.dart';
+import 'helper.dart';
 
 
 // go to new user home page
@@ -26,5 +28,14 @@ void navToMyBookingPage(BuildContext context, String rloc) {
             ViewBookingPage(
               rloc: rloc,
             ))
+  );
+}
+void navToGenericFormPage(BuildContext context, FormParams params){
+  Navigator.push(
+      context,
+      SlideTopRoute(
+          page: GenericFormPageWidget(
+            formParams: params
+          ))
   );
 }

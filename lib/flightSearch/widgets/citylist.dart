@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:vmba/Helpers/settingsHelper.dart';
+import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -12,6 +13,7 @@ import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../data/models/cities.dart';
+import '../../flightStatus/flightStatusPage.dart';
 import '../../utilities/helper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
 
@@ -78,8 +80,9 @@ class Routes {
 //class Departures extends StatelessWidget {
 class Departures extends StatefulWidget {
   final String title;
+  bool isFlightStatus = false;
 
-  Departures({Key key= const Key("deps_key"), this.title=''}) : super(key: key);
+  Departures({Key key= const Key("deps_key"), this.title='', this.isFlightStatus = false}) : super(key: key);
   @override
   _DeparturesState createState() => new _DeparturesState();
 }
@@ -122,9 +125,18 @@ class _DeparturesState extends State<Departures> {
       // build routes
       // ABZ|Aberdeen (ABZ)
       _cityData = [];
-      gblCityList!.cities!.forEach((city) {
-        _cityData!.add('${city.code}|${city.name} (${city.code})');
-      });
+      if( widget.isFlightStatus) {
+        if( gblFlightStatuss!=null  ) {
+          List<String>? sorted =  gblFlightStatuss!.getSortedList();
+          sorted!.forEach((element) {
+            _cityData!.add('${element}|${cityCodetoAirport(element)} (${element})');
+          });
+          }
+      } else {
+        gblCityList!.cities!.forEach((city) {
+          _cityData!.add('${city.code}|${city.name} (${city.code})');
+        });
+      }
       return ;
     }
 
@@ -272,8 +284,9 @@ class DepartureListState extends State<DepartureList> {
 class Arrivals extends StatefulWidget {
   final String title;
   final String departCityCode;
+  bool isFlightStatus;
 
-  Arrivals({Key key= const Key("arrvs_key"), this.title='',this.departCityCode=''}) : super(key: key);
+  Arrivals({Key key= const Key("arrvs_key"), this.title='',this.departCityCode='', this.isFlightStatus = false}) : super(key: key);
   @override
   _ArrivalsState createState() => new _ArrivalsState();
 }
@@ -293,6 +306,17 @@ class _ArrivalsState extends State<Arrivals> {
 
   Future _loadData() async {
     //Repository.get().getAllDepartures().then((cityData) {
+    if( widget.isFlightStatus) {
+      _departCityData = [];
+      if( gblFlightStatuss!=null  ) {
+        List<String>? sorted = gblFlightStatuss!.getSortedDestList(departCityCode);
+        sorted!.forEach((element) {
+          _departCityData!.add('${element}|${cityCodetoAirport(element)} (${element})');
+        });
+      }
+      return;
+    }
+
     if( gblSettings.useLogin2 && gblCityList != null) {
       // build routes
       // ABZ|Aberdeen (ABZ)
@@ -424,8 +448,10 @@ class _ArrivalsState extends State<Arrivals> {
 
 class CitiesScreen extends StatefulWidget {
   final String filterByCitiesCode;
+  bool isFlightStatus = false;
 
-  CitiesScreen({Key key= const Key("citysc_key"), this.filterByCitiesCode=''}) : super(key: key);
+  CitiesScreen({Key key= const Key("citysc_key"), this.filterByCitiesCode='', this.isFlightStatus = false}) : super(key: key);
+
 
   CitiesScreenState createState() => CitiesScreenState();
 }
@@ -514,9 +540,9 @@ class CitiesScreenState  extends State<CitiesScreen> {
       ),
       body: new Container(
           child: (widget.filterByCitiesCode != null && widget.filterByCitiesCode != '')
-              ? Arrivals(departCityCode: widget.filterByCitiesCode,
+              ? Arrivals(departCityCode: widget.filterByCitiesCode,isFlightStatus: widget.isFlightStatus
           )
-              : Departures()),
+              : Departures(isFlightStatus: widget.isFlightStatus)),
     );
   }
 

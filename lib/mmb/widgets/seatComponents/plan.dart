@@ -26,6 +26,7 @@ double cellSize = 45.0; //28.0;
 double cellFontSize = 13.0;
 double cellPadding = 5.0;
 double aisleCellSize = 20.0;
+bool nullSeatNoSpace = true;
 
 class RenderSeatPlan2 extends StatefulWidget {
   const RenderSeatPlan2(
@@ -611,6 +612,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       }
       bool dumpSeats = true;
       String dumpMsg = '$indexRow ';
+      if(indexRow < 10 ) dumpMsg = ' $indexRow ';
 
       row = [];
       String leftWing = 'f';
@@ -651,14 +653,20 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   //          row.add(getWingPath(context, 'f', 50, 45, false));
         } else
           if (seat == null && indexRow != 1) {
-          dumpMsg += '   ';
-          row.add(Padding(
-            padding: EdgeInsets.all(cellPadding),
-            child: Container(
-              child: Text(''),
-              width: cellSize,
-            ),
-          ));
+          dumpMsg += ' n ';
+          if ( nullSeatNoSpace) {
+            row.add(Padding(
+              padding: EdgeInsets.all(0),
+            ));
+          } else {
+            row.add(Padding(
+              padding: EdgeInsets.all(cellPadding),
+              child: Container(
+                child: Text(''),
+                width: cellSize,
+              ),
+            ));
+          }
         } else if (seat == null && indexRow == 1 ||
             seat!.sCellDescription == 'Aisle') {
           dumpMsg += ' a ';
@@ -745,6 +753,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         } else {
 
           var color;
+          dumpMsg += '${seat!.sCode} ';
           switch (seat!.sCellDescription) {
             case 'EmergencySeat':
               color = gblSystemColors.seatPlanColorEmergency;

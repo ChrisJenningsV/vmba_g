@@ -232,6 +232,11 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       if (rs.isOk()) {
         objAv = rs.body!;
         removeDepartedFlights();
+        try{
+          objAv!.availability.MarkLowestFare();
+        } catch(e) {
+
+        }
         _dataLoaded();
       } else {
         setState(() {

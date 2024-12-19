@@ -29,6 +29,7 @@ void configLM() {
       accentColor: Colors.grey, // used for calendar selection ends
       primaryColor: Colors.red,
       textButtonTextColor: Colors.black54,
+      plainTextButtonTextColor: Colors.red,
       primaryButtonTextColor: Colors.white,
       primaryHeaderColor: Colors.red,
       calInRangeColor: Color.fromRGBO(169, 169, 169, 1),
@@ -45,6 +46,9 @@ void configLM() {
     seatPriceColor: Colors.white,
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
+
+    // new
+      inputFillColor: Colors.grey.shade50,
 
   );
 
@@ -65,18 +69,37 @@ void configLM() {
   gblSettings = Settings (
  //   homePageFilename: 'customPages.json',
     // start new bits
-/*
     homePageStyle: 'V3',
+    inputStyle: 'V2',
+    smartApiVersion: 2,
     wantShadows: false,
+    wantTransapentHomebar: true,
+    wantVericalFaresCalendar: true,
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
+    wantNewMMB: true,
+    wantNewSeats: true,
+    wantUpgradePrices: true,
+    wantButtonIcons: false,
     wantPriceCalendarRounding: false,
-    wantUnlock:true,
-    wantProducts: true,
+    wantUnlock:false,
+    //wantProducts: true,
     wantStatusLine: true,
-    wantSeatsWithProducts: true,
-*/
+    wantFlightStatus: true,
+    wantHelpCentre: true,
 
+    wantSeatsWithProducts: true,
+    useLogin2: true,
+    homePageMessage: 'Hello [[firstname]], where can we take you today?',
+
+    wantNewCalendar: true,
+    wantCalendarBigMonth: true,
+    seatPlanStyle: 'WI',
+//    wantNewInstallPage: true,
+//    wantHomeUpcoming: true,
+//    wantRememberMe: true,
+    wantAddContact: true,
+    wantFqtvRegister: true,
     // end new bits
 
    // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
@@ -172,11 +195,11 @@ void configLM() {
     testApiUrl:      'https://customertest.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
 */
 
-  //  testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
-    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+  //  testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
-   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-//    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+//   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',

@@ -14,7 +14,8 @@ import '../../utilities/helper.dart';
 
 
 
-Widget paxGetFirstName(TextEditingController firstNameTextEditingController, {required void Function(String) onFieldSubmitted,required void Function(String) onSaved}) {
+Widget paxGetFirstName(TextEditingController firstNameTextEditingController,
+    {required void Function(String) onFieldSubmitted,required void Function(String) onSaved}) {
   return V2TextWidget(
     maxLength: 50,
     styleVer: gblSettings.styleVersion,

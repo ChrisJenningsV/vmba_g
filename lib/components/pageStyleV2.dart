@@ -156,6 +156,38 @@ class _V2TextWidgetState extends State<V2TextWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if( gblSettings.inputStyle == 'V2'){
+      EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 2, 0, 2);
+      ThemeData theme = new ThemeData(
+        primaryColor: Colors.blueAccent,
+        primaryColorDark: Colors.blue,
+      );
+
+      return Padding(
+          padding: _padding,
+          child: new Theme(
+              data: theme ,
+              child: TextFormField(
+                decoration: widget.decoration,
+                maxLength: widget.maxLength,
+                controller: widget.controller,
+                validator: widget.validator,
+                onFieldSubmitted: widget.onFieldSubmitted,
+                inputFormatters: widget.inputFormatters,
+                textInputAction: widget.textInputAction,
+                onSaved: widget.onSaved,
+                onChanged: widget.onChanged,
+                keyboardType: widget.keyboardType,
+                autovalidateMode: widget.autovalidateMode,
+                textAlign: widget.textAlign,
+                autofocus: widget.autofocus,
+                focusNode: widget.focusNode,
+
+              )
+          )
+      );
+    }
+
     if( wantPageV2() || widget.styleVer == 2) {
       return v2BorderBox(context, ' ' + translate(widget.decoration?.labelText as String),
         TextFormField(

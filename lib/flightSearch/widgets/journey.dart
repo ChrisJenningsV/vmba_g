@@ -57,7 +57,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         route.arrival = arrivalCode;
 */
         gblSearchParams.searchOriginCode = newValue.split('|')[0];
-        gblOrigin =gblSearchParams.searchOriginCode;
+        gblOrigin = gblSearchParams.searchOriginCode;
         gblSearchParams.searchOrigin = newValue.split('|')[1];
         gblSearchParams.searchDestination = translate('Select arrival airport');
         gblSearchParams.searchDestinationCode = '';
@@ -67,7 +67,6 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         gblFlightPrices = null;
         logit('clear FlightPrices');
         widget.onChanged!(route);
-
       });
     }
   }
@@ -83,7 +82,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
         route.arrival = arrivalCode;
 */
         gblSearchParams.searchDestinationCode = newValue.split('|')[0];
-        gblDestination =gblSearchParams.searchDestinationCode;
+        gblDestination = gblSearchParams.searchDestinationCode;
         gblSearchParams.searchDestination = newValue.split('|')[1];
         route.departure = gblSearchParams.searchOriginCode;
         route.arrival = gblSearchParams.searchDestinationCode;
@@ -99,130 +98,123 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   Widget build(BuildContext context) {
     return Container(
       //color: Colors.red,
-      child: Row(
+        child: Row(
 
-        //mainAxisSize: MainAxisSize.max,
-        // mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          new Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          //mainAxisSize: MainAxisSize.max,
+          // mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              new GestureDetector(
-                  onTap: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CitiesScreen()),
-                    );
-                    // print('$result');
-                    _handleDeptureSelectionChanged('$result');
-                  },
-                  child: _flyFrom(),
-              ),
-              new Padding(
-                padding: EdgeInsets.only(bottom: 5),
-              ),
-              new GestureDetector(
-                  onTap: () async {
-                    //departureCode == 'null' || departureCode == ''
-                    gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
-                        ? print('Pick departure city first')
-                        : await arrivalSelection(context);
-                  },
-                  child: _flyTo(),
+              new Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CitiesScreen()),
+                      );
+                      // print('$result');
+                      _handleDeptureSelectionChanged('$result');
+                    },
+                    child: getFlyFrom(context, 'Fly from'),
+                  ),
+                  new Padding(
+                    padding: EdgeInsets.only(bottom: 5),
+                  ),
+                  new GestureDetector(
+                    onTap: () async {
+                      //departureCode == 'null' || departureCode == ''
+                      gblSearchParams.searchOriginCode == 'null' ||
+                          gblSearchParams.searchOriginCode == ''
+                          ? print('Pick departure city first')
+                          : await arrivalSelection(context);
+                    },
+                    child: getFlyTo(context, setState, 'Fly to', true),
+                  )
+                ],
               )
-            ],
-          )
-        ])
+            ])
     );
   }
 
 
-  Widget _getAirportText(String airportName, String code) {
-    Color c;
-    FontWeight fw;
-    double? fSize;
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    if( screenWidth < 380 &&  airportName.length > 20 ) {
-      fSize = 14.0;
-    } else {
-      fSize = 18.0;
-    }
-    if( code == '') {
-      c = Colors.grey;
-      fw = FontWeight.w300;
-    } else {
-      c = Colors.black;
-      fw = FontWeight.w400;
-    }
-   /* if( wantHomePageV3()  ){
-      fw = FontWeight.normal;
-      fSize = null;
-    }*/
 
-    return Container(
-    //   color: Colors.red,
-  width: MediaQuery.of(context).size.width - 40,
-/*
-        child: FittedBox(
-        fit: BoxFit.fitWidth,
-*/
-        child:
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-        TrText(
-      translate(airportName),
-      noTrans: true,
-      style: wantHomePageV3() ? TextStyle() : TextStyle(
-          fontWeight: fw,
-          color: c,
-      fontSize: fSize)),
-          Icon(Icons.keyboard_arrow_down_outlined)
-      ] )
-    //)
-    );
-    //,
-    //fontSize: fSize)
-  }
   Future arrivalSelection(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CitiesScreen(filterByCitiesCode: gblSearchParams.searchOriginCode)),
+              CitiesScreen(
+                  filterByCitiesCode: gblSearchParams.searchOriginCode)),
     );
     _handleArrivalSelectionChanged('$result');
   }
 
-  Widget _airport(String fullName){
-    if( fullName.contains('(')) {
-      String airport = fullName.split('(')[0];
-      String code = fullName.split('(')[1];
+}
+Widget _getAirportText(BuildContext context, String airportName, String code) {
+  Color c;
+  FontWeight fw;
+  double? fSize;
+  double screenWidth = MediaQuery
+      .of(context)
+      .size
+      .width;
 
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(translate(airport.trim()), textScaleFactor: 1.5,
-            style: TextStyle(fontWeight: FontWeight.bold),),
-          Padding(padding: EdgeInsets.only(left: 5)),
-          Text(code.replaceAll(')', ''),),
-        ],
-      );
-    } else {
-      return Text(fullName);
-    }
+  if (screenWidth < 380 && airportName.length > 20) {
+    fSize = 14.0;
+  } else {
+    fSize = 18.0;
   }
+  if (code == '') {
+    c = Colors.grey;
+    fw = FontWeight.w300;
+  } else {
+    c = Colors.black;
+    fw = FontWeight.w400;
+  }
+  /* if( wantHomePageV3()  ){
+      fw = FontWeight.normal;
+      fSize = null;
+    }*/
 
-  Widget _flyTo() {
+  return Container(
+    //   color: Colors.red,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width - 40,
+/*
+        child: FittedBox(
+        fit: BoxFit.fitWidth,
+*/
+      child:
+      Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TrText(
+                translate(airportName),
+                noTrans: true,
+                style: wantHomePageV3() ? TextStyle() : TextStyle(
+                    fontWeight: fw,
+                    color: c,
+                    fontSize: fSize)),
+            Icon(Icons.keyboard_arrow_down_outlined)
+          ])
+    //)
+  );
+  //,
+  //fontSize: fSize)
+}
+
+  Widget getFlyTo(BuildContext context, void Function(void Function()) setState, String title, bool flightSearchPage ) {
     if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Fly to'), Row(
+      return v2BorderBox(context,  ' ' + translate(title), Row(
           children: <Widget>[
             Icon(PhosphorIcons.airplane_landing, color:  gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
             Padding(padding: EdgeInsets.all(5)),
             ///_airport(arrivalAirport), /// Text(departureAirport)
-            _airport(gblSearchParams.searchDestination), /// Text(departureAirport)
+            showAirport(gblSearchParams.searchDestination), /// Text(departureAirport)
           ]));
 
     } else {
@@ -232,9 +224,10 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         //(gblSettings.wantCitySwap && departureCode.isNotEmpty && arrivalCode.isNotEmpty) ?
-        (gblSettings.wantCitySwap && gblSearchParams.searchOriginCode.isNotEmpty && gblSearchParams.searchDestinationCode.isNotEmpty) ?
+        (gblSettings.wantCitySwap && gblSearchParams.searchOriginCode.isNotEmpty &&
+            gblSearchParams.searchDestinationCode.isNotEmpty && flightSearchPage) ?
         Row(children: [
-          TrText('Fly to', style: new TextStyle(
+          TrText(title, style: new TextStyle(
               fontWeight: FontWeight.bold, fontSize: 15.0)),
           IconButton(
             padding: EdgeInsets.zero,
@@ -243,7 +236,6 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
             color: Colors.blueGrey,
             tooltip: translate('Swap Origin and Destination'),
             onPressed: () {
-              setState(() {
 /*
                 var dest = departureAirport;
                 departureAirport = arrivalAirport;
@@ -254,14 +246,15 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
                 gblSearchParams.searchOrigin = gblSearchParams.searchDestination;
                 gblSearchParams.searchOriginCode = gblSearchParams.searchDestinationCode;
                 gblSearchParams.searchDestinationCode = destCode;
+              setState(() {
               });
             },)
         ],)
-            : new TrText('Fly to',
+            : new TrText(title,
             style: new TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 15.0)),
         //_getAirportText(arrivalAirport, arrivalCode),
-        _getAirportText(gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode),
+        _getAirportText(context, gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode),
         new Divider(
           height: 0.0,
         ),
@@ -272,14 +265,14 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
 
 
 
-  Widget _flyFrom() {
+  Widget getFlyFrom(BuildContext context, String title ) {
     if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Fly From'), Row(
+      return v2BorderBox(context,  ' ' + translate(title), Row(
           children: <Widget>[
             Icon(PhosphorIcons.airplane_takeoff, color: gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
             Padding(padding: EdgeInsets.all(5)),
             //_airport(departureAirport), /// Text(departureAirport)
-            _airport(gblSearchParams.searchOrigin), /// Text(departureAirport)
+            showAirport(gblSearchParams.searchOrigin), /// Text(departureAirport)
           ]));
 
     } else {
@@ -289,23 +282,41 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TrText(
-              'Fly from',
+              title,
               style: new TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15.0,
               ),
             ),
             //_getAirportText(departureAirport, departureCode),
-            _getAirportText(gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode),
+            _getAirportText(context, gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode),
             new Divider(
               height: 0.0,
             ),
           ]);
     }
   }
-}
+
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('lib/assets/data/testdata.json');
 }
 
+Widget showAirport(String fullName){
+  if( fullName.contains('(')) {
+    String airport = fullName.split('(')[0];
+    String code = fullName.split('(')[1];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(translate(airport.trim()), textScaleFactor: 1.5,
+          style: TextStyle(fontWeight: FontWeight.bold),),
+        Padding(padding: EdgeInsets.only(left: 5)),
+        Text(code.replaceAll(')', ''),),
+      ],
+    );
+  } else {
+    return Text(fullName);
+  }
+}

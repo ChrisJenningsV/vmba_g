@@ -1,7 +1,7 @@
 {
   "version": "1",
   "calendar": {
-    "backColor": "yellow",
+    "backColor": "grey",
     "textColor": "red",
     "selectableColor": "blue",
     "disabledColor": "White",

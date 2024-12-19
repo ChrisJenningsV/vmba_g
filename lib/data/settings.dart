@@ -69,9 +69,8 @@ class Settings {
   bool wantMyAccount =true;
   bool wantProfileList = false;
   bool wantUnlock = false;
-  bool wantFQTV = false;
+  bool wantHelpCentre;
   bool wantFindBookings = false;
-  bool wantFQTVNumber = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
   bool wantCurrencyPicker = false;
@@ -79,7 +78,6 @@ class Settings {
   bool wantPassengerPassport = false;
   bool wantRememberMe = false;
   bool wantCustomProgress =false;
-  bool wantHomeFQTVButton = false;
   bool wantUmnr = false;
   bool youthIsAdult = false;
   bool wantEnglishTranslation = false;
@@ -129,6 +127,7 @@ class Settings {
   bool wantCalendarBigMonth;
   bool wantNewMMB;
   bool wantNewSeats;
+  bool wantAddContact;
   bool wantSeatKeyExpanded;
   bool wantUpgradePrices;
   bool wantPriceCalendarRounding;
@@ -144,14 +143,26 @@ class Settings {
   bool wantShadows;
   bool wantTransapentHomebar;
   bool wantVericalFaresCalendar;
-  bool wantFqtvAutologin;
-  bool wantFqtvHomepage;
   bool wantCustomHomepage;
   bool useLogin2;
   bool wantNewInstallPage;
   bool wantHomeUpcoming;
   // new gui opts
   bool wantCityDividers;
+  // fqtv settings
+  bool wantFQTV = false;
+  bool wantFlightStatus = false;
+  bool wantFQTVNumber = false;
+  bool wantHomeFQTVButton = false;
+  bool wantFqtvAutologin;
+  bool wantFqtvHomepage;
+  bool wantFqtvRegister;
+  bool wantFqtvAddress;
+  bool wantFqtvDob;
+  bool wantFqtvPassport;
+
+  String fqtvName="";
+  String fQTVpointsName = 'airmiles';
 
   String dagerousdims;
   String domesticCountryCode;
@@ -159,6 +170,7 @@ class Settings {
   String homePageMessage;
   String productFormat;
   String homePageStyle;
+  String inputStyle;
   String homePageFilename;
   String pageStyle;
   String defaultCountryCode;
@@ -210,7 +222,6 @@ class Settings {
   String latestBuildAndroid = '1';
   String lowestValidBuildiOS = '1';
   String lowestValidBuildAndroid = '1';
-  String fQTVpointsName = 'airmiles';
   String reqUpdateMsg;
   String optUpdateMsg;
 
@@ -251,7 +262,6 @@ class Settings {
   bool eVoucher;
   PassengerTypes passengerTypes;
 
-  String fqtvName="";
   String updateMessage='';
   String appFeedbackEmail="";
   String buttonStyle;
@@ -295,6 +305,12 @@ bool bpShowFastTrack;
     this.wantRememberMe = false ,
     this.wantCustomProgress = true,
     this.wantHomeFQTVButton = false,
+    this.wantFqtvRegister = false,
+    this.wantFqtvDob = false,
+    this.wantFqtvAddress = false,
+    this.wantFqtvPassport = false,
+    this.wantFlightStatus = false,
+
     this.wantUmnr = false,
     this.want24HourClock = false,
     this.wantNewEditPax = false,
@@ -346,6 +362,7 @@ bool bpShowFastTrack;
     this.wantNewCalendar = false,
     this.wantCalendarBigMonth = false,
     this.wantNewSeats = false,
+    this.wantAddContact = false,
     this.wantSeatKeyExpanded = false,
     this.wantNewMMB = false,
     this.wantUpgradePrices = false,
@@ -362,6 +379,7 @@ bool bpShowFastTrack;
     this.wantNewInstallPage = false,
     this.wantHomeUpcoming = false,
     this.wantUnlock = false,
+    this.wantHelpCentre = true,
 
     // new Gui
     this.wantCityDividers = false,
@@ -372,6 +390,7 @@ bool bpShowFastTrack;
     this.useSmartPay = false,
     this.avTimeFormat='HHmm',
     this.homePageStyle='V1',
+    this.inputStyle='V1',
     this.homePageFilename = '',
     this.pageStyle = 'V1',
     this.styleVersion = 1,

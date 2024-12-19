@@ -673,10 +673,10 @@ Widget _getLogo(){
     );
 
     if( wantHomePageV2() || wantHomePageV3() ) {
-      b1Clr = gblSystemColors.home1ButtonColor!;
-      b2Clr = gblSystemColors.home2ButtonColor!;
-      b1TextClr = gblSystemColors.home1ButtonTextColor!;
-      b2TextClr = gblSystemColors.home2ButtonTextColor!;
+      if( gblSystemColors.home1ButtonColor != null )       b1Clr = gblSystemColors.home1ButtonColor!;
+      if( gblSystemColors.home2ButtonColor != null ) b2Clr = gblSystemColors.home2ButtonColor!;
+      if( gblSystemColors.home1ButtonTextColor != null )  b1TextClr = gblSystemColors.home1ButtonTextColor!;
+      if( gblSystemColors.home2ButtonTextColor != null )  b2TextClr = gblSystemColors.home2ButtonTextColor!;
       fw = FontWeight.normal;
       buttonHeight = 35.0;
       tsf = 1.25;
@@ -684,33 +684,44 @@ Widget _getLogo(){
     }
 
     if(gblSettings.homePageMessage != '' ){
+      String msg = gblSettings.homePageMessage;
+      if( gblPassengerDetail != null && gblPassengerDetail!.firstName != ''){
+        msg = msg.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);
+      } else {
+        msg = msg.replaceAll('[[firstname]]', gblSettings.defaultTraveller);
+      }
       list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-          child: VHeadlineText(gblSettings.homePageMessage, size: TextSize.medium,color: gblSystemColors.headerTextColor,)));
+          child: VHeadlineText(msg, size: TextSize.medium,color: gblSystemColors.headerTextColor,)));
     }
 
     if( gblSettings.wantHomeUpcoming && gblTrips != null && gblTrips!.trips != null && gblTrips!.trips!.length> 0) { //
       HomeCard card = new HomeCard();
       String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
-      if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) fltDate = 'Today';
+      DateTime dtComp = DateTime.now().add(Duration(days: 1));
+      if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
+        fltDate = 'Today';
+      } else if(gblTrips!.trips!.first.fltdate!.month == dtComp.month && gblTrips!.trips!.first.fltdate!.day == dtComp.day) {
+        fltDate = 'Tomorrow';
+      }
+        card.title = CardText('', text: translate('Next Trip' + ': ' + fltDate));
+        card.icon = Icons.airplanemode_active;
+        card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
+        card.title!.color = gblSystemColors.primaryButtonTextColor;
 
-      card.title = CardText('', text: translate('Next Trip' + ': ' + fltDate));
-      card.icon = Icons.airplanemode_active;
-      card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
-      card.title!.color = gblSystemColors.primaryButtonTextColor;
-
-      list.add(
-          GestureDetector(
-            onTap: () {
-              navToMyBookingPage(context, gblTrips!.trips!.first.rloc);
-            },
-            child:
-          v3ExpanderCard(
-          context, card, getUpcoming(context, () {
-            setState(() {});
-          }), wantIcon: false
-        ))
+        list.add(
+            GestureDetector(
+                onTap: () {
+                  navToMyBookingPage(context, gblTrips!.trips!.first.rloc);
+                },
+                child:
+                v3ExpanderCard(
+                    context, card, getUpcoming(context, () {
+                  setState(() {});
+                }), wantIcon: false
+                ))
         );
-    }
+      }
+
 
     if (gblNoNetwork == false && gblSettings.disableBookings == false) {
       list.add(Row(

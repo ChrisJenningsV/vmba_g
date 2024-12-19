@@ -37,7 +37,7 @@ class FlightSearchRequest
 
 class FlightPrices {
   List<FlightPrice> flightPrices = List.from([FlightPrice()]);
-  List<bool> months = [false,false,false,false,false,false,false,false,false,false,false,false,];
+  List<bool> months = [false,false,false,false,false,false,false,false,false,false,false,false,false,];
   String from = '';
   String to = '';
 

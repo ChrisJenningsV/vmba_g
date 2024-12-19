@@ -652,14 +652,21 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
             margin: EdgeInsets.all(0),
             child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   vidTextButton(
                       context, 'Flight details', _onPressedFlightDetails, p1: fltNo,
                       p3: '',
                       color: gblSystemColors.fltText,
                       minHeight: true),
-                  Padding(padding: EdgeInsets.all(5))]),
+                  Padding(padding: EdgeInsets.all(5)),
+                  (item.flt.first.fltav.isLowestFareForThatDay!= null && item.flt.first.fltav!.isLowestFareForThatDay==true) ?
+                    Container( child:Text('Lowest Fare' , style: TextStyle(color: Colors.white),),
+                      padding: EdgeInsets.all(5),
+                      color: Colors.red,
+                    ) : Container()
+
+                ]),
           )),
       //Text('here', style: TextStyle(color: Colors.white),)
     ]);

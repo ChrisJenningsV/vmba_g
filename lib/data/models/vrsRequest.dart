@@ -56,6 +56,7 @@ class VrsApiRequest extends Session {
 
 class VrsApiResponse  {
   String data ='';
+  String encrypted='';
   String errorMsg ='';
   String sessionId ='';
   String varsSessionId ='';

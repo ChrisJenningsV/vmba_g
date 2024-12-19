@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
+import 'package:encrypt/encrypt.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
+import 'package:vmba/data/models/paxContacts.dart';
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/xmlApi.dart';
@@ -14,6 +16,7 @@ import '../main.dart';
 import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
+import 'crypto.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -29,6 +32,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/notifyMsgs.dart';
 import 'models/trips.dart';
+import 'models/paxContacts.dart';
 import 'models/vrsRequest.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
@@ -293,6 +297,17 @@ class Repository {
 /*
         }
 */
+        try {
+          if(gblSettings.useLogin2){
+            String pass = 'MobileAPPpasswor';
+/*
+            Encrypted e;
+            String newData = decrypt(pass,data);
+*/
+          }
+        } catch(e) {
+
+        }
 
         Map<String, dynamic> map = json.decode(data);
           //
@@ -312,6 +327,7 @@ class Repository {
           if( langFileModifyString != null && langFileModifyString.isNotEmpty ){
             gblLangFileModTime = langFileModifyString;
           }
+          logit('getSettingsFromApi - login COMPLETING');
           try {
             if (map['cities'] != null && map['cities'] != '') {
               Map<String, dynamic> json = jsonDecode(map['cities']);
@@ -320,6 +336,10 @@ class Repository {
             if (map['trips'] != null && map['trips'] != '') {
               Map<String, dynamic> json = jsonDecode(map['trips']);
               gblTrips = Trips.fromJson(json);
+            }
+            if (map['contacts'] != null && map['contacts'] != '') {
+              Map<String, dynamic> json = jsonDecode(map['contacts']);
+              gblContacts = PaxContacts.fromJson(json);
             }
 
           } catch(e) {
@@ -512,6 +532,15 @@ class Repository {
                     break;
                   case 'wantseats':
                     gblSettings.wantSeats = parseBool(item['value']);
+                    break;
+                  case 'wantFlightStatus':
+                    gblSettings.wantFlightStatus = parseBool(item['value']);
+                    break;
+                  case 'wantHelpCentre':
+                    gblSettings.wantHelpCentre = parseBool(item['value']);
+                    break;
+                  case 'wantPriceCalendar':
+                    gblSettings.wantPriceCalendar = parseBool(item['value']);
                     break;
                   case 'wantcityswap':
                     gblSettings.wantCitySwap = parseBool(item['value']);
@@ -728,6 +757,48 @@ class Repository {
                     gblSettings.searchDateBack = parseInt(item['value']);
                     break;
 
+                  case 'PassengerFrequentFlyerProgramme':
+                    //gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+//                  case 'FrequentFlyerRedeemAirMiles':                   // "Redeem AirMiles Enabled",
+                  case 'PassengerFrequentFlyerProgrammeRegistration':   // "Program Registration Enabled",
+                    gblSettings.wantFqtvRegister = parseBool(item['value']);
+                    break;
+                  case 'PassengerFrequentFlyerProgrammeChildren':       //      ' "Children Enabled",
+  //                  gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+                  case 'PassengerFrequentFlyerProgrammeInfants':        //      ' "Infants Enabled",
+//                    gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+//                  case 'PassengerFrequentFlyerQuickRegistration':       //    ' "Quick Registration Enabled",
+                  case 'FqtvRegistrationWantAddress':                   //    ' "Want Address for Registration",
+                    gblSettings.wantFqtvAddress = parseBool(item['value']);
+                    break;
+                  case 'FqtvRegistrationWantDOB':                       //      ' "Want DOB for Registration",
+                    gblSettings.wantFqtvDob = parseBool(item['value']);
+                    break;
+                  case 'FqtvRegistrationWantPublicity':                 //      '"Want Publicity for Registration",
+                    //gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+                  case 'FqtvRegistrationWantPublicityRequired':         //      ' "Want Publicity required for Registration",
+                    //gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+                  case 'FqtvEditIntimate':                              //      '"Can edit Name,Phone, eMail and DOB",
+                    //gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+                  case 'FqtvRegistrationWantPassport':                  //      ' "Want Passport for Registration",
+                    gblSettings.wantFqtvPassport = parseBool(item['value']);
+                    break;
+                  case 'FqtvRegistrationWantOptions':                   //' "Want Options for Registration",
+                    //gblSettings.hideFareRules = parseBool(item['value']);
+                    break;
+                  case 'FqtvProgramName':                               //    '"Frequent Traveller Program Name",
+                    gblSettings.fqtvName = item['value'];
+                    break;
+                  case 'FqtvMinDOB':
+                    gblSettings.maxNumberOfPax = parseInt(item['value']);
+                    break;
+
 
                   default:
                     String param = item['parameter'];
@@ -745,6 +816,7 @@ class Repository {
                 }
               }
               gblLoginSuccessful = true;
+              logit('getSettingsFromApi - login COMPLETED');
             } else {
               print('settingsJson == null');
 

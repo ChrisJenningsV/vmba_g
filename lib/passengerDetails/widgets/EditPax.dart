@@ -213,14 +213,20 @@ return SafeArea(
 
 
 Widget getFirstname() {
-
-  return paxGetFirstName(
+  return  Padding(
+    padding: _padding,
+    child: new Theme(
+      data: theme ,
+      child:
+  paxGetFirstName(
         _firstNameTextEditingController,
         onFieldSubmitted: (value){
         widget.passengerDetail.firstName = value;      },
         onSaved: (value){
           widget.passengerDetail.firstName = value;
         },
+  )
+  )
   );
 }
 
@@ -317,14 +323,20 @@ Widget getFirstname() {
       );
 */
     }
+  ThemeData theme =    new ThemeData(
+    primaryColor: Colors.blueAccent,
+    primaryColorDark: Colors.blue,
+  );
+  EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 2, 0, 2);
 
  List <Widget> renderFields() {
     List <Widget> list = [];
+/*
     ThemeData theme =    new ThemeData(
       primaryColor: Colors.blueAccent,
       primaryColorDark: Colors.blue,
     );
-    EdgeInsetsGeometry _padding = EdgeInsets.fromLTRB(0, 2, 0, 2);
+*/
 
     //return Column(children: <Widget>[
     //logit('title = ${widget.passengerDetail.title}');
@@ -340,7 +352,6 @@ Widget getFirstname() {
       child: new Theme(
         data: theme ,
         child: getFirstname(),
-
       ),
     ));
 

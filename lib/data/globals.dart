@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/data/models/models.dart';
 import '../components/vidButtons.dart';
+import '../flightStatus/flightStatusPage.dart';
 import '../home/searchParams.dart';
 import '../v3pages/homePageHelper.dart';
 import '../v3pages/v3Theme.dart';
@@ -14,6 +15,7 @@ import 'package:vmba/data/settings.dart';
 import 'models/cities.dart';
 import 'models/flightPrices.dart';
 import 'models/notifyMsgs.dart';
+import 'models/paxContacts.dart';
 import 'models/pnr.dart';
 import 'models/products.dart';
 import 'models/providers.dart';
@@ -25,10 +27,12 @@ import 'models/trips.dart';
 // M1 = LM new stuff
 // 9Q caicos
 //  YL lyb wings
-String gblBuildFlavor = 'T6';
+// H4 hisky
+// X4 excursions
+String gblBuildFlavor = 'LM';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 117; // now 119 for LM NEW
+int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
 int requiredApiVersion = 105;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = false;
@@ -161,6 +165,7 @@ PageListHolder? gblHomeCardList;
 V3Theme? gblV3Theme;
 Cities? gblCityList;
 Trips? gblTrips;
+PaxContacts? gblContacts;
 ButtonClickParams? gblButtonClickParams;
 
 TextStyle? gblTitleStyle;
@@ -183,3 +188,4 @@ StackTrace? gblStack;
 
 
 SearchParams gblSearchParams = new SearchParams();
+FlightStatuss? gblFlightStatuss;

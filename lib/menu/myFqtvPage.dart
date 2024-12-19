@@ -10,8 +10,10 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/forms/genericFormPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/utilities/navigation.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
@@ -217,15 +219,28 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         titlePadding: EdgeInsets.only(top: 0),
-        contentPadding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 0),
+        contentPadding: EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 0),
         title: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   color: titleBackClr,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
-              padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-              child: Text(sTitle ,
-                style: TextStyle(color: Colors.white),)
+              padding: EdgeInsets.only(left: 10, top: 0, bottom: 0),
+              child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(padding: EdgeInsets.all(20)),
+                    Text(sTitle ,
+                      style: TextStyle(color: Colors.white),),
+                    IconButton(onPressed: () => Navigator.pop(context),
+                         icon: Stack(
+                           children: [
+                             Icon(Icons.circle_outlined, color: Colors.white, size: 34,),
+                              Padding( padding: EdgeInsets.only(left: 5, top: 5), child: Icon(Icons.close, color: Colors.white,)),
+                           ],
+                         ))
+            ] )
         ),
         content: contentBox(context),
         //actions: <Widget>[)    ]
@@ -290,16 +305,17 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     // });
   }
 
-    contentBox(context){
+Widget? contentBox(context){
     return
       SizedBox(
           width: MediaQuery.of(context).size.width,
         child:
         Stack(
-          children: <Widget>[ Column(
+          children: <Widget>[
+            Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new TextFormField(
+              Padding(padding: EdgeInsets.only(left: 10, right: 10), child: TextFormField(
                 decoration: getDecoration( '${gblSettings.fqtvName} ' + translate('number')),
                 controller: _fqtvTextEditingController,
                 keyboardType: TextInputType.number,
@@ -308,10 +324,10 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                     //.contactInfomation.phonenumber = value.trim()
                   }
                 },
-              ),
+              ),),
 
               SizedBox(height: 15,),
-              new TextFormField(
+              Padding(padding: EdgeInsets.only(left: 10, right: 10), child:  TextFormField(
                 obscureText: _isHidden,
                 obscuringCharacter: "*",
                 controller: _passwordEditingController ,
@@ -327,17 +343,21 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                     //.contactInfomation.phonenumber = value.trim()
                   }
                 },
-              ),
-              new TextButton(
+              )),
+              Padding(padding: EdgeInsets.only(left: 10, right: 10), child: Row( children:
+              [
+                TrText('Can\'t log in ?'),
+                TextButton(
                 child: new TrText(
                   'Reset Password',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: gblSystemColors.plainTextButtonTextColor),
                 ),
-                style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
+               // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
                   resetPasswordDialog();
                 },
-              ),
+              )]
+              )),
               gblSettings.wantRememberMe ?
               CheckboxListTile(
                 title: TrText("Remember me"),
@@ -352,12 +372,12 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                    vidCancelButton( context, "CANCEL", (context) {
+                 /*   vidCancelButton( context, "CANCEL", (context) {
                       //
                       Navigator.of(context).pop();
                     },
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(width: 20,),*/
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: gblSystemColors.primaryButtonColor,),
                     child: Row(children: <Widget>[
@@ -397,9 +417,33 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                     },
                   ),
                 ],
-              )
+              ),
+              gblSettings.wantFqtvRegister ?
+                Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black12 ,
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0),)),
+                  margin: EdgeInsets.all(0),
+                  height: 35,
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  width: MediaQuery.of(context).size.width,
+                  child: TextButton(child: new TrText(
+                    'Create a ${gblSettings.fqtvName} account >',
+                    style: TextStyle(color: gblSystemColors.plainTextButtonTextColor),
+                  ),
+                      // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        navToGenericFormPage(context, new FormParams(formName: 'FQTVREGISTER',
+                            formTitle: '${gblSettings.fqtvName} Registration'));
+                      }
+
+                  )
+                ) :
+              Container()
             ],
-          )],
+          )
+          ],
         )
       );
   }
@@ -705,7 +749,7 @@ Widget _getTrans() {
   }
 
   void _showDialog() {
-    showVidDialog(context, gblSettings.fqtvName, _error);
+    showVidDialog(context, gblSettings.fqtvName, _error, type: DialogType.Error);
     return;
     // flutter defined function
   }

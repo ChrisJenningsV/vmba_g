@@ -10,6 +10,8 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../Products/optionsPage.dart';
+import '../calendar/bookingFunctions.dart';
 import '../components/showDialog.dart';
 import '../utilities/helper.dart';
 import '../v3pages/controls/V3Constants.dart';
@@ -110,16 +112,33 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
               showVidDialog(context, 'Alert', 'PDR Error in data');
 
             }
-            var _error = await Navigator.push(
+            if( gblSettings.wantProducts) {
+              if( gblError == '') {
+                refreshStatusBar();
+                Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ContactDetailsWidget(
-                          newbooking: widget.newBooking!,
-                          preLoadDetails: widget.preLoadDetails,
-                          passengerDetailRecord: widget.passengerDetailRecord!,
-                        )));
-            print(_error);
+                builder: (context) =>
+                OptionsPageWidget(
+                newBooking: widget.newBooking as NewBooking)));
+                } else {
+                setState(() {
+                gblActionBtnDisabled = false;
+                });
+              }
+            } else {
+              var _error = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ContactDetailsWidget(
+                            newbooking: widget.newBooking!,
+                            preLoadDetails: widget.preLoadDetails,
+                            passengerDetailRecord: widget
+                                .passengerDetailRecord!,
+                          )));
+              print(_error);
+            }
           } else {
             logit('no newBooking');
             continuePass = true;
