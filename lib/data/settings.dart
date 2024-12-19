@@ -70,6 +70,7 @@ class Settings {
   bool wantProfileList = false;
   bool wantUnlock = false;
   bool wantHelpCentre;
+  bool wantLocation;
   bool wantFindBookings = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
@@ -380,6 +381,7 @@ bool bpShowFastTrack;
     this.wantHomeUpcoming = false,
     this.wantUnlock = false,
     this.wantHelpCentre = true,
+    this.wantLocation = false,
 
     // new Gui
     this.wantCityDividers = false,

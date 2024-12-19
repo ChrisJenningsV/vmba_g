@@ -66,7 +66,7 @@ class NotificationService {
         requestSoundPermission: false,
         requestBadgePermission: false,
         requestAlertPermission: false,
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+//        onDidReceiveLocalNotification: onDidReceiveLocalNotification,
       );
 /*
       final DarwinInitializationSettings initializationSettingsIOS =

@@ -3,6 +3,8 @@ import 'dart:async' show Future;
 import 'dart:convert';
 import 'package:encrypt/encrypt.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:vmba/data/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/paxContacts.dart';
@@ -345,6 +347,12 @@ class Repository {
           } catch(e) {
             logit('Error loading cities ${e.toString()}');
           }
+
+          if( gblSettings.wantLocation){
+            initGeolocation();
+          }
+
+
 /*
           if( gblSettings.useWebApiforVrs) {
 */
@@ -1862,4 +1870,37 @@ Future<String?> getSetting(String key ) async {
     print('getSetting $key error: $e');
   }
   return '';
+}
+
+Future<void> initGeolocation() async {
+  try {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Location Not Available');
+      }
+    } else {
+      throw Exception('Error');
+    }
+    //return await Geolocator.getCurrentPosition();
+
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best)
+        .timeout(Duration(seconds: 5));
+
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      print(placemarks[0]);
+    }catch(err){
+      logit(err.toString());
+    }
+  } catch(e){
+    logit(e.toString());
+
+  }
 }

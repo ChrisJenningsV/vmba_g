@@ -87,6 +87,7 @@ void configLM() {
     wantStatusLine: true,
     wantFlightStatus: true,
     wantHelpCentre: true,
+    wantLocation: true,
 
     wantSeatsWithProducts: true,
     useLogin2: true,
