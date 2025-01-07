@@ -3,4 +3,9 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "lib/assets/caicos/images/caicos_1024x1024.png"
+  remove_alpha_ios: true
+  min_sdk_android: 24
+  adaptive_icon_background: "#ffffff" # You can use a color or image for the background
+  adaptive_icon_foreground: "lib/assets/hisky/images/caicos_1024x1024.png" # For adaptive icons on Android
+
 

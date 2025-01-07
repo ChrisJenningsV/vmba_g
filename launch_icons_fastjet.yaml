@@ -2,8 +2,12 @@
 flutter_launcher_icons:
   android: true
   ios: true
-  remove_alpha_ios: true
   image_path: "lib/assets/fastjet/images/fastjet-1024.png"
+  remove_alpha_ios: true
+  min_sdk_android: 24
+  adaptive_icon_background: "#ffffff" # You can use a color or image for the background
+  adaptive_icon_foreground: "lib/assets/hisky/images/fastjet-1024.png" # For adaptive icons on Android
+
 
 # flutter pub run --no-sound-null-safety  flutter_launcher_icons:main -f launch_icons_fastjet.yaml
 #
