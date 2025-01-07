@@ -381,7 +381,7 @@ bool bpShowFastTrack;
     this.wantNewInstallPage = false,
     this.wantHomeUpcoming = false,
     this.wantUnlock = false,
-    this.wantHelpCentre = true,
+    this.wantHelpCentre = false,
     this.wantLocation = false,
     this.wantGeoLocationHopePage = false,
 
