@@ -28,6 +28,7 @@ import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
 import 'data/globals.dart';
 import 'data/SystemColors.dart';
+import 'data/repository.dart';
 import 'main_aurigny.dart';
 import 'main_buraq.dart';
 import 'main_caicos.dart';

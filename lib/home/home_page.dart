@@ -32,6 +32,7 @@ import 'package:vmba/v3pages/v3HomePage.dart';
 import '../v3pages/cards/v3Card.dart';
 import '../v3pages/loggedInHomePage.dart';
 import '../v3pages/newInstallPage.dart';
+import '../v3pages/smartHomePage.dart';
 import '../v3pages/v3Theme.dart';
 
 GlobalKey<StatusBarState> statusGlobalKeyOptions = new GlobalKey<StatusBarState>();
@@ -82,6 +83,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
       //setState(() => gblNetState = source);
     });
+    if( gblSettings.wantLocation){
+      initGeolocation(refresh);
+    }
+
 
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
@@ -355,6 +360,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     initThemes(context);
+
+    if( gblCurLocation != null && gblSettings.wantGeoLocationHopePage) {
+      return new SmartHomePage();
+    }
 
     if( (wantHomePageV3() && wantCustomHome()) ||
         (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){

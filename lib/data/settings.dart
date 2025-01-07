@@ -71,6 +71,7 @@ class Settings {
   bool wantUnlock = false;
   bool wantHelpCentre;
   bool wantLocation;
+  bool wantGeoLocationHopePage;
   bool wantFindBookings = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
@@ -382,6 +383,7 @@ bool bpShowFastTrack;
     this.wantUnlock = false,
     this.wantHelpCentre = true,
     this.wantLocation = false,
+    this.wantGeoLocationHopePage = false,
 
     // new Gui
     this.wantCityDividers = false,

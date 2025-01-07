@@ -17,6 +17,9 @@ class VrsApiRequest extends Session {
   String undoCmd ='';
   String smartApiVersion = '';
   String email = '';
+  String? country = '';
+  String? countryCode = '';
+  String? city = '';
 
   VrsApiRequest(
       Session session,
@@ -25,8 +28,11 @@ class VrsApiRequest extends Session {
   {this.appFile='',this.vrsGuid='', this.appVersion='', this.brandId='',
     this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='',
     this.data='',
-    this.smartApiVersion='1.2', this.email='',
-
+    this.smartApiVersion='1.2',
+    this.email='',
+    this.country='',
+    this.countryCode='',
+    this.city='',
   }
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
@@ -401,4 +407,21 @@ class ValidateEmailRequest{
     return map;
   }
 }
+class LoadHomePageRequest{
+  String country ='';
+  String countryCode ='';
+  String county ='';
+  String city ='';
+
+  LoadHomePageRequest({ this.country='', this.countryCode='', this.city='',this.county=''});
+
+  Map  toJson() {
+    Map map = new Map();
+    map['country'] = country;
+    map['countryCode'] = countryCode;
+    map['city'] = city;
+    return map;
+  }
+}
+
 

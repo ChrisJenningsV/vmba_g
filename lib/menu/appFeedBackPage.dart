@@ -123,6 +123,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(translate('App version: ') + widget.version + '  GMT:${getGmtTime().toString().substring(0,16)}'),
               ),
+              (gblSettings.wantLocation && gblCurLocation != null ) ? Text('Location ${gblCurLocation!.locality}, ${gblCurLocation!.country}') : Container(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton(

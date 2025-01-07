@@ -21,7 +21,7 @@ Future<void> saveToken(String token) async {
     deviceId =  iosDeviceInfo.identifierForVendor as String; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    deviceId = androidDeviceInfo.id as String; // unique ID on Android
+    deviceId = androidDeviceInfo.id; // unique ID on Android
     // deviceId = androidDeviceInfo.androidId as String; // unique ID on Android
   }
   logit('device id = $deviceId tok = $token');

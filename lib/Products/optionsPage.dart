@@ -66,9 +66,11 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
         body:getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyOptions),
     ));
   }
+/*
   Future<bool> _onWillPop() async {
     return onWillPop(context);
   }
+*/
 
   Widget _body(NewBooking newBooking) {
     return

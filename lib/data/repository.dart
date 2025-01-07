@@ -201,6 +201,7 @@ class Repository {
   // CJ overwrites hardcoded!!! -  await getSettingsFromDatabase();
     //get values from webservice
   // cj - test returning live vals
+
     gblLoginSuccessful = true;
     await getSettingsFromApi();
   /*  if(gblNoNetwork == true){
@@ -262,9 +263,18 @@ class Repository {
 
 //      if( gblSettings.useWebApiforVrs) {
         if( gblSession == null ) gblSession = new Session('0', '', '0');
-        String msg =  json.encode(VrsApiRequest(gblSession as Session, '', gblSettings.vrsGuid, appFile: '$gblLanguage.json',
-            vrsGuid: gblSettings.vrsGuid, brandId: gblSettings.brandID, appVersion: gblVersion,
-            email: PaxManager.getPaxEmail())); // '{VrsApiRequest: ' + + '}' ;
+        String msg =  json.encode(VrsApiRequest(gblSession as Session, '',
+              gblSettings.vrsGuid,
+              appFile: '$gblLanguage.json',
+              vrsGuid: gblSettings.vrsGuid,
+              brandId: gblSettings.brandID,
+              appVersion: gblVersion,
+              email: PaxManager.getPaxEmail(),
+              country: gblCurLocation ==null ? '' : gblCurLocation!.country,
+              countryCode: gblCurLocation ==null ? '' : gblCurLocation!.isoCountryCode,
+              city: gblCurLocation ==null ? '' : gblCurLocation!.locality,
+          )
+        ); // '{VrsApiRequest: ' + + '}' ;
         print('msg = $msg');
         print('login_uri = ${gblSettings.xmlUrl}');
 
@@ -275,17 +285,6 @@ class Repository {
                 headers: getXmlHeaders(),
              );
 
-/*
-      } else {
-        print('login_uri = ${gblSettings.apiUrl + "/login"}');
-        print('login_headers = $headers');
-        print('login_body = ${JsonEncoder().convert(body)}');
-        response = await http.post(
-            Uri.parse(gblSettings.apiUrl + "/login"),
-            headers: headers,
-            body: JsonEncoder().convert(body));
-      }
-*/
       if (response.statusCode == 200) {
         String data = response.body;
         /*if( gblSettings.useWebApiforVrs) {*/
@@ -348,21 +347,9 @@ class Repository {
             logit('Error loading cities ${e.toString()}');
           }
 
-          if( gblSettings.wantLocation){
-            initGeolocation();
-          }
-
-
-/*
-          if( gblSettings.useWebApiforVrs) {
-*/
           gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
           logit('gs Server IP ${map['serverIP']}');
-/*
-        } else {
-          gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
-        }
-*/
+
         List <dynamic>? settingsJson;
           if (settingsString != null && settingsString.isNotEmpty) {
             settingsJson = json.decode(settingsString);
@@ -547,6 +534,13 @@ class Repository {
                   case 'wantHelpCentre':
                     gblSettings.wantHelpCentre = parseBool(item['value']);
                     break;
+                  case 'wantGeoLocationHopePage':
+                    gblSettings.wantGeoLocationHopePage = parseBool(item['value']);
+                    break;
+                  case 'wantLocation':
+                    gblSettings.wantLocation = parseBool(item['value']);
+                    break;
+
                   case 'wantPriceCalendar':
                     gblSettings.wantPriceCalendar = parseBool(item['value']);
                     break;
@@ -1872,8 +1866,9 @@ Future<String?> getSetting(String key ) async {
   return '';
 }
 
-Future<void> initGeolocation() async {
+Future<void> initGeolocation(void Function () onComplete) async {
   try {
+    logit('initGeo');
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -1882,21 +1877,26 @@ Future<void> initGeolocation() async {
         return Future.error('Location Not Available');
       }
     } else {
-      throw Exception('Error');
+ //     throw Exception('Error');
     }
     //return await Geolocator.getCurrentPosition();
 
     var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best)
-        .timeout(Duration(seconds: 5));
+        desiredAccuracy: LocationAccuracy.low)
+        .timeout(Duration(seconds: 15));
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
       );
-      print(placemarks[0]);
-    }catch(err){
+      if( placemarks.length > 0) {
+        gblCurLocation = placemarks[0];
+        logit('got Geo');
+        print(placemarks[0]);
+        onComplete();
+      }
+    } catch(err){
       logit(err.toString());
     }
   } catch(e){

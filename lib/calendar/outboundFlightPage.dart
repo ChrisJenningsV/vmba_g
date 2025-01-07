@@ -197,7 +197,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         objAv = rs.body!;
         removeDepartedFlights();
         try{
-          objAv!.availability.MarkLowestFare();
+          objAv.availability.MarkLowestFare();
         } catch(e) {
 
         }

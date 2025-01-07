@@ -953,10 +953,10 @@ Widget getPriceRow(List<Flt> item, int index){
     String newStr = element.fltav.pri![index];
     String newMiles = element.fltav.miles![index];
     double? newVal = double.tryParse(newStr)  ;
-    if( newVal != null )    val +=  newVal as double;
+    if( newVal != null )    val +=  newVal;
     if( newMiles != '')    miles +=  int.parse(newMiles);
     newVal = double.tryParse(element.fltav.tax![index]);
-    if( newVal != null )    val +=  newVal as double;
+    if( newVal != null )    val +=  newVal;
   });
 
   return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), miles.toString()), //item[0].fltav.miles![index]),
@@ -1041,9 +1041,9 @@ Widget getWasPriceRow(List<Flt> item, int index){
   item.forEach((element) {
     String newStr = element.fltav.pri![index];
     double? newVal = double.tryParse(newStr)  ;
-    if( newVal != null )    val +=  newVal as double;
+    if( newVal != null )    val +=  newVal;
     newVal = double.tryParse(element.fltav.tax![index]);
-    if( newVal != null )    val +=  newVal as double;
+    if( newVal != null )    val +=  newVal;
   });
 
   return new Text(calenderPrice(item[0].fltav.cur![index], val.toStringAsFixed(gblSettings.currencyDecimalPlaces), item[0].fltav.miles![index]),
@@ -1110,7 +1110,7 @@ List<Widget> getPriceButtonList(String? cbNameIn, List<Flt> item, int index, {bo
 
       if(noAv > 0) {
         if( item[0].fltav.discprice!.length > index &&
-            item[0].fltav.discprice![index] != null &&  item[0].fltav.discprice![index] != '')
+            item[0].fltav.discprice![index] != '')
         {
           list.add(getWasPriceRow(item, index));
           if( inRow) {

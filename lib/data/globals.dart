@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:vmba/data/models/models.dart';
 import '../components/vidButtons.dart';
 import '../flightStatus/flightStatusPage.dart';
@@ -30,7 +31,7 @@ import 'models/trips.dart';
 // H4 hisky
 // X4 excursions
 String gblBuildFlavor = 'LM';
-bool gblIsLive = false;
+bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
 int requiredApiVersion = 105;
@@ -189,3 +190,5 @@ StackTrace? gblStack;
 
 SearchParams gblSearchParams = new SearchParams();
 FlightStatuss? gblFlightStatuss;
+String gblLoadedHomeCity = '';
+Placemark? gblCurLocation;
