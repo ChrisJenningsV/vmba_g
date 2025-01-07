@@ -12,7 +12,7 @@ import '../../components/pageStyleV2.dart';
 
 
 class JourneyDateWidget extends StatefulWidget {
-  JourneyDateWidget({Key key= const Key("jdate_key"), this.isReturn: false, required this.onChanged})
+  JourneyDateWidget({Key key= const Key("jdate_key"), this.isReturn = false, required this.onChanged})
       : super(key: key);
 
   final bool isReturn;

@@ -7,7 +7,7 @@ import 'package:vmba/components/trText.dart';
 import '../../data/globals.dart';
 
 class JourneyTypeWidget extends StatefulWidget {
-  JourneyTypeWidget({Key key= const Key("jtype_key"), this.isReturn: false, this.onChanged})
+  JourneyTypeWidget({Key key= const Key("jtype_key"), this.isReturn = false, this.onChanged})
       : super(key: key);
 
   //final SystemColors systemColors;

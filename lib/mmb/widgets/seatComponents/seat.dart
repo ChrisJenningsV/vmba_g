@@ -111,6 +111,13 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
       seatClr = gblSystemColors.seatPlanColorEmergency;
       if( gblSystemColors.seatPlanTextColorEmergency != null ) seatTxtColor = gblSystemColors.seatPlanTextColorEmergency;
       break;
+    case SeatType.unavailable:
+      seatClr = Colors.grey;
+      if( gblSystemColors.seatPlanColorUnavailable != null ) seatTxtColor = gblSystemColors.seatPlanColorUnavailable;
+    case  SeatType.blank:
+      seatClr = Colors.grey;
+      if( gblSystemColors.seatPlanColorUnavailable != null ) seatTxtColor = gblSystemColors.seatPlanColorUnavailable;
+
   }
 
   Widget body =  VTitleText(seatNo,size:  TextSize.small,color: seatTxtColor);
