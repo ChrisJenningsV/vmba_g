@@ -30,7 +30,7 @@ import 'models/trips.dart';
 //  YL lyb wings
 // H4 hisky
 // X4 excursions
-String gblBuildFlavor = 'H4';
+String gblBuildFlavor = 'X4';
 bool gblIsLive = true;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg

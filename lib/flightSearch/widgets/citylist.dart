@@ -324,8 +324,11 @@ class _ArrivalsState extends State<Arrivals> {
         _departCityData = [];
         gblCityList!.cities!.forEach((city) {
           if( city.code == departCityCode){
-            city.destinations.forEach((city) {
-              _departCityData!.add('${city.code}|${city.name} (${city.code})');
+            city.destinations.forEach((cty) {
+              String cityData = '${cty.code}|${cty.name} (${cty.code})';
+              if( !_departCityData!.contains(cityData) ) {
+                _departCityData!.add(cityData);
+              }
 
             });
           }
