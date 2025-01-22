@@ -28,6 +28,7 @@ class SmartHomePageState extends State<SmartHomePage>{
   bool _displayProcessingIndicator = false;
   late AssetImage  mainBackGroundImage;
   late CustomPage homePageList;
+  CustomPage? homePage;
 
   @override void initState() {
     initJson();
@@ -73,12 +74,14 @@ class SmartHomePageState extends State<SmartHomePage>{
           ));
     }
 
-    // get page info
-    if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
-      if (gblHomeCardList!.pages!['home'] == null) {
+    // get custom page
+ /*   if (homePage != null ) {
+      return Column(
+          children:getCustomPage(context, homePage as CustomPage , (){
 
-      }
-    }
+      })
+      );
+    }*/
     return  getCustomScaffoldPage(context, gblFqtvLoggedIn ? 'fqtvhome' : 'home', (){
       setState(() {
       });
@@ -123,19 +126,39 @@ class SmartHomePageState extends State<SmartHomePage>{
 
   initJson()  async {
 
-    if(gblCurLocation != null && gblLoadedHomeCity != gblCurLocation!.locality){
-      // use smart api to load home page JSON
-      LoadHomePageRequest rq = LoadHomePageRequest(
-          country: gblCurLocation!.country as String,
-          countryCode: gblCurLocation!.isoCountryCode as String,
-          county: gblCurLocation!.subAdministrativeArea as String,
-          city: gblCurLocation!.locality as String
-          );
+    try {
+      logit('smartHomePage: initJson');
+      if (gblCurLocation != null &&
+          gblLoadedHomeCity != gblCurLocation!.locality) {
+        // use smart api to load home page JSON
+        LoadHomePageRequest rq = LoadHomePageRequest(
+            country: gblCurLocation!.country as String,
+            countryCode: gblCurLocation!.isoCountryCode as String,
+            county: gblCurLocation!.subAdministrativeArea as String,
+            city: gblCurLocation!.locality as String
+        );
 
-      String data = json.encode(rq);
+        String data = json.encode(rq);
 
-      String rx = await callSmartApi('LOADHOMEPAGE', data);
-      String ok = rx;
+        String rx = await callSmartApi('LOADHOMEPAGE', data);
+        logit('smartHomePage: loaded home');
+        final Map<String, dynamic> map = json.decode(rx);
+        gblHomeCardList = new PageListHolder.fromJson(map['root']);
+        if (gblHomeCardList!.pages!['home'] != null) {
+          logit('smartHomePage: got home');
+          _displayProcessingIndicator = false;
+          homePage = gblHomeCardList!.pages!['home'];
+          setState(() {
+
+          });
+
+        }
+
+      } else {
+        logit('no location data');
+      }
+    } catch(e) {
+      logit('SmartHome  ${e.toString()}');
     }
   }
 

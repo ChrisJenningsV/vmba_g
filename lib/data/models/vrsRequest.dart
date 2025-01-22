@@ -55,6 +55,9 @@ class VrsApiRequest extends Session {
     map['appVersion'] = appVersion;
     map['smartApiVersion'] = smartApiVersion;
     map['email'] = email;
+    map['city'] = city;
+    map['country'] = country;
+    map['countryCode'] = countryCode;
 
     return map;
   }

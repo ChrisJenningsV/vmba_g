@@ -361,7 +361,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     initThemes(context);
 
-    if( gblCurLocation != null && gblSettings.wantGeoLocationHopePage) {
+    if( gblCurLocation != null && gblSettings.wantGeoLocationHopePage ) {
       return new SmartHomePage();
     }
 

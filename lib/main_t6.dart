@@ -70,6 +70,8 @@ void configT6() {
     wantHomeUpcoming: true,
     wantRememberMe: true,
     wantAddContact: true,
+    wantNewDialogs: true,
+
 // end new features
 
       latestBuildiOS: '105',

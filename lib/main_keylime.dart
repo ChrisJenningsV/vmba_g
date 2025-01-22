@@ -49,7 +49,7 @@ void configKG() {
   gblTitleStyle =  new TextStyle( color: Colors.white) ;
 
 
-  gblAppTitle = 'keylimeair';
+  gblAppTitle = 'keylime';
   gblBuildFlavor = 'KG';
 
   gblSettings = Settings(
@@ -62,8 +62,8 @@ void configKG() {
     wantFindBookings: true,
     wantClassBandImages: true,
     //wantMaterialControls: true,
-    wantPageImages: true,
-    wantTallPageImage: true,
+    wantPageImages: false,
+    wantTallPageImage: false,
 
     currency: 'USD',
     airlineName: "Key Lime",
@@ -73,10 +73,10 @@ void configKG() {
     brandID: "",
     buttonStyle: 'RO2',
 
-    termsAndConditionsUrl:  "https://www.airgotland.se/sv/allt-for-resan/fore-resan/resebestammelser?app_mode=1",
-    privacyPolicyUrl:  "https://www.airgotland.se/sv/om-air-gotland/integritetspolicy?app_mode=1",
-    faqUrl: "https://www.airgotland.se/sv/allt-for-resan?app_mode=1", //"https://www.airleap.se/en/travel-information",
-    contactUsUrl: "https://www.airgotland.se/sv/om-air-gotland/kontakta-oss?app_mode=1", // "https://www.airleap.se/en/about-airleap/contact-us",
+    termsAndConditionsUrl:  "https://denverairconnection.com/mobile/contract-of-carriage/",
+    privacyPolicyUrl:  " https://denverairconnection.com/mobile/privacy/",
+    faqUrl: "https://denverairconnection.com/mobile/frequently-asked-questions/",
+    contactUsUrl: "https://denverairconnection.com/mobile/contact-us/",
 //    locale:  'en-EN',
     //   bookingLeadTime:  60,
     webCheckinNoSeatCharge:  false,
@@ -99,7 +99,9 @@ void configKG() {
       youths: false,
       senior: false,
       student: false,
-      wantYouthDOB: false,
+      wantYouthDOB: true,
+      wantAdultDOB: true,
+      wantSeniorDOB: true,
     ),
 
     eVoucher:  true,
@@ -108,7 +110,7 @@ void configKG() {
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",
-    prohibitedItemsNoticeUrl: '',
+    prohibitedItemsNoticeUrl: 'https://denverairconnection.com/mobile/prohibited-items-notice/',
     groupsBookingsEmail:  "",
 //    maxNumberOfPax:  9,
     hideFareRules:  true,
@@ -118,7 +120,9 @@ void configKG() {
     wantMiddleName: true,
     wantRedressNo: true,
     wantKnownTravNo: true,
-
+    useLogin2: true,
+    wantNewCalendar: true,
+    wantCalendarBigMonth: true,
 
     apiKey: '75998e0697a04bc0bbb7dd9a38cf0745',
 //Staging setttings
@@ -127,12 +131,12 @@ void configKG() {
     liveApiUrl: 'https://booking.airgotland.se/VARS/webApiV2/api/',
     liveCreditCardProvider: 'worldpaydirect',
 
-    xmlUrl:      "https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    xmlUrl:      "https://customertest.videcom.com/keylimeAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     apisUrl:      'https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'https://customertest.videcom.com/keylimeAir/VARS/webApiV2/api/',
     creditCardProvider: 'videcard',
 
-    testXmlUrl:      "https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://customertest.videcom.com/keylimeAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     testApisUrl:      'https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/keylimeAir/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',

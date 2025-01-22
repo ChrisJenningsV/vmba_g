@@ -125,25 +125,32 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
     {void Function()? onComplete, DialogType type= DialogType.Information, Widget Function(void Function(void Function()))? getContent}) {
   logit('getAlertDialog');
 
-  IconData icon = Icons.error_outline;
+  //IconData icon = Icons.error_outline;
   Color titleTextClr=  gblSystemColors.headerTextColor!;
   Color? titleBackClr=  gblSystemColors.headerTextColor!;
+  Widget icon = Icon(Icons.error_outline, color: titleTextClr);
 
   switch (type) {
     case DialogType.Information:
-      titleTextClr = Colors.blue;
-      titleBackClr = Colors.blue[100];
-      icon = Icons.info_outline;
+      titleTextClr = Colors.white;
+      titleBackClr = Colors.cyan;
+      icon = Icon(Icons.error_outline, color: titleTextClr);
       break;
     case DialogType.Error:
-      titleTextClr = Colors.red;
-      titleBackClr = Colors.red[100];
-      icon = Icons.close;
+      titleTextClr = Colors.white;
+      titleBackClr = Colors.red;
+      icon = IconButton(onPressed: () => Navigator.pop(context),
+        icon: Stack(
+        children: [
+        Icon(Icons.circle_outlined, color: Colors.white, size: 34,),
+        Padding( padding: EdgeInsets.only(left: 5, top: 5), child: Icon(Icons.close, color: Colors.white,)),
+        ],
+        ));
       break;
     case DialogType.Warning:
-      titleTextClr = Colors.yellow;
-      titleBackClr = Colors.yellow[100];
-      icon = Icons.warning_amber;
+      titleTextClr = Colors.white;
+      titleBackClr = Colors.yellow;
+      icon = Icon(Icons.warning_amber, color: titleTextClr);
       break;
     case DialogType.Custom:
       titleTextClr = Colors.black87;
@@ -153,9 +160,9 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
 
   Widget dlgTitleContent = Row(
       children: [
-        Icon(icon, color: titleTextClr),
+        icon,
         Padding(padding: EdgeInsets.all(3),),
-        Text(title,  style: TextStyle(color: Colors.black),)
+        Text(title,  style: TextStyle(color: titleTextClr),)
       ]
   );
   if( icon == Icons.error_outline){
@@ -201,7 +208,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
             ),
           ),
 
-          onComplete != null ?
+       /*   onComplete != null ?
           InkWell(
             child: Container(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 50, right: 50),
@@ -225,7 +232,7 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
                   },
                 )
             ),
-          ): Container(),
+          ): Container(),*/
 
         ],
       ),
@@ -238,7 +245,11 @@ onPressed: () {
 if( onComplete != null ) {
 onComplete();
 } else {
-  Navigator.of(context).pop();
+  try {
+    Navigator.of(context).pop();
+  } catch(e) {
+    logit(e.toString());
+  }
 }
 },
 

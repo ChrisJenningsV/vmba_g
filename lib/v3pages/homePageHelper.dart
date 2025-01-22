@@ -44,45 +44,78 @@ class CustomPage {
   double bottomPadding = 10;
   Color? backgroundColor = Colors.white;
   String backgroundImage = '';
+  BottomNav? bottomNav;
+
 
   CustomPage({this.cards});
 
   CustomPage.fromJson(Map<String, dynamic> json) {
-    if( json['topPadding'] != null ) topPadding =  double.parse(json['topPadding']);
-    if( json['bottomPadding'] != null ) bottomPadding =  double.parse(json['bottomPadding']);
-    if( json['backgroundColor'] != null ) backgroundColor = lookUpColor( json['backgroundColor'].toString());
-    if( json['backgroundImage'] != null ) backgroundImage = json['backgroundImage'];
+    try {
+      if (json['topPadding'] != null)
+        topPadding = double.parse(json['topPadding']);
+      if (json['bottomPadding'] != null)
+        bottomPadding = double.parse(json['bottomPadding']);
+      if (json['backgroundColor'] != null)
+        backgroundColor = lookUpColor(json['backgroundColor'].toString());
+      if (json['backgroundImage'] != null)
+        backgroundImage = json['backgroundImage'];
 
-    if( json['title'] != null ) {
-      if( json['title'] is Map) {
-        title = CardText.fromJson('Home', json['title']);
-      } else {
-        title = new CardText('Home', text: json['title']);
-      }
-    }
-
-    if (json['cards'] != null) {
-      cards = [];
-      //new List<Country>();
-      json['cards'].forEach((v) {
-        HomeCard c = new HomeCard.fromJson(v);
-        if( c.title != null ) {
-//          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
+      if (json['title'] != null) {
+        if (json['title'] is Map) {
+          title = CardText.fromJson('Home', json['title']);
+        } else {
+          title = new CardText('Home', text: json['title']);
         }
-        cards?.add(c);
-      });
+      }
+
+      if (json['cards'] != null) {
+        cards = [];
+        //new List<Country>();
+        if (json['cards'] is List) {
+          json['cards'].forEach((v) {
+            HomeCard c = new HomeCard.fromJson(v);
+            if (c.title != null) {
+//          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
+            }
+            cards?.add(c);
+          });
+        } else {
+          HomeCard c = new HomeCard.fromJson(json['cards']);
+          cards?.add(c);
+        }
+      }
+      if (json['bottomNav'] != null) {
+        bottomNav = new BottomNav.fromJson(json['bottomNav']);
+      }
+    } catch (e) {
+      logit('CustomPage ${e.toString()}');
     }
   }
+
+
 }
+
+class BottomNav {
+  bool display = false;
+
+  BottomNav.fromJson(Map<String, dynamic> json) {
+    if (json['display'] != null) display = parseBool(json['display']);
+  }
+
+}
+
 class HomeCard extends HomeCardLink  {
 
   IconData? icon;
   String image='';
   String format='';
+  String shape='';
   double height = 0;
   double fontSize = 0;
   bool expanded = true;
   double cornerRadius= 10;
+  Color? backgroundClr;
+  Color? textClr;
 
   List<HomeCard>? cards;
   List<HomeCardLink>? links;
@@ -91,26 +124,36 @@ class HomeCard extends HomeCardLink  {
   HomeCard();
 
   HomeCard.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
-    if( json['card_type'] != null ) card_type = json['card_type'];
 
-    /*if( json['title'] != null ) {
+    try {
+      if (json['card_type'] != null) card_type = json['card_type'];
+      //logit('HomeCard.fromJson $card_type');
+      if( card_type == 'photoLink'){
+        //logit('HomeCard.fromJson $card_type');
+      }
+
+      /*if( json['title'] != null ) {
       if( json['title'] is Map) {
         title = CardText.fromJson(card_type, json['title']);
       } else {
         title = new CardText(card_type, text: json['title']);
       }
     }*/
-    if( json['expanded'] != null ) expanded = parseBool(json['expanded']);
-    if( json['format'] != null ) format = json['format'];
-    if( json['icon'] != null && json['icon'] != '' &&  json['icon'] != 'none') {
-      icon = getIconFromName(json['icon'].toString());
-    }
-      if( json['image'] != null ) image = json['image'];
-      if( json['url'] != null ) url = json['url'];
-      if( json['height'] != null ) height = double.parse(json['height']);
-      if( json['fontSize'] != null ) fontSize = double.parse(json['fontSize']);
-      if( json['cornerRadius'] != null ){
-        if( int.parse(json['cornerRadius']) < 50) {
+      if (json['expanded'] != null) expanded = parseBool(json['expanded']);
+      if (json['format'] != null) format = json['format'];
+      if (json['shape'] != null) shape = json['shape'];
+      if (json['icon'] != null && json['icon'] != '' &&
+          json['icon'] != 'none') {
+        icon = getIconFromName(json['icon'].toString());
+      }
+      if (json['image'] != null) image = json['image'];
+      if (json['backgroundClr'] != null) backgroundClr = lookUpColor(json['backgroundClr']);
+      if (json['textClr'] != null) textClr = lookUpColor(json['textClr']);
+      if (json['url'] != null) url = json['url'];
+      if (json['height'] != null) height = double.parse(json['height']);
+      if (json['fontSize'] != null) fontSize = double.parse(json['fontSize']);
+      if (json['cornerRadius'] != null) {
+        if (int.parse(json['cornerRadius']) < 50) {
           cornerRadius = double.parse(json['cornerRadius']);
         }
       }
@@ -122,13 +165,23 @@ class HomeCard extends HomeCardLink  {
           cards?.add(new HomeCard.fromJson(v));
         });
       }
-    if (json['links'] != null) {
-      links = [];
-      //new List<Country>();
-      json['links'].forEach((v) {
-        links?.add(new HomeCardLink.fromJson(v));
-      });
-    }
+      if (json['links'] != null) {
+        links = [];
+        //new List<Country>();
+        if (json['links'] is List) {
+          json['links'].forEach((v) {
+            links?.add(new HomeCardLink.fromJson(v));
+          });
+        } else {
+          links?.add(new HomeCardLink.fromJson(json['links']));
+
+        }
+
+      }
+    } catch(e) {
+      logit('HomeCard.fromJson ${e.toString()}');
+      }
+
     }
   }
 
@@ -140,21 +193,29 @@ class HomeCardLink {
   String card_type='';
 
   HomeCardLink();
-
   HomeCardLink.fromJson(Map<String, dynamic> json) {
-    if( json['action'] != null ) {
-      action = CardAction.fromJson(json['action']);
-    }
-      if( json['destination'] != null ) destination = json['destination'];
+    //logit('HomeCardLink.fromJson');
+    try {
+      if (json['action'] != null) {
+        action = CardAction.fromJson(json['action']);
+      }
+      if (json['destination'] != null) destination = json['destination'];
 
-      if( json['title'] != null ) {
-        if( json['title'] is Map) {
+      if (json['title'] != null) {
+        if (json['title'] is Map) {
           title = CardText.fromJson(card_type, json['title']);
 //          logit('ttl ${title!.text} bgclr ${title!.backgroundColor}');
         } else {
           title = new CardText(card_type, text: json['title']);
         }
+        title!.card_type = card_type;
       }
+    } catch(e) {
+      logit('HomeCardLink.fromJson ${e.toString()}');
+    }
+
+
+
     }
   }
 
@@ -187,52 +248,65 @@ class CardText {
   CardText(this.card_type, {this.text=''});
 
   CardText.fromJson(String card_type, Map<String, dynamic> json) {
-    this.card_type = card_type;
-    if (json['text'] != null) text = json['text'];
-    if (json['fontSize'] != null) fontSize = double.parse(json['fontSize']);
+    try {
+      this.card_type = card_type;
+      if (json['text'] != null) text = json['text'];
+      if (json['fontSize'] != null) fontSize = double.parse(json['fontSize']);
 
-      if( json['fontWeight'] != null ){
-        if(json['fontWeight'].toString().toUpperCase().contains('BOLD')) {
+      if (json['fontWeight'] != null) {
+        if (json['fontWeight'].toString().toUpperCase().contains('BOLD')) {
           fontWeight = FontWeight.bold;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('100')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('100')) {
           fontWeight = FontWeight.w100;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('200')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('200')) {
           fontWeight = FontWeight.w200;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('300')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('300')) {
           fontWeight = FontWeight.w300;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('400')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('400')) {
           fontWeight = FontWeight.w400;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('500')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('500')) {
           fontWeight = FontWeight.w500;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('600')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('600')) {
           fontWeight = FontWeight.w600;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('700')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('700')) {
           fontWeight = FontWeight.w700;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('800')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('800')) {
           fontWeight = FontWeight.w800;
-        } else if(json['fontWeight'].toString().toUpperCase().contains('900')) {
+        } else
+        if (json['fontWeight'].toString().toUpperCase().contains('900')) {
           fontWeight = FontWeight.w900;
-
         }
       }
-      if (json['color'] != null){
-        if( json['color'].toString().startsWith('#')) {
+      if (json['color'] != null) {
+        if (json['color'].toString().startsWith('#')) {
           color = json['color'].toString().toColor();
         } else {
           // look up color name
-          color =lookUpColor( json['color'].toString());
+          color = lookUpColor(json['color'].toString());
         }
       }
-      if( json['backgroundColor'] != null ) {
+      if (json['backgroundColor'] != null) {
         //logit('fromJ $text got bgClr ${json['backgroundColor']}');
 
-        if( json['backgroundColor'].toString().startsWith('#')) {
+        if (json['backgroundColor'].toString().startsWith('#')) {
           backgroundColor = json['backgroundColor'].toString().toColor();
         } else {
           backgroundColor = lookUpColor(json['backgroundColor'].toString());
         }
         //logit('fromJ $text got bgClr $backgroundColor');
       }
+    } catch(e){
+      logit(' ${e.toString()}');
+    }
+
     }
 
   TextStyle getStyle(){
@@ -262,6 +336,12 @@ class CardText {
         fontS = 20;
         clr = Colors.white;
         break;
+      case 'BUTTON':
+        fontS = 20;
+        clr = gblSystemColors.primaryButtonTextColor as Color;
+        if( color != null ) clr = color as Color;
+        break;
+
       default:
         fontS = 20;
         clr = Colors.grey;

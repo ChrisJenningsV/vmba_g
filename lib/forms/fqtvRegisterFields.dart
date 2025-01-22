@@ -90,7 +90,10 @@ Widget fqtvIntroBox() {
             width: 60,
             fit: BoxFit.fill,
           ) ),
-          Column(
+           Flexible(child:
+             Text('Please complete this registration form.On completion you will receive an email',
+             softWrap: true, style: TextStyle(color: gblSystemColors.headerTextColor),))
+        /*Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -100,7 +103,7 @@ Widget fqtvIntroBox() {
               VBodyText('containing your joining information.',color: gblSystemColors.headerTextColor),
 
             ],
-          )
+          )*/
         ],
         )
       )

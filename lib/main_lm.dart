@@ -86,9 +86,11 @@ void configLM() {
     //wantProducts: true,
     wantStatusLine: true,
     wantFlightStatus: true,
+    wantNews: true,
     wantHelpCentre: true,
     wantLocation: true,
     wantGeoLocationHopePage: true,
+    wantNewDialogs: true,
 
     wantSeatsWithProducts: true,
     useLogin2: true,
@@ -183,28 +185,24 @@ void configLM() {
 //    testPayPage: 'http://10.0.2.2:57793/MobilePaymentStart.aspx',
    testPayPage: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobilePaymentStart.aspx',
 
-//    testXmlUrl:      "http://10.0.2.2:61670/VRSXMLwebService3.asmx/PostVRSCommand?",
-//    testXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
-    //   testSmartApiUrl:      "http://10.0.2.2:51088/webservices/VrsApi.asmx/MobileSmartApi",
-
 //    testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
 
-/*
-    testXmlUrl:      "https://customertest.videcom.com/LoganAirinhouse/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    testSmartApiUrl:      "https://customertest.videcom.com/LoganAirinhouse/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-    testApisUrl:      'https://customertest.videcom.com/LoganAirinhouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl:      'https://customertest.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
-*/
 
-    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+    testXmlUrl:      "https://inhouse.videcom.com/LoganAirinhouse/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+//    testSmartApiUrl:      "https://inhouse.videcom.com/LoganAirinhouse/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+    testApisUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    testApiUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
+
+
+//    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
   //  testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
 //   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
-    testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+//    testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
-    testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
+  //  testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
 //    testApiUrl:      'https://customertest.videcom.com/LoganAirInHouse/VARS/webApiv2/api/',
 
 //    testApiUrl:      'http://10.0.2.2:5000/api',  // local

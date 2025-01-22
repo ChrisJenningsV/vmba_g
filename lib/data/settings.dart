@@ -72,6 +72,7 @@ class Settings {
   bool wantHelpCentre;
   bool wantLocation;
   bool wantGeoLocationHopePage;
+  bool wantNewDialogs;
   bool wantFindBookings = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
@@ -154,6 +155,7 @@ class Settings {
   // fqtv settings
   bool wantFQTV = false;
   bool wantFlightStatus = false;
+  bool wantNews = false;
   bool wantFQTVNumber = false;
   bool wantHomeFQTVButton = false;
   bool wantFqtvAutologin;
@@ -312,6 +314,7 @@ bool bpShowFastTrack;
     this.wantFqtvAddress = false,
     this.wantFqtvPassport = false,
     this.wantFlightStatus = false,
+    this.wantNews = false,
 
     this.wantUmnr = false,
     this.want24HourClock = false,
@@ -384,6 +387,7 @@ bool bpShowFastTrack;
     this.wantHelpCentre = false,
     this.wantLocation = false,
     this.wantGeoLocationHopePage = false,
+    this.wantNewDialogs = false,
 
     // new Gui
     this.wantCityDividers = false,

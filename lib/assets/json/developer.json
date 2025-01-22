@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "pages": {
+    "developer": {
+      "pageName": "developer",
+      "title": {
+        "text": "Developer Page",
+        "fontSize": "40",
+        "fontWeight": "bold",
+        "color": "Black"
+      },
+      "topPadding": "50",
+      "bottomPadding": "10",
+      "backgroundColor": "Red",
+      "cards": [
+        {
+          "card_type": "ButtonList",
+          "icon": "home",
+          "expanded": "true",
+          "title": {
+            "text": "Options",
+            "fontSize": "26",
+            "color": "BlueGrey"
+          },
+          "cards": [
+            {
+              "card_type": "button",
+              "title": "Set Location",
+              "action": {
+                "function": "loadDialog",
+                "fileName": "Clanlogan.json"
+              },
+              "icon": "home"
+            },
+            {
+              "card_type": "button",
+              "title": "UI Settings",
+              "action": {
+                "function": "loadDialog",
+                "fileName": "basic.json"
+              },
+              "icon": "home"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

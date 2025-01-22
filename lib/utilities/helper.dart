@@ -66,9 +66,14 @@ Future<Session> login() async {
   return gblSession as Session;
 }
 
-Future sendVRSCommand(msg) async {
+Future sendVRSCommand(msg, {String ApiMethod=''}) async {
+  String method = "/RunVRSCommand";
+  if( ApiMethod != ''){
+      method = ApiMethod;
+  }
+
   final http.Response response = await http.post(
-      Uri.parse(gblSettings.apiUrl + "/RunVRSCommand"),
+      Uri.parse(gblSettings.apiUrl + method),
       headers: getApiHeaders(),
       body: msg);
 

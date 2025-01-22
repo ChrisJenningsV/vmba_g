@@ -8,7 +8,8 @@ import 'models/models.dart';
 import 'models/vrsRequest.dart';
 
 Future<String> callSmartApi(String action, String data) async {
-  String msg =  json.encode(VrsApiRequest(gblSession as Session, action,
+  VrsApiRequest rq =
+    VrsApiRequest(gblSession as Session, action,
       gblSettings.xmlToken.replaceFirst('token=', ''),
       vrsGuid: gblSettings.vrsGuid,
       undoCmd: gblUndoCommand,
@@ -17,7 +18,13 @@ Future<String> callSmartApi(String action, String data) async {
       rloc: gblCurrentRloc,
       language: gblLanguage,
       phoneId: gblDeviceId
-  )); // '{VrsApiRequest: ' + + '}' ;
+    ); // '{VrsApiRequest: ' + + '}' ;
+  if( gblCurLocation != null ){
+    rq.countryCode = gblCurLocation!.isoCountryCode;
+    rq.country = gblCurLocation!.country;
+    rq.city = gblCurLocation!.locality;
+  }
+  String msg =  json.encode(rq);
 
   print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg');
   http.Response? response;
@@ -85,8 +92,10 @@ Future<String> callSmartApi(String action, String data) async {
   logit('Server IP ${map['serverIP']}');
   if( rs.isSuccessful == false) {
     if( rs.data != null && rs.data.isNotEmpty) {
+      gblError =rs.data;
      throw rs.data;
     } else {
+      gblError =rs.errorMsg;
       throw rs.errorMsg;
     }
   }

@@ -13,6 +13,7 @@ enum PageEnum {
   product,
   contactDetails,
   editPax,
+  news,
   choosePayment,
   myBookings,
   dangerousGoods,

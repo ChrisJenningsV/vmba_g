@@ -30,8 +30,9 @@ import 'models/trips.dart';
 //  YL lyb wings
 // H4 hisky
 // X4 excursions
-String gblBuildFlavor = 'X4';
-bool gblIsLive = true;
+// KG key lime / Dallas
+String gblBuildFlavor = 'KG';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
 int requiredApiVersion = 105;
@@ -119,7 +120,7 @@ late Settings gblSettings;
 bool gblNoNetwork = false;
 bool gblPushInitialized = false;
 bool gblVerbose = false;
-bool  gblWantLogin = true;
+bool  gblWantLogin = false;
 bool gblDemoMode = false;
 bool gblDebugMode = false;
 bool gblLoginSuccessful = false;

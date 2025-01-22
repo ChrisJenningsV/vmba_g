@@ -25,6 +25,7 @@ buildRelease\logan.bat
 buildRelease\blueislands.bat
 buildRelease\aurigny.bat
 buildRelease\unitednigeria.bat
+buildRelease\keylime.bat
 
 # for iOS run command file in finder
 

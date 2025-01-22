@@ -15,6 +15,7 @@ import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../News/NewsPage.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../helpCentre/helpCentrePage.dart';
 import '../home/home_page.dart';
@@ -241,6 +242,17 @@ class DrawerMenu extends StatefulWidget {
         },
       ));
     }
+    if( gblSettings != null && gblSettings!.wantNews){
+      list.add(ListTile(
+        dense: dense,
+        title: _getMenuItem( Icons.newspaper_outlined, 'NEWS' ),
+        onTap: () {
+          Navigator.push(
+              context, SlideTopRoute(page: NewsPageWidget()
+          ));
+        },
+      ));
+    }
 
     // FAQ
     if(gblNoNetwork == false &&
@@ -356,7 +368,7 @@ class DrawerMenu extends StatefulWidget {
     if(gblSecurityLevel > 90 ){
       list.add(ListTile(
           dense: dense,
-          title: _getMenuItem(Icons.web, 'Debugging Page'),
+          title: _getMenuItem(Icons.web, 'Developer Page'),
           onTap: () {
             Navigator.push(context,
                 SlideTopRoute(page: DebugPage()));
@@ -473,6 +485,7 @@ class DrawerMenu extends StatefulWidget {
     list.add(ListTile(
     title:  _getMenuItem( Icons.stay_primary_portrait, 'App feedback' ),
     onTap: () {
+      Navigator.of(context).pop();
     PackageInfo.fromPlatform()
         .then((PackageInfo packageInfo) =>
     packageInfo.version + '.' + packageInfo.buildNumber)

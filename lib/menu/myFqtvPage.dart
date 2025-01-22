@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vmba/data/models/dialog.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,6 +11,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/dialogs/smartDialog.dart';
 import 'package:vmba/forms/genericFormPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
@@ -168,7 +170,8 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           ),
         ),
       );
-    } else if( gblFqtvLoggedIn == false || widget.passengerDetail == null || widget.passengerDetail!.fqtv == null ||
+    }
+    else if( gblFqtvLoggedIn == false || widget.passengerDetail == null || widget.passengerDetail!.fqtv == null ||
         widget.passengerDetail!.fqtv.isEmpty || widget.passengerDetail!.fqtvPassword == null ||
         widget.passengerDetail!.fqtvPassword.isEmpty  ) {
       Color titleBackClr = gblSystemColors.primaryHeaderColor;
@@ -198,20 +201,36 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
           }
         }
       }
-
-//      return v3ShowDialog(context,Text(translate('${gblSettings.fqtvName} ') + translate('LOGIN'),   )
       String sTitle = translate('${gblSettings.fqtvName} ') + translate('LOGIN');
       if( sTitle.length > 20 ) sTitle = translate('LOGIN');
 
+      DialogDef dialog = new DialogDef(caption: sTitle, actionText: 'Continue', action: 'DoFqtvLogin');
+
+      if( gblSettings.wantNewDialogs ) {
+
+        dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number')));
+        dialog.fields.add(new DialogFieldDef(field_type: 'space', caption: ''));
+        dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password'));
+        dialog.fields.add(new DialogFieldDef(field_type: 'action', caption: "Can't log in? ",
+            actionText: translate('Reset Password'),
+            action: 'FqtvReset'
+          ));
+
+
+        if( gblSettings.wantFqtvRegister ) {
+          dialog.foot.add(new DialogFieldDef(field_type: 'action', caption: '',
+              actionText: translate('Create a') + ' ${gblSettings.fqtvName} ' + translate('account >'),
+              action: 'FqtvRegister'
+            ));
+        }
+
+
+        return smartDialogPage(context, dialog, null, (){ setState(() {}); });
+      }
+
+
       return  Scaffold(
-       /*   appBar: AppBar(
-            flexibleSpace: flexibleSpace,
-            toolbarHeight: 400,
-            backgroundColor: Colors.transparent,
-            title: Text(''),
-            automaticallyImplyLeading: false,
-          ),*/
-          body:
+           body:
               Column (
               children: [
                 flexibleSpace,
@@ -248,7 +267,6 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
                 ])
               );
     }
-
 
     String fqtvName = 'My ${gblSettings.fqtvName}';
     if( gblSettings.fqtvName.startsWith('My')) {
@@ -434,7 +452,7 @@ Widget? contentBox(context){
                       // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        navToGenericFormPage(context, new FormParams(formName: 'FQTVREGISTER',
+                        navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVREGISTER',
                             formTitle: '${gblSettings.fqtvName} Registration'));
                       }
 
@@ -754,9 +772,9 @@ Widget _getTrans() {
     // flutter defined function
   }
 
-  void _fqtvResetPassword({void Function()? refresh }) async {
+  void _fqtvResetPassword(String email, {void Function()? refresh }) async {
     String msg = json.encode(ApiFqtvResetPasswordRequest(
-        _oldPasswordEditingController.text).toJson());
+        email).toJson());
     String method = 'ResetPassword';
     _oldPasswordEditingController.text = '';
 
@@ -1454,7 +1472,7 @@ Widget _getTrans() {
                   var str = validateEmail(_oldPasswordEditingController.text);
                   if (str == null || str == '') {
                     gblActionBtnDisabled = true;
-                    _fqtvResetPassword();
+                    _fqtvResetPassword(_oldPasswordEditingController.text);
                   } else {
                     _error = str;
                     _actionCompleted();
@@ -1494,3 +1512,41 @@ class FqtvSummaryBoxState extends State<FqtvSummaryBox> {
   }
 
   }
+
+void fqtvResetPassword(BuildContext context, String email, {void Function()? refresh }) async {
+  String msg = json.encode(ApiFqtvResetPasswordRequest(
+      email).toJson());
+  String method = 'ResetPassword';
+
+  //print(msg);
+  sendVRSCommand(msg, ApiMethod:  "/FqTvMember/ResetPassword").then((resultin){
+    String result = resultin;
+    gblActionBtnDisabled = false;
+    //if( refresh != null ) refresh();
+    if( result.startsWith('{')) {
+      Map<String, dynamic> map = json.decode(result);
+      ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
+      //_isButtonDisabled = false;
+      if (resp.statusCode != 'OK') {
+/*
+      _error = resp.message;
+      _actionCompleted();
+      _showDialog();
+*/
+        showVidDialog(context, 'Error', resp.message);
+      } else {
+/*
+      _error = resp.message;
+      _actionCompleted();
+      _error = 'Reset email sent';
+*/
+        Navigator.of(context).pop();
+        //_showDialog();
+        showVidDialog(context, 'Information', 'Reset email sent');
+      }
+    } else {
+      showVidDialog(context, 'Error', result, type: DialogType.Error);
+    }
+  });
+
+}

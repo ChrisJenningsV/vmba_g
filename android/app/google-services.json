@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "287291202399",
     "project_id": "vmba-notify",
-    "storage_bucket": "vmba-notify.appspot.com"
+    "storage_bucket": "vmba-notify.firebasestorage.app"
   },
   "client": [
     {
@@ -370,6 +370,42 @@
         "mobilesdk_app_id": "1:287291202399:android:c35ffb1faf2187bd6a74ea",
         "android_client_info": {
           "package_name": "com.ibomair.reservations"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqd3J-LZhHR3QAyc7Fbe7tlY5Nk53Ff-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287291202399-ekk4lrspmos1fjp75nu69uhmobjr39oi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "287291202399-65n4pg2gennb3jilps9e0admfhrbh6lg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fastjet.reservations"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287291202399:android:d3218414820012936a74ea",
+        "android_client_info": {
+          "package_name": "com.keylime.booking"
         }
       },
       "oauth_client": [

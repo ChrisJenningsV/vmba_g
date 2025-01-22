@@ -1866,7 +1866,7 @@ Future<String?> getSetting(String key ) async {
   return '';
 }
 
-Future<void> initGeolocation(void Function () onComplete) async {
+Future<void> initGeolocation(void Function()? onComplete) async {
   try {
     logit('initGeo');
     LocationPermission permission;
@@ -1882,7 +1882,7 @@ Future<void> initGeolocation(void Function () onComplete) async {
     //return await Geolocator.getCurrentPosition();
 
     var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low)
+        desiredAccuracy: LocationAccuracy.medium)
         .timeout(Duration(seconds: 15));
 
     try {
@@ -1894,7 +1894,7 @@ Future<void> initGeolocation(void Function () onComplete) async {
         gblCurLocation = placemarks[0];
         logit('got Geo');
         print(placemarks[0]);
-        onComplete();
+        if( onComplete != null ) onComplete();
       }
     } catch(err){
       logit(err.toString());

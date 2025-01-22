@@ -12,6 +12,8 @@ import 'package:vmba/calendar/TabPage.dart';
 import 'package:vmba/utilities/timeHelper.dart';
 
 import '../controllers/vrsCommands.dart';
+import '../data/models/dialog.dart';
+import '../dialogs/smartDialog.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 
@@ -32,18 +34,19 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     email = gblSettings.appFeedbackEmail;
 
     textSpliter(
-            translate('We’re interested in how we can improve our app. Please email specific app feedback to'))
+        translate(
+            'We’re interested in how we can improve our app. Please email specific app feedback to'))
         .forEach((widget) {
       widgets.add(widget);
     });
     widgets.add(appLinkWidget(
         'mailto',
-        email ,
+        email,
         Text(email,
             style: TextStyle(
               decoration: TextDecoration.underline,
             )),
-            queryParameters: {'subject': 'AppFeedback'+ widget.version}
+        queryParameters: {'subject': 'AppFeedback' + widget.version}
     )
     );
 
@@ -121,26 +124,30 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(translate('App version: ') + widget.version + '  GMT:${getGmtTime().toString().substring(0,16)}'),
+                child: Text(translate('App version: ') + widget.version +
+                    '  GMT:${getGmtTime().toString().substring(0, 16)}'),
               ),
-              (gblSettings.wantLocation && gblCurLocation != null ) ? Text('Location ${gblCurLocation!.locality}, ${gblCurLocation!.country}') : Container(),
+/*
+              (gblSettings.wantLocation && gblCurLocation != null) ?
+              Text('${gblCurLocation!.toString()}') : Container(),
+*/
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton(
                   onLongPress: () async {
-
                     showLogin(context);
                   },
                   child: Container(),
                   onPressed: () {},
                 ),
               ),
-               (gblSecurityLevel > 90 ) ? _getSinedInOptions()
+              (gblSecurityLevel > 90) ? _getSinedInOptions()
 /*               Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                   child: TrText('Sined in' ),)
                   */
-       : Text(gblError),
+                  : Text(gblError),
 
             ],
           ),
@@ -149,6 +156,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     }
     // });
   }
+
   Widget _getSinedInOptions() {
     return _getSinedIn();
   }
@@ -158,14 +166,14 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     String title = 'Status: Connected to ';
     String btnText = 'Connect to ';
     IconData ico = Icons.android_outlined;
-    if (gblIsLive == true ){
+    if (gblIsLive == true) {
       title += 'Live';
       btnText += 'Test';
     } else {
       title += 'Test';
       btnText += 'Live';
     }
-    if(gblIsIos ) {
+    if (gblIsIos) {
       ico = Icons.person_outline;
     }
     return Center(
@@ -175,7 +183,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
           children: <Widget>[
             ListTile(
               leading: Icon(ico),
-              title: new TrText( 'Sined In: ' + gblSine),
+              title: new TrText('Sined In: ' + gblSine),
               subtitle: Text(title),
             ),
 
@@ -184,34 +192,38 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               children: <Widget>[
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText(btnText),
-                  onPressed: () {_swapLiveTest();},
+                  onPressed: () {
+                    _swapLiveTest();
+                  },
                 ),
 
 
                 //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Reset cache'),
                   onPressed: () {
                     _resetLangs();
                     deleteLang();
-                    },
+                  },
 
                 ),
 
                 //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Delete Notifications'),
                   onPressed: () {
-
                     Repository.get().deleteNotifications();
                   },
 
@@ -221,12 +233,13 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 //const SizedBox(width: 8),
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Demo Page'),
                   onPressed: () {
                     Navigator.push(
-                      context, SlideTopRoute(page: TabPage())
+                        context, SlideTopRoute(page: TabPage())
                     );
                   },
 
@@ -234,21 +247,26 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
 
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Error msg'),
                   onPressed: () {
-                    criticalErrorPage(context, 'this is a test error message', title: 'Error title');
+                    criticalErrorPage(context, 'this is a test error message',
+                        title: 'Error title');
                   },
                 ),
 
                 TextButton(
                   style: TextButton.styleFrom(
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
+                      side: BorderSide(
+                          color: gblSystemColors.textButtonTextColor, width: 1),
                       foregroundColor: gblSystemColors.textButtonTextColor),
                   child: TrText('Success msg'),
                   onPressed: () {
-                    successMessagePage(context, 'this is a test success message', title: 'Booking Confirmed');
+                    successMessagePage(
+                        context, 'this is a test success message',
+                        title: 'Booking Confirmed');
                   },
                 ),
 
@@ -261,13 +279,13 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       ),
     );
   }
+
   void _resetLangs() async {
     var prefs = await SharedPreferences.getInstance();
     // reset
     prefs.setString('language_code', '');
     prefs.setString('cache_time2', '');
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _swapLiveTest() {
@@ -276,18 +294,18 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     // cannot reuse session after swap
     gblSession = null;
 
-    if(gblIsLive == true) {
+    if (gblIsLive == true) {
       gblSettings.xmlUrl = gblSettings.liveXmlUrl;
       gblSettings.apisUrl = gblSettings.liveApisUrl;
       gblSettings.apiUrl = gblSettings.liveApiUrl;
       gblSettings.smartApiUrl = gblSettings.liveSmartApiUrl;
-      gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
+      gblSettings.creditCardProvider = gblSettings.liveCreditCardProvider;
     } else {
       gblSettings.xmlUrl = gblSettings.testXmlUrl;
       gblSettings.apisUrl = gblSettings.testApisUrl;
       gblSettings.apiUrl = gblSettings.testApiUrl;
       gblSettings.smartApiUrl = gblSettings.testSmartApiUrl;
-      gblSettings.creditCardProvider  = gblSettings.testCreditCardProvider;
+      gblSettings.creditCardProvider = gblSettings.testCreditCardProvider;
     }
 
     setState(() {
@@ -333,54 +351,67 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
    */
 
   showLogin(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-              children:[
-/*
-                Image.network('${gblSettings.gblServerFiles}/images/lock_user_man.png',
-                  width: 50, height: 50, fit: BoxFit.contain,),
-*/
-                TrText('LOGIN')
-              ]
-          ),
-          content: contentBox(context),
-          actions: <Widget>[
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black12) ,
-              child: TrText("CANCEL", style: TextStyle(backgroundColor: Colors.black12, color: Colors.black),),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: TrText("CONTINUE"),
-              onPressed: () {
-                String sine = _sineController.text;
-                String pas = _passwordController.text;
-                _sineIn(sine,pas).then( (result) {
-                  setState(() {
+    if (gblSettings.wantNewDialogs) {
+      DialogDef dialog = new DialogDef(caption: 'Developer Login',
+          actionText: 'Continue',
+          action: 'DoDeveloperLogin');
+      dialog.fields.add(
+          new DialogFieldDef(field_type: 'number', caption: 'sine (4ch)'));
+      dialog.fields.add(
+          new DialogFieldDef(field_type: 'password', caption: 'Password'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
 
-                });
+      showSmartDialog(context, dialog, null, () {
+        setState(() {});
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Row(
+                children: [
+                  TrText('LOGIN')
+                ]
+            ),
+            content: contentBox(context),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black12),
+                child: TrText("CANCEL", style: TextStyle(
+                    backgroundColor: Colors.black12, color: Colors.black),),
+                onPressed: () {
+                  //Put your code here which you want to execute on Cancel button click.
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                child: TrText("CONTINUE"),
+                onPressed: () {
+                  String sine = _sineController.text;
+                  String pas = _passwordController.text;
+                  devSineIn(context, sine, pas).then((result) {
+                    setState(() {
+
+                    });
                   });
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
 /*                Navigator.of(context).pushNamedAndRemoveUntil(
                     '/HomePage', (Route<dynamic> route) => false);*/
-              },
-            ),
-          ],
-        );
-      },
-    );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   TextEditingController _sineController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  contentBox(context){
+  contentBox(context) {
     return Stack(
       children: <Widget>[
         Container(
@@ -399,7 +430,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   ),
                 ),
                 controller: _sineController,
-                keyboardType: TextInputType.number ,
+                keyboardType: TextInputType.number,
 
                 // do not force phone no here
                 /*              validator: (value) => value.isEmpty
@@ -417,7 +448,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
               new TextFormField(
                 obscureText: true,
                 obscuringCharacter: "*",
-                controller: _passwordController ,
+                controller: _passwordController,
                 decoration: InputDecoration(
                   contentPadding:
                   new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
@@ -448,8 +479,9 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       ],
     );
   }
+}
 
-  Future <String>  _sineIn(String sine, String pas) async {
+  Future <String>  devSineIn(BuildContext context, String sine, String pas) async {
 
     // check for debug mode
     if( gblSettings.debugUser != null && gblSettings.debugUser.isNotEmpty &&
@@ -524,4 +556,4 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
   }
 
 
-}
+

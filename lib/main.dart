@@ -157,6 +157,13 @@ bool bFirstTime = true;
     _initTheme();
     setLiveTest();
 
+/*
+    if( gblSettings.wantLocation){
+      initGeolocation(null);
+    }
+
+*/
+
     if( gblLangFileLoaded == false ) {
       //initLang(gblLanguage);
       initLangCached(gblLanguage).then((x){

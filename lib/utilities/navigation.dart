@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../data/globals.dart';
 import '../forms/genericFormPage.dart';
+import '../menu/myFqtvPage.dart';
 import '../mmb/viewBookingPage.dart';
 import 'helper.dart';
 
@@ -20,6 +22,12 @@ void navToFlightSearchPage(BuildContext context) {
   Navigator.of(context).pushNamedAndRemoveUntil('/FlightSearchPage', (Route<dynamic> route) => false);
 }
 
+void navToMyBookingsPage(BuildContext context) {
+  Navigator.of(context).pushNamedAndRemoveUntil(
+  '/MyBookingsPage', (Route<dynamic> route) => false);
+
+}
+
 void navToMyBookingPage(BuildContext context, String rloc) {
   Navigator.push(
     context,
@@ -30,12 +38,22 @@ void navToMyBookingPage(BuildContext context, String rloc) {
             ))
   );
 }
-void navToGenericFormPage(BuildContext context, FormParams params){
+void navToSmartDialogHostPage(BuildContext context, FormParams params){
+  gblActionBtnDisabled = false;
   Navigator.push(
       context,
       SlideTopRoute(
-          page: GenericFormPageWidget(
+          page: SmartDialogHostPage(
             formParams: params
           ))
   );
 }
+
+void navToFqtvPage(BuildContext context){
+  Navigator.push(
+      context, SlideTopRoute(page: MyFqtvPage(
+      isAdsBooking: false,
+      isLeadPassenger: true,)
+    ));
+
+  }

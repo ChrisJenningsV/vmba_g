@@ -2,9 +2,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/v3pages/cards/searchCard.dart';
 import 'package:vmba/v3pages/cards/v3Card.dart';
 
+import '../../components/trText.dart';
 import '../../components/vidCards.dart';
 import '../../data/globals.dart';
 import '../../menu/contact_us_page.dart';
@@ -12,9 +14,11 @@ import '../../menu/menu.dart';
 import '../../mmb/myBookingsPage.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/navigation.dart';
+import '../../utilities/widgets/colourHelper.dart';
 import '../homePageHelper.dart';
 import '../loggedInHomePage.dart';
 import '../v3BottomNav.dart';
+import '../v3Theme.dart';
 import '../v3UnlockPage.dart';
 import 'FqtvLogin.dart';
 
@@ -86,14 +90,19 @@ class V3CustomPageState extends State<V3CustomPage> {
 }
 
 Widget getCustomScaffoldPage(BuildContext context, String pageName, void Function() doCallback) {
+  CustomPage? homePage;
   if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
     if (gblHomeCardList!.pages![pageName] == null) {
       /* list.add(Text(' Page $pageName not found'));
       return list;
     }*/
     }
-    CustomPage homePage = gblHomeCardList!.pages![pageName];
+     homePage = gblHomeCardList!.pages![pageName];
 
+    }
+    Widget body = Text('Loading...');
+    if( homePage != null ){
+      body = getCustomPageBody(context, homePage as CustomPage , doCallback);
     }
 
     return Scaffold(
@@ -104,16 +113,26 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
         endDrawer: new DrawerMenu(),
         bottomNavigationBar: getV3BottomNav(context),
         //drawer: DrawerMenu(),
-        body: getCustomPageBody(context, pageName, doCallback)
+        body: body
     );
   }
 
 
-Widget getCustomPageBody(BuildContext context, String pageName, void Function() doCallback) {
+Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Function() doCallback) {
   ImageProvider image = Image
       .asset('lib/assets/images/bg.png')
       .image;
-   if (pageName == 'newinstall') {
+
+  if( homePage.backgroundImage != null && homePage.backgroundImage !='' ){
+    NetworkImage backgroundImage = NetworkImage(
+        '${gblSettings.gblServerFiles}/pageImages/${homePage.backgroundImage}');
+    image = Image(
+      image:
+      backgroundImage,
+      fit: BoxFit.cover,).image;
+  }
+
+   if (homePage.pageName == 'newinstall') {
       NetworkImage backgroundImage = NetworkImage(
           '${gblSettings.gblServerFiles}/pageImages/newinstall.png');
       image = Image(
@@ -145,7 +164,7 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
 
               child: Column(
                 children:
-                getCustomPage(context, pageName, doCallback),
+                getCustomPage(context, homePage, doCallback),
 
               ),
             ))
@@ -154,19 +173,19 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
 
 
 
-  List<Widget> getCustomPage(BuildContext context, String pageName,
+  List<Widget> getCustomPage(BuildContext context, CustomPage homePage, // String pageName,
       void Function() doCallback) {
     List<Widget> list = [];
     TextStyle ts = TextStyle();
 
 
-    if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
+   /* if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
       if (gblHomeCardList!.pages![pageName] == null) {
         list.add(Text(' Page $pageName not found'));
         return list;
-      }
+      }*/
 
-      CustomPage homePage = gblHomeCardList!.pages![pageName];
+     // CustomPage homePage = gblHomeCardList!.pages![pageName];
 
 
       list.add(Padding(padding: EdgeInsets.only(top: homePage.topPadding)));
@@ -190,8 +209,9 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
 
       if (homePage.cards != null && homePage.cards!.length > 0) {
         homePage.cards!.forEach((card) {
-          ts = card.title!.getStyle();
-
+          if( card.title != null ) {
+            ts = card.title!.getStyle();
+          }
           switch (card.card_type.toUpperCase()) {
             case 'FLIGHTSEARCH':
               list.add(v3ExpanderCard(
@@ -218,15 +238,25 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
                   context, card,getMiniMyBookingsPage(context),ts: ts));
               break;
             case 'CARDSLIDER':
-              list.add(v3ExpanderCard(
-                  context, card, getSlides(context, card.cards, doCallback), ts: ts));
+              list.add(getCard(
+                  context, card, getSlides(context, card, doCallback), ts: ts));
+              break;
+            case 'DIVIDER':
+              list.add(
+                  Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Divider(color: card.backgroundClr, height: 2,))
+              );
               break;
             case 'LINKLIST':
-              list.add(v3ExpanderCard(
+              list.add(getCard(
                   context, card, getLinks(context, card.cards, doCallback),  ts: ts));
               break;
+            case 'BUTTONLIST':
+              list.add(Container(
+                  child: getLinks(context, card.cards, doCallback)));
+              break;
             case 'ICONLINK':
-              list.add(getLink(context, card, false, doCallback));
+              list.add(getLinkButton(context, card, false, doCallback));
               break;
             case 'PHOTOLINK':
               list.add(getSlide(context, card, true));
@@ -237,12 +267,59 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
           }
         });
       }
-    }
+    //}
     return list;
   }
 
-  Widget getSlides(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+Widget getCard(BuildContext context, HomeCard card,  Widget body,
+    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
+
+  if( card.shape != null && card.shape == 'square'){
+    return squareCard( context, card, body, wantIcon: wantIcon,  ts: ts );
+  }
+  return v3ExpanderCard( context, card, body, wantIcon: wantIcon,  ts: ts );
+}
+
+Widget squareCard(BuildContext context, HomeCard card,  Widget body,
+    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
+
+  Color titleColor = Colors.grey.shade200;
+  String sTitle = 'No Title';
+
+  if( card.backgroundClr != null){
+    titleColor = card.backgroundClr as Color;
+  }
+
+  if (card.title != null) {
+    sTitle = card.title!.text;
+  }
+  if (gblPassengerDetail != null) {
+    sTitle = sTitle.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);
+  }
+
+  Widget title =       Container(
+      color: titleColor,
+      child: Row( children: [
+        card.icon!= null ? Icon(
+          card.icon,
+          size: 30.0,
+          color: ts.color,
+        ) : Container(),
+        Padding(padding: EdgeInsets.all(2)),
+        Text(translate(sTitle),  style: ts,)
+      ],));
+
+  return Column(
+    children: [
+      title,
+      body
+    ]
+  );
+
+}
+  Widget getSlides(BuildContext context, HomeCard card,  void Function() doCallback) {
     List<Widget> list = [];
+    final cards = card!.cards;
     if (cards != null) {
       cards.forEach((card) {
         switch (card.card_type) {
@@ -250,7 +327,7 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
             list.add(getSlide(context, card, false));
             break;
           case 'iconLink':
-            list.add(getLink(context, card, false, doCallback));
+            list.add(getLinkButton(context, card, false, doCallback));
             break;
         }
       });
@@ -260,6 +337,7 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
+          color: card.backgroundClr,
           padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
           /* decoration: BoxDecoration(
   image: DecorationImage(
@@ -279,7 +357,10 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
             list.add(getSlide(context, card, false));
             break;
           case 'iconLink':
-            list.add(getLink(context, card, false, doCallback));
+            list.add(getLinkButton(context, card, false, doCallback));
+            break;
+          case 'button':
+            list.add(getButton(context, card, false, doCallback));
             break;
         }
       });
@@ -320,7 +401,7 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
             'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}',
             // width: 300,
            // height: 150,
-            fit:BoxFit.fill
+            fit:BoxFit.fitWidth
 
         ),
       //)
@@ -361,13 +442,78 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
     return DecorationImage(
       image: NetworkImage(
           'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}'),
-      fit: BoxFit.none, // (topLevel) ? BoxFit.fitWidth : BoxFit.fitWidth, // BoxFit.fitHeight,
+      fit: BoxFit.fitHeight, // (topLevel) ? BoxFit.fitWidth : BoxFit.fitWidth, // BoxFit.fitHeight,
       alignment: Alignment.topCenter,
     );
   }
 
-  Widget getLink(BuildContext context, HomeCard card, bool topLevel,void Function() doCallback) {
+Widget getButton(BuildContext context, HomeCard card, bool topLevel,void Function() doCallback) {
+  EdgeInsets buttonPad = EdgeInsets.all(10);
+  bool wantShadows = gblSettings.wantShadows;
+
+  List<Widget> list = [];
+  list.add(VButtonText(card.title!.text, color: card.textClr));
+
+  return
+        ElevatedButton(
+            onPressed: () {
+              if(gblActionBtnDisabled == false ) {
+                doCallback();
+              }
+            },
+
+            style: ElevatedButton.styleFrom(
+                elevation: wantShadows ? null :0,
+                backgroundColor: card.backgroundClr,
+                foregroundColor: card.textClr,
+                side: BorderSide(
+                  width: 0,
+                  color: Colors.transparent,
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: getButtonRadius())),
+            child: Padding(
+              padding: buttonPad,
+              child: Row(
+                //mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  list
+                ,
+              ),
+            )
+    );
+}
+
+
+
+  Widget getLinkButton(BuildContext context, HomeCard card, bool topLevel,void Function() doCallback) {
     if (card.title!.color == null) card.title!.color = Colors.black;
+
+    Widget caption;
+    Color? bkClr;
+    if( card.card_type == 'button') {
+      card.title!.card_type = card.card_type;
+      caption = Text(card.title!.text, style: TextStyle(color: card.textClr));
+      bkClr = gblSystemColors.primaryButtonColor;
+      if( card.backgroundClr != null) bkClr = card.backgroundClr;
+    } else {
+      caption = Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  getIcon(card),
+                  Padding(padding: EdgeInsets.all(3)),
+                  Text(card.title!.text, style: card.title!.getStyle()),
+                ]),
+            Padding(padding: EdgeInsets.all(3)),
+            Icon(Icons.chevron_right, size: 20,)
+          ]
+      );
+    }
+
+
     return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -414,27 +560,13 @@ Widget getCustomPageBody(BuildContext context, String pageName, void Function() 
             // width: (topLevel)? null : 120,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              //color: gblSystemColors.seatPlanColorUnavailable,
+              color: bkClr,
               borderRadius:
               new BorderRadius.all(new Radius.circular(5.0)),
 
             ),
             //alignment: Alignment.bottomCenter,
-            child:
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        getIcon(card),
-                        Padding(padding: EdgeInsets.all(3)),
-                        Text(card.title!.text, style: card.title!.getStyle()),
-                      ]),
-                  Padding(padding: EdgeInsets.all(3)),
-                  Icon(Icons.chevron_right, size: 20,)
-                ]
-            ),
+            child: caption,
           ),
 
         ));

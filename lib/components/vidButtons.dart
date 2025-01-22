@@ -86,7 +86,7 @@ BorderRadius getButtonRadius() {
   NEXT button at the bottom of most pages
  */
 Widget vidWideActionButton(BuildContext context, String caption, void Function(BuildContext, dynamic) onPressed, 
-    {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true, bool availableOffline = false, bool disabled = false} ) {
+    {IconData? icon, int iconRotation=0, var param1, double offset=0, bool wantIcon = true, bool availableOffline = false, bool disabled = false, double? pad} ) {
 
   List<Widget> list = [];
   EdgeInsets buttonPad = EdgeInsets.all(0);
@@ -96,7 +96,10 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
     if( gblV3Theme!.generic!.actionButtonIcons != null) {
       wantIcon = gblV3Theme!.generic!.actionButtonIcons as bool;
     }
-    if( gblV3Theme!.generic!.actionButtonPadding != null ){
+
+    if( pad != null ) {
+      buttonPad = EdgeInsets.all(pad);
+    } else if( gblV3Theme!.generic!.actionButtonPadding != null ){
       buttonPad = EdgeInsets.all(gblV3Theme!.generic!.actionButtonPadding as double);
     }
     if( gblV3Theme!.generic!.actionButtonShadow != null ){

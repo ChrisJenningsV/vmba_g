@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
+import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
@@ -74,6 +75,9 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
   Widget _body() {
     if (_loadingInProgress) {
       return getProgressMessage('Loading...', '');
+    }
+    if( gblError != ''){
+
     }
     if( _showResults){
       return getResults();
@@ -327,14 +331,23 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
   Future<void> loadData() async {
     String data = '';
-    String reply = await callSmartApi('GETFLIGHTSTATUS', data);
-    Map<String, dynamic> map = json.decode(reply);
-     gblFlightStatuss = new FlightStatuss.fromJson(map);
+    gblError = '';
+    try {
+      String reply = await callSmartApi('GETFLIGHTSTATUS', data);
+      Map<String, dynamic> map = json.decode(reply);
+      gblFlightStatuss = new FlightStatuss.fromJson(map);
 
-    _loadingInProgress = false;
-    setState(() {
+      _loadingInProgress = false;
+      setState(() {
 
-    });
+      });
+    } catch(e) {
+      _loadingInProgress = false;
+      setState(() {
+
+      });
+      showVidDialog(context, 'Error', e.toString(), type: DialogType.Error);
+    }
   }
 
 

@@ -74,7 +74,7 @@ void configM1() {
   gblSettings = Settings (
     //   homePageFilename: 'customPages.json',
     // start new bits
-    homePageStyle: 'V3',
+//    homePageStyle: 'V3',
     smartApiVersion: 2,
     wantShadows: false,
     wantTransapentHomebar: true,
@@ -86,13 +86,18 @@ void configM1() {
     wantUpgradePrices: true,
     wantButtonIcons: false,
     wantPriceCalendarRounding: false,
-    wantUnlock:true,
+    wantUnlock:false,
     wantProducts: true,
     wantStatusLine: true,
     wantSeatsWithProducts: true,
     useLogin2: true,
     homePageMessage: 'Hello, where can we take you today?',
+    wantFlightStatus: true,
+    wantHelpCentre: true,
+    wantLocation: true,
+    wantNewDialogs: true,
 
+//    wantGeoLocationHopePage: true,
     // end new bits
 
     // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),

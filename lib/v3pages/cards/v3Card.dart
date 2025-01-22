@@ -17,6 +17,9 @@ Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body,
       titleColor = card.title!.backgroundColor!;
     }
   }
+    if( card.backgroundClr != null){
+      titleColor = card.backgroundClr as Color;
+    }
   String sTitle = 'No Title';
   if( card.title != null ) {
     sTitle = card.title!.text;
@@ -28,11 +31,11 @@ Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body,
   Widget title =       Container(
     color: titleColor,
       child: Row( children: [
-        Icon(
-          card.icon== null ? Icons.back_hand : card.icon,
+        card.icon!= null ? Icon(
+           card.icon,
           size: 30.0,
           color: ts.color,
-        ),
+        ) : Container(),
         Padding(padding: EdgeInsets.all(2)),
         Text(translate(sTitle),  style: ts,)
       ],));
