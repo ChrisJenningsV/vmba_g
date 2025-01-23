@@ -31,7 +31,7 @@ import 'models/trips.dart';
 // H4 hisky
 // X4 excursions
 // KG key lime / Dallas
-String gblBuildFlavor = 'KG';
+String gblBuildFlavor = 'LM';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg

@@ -96,6 +96,12 @@
 @import webview_flutter_wkwebview;
 #endif
 
+#if __has_include(<zendesk_helpcenter/ZendeskHelpCenterPluginClass.h>)
+#import <zendesk_helpcenter/ZendeskHelpCenterPluginClass.h>
+#else
+@import zendesk_helpcenter;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -114,6 +120,7 @@
   [StoreRedirectPlugin registerWithRegistrar:[registry registrarForPlugin:@"StoreRedirectPlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
+  [ZendeskHelpCenterPluginClass registerWithRegistrar:[registry registrarForPlugin:@"ZendeskHelpCenterPluginClass"]];
 }
 
 @end

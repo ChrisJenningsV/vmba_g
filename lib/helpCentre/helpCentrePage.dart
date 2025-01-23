@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zendesk_helpcenter/zendesk_helpcenter.dart';
 import '../data/globals.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
@@ -64,18 +65,51 @@ class HelpCentrePageWidgetState extends State<HelpCentrePageWidget>  with Ticker
       return getProgressMessage('Loading...', '');
     }
     return Container(
-        height: 400,
+        //height: 400,
         color: Colors.white,
         child: Column(
           children: [
-            Padding(padding: EdgeInsets.all(40)),
-            Image.network('${gblSettings.gblServerFiles}/pageImages/helpcentre.png',
-                errorBuilder: (BuildContext context, Object obj,
-                    StackTrace? stackTrace) {
-                  return Text('', style: TextStyle(color: Colors.red));
-                }
-            ), //
+            Padding(padding: EdgeInsets.only(top: 100)),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6), // <-- Radius
+                ),
+                backgroundColor: Colors.red,
+                elevation: 10,
+                minimumSize: const Size.fromHeight(
+                    40), // fromHeight use double.infinity as width and 40 is the height
+              ),
+              onPressed: () {
+                ZendeskHelpcenter.initialize(
+                    appId: "562cd5d9b480bf8fa9512352b900e0117680b0affd4278fb",
+                    clientId: "mobile_sdk_client_e68bf24adb8618bed9b1",
+                    nameIdentifier: gblNotifyToken,
+                    urlString: 'https://loganaircrcc.zendesk.com'
 
+                );
+              },
+              child: const Text('Initialize'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                backgroundColor: Colors.blue,
+                elevation: 10,
+                minimumSize: const Size.fromHeight(40),
+              ),
+              onPressed: () {
+                //ZendeskHelpcenter.showRequestList();
+                ZendeskHelpcenter.showHelpCenter();
+              },
+              child: const Text(
+                'Request List',
+              ),
+            ),
+            const SizedBox(height: 20),
           ],
         )
     );

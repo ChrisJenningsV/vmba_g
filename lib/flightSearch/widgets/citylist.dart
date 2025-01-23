@@ -213,6 +213,11 @@ class DepartureListState extends State<DepartureList> {
 
   void filterCities(String filter){
     routes = [];
+    if( widget.routes != null ) {
+      logit('filter cities ${widget.routes!.length} found ');
+    } else {
+      logit('filter cities null found ');
+    }
     _getRoutes(widget.routes)!.forEach((route) {
       String code = route.split('|')[0].toUpperCase();
       String name = route.split('|')[1].toUpperCase();
@@ -225,7 +230,11 @@ class DepartureListState extends State<DepartureList> {
 
   @override
   Widget build(BuildContext context) {
-    if(gblLogCities ) {logit('build DepartureList len=${routes!.length}');}
+    if (routes!.length == null) {
+      logit('build DepartureList len=null');
+    } else  {
+      logit('build DepartureList len=${routes!.length}');
+    }
 //    if( _searchEditingController.text.isNotEmpty) {
       filterCities(_searchEditingController.text);
   //  }
