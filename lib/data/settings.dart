@@ -96,6 +96,7 @@ class Settings {
   bool wantMmbProducts = false;
   String productImageMode ='';
   bool wantDangerousGoods = false;
+  bool wantDangerousGoodsCheckin = false;
   bool wantInternatDialCode=false;
   bool wantCovidWarning = false;
   bool wantCountry = false;
@@ -106,6 +107,7 @@ class Settings {
   bool wantProgressBar = false;
   bool wantGender = false;
   bool wantMiddleName = false ;
+  bool middleNameRequired = false ;
   bool wantRedressNo = false ;
   bool wantKnownTravNo;
   bool wantPushNoticications;
@@ -115,6 +117,7 @@ class Settings {
   bool wantNewPayment;
   bool useScrollWebViewiOS;
   bool wantButtonIcons;
+  bool wantValidateDobOnReturn;
 //  bool useWebApiforVrs;
   bool bpShowAddPassToWalletButton;
   bool disableBookings;
@@ -156,6 +159,7 @@ class Settings {
   bool wantFQTV = false;
   bool wantFlightStatus = false;
   bool wantNews = false;
+  bool wantFopVouchers = false;
   bool wantFQTVNumber = false;
   bool wantHomeFQTVButton = false;
   bool wantFqtvAutologin;
@@ -315,6 +319,7 @@ bool bpShowFastTrack;
     this.wantFqtvPassport = false,
     this.wantFlightStatus = false,
     this.wantNews = false,
+    this.wantFopVouchers = false,
 
     this.wantUmnr = false,
     this.want24HourClock = false,
@@ -329,6 +334,7 @@ bool bpShowFastTrack;
     this.wantMmbProducts = false,
     this.productImageMode = 'index',
     this.wantDangerousGoods = false,
+    this.wantDangerousGoodsCheckin = false,
     this.wantInternatDialCode = false,
     this.defaultCountryCode ='',
     this.wantCovidWarning = false,
@@ -341,6 +347,7 @@ bool bpShowFastTrack;
     this.wantApis = false,
     this.wantGender = false,
     this.wantMiddleName = false,
+    this.middleNameRequired = false,
     this.wantRedressNo = false,
     this.wantKnownTravNo = false,
     this.wantPushNoticications = false,
@@ -350,6 +357,7 @@ bool bpShowFastTrack;
     this.wantNewPayment = true,
     this.useScrollWebViewiOS = false,
     this.wantButtonIcons = true,
+    this.wantValidateDobOnReturn = true,
     this.wantAllColorButtons = true,
     this.wantBpLogo = true,
     this.useAppBarImeonBP = false,

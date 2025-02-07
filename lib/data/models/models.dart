@@ -1,10 +1,11 @@
-
+import 'package:vmba/utilities/PaxManager.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../../Helpers/stringHelpers.dart';
+import '../../components/showDialog.dart';
 import '../../components/trText.dart';
 import '../../components/vidTextFormatting.dart';
 import '../../home/searchParams.dart';
@@ -182,43 +183,149 @@ class PassengerDetail {
     this.wantNotifications=true,
   });
 
-  bool isComplete() {
+
+  ErrorParams isComplete(int paxNo) {
+    ErrorParams errorParams = new ErrorParams();
+
     if (title == '' || title == null) {
-      gblWarning = 'Passenger details required';
-      return false;
+//      gblWarning = 'Passenger details required';
+      errorParams.msg = 'Passenger details required';
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
     }
     if (firstName == '' || firstName == null) {
+/*
       gblWarning = 'First name is required';
       return false;
+*/
+      errorParams.msg = translate( 'First name is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
     }
 
-    if (gblSettings.wantMiddleName &&
+    if (gblSettings.wantMiddleName && gblSettings.middleNameRequired &&
         (middleName == null || middleName.isEmpty)) {
+/*
       gblWarning = 'Middle name is required';
       return false;
+*/
+      errorParams.msg = translate( 'Middle name is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
+
     }
 
     if (lastName == '' || lastName == null) {
+/*
       gblWarning = 'Last name is required';
       return false;
+*/
+      errorParams.msg = translate( 'Last name is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
+
+    }
+    if( paxNo == 1 &&  email == '' ){
+/*
+      gblWarning = 'Email is required';
+      return false;
+*/
+      errorParams.msg = translate( 'Email is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
+
+    }
+    if( paxNo == 1 &&  phonenumber == '' ){
+/*
+      gblWarning = 'Phone number is required';
+      return false;
+*/
+      errorParams.msg = translate( 'Phone number is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
+
     }
 
     if (gblSettings.wantGender && (gender == null || gender.isEmpty)) {
+/*
       gblWarning = 'Gender is required';
       return false;
+*/
+      errorParams.msg = translate( 'Gender is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
     }
 
     if( gblRedeemingAirmiles && (fqtv == null || fqtv.isEmpty )){
+/*
       gblWarning = '${gblSettings.fqtvName}' + translate( ' number required');
           return false;
+*/
+      errorParams.msg = '${gblSettings.fqtvName}' + translate( ' number required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
     }
     if( gblSettings.wantCountry && (country == null || country == '') ){
+/*
       gblWarning = translate( 'Country is required');
       return false;
+*/
+      errorParams.msg = translate( 'Country is required');
+      errorParams.errorType = DialogType.Error;
+      errorParams.isError = true;
+      return errorParams;
+    }
+    if(PaxManager.wantDobForPax(this.paxType)) {
+      if( dateOfBirth == null){
+        errorParams.msg = translate( 'Date of Birth is required');
+        errorParams.errorType = DialogType.Error;
+        errorParams.isError = true;
+        return errorParams;
+      }
+      if( gblSettings.wantValidateDobOnReturn && gblSearchParams.isReturn && (this.paxType ==PaxType.infant || this.paxType == PaxType.child)){
+        // check age OK
+        if( this.paxType ==PaxType.infant ){
+          DateTime birthday = DateTime(dateOfBirth!.year + gblSettings.passengerTypes.infantMaxAge, dateOfBirth!.month,  dateOfBirth!.day);
+          if( birthday.isBefore(gblSearchParams!.returnDate as DateTime)){
+            logit('infant too old on return');
+            errorParams.msg = translate( 'Sorry, it seems that an infant has an important birthday relating to this booking.\nYou cannot make a return ' +
+              'booking where an infant is under ${gblSettings.passengerTypes.infantMaxAge} on the outbound and over ${gblSettings.passengerTypes.infantMaxAge} ' +
+              'on the return flight.\nTo proceed , please make two separate one-way bookings to follow saftey regulations.\n Thank you');
+            errorParams.errorType = DialogType.Error;
+            errorParams.isError = true;
+            errorParams.showDialog = true;
+            return errorParams;
+          }
+        } else if (this.paxType == PaxType.child){
+          DateTime birthday = DateTime(dateOfBirth!.year + gblSettings.passengerTypes.childMaxAge, dateOfBirth!.month,  dateOfBirth!.day);
+          if( birthday.isBefore(gblSearchParams!.returnDate as DateTime)){
+            logit('infant too old on return');
+            errorParams.msg = translate( 'Sorry, it seems that a child has an important birthday relating to this booking.\nYou cannot make a return ' +
+                'booking where an child is under ${gblSettings.passengerTypes.childMaxAge} on the outbound and over ${gblSettings.passengerTypes.childMaxAge} ' +
+                'on the return flight.\nTo proceed , please make two separate one-way bookings to follow saftey regulations.\n Thank you');
+            errorParams.errorType = DialogType.Error;
+            errorParams.isError = true;
+            errorParams.showDialog = true;
+            return errorParams;
+          }
+
+        }
+
+      }
 
     }
 
-    return true;
+    errorParams.msg = '';
+    errorParams.isError = false;
+    return errorParams;
   }
 
 
@@ -773,21 +880,22 @@ class RunVRSCommandList extends Session {
   }
 }
 
+/*
 class FopVouchers {
   List<FopVoucher> vouchers = List.from([FopVoucher()]);
 
   FopVouchers();
 
   FopVouchers.fromJson(Map<String, dynamic> json) {
-    if (json['fopvoucher'] != null) {
+    if (json['fopVouchers'] != null) {
       vouchers = [];
       //new List<Disruption>();
-      if (json['fopvoucher'] is List) {
-        json['fopvoucher'].forEach((v) {
+      if (json['fopVouchers'] is List) {
+        json['fopVouchers'].forEach((v) {
           vouchers.add(new FopVoucher.fromJson(v));
         });
       } else {
-        vouchers.add(new FopVoucher.fromJson(json['fopvoucher']));
+        vouchers.add(new FopVoucher.fromJson(json['fopVouchers']));
       }
     }
   }
@@ -820,27 +928,17 @@ class FopVoucher {
 
   FopVoucher.fromJson(Map<String, dynamic> json) {
 //    logit(json.toString());
-    if (json['vouchertype'] != null) vouchertype = json['vouchertype'];
-    if (json['vouchernumber'] != null) vouchernumber = json['vouchernumber'];
-    if (json['securitycode'] != null) securitycode = json['securitycode'];
-    if (json['vouchercode'] != null) vouchercode = json['vouchercode'];
-    if (json['description'] != null) description = json['description'];
-    if (json['currency'] != null) currency = json['currency'];
-    if (json['amount'] != null) amount = json['amount'];
-    if (json['amountused'] != null) amountused = json['amountused'];
-    if (json['amountrefunded'] != null) amountrefunded = json['amountrefunded'];
-    if (json['multipleuse'] != null) multipleuse = json['multipleuse'];
-    if (json['recipientname'] != null) recipientname = json['recipientname'];
-    if (json['recipientonly'] != null) recipientonly = json['recipientonly'];
-    if (json['validfromdate'] != null) validfromdate = json['validfromdate'];
-    if (json['validtodate'] != null) validtodate = json['validtodate'];
-    if (json['flightsfromdate'] != null) flightsfromdate = json['flightsfromdate'];
-    if (json['flightstodate'] != null) flightstodate = json['flightstodate'];
-    if (json['classes'] != null) classes = json['classes'];
-    if (json['returnonly'] != null) returnonly = json['returnonly'];
-    if (json['farecurrency'] != null) farecurrency = json['farecurrency'];
-    if (json['closed'] != null) closed = json['closed'];
-    if (json['refunded'] != null) refunded = json['refunded'];
+    if (json['VoucherType'] != null) vouchertype = json['VoucherType'];
+    if (json['VoucherNumber'] != null) vouchernumber = json['VoucherNumber'];
+
+    if (json['SecurityCode'] != null) securitycode = json['SecurityCode'];
+//    if (json['VoucherCode'] != null) vouchernumber = json['VoucherCode'];
+//    if (json['Description'] != null) vouchernumber = json['Description'];
+//    if (json['Currency'] != null) vouchernumber = json['Currency'];
+//    if (json['Amount'] != null) vouchernumber = json['Amount'];
+//    if (json[''] != null) vouchernumber = json[''];
+//    if (json[''] != null) vouchernumber = json[''];
+
   }
 
-}
+}*/

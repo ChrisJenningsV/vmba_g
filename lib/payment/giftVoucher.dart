@@ -10,6 +10,7 @@ import '../components/vidCards.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/models/models.dart';
+import '../data/models/vouchers.dart';
 import '../data/repository.dart';
 import '../utilities/helper.dart';
 

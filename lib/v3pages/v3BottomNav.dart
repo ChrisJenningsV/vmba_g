@@ -71,11 +71,13 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
           icon:  Icon(Icons.person),
           label: 'Account',
         ),
+/*
         BottomNavigationBarItem(
           icon:  Icon(Icons.menu
           ),
           label: 'more',
         ),
+*/
 
       ],
       currentIndex: 0,

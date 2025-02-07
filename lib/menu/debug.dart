@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/components/showDialog.dart';
 
-import '../data/globals.dart';
 import '../v3pages/cards/v3CustomPage.dart';
 import '../v3pages/homePageHelper.dart';
 import '../v3pages/v3BottomNav.dart';

@@ -52,9 +52,12 @@ Widget paxGetMiddleName(TextEditingController middleNameTextEditingController, {
     inputFormatters: [
       FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
     ],
-    validator: (value) =>
-    value!.isEmpty ? translate(
-        'Middle name cannot be empty - type NONE if none') : null,
+    validator: (value) {
+      if( gblSettings.middleNameRequired ) {
+        if(value!.isEmpty) return translate('Middle name cannot be empty - type NONE if none');
+      }
+      return null;
+    },
     onSaved: (value) {
       if (value != null) {
         onSaved(value.trim());
@@ -137,7 +140,9 @@ Widget pax2faNumber(BuildContext context, List<TextEditingController> emailTextE
                   keyboardType: TextInputType.number,
                   textInputAction: i < 5 ? TextInputAction.next : TextInputAction.done,
                     onChanged: (value) {
-                      if( value!.length >=1 ){
+                      String index = i.toString();
+                      //logit(' val $value index $i');
+                      if( value!.length >=1 && i < 5 ){
                         FocusScope.of(context).nextFocus();
                       }
                     },
@@ -471,6 +476,9 @@ _showCalenderDialog(BuildContext context, PaxType paxType, void Function(DateTim
 
   // VRS uses todays date - not date of travel, code here to use date of travel if required
   DateTime lastFltDate = DateTime.now();
+  if( gblDepartDate != null ){
+    lastFltDate = gblDepartDate!;
+  }
 //    DateTime lastFltDate = widget.newBooking.departureDate;
 //    if( widget.newBooking.returnDate != null ){
 //      lastFltDate = widget.newBooking.returnDate;
@@ -483,13 +491,18 @@ _showCalenderDialog(BuildContext context, PaxType paxType, void Function(DateTim
     case PaxType.infant:
       {
         _initialDateTime = DateTime.now();
-        _minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2 -1 )));
+        //_minimumDate = DateTime.now().subtract(new Duration(days: (365 * 2 -1 )));
+        _minimumDate = DateTime(lastFltDate.year - 2, lastFltDate.month, lastFltDate.day );
+        _minimumDate = _minimumDate.add(Duration(days: 1));
       }
       break;
     case PaxType.child:
       {
-        _initialDateTime = DateTime.now().subtract(Duration(days: 731));
-        _minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
+        //_initialDateTime = DateTime.now().subtract(Duration(days: 731));
+        _initialDateTime =DateTime(DateTime.now().year - 2, DateTime.now().month, DateTime.now().day );
+            //_minimumDate = DateTime.now().subtract(new Duration(days: (4015)));
+        _minimumDate = DateTime(lastFltDate.year - gblSettings.passengerTypes.childMaxAge, lastFltDate.month, lastFltDate.day );
+        _minimumDate = _minimumDate.add(Duration(days: 1));
       }
       break;
     case PaxType.youth:

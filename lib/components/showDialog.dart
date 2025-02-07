@@ -97,7 +97,8 @@ enum DialogType{
   Error,
   Warning,
   Information,
-  Custom
+  Custom,
+  None
 }
 
 void showVidDialog(BuildContext context, String title, String msg,
@@ -155,6 +156,8 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
     case DialogType.Custom:
       titleTextClr = Colors.black87;
       titleBackClr = Colors.black12;
+      break;
+    default:
       break;
   }
 
@@ -364,4 +367,12 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
             ]);
       },
     );
+  }
+
+  class ErrorParams {
+    String msg = '';
+    DialogType errorType = DialogType.None;
+    bool isError = false;
+    bool showDialog = false;
+
   }

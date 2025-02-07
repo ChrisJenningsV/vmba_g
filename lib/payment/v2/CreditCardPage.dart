@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/payment/v2/countDownTimer/CardInputWidget.dart';
-import 'package:vmba/payment/v2/countDownTimer/CountDownTimer.dart';
-import 'package:vmba/payment/v2/countDownTimer/timerWidget.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/models/pnrs.dart';
+import 'package:vmba/data/models/providers.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
@@ -45,10 +44,12 @@ class CreditCardPage extends StatefulWidget {
     this.isMmb = false,
     this.mmbBooking,
     this.mmbAction,
+    required this.provider,
     required this.session,
   }) : super(key: key);
 
   final NewBooking? newBooking;
+  final Provider provider;
   final PnrModel pnrModel;
   final Stopwatch? stopwatch;
   final bool isMmb;
@@ -228,7 +229,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                       if (result == true) {
 //                        if( gblSettings.useWebApiforVrs) {
                           logit('CCP MakePaymentVars');
-                          makePaymentVars();
+                          makePaymentVars(widget.provider);
   /*                      } else {
                           logit('CCP MakePayment');
                           makePayment();
@@ -361,7 +362,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   }
 
 
-  Future makePaymentVars() async {
+  Future makePaymentVars(Provider provider) async {
     try {
       String msg = '';
       bool oldCancelled = false;
@@ -404,7 +405,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
             gblPayAction != 'BOOKSEAT') {
           msg = '*$rLOC^';
         }
-        msg += getPaymentCmd(false);
+        msg += getPaymentCmd(false,provider);
         if( gblPayAction == 'BOOKSEAT') {
           //msg += '^E*R';
         }
@@ -716,7 +717,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
         //msg = '*$rLOC^';
         logit('send $msg');
-        msg += getPaymentCmd(true);
+        msg += getPaymentCmd(true, provider);
 
         try {
           logit("Payment sent $msg");
@@ -862,7 +863,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
 
 
 
-  Future makePayment() async {
+  Future makePayment(Provider provider) async {
     String msg = '';
     bool oldCancelled = false;
     http.Response response;
@@ -891,7 +892,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblBookingState != BookingState.bookSeat) {
         msg = '*$rLOC^';
       }
-      msg += getPaymentCmd(false);
+      msg += getPaymentCmd(false, provider);
       logit(msg);
 
       _sendVRSCommand(json.encode(RunVRSCommand(session!, msg).toJson()))
@@ -1192,7 +1193,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       }
 
       //msg = '*$rLOC^';
-      msg += getPaymentCmd(true);
+      msg += getPaymentCmd(true, provider);
 
       try {
         logit("Payment sent $msg");
@@ -1287,7 +1288,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     return connectedLine;
   }
 
-  String getPaymentCmd(bool makeHtmlSafe) {
+  String getPaymentCmd(bool makeHtmlSafe, Provider provider) {
     var buffer = new StringBuffer();
     //if (isLive) {
     //buffer.write('MK($creditCardProviderProduction)');
@@ -1366,7 +1367,11 @@ class _CreditCardPageState extends State<CreditCardPage> {
           gblBookSeatCmd = '';
     }
 
-    buffer.write(addCreditCard(currency, am, gblSettings.creditCardProvider));
+    if( provider != null && provider.paymentSchemeName != null ) {
+      buffer.write(addCreditCard(currency, am, provider.paymentSchemeName));
+    } else {
+      buffer.write(addCreditCard(currency, am, gblSettings.creditCardProvider));
+    }
     //buffer.write('MK(${gblSettings.creditCardProvider})');
 
     //creditCardProviderStaging

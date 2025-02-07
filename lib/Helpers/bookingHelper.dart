@@ -8,7 +8,7 @@ import '../data/globals.dart';
 import '../data/models/pnr.dart';
 import '../data/models/pnrs.dart';
 import '../data/repository.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';

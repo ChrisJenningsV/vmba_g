@@ -42,8 +42,8 @@ void configLM() {
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200],
-    seatPlanBackColor: Colors.black,//Colors.grey.shade300
-    seatPriceColor: Colors.white,
+    seatPlanBackColor: Colors.grey.shade300, // Colors.black,
+    seatPriceColor: Colors.black,
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
 
@@ -87,18 +87,19 @@ void configLM() {
     wantStatusLine: true,
     wantFlightStatus: true,
     wantNews: true,
-    wantHelpCentre: true,
+    wantFopVouchers: true,
+    wantHelpCentre: false,
     wantLocation: true,
     wantGeoLocationHopePage: true,
     wantNewDialogs: true,
 
-    wantSeatsWithProducts: true,
+    wantSeatsWithProducts: false,
     useLogin2: true,
     homePageMessage: 'Hello [[firstname]], where can we take you today?',
 
     wantNewCalendar: true,
     wantCalendarBigMonth: true,
-    seatPlanStyle: 'WI',
+    seatPlanStyle: '', //'''WI',
 //    wantNewInstallPage: true,
 //    wantHomeUpcoming: true,
 //    wantRememberMe: true,
@@ -142,7 +143,7 @@ void configLM() {
   groupsBookingsEmail: 'groups@loganair.co.uk',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers"}',
     wantClassBandImages: false,
-    wantDangerousGoods: true ,
+    wantDangerousGoodsCheckin: true ,
     bpShowFastTrack: true,
     bpShowLoungeAccess: true,
     bpShowAddPassToWalletButton: false,
@@ -199,7 +200,7 @@ void configLM() {
   //  testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
 //   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
- //   testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
 //    testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
  //   testApiUrl:      'http://10.0.2.2:5000/api',
   //  testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',

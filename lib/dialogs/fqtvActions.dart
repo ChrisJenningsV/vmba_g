@@ -6,7 +6,7 @@ import 'package:vmba/utilities/navigation.dart';
 import '../components/showDialog.dart';
 import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../utilities/PaxManager.dart';
 
 void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {

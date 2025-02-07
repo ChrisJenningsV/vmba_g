@@ -101,6 +101,10 @@ class SearchButtonWidget extends StatelessWidget {
           translate('The number of infants cannot be greater than the number of adult passengers.'));
       isValid = false;
     }
+
+    gblSearchParams.departDate = newBooking.departureDate;
+    gblSearchParams.returnDate = newBooking.returnDate;
+
     return isValid;
   }
 void _onPressed(BuildContext context, dynamic p ) {

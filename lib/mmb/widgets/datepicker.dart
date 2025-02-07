@@ -10,6 +10,8 @@ import 'package:vmba/mmb/changeFlightPage.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../datePickers/widgets/dayBuilder.dart';
+
 class MmbDatePickerWidget extends StatefulWidget {
   MmbDatePickerWidget(
       {Key key= const Key("mmbdate_key"), required this.pnr,required  this.journeyToChange,required  this.mmbBooking})
@@ -79,6 +81,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
 
   void _handleDateChanged(FlightDates newValue) {
     departureDate = newValue.departureDate;
+    gblDepartDate = departureDate;
     setState(() {
 
     });
@@ -98,15 +101,29 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
         ),
         endDrawer: DrawerMenu(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          gblSettings.wantNewCalendar ?
+              wrapCal(
+                DayPickerPage(
+                  firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
+                  departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
+                  lastDate: DateTime.parse(DateFormat('y-MM-dd').format(lastDate!) + ' 00:00:00'),
+                  //firstDate: firstDate,
+                  // departureDate: departureDate,
+                  //lastDate: lastDate,
+                  onChanged: _handleDateChanged,
+              ),
+                  (){ setState(() {},);},
+              false, departureDate, null)
+              :
           DayPickerPage(
-              firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
-              departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
-              lastDate: DateTime.parse(DateFormat('y-MM-dd').format(lastDate!) + ' 00:00:00'),
-              //firstDate: firstDate,
-              // departureDate: departureDate,
-              //lastDate: lastDate,
-              onChanged: _handleDateChanged,
-          ),
+            firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
+            departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
+            lastDate: DateTime.parse(DateFormat('y-MM-dd').format(lastDate!) + ' 00:00:00'),
+            //firstDate: firstDate,
+            // departureDate: departureDate,
+            //lastDate: lastDate,
+            onChanged: _handleDateChanged,
+          )          ,
         ]),
         floatingActionButton: Padding(
             padding: EdgeInsets.only(left: 35.0),

@@ -11,7 +11,7 @@ import '../../controllers/vrsCommands.dart';
 import '../../data/globals.dart';
 import '../../data/models/models.dart';
 import '../../data/models/vrsRequest.dart';
-import '../../data/smartApi.dart';
+import '../../data/CommsManager.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/messagePages.dart';
 import '../../utilities/navigation.dart';

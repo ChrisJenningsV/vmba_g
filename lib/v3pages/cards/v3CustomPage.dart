@@ -91,7 +91,7 @@ class V3CustomPageState extends State<V3CustomPage> {
 
 Widget getCustomScaffoldPage(BuildContext context, String pageName, void Function() doCallback) {
   CustomPage? homePage;
-  if (gblHomeCardList != null && gblHomeCardList!.pages!.length > 0) {
+  if (gblHomeCardList != null && gblHomeCardList!.pages != null && gblHomeCardList!.pages!.length > 0) {
     if (gblHomeCardList!.pages![pageName] == null) {
       /* list.add(Text(' Page $pageName not found'));
       return list;
@@ -234,8 +234,8 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
                   context, card, FqtvLoginBox(), ts: ts));
               break;
             case 'MYBOOKINGS':
-              list.add(v3ExpanderCard(
-                  context, card,getMiniMyBookingsPage(context),ts: ts));
+              list.add(Container(
+                  child: getMiniMyBookingsPage(context, (){ doCallback(); })));
               break;
             case 'CARDSLIDER':
               list.add(getCard(
@@ -246,6 +246,10 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
                   Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: Divider(color: card.backgroundClr, height: 2,))
               );
+              break;
+            case 'PHOTOLIST':
+              list.add(getCard(
+                  context, card,  getPhotoList(context, card.cards, doCallback), ts: ts));
               break;
             case 'LINKLIST':
               list.add(getCard(
@@ -347,24 +351,92 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
           ),
         ));
   }
+  Widget getListItem(BuildContext context, HomeCard card, void Function() doCallback){
+    switch (card.card_type) {
+      case 'photoLink':
+        return getSlide(context, card, false);
+        break;
+      case 'iconLink':
+          return getLinkButton(context, card, false, doCallback);
+        break;
+      case 'button':
+        return getButton(context, card, false, doCallback);
+        break;
+    }
+    return Text('Unknow type ${card.card_type}');
 
-  Widget getLinks(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+  }
+
+  List<Widget> getLinkList(BuildContext context, List<HomeCard>? cards, void Function() doCallback){
     List<Widget> list = [];
     if (cards != null) {
       cards.forEach((card) {
-        switch (card.card_type) {
-          case 'photoLink':
-            list.add(getSlide(context, card, false));
-            break;
-          case 'iconLink':
-            list.add(getLinkButton(context, card, false, doCallback));
-            break;
-          case 'button':
-            list.add(getButton(context, card, false, doCallback));
-            break;
-        }
+        list.add(getListItem(context, card, doCallback));
       });
     }
+    return list;
+  }
+
+Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+  List<Widget> list = [];
+
+  if (cards != null) {
+    Widget? left;
+    Widget? right;
+    int index = 0;
+    cards.forEach((card) {
+      index++;
+      if( index == 1) {
+        left = getListItem(context, card, doCallback);
+        right = null;
+      } else {
+        right = getListItem(context, card, doCallback);
+        Row r = Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            left as Widget,
+            right as Widget
+          ],
+        );
+        list.add(r);
+        left = null;
+        right = null;
+        index = 0;
+      }
+    });
+    // end of list - any left ?
+    if( left != null){
+      Row r = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          left as Widget,
+        ],
+      );
+      list.add(r);
+
+    }
+  }
+
+
+      return
+      Container(
+        color: Colors.white,
+  child:
+        Container(
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+        child: Column(
+            children: list
+        ),
+      ));
+}
+
+  Widget getLinks(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+    List<Widget> list = getLinkList(context, cards, doCallback);
+
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -389,6 +461,10 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
               Navigator.push(context,
                   SlideTopRoute(page: CustomPageWeb(card.title!.text, card.url)));
             }
+            if (card.action != null && card!.action!.url != '') {
+              Navigator.push(context,
+                  SlideTopRoute(page: CustomPageWeb(card!.action!.pageName, card!.action!.url)));
+            }
           },
 
               child: Container(
@@ -411,6 +487,38 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
       );
     }
 
+    if( card.title != null ) card.title!.card_type = card.card_type;
+
+    Widget footer = Container(color: Colors.white,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(card.title!.text, style: card.title!.getStyle())
+            ]));
+
+    if( card.price != '' ){
+      footer = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 125)),
+          Container(
+          color: Colors.white,
+                child:Row(
+                    children: [Text(card.title!.text, style: card.title!.getStyle())])),
+           Container(
+             color: Colors.white,
+            padding: EdgeInsets.only(left: 10, right: 10, bottom: 2),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('from ', style: TextStyle(color: Colors.grey),),
+                Text(card.price),
+              ],
+            )),
+        ],
+      );
+    }
+
     return Card(
       child: InkWell(
         onTap: () {
@@ -418,20 +526,40 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
             Navigator.push(context,
                 SlideTopRoute(page: CustomPageWeb(card.title!.text, card.url)));
           }
+          if (card.action != null && card!.action!.url != '') {
+            Navigator.push(context,
+                SlideTopRoute(page: CustomPageWeb(card!.action!.pageName, card!.action!.url)));
+          }
         },
         child: Container(
-          height: card.height == 0 ? 120 : card.height,
-          width: (topLevel) ? null : 120,
+          height: card.height == 0 ? 170 : card.height,
+          width: (topLevel) ? null : 170,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            //color: gblSystemColors.seatPlanColorUnavailable,
+            border: Border.all(
+              width: 2.0,
+              // assign the color to the border color
+              color: Colors.red,
+            ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: const Color(0x90000000),
+                offset: Offset(0.0, 6.0),
+                blurRadius: 5.0,
+              ),
+            ],
             borderRadius:
             new BorderRadius.all(new Radius.circular(5.0)),
             image: _getImage(card, topLevel),
           ),
           alignment: Alignment.bottomCenter,
           child:
-          Text(card.title!.text, style: card.title!.getStyle()),
+              Container(
+                alignment: Alignment.bottomCenter,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.transparent,
+                child:   footer,
+              )
         ),
       ),
 

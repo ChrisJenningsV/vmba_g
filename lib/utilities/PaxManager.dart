@@ -123,16 +123,46 @@ class PaxManager {
   }
 
   static String getPaxEmail(){
-    if( gblPassengerDetail != null ){
+    if( gblPassengerDetail != null && gblPassengerDetail!.email != ''){
       return gblPassengerDetail!.email;
     }
     if( gblIsLive) return '';
 
-    if( gblSettings.wantNewInstallPage){
-      return gblValidationEmail;
-    }
-    return '';
+    return gblValidationEmail;
   }
+
+  static bool wantDobForPax(PaxType paxType){
+
+    bool wantDOB = false;
+    switch (paxType) {
+      case PaxType.adult:
+        if( gblSettings.passengerTypes.wantAdultDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.senior:
+        if( gblSettings.passengerTypes.wantSeniorDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.student:
+        if( gblSettings.passengerTypes.wantStudentDOB) {
+          wantDOB = true;
+        }
+        break;
+      case PaxType.youth:
+        if( gblSettings.passengerTypes.wantYouthDOB) {
+          wantDOB = true;
+        }
+        break;
+
+      default:
+        wantDOB = true;
+        break;
+    }
+    return wantDOB;
+  }
+
 
 }
 

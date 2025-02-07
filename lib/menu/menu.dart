@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 import 'package:vmba/menu/contact_us_page.dart';
@@ -14,8 +13,8 @@ import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/v3pages/v3UnlockPage.dart';
 
+import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
-import '../News/NewsPage.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../helpCentre/helpCentrePage.dart';
 import '../home/home_page.dart';
@@ -23,6 +22,7 @@ import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../v3pages/cards/v3CustomPage.dart';
 import 'debug.dart';
+import 'icons.dart';
 
 
 class DrawerMenu extends StatefulWidget {
@@ -75,7 +75,7 @@ class DrawerMenu extends StatefulWidget {
     if( gblNoNetwork == false && gblSettings.disableBookings == false ) {
       list.add(ListTile(
         dense: dense,
-        title: _getMenuItem(Icons.flight_takeoff, 'Book a flight'),
+        title: _getMenuItem(Icons.flight_takeoff, 'Book a flight', iconName: 'flight'),
         onTap: () {
           // Update the state of the app
           // ...
@@ -94,7 +94,7 @@ class DrawerMenu extends StatefulWidget {
         list.add(ListTile(
           dense: dense,
           // contentPadding: EdgeInsets.zero,
-          title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS / Island Resident Flight'),
+          title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS / Island Resident Flight', iconName: 'flight'),
           onTap: () {
             gblCurPage = 'BOOKADS';
             Navigator.push(context, SlideTopRoute(page: AdsPage()));
@@ -231,24 +231,39 @@ class DrawerMenu extends StatefulWidget {
       ));
       }
 
-    if( gblSettings != null && gblSettings!.wantFlightStatus){
+    if( gblSettings != null && gblSettings!.wantFlightStatus && gblIsLive == false){
       list.add(ListTile(
         dense: dense,
-        title: _getMenuItem( Icons.airplanemode_inactive, 'Flight Status' ),
+        title: _getMenuItem( Icons.airplanemode_active, 'Flight Status', iconName: 'FlightStatus' ),
         onTap: () {
+          gblDestination = '';
+          gblOrigin = '';
           Navigator.push(
               context, SlideTopRoute(page: FlightStatusPageWidget(          )
           ));
         },
       ));
     }
-    if( gblSettings != null && gblSettings!.wantNews){
+
+    if( gblSettings != null && gblSettings!.wantFopVouchers && gblIsLive == false){
+      list.add(ListTile(
+        dense: dense,
+        title: _getMenuItem( Icons.airplane_ticket_outlined, 'My Vouchers' ),
+        onTap: () {
+          Navigator.push(
+              context, SlideTopRoute(page: GetericListPageWidget('VOUCHERS')
+          ));
+        },
+      ));
+    }
+
+    if( gblSettings != null && gblSettings!.wantNews && gblIsLive == false){
       list.add(ListTile(
         dense: dense,
         title: _getMenuItem( Icons.newspaper_outlined, 'NEWS' ),
         onTap: () {
           Navigator.push(
-              context, SlideTopRoute(page: NewsPageWidget()
+              context, SlideTopRoute(page: GetericListPageWidget('NEWS')
           ));
         },
       ));
@@ -518,17 +533,23 @@ class DrawerMenu extends StatefulWidget {
 
 
 
-  Widget _getMenuItem( IconData ico, String txt, {Color? iconColor} ) {
+  Widget _getMenuItem( IconData ico, String txt, {Color? iconColor, String iconName=''} ) {
+
+      Widget mIcon = Icon(ico, color: iconColor,);
+      if( iconName != '' ){
+          mIcon = getnamedIcon(iconName);
+    }
+
     return Row(
       children: <Widget>[
         Padding(
           // padding: EdgeInsets.only(right: 55),
           padding: EdgeInsets.only(right: 15),
-          child: Icon(ico, color: iconColor,),
+          child: mIcon,
         ),
         TrText(txt),
       ],
     );
   }
-
 }
+

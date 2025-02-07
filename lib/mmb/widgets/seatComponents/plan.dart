@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
 import 'package:vmba/mmb/widgets/seatComponents/wing.dart';
@@ -382,14 +381,14 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                       // select pax for this seat
 
                       logit(
-                          'pax ${params!.paxNo} ${params!.action} ${paxlist!.list![params!.paxNo].name} to seat ${seat
+                          'pax ${params!.paxNo} ${params.action} ${paxlist!.list![params.paxNo].name} to seat ${seat
                               .sCode}');
-                      if( params!.action.toLowerCase() == 'release' ){
+                      if( params.action.toLowerCase() == 'release' ){
                         paxlist!.releaseSeat(seat.sCode);
                       } else {
                         paxlist!.releaseSeat(seat.sCode);
-                        paxlist!.list![params!.paxNo].selected = true;
-                        paxlist!.list![params!.paxNo].seat = seat.sCode;
+                        paxlist!.list![params.paxNo].selected = true;
+                        paxlist!.list![params.paxNo].seat = seat.sCode;
                       }
                       setState2(() {
 

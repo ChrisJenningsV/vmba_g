@@ -22,6 +22,7 @@ import 'models/products.dart';
 import 'models/providers.dart';
 import 'models/seatplan.dart';
 import 'models/trips.dart';
+import 'models/vouchers.dart';
 
 // variable shared to whole app
 // initialized in main_XX.dart
@@ -31,7 +32,7 @@ import 'models/trips.dart';
 // H4 hisky
 // X4 excursions
 // KG key lime / Dallas
-String gblBuildFlavor = 'LM';
+String gblBuildFlavor = 'X4';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
@@ -66,6 +67,7 @@ String gblPayCmd ='';
 //String gblMobileFlags = '';
 String gblDestination ='';
 String gblOrigin ='';
+String gblFltNo = '';
 String gblPayable = '';
 String gblCurrentRloc ='';
 String gblPaymentMsg ='';
@@ -126,6 +128,7 @@ bool gblDebugMode = false;
 bool gblLoginSuccessful = false;
 bool gblNeedPnrReload = false;
 PnrModel? gblPnrModel;
+PnrModel? gblNextPnr;
 NewBooking? gblNewBooking;
 SeatPlanDefinition? gblSeatPlanDef;
 int gblCurPax = 0;
@@ -167,6 +170,7 @@ PageListHolder? gblHomeCardList;
 V3Theme? gblV3Theme;
 Cities? gblCityList;
 Trips? gblTrips;
+FopVouchers? gblFopVouchers;
 PaxContacts? gblContacts;
 ButtonClickParams? gblButtonClickParams;
 
@@ -191,5 +195,5 @@ StackTrace? gblStack;
 
 SearchParams gblSearchParams = new SearchParams();
 FlightStatuss? gblFlightStatuss;
-String gblLoadedHomeCity = '';
+String gblLoadedHomeCountry = '';
 Placemark? gblCurLocation;

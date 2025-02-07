@@ -152,7 +152,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   }
 
 }
-Widget _getAirportText(BuildContext context, String airportName, String code) {
+Widget _getAirportText(BuildContext context, String airportName, String code, bool bIsWide, {bool bold = false}) {
   Color c;
   FontWeight fw;
   double? fSize;
@@ -173,21 +173,14 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
     c = Colors.black;
     fw = FontWeight.w400;
   }
-  /* if( wantHomePageV3()  ){
-      fw = FontWeight.normal;
-      fSize = null;
-    }*/
+  if (bold) fw = FontWeight.bold;
+
+  double width = MediaQuery.of(context).size.width - 40;
+  if( !bIsWide) width = width/2;
 
   return Container(
     //   color: Colors.red,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width - 40,
-/*
-        child: FittedBox(
-        fit: BoxFit.fitWidth,
-*/
+      width: width,
       child:
       Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +188,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
             TrText(
                 translate(airportName),
                 noTrans: true,
-                style: wantHomePageV3() ? TextStyle() : TextStyle(
+                style: TextStyle(
                     fontWeight: fw,
                     color: c,
                     fontSize: fSize)),
@@ -207,7 +200,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
   //fontSize: fSize)
 }
 
-  Widget getFlyTo(BuildContext context, void Function(void Function()) setState, String title, bool flightSearchPage ) {
+  Widget getFlyTo(BuildContext context, void Function(void Function()) setState, String title, bool flightSearchPage, {bool bWantWide = true} ) {
     if( wantPageV2()) {
       return v2BorderBox(context,  ' ' + translate(title), Row(
           children: <Widget>[
@@ -254,7 +247,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
             style: new TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 15.0)),
         //_getAirportText(arrivalAirport, arrivalCode),
-        _getAirportText(context, gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode),
+        _getAirportText(context, gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode,bWantWide),
         new Divider(
           height: 0.0,
         ),
@@ -263,9 +256,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
   }
   }
 
-
-
-  Widget getFlyFrom(BuildContext context, String title ) {
+  Widget getFlyFrom(BuildContext context, String title, {bool bWantWide = true, bool bold = false} ) {
     if( wantPageV2()) {
       return v2BorderBox(context,  ' ' + translate(title), Row(
           children: <Widget>[
@@ -289,7 +280,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code) {
               ),
             ),
             //_getAirportText(departureAirport, departureCode),
-            _getAirportText(context, gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode),
+            _getAirportText(context, gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode, bWantWide, bold: bold),
             new Divider(
               height: 0.0,
             ),

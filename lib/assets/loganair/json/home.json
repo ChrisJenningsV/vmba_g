@@ -1,0 +1,62 @@
+{
+  "root": {
+    "version": "1",
+    "pages": {
+      "home": {
+        "pageName": "home",
+        "title": {
+          "text": "Hello, where can we take you today? (local)",
+          "fontSize": "40",
+          "fontWeight": "bold",
+          "color": "White"
+        },
+        "topPadding": "100",
+        "bottomPadding": "10",
+        "backgroundColor": "Red",
+        "backgroundImage": "henley.png",
+        "cards": [
+          {
+            "card_type": "MyBookings",
+            "title": "My Bookings",
+            "icon": "Pnr"
+          },
+          {
+            "card_type": "Divider",
+            "backgroundClr": "Black"
+          },
+          {
+            "card_type": "PhotoList",
+            "shape": "square",
+            "backgroundClr": "white",
+            "title": {
+              "text": "Destinations",
+              "fontSize": "26",
+              "color": "black"
+            },
+            "cards": [
+              {
+                "card_type": "photoLink",
+                "title": {
+                  "text": "Birmingham",
+                  "color": "black"
+                },
+                "action": {
+                  "pageName": "Destination Birmingham",
+                  "url": "https://www.loganair.co.uk/en-gb/flights-to-birmingham"
+                },
+                "image": "destinations/birmingham.jpg",
+                "price": "£199"
+              },
+              {
+                "card_type": "photoLink",
+                "title": "Bristol",
+                "image": "destinations/bristol.jpg",
+                "price": "£124"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

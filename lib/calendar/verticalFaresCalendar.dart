@@ -83,14 +83,14 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         _scrollController.animateTo(animateTo,
             duration: new Duration(microseconds: 1), curve: Curves.ease));
     // what is expanded and selected
-    if (widget.objAv != null && widget.objAv.availability.itin != null &&
+    if ( widget.objAv.availability.itin != null &&
         widget.objAv.availability.itin!.length == 1) {
       selectedFlt = 1;
       expandedFlt = 1;
     } else {
       selectedFlt = 1;
     }
-    if(  widget.objAv != null &&  widget.objAv.availability != null &&  widget.objAv.availability.itin != null ) {
+    if(  widget.objAv.availability != null &&  widget.objAv.availability.itin != null ) {
       widget.objAv.availability.itin!.forEach((element) {
         _controllerList.add(new ExpansionTileController());
       });
@@ -606,11 +606,11 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              vertGetTime(item.flt.first.time.dtimlcl as String),
-              vertGetDate(item.flt[0].time.ddaylcl as String),
-              vertGetAirport(item.flt.first.dep as String),
+              vertGetTime(item.flt.first.time.dtimlcl),
+              vertGetDate(item.flt[0].time.ddaylcl),
+              vertGetAirport(item.flt.first.dep),
               getTerminal(
-                  getTerminalString(item.flt.first as Flt, true), true),
+                  getTerminalString(item.flt.first, true), true),
             ],
           ),
           Column(children: [

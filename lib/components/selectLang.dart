@@ -137,6 +137,8 @@ initLang(String lang) async {
 
           }
         } else {
+          gblLangFileLoaded = false;
+          gblLangMap = null;
           logit('lang file  data error ' + data.substring(0,20));
           try {
             String jsn = await rootBundle.loadString(

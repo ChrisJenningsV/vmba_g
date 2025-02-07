@@ -39,7 +39,7 @@ import '../components/showDialog.dart';
 import '../components/vidButtons.dart';
 import '../components/vidGraphics.dart';
 import '../controllers/vrsCommands.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../functions/bookingFunctions.dart';
 import '../home/home_page.dart';
 import '../menu/contact_us_page.dart';

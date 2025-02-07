@@ -94,7 +94,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
     if( gblRedeemingAirmiles) {
       buffer.write(',FQTV=True');
     }
-    if(this.widget.newBooking.currency != null && this.widget.newBooking.currency.isNotEmpty) {
+    if(this.widget.newBooking.currency.isNotEmpty) {
       buffer.write(',QuoteCurrency=${this.widget.newBooking.currency}');
     }
 
@@ -189,7 +189,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         DateTime fltDate = DateTime.parse(
             objAv!.availability.itin![i].flt.first.time.ddaygmt +
                 ' ' +
-                (objAv!.availability.itin![i].flt.first.time.dtimgmt as String));
+                (objAv!.availability.itin![i].flt.first.time.dtimgmt));
         if (fltDate.isBefore(getGmtTime().subtract(Duration(
             minutes: gblSettings.bookingLeadTime)))) {
           objAv!.availability.itin?.removeAt(i);
@@ -737,7 +737,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
   void flightSelected(BuildContext context ,AvItin? avItem,List<String> flt, List<Flt> flts, String? className) {
     print(flt);
-    if (flt != null && flt.length > 0) {
+    if (flt.length > 0) {
       this.widget.newBooking.returningflight = flt;
       this.widget.newBooking.returningflts = flts;
       this.widget.newBooking.returningClass = className as String;
@@ -745,9 +745,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
     _loadingInProgress = true;
     _loading = 'loading';
-    if (this.widget.newBooking.returningflight.length > 0 &&
-        this.widget.newBooking.returningflight[0] != null &&
-        this.widget.newBooking.outboundflight[0] != null) {
+    if (this.widget.newBooking.returningflight.length > 0 ) {
       hasDataConnection().then((result) async {
         if (result == true) {
           if( gblSettings.wantProducts) {

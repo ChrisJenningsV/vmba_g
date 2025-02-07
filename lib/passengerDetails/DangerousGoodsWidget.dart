@@ -119,7 +119,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
                 context,
                 MaterialPageRoute(
                 builder: (context) =>
-                OptionsPageWidget(
+                SeatsAndOptionsPageWidget(
                 newBooking: widget.newBooking as NewBooking)));
                 } else {
                 setState(() {

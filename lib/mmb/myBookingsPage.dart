@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnrs.dart';
 import 'package:vmba/mmb/viewBookingPage.dart';
@@ -25,9 +26,14 @@ import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
+import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
+import '../utilities/navigation.dart';
 import '../v3pages/cards/typogrify.dart';
+import '../v3pages/cards/v3Card.dart';
+import '../v3pages/homePageHelper.dart';
+import '../v3pages/loggedInHomePage.dart';
 import '../v3pages/v3Constants.dart';
 
 
@@ -94,68 +100,6 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
     Repository.get().getAllCities().then((cities) {});
   }
 
- /* getmybookings()  {
-    gblNeedPnrReload = false;
-    Repository.get().getAllPNRs().then((pnrsDBCopy) {
-      List<PnrDBCopy> thispnrs = [];
-      List<PnrDBCopy> thisOldpnrs = [];
-
-      List<PnrDBCopy> olderPnrs = [];
-      // new List<PnrDBCopy>();
-      logit('get my bookings');
-      for (var item in pnrsDBCopy) {
-        String pnrJson = item.data ; //.replaceAll('"APPVERSION": 1.0.0.98,','"');
-
-        Map<String, dynamic> map = jsonDecode(pnrJson);
-        PnrModel _pnr = new PnrModel.fromJson(map);
-        PnrDBCopy _pnrs = new PnrDBCopy(
-            rloc: item.rloc,
-            data: item.data,
-            nextFlightSinceEpoch: _pnr.getnextFlightEpoch(),
-            delete: item.delete);
-        //if (_pnrs.nextFlightSinceEpoch != 0) {
-//        logit('Loading ${_pnr.pNR.rLOC}');
-        _error = _pnr.validate();
-        //logit('Loading ${_pnr.pNR.rLOC}  $_error');
-        if (_error.isEmpty && _pnr.hasFutureFlightsAddDayOffset(0)) {
-          thispnrs.add(_pnrs);
-        } else if (_error.isEmpty && _pnr.hasFutureFlightsMinusDayOffset(7)) {
-          thisOldpnrs.add(_pnrs);
-        } else if (gblSettings.displayErrorPnr) {
-          if ( _pnr.hasFutureFlightsAddDayOffset(0)) {
-            thispnrs.add(_pnrs);
-          } else if ( _pnr.hasFutureFlightsMinusDayOffset(7)) {
-            thisOldpnrs.add(_pnrs);
-          } else {
-            olderPnrs.add(_pnrs);
-          }
-
-        } else {
-          // remove old booking
-          try {
-            logit('Deleting ${item.rloc}');
-            Repository.get().deletePnr(item.rloc);
-            Repository.get().deleteApisPnr(item.rloc);
-          } catch(e) {
-            logit(e.toString());
-          }
-        }
-
-        //}
-      }
-
-      thispnrs.sort(
-          (a, b) => a.nextFlightSinceEpoch.compareTo(b.nextFlightSinceEpoch));
-      setState(() {
-        print('getb setState');
-        activePnrs = thispnrs;
-        recentPnrs = thisOldpnrs;
-        oldPnrs = olderPnrs;
-        _loadingInProgress = false;
-      });
-    });
-  }*/
-
   @override
   Widget build(BuildContext context) {
   if( gblNeedPnrReload){
@@ -206,10 +150,6 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
             PageEnum.myBookings,
             //backgroundColor: gblSystemColors.primaryHeaderColor,
             titleText: "My Bookings",
- /*           title: TrText("My Bookings",
-                style: TextStyle(
-                    color:
-                    gblSystemColors.headerTextColor)),*/
           toolbarHeight: 60,
           bottom:  new PreferredSize(
           preferredSize: new Size.fromHeight(30.0),
@@ -1357,36 +1297,73 @@ getmybookings(void Function() onComplete )  {
   });
 }
 
-Widget getMiniMyBookingsPage(BuildContext context)
+Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
 {
-  if( gotPnrs == false ){
+  if( gblTrips != null && gblTrips!.trips != null &&  gblTrips!.trips!.length > 0){
+    HomeCard card = new HomeCard();
+    String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
+    DateTime dtComp = DateTime.now().add(Duration(days: 1));
+    if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
+      fltDate = 'Today';
+    } else if(gblTrips!.trips!.first.fltdate!.month == dtComp.month && gblTrips!.trips!.first.fltdate!.day == dtComp.day) {
+      fltDate = 'Tomorrow';
+    }
+    card.title = CardText('', text: translate('Your next flight' + ': ' + fltDate));
+    card.icon = null; // Icons.airplanemode_active;
+    card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
+    card.title!.color = gblSystemColors.primaryButtonTextColor;
+
+    return GestureDetector(
+        onTap: () {
+          navToMyBookingPage(context, gblTrips!.trips!.first.rloc);
+        },
+        child:
+        v3ExpanderCard(
+            context, card, getUpcoming(context, () {
+            doUpdate();
+          //setState(() {});
+        }), wantIcon: false
+        ));
+
+  }
+//  if( gblSettings.wantNewInstallPage && PaxManager.getPaxEmail() == '')
+
+    if(/* gblIsNewInstall == true ||*/ PaxManager.getPaxEmail() == '') {
+
+      HomeCard card = new HomeCard();
+      card.title = CardText('', text: translate('Finish setting up my App'));
+      card.icon = Icons.settings;
+      card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
+      card.title!.color = gblSystemColors.primaryButtonTextColor;
+
+      return
+          v3ExpanderCard(
+              context, card, getFinishSetup(context, () {
+          }), wantIcon: false
+          );
+
+
+      return Text('New Install');
+    }
+
+  /*if( gotPnrs == false ){
     getmybookings((){
 
-    });
-  }
-  /*ListView listViewOfBookings = ListView.builder(
-      shrinkWrap: true,
-      itemCount: activePnrs.length,
-      itemBuilder: (BuildContext context, index) =>
-          getMiniItem(context, activePnrs[index]));
-*/
+    }
+    );
+  }*/
+
   List<Widget> list = [];
   activePnrs.forEach((element) {
     list.add(getMiniItem(context, element));
   });
 
   return Container(
- //   color: Colors.lightBlueAccent,
       alignment: Alignment.topLeft,
-   //   width: 700,
- //     height: 100,
       child:Column(
         children: list,
       )
   );
-    return Text('bookings');
-    //return myTrips('A');
-
 }
 Widget getMiniItem(BuildContext context , PnrDBCopy document) {
   String pnrJson = document.data;

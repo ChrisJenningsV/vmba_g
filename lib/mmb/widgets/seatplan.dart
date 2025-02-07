@@ -27,7 +27,7 @@ import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
-import '../../data/smartApi.dart';
+import '../../data/CommsManager.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
@@ -55,7 +55,7 @@ class SeatPlanWidget extends StatefulWidget {
       this.paxlist ,
       this.seatplan ='',
       this.rloc ='',
-      this.journeyNo = '',
+      this.journeyNo = '0',
       this.cabin = '',
         this.flt='',
       this.selectedpaxNo = 1,
@@ -96,14 +96,36 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     super.initState();
     gblPaymentMsg = '';
     setError( '');
+
+
     //_noInternet = false;
     _noSeats = false;
     _loadingInProgress = true;
     _displayProcessingText = translate('Loading seat plan...');
     seatplan = widget.seatplan;
-    _loadData(widget.seatplan);
+    int journeyNo = 0;
+    if( widget.journeyNo != '') {
+      journeyNo = int.parse(widget.journeyNo);
+    }
+    seatplan = 'ls';
+    seatplan += gblPnrModel!.pNR.itinerary.itin[journeyNo].airID;
+    seatplan += gblPnrModel!.pNR.itinerary.itin[journeyNo].fltNo;
+    seatplan += '/' + DateFormat('ddMMM').format(DateTime.parse(gblPnrModel!.pNR.itinerary.itin[journeyNo].depDate + ' ' +
+            gblPnrModel!.pNR.itinerary.itin[journeyNo].depTime));
+    seatplan +=  gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive;
+    seatplan += '[CB=' + gblPnrModel!.pNR.itinerary.itin[journeyNo].classBand;
+    seatplan += '][CUR=';
+    seatplan += gblPnrModel!.pNR.fareQuote.fQItin[0].cur;
+    seatplan += '][MMB=True]~x';
+
+    _loadData(seatplan);
     paxlist = new PaxList();
-    paxlist!.init(widget.paxlist as List<Pax>);
+    if( widget.paxlist == null ) {
+      List<Pax> paxlists = getPaxlist(gblPnrModel as PnrModel, journeyNo);
+      paxlist!.init(paxlists );
+    } else {
+      paxlist!.init(widget.paxlist as List<Pax>);
+    }
     session = Session('', '', '');
 
     paxlist!.list!.forEach((p) => p.selected = false);
@@ -314,10 +336,27 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                     Map<String, dynamic> map = json.decode(onValue);
                     PnrModel pnrModel = new PnrModel.fromJson(map);
                     gblPnrModel = pnrModel;
-                    refreshStatusBar();
-                    //showSnackBar(translate("Seat(s) allocated"));
-                    Navigator.pop(context, pnrModel);
-                    //            })
+
+                    if( gblSettings.wantSeatsWithProducts == false && gblSettings.wantNewSeats) {
+                      // go to payment page
+                      if( gblPnrModel != null ) {
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ChoosePaymenMethodWidget(
+                                      //SelectPaymentProviderWidget()
+                                      newBooking: gblNewBooking,
+                                      pnrModel: gblPnrModel as PnrModel,
+                                      isMmb: false,)
+                            )
+                        );
+                      }
+
+                    } else {
+                      refreshStatusBar();
+                      Navigator.pop(context, pnrModel);
+                    }
                   }
                 }
             );
@@ -449,11 +488,6 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         key: _key,
         appBar: new V3AppBar(
           PageEnum.chooseSeat,
-          //brightness: gblSystemColors.statusBar,
-/*
-          backgroundColor:
-          gblSystemColors.primaryHeaderColor,
-*/
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
@@ -462,6 +496,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               }
             )
           ],
+          toolbarHeight: 70,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: getTitle(),

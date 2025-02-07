@@ -15,8 +15,6 @@ import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/repository.dart';
-import '../data/smartApi.dart';
-import '../data/xmlApi.dart';
 import '../utilities/helper.dart';
 
 class UnlockPage extends  StatefulWidget {
@@ -98,6 +96,7 @@ class UnlockPageState extends State<UnlockPage> {
     );
   }
 }
+/*
 
   Future<void> sendUnlockMsg(BuildContext context, String email, void Function() doCallback) async {
     try {
@@ -122,6 +121,7 @@ class UnlockPageState extends State<UnlockPage> {
       String er= e.toString();
     }
   }
+*/
 
 /*
 void setState(Null Function() param0) {
@@ -183,7 +183,7 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
               logit('resend email');
               _isButtonDisabled = true;
               doCallback();
-              sendUnlockMsg(context, gblValidationEmail, doCallback);
+//              sendUnlockMsg(context, gblValidationEmail, doCallback);
               _isButtonDisabled = false;
               doCallback();
 
@@ -229,6 +229,8 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
                   hideSnackBarMessage();
                   _isButtonDisabled = true;
                   doCallback();
+                  PaxManager.populate(gblValidationEmail);
+                  PaxManager.save();
                   await Repository.get().settings();
                   // save new email etc in my account
                   String firstName = '', lastName = '', title = '', dOB = '';
@@ -264,7 +266,7 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
                   _isButtonDisabled = true;
                   unlockIsPart2 = true;
                   doCallback();
-                  sendUnlockMsg(context, value, doCallback);
+//                  sendUnlockMsg(context, value, doCallback);
                 } else {
                   showVidDialog(context, 'Error', 'Please enter valid email address');
                 }
@@ -297,6 +299,7 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
         //)
     );
 }
+/*
 
 String generatePin(){
   String val = '';
@@ -310,4 +313,4 @@ String generatePin(){
 
   return val;
 
-}
+}*/

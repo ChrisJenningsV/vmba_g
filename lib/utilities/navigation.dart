@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
-import '../forms/genericFormPage.dart';
+import '../dialogs/genericFormPage.dart';
 import '../menu/myFqtvPage.dart';
 import '../mmb/viewBookingPage.dart';
 import 'helper.dart';

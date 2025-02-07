@@ -8,20 +8,21 @@ import '../data/models/models.dart';
 import '../data/models/pnr.dart';
 import '../home/home_page.dart';
 import '../menu/menu.dart';
+import '../mmb/widgets/seatplan.dart';
 import '../payment/choosePaymentMethod.dart';
 import '../utilities/helper.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/controls/V3Constants.dart';
 
-class OptionsPageWidget extends StatefulWidget {
-  OptionsPageWidget({Key key= const Key("opt_key"), required this.newBooking}) : super(key: key);
+class SeatsAndOptionsPageWidget extends StatefulWidget {
+  SeatsAndOptionsPageWidget({Key key= const Key("opt_key"), required this.newBooking}) : super(key: key);
   final NewBooking newBooking;
 
   _OptionsWidgetState createState() => _OptionsWidgetState();
 }
 
-class _OptionsWidgetState extends State<OptionsPageWidget> {
+class _OptionsWidgetState extends State<SeatsAndOptionsPageWidget> {
   GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
@@ -32,13 +33,12 @@ class _OptionsWidgetState extends State<OptionsPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //Show dialog
-    //print('build');
 
-/*
-    return WillPopScope(
-        onWillPop: _onWillPop,
-*/
+    if( gblSettings.wantSeatsWithProducts == false && gblSettings.wantNewSeats){
+      return SeatPlanWidget(rloc: gblPnrModel!.pNR.rLOC,);
+    }
+
+
     return
       CustomWillPopScope(
           action: () {

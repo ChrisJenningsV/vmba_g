@@ -127,6 +127,10 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                 child: Text(translate('App version: ') + widget.version +
                     '  GMT:${getGmtTime().toString().substring(0, 16)}'),
               ),
+              (gblSettings.wantLocation && gblCurLocation != null) ?
+              Text('${gblCurLocation!.country} ${gblCurLocation!.locality}') : Container(),
+
+
 /*
               (gblSettings.wantLocation && gblCurLocation != null) ?
               Text('${gblCurLocation!.toString()}') : Container(),

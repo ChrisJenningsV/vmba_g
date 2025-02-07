@@ -15,7 +15,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart' as inapp;
 
 import '../Helpers/bookingHelper.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import 'choosePaymentMethod.dart';
 

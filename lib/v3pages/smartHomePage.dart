@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/v3pages/v3BottomNav.dart';
 
 import '../components/showDialog.dart';
@@ -9,7 +10,7 @@ import '../components/vidCards.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/smartApi.dart';
+import '../data/repository.dart';
 import '../menu/contact_us_page.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
@@ -128,10 +129,16 @@ class SmartHomePageState extends State<SmartHomePage>{
 
     try {
       logit('smartHomePage: initJson');
+
+      // get default home
+      getHomepage();
+
+      // get geo home
       if (gblCurLocation != null &&
-          gblLoadedHomeCity != gblCurLocation!.locality) {
+          gblLoadedHomeCountry != gblCurLocation!.country) {
         // use smart api to load home page JSON
-        LoadHomePageRequest rq = LoadHomePageRequest(
+        await loadLocationHome();
+  /*      LoadHomePageRequest rq = LoadHomePageRequest(
             country: gblCurLocation!.country as String,
             countryCode: gblCurLocation!.isoCountryCode as String,
             county: gblCurLocation!.subAdministrativeArea as String,
@@ -139,19 +146,30 @@ class SmartHomePageState extends State<SmartHomePage>{
         );
 
         String data = json.encode(rq);
-
+        gblHomeCardList = null;
         String rx = await callSmartApi('LOADHOMEPAGE', data);
+        gblLoadedHomeCountry = gblCurLocation!.country as String;
         logit('smartHomePage: loaded home');
         final Map<String, dynamic> map = json.decode(rx);
-        gblHomeCardList = new PageListHolder.fromJson(map['root']);
-        if (gblHomeCardList!.pages!['home'] != null) {
+        gblHomeCardList = new PageListHolder.fromJson(map['root']);*/
+        if (gblHomeCardList != null && gblHomeCardList!.pages!['home'] != null) {
           logit('smartHomePage: got home');
           _displayProcessingIndicator = false;
           homePage = gblHomeCardList!.pages!['home'];
           setState(() {
 
           });
+        } else {
+          // use default
+          String jsonString =  await rootBundle.loadString('lib/assets/json/DefaultHome.json');
+          final Map<String, dynamic> map = json.decode(jsonString);
+          gblHomeCardList = new PageListHolder.fromJson(map['root']);
+          logit('smartHomePage: use local home');
+          _displayProcessingIndicator = false;
+          homePage = gblHomeCardList!.pages!['home'];
+          setState(() {
 
+          });
         }
 
       } else {

@@ -29,7 +29,7 @@ import '../calendar/bookingFunctions.dart';
 import '../components/bottomNav.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../menu/myAccountPage.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
@@ -1530,7 +1530,7 @@ List<Widget> getPayOptions(String amount, String cur) {
       ));
     }
     list.add(Divider());
-    if( gblSettings.wantGiftVouchers){
+    if( gblSettings.wantGiftVouchers && gblIsLive == false){
       list.add(GiftVoucherCard());
       list.add(Divider());
     }
@@ -1742,6 +1742,7 @@ List<Widget> getPayOptions(String amount, String cur) {
                         CustomPageRoute(
                             builder: (context) =>
                                 CreditCardPage(pnrModel: widget.pnrModel,
+                                  provider: provider ,
                                   stopwatch: stopwatch,
                                   session: session!,
                                   isMmb: isMmb,

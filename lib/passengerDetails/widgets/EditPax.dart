@@ -126,7 +126,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
   @override
   Widget build(BuildContext context) {
-    logit('b editPax');
+    //logit('b editPax');
     return
 
       new Scaffold(
@@ -378,8 +378,9 @@ Widget getFirstname() {
       ),
     ));
 
-    bool wantDOB = false;
+    bool wantDOB = PaxManager.wantDobForPax(widget.passengerDetail.paxType);
     //logit('Pax type: ${widget.passengerDetail.paxType.toString()}');
+/*
     switch (widget.passengerDetail.paxType) {
       case PaxType.adult:
         if( gblSettings.passengerTypes.wantAdultDOB) {
@@ -406,6 +407,7 @@ Widget getFirstname() {
         wantDOB = true;
         break;
     }
+*/
 
 
     // DOB
@@ -769,8 +771,11 @@ Widget genderPicker (EdgeInsetsGeometry padding, ThemeData theme) {
               value: index++,
             )
             ).toList(),
-            validator: (value) =>
-            (value == null ) ? translate('Gender is required') : null,
+            autovalidateMode: AutovalidateMode.always,
+            validator: (value) {
+              if(value == null || value == '' || value == 0) return translate('Gender is required');
+                  return null;
+            },
 
             // hint: Text('Country'),
             onChanged: (value) {

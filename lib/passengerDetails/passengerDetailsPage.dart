@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:vmba/Helpers/bookingHelper.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'dart:convert';
-import 'package:vmba/contactDetails/contactDetailsPage.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
@@ -61,6 +60,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     }
     commonPageInit('PASSENGERDETAILS');
     gblPnrModel = widget.pnrModel;
+    gblNewBooking = widget.newBooking;
 
     for (var i = 0;
         i <= widget.newBooking.passengers.totalPassengers() - 1;
@@ -137,18 +137,22 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
   }
 
   showContinueButton() {
-    int uncompletedItems;
+    int uncompletedItems = 0;
     gblWarning = '';
+
+    _passengerDetails.forEach((pax){
+        ErrorParams errorParams = pax.isComplete(int.parse(pax.paxNumber));
+        if( errorParams.isError){
+          uncompletedItems++;
+        }
+    });
+
+/*
     uncompletedItems = _passengerDetails
-        .where((pax) => !pax.isComplete()
-/*            pax.title == '' || pax.title == null ||
-                pax.firstName == '' || pax.firstName == null||
-                pax.lastName == '' || pax.lastName == null ||
-                (gblSettings.wantGender && (pax.gender == null || pax.gender.isEmpty )) ||
-                (gblSettings.wantMiddleName && (pax.middleName == null || pax.middleName.isEmpty ))
-*/
+        .where((pax) => !pax.isComplete(int.parse(pax.paxNumber))
     )
         .length;
+*/
 
 
 
@@ -156,6 +160,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       setState(() {
         allPaxDetailsCompleted = true;
       });
+    } else {
+      allPaxDetailsCompleted = false;
     }
   }
 
@@ -339,7 +345,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    logit('b paxDet');
+    //logit('b paxDet');
     //logit('pd');
     //Show dialog
     //print('build');
@@ -554,6 +560,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
         pax.firstName = firstNames[index];
         pax.gender = genderList[index];
         pax.country = countryList[index];
+        pax.phonenumber = '052525252525';
+        pax.email = 'test@test.com';
         // DOB ?
 
       } else if (index == 0){
@@ -562,7 +570,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       }
      index++;
     });
-    allPaxDetailsCompleted = true;
+    //allPaxDetailsCompleted = true;
+    showContinueButton();
     setState(() {
 
     });
@@ -625,9 +634,24 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     if (_passengerDetails[paxNo - 1].firstName != '' && _passengerDetails[paxNo - 1].firstName != null) {
       // validate this pax
       gblWarning = '';
-      _passengerDetails[paxNo - 1].isComplete();
+      ErrorParams errorParams = _passengerDetails[paxNo - 1].isComplete(paxNo);
 
-      return Column(
+      return InkWell(
+          onTap: (){
+            Navigator.push(
+                context,
+                SlideTopRoute(
+                    page: EditPaxWidget(
+                      passengerDetail: _passengerDetails[paxNo - 1],
+                      isAdsBooking: widget.newBooking.ads.isAdsBooking(),
+                      isLeadPassenger: isLeadPassenger,
+                      destination: widget.newBooking.arrival,
+                      newBooking: widget.newBooking,
+                    ))).then((passengerDetails) {
+              updatePassengerDetails(passengerDetails, paxNo - 1);
+            });
+          },
+          child: Column(
           children: [
             Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -641,7 +665,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                     //]                ),
           IconButton(
             onPressed: () {
-              if (gblSettings.wantNewEditPax) {
+            //  if (gblSettings.wantNewEditPax) {
                 Navigator.push(
                     context,
                     SlideTopRoute(
@@ -654,7 +678,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                     ))).then((passengerDetails) {
                   updatePassengerDetails(passengerDetails, paxNo - 1);
                 });
-              } else {
+              /*} else {
                 Navigator.push(
                     context,
                     SlideTopRoute(
@@ -666,15 +690,16 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   updatePassengerDetails(passengerDetails, paxNo - 1);
                 });
 
-              }
+              }*/
             },
             icon: Icon(Icons.edit, color: wantPageV2() ? gblSystemColors.primaryHeaderColor : null ,),
             iconSize: 20,
           )
         ],
         ),
-        gblWarning == '' ? Container() : Align(alignment:  Alignment.centerLeft , child:  Text( gblWarning, style: TextStyle(color: Colors.red)),),
-        ]);
+        errorParams.isError ? Align(alignment:  Alignment.centerLeft , child:  Text( errorParams.msg, style: TextStyle(color: Colors.red)),) : Container() ,
+        ])
+      );
 
     } else {
       return Row(
@@ -754,7 +779,17 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
       hasDataConnection().then((result) async {
         if (result == true) {
-            if( gblSettings.wantDangerousGoods == true ){
+            if( gblSettings.wantNewSeats) {
+              PnrModel pnrModel = PnrModel();
+              gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {});
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SeatsAndOptionsPageWidget(
+                              newBooking: gblNewBooking!)));
+            } else if( gblSettings.wantDangerousGoods == true )
+            {
 
               if( passengerDetailRecord ==  null ){
                 logit('passengerDetailRecord is null ');
@@ -770,7 +805,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
               ).then((passengerDetails) {
                 logit('return from DG');
               });
-            } else {
+            }
+            else {
 
               setError( '');
               PnrModel pnrModel = PnrModel();
@@ -784,7 +820,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OptionsPageWidget(
+                              SeatsAndOptionsPageWidget(
                                   newBooking: this.widget.newBooking)));
                 } else {
                   setState(() {
@@ -802,20 +838,12 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                   var _error = await Navigator.push(
                       context,
                       MaterialPageRoute(
-//                    CustomPageRoute(
                           builder: (context) =>
                               ChoosePaymenMethodWidget(
                                 //SelectPaymentProviderWidget()
                                 newBooking: widget.newBooking,
                                 pnrModel: gblPnrModel as PnrModel,
                                 isMmb: false,)
-                        /*
-                            ContactDetailsWidget(
-                              newbooking: widget.newBooking,
-                              preLoadDetails: preLoadDetails,
-                              passengerDetailRecord: passengerDetailRecord!,
-                            )
-*/
                       )
                   );
                 }

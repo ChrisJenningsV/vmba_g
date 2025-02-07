@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
+import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/v3pages/v3BottomNav.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
@@ -12,9 +13,11 @@ import '../components/vidCards.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/repository.dart';
+import '../dialogs/genericFormPage.dart';
 import '../menu/contact_us_page.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
+import '../utilities/navigation.dart';
 import 'homePageHelper.dart';
 import 'cards/searchCard.dart';
 import 'cards/v3CustomPage.dart';
@@ -124,47 +127,46 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
     return VTitleText('No upcoming trips', translate: true,);
 
   }
-  String destin = cityCodetoAirport(gblTrips!.trips!.first.destin);
+  String destin = gblTrips!.trips!.first.destin; //cityCodetoAirport(gblTrips!.trips!.first.destin);
   //String destin = cityCodetoAirport(gblTrips!.trips!.first.depart);
   List<Widget> list = [];
+
+  if( gblNextPnr != null ){
+      list.add(Row( children: [VHeadlineText('Booking Reference: ${gblNextPnr!.pNR.rLOC}', size: TextSize.small,)]));
+      list.add(Row( children: [VHeadlineText('${gblTrips!.trips!.first.fltNo}', size: TextSize.small,)]));
+  }
+  // Booking reference
+
   list.add(
     Row(
       children: [
-        Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child:VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.depart), size: TextSize.small, )),
-        Icon(Icons.arrow_forward, size: 25,),
+        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.depart), size: TextSize.small, ),
+        Icon(Icons.flight_takeoff, size: 25,),
         VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.destin), size: TextSize.small)
       ]
     ));
-/*
-  list.add(
-    Row(
-        children: [
-          (gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) ?
-              Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: VTitleText(
-                translate('Today'),
-                size: TextSize.medium,))
-              :
-              Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child:VTitleText(
-                DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!),
-                size: TextSize.medium,)),
-        ]
-    ));
-*/
+
 
   return
      Container(
   width: MediaQuery.of(context).size.width,
+         decoration: BoxDecoration(
+           image: DecorationImage(
+             opacity: 0.5,
+             image: NetworkImage('${gblSettings.gblServerFiles}/cityImages/$destin.png'),//AssetImage("assets/images/bulb.jpg"),
+             fit: BoxFit.cover,
+           ),
+         ),
   // height: 400,
   child:Column(
   crossAxisAlignment: CrossAxisAlignment.stretch,  // add this
   children: <Widget>[
+/*
   Image.network('${gblSettings.gblServerFiles}/cityImages/$destin.png',
     fit:BoxFit.fill
 
   ),
+*/
     Column(
         children: list,
       ),
@@ -173,3 +175,40 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
 
 }
 
+Widget getFinishSetup(BuildContext context, void Function() doCallback){
+  List<Widget> list = [];
+  list.add(
+      Row(
+          children: [
+            vidWideActionButton(context, 'Setttings', (context, d){
+              navToSmartDialogHostPage(context, new FormParams(formName: 'NEWINSTALLSETTINGS',
+                  formTitle: 'New Install Settings'));
+
+            })
+          ]
+      ));
+
+  return
+    Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+        // height: 400,
+        alignment: Alignment.center,
+        child:Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,  // add this
+            children: <Widget>[
+/*
+              Image.network('${gblSettings.gblServerFiles}/cityImages/$destin.png',
+                  fit:BoxFit.fill
+
+              ),
+*/
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: list,
+              ),
+            ]
+        ));
+
+
+}

@@ -126,9 +126,10 @@ void configKG() {
 
     apiKey: '75998e0697a04bc0bbb7dd9a38cf0745',
 //Staging setttings
-    liveXmlUrl:      "https://booking.airgotland.se/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
-    liveApisUrl:       'https://booking.airgotland.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    liveApiUrl: 'https://booking.airgotland.se/VARS/webApiV2/api/',
+    liveXmlUrl:      "https://booking.denverairconnection.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    liveApisUrl:      'https://booking.denverairconnection.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
+    liveApiUrl:       'https://booking.denverairconnection.com/VARS/webApiV2/api/',
+    liveSmartApiUrl:  "https://booking.denverairconnection.com/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     liveCreditCardProvider: 'worldpaydirect',
 
     xmlUrl:      "https://customertest.videcom.com/keylimeAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
@@ -137,6 +138,7 @@ void configKG() {
     creditCardProvider: 'videcard',
 
     testXmlUrl:      "https://customertest.videcom.com/keylimeAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
+    testSmartApiUrl:  "https://customertest.videcom.com/keylimeAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/keylimeAir/VARS/webApiV2/api/',
     testCreditCardProvider: 'videcard',

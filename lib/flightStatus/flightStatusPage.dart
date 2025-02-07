@@ -7,12 +7,14 @@ import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
-import '../data/smartApi.dart';
+import '../data/CommsManager.dart';
 import '../flightSearch/widgets/citylist.dart';
 import '../flightSearch/widgets/journey.dart';
+import '../menu/icons.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
+import '../v3pages/cards/v3FormFields.dart';
 import '../v3pages/controls/V3Constants.dart';
 
 
@@ -27,8 +29,10 @@ class FlightStatusPageWidget extends StatefulWidget {
 class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with TickerProviderStateMixin {
   late bool _loadingInProgress;
   late bool _showResults;
+  String resultsFor = '';
+  late TabController _controller;
 
-  TabController? _tabViewController ;
+//  TabController? _tabViewController ;
 
   @override void initState() {
     _loadingInProgress = true;
@@ -37,118 +41,222 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     gblSearchParams.searchOrigin = 'Select Origin';
     gblOrigin = '';
     gblDestination ='';
-
+    _controller = TabController(length: 4, vsync: this);
+  //  _tabViewController = new TabController(vsync: this, length: 2);
+  /*  _tabViewController!.addListener(() {
+      setState(() {
+        _showResults = false;
+      });
+      logit("Selected Index: " + _tabViewController!.index.toString());
+    });*/
     loadData();
   }
 
 
   @override
   Widget build(BuildContext context) {
+    List <Widget> tabs = [];
+    List <Widget> tabViews = [];
+
+    tabs.add(TrText('Arrivals'));
+    tabs.add(TrText('Departures'));
+    tabs.add(TrText('Route'));
+    tabs.add(TrText('Flight No'));
+
+    tabViews.add(getRouteView('a'));
+    tabViews.add(getRouteView('d'));
+    tabViews.add(getRouteView('r'));
+    tabViews.add(getFltNoView() );
+
+
     return
 
       new Scaffold(
         backgroundColor: Colors.grey.shade50, //v2PageBackgroundColor(),
-        appBar: appBar(context, _showResults ? 'Flight Status Results' : 'Flight Status Search', PageEnum.editPax,
+        appBar: appBar(context, _showResults ? 'Flight Status' : 'Flight Status', PageEnum.editPax,
           //imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                if( _showResults ){
+          toolbarHeight: 60,
+          bottom:  new PreferredSize(
+            preferredSize: new Size.fromHeight(30.0),
+            child: new Container(
+              height: 20.0, child: TabBar(
+                onTap: (index){
+                  logit('OnTab i=$index');
                   _showResults = false;
                   setState(() {
 
                   });
-                } else {
+                  //_controller!.animateTo((index ));
+                },
+                indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.black : gblSystemColors.tabUnderlineColor,
+                isScrollable: true,
+                labelColor: gblSystemColors.headerTextColor,
+                tabs: tabs,
+                controller: _controller),
+            ),
+          ),
+        actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
                   Navigator.pop(context);
-                }
               },
             )
           ],
         ),
         extendBodyBehindAppBar: gblSettings.wantPageImages,
         //endDrawer: DrawerMenu(),
-        body: _body(),
+        body: TabBarView(
+          controller: _controller,
+          children: tabViews,
+        ),
       );
   }
 
-  Widget _body() {
-    if (_loadingInProgress) {
-      return getProgressMessage('Loading...', '');
-    }
-    if( gblError != ''){
 
-    }
-    if( _showResults){
-      return getResults();
-    }
 
-/*
-    List<FlightStatus>? fs;
-    var set;
-    var sorted;
-    if( gblFlightStatuss != null && gblFlightStatuss!.flights.length > 0 ){
-      set = Set<String>();
-      fs = gblFlightStatuss!.flights.where((element) => set.add(element.departureAirport)).toList();
-      sorted = set.toList();
-      sorted.sort();
-    }
-*/
-    //List<FlightStatus>? sorted =  gblFlightStatuss!.getSortedList();
-    return Container(
-      color: Colors.white,
-      child: Column(
-      children: [
-        Image.network('${gblSettings.gblServerFiles}/pageImages/flightStatus.png',
-            errorBuilder: (BuildContext context, Object obj,
-                StackTrace? stackTrace) {
-              return Text('', style: TextStyle(color: Colors.red));
-            }
-        ), //
-        DefaultTabController(
-          length: 2,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const TabBar(tabs: [
-                Tab(child: Text("Route",style: TextStyle(color: Colors.black87),), ),
-                Tab(child: Text("Flight No",style: TextStyle(color: Colors.grey),), ),
-              ]),
-              SizedBox(
-                //Add this to give height
-                height: MediaQuery.of(context).size.height * 0.50,
-                child: TabBarView(children: [
-                  getRouteView(),
-                  getFltNoView(),
-                ]),
-              ),
-            ],
-          ),
-        ),
-      ],
-    )
-    );
-
-  }
-
-  Widget getResults(){
+  Widget getResults(String brew ){
 
     var set = Set<String>();
-    var fs = gblFlightStatuss!.flights.where((element) => element.departureAirport == gblOrigin && element.schArrivalAirport == gblDestination ).toList();
+    List<FlightStatus> fs;
+    bool byRoute = true;
+    int index = _controller!.index;
+    if( index > 0 ) byRoute = false;
+
+
+    if( brew == 'a' ) {
+      fs = gblFlightStatuss!.flights.where((element) =>
+      element.schArrivalAirport == gblOrigin).toList();
+    } else if( brew == 'a' || brew == 'd') {
+      fs = gblFlightStatuss!.flights.where((element) =>
+      element.departureAirport == gblOrigin ).toList();
+    } else if (brew == 'r') {
+      fs = gblFlightStatuss!.flights.where((element) =>
+          element.departureAirport == gblOrigin &&
+          element.schArrivalAirport == gblDestination).toList();
+    } else {
+      String fltNo = _fltNoEditingController.text;
+      gblFltNo = fltNo;
+      fs = gblFlightStatuss!.flights.where((element) => element
+          .flightNumber == fltNo).toList();
+
+    }
     var sorted = fs.toList();
     //sorted.sort();
 
+//    return  Text('results');
+    List<DataRow> list = [];
+    List <DataColumn> cols = [];
+    cols.add(DataColumn( label: Container( color: Colors.black, child: Text('Flight',)),));
+    if( brew == 'a') {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Departs',)),));
+    }
+    if(  brew == 'r') {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Route',)),));
+    }
+    cols.add(DataColumn( label: getnamedIcon('takeOff', color: Colors.white),));
+    if( brew == 'd' ) {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Arrives',)),));
+    }
+    cols.add(DataColumn( label: getnamedIcon('landing', color: Colors.white),));
+    cols.add(DataColumn( label: Container( color: Colors.black, child: Text('Status',)),));
+
+    list = [];
+    String dDate = '';
+    fs.forEach((flight) {
+      if(flight.departureAirportName == flight.schArrivalAirportName ) {
+        // ignore
+      } else {
+        String depTime = '';
+        String depDate = '';
+        String arTime = '';
+        String arDate = '';
+        if (flight.schDepartureTime != '' &&
+            flight.schDepartureTime.contains(' ')) {
+          depTime = flight.schDepartureTime.split(' ')[0];
+          depDate = flight.schDepartureTime.split(' ')[1].replaceAll('-', '');
+        }
+        if (flight.schArrivalTime != '' &&
+            flight.schArrivalTime.contains(' ')) {
+          arTime = flight.schArrivalTime.split(' ')[0];
+          arDate = flight.schArrivalTime.split(' ')[1].replaceAll('-', '');
+        }
+        if( dDate == '') dDate = depDate;
+        List<DataCell> cells = [];
+        cells.add(DataCell(Text(flight.airlineCode + flight.flightNumber)));
+        if( brew == 'a' ) {
+          cells.add(DataCell(Text(flight.departureAirportName)));
+        }
+        if(  brew == 'r') {
+          cells.add(DataCell(
+            Column(
+              children: [
+                Text(flight.departureAirportName),
+                Text(flight.schArrivalAirportName)
+                ]
+          ))
+          );
+        }
+        if( dDate != depDate) {
+          cells.add(DataCell(Column( children: [Text(depTime), Text(depDate)])));
+        } else {
+          cells.add(DataCell(Text(depTime)));
+        }
+        if( brew == 'd' ) {
+          cells.add(DataCell(Text(flight.schArrivalAirportName)));
+        }
+        if( dDate != arDate) {
+          cells.add(DataCell(Column( children: [Text(arTime), Text(arDate)])));
+        } else {
+          cells.add(DataCell(Text(arTime)));
+        }
+        String status = '';
+        if(flight.arrivalStatus == 'As Scheduled'){
+          status = flight.departureStatus;
+        } else {
+          status = flight.arrivalStatus;
+        }
+        Color clr = Colors.green;
+        if( status.contains('Sched')){
+          clr = Colors.black54;
+        } else if( status.contains('Exp')){
+          clr = Colors.blue;
+        } else if( status.contains('Can')){
+          clr = Colors.red;
+        }
+        cells.add(DataCell(Text(status,style: TextStyle(color: clr),)));
+        list.add(DataRow(cells: cells));
+      }
+    });
 
     return Container(
-      padding: EdgeInsets.all(0),
-        child:
+        height: 500,
+        padding: EdgeInsets.only(top: 10),
+        child: SingleChildScrollView( child:
+             DataTable(
+               horizontalMargin: 5.0,
+               columnSpacing: 10.0,
+               headingRowHeight: 40,
+              headingTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+             //dataRowMaxHeight: 40,
+             headingRowColor:   WidgetStateColor.resolveWith((states) => Colors.black),
+        columns:  cols,
+    rows: list
+
+    ))
+    );
+
+
+    return
          ListView.builder(
           //padding: EdgeInsets.all(0),
           //physics:AlwaysScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: sorted == null ? 0 : sorted.length ,
             itemBuilder: (BuildContext context, i) {
-
 
       return new ListTile(
         //minVerticalPadding: 0,
@@ -170,7 +278,6 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
             //Navigator.pop(context, '${routes![i]}');
           });
     }
-    )
         ) ;
   }
 
@@ -189,6 +296,13 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
         VTitleText('$index ${fs.flightCode}', size: TextSize.large,)
     ]));
+
+    fltList.add(Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('${fs.departureAirportName} -  ${fs.schArrivalAirportName}'),
+        ]));
+
+
     fltList.add(Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
     Text('${fs.schDepartureTime} -  ${fs.schArrivalTime}'),
@@ -231,26 +345,34 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
   }
 
   Widget getTitle() {
+    int index = _controller!.index;
+
+    List<Widget> list = [];
+    if( index == 0 ) {
+      list.add(Row(children: [Text('From: ${cityCodetoAirport(gblOrigin)}', style: TextStyle(color: Colors.black87),)]));
+      list.add(Row(children: [Text('To: ${cityCodetoAirport(gblDestination)}', style: TextStyle(color: Colors.black87),)]));
+
+    } else {
+      list.add(Row(children: [Text('Flight No: $gblFltNo}', style: TextStyle(color: Colors.black87),)]));
+
+    }
+
     return Container(
         color: Colors.black12,
         padding: EdgeInsets.all(5),
         child: Column(
           
-        children: [
-        Row(children: [Text('From: ${cityCodetoAirport(gblOrigin)}', style: TextStyle(color: Colors.black87),)]),
-        Row(children: [Text('To: ${cityCodetoAirport(gblDestination)}', style: TextStyle(color: Colors.black87),)])
-      ])
+        children: list
+      )
     );
   }
 
-  Widget getRouteView(){
-    return Container(
-      padding: EdgeInsets.all(10),
-        child: Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        new GestureDetector(
+  Widget getRouteView(String brew){
+
+    List<Widget> searchBoxes = [];
+
+    if( brew == 'd' || brew == 'r' || brew == 'a'){
+      searchBoxes.add(GestureDetector(
           onTap: () async {
             final result = await Navigator.push(
               context,
@@ -259,31 +381,50 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
             // print('$result');
             _handleDeptureSelectionChanged('$result');
           },
-          child: getFlyFrom(context, 'Departs')
-        ),
-        new Padding(
-          padding: EdgeInsets.only(bottom: 5),
-        ),
-        new GestureDetector(
+          child: getFlyFrom(context, brew == 'a'? 'Arrives' : 'Departs', bWantWide: false, bold: true)
+      ));
+    }
+    if( brew == 'r') {
+      searchBoxes.add( Padding(padding: EdgeInsets.only(bottom: 5),));
+          searchBoxes.add( GestureDetector(
           onTap: () async {
-            //departureCode == 'null' || departureCode == ''
-            gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
-                ? print('Pick departure city first')
-                : await arrivalSelection(context);
-          },
-          child: getFlyTo(context, setState, 'Arrives', false),
+        //departureCode == 'null' || departureCode == ''
+        gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
+            ? print('Pick departure city first')
+            : await arrivalSelection(context);
+      },
+    child: getFlyTo(context, setState, 'Arrives', false, bWantWide: false),
+    ));
+    }
+
+    bool disabled = (gblOrigin == '') ? true : false;
+
+    if( brew == 'r') disabled = (gblDestination == '' || gblOrigin == '') ? true : false;
+
+    return Container(
+      padding: EdgeInsets.all(10),
+        child: Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(padding: EdgeInsets.only(top: 100)),
+
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: searchBoxes
         ),
-        Padding(padding: EdgeInsets.all(15)),
-        vidWideActionButton(context,'Find Flights',
-            disabled: (gblDestination == '' || gblOrigin == '') ? true : false,
+        Padding(padding: EdgeInsets.only(top: 25)),
+        vidWideActionButton(context,'Check Status',
+            disabled: disabled,
             _onPressed,
             icon: Icons.check,
-            offset: 0 ),
+            offset: 0, param1: brew ),
+        _showResults ? getResults(brew): Container()
       ],
     ));
   }
-  void _onPressed(BuildContext context, dynamic p) {
-      if( gblDestination != '' && gblOrigin != '') {
+  void _onPressed(BuildContext context, dynamic brew) {
+    //gblDestination != '' &&
+      if((  gblOrigin != '' ) || _fltNoEditingController.text != '') {
         _showResults = true;
         setState(() {
 
@@ -325,8 +466,36 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       });
     }
   }
+  TextEditingController _fltNoEditingController = new TextEditingController();
+
   Widget getFltNoView(){
-    return Text("FltNo Body");
+    return Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 100)),
+
+
+            Text("Enter Flight number without airline code or leading 0's"),
+            Padding(padding: EdgeInsets.only(left: 10, right: 10),
+              child:V3TextFormField(
+                translate('Flt No'),
+                _fltNoEditingController,
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(15)),
+            vidWideActionButton(context,'Find Flights',
+                disabled: (_fltNoEditingController.text == '') ? true : false,
+                _onPressed,
+                icon: Icons.check,
+                offset: 0 ),
+            _showResults ? getResults('f'): Container()
+          ],
+        ));
+
   }
 
   Future<void> loadData() async {

@@ -13,7 +13,13 @@ Future getHomepage() async {
     String jsonString =  await rootBundle.loadString('lib/assets/$gblAppTitle/json/home.json');
 
     final Map<String, dynamic> map = json.decode(jsonString);
-    gblHomeCardList = new PageListHolder.fromJson(map);
+    logit('getHomepage - loaded');
+    if( map['root'] != null ) {
+      gblHomeCardList = new PageListHolder.fromJson(map['root']);
+    } else {
+      gblHomeCardList = new PageListHolder.fromJson(map);
+
+    }
   }
 }
 
@@ -23,14 +29,18 @@ class PageListHolder {
   String version ='';
 
   PageListHolder.fromJson(Map<String, dynamic> json) {
-    if( json['version'] != null ) version =  json['version'];
+    try {
+      if (json['version'] != null) version = json['version'];
 
-    if (json['pages'] != null) {
-      pages = new Map();
-      //new List<Country>();
-      json['pages'].forEach((n, v) {
-        pages![n] =new CustomPage.fromJson(v);
-      });
+      if (json['pages'] != null) {
+        pages = new Map();
+        //new List<Country>();
+        json['pages'].forEach((n, v) {
+          pages![n] = new CustomPage.fromJson(v);
+        });
+      }
+    } catch (e) {
+      logit(e.toString());
     }
   }
 
@@ -66,6 +76,7 @@ class CustomPage {
         } else {
           title = new CardText('Home', text: json['title']);
         }
+
       }
 
       if (json['cards'] != null) {
@@ -110,6 +121,7 @@ class HomeCard extends HomeCardLink  {
   String image='';
   String format='';
   String shape='';
+  String price = '';
   double height = 0;
   double fontSize = 0;
   bool expanded = true;
@@ -142,6 +154,7 @@ class HomeCard extends HomeCardLink  {
       if (json['expanded'] != null) expanded = parseBool(json['expanded']);
       if (json['format'] != null) format = json['format'];
       if (json['shape'] != null) shape = json['shape'];
+      if (json['price'] != null) price = json['price'];
       if (json['icon'] != null && json['icon'] != '' &&
           json['icon'] != 'none') {
         icon = getIconFromName(json['icon'].toString());
@@ -178,6 +191,7 @@ class HomeCard extends HomeCardLink  {
         }
 
       }
+      if( title != null ) title!.card_type = card_type;
     } catch(e) {
       logit('HomeCard.fromJson ${e.toString()}');
       }
@@ -229,10 +243,14 @@ class CardAction {
   CardAction();
 
   CardAction.fromJson(Map<String, dynamic> json) {
-    if (json['function'] != null) function = json['function'];
-    if (json['pageName'] != null) pageName = json['pageName'];
-    if (json['fileName'] != null) fileName = json['fileName'];
-    if (json['url'] != null) url = json['url'];
+    try {
+      if (json['function'] != null) function = json['function'];
+      if (json['pageName'] != null) pageName = json['pageName'];
+      if (json['fileName'] != null) fileName = json['fileName'];
+      if (json['url'] != null) url = json['url'];
+     } catch (e) {
+        logit('CardAction ' + e.toString());
+    }
 
   }
 }
@@ -319,6 +337,7 @@ class CardText {
       case 'HOME':
         fontS = 30;
         clr = gblSystemColors.v3TitleColor as Color;
+        if( color != null ) clr = color as Color;
         break;
       case 'FLIGHTSEARCH':
         fontS = 20;
@@ -331,10 +350,11 @@ class CardText {
       case 'CARDSLIDER':
         fontS = 20;
         clr = Colors.grey;
+        if( color != null ) clr = color as Color;
         break;
       case 'PHOTOLINK':
         fontS = 20;
-        clr = Colors.white;
+        clr = Colors.black;
         break;
       case 'BUTTON':
         fontS = 20;
@@ -348,7 +368,7 @@ class CardText {
         break;
     }
     if(fontSize != 0) fontS = fontSize;
-    if( color != null ) clr = color as Color;
+//    if( color != null ) clr = color as Color;
     TextStyle ts = TextStyle(fontSize: fontS, color: clr);
 
     return ts;

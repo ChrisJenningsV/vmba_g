@@ -9,6 +9,7 @@ import '../data/globals.dart';
 import '../data/models/dialog.dart';
 import '../utilities/helper.dart';
 import '../v3pages/cards/v3FormFields.dart';
+import '../v3pages/fields/Pax.dart';
 import 'dialogActions.dart';
 
 bool _isHidden = true;
@@ -18,6 +19,7 @@ Widget smartDialogPage( BuildContext context, DialogDef dialog, Widget? content,
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   double? width;
   gblActionBtnDisabled = false;
+  logit('get smart dialog');
 
   if( content == null ) content = getDialogContent(context, dialog, (){ doUpdate(); });
 
@@ -28,7 +30,11 @@ Widget smartDialogPage( BuildContext context, DialogDef dialog, Widget? content,
   }
 
     return  Scaffold(
-        body:
+        body: /*InkWell(
+          onTap: () {
+            logit('clicked out');
+          },
+        child:*/
         Column (
             children: [
               flexibleSpace,
@@ -63,6 +69,7 @@ Widget smartDialogPage( BuildContext context, DialogDef dialog, Widget? content,
                 //actions: <Widget>[)    ]
               ),
             ])
+    //)
     );
 
 }
@@ -199,6 +206,28 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       validator: (value) => validateEmail(value!.trim()),
       ));
 
+    case 'PIN':
+      TextEditingController te1 = new TextEditingController();
+      dialog.editingControllers.add(te1);
+      TextEditingController te2 = new TextEditingController();
+      dialog.editingControllers.add(te2);
+      TextEditingController te3 = new TextEditingController();
+      dialog.editingControllers.add(te3);
+      TextEditingController te4 = new TextEditingController();
+      dialog.editingControllers.add(te4);
+      TextEditingController te5 = new TextEditingController();
+      dialog.editingControllers.add(te5);
+      TextEditingController te6 = new TextEditingController();
+      dialog.editingControllers.add(te6);
+      List<TextEditingController> faEditingController = [te1,te2,te3,te4,te5,te6];
+
+      return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
+          child: pax2faNumber(
+          context, faEditingController, onFieldSubmitted: (value) {},
+          onSaved: (value) {}, autofocus: true));
+
+
+
     case 'NUMBER':
       TextEditingController _emailEditingController = new TextEditingController();
       dialog.editingControllers.add(_emailEditingController);
@@ -227,14 +256,19 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       },
       ));
       break;
+    case 'TEXT':
+      return Padding(padding: EdgeInsets.only(left: 10 ), child:TrText(f.caption));
     case 'ACTION':
         if( f.caption == '') {
           return
-            TextButton(child: new TrText(f.actionText,
+            TextButton(child: TrText(f.actionText,
               style: TextStyle(color: gblSystemColors.plainTextButtonTextColor),
-            ),
+                ),
                 // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
+                  gblActionBtnDisabled = true;
+                  doUpdate();
+
                   Navigator.of(context).pop();
                   doDialogAction(context, dialog, f, doUpdate);
                 }
@@ -250,6 +284,9 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
             ),
                 // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
+                  gblActionBtnDisabled = true;
+                  doUpdate();
+
                   Navigator.of(context).pop();
                   doDialogAction(context, dialog, f, doUpdate);
                   /*

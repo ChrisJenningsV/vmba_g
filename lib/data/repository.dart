@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
-import 'package:encrypt/encrypt.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/paxContacts.dart';
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
+import 'package:vmba/data/CommsManager.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
@@ -18,7 +18,7 @@ import '../main.dart';
 import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
-import 'crypto.dart';
+import '../v3pages/homePageHelper.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -34,7 +34,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/notifyMsgs.dart';
 import 'models/trips.dart';
-import 'models/paxContacts.dart';
+import 'models/vouchers.dart';
 import 'models/vrsRequest.dart';
 
 //import 'package:flutter/services.dart' show rootBundle;
@@ -335,12 +335,31 @@ class Repository {
               gblCityList = Cities.fromJson(json);
             }
             if (map['trips'] != null && map['trips'] != '') {
+              logit('got trips');
               Map<String, dynamic> json = jsonDecode(map['trips']);
               gblTrips = Trips.fromJson(json);
             }
+            if( map['fopVouchers'] != null && map['fopVouchers'] != ''){
+              logit('got vouchers');
+              Map<String, dynamic> json = jsonDecode(map['fopVouchers']);
+              gblFopVouchers = FopVouchers.fromJson(json);
+            }
+
             if (map['contacts'] != null && map['contacts'] != '') {
+              logit('got contacts');
               Map<String, dynamic> json = jsonDecode(map['contacts']);
               gblContacts = PaxContacts.fromJson(json);
+            }
+            if( map['nextTripPnr'] != null ) {
+              logit('got next pnr');
+              String pnrJson =map['nextTripPnr'];
+              pnrJson =  pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
+                  .replaceAll('<string xmlns="http://videcom.com/">', '')
+                  .replaceAll('</string>', '');
+              Map<String, dynamic> mapP = json.decode(pnrJson);
+
+              gblNextPnr = new PnrModel.fromJson(mapP);
+
             }
 
           } catch(e) {
@@ -1894,6 +1913,7 @@ Future<void> initGeolocation(void Function()? onComplete) async {
         gblCurLocation = placemarks[0];
         logit('got Geo');
         print(placemarks[0]);
+        await loadLocationHome();
         if( onComplete != null ) onComplete();
       }
     } catch(err){
@@ -1903,4 +1923,22 @@ Future<void> initGeolocation(void Function()? onComplete) async {
     logit(e.toString());
 
   }
+}
+
+Future<void> loadLocationHome() async {
+  LoadHomePageRequest rq = LoadHomePageRequest(
+      country: gblCurLocation!.country as String,
+      countryCode: gblCurLocation!.isoCountryCode as String,
+      county: gblCurLocation!.subAdministrativeArea as String,
+      city: gblCurLocation!.locality as String
+  );
+
+  String data = json.encode(rq);
+  gblHomeCardList = null;
+  String rx = await callSmartApi('LOADHOMEPAGE', data);
+  gblLoadedHomeCountry = gblCurLocation!.country as String;
+  logit('smartHomePage: loaded home');
+  final Map<String, dynamic> map = json.decode(rx);
+  gblHomeCardList = new PageListHolder.fromJson(map['root']);
+
 }

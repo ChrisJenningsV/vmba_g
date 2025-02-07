@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 import '../data/models/dialog.dart';
-import '../dialogs/smartDialog.dart';
+import 'smartDialog.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/controls/V3Constants.dart';
-import 'fqtvRegisterFields.dart';
+import '../forms/fqtvRegisterFields.dart';
 
 class FormParams {
   String formName='';
@@ -48,6 +48,30 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
       case 'FQTVREGISTER':
         dialog.width = 'full';
         return smartDialogPage(context, dialog, _body(),  (){ setState(() {}); });
+
+      case 'NEWINSTALLSETTINGS':
+        //gblValidationEmail = '';
+        gblValidationPinTries = 0;
+        DialogDef dialog = new DialogDef(caption: 'Register App', actionText: 'Continue', action: 'DoRequestPin');
+        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+        dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Enter email to access details of bookings made on the website.A validation PIN will be sent to this email.'));
+        // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
+        dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
+        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+
+        return smartDialogPage(context, dialog,null, (){ setState(() {}); });
+
+      case 'VALIDATEPIN':
+        DialogDef dialog = new DialogDef(caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
+        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+        dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check youe email inbox, and enter the validation PIN below. '));
+        // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
+        dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
+        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+        dialog.foot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
+
+        return smartDialogPage(context, dialog,null, (){ setState(() {}); });
+
 
       default:
 

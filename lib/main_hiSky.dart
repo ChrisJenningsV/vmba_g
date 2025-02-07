@@ -116,6 +116,7 @@ void configH4() {
       wantYouthDOB: true,
       wantAdultDOB: true,
       adultMinAge: 12,
+      childMaxAge: 12,
 
     ),
 

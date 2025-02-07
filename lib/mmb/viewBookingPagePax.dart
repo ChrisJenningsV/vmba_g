@@ -394,7 +394,7 @@ extension Section on ViewBookingBodyState {
           //Checkin Button
           return vidTextButton(context, 'Check-in',
                   ({p1, p2, String? p3}) {
-                    if( gblSettings.wantDangerousGoods == true ){
+                    if( gblSettings.wantDangerousGoods == true || gblSettings.wantDangerousGoodsCheckin){
                       Navigator.push(
                           context,
                           SlideTopRoute(

@@ -21,7 +21,7 @@ class PassengerTypes {
   int studentMinAge=0;
   int seniorMinAge=0;
 
-  int infantMaxAge=0;
+  int infantMaxAge=2;
   int childMaxAge =0;
   int youthMaxAge=0;
   int studentMaxAge=0;
@@ -41,8 +41,8 @@ class PassengerTypes {
     this.youthMinAge=12,
     this.studentMinAge=0,
     this.seniorMinAge=0,
-    this.infantMaxAge=0,
-    this.childMaxAge=0,
+    this.infantMaxAge=2,
+    this.childMaxAge=12,
     this.youthMaxAge=15,
     this.studentMaxAge=0,
     this.seniorMaxAge=0,

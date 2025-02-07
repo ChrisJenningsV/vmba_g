@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../../data/globals.dart';
 import '../../../data/models/seatplan.dart';
-import '../../../utilities/helper.dart';
 import '../../../v3pages/v3Theme.dart';
 import '../seatplan.dart';
 

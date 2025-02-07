@@ -13,7 +13,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/menu/myFqtvPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/selectLang.dart';
-import 'package:vmba/v3pages/homePageHelper.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
@@ -27,11 +26,6 @@ import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../utilities/timeHelper.dart';
 import '../utilities/widgets/appBarWidget.dart';
-import 'package:vmba/v3pages/v3HomePage.dart';
-
-import '../v3pages/cards/v3Card.dart';
-import '../v3pages/loggedInHomePage.dart';
-import '../v3pages/newInstallPage.dart';
 import '../v3pages/smartHomePage.dart';
 import '../v3pages/v3Theme.dart';
 
@@ -361,17 +355,16 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     initThemes(context);
 
-    if( gblCurLocation != null && gblSettings.wantGeoLocationHopePage ) {
+    if( gblSettings.wantGeoLocationHopePage ) {
       return new SmartHomePage();
     }
 
+/*
     if( (wantHomePageV3() && wantCustomHome()) ||
         (gblSettings.wantFqtvHomepage && gblSettings.wantFqtvAutologin && gblFqtvLoggedIn )){
       return new V3HomePage();
     }
-/*    if( gblIsNewInstall!= null && gblIsNewInstall == true && gblSettings.wantNewInstallPage){
-      return new NewInstallPage();
-    }*/
+*/
 
 
     var buttonShape;
@@ -702,6 +695,7 @@ Widget _getLogo(){
       list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
           child: VHeadlineText(msg, size: TextSize.medium,color: gblSystemColors.headerTextColor,)));
     }
+/*
 
     if( gblSettings.wantHomeUpcoming && gblTrips != null && gblTrips!.trips != null && gblTrips!.trips!.length> 0) { //
       HomeCard card = new HomeCard();
@@ -731,6 +725,7 @@ Widget _getLogo(){
         );
       }
 
+*/
 
     if (gblNoNetwork == false && gblSettings.disableBookings == false) {
       list.add(Row(
