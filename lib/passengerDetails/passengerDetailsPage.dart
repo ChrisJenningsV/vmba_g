@@ -140,8 +140,10 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
     int uncompletedItems = 0;
     gblWarning = '';
 
+    int index =1;
     _passengerDetails.forEach((pax){
-        ErrorParams errorParams = pax.isComplete(int.parse(pax.paxNumber));
+        ErrorParams errorParams = pax.isComplete(index); // int.parse(pax.paxNumber)
+        index++;
         if( errorParams.isError){
           uncompletedItems++;
         }

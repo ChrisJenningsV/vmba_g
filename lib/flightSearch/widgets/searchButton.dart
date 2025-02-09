@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/calendar/outboundFlightPage.dart';
 
 import 'package:vmba/data/SystemColors.dart';
+import 'package:vmba/data/audit.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/utilities/helper.dart';
@@ -96,14 +97,18 @@ class SearchButtonWidget extends StatelessWidget {
       isValid = false;
     }
 
+
+
     if (newBooking.passengers.infants > newBooking.passengers.adults) {
       errors.add(
           translate('The number of infants cannot be greater than the number of adult passengers.'));
       isValid = false;
     }
 
+
     gblSearchParams.departDate = newBooking.departureDate;
     gblSearchParams.returnDate = newBooking.returnDate;
+    gblSearchParams.passengers = newBooking.passengers;
 
     return isValid;
   }
@@ -112,13 +117,18 @@ void _onPressed(BuildContext context, dynamic p ) {
     _clearNewBookingObject();
     hasDataConnection().then((result) async {
       if (result == true) {
-        _validate(newBooking)
-            ? this.onChanged(await Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) =>
-                    FlightSeletionPage(
-                        newBooking: newBooking))))
-            : _ackErrorAlert(context);
+        bool valid = _validate(newBooking);
+        if(valid) {
+            AuditManager.add('DoSearch', gblSearchParams);
+
+           this.onChanged(await Navigator.of(context).push(
+          MaterialPageRoute(
+          builder: (context) =>
+          FlightSeletionPage(
+          newBooking: newBooking))));
+      } else {
+        _ackErrorAlert(context);
+      }
       } else {
 //showSnackBar(context, translate('Please, check your internet connection'));
         //noInternetSnackBar(context);
