@@ -8,7 +8,7 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/components/selectLang.dart';
-import 'package:vmba/calendar/TabPage.dart';
+import 'package:vmba/calendar/ImageAnimations.dart';
 import 'package:vmba/utilities/timeHelper.dart';
 
 import '../controllers/vrsCommands.dart';
@@ -243,7 +243,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                   child: TrText('Demo Page'),
                   onPressed: () {
                     Navigator.push(
-                        context, SlideTopRoute(page: TabPage())
+                        context, SlideTopRoute(page: FlyingPlanePage())
                     );
                   },
 
@@ -365,7 +365,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
           new DialogFieldDef(field_type: 'password', caption: 'Password'));
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
 
-      showSmartDialog(context, dialog, null, () {
+      gblCurDialog = dialog;
+      showSmartDialog(context, null, () {
         setState(() {});
       });
     } else {

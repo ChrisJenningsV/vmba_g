@@ -1,3 +1,6 @@
+import 'package:vmba/Seats/plan.dart';
+import 'package:vmba/data/models/seatplan.dart';
+
 class Pax {
   String name;
   String seat;
@@ -28,19 +31,31 @@ class PaxList{
     list = paxList;
   }
 
-  String getOccupant(String code){
-
+  String getOccupant(String code, Seat? seat, String rloc){
+    bool bFound = false;
     this!.list!.forEach((pax) {
        if( pax.seat == code){
          // get initials
          List<String> strArray = pax.name.split(' ');
-         code = strArray[0].substring(0,1);
-         if( strArray.length> 1){
-           code += strArray[1].substring(0,1);
+         code = strArray[0].substring(0, 1);
+         if (strArray.length > 1) {
+           code += strArray[1].substring(0, 1);
+           bFound = true;
          }
        }
     });
-
+    if( bFound)     return code;
+    if(seat != null ) {
+      if (seat!.sRLOC == rloc) {
+        if( seat!.sFirstName != '' ) {
+          code = seat!.sFirstName.substring(0, 1);
+          if (seat!.sLastName != '') {
+            code += seat!.sLastName.substring(0, 1);
+            bFound = true;
+          }
+        }
+      }
+    }
     return code;
   }
 
@@ -59,5 +74,14 @@ class PaxList{
         pax.selected = false;
       }
     });
+    if( gblSelectedSeats != null ){
+      int index = 0;
+      gblSelectedSeats!.forEach((seat) {
+        if ( seat == sCode) {
+          gblSelectedSeats![index] ='';
+        }
+        index+=1;
+      });
+    }
   }
 }

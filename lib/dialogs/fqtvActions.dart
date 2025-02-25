@@ -8,6 +8,7 @@ import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/CommsManager.dart';
 import '../utilities/PaxManager.dart';
+import '../utilities/helper.dart';
 
 void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {
   gblRedeemingAirmiles = false;
@@ -52,7 +53,12 @@ void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {
 */
       showVidDialog(context, 'Information', gblError, onComplete: () {
         gblError = '';
-        Navigator.of(context).pop();
+        try {
+          Navigator.of(context).pop();
+        } catch(e) {
+          logit('FQTV Login ' + e.toString());
+          navToHomepage(context);
+        }
       }
       );
 /*

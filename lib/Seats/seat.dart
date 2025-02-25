@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../data/globals.dart';
 import '../../../data/models/seatplan.dart';
 import '../../../v3pages/v3Theme.dart';
-import '../seatplan.dart';
+import '../mmb/widgets/seatplan.dart';
 
 
 
@@ -20,7 +20,7 @@ Widget getSeatKey2() {
 
 
   return Card(
-    margin: EdgeInsets.fromLTRB(10, 15, 10, 20),
+    margin: EdgeInsets.fromLTRB(10, 15, 10, 0),
     color: Colors.black,
     shadowColor: Colors.transparent,
     elevation: 0,
@@ -117,7 +117,7 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
       seatClr = Colors.grey;
       if( gblSystemColors.seatPlanColorUnavailable != null ) seatTxtColor = gblSystemColors.seatPlanColorUnavailable;
 
-  }
+    }
 
   Widget body =  VTitleText(seatNo,size:  TextSize.small,color: seatTxtColor);
   if( seatSize == SeatSize.small) body =  VBodyText(seatNo,size:  TextSize.small,color: seatTxtColor);
@@ -137,8 +137,8 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
     //color: seatClr,
     padding: EdgeInsets.all(0),
     alignment: Alignment.center,
-    height: gblSeatPlanDef!.seatWidth,
-    width: gblSeatPlanDef!.seatHeight,
+    height: gblSeatPlanDef!.seatHeight,
+    width: gblSeatPlanDef!.seatWidth,
     decoration: BoxDecoration(
       border: Border.all(color: Colors.grey, width: 1),
       borderRadius: BorderRadius.all(

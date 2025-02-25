@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
 import '../dialogs/genericFormPage.dart';
+import '../menu/myAccountPage.dart';
 import '../menu/myFqtvPage.dart';
 import '../mmb/viewBookingPage.dart';
 import 'helper.dart';
@@ -27,6 +28,14 @@ void navToMyBookingsPage(BuildContext context) {
   '/MyBookingsPage', (Route<dynamic> route) => false);
 
 }
+void navToMyAccountPage(BuildContext context) {
+  Navigator.push(
+    context, SlideTopRoute(page: MyAccountPage(
+    isAdsBooking: false,
+    isLeadPassenger: true,
+  )));
+
+}
 
 void navToMyBookingPage(BuildContext context, String rloc) {
   Navigator.push(
@@ -40,6 +49,8 @@ void navToMyBookingPage(BuildContext context, String rloc) {
 }
 void navToSmartDialogHostPage(BuildContext context, FormParams params){
   gblActionBtnDisabled = false;
+
+//  Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(builder: (context) => SmartDialogHostPage(formParams: params)), (route) => false);
   Navigator.push(
       context,
       SlideTopRoute(

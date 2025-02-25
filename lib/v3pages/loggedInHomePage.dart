@@ -149,10 +149,11 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
 
   return
      Container(
+       padding: EdgeInsets.all(10),
   width: MediaQuery.of(context).size.width,
          decoration: BoxDecoration(
            image: DecorationImage(
-             opacity: 0.5,
+             opacity: 0.7,
              image: NetworkImage('${gblSettings.gblServerFiles}/cityImages/$destin.png'),//AssetImage("assets/images/bulb.jpg"),
              fit: BoxFit.cover,
            ),

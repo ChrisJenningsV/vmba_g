@@ -10,6 +10,7 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/passengerDetails/widgets/editPage.dart';
 import 'package:vmba/passengerDetails/widgets/EditPax.dart';
 import 'package:vmba/utilities/helper.dart';
+import 'package:vmba/utilities/navigation.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -781,15 +782,30 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
       hasDataConnection().then((result) async {
         if (result == true) {
-            if( gblSettings.wantNewSeats) {
+            if( gblNewBooking == null ){
+              // booking failed
+              showVidDialog(context, 'Error', 'Booking failed', onComplete:()
+              {
+                navToFlightSearchPage(context);
+              });
+            } else if( gblSettings.wantNewSeats) {
               PnrModel pnrModel = PnrModel();
-              gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {});
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SeatsAndOptionsPageWidget(
-                              newBooking: gblNewBooking!)));
+              gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {
+                logit('book error ${e.toString()}');
+              });
+              if(gblPnrModel == null ) {
+                showVidDialog(context, 'Error', 'Booking failed', onComplete:()
+                {
+                  navToFlightSearchPage(context);
+                });
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SeatsAndOptionsPageWidget(
+                                newBooking: gblNewBooking!)));
+              }
             } else if( gblSettings.wantDangerousGoods == true )
             {
 

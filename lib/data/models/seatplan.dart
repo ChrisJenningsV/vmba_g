@@ -21,15 +21,49 @@ class Seatplan {
     return data;
   }
 
+  int getMinCol() {
+    int minCol = -1;
+    this.seats.seat.forEach((s) {
+      if (minCol == -1 || minCol > s.sCol) {
+        minCol = s.sCol;
+      }
+    });
+    return minCol;
+  }
+  int getMaxCol() {
+    int maxCol = 0;
+    this.seats.seat.forEach((s) {
+      if (s.sCol > maxCol) {
+        maxCol = s.sCol;
+      }
+    });
+    return maxCol;
+  }
+
+
+  List<Seat> getSeatsForRow(int row){
+    List<Seat> seats = [];
+    seats = this
+        .seats
+        .seat
+        .where((a) => a.sRow == row)
+        .toList();
+    if (seats == null) {} else {
+      seats.sort((a, b) => a.sCol.compareTo(b.sCol));
+    }
+    return seats;
+  }
+
   SeatPlanDefinition? getPlanDataTable(){
     SeatPlanDefinition def = new SeatPlanDefinition();
 
 
     // build a table of seats
-    def.noRows = this.seats.seat.last.sRow;
+    //def.noRows = this.seats.seat.last.sRow;
 
     int minCol = -1;
     int maxCol = -1;
+    int maxRow = -1;
     this.seats.seat.forEach((s) {
       if(minCol == -1 || minCol > s.sCol ){
         minCol = s.sCol;
@@ -37,9 +71,13 @@ class Seatplan {
       if(s.sCol > maxCol ) {
         maxCol = s.sCol;
       }
+      if(s.sRow > maxRow ) {
+        maxRow = s.sRow;
+      }
     });
     def.minCol = minCol;
     def.maxCol = maxCol;
+    def.maxRow = maxRow;
     if( maxCol > 10) {
       logit('mini seats $maxCol');
       def.seatSize = SeatSize.small;
@@ -60,7 +98,7 @@ class Seatplan {
 
     int cols = this.seats.seat.last.sRow;
     // step through rows
-    for (var indexRow = 1; indexRow <= def.noRows; indexRow++) {
+    for (var indexRow = 1; indexRow <= def.maxRow; indexRow++) {
       List<Seat> seats = this.seats.seat.where((a) => a.sRow == indexRow).toList();
 
       SeatPlanRow sRow = new SeatPlanRow();
@@ -260,7 +298,8 @@ class SeatPlanDefinition{
   // table of seats by row / col
   List<SeatPlanRow> table = [];
 
-  int noRows = 0;
+//  int noRows = 0;
+  int maxRow = 0;
   int minCol = 0;
   int maxCol = 0;
   double seatWidth = 35;
@@ -281,13 +320,36 @@ class SeatPlanDefinition{
     return paxlist;
   }
 
+  dump( ){
+    if(table != null  ){
+      int iRow = 1;
+      table!.forEach((row){
+        String sDump = '';
+        for ( var indexCol = 0; indexCol <= this.maxCol ; indexCol++){
+          if( row.cols[indexCol] != null ){
+            Seat seat = row.cols[indexCol];
+            if( seat.sCode == ''){
+              sDump += ' ${seat.sCellDescription}';
+            } else {
+              sDump += ' ${seat.sCode}';
+            }
+          }
+        };
+        //logit('r: $iRow $sDump');
+
+
+        iRow++;
+      });
+    }
+  }
+
   // type of col - used to set width
   // Seat, Aisel
   List<String> colTypes = [];
 
   Seat? getSeatAt(int row, int col){
     Seat? retSeat = null;
-    if( row < noRows) {
+    if( row <= maxRow) {
       if( col <= maxCol ){
         table.forEach((tr) {
           if( tr.rowNo == row){
@@ -355,12 +417,12 @@ class SeatsFlt {
   SeatsFlt();
 
   SeatsFlt.fromJson(Map<String, dynamic> json) {
-    sFltNo = json['FltNo'];
-    sFltDate = json['Flt_Date'];
-    sDepart = json['Depart'];
-    sDestin = json['Destin'];
-    sFltID = json['FltID'];
-    sRef = json['Ref'];
+    if( json['FltNo'] != null ) sFltNo = json['FltNo'];
+    if( json['Flt_Date'] != null ) sFltDate = json['Flt_Date'];
+    if( json['Depart'] != null ) sDepart = json['Depart'];
+    if( json['Destin'] != null ) sDestin = json['Destin'];
+    if( json['FltID'] != null ) sFltID = json['FltID'];
+    if( json['Ref'] != null ) sRef = json['Ref'];
   }
 
   Map<String, dynamic> toJson() {
@@ -502,5 +564,39 @@ class Seat {
     data['scprice'] = this.sScprice;
     data['seatdescription'] = this.sSeatdescription;
     return data;
+  }
+}
+
+class SeatPlanConfig {
+  String version = '';
+  String name = '';
+  String layout = '';
+  double top = 0;
+  double left = 0;
+  double cabinWidth = 0;
+  double seatHorzSpace = 0;
+  double seatVertSpace = 0;
+  double seatWidth = 0;
+  double seatHeight = 0;
+  double aiselWidth = 0;
+
+  SeatPlanConfig.fromJson(Map<String, dynamic> json) {
+    try {
+      if (json['version'] != null) version = json['version'];
+      if (json['name'] != null) name = json['name'];
+      if (json['layout'] != null) layout = json['layout'];
+      if (json['top'] != null) top = double.parse(json['top']);
+      if (json['left'] != null) left = double.parse(json['left']);
+      if (json['cabinWidth'] != null) cabinWidth = double.parse(json['cabinWidth']);
+
+      if (json['seatVertSpace'] != null) seatVertSpace = double.parse(json['seatVertSpace']);
+      if (json['seatHorzSpace'] != null) seatHorzSpace = double.parse(json['seatHorzSpace']);
+      if (json['seatWidth'] != null) seatWidth = double.parse(json['seatWidth']);
+      if (json['seatHeight'] != null) seatHeight = double.parse(json['seatHeight']);
+      if (json['aiselWidth'] != null) aiselWidth = double.parse(json['aiselWidth']);
+
+    } catch (e) {
+
+    }
   }
 }

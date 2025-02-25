@@ -1,6 +1,5 @@
 
 import 'dart:core';
-import 'package:meta/meta.dart';
 
 class BoardingPass {
   static final dbRloc = "rloc";

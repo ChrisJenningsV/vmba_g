@@ -1,7 +1,10 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:vmba/data/CommsManager.dart';
 import 'package:vmba/data/models/dialog.dart';
 import 'package:vmba/dialogs/registerActions.dart';
 import 'package:vmba/dialogs/smartDialog.dart';
@@ -9,7 +12,9 @@ import 'package:vmba/menu/appFeedBackPage.dart';
 
 import '../components/showDialog.dart';
 import '../data/globals.dart';
+import '../data/models/vrsRequest.dart';
 import '../data/repository.dart';
+import '../menu/debug.dart';
 import '../utilities/PaxManager.dart';
 import 'genericFormPage.dart';
 import '../menu/myFqtvPage.dart';
@@ -17,14 +22,14 @@ import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
 import 'fqtvActions.dart';
 
-Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldDef? field, void Function() doUpdate ) async {
+Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Function() doUpdate ) async {
   String action='';
   gblActionBtnDisabled = true;
 
   if( field != null ) {
     action =  field.action;
   } else {
-    action = dialog.action;
+    action = gblCurDialog!.action;
   }
 
   switch( action.toUpperCase()){
@@ -42,17 +47,17 @@ Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldD
       break;
     case 'DOFQTVRESET':
       // chack value input
-    String er = validateEmail(dialog.editingControllers[0].value.text);
+    String er = validateEmail(gblCurDialog!.editingControllers[0].value.text);
     if( er == '' ){
       // send reset request
-      fqtvResetPassword(context, dialog.editingControllers[0].value.text);
+      fqtvResetPassword(context, gblCurDialog!.editingControllers[0].value.text);
     } else {
       showVidDialog(context, 'Error', er, type: DialogType.Error);
     }
       break;
     case 'DOFQTVLOGIN':
-      String FqtvNo = dialog.editingControllers[0].value.text;
-      String FqtvPw = dialog.editingControllers[1].value.text;
+      String FqtvNo = gblCurDialog!.editingControllers[0].value.text;
+      String FqtvPw = gblCurDialog!.editingControllers[1].value.text;
       if( FqtvNo == '' || FqtvPw == '') {
         showVidDialog(context, 'Error', 'Please complete all details',
             type: DialogType.Error);
@@ -61,8 +66,8 @@ Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldD
       }
       break;
     case 'DODEVELOPERLOGIN':
-      String No = dialog.editingControllers[0].value.text;
-      String Pw = dialog.editingControllers[1].value.text;
+      String No = gblCurDialog!.editingControllers[0].value.text;
+      String Pw = gblCurDialog!.editingControllers[1].value.text;
       if( No == '' || Pw == '') {
         showVidDialog(context, 'Error', 'Please complete all details',
             type: DialogType.Error);
@@ -77,9 +82,48 @@ Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldD
         }
       }
       break;
+    case 'DODARKSITEADMIN':
+      // save local
+      gblSettings.darkSiteMessage =gblCurDialog!.editingControllers[1].value.text;
+      gblSettings.darkSiteEnabled = parseBool(getGblValue('dark'));
+      // save to server
+      SaveSettingsRequest saveSettingsRequest = new SaveSettingsRequest();
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteEnabled', gblSettings.darkSiteEnabled.toString()));
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteMessage', gblSettings.darkSiteMessage));
+
+      String data = json.encode(saveSettingsRequest);
+      String reply = await callSmartApi('SAVESETTINGS', data);
+      if( reply == 'OK' || reply == '') {
+         showVidDialog(context, 'Success', 'Settings saved', type: DialogType.Information, onComplete: (){
+           // go home
+           navToHomepage(context);
+         });
+      } else {
+        showVidDialog(context, 'Error', reply, type: DialogType.Error);
+      }
+      break;
+    case 'DOAGENTLOGIN':
+      String No = gblCurDialog!.editingControllers[0].value.text;
+      String Pw = gblCurDialog!.editingControllers[1].value.text;
+      if( No == '' || Pw == '') {
+        showVidDialog(context, 'Error', 'Please complete all details',
+            type: DialogType.Error);
+      } else {
+        String result = await devSineIn(context, No, Pw);
+        if( result == 'OK') {
+          if( gblSecurityLevel >= 99) {
+            Navigator.push(context,
+                SlideTopRoute(page: DebugPage(name: 'ADMIN',)));
+          }
+        } else {
+          showVidDialog(context, 'Error', result ,
+              type: DialogType.Error);
+        }
+      }
+      break;
 
     case 'DOREQUESTPIN':
-      String email = dialog.editingControllers[0].value.text;
+      String email = gblCurDialog!.editingControllers[0].value.text;
       if( (email == '' || validateEmail(email) != '') && gblValidationEmail == ''  ) {
         showVidDialog(context, 'Error', 'Please enter a valid email',
             type: DialogType.Error);
@@ -96,7 +140,7 @@ Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldD
       }
       break;
     case 'DORESENDPIN':
-      String email = dialog.editingControllers[0].value.text;
+      String email = gblCurDialog!.editingControllers[0].value.text;
       if( (email == '' || validateEmail(email) != '') && gblValidationEmail == ''  ) {
         showVidDialog(context, 'Error', 'Please enter a valid email',
             type: DialogType.Error);
@@ -115,8 +159,8 @@ Future<void> doDialogAction(BuildContext context, DialogDef dialog, DialogFieldD
 
     case 'DOVALIDATEPIN':
       gblValidationPinTries +=1;
-      String pinInput = dialog.editingControllers[0].text +  dialog.editingControllers[1].text +  dialog.editingControllers[2].text +
-          dialog.editingControllers[3].text +  dialog.editingControllers[4].text +  dialog.editingControllers[5].text;
+      String pinInput = gblCurDialog!.editingControllers[0].text +  gblCurDialog!.editingControllers[1].text +  gblCurDialog!.editingControllers[2].text +
+          gblCurDialog!.editingControllers[3].text +  gblCurDialog!.editingControllers[4].text +  gblCurDialog!.editingControllers[5].text;
       if( pinInput == gblValidationPin || (gblValidationPin2 != '' && pinInput == gblValidationPin2 )) {
 /*
         PaxManager.populate(gblValidationEmail);

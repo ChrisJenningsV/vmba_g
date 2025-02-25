@@ -384,7 +384,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       print('Calling VRS with Cmd = $msg');
       String data = await runVrsCommand(msg).catchError((e) {
         //noInternetSnackBar(context);
-        return null;
+        return '';
       });
 
       try {

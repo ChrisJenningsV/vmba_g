@@ -32,6 +32,11 @@ class Passengers {
   int totalPassengers() {
     return this.adults + this.children + this.youths + this.infants  + this.students + this.seniors + this.teachers;
   }
+  int totalSeatedPassengers() {
+    return this.adults + this.children + this.youths + this.students + this.seniors + this.teachers;
+  }
+
+
   void getPax(list) {
     if (this.adults != 0) {
       list.add(tableRow(translate('No of ') + translate('Adults') + ': ',
@@ -187,14 +192,14 @@ class PassengerDetail {
   ErrorParams isComplete(int paxNo) {
     ErrorParams errorParams = new ErrorParams();
 
-    if (title == '' || title == null) {
+    if (title == '' ) {
 //      gblWarning = 'Passenger details required';
       errorParams.msg = 'Passenger details required';
       errorParams.errorType = DialogType.Error;
       errorParams.isError = true;
       return errorParams;
     }
-    if (firstName == '' || firstName == null) {
+    if (firstName == '' ) {
 /*
       gblWarning = 'First name is required';
       return false;
@@ -206,11 +211,7 @@ class PassengerDetail {
     }
 
     if (gblSettings.wantMiddleName && gblSettings.middleNameRequired &&
-        (middleName == null || middleName.isEmpty)) {
-/*
-      gblWarning = 'Middle name is required';
-      return false;
-*/
+        ( middleName.isEmpty)) {
       errorParams.msg = translate( 'Middle name is required');
       errorParams.errorType = DialogType.Error;
       errorParams.isError = true;
@@ -328,6 +329,15 @@ class PassengerDetail {
     return errorParams;
   }
 
+  String toLog() {
+    String output = '';
+
+    output += 't:' + this.title + ', ';
+    output += 'f:' + this.firstName + ', ';
+    output += 'l:' + this.lastName + ', ';
+
+    return output;
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

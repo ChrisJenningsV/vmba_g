@@ -51,7 +51,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
     BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
 
-      backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
+      backgroundColor: Color.fromRGBO(0, 0, 0, 0.6),
       items:   <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -81,7 +81,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
 
       ],
       currentIndex: 0,
-      selectedItemColor: Colors.black,
+      selectedItemColor: Colors.red,
       unselectedItemColor: Colors.white,
       onTap: (value) async {
         switch (value){
@@ -89,11 +89,6 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
             // home
             gblCurPage = 'HOME';
             navToHomepage(context) ;
-/*
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/HomePage', (Route<dynamic> route) => false);
-
-*/
             break;
           case 1:
             // book now
@@ -103,13 +98,11 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
             // my bookings
             gblCurPage = 'MYBOOKINGS';
             navToMyBookingsPage(context);
-/*
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/MyBookingsPage', (Route<dynamic> route) => false);
-*/
             break;
           case 3:
             // my account
+            gblCurPage = 'MYACCOUNT';
+            navToMyAccountPage(context);
             break;
           case 4:
             // more

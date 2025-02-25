@@ -66,12 +66,14 @@ class DialogDef {
 
     String action = '';
     bool required = true;
-
-    // OUTPUTS
     String value = '';
+    String initialValue = '';
+
+    TextEditingController? controller;
+
 
     DialogFieldDef({this.field_type='', this.caption='',
-      this.actionText='', this.action = ''});
+      this.actionText='', this.action = '', this.initialValue='false'});
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {
       try {

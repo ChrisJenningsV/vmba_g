@@ -96,9 +96,9 @@ class Xml {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pnrApis != null) {
+    //if (this.pnrApis != null) {
       data['pnr_apis'] = this.pnrApis.toJson();
-    }
+    //}
     return data;
   }
 }
@@ -146,9 +146,9 @@ class Flights {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.flight != null) {
+//    if (this.flight != null) {
       data['flight'] = this.flight.map((v) => v.toJson()).toList();
-    }
+  //  }
     return data;
   }
 }
@@ -225,9 +225,9 @@ class Passengers {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.passenger != null) {
+    //if (this.passenger != null) {
       data['passenger'] = this.passenger.map((v) => v.toJson()).toList();
-    }
+    //}
     return data;
   }
 }

@@ -25,6 +25,7 @@ import 'package:vmba/v3pages/v3Theme.dart';
 import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
 import 'data/globals.dart';
+import 'dialogs/genericFormPage.dart';
 import 'main_aurigny.dart';
 import 'main_buraq.dart';
 import 'main_caicos.dart';
@@ -309,6 +310,7 @@ bool bFirstTime = true;
         '/CompletedPage': (BuildContext context) => new CompletedPage(),
         '/NewInstallPage': (BuildContext context) => new NewInstallPage(),
         '/ViewBookingPage': (BuildContext context) => new ViewBookingPage(),
+        '/SmartDialogHostPage': (BuildContext context) => new SmartDialogHostPage(formParams: null,),
 /*        '/ProcessCommandsPage': (BuildContext context) =>
             new ProcessCommandsPage(),*/
       },

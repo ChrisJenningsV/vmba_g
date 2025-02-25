@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/utilities/widgets/colourHelper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../calendar/ImageAnimations.dart';
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
@@ -265,6 +266,10 @@ class MessagePageState extends State<MessagePage> {
   }
 
   Widget dialogBody() {
+    if( gblSettings.wantCustomAnimations) {
+      return RoataingImage(wantButtons: false);
+    }
+
     // scale and offset image if required, default offset 25 gives radius 48
     double radius = 73 - gblSettings.progressFactor ; // 48
     double offset =  gblSettings.progressFactor; // 25

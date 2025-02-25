@@ -14,6 +14,19 @@ class CustomError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // debugDumpRenderTree();
+    String serror = '';
+    serror = kDebugMode
+        ? errorDetails.summary.toString()
+        : 'Oops! Something went wrong!';
+
+    if( kDebugMode) {
+      serror += '\n';
+      if (errorDetails.stack != null) {
+        serror += errorDetails.stack.toString();
+      }
+    }
+    if( serror.length > 300 ) serror = serror.substring(0,300);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -25,10 +38,7 @@ class CustomError extends StatelessWidget {
             Image.asset(
                 'assets/images/error_illustration.png'),
 */
-            Text(
-              kDebugMode
-                  ? errorDetails.summary.toString()
-                  : 'Oups! Something went wrong!',
+            Text(serror,
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.red ,

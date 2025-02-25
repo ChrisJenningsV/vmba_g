@@ -128,6 +128,35 @@ class SeatReply {
     if( json['bookSeatCmd'] != null ) bookSeatCmd = json['bookSeatCmd'];
   }
 }
+class SaveSettingsRequest{
+  String rloc = '';
+  List<MobileSetting>? settingsList = [] ; // = List.from([Pax]);
+
+  SaveSettingsRequest();
+
+  Map  toJson() {
+    Map map = new Map();
+    map['rloc'] = rloc;
+
+    if (this.settingsList != null) {
+      map['settingsList'] = this.settingsList!.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+class MobileSetting{
+  String name = '';
+  String value = '';
+  MobileSetting(this.name, this.value);
+
+  Map  toJson() {
+    Map map = new Map();
+    map['name'] = name;
+    map['value'] = value;
+    return map;
+  }
+  }
+
 
 class CheckinRequest{
   String rloc ='';

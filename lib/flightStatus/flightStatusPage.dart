@@ -38,7 +38,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     _loadingInProgress = true;
     _showResults = false;
     gblSearchParams.searchDestination = 'Select Destination';
-    gblSearchParams.searchOrigin = 'Select Origin';
+    gblSearchParams.searchOrigin = 'Select Airport';
     gblOrigin = '';
     gblDestination ='';
     _controller = TabController(length: 4, vsync: this);
@@ -112,6 +112,102 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
         ),
       );
   }
+
+  List<DataRow> getRows(String brew) {
+    List<DataRow> list = [];
+  String dDate = '';
+    List<FlightStatus> fs;
+    bool byRoute = true;
+    int index = _controller!.index;
+    if( index > 0 ) byRoute = false;
+
+
+    if( brew == 'a' ) {
+      fs = gblFlightStatuss!.flights.where((element) =>
+      element.schArrivalAirport == gblOrigin).toList();
+    } else if( brew == 'a' || brew == 'd') {
+      fs = gblFlightStatuss!.flights.where((element) =>
+      element.departureAirport == gblOrigin ).toList();
+    } else if (brew == 'r') {
+      fs = gblFlightStatuss!.flights.where((element) =>
+      element.departureAirport == gblOrigin &&
+          element.schArrivalAirport == gblDestination).toList();
+    } else {
+      String fltNo = _fltNoEditingController.text;
+      gblFltNo = fltNo;
+      fs = gblFlightStatuss!.flights.where((element) => element
+          .flightNumber == fltNo).toList();
+
+    }
+    var sorted = fs.toList();
+
+  fs.forEach((flight) {
+    if(flight.departureAirportName == flight.schArrivalAirportName ) {
+      // ignore
+    } else {
+      String depTime = '';
+      String depDate = '';
+      String arTime = '';
+      String arDate = '';
+      if (flight.schDepartureTime != '' &&
+          flight.schDepartureTime.contains(' ')) {
+        depTime = flight.schDepartureTime.split(' ')[0];
+        depDate = flight.schDepartureTime.split(' ')[1].replaceAll('-', '');
+      }
+      if (flight.schArrivalTime != '' &&
+          flight.schArrivalTime.contains(' ')) {
+        arTime = flight.schArrivalTime.split(' ')[0];
+        arDate = flight.schArrivalTime.split(' ')[1].replaceAll('-', '');
+      }
+      if( dDate == '') dDate = depDate;
+      List<DataCell> cells = [];
+      cells.add(DataCell(Text(flight.airlineCode + flight.flightNumber)));
+      if( brew == 'a' ) {
+        cells.add(DataCell(Text(flight.departureAirportName)));
+      }
+      if(  brew == 'r') {
+        cells.add(DataCell(
+            Column(
+                children: [
+                  Text(flight.departureAirportName),
+                  Text(flight.schArrivalAirportName)
+                ]
+            ))
+        );
+      }
+      if( dDate != depDate) {
+        cells.add(DataCell(Column( children: [Text(depTime), Text(depDate)])));
+      } else {
+        cells.add(DataCell(Text(depTime)));
+      }
+      if( brew == 'd' ) {
+        cells.add(DataCell(Text(flight.schArrivalAirportName)));
+      }
+      if( dDate != arDate) {
+        cells.add(DataCell(Column( children: [Text(arTime), Text(arDate)])));
+      } else {
+        cells.add(DataCell(Text(arTime)));
+      }
+      String status = '';
+      if(flight.arrivalStatus == 'As Scheduled'){
+        status = flight.departureStatus;
+      } else {
+        status = flight.arrivalStatus;
+      }
+      Color clr = Colors.green;
+      if( status.contains('Sched')){
+        clr = Colors.black54;
+      } else if( status.contains('Exp')){
+        clr = Colors.blue;
+      } else if( status.contains('Can')){
+        clr = Colors.red;
+      }
+      cells.add(DataCell(Text(status,style: TextStyle(color: clr),)));
+      list.add(DataRow(cells: cells));
+    }
+  });
+  return list;
+}
 
 
 
@@ -232,21 +328,30 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       }
     });
 
-    return Container(
-        height: 500,
+    return
+      SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+      Container(
+        //height: 500,
         padding: EdgeInsets.only(top: 10),
         child: SingleChildScrollView( child:
-             DataTable(
+        SizedBox.expand(
+            child:
+            DataTable(
                horizontalMargin: 5.0,
                columnSpacing: 10.0,
                headingRowHeight: 40,
               headingTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
              //dataRowMaxHeight: 40,
              headingRowColor:   WidgetStateColor.resolveWith((states) => Colors.black),
-        columns:  cols,
+        columns:  getCols(brew),
     rows: list
-
+            )
     ))
+    )
+      ])
     );
 
 
@@ -280,6 +385,30 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     }
         ) ;
   }
+
+  List <DataColumn> getCols(String brew){
+    List <DataColumn> cols = [];
+    cols.add(DataColumn( label: Container( color: Colors.black, child: Text('Flight',)),));
+    if( brew == 'a') {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Departs',)),));
+    }
+    if(  brew == 'r') {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Route',)),));
+    }
+    cols.add(DataColumn( label: getnamedIcon('takeOff', color: Colors.white),));
+    if( brew == 'd' ) {
+      cols.add(DataColumn(
+        label: Container(color: Colors.black, child: Text('Arrives',)),));
+    }
+    cols.add(DataColumn( label: getnamedIcon('landing', color: Colors.white),));
+    cols.add(DataColumn( label: Container( color: Colors.black, child: Text('Status',)),));
+
+    return cols;
+  }
+
+
 
 
   Widget getFlight(FlightStatus fs, int index ){
@@ -361,7 +490,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
         color: Colors.black12,
         padding: EdgeInsets.all(5),
         child: Column(
-          
+
         children: list
       )
     );
@@ -386,20 +515,51 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     }
     if( brew == 'r') {
       searchBoxes.add( Padding(padding: EdgeInsets.only(bottom: 5),));
-          searchBoxes.add( GestureDetector(
-          onTap: () async {
-        //departureCode == 'null' || departureCode == ''
-        gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
-            ? print('Pick departure city first')
-            : await arrivalSelection(context);
-      },
-    child: getFlyTo(context, setState, 'Arrives', false, bWantWide: false),
-    ));
+      searchBoxes.add( GestureDetector(
+        onTap: () async {
+          //departureCode == 'null' || departureCode == ''
+          gblSearchParams.searchOriginCode == 'null' || gblSearchParams.searchOriginCode == ''
+              ? print('Pick departure city first')
+              : await arrivalSelection(context);
+        },
+        child: getFlyTo(context, setState, 'Arrives', false, bWantWide: false),
+      ));
+    } else {
+      searchBoxes.add(Padding(padding: EdgeInsets.only(left: 100)));
     }
 
     bool disabled = (gblOrigin == '') ? true : false;
 
     if( brew == 'r') disabled = (gblDestination == '' || gblOrigin == '') ? true : false;
+
+
+    return
+      SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child:
+            Column(
+                children: [
+                  Padding(padding: EdgeInsets.all(40)),
+                //Text('top'),
+                Row(mainAxisAlignment: brew == 'a' ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+                    children: searchBoxes),
+            DataTable(
+      columnSpacing: (MediaQuery.of(context).size.width / 10) * 0.5,
+      dataRowHeight: 80,
+                headingTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                //dataRowMaxHeight: 40,
+                headingRowColor:   WidgetStateColor.resolveWith((states) => Colors.black),
+      columns: getCols(brew) ,
+      rows: getRows(brew)
+    )])
+    )
+    );
+
+
+
+
 
     return Container(
       padding: EdgeInsets.all(10),

@@ -18,7 +18,7 @@ class GetericListPageWidget extends StatefulWidget {
   GetericListPageWidget(this.listType);
   // : super(key: key);
 
-  String listType;
+  final String listType;
 
 
   GetericListPageWidgetState createState() =>      GetericListPageWidgetState();
@@ -31,12 +31,14 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
   bool wantTitle2 = false;
 
   @override void initState() {
+    super.initState();
     _loadingInProgress = true;
 
     switch(widget.listType.toUpperCase()) {
       case 'NEWS':
         title = 'NEWS';
         wantTitle2 = true;
+        loadData();
         break;
       case 'VOUCHERS':
         _loadingInProgress = false;
@@ -45,7 +47,6 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
         break;
     }
 
-    loadData();
   }
 
 
@@ -77,6 +78,7 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
     if (_loadingInProgress) {
       return getProgressMessage('Loading...', '');
     }
+
     if( gblError != ''){
 
     }
@@ -86,17 +88,30 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
 
   Widget getResults(){
 
-    var set = Set<String>();
+    //var set = Set<String>();
+    String sError ='';
     int len = 0;
     double pad = 0;
     switch(widget.listType.toUpperCase()){
       case 'NEWS':
-        len = news.items == null ? 0 : news.items.length;
+        sError = 'No NEWS available';
+        len =  news.items.length;
         break;
       case 'VOUCHERS':
-        len = gblFopVouchers!.vouchers.length;
-        pad = 10;
+        sError = 'No Vouchers available';
+        if( gblFopVouchers != null ) {
+          len = gblFopVouchers!.vouchers.length;
+          pad = 10;
+        }
         break;
+    }
+
+    if( len == 0){
+      return getAlertDialog(context, title, sError, setState, onComplete: () {
+        setState(() {});
+      },
+          type: DialogType.Information,wantActions: false);
+
     }
 
 
@@ -283,7 +298,6 @@ class News {
           //  List<Map<dynamic>> map = json['item'];
             //int count = map.length;
             json['item'].forEach((v) {
-            Map m = v;
             items.add(new NewsItem.fromJson(v));
           });
           } catch(e) {
@@ -291,12 +305,12 @@ class News {
           }
         } else  if (json['item'] is Map) {
           try {
-            List<Map<String, dynamic>> map = json['item'];
+            //List<Map<String, dynamic>> map = json['item'];
           } catch(e) {
 
           }
             json['item'].forEach((v) {
-              Map m = v;
+              //Map m = v;
 
               items.add(new NewsItem.fromJson(v));
             });

@@ -64,6 +64,7 @@ void configKG() {
     //wantMaterialControls: true,
     wantPageImages: false,
     wantTallPageImage: false,
+    bpShowAddPassToWalletButton: true,
 
     currency: 'USD',
     airlineName: "Key Lime",
@@ -74,7 +75,7 @@ void configKG() {
     buttonStyle: 'RO2',
 
     termsAndConditionsUrl:  "https://denverairconnection.com/mobile/contract-of-carriage/",
-    privacyPolicyUrl:  " https://denverairconnection.com/mobile/privacy/",
+    privacyPolicyUrl:  "https://denverairconnection.com/mobile/privacy/",
     faqUrl: "https://denverairconnection.com/mobile/frequently-asked-questions/",
     contactUsUrl: "https://denverairconnection.com/mobile/contact-us/",
 //    locale:  'en-EN',
@@ -85,7 +86,7 @@ void configKG() {
 //    backgroundImageUrl:  "",
 //    hostBaseUrl: 'https://customertest.videcom.com/AirLeap/VARS/public',
     iOSAppId:  '1457545908',
-    androidAppId:   'com.keylime.booking', //  'se.airleap.booking',
+    androidAppId:  'com.denverairconnection.booking', // 'com.keylime.booking',
     gblLanguages: '',
     wantEnglishTranslation: false,
     want24HourClock: true,
@@ -106,7 +107,7 @@ void configKG() {
 
     eVoucher:  true,
     wantUmnr: true,
-    fqtvName:  "Air Club",
+    fqtvName:  "Denver Air Club",
     wantFQTV: true,
     wantFQTVNumber: true,
     appFeedbackEmail:  "",
@@ -141,6 +142,7 @@ void configKG() {
     testSmartApiUrl:  "https://customertest.videcom.com/keylimeAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/keylimeAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/keylimeAir/VARS/webApiV2/api/',
+ //   testApiUrl:      'http://10.0.2.2:5000/api/',
     testCreditCardProvider: 'videcard',
 
     wantLeftLogo: false,

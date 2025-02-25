@@ -3,11 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:settings_ui/settings_ui.dart';
 
+import '../components/trText.dart';
+import '../data/globals.dart';
+import '../data/models/dialog.dart';
+import '../dialogs/smartDialog.dart';
+import '../utilities/helper.dart';
+import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3CustomPage.dart';
+import '../v3pages/controls/V3Constants.dart';
 import '../v3pages/homePageHelper.dart';
 import '../v3pages/v3BottomNav.dart';
 import 'menu.dart';
+
 
 const rowDivider = SizedBox(width: 20);
 const colDivider = SizedBox(height: 10);
@@ -66,16 +75,22 @@ class DebugPageState extends State<DebugPage> {
   @override
   Widget build(BuildContext context) {
 
-
+    String title = '';
     Widget body = Text('Loading...');
     if( homePage != null ){
       body = getCustomPageBody(context, homePage as CustomPage , doCallback);
     }
+    if( widget.name == 'ADMIN'){
+      title = 'Mobile App Admin';
+      body = getAdminBody();
+    }
 
     return Scaffold(
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         extendBody: true,
-        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0,
+        appBar: appBar(context,
+          title,
+          PageEnum.summary,
         ),
         endDrawer: new DrawerMenu(),
         bottomNavigationBar: getV3BottomNav(context),
@@ -100,6 +115,110 @@ class DebugPageState extends State<DebugPage> {
 
     }
 
+  }
+  bool isSwitched = false;
+  bool isSwitched2 = true;
+  Widget getAdminBody(){
+    return SettingsList(
+      sections: [
+        SettingsSection(
+          //titlePadding: EdgeInsets.all(20),
+          title: Text('Section 1'),
+          tiles: [
+            SettingsTile(
+              title: Text('Dark Site'),
+              //subtitle: 'English',
+              leading: Icon(Icons.dark_mode),
+              onPressed: (BuildContext context) {
+                logit('Section DarkSite click');
+                setGblValue('dark', gblSettings.wantDarkSite.toString());
+                DialogDef dialog = new DialogDef(caption: 'Dark site configuration',
+                    actionText: 'Save',
+                    action: 'DoDarkSiteAdmin');
+                dialog.fields.add(
+                    new DialogFieldDef(field_type: 'switch', caption: 'enabled', initialValue: 'dark' ));
+                dialog.fields.add(
+                    new DialogFieldDef(field_type: 'edittext', caption: 'message', initialValue: gblSettings.darkSiteMessage));
+                dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+
+                gblCurDialog = dialog;
+                showSmartDialog(context, null, () {
+                  setState(() {});
+                });
+              },
+            ),
+          ],
+        ),
+        SettingsSection(
+//          titlePadding: EdgeInsets.all(20),
+          title: Text('New Features'),
+          tiles: [
+/*
+            SettingsTile(
+              title: Text('Progress Animation'),
+              leading: Icon(Icons.animation),
+              onPressed: (BuildContext context) {},
+            ),
+*/
+            SettingsTile.switchTile(
+              initialValue: gblSettings.wantCustomAnimations,
+              title: Text('Custom Progress Animation'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplanemode_inactive),
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantCustomAnimations = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('News'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.phone_android),
+              initialValue: gblSettings.wantNews,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantNews = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Flight Status'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplanemode_active),
+              initialValue: gblSettings.wantFlightStatus,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantFlightStatus = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Vouchers'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplane_ticket_outlined),
+              initialValue: gblSettings.wantFopVouchers,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantFopVouchers = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Help centre'),
+              activeSwitchColor: Colors.red,
+              leading: Icon(Icons.help_center),
+              initialValue: gblSettings.wantHelpCentre,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantHelpCentre = value;
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );;
   }
 
 Widget getBottomNav() {

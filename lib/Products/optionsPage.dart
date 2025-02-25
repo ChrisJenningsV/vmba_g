@@ -35,7 +35,11 @@ class _OptionsWidgetState extends State<SeatsAndOptionsPageWidget> {
   Widget build(BuildContext context) {
 
     if( gblSettings.wantSeatsWithProducts == false && gblSettings.wantNewSeats){
-      return SeatPlanWidget(rloc: gblPnrModel!.pNR.rLOC,);
+      if( gblPnrModel != null ) {
+        return SeatPlanWidget(rloc: gblPnrModel!.pNR.rLOC,);
+      } else {
+        logit('gblPnrModel is null ');
+      }
     }
 
 

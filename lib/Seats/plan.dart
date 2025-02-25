@@ -5,9 +5,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vmba/Seats/seatLayout.dart';
 import 'package:vmba/components/vidButtons.dart';
-import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
-import 'package:vmba/mmb/widgets/seatComponents/wing.dart';
+import 'package:vmba/seats/seat.dart';
+import 'package:vmba/seats/wing.dart';
 import 'package:vmba/mmb/widgets/seatplan.dart';
 
 import '../../../calendar/flightPageUtils.dart';
@@ -20,6 +21,10 @@ import '../../../data/models/seatplan.dart';
 import '../../../utilities/helper.dart';
 import '../../../utilities/widgets/snackbarWidget.dart';
 import '../../../v3pages/v3Theme.dart';
+import '../Helpers/settingsHelper.dart';
+
+// seat layouts / seat plans found at https://www.aerolopa.com/lm-e45
+
 
 double cellSize = 45.0; //28.0;
 double cellFontSize = 13.0;
@@ -49,16 +54,17 @@ class RenderSeatPlan2 extends StatefulWidget {
 
   _RenderSeatPlanSeatState2 createState() => _RenderSeatPlanSeatState2();
 }
+String acceptTermsText =
+    'This seat is a priority for customers with reduced mobility. As such you may be moved if this seat is required for that purpose. If moved, your seat charge will be refunded.';
+String notAllowEmergencySeatingText =
+    'Infants can not select this seat';
+
+List<String> gblSelectedSeats = [];
 
 class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   Seat? selectedSeat;
-  String acceptTermsText =
-      'This seat is a priority for customers with reduced mobility. As such you may be moved if this seat is required for that purpose. If moved, your seat charge will be refunded.';
-  String notAllowEmergencySeatingText =
-      'Infants can not select this seat';
 
   PaxList? paxlist;
-  List<String> selectedSeats = [];
 
   // List<String>();
   ScrollController? _controller;
@@ -92,6 +98,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     showkey = true;
     loadData();
     logit('got it');
+    gblSeatplan = widget.seatplan;
   }
 
   emergencySeatSelection(BuildContext context, String selectedSeat) {
@@ -150,8 +157,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
 
   void loadData() {
     paxlist = new PaxList();
+    gblSelectedSeats = [];
     paxlist!.init(widget.pax);
-    paxlist!.list!.forEach((f) => selectedSeats.add(f.seat));
+    paxlist!.list!.forEach((f) => gblSelectedSeats.add(f.seat));
 
     gblSeatPlanDef = this.widget.seatplan.getPlanDataTable();
   }
@@ -344,9 +352,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       }
 
       String price = 'Included';
-      if( seat.sScprice != '' && seat.sScprice != '0') {
+      if (seat.sScprice != '' && seat.sScprice != '0') {
         price = formatPrice(seat.sCur, double.parse(seat.sScprice)) +
-              ' ' + seat.sScinfo;
+            ' ' + seat.sScinfo;
       }
 
       paxes.add(ListTile(
@@ -356,10 +364,10 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
               children: [
                 // seat no
                 (p.seat != '') ? Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: _getSeat(
-                        Seat(sCode: p.seat, sCellDescription: 'Seat'), false,
-                        SeatSize.medium, noCode: true), ) : Container(),
+                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                  child: getSeat2(
+                      Seat(sCode: p.seat, sCellDescription: 'Seat'), false,
+                      SeatSize.medium, noCode: true, occupant: this.paxlist!.getOccupant(seat!.sCode, seat, widget.rloc)),) : Container(),
                 // name
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,14 +389,16 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                       // select pax for this seat
 
                       logit(
-                          'pax ${params!.paxNo} ${params.action} ${paxlist!.list![params.paxNo].name} to seat ${seat
+                          'pax ${params!.paxNo} ${params.action} ${paxlist!
+                              .list![params.paxNo].name} to seat ${seat
                               .sCode}');
-                      if( params.action.toLowerCase() == 'release' ){
+                      if (params.action.toLowerCase() == 'release') {
                         paxlist!.releaseSeat(seat.sCode);
                       } else {
                         paxlist!.releaseSeat(seat.sCode);
                         paxlist!.list![params.paxNo].selected = true;
                         paxlist!.list![params.paxNo].seat = seat.sCode;
+                        gblSelectedSeats!.add(seat.sCode);
                       }
                       setState2(() {
 
@@ -439,8 +449,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         }
         paxIndex++;
       });
-      selectedSeats.clear();
-      paxlist!.list!.forEach((f) => selectedSeats.add(f.seat));
+      gblSelectedSeats.clear();
+      paxlist!.list!.forEach((f) => gblSelectedSeats.add(f.seat));
     });
 
     String message = '${translate('Seat')} $_seatNumber ${translate(
@@ -513,6 +523,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       );
     }
 
+    return seatsByPosition();
+
     return Container(
         margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -521,9 +533,13 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           //border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
           borderRadius: BorderRadius.all(
               Radius.circular(10.0)),
-          color: gblSettings.seatPlanStyle.contains('I') ? null : gblSystemColors.seatPlanBackColor,
+          color: gblSettings.seatPlanStyle.contains('I')
+              ? null
+              : gblSystemColors.seatPlanBackColor,
           image: gblSettings.seatPlanStyle.contains('I') ?
-            DecorationImage(image: AssetImage('lib/assets/images/sky.png') as ImageProvider, fit: BoxFit.fill) : null ,
+          DecorationImage(
+              image: AssetImage('lib/assets/images/sky.png') as ImageProvider,
+              fit: BoxFit.fill) : null,
         ),
         child: Column(children: renderSeats(
             rows, minCol, maxCol, widget.rloc, widget.cabin))
@@ -582,7 +598,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     bool selectableSeat = true;
     bool hasWings = this.widget.seatplan.hasWings();
     int leftWingIndex = this.widget.seatplan.getLeftWing();
-    int rightWingIndex = this. widget.seatplan.getRightWing();
+    int rightWingIndex = this.widget.seatplan.getRightWing();
 
 
     // get max no cols
@@ -599,7 +615,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           .toList();
       if (seats == null) {} else {
         seats.sort((a, b) => a.sRow.compareTo(b.sCol));
-
       }
       // check for large plane
       if (maxCol > 8) {
@@ -611,7 +626,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       }
       bool dumpSeats = true;
       String dumpMsg = '$indexRow ';
-      if(indexRow < 10 ) dumpMsg = ' $indexRow ';
+      if (indexRow < 10) dumpMsg = ' $indexRow ';
 
       row = [];
       String leftWing = 'f';
@@ -645,15 +660,19 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           }
         });
 
+        if (seat != null && seat!.sRLOC != null && seat!.sRLOC != '') {
+          logit('s=${seat!.sCode} r=${seat!.sRLOC}');
+        }
 
-        if( indexColumn == leftWingIndex && (seat == null || seat!.sCellDescription == '') ) {
+        if (indexColumn == leftWingIndex &&
+            (seat == null || seat!.sCellDescription == '')) {
 //          row.add(getWingPath(context, 'f', 50, 45, true));
-        } else  if( indexColumn == rightWingIndex && (seat == null || seat!.sCellDescription == '') ) {
-  //          row.add(getWingPath(context, 'f', 50, 45, false));
-        } else
-          if (seat == null && indexRow != 1) {
+        } else if (indexColumn == rightWingIndex &&
+            (seat == null || seat!.sCellDescription == '')) {
+          //          row.add(getWingPath(context, 'f', 50, 45, false));
+        } else if (seat == null && indexRow != 1) {
           dumpMsg += ' n ';
-          if ( nullSeatNoSpace) {
+          if (nullSeatNoSpace) {
             row.add(Padding(
               padding: EdgeInsets.all(0),
             ));
@@ -692,44 +711,44 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             seat!.sCellDescription == 'Wing Start' ||
             seat!.sCellDescription == 'Wing Middle' ||
             seat!.sCellDescription == 'Wing End' ||
-            seat!.sCellDescription == 'DoorDown'||
+            seat!.sCellDescription == 'DoorDown' ||
             seat!.sCellDescription == 'DoorUp') {
-
           String seatTxt = '';
           Widget? pathWidget = null;
 
-          if( gblSettings.seatPlanStyle!= null &&  gblSettings.seatPlanStyle.contains('W') ){
-              switch(seat!.sCellDescription) {
-                case 'SeatPlanWidthMarker':
-                  seatTxt = 'w';
-                  indexColumn < 3 ? leftWing = 'w' : rightWing = 'w';
-                  break;
-                case 'Wing Start':
-                  seatTxt = 's';
-                  indexColumn < 3 ? leftWing = 's' : rightWing = 's';
-                  pathWidget = getWingPath(context, 's', 50, 45, indexColumn < 3);
-                  break;
-                case 'Wing Middle':
-                  pathWidget = getWingPath(context, 'm', 50, 45, indexColumn < 3);
-                  indexColumn < 3 ? leftWing = 'm' : rightWing = 'm';
-                  seatTxt = 'm';
-                  break;
-                case 'Wing End':
-                  pathWidget = getWingPath(context, 'e', 50, 45, indexColumn < 3);
-                  indexColumn < 3 ? leftWing = 'e' : rightWing = 'e';
-                  seatTxt = 'e';
-                  break;
-                case 'DoorDown':
-                  pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
-                  indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
-                  seatTxt = 'd';
-                  break;
-                case 'DoorUp':
-                  pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
-                  indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
-                  seatTxt = 'u';
-                  break;
-              }
+          if (gblSettings.seatPlanStyle != null &&
+              gblSettings.seatPlanStyle.contains('W')) {
+            switch (seat!.sCellDescription) {
+              case 'SeatPlanWidthMarker':
+                seatTxt = 'w';
+                indexColumn < 3 ? leftWing = 'w' : rightWing = 'w';
+                break;
+              case 'Wing Start':
+                seatTxt = 's';
+                indexColumn < 3 ? leftWing = 's' : rightWing = 's';
+                pathWidget = getWingPath(context, 's', 50, 45, indexColumn < 3);
+                break;
+              case 'Wing Middle':
+                pathWidget = getWingPath(context, 'm', 50, 45, indexColumn < 3);
+                indexColumn < 3 ? leftWing = 'm' : rightWing = 'm';
+                seatTxt = 'm';
+                break;
+              case 'Wing End':
+                pathWidget = getWingPath(context, 'e', 50, 45, indexColumn < 3);
+                indexColumn < 3 ? leftWing = 'e' : rightWing = 'e';
+                seatTxt = 'e';
+                break;
+              case 'DoorDown':
+                pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
+                seatTxt = 'd';
+                break;
+              case 'DoorUp':
+                pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
+                seatTxt = 'u';
+                break;
+            }
           }
 
           /*row.add(pathWidget ??
@@ -748,9 +767,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             ((seat!.sCabinClass != widget.cabin) && widget.cabin != '')) {
           rowHasSeats = true;
           row.add(hookUpSeat(seat, false, false, gblSeatPlanDef!.seatSize));
-
         } else {
-
           var color;
           dumpMsg += '${seat!.sCode} ';
           switch (seat!.sCellDescription) {
@@ -763,7 +780,11 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
               } else {
                 color = gblSystemColors.seatPlanColorAvailable;
               }
+              if (seat!.sRLOC != '') {
+                SeatType.selected;
+              }
               break;
+
             default:
               if (seat!.noInfantSeat) {
                 color = gblSystemColors.seatPlanColorRestricted;
@@ -774,13 +795,13 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           }
 
           //Is the seat already selected by one of the pax
-          if (selectedSeats.contains(seat!.sCode)) {
+          if (gblSelectedSeats.contains(seat!.sCode)) {
             color = gblSystemColors.seatPlanColorSelected;
             selectableSeat = false;
           }
           bool selected = false;
-          if (selectedSeats != null && seat != null && seat!.sCode != '' &&
-              selectedSeats.contains(seat!.sCode)) {
+          if (gblSelectedSeats != null && seat != null && seat!.sCode != '' &&
+              gblSelectedSeats.contains(seat!.sCode)) {
             selected = true;
           }
 
@@ -818,64 +839,81 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           // check if
 
           obj.add(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                (hasWings && gblSettings.seatPlanStyle.contains('W')) ? getWingPath(context, 'f', 50, 45, true) : Container(),
-              Expanded( child: Container(
-              color: gblSettings.seatPlanStyle.contains('I') ? gblSystemColors.seatPlanBackColor : null,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(padding: EdgeInsets.all(5)),
-             Container(
-               margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0,
-                        color: gblSystemColors.seatPriceColor as Color),
-                    left: BorderSide(width: 2.0, color: gblSystemColors.seatPriceColor as Color),
-                    right: BorderSide(width: 2.0, color: gblSystemColors.seatPriceColor as Color),
-                  )),
-              child: Center(
-                child: Text(
-                  formatPrice(currencyCode, double.parse(currentSeatPrice)) +
-                      '\n ' + currentSeatPriceLabel,
-                  style: TextStyle(color: gblSystemColors.seatPriceColor as Color),
-                ),
-                //' Seat Charge'),
-              ),
-            ),
-          ]))),
-                (hasWings && gblSettings.seatPlanStyle.contains('W')) ? getWingPath(context, 'f', 50, 45, false) : Container(),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    (hasWings && gblSettings.seatPlanStyle.contains('W'))
+                        ? getWingPath(context, 'f', 50, 45, true)
+                        : Container(),
+                    Expanded(child: Container(
+                        color: gblSettings.seatPlanStyle.contains('I')
+                            ? gblSystemColors.seatPlanBackColor
+                            : null,
+                        child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(padding: EdgeInsets.all(5)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(width: 2.0,
+                                          color: gblSystemColors
+                                              .seatPriceColor as Color),
+                                      left: BorderSide(width: 2.0,
+                                          color: gblSystemColors
+                                              .seatPriceColor as Color),
+                                      right: BorderSide(width: 2.0,
+                                          color: gblSystemColors
+                                              .seatPriceColor as Color),
+                                    )),
+                                child: Center(
+                                  child: Text(
+                                    formatPrice(currencyCode,
+                                        double.parse(currentSeatPrice)) +
+                                        '\n ' + currentSeatPriceLabel,
+                                    style: TextStyle(color: gblSystemColors
+                                        .seatPriceColor as Color),
+                                  ),
+                                  //' Seat Charge'),
+                                ),
+                              ),
+                            ]))),
+                    (hasWings && gblSettings.seatPlanStyle.contains('W'))
+                        ? getWingPath(context, 'f', 50, 45, false)
+                        : Container(),
 
-              ]
-            )
+                  ]
+              )
           );
         }
         previousSeatPrice = currentSeatPrice;
       }
-      if( dumpSeats) {
+      if (dumpSeats) {
         logit(dumpMsg);
       }
-      if( rowHasSeats) {
+      if (rowHasSeats) {
         obj.add(
-          Row(
-            children: [
-                gblSettings.seatPlanStyle.contains('W') ? getWingPath(context, leftWing, 50, 45, true) : Container(),
-            Expanded( child:Container(
-              color: gblSettings.seatPlanStyle.contains('I') ? gblSystemColors.seatPlanBackColor : null,
-            child:
-            new Row(
-          children: row,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ))
-            ),
-            gblSettings.seatPlanStyle.contains('W') ? getWingPath(context, rightWing, 50, 45, false) : Container()
-    ]
-    ));
+            Row(
+                children: [
+                  gblSettings.seatPlanStyle.contains('W') ? getWingPath(
+                      context, leftWing, 50, 45, true) : Container(),
+                  Expanded(child: Container(
+                      color: gblSettings.seatPlanStyle.contains('I')
+                          ? gblSystemColors.seatPlanBackColor
+                          : null,
+                      child:
+                      new Row(
+                        children: row,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ))
+                  ),
+                  gblSettings.seatPlanStyle.contains('W') ? getWingPath(
+                      context, rightWing, 50, 45, false) : Container()
+                ]
+            ));
       }
     }
     obj.add(new Padding(
@@ -984,7 +1022,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           );
         }
         previousSeatPrice = currentSeatPrice;
-      }*//*
+      }*/ /*
 
       row.add(VerticalDivider(width: 2,
         color: Colors.amber,
@@ -1042,6 +1080,31 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     return obj;
   }
 */
+  Widget dummySeat(String id, Color clr) {
+    return Container(
+      alignment: Alignment.center,
+      width: seatWidth,
+      height: seatHeight,
+      decoration: BoxDecoration(
+        border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
+        borderRadius: BorderRadius.all(
+            Radius.circular(3.0)),
+        color: clr,
+      ),
+      child: Text(id),
+    );
+  }
+
+  Widget seatsByPosition() {
+    return Expanded(
+        child: SingleChildScrollView(
+            child: Stack(
+              children:
+              AddSeats(context, hookUpSeat),
+            )
+        )
+    );
+  }
 
 
   Widget _getSeatPriceInfo() {
@@ -1061,21 +1124,20 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       ],));
   }
 
-  Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat,
-      SeatSize seatSize) {
+  Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat,SeatSize seatSize) {
     return Padding(
         padding: EdgeInsets.all(cellPadding),
         child: GestureDetector(
-          child: _getSeat(seat, selected, seatSize),
+          child: getSeat2(seat, selected, seatSize),
           onTap: () {
-            if (selectableSeat && !selectedSeats.contains(seat!.sCode)) {
+            if (selectableSeat && !gblSelectedSeats.contains(seat!.sCode)) {
               selectPaxForSeat(context, seat!);
             }
           },
         ));
   }
-
-  Widget _getSeat(Seat? seat, bool selected, SeatSize seatSize, {bool noCode=false}) {
+}
+  Widget  getSeat2(Seat? seat, bool selected, SeatSize seatSize, {bool noCode=false, String occupant=''}) {
     SeatType seatType = SeatType.occupied;
     if (seat == null) {
       return Container();
@@ -1089,6 +1151,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         break;
       case 'EmergencySeat':
         seatType = SeatType.emergency;
+        if (selected) seatType = SeatType.selected;
+        if( seat!.sRLOC != '' ) SeatType.selected;
         break;
       case 'Seat':
         if (seat!.noInfantSeat) {
@@ -1097,6 +1161,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           seatType = SeatType.available;
         }
         if (selected) seatType = SeatType.selected;
+        if( seat!.sRLOC != '' ) SeatType.selected;
         break;
       default:
         if (seat!.noInfantSeat) {
@@ -1108,16 +1173,21 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         break;
     }
     String code = seat!.sCode;
-    if( noCode == false) code = this.paxlist!.getOccupant(code);
-    if( code != seat!.sCode){
-      // occupied seat
-      seatType = SeatType.selected;
+    if( noCode == false) {
+
+      String oCode = occupant;
+      if( oCode != '' ) code = oCode;
+    }
+      if( code != '' &&  code != seat!.sCode){
+        // occupied seat
+        seatType = SeatType.selected;
+      }
+
+
+      return seat2(code, seatType, seatSize);
     }
 
 
-    return seat2(code, seatType, seatSize);
-  }
-}
 
 Widget getSeatplanTitle() {
   Itin flt = gblPnrModel!.pNR.itinerary.itin[gblCurJourney];

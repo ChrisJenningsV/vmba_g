@@ -71,6 +71,9 @@ class Settings {
   bool wantUnlock = false;
   bool wantHelpCentre;
   bool wantLocation;
+  bool wantAdminLogin;
+  bool wantDarkSite;
+  bool darkSiteEnabled;
   bool wantGeoLocationHopePage;
   bool wantNewDialogs;
   bool wantFindBookings = false;
@@ -168,6 +171,7 @@ class Settings {
   bool wantFqtvAddress;
   bool wantFqtvDob;
   bool wantFqtvPassport;
+  bool wantCustomAnimations;
 
   String fqtvName="";
   String fQTVpointsName = 'airmiles';
@@ -212,6 +216,7 @@ class Settings {
   String debugPassword='';
   String seatPlanStyle='';
   String defaultTraveller;
+  String darkSiteMessage;
 
   String customMenu1='';
   String customMenu2='';
@@ -317,6 +322,7 @@ bool bpShowFastTrack;
     this.wantFqtvDob = false,
     this.wantFqtvAddress = false,
     this.wantFqtvPassport = false,
+    this.wantCustomAnimations = false,
     this.wantFlightStatus = false,
     this.wantNews = false,
     this.wantFopVouchers = false,
@@ -394,6 +400,9 @@ bool bpShowFastTrack;
     this.wantUnlock = false,
     this.wantHelpCentre = false,
     this.wantLocation = false,
+    this.wantDarkSite = false,
+    this.darkSiteEnabled = false,
+    this.wantAdminLogin = false,
     this.wantGeoLocationHopePage = false,
     this.wantNewDialogs = false,
 
@@ -412,6 +421,7 @@ bool bpShowFastTrack;
     this.styleVersion = 1,
     this.seatPlanStyle = '',
     this.defaultTraveller = 'Traveller',
+    this.darkSiteMessage = '',
 
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,

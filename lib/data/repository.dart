@@ -19,6 +19,7 @@ import '../utilities/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
 import '../v3pages/homePageHelper.dart';
+import 'audit.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -102,6 +103,7 @@ class Repository {
               profile.value.toString().replaceAll(
                   "'", '"')); // .replaceAll(',}', '}')
             gblPassengerDetail = PassengerDetail.fromJson(map);
+            AuditManager.add('initFqtv loaded PAX1', gblPassengerDetail );
 
             if( gblPassengerDetail!= null &&
                 gblPassengerDetail!.fqtv != null && gblPassengerDetail!.fqtv.isNotEmpty &&
@@ -350,7 +352,7 @@ class Repository {
               Map<String, dynamic> json = jsonDecode(map['contacts']);
               gblContacts = PaxContacts.fromJson(json);
             }
-            if( map['nextTripPnr'] != null ) {
+            if( map['nextTripPnr'] != null && map['nextTripPnr'] != '' ) {
               logit('got next pnr');
               String pnrJson =map['nextTripPnr'];
               pnrJson =  pnrJson.replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
@@ -363,7 +365,7 @@ class Repository {
             }
 
           } catch(e) {
-            logit('Error loading cities ${e.toString()}');
+            logit('Error loading next trip ${e.toString()}');
           }
 
           gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
@@ -507,6 +509,9 @@ class Repository {
                   case'productimagemode':
                     gblSettings.productImageMode = item['value'];
                     break;
+                  case 'darkSiteMessage':
+                    gblSettings.darkSiteMessage = item['value'];
+                    break;
 
 
                 /*
@@ -558,6 +563,12 @@ class Repository {
                     break;
                   case 'wantLocation':
                     gblSettings.wantLocation = parseBool(item['value']);
+                    break;
+                  case 'wantdarkSite':
+                    gblSettings.wantDarkSite = parseBool(item['value']);
+                    break;
+                  case 'darkSiteEnabled':
+                    gblSettings.darkSiteEnabled = parseBool(item['value']);
                     break;
 
                   case 'wantPriceCalendar':

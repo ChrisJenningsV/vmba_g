@@ -20,9 +20,9 @@ class FormParams {
 
 
 class SmartDialogHostPage extends StatefulWidget {
-  SmartDialogHostPage({ required this.formParams});
+  SmartDialogHostPage({ this.formParams = null});
   // : super(key: key);
-  final FormParams formParams;
+  final FormParams? formParams;
 
   SmartDialogHostPageState createState() =>
       SmartDialogHostPageState();
@@ -34,20 +34,22 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
   @override
   Widget build(BuildContext context) {
 
-    DialogDef dialog = new DialogDef(caption: widget.formParams.formTitle);
+    DialogDef dialog = new DialogDef(caption: widget.formParams!.formTitle);
 
-    switch (widget.formParams.formName) {
+    switch (widget.formParams!.formName) {
       case 'FQTVRESET':
         DialogDef dialog = new DialogDef(caption: 'Reset Password', actionText: 'Continue', action: 'DoFqtvReset');
         dialog.fields.add(new DialogFieldDef(field_type: 'space'));
         dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
         dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+        gblCurDialog = dialog;
 
-        return smartDialogPage(context, dialog,null, (){ setState(() {}); });
+        return smartDialogPage();
 
       case 'FQTVREGISTER':
         dialog.width = 'full';
-        return smartDialogPage(context, dialog, _body(),  (){ setState(() {}); });
+        gblCurDialog = dialog;
+        return smartDialogPage( content:  _body());
 
       case 'NEWINSTALLSETTINGS':
         //gblValidationEmail = '';
@@ -58,8 +60,8 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
         // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
         dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
         dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-
-        return smartDialogPage(context, dialog,null, (){ setState(() {}); });
+        gblCurDialog = dialog;
+        return smartDialogPage();
 
       case 'VALIDATEPIN':
         DialogDef dialog = new DialogDef(caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
@@ -69,13 +71,14 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
         dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
         dialog.fields.add(new DialogFieldDef(field_type: 'space'));
         dialog.foot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
+        gblCurDialog = dialog;
 
-        return smartDialogPage(context, dialog,null, (){ setState(() {}); });
+        return smartDialogPage();
 
 
       default:
-
-        return smartDialogPage(context, dialog, _body(), (){ setState(() {}); });
+        gblCurDialog = dialog;
+        return smartDialogPage(content:  _body());
 
     }
 
@@ -84,8 +87,8 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
 
       new Scaffold(
         backgroundColor: v2PageBackgroundColor(),
-        appBar: appBar(context, widget.formParams.formTitle, PageEnum.editPax,
-          imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
+        appBar: appBar(context, widget.formParams!.formTitle, PageEnum.editPax,
+          imageName: gblSettings.wantPageImages ? widget.formParams!.formName : '',
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
@@ -137,28 +140,14 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
   }
 
   List <Widget> renderFields(BuildContext context ) {
-    switch (widget.formParams.formName.toUpperCase()) {
+    switch (widget.formParams!.formName.toUpperCase()) {
       case 'FQTVREGISTER':
         return renderFqtvRegFields(context);
 
       default:
         List <Widget> list = [];
-        list.add(Text('no render for ${widget.formParams.formName}'));
+        list.add(Text('no render for ${widget.formParams!.formName}'));
         return list;
     }
-/*
-
-    List <Widget> list = [];
-    ThemeData theme = new ThemeData(
-      primaryColor: Colors.blueAccent,
-      primaryColorDark: Colors.blue,
-    );
-
-
-    return list;
-*/
   }
-
-
-
   }

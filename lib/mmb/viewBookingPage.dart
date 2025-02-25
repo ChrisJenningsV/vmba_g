@@ -2398,11 +2398,11 @@ class ViewBookingBodyState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              gblSettings.prohibitedItemsNoticeUrl != null
+              (gblSettings.prohibitedItemsNoticeUrl != null && gblSettings.prohibitedItemsNoticeUrl != 'null')
                   ? appLinkWidget(
                       'https',
                       gblSettings.prohibitedItemsNoticeUrl.replaceAll('https:', '').replaceAll('https', '').trimLeft().trimRight(),
-                      Text(
+                       Text(
                           gblSettings.prohibitedItemsNoticeUrl,
                           style: TextStyle(
                             decoration: TextDecoration.underline,
@@ -2502,9 +2502,6 @@ class ViewBookingBodyState
       );
     }
 
-
-
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -2520,7 +2517,7 @@ class ViewBookingBodyState
               Padding(
                 padding: EdgeInsets.all(4),
               ),
-              appLinkWidget(
+              gblSettings.prohibitedItemsNoticeUrl == null ? Container() : appLinkWidget(
                   'https',
                   gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
                   Text(gblSettings.prohibitedItemsNoticeUrl,

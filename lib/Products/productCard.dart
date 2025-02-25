@@ -14,6 +14,7 @@ import '../utilities/helper.dart';
 import '../utilities/widgets/snackbarWidget.dart';
 import 'controller/productCommands.dart';
 
+//ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
   final ProductCategory productCategory;
   final PnrModel savedPnr;

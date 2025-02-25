@@ -239,6 +239,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
                 gblSearchParams.searchOrigin = gblSearchParams.searchDestination;
                 gblSearchParams.searchOriginCode = gblSearchParams.searchDestinationCode;
                 gblSearchParams.searchDestinationCode = destCode;
+                gblSearchParams.searchDestination = dest;
               setState(() {
               });
             },)

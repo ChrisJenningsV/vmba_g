@@ -329,13 +329,15 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
       if (item.flt[fltNo - 1].fltav.pri![curFare] != '' &&
           item.flt[fltNo - 1].fltav.pri![curFare - 1 ] != '') {
         //logit('b');
-        if (double.parse(item.flt[fltNo - 1].fltav.pri![curFare]) >
-            double.parse(item.flt[fltNo - 1].fltav.pri![curFare - 1])) {
+        String up1 = item.flt[fltNo - 1].fltav.incprice![curFare];
+        String up = item.flt[fltNo - 1].fltav.incprice![curFare-1];
+        if( up == '') up = '0';
+        if (double.parse(up1) >
+            double.parse(up)) {
           //logit('c');
           if( gblSettings.wantUpgradePrices) {
-            upgradePrice =
-                double.parse(item.flt[fltNo - 1].fltav.pri![curFare]) -
-                    double.parse(item.flt[fltNo - 1].fltav.pri![curFare - 1]);
+            upgradePrice = double.parse(up1) ;
+            //logit('upgrade $up1');
           } else {
             upgradePrice = 0;
           }
@@ -505,7 +507,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
               child:
             Row(
               children: [
-                Icon(Icons.airline_seat_recline_extra_sharp),
+                Icon(Icons.directions_walk),
                 Padding(padding: EdgeInsets.all(3)),
                 VBodyText(tranTime + ' transfer time', size: TextSize.small,),
               ],
@@ -624,11 +626,11 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              vertGetTime(item.flt.last.time.atimlcl as String),
-              vertGetDate(item.flt.last.time.adaylcl as String),
-              vertGetAirport(item.flt.last.arr as String),
+              vertGetTime(item.flt.last.time.atimlcl ),
+              vertGetDate(item.flt.last.time.adaylcl ),
+              vertGetAirport(item.flt.last.arr ),
               getTerminal(
-                  getTerminalString(item.flt.first as Flt, false), false),
+                  getTerminalString(item.flt.first , false), false),
             ],
           ),
           V3VertDivider(color: gblSystemColors.fltText),
@@ -660,7 +662,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                       color: gblSystemColors.fltText,
                       minHeight: true),
                   Padding(padding: EdgeInsets.all(5)),
-                  (item.flt.first.fltav.isLowestFareForThatDay!= null && item.flt.first.fltav!.isLowestFareForThatDay==true) ?
+                  (item.flt.first.fltav.isLowestFareForThatDay!= null && item.flt.first.fltav.isLowestFareForThatDay==true) ?
                     Container( child:Text('Lowest Fare' , style: TextStyle(color: Colors.white),),
                       padding: EdgeInsets.all(5),
                       color: Colors.red,
@@ -679,8 +681,8 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     List<String> msgs = buildfltRequestMsg(item.flt,
         classband.cbname,
         classband.cabin,
-        int.parse(classband.cb as String),
-        this.widget.newBooking.passengers.totalPassengers());
+        int.parse(classband.cb ),
+        this.widget.newBooking.passengers.totalSeatedPassengers());
 
     if (widget.isReturnFlight) {
       if (msgs != null && msgs.length > 0) {

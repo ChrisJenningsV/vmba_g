@@ -229,7 +229,7 @@ class Field {
     data['displayable'] = this.displayable;
     data['editable'] = this.editable;
     data['value'] = this.value;
-    if (this.choices != null) {
+    if (this.choices != '') {
       data['choices'] = this.choices.toJson();
     }
     return data;
@@ -292,9 +292,9 @@ class Choices {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.choice != null) {
+    //if (this.choice != null) {
       data['choice'] = this.choice.map((v) => v.toJson()).toList();
-    }
+    //}
     return data;
   }
 }

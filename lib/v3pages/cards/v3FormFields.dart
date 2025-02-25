@@ -56,10 +56,10 @@ class V3TextFormFieldState extends State<V3TextFormField> {
       child: Focus(
         onFocusChange: (hasFocus) {
           logit('focus change focus = $hasFocus');
-          setState(() {
+        /*  setState(() {
               _colorText = hasFocus ? focusColor() : _defaultColor;
               _backColor = hasFocus ? Colors.white : Colors.black12;
-            });
+            });*/
         },
 
         child: TextFormField(

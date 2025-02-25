@@ -355,7 +355,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     initThemes(context);
 
-    if( gblSettings.wantGeoLocationHopePage ) {
+    if( gblSettings.wantGeoLocationHopePage && gblSettings.darkSiteEnabled == false ) {
       return new SmartHomePage();
     }
 
@@ -449,6 +449,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
             ),
           ));
     } else if (updateMsg != '') {
+      Color background = gblSettings.wantTransapentHomebar ? Colors.transparent : headerClr;
+      if( gblSettings.darkSiteEnabled) {
+        background = Colors.black;
+      }
 
       return new Scaffold(
           extendBodyBehindAppBar: extendBodyBehindAppBar,
@@ -458,7 +462,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
             //brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
-            backgroundColor: gblSettings.wantTransapentHomebar ? Colors.transparent : headerClr,
+            backgroundColor: background,
             title:_getLogo() ,
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
 
@@ -532,6 +536,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
       //print(mainBackGroundImage);
       //var bal = (gblFqtvBalance != null && gblFqtvBalance > 0) ?
       //Text('${gblSettings.fqtvName} balance $gblFqtvBalance', style: TextStyle(fontSize: 8.0),):Text(' ');
+      Color background = gblSettings.wantTransapentHomebar ? Colors.transparent : headerClr;
+      if( gblSettings.darkSiteEnabled) {
+        background = Colors.black;
+      }
 
       return new Scaffold(
         key: scaffoldKey,
@@ -539,7 +547,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         appBar: new vidAppBar(
           elevation: elevation,
             centerTitle: gblCentreTitle,
-            backgroundColor: gblSettings.wantTransapentHomebar ? Colors.black.withOpacity(0.05) : headerClr,
+            backgroundColor: background,
             title:_getLogo() ,
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
             ),
@@ -610,7 +618,9 @@ Widget _getLogo(){
     //   if( gblSettings.aircode == 'LM') {
     list.add(Container(
         decoration: BoxDecoration(
+            color: gblSettings.darkSiteEnabled ?Colors.black : null,
             image: DecorationImage(
+                colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
                 image: mainBackGroundImage, fit: BoxFit.fill))));
     if (gotBG) {
       list.add(ClipRRect(child: getImage()));
@@ -685,7 +695,21 @@ Widget _getLogo(){
       b1Text = VButtonText('Book a flight', color: b1TextClr,);
     }
 
-    if(gblSettings.homePageMessage != '' ){
+    if( gblSettings.darkSiteEnabled) {
+      String msg = gblSettings.darkSiteMessage;
+      list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 50),
+          child: Card(
+            shadowColor: Colors.white,
+            color: Colors.black,
+              child: Container(
+                width: 400,
+                height: 300,
+                  child: VTitleText(msg, size: TextSize.large,
+                color: gblSystemColors.headerTextColor,))
+        )
+      ));
+      list.add( Padding( padding: EdgeInsets.all(60)));
+    } else if(gblSettings.homePageMessage != '' ){
       String msg = gblSettings.homePageMessage;
       if( gblPassengerDetail != null && gblPassengerDetail!.firstName != ''){
         msg = msg.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);

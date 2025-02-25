@@ -207,7 +207,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         if( this.widget.newBooking.eVoucherCode != '' && objAv.availability.itin != null ){
           // look for discprice
           objAv.availability.itin!.forEach((element) {
-            if( element.flt != null ){
               element.flt.forEach((flt) {
                 if(flt.fltav.discprice!= null ) {
                   flt.fltav.discprice!.forEach((discprice) {
@@ -217,7 +216,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                   });
                 }
               });
-            }
           });
 
         }
@@ -385,7 +383,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget getCalenderWidget() {
-    if (objAv != null && objAv.availability.cal != null && objAv.availability.cal!.day != null) {
+    if (objAv.availability.cal != null ) {
       return new ListView(
           shrinkWrap: true,
           controller: _scrollController,
@@ -412,7 +410,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   Widget flightAvailability() {
-    if (objAv != null && objAv.availability.itin != null && objAv.availability.itin!.length > 0) {
+    if (objAv.availability.itin != null && objAv.availability.itin!.length > 0) {
       return new
       ListView(
           scrollDirection: Axis.vertical,
@@ -502,7 +500,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     String currency='';
     flts.forEach((element) {
       if(element.fltav.discprice != null  && element.fltav.discprice!.length > index &&
-          element.fltav.discprice![index] != null &&
           element.fltav.discprice![index].isNotEmpty && element.fltav.discprice![index] != '0'
 
       ){
@@ -541,9 +538,9 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     /*setState(() {
 
     });*/
-    if (flt != null) {
+
       print(flt);
-      if (flt != null && flt.length > 0) {
+      if (flt.length > 0) {
         this.widget.newBooking.outboundflight = flt;
         this.widget.newBooking.outboundflts = outboundflts;
         this.widget.newBooking.outboundClass = className;
@@ -555,7 +552,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         if (result == true) {
           _loadingInProgress = false;
           if (this.widget.newBooking.isReturn &&
-              this.widget.newBooking.outboundflight[0] != null) {
+              this.widget.newBooking.outboundflight[0] != '') {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -564,7 +561,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
                           outboundFlight: outboundflts.last,
                           outboundAvItem: avItem as AvItin,
                         )));
-          } else if (this.widget.newBooking.outboundflight[0] != null) {
+          } else {
 
             if( gblSettings.wantProducts) {
               // first save new booking
@@ -609,7 +606,6 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
 //          noInternetSnackBar(context);
         }
       });
-    }
   }
 
   bool isUmnr() {

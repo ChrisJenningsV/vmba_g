@@ -1,6 +1,9 @@
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/models.dart';
@@ -9,9 +12,9 @@ import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/seatplan.dart';
 import 'package:vmba/data/models/vrsRequest.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/mmb/widgets/seatComponents/flights.dart';
-import 'package:vmba/mmb/widgets/seatComponents/plan.dart';
-import 'package:vmba/mmb/widgets/seatComponents/seat.dart';
+import 'package:vmba/Seats/flights.dart';
+import 'package:vmba/Seats/plan.dart';
+import 'package:vmba/Seats/seat.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:vmba/mmb/widgets/seatPlanPassengers.dart';
@@ -28,6 +31,7 @@ import '../../calendar/bookingFunctions.dart';
 import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
 import '../../data/CommsManager.dart';
+import '../../menu/menu.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
@@ -107,6 +111,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     if( widget.journeyNo != '') {
       journeyNo = int.parse(widget.journeyNo);
     }
+    gblCurJourney = journeyNo;
     seatplan = 'ls';
     seatplan += gblPnrModel!.pNR.itinerary.itin[journeyNo].airID;
     seatplan += gblPnrModel!.pNR.itinerary.itin[journeyNo].fltNo;
@@ -120,6 +125,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
     _loadData(seatplan);
     paxlist = new PaxList();
+    gblSelectedSeats = [];
     if( widget.paxlist == null ) {
       List<Pax> paxlists = getPaxlist(gblPnrModel as PnrModel, journeyNo);
       paxlist!.init(paxlists );
@@ -138,6 +144,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     showkey = true;
   }
 
+  Widget getRoute(int journeyNo){
+
+    String text =  gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '  ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive;
+    if( gblIsLive == false && gblSeatplan != null ) text += ' [' + gblSeatplan!.seats.seatsFlt.sRef + ']';
+    return Row( mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          VTitleText(text ,
+            )
+    ]
+    );
+  }
   void _dataLoaded() {
     setState(() {
       _loadingInProgress = false;
@@ -159,26 +176,6 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     //_key.currentState.showSnackBar(_snackbar);
   }
 
-  // Future<Session> login() async {
-  //   var body = {"AgentGuid": "${gbl_settings.vrsGuid}"};
-
-  //   final http.Response response = await http.post(
-  //       gbl_settings.apiUrl + "/login",
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: JsonEncoder().convert(body));
-
-  //   if (response.statusCode == 200) {
-  //     Map map = json.decode(response.body);
-  //     LoginResponse loginResponse = new LoginResponse.fromJson(map);
-  //     if (loginResponse.isSuccessful) {
-  //       print('successful login');
-  //       return loginResponse.getSession();
-  //     }
-  //   } else {
-  //     print('failed');
-  //     //return  LoginResponse();
-  //   }
-  // }
 
   Future _sendVRSCommand(String msg) async {
     try {
@@ -193,24 +190,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     }
 
   }
-/*
 
-  Future _sendVRSCommandList(msg) async {
-    try {
-      if(msg.startsWith('{' )){
-        Map map = json.decode(msg);
-        msg = map['Commands'];
-      }
 
-      String data = await runVrsCommand(msg);
-      return data;
-    } catch(e){
-      return 'error ${e.toString()}';
-    }
-
-  }
-
- */
   String _getSeatPlanCommand( int journeyNo) {
     if( journeyNo <= gblPnrModel!.pNR.itinerary.itin.length) {
       Itin itin = gblPnrModel!.pNR.itinerary.itin[journeyNo];
@@ -227,19 +208,20 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   }
 
 
-  //  lsLM0085/25SepABZBHD[CB=FLY][CUR=GBP][MMB=True]~x
+  //  example lsLM0085/25SepABZBHD[CB=FLY][CUR=GBP][MMB=True]~x
   Future _loadData(String seatPlanCmd) async {
     logit('load seat plan $seatPlanCmd');
     setState(() {
 
     });
-    Repository.get().getSeatPlan(seatPlanCmd).then((rs) {
+    Repository.get().getSeatPlan(seatPlanCmd).then((rs) async {
       if (rs.isOk()) {
         objSeatplan = rs.body;
 
         gblLoadSeatState = VrsCmdState.none;
         if( objSeatplan != null ) {
           objSeatplan!.simplifyPlan();
+          gblSeatplan = objSeatplan;
           gblSeatPlanDef = objSeatplan!.getPlanDataTable();
         }
 
@@ -249,8 +231,38 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               _noSeats = true;
             });
           } else {
-            _dataLoaded();
+            if( !gblSettings.wantNewSeats) {
+              _dataLoaded();
+            }
           }
+
+          // check for json definition file
+          if( gblSettings.wantNewSeats){
+            if(gblSeatplan != null && gblSeatplan!.seats.seatsFlt != null && gblSeatplan!.seats.seatsFlt.sRef != '' ) {
+              try {
+                final jsonString = await http.get(Uri.parse('${gblSettings.gblServerFiles}/seatplans/${gblSeatplan!.seats.seatsFlt.sRef}.json'), headers: {HttpHeaders.contentTypeHeader: "application/json",
+                  HttpHeaders.acceptEncodingHeader: 'gzip,deflate,br'}); // ,
+                String data = utf8.decode(jsonString.bodyBytes);
+                if( data.startsWith('{')) {
+                  final Map<String, dynamic> map = json.decode(data);
+                  SeatPlanConfig seatPlanConfig = SeatPlanConfig.fromJson(map);
+                  gblSeatPlanConfig = seatPlanConfig;
+                  logit('load seatplanConfig complete [${gblSeatplan!.seats.seatsFlt.sRef}]' );
+                  _dataLoaded();
+                } else {
+                  logit('load seatplanConfig json INVALID data [${gblSeatplan!.seats.seatsFlt.sRef}]' );
+                  _dataLoaded();
+                }
+              } catch(e) {
+                logit('load seatplanConfig json ' + e.toString());
+                _dataLoaded();
+              }
+            } else {
+              _dataLoaded();
+            }
+          }
+
+
       } else {
         setError( rs.error);
         setState(() {
@@ -275,11 +287,12 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     });
   }
 
-  void _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true, int? journeyNo }) {
+  bool _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true, int? journeyNo }) {
    // _bookSeats();
     setError( '');
     // check is any seats selects
     int seatsSelected = 0;
+    if( journeyNo == null ) journeyNo = gblCurJourney;
     paxlist!.list!.forEach((seat) {
       if(seat.seat != '' && seat.seat != seat.savedSeat){
         seatsSelected++;
@@ -289,17 +302,19 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       showVidDialog(context, 'Error', 'Select Seats First');
 
     } else {
-      smartBookSeats(gotoPayment: gotoPayment, journeyNo: journeyNo  );
+      smartBookSeats(gotoPayment,  journeyNo  as int );
       setState(() {
         paxlist=new PaxList();
         paxlist!.init(paxValue);
         _loadingInProgress = true;
         _displayProcessingText = translate('Booking your seat selection...');
       });
+      return true;
     }
+    return false;
   }
 
-  smartBookSeats({bool gotoPayment = true, int? journeyNo}) async {
+  smartBookSeats(bool gotoPayment , int journeyNo) async {
     gblPayAction = 'BOOKSEAT';
     SeatRequest seat = new SeatRequest();
     gblBookSeatCmd = '';
@@ -313,7 +328,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     } else {
       seat.webCheckinNoSeatCharge = false;
     }
-    logit('SA book seats j=${widget.journeyNo}');
+    logit('SA book seats j=$journeyNo');
 
     String data =  json.encode(seat);
 
@@ -333,26 +348,28 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   if (onValue.toString().contains('ERROR')) {
                     _dataLoadedFailed(onValue.toString());
                   } else {
+                    logit('booked seat for $journeyNo');
                     Map<String, dynamic> map = json.decode(onValue);
                     PnrModel pnrModel = new PnrModel.fromJson(map);
                     gblPnrModel = pnrModel;
 
                     if( gblSettings.wantSeatsWithProducts == false && gblSettings.wantNewSeats) {
                       // go to payment page
-                      if( gblPnrModel != null ) {
-                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ChoosePaymenMethodWidget(
-                                      //SelectPaymentProviderWidget()
-                                      newBooking: gblNewBooking,
-                                      pnrModel: gblPnrModel as PnrModel,
-                                      isMmb: false,)
-                            )
-                        );
+                      if( (gblCurJourney+1) >= gblPnrModel!.pNR.itinerary.itin.length && gotoPayment) {
+                        if (gblPnrModel != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ChoosePaymenMethodWidget(
+                                        //SelectPaymentProviderWidget()
+                                        newBooking: gblNewBooking,
+                                        pnrModel: gblPnrModel as PnrModel,
+                                        isMmb: false,)
+                              )
+                          );
+                        }
                       }
-
                     } else {
                       refreshStatusBar();
                       Navigator.pop(context, pnrModel);
@@ -486,9 +503,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: _key,
+        endDrawer: gblSettings.wantNewSeats ? DrawerMenu() : null,
         appBar: new V3AppBar(
+          automaticallyImplyLeading: false,
           PageEnum.chooseSeat,
-          actions: <Widget>[
+          actions: gblSettings.wantNewSeats ? null : <Widget>[
             IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
@@ -496,7 +515,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
               }
             )
           ],
-          toolbarHeight: 70,
+          toolbarHeight: 90,
           iconTheme: IconThemeData(
               color: gblSystemColors.headerTextColor),
           title: getTitle(),
@@ -518,10 +537,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         caption = 'Save seats and next flight';
       }
 
-      return vidWideActionButton(context, caption, (context, d) {
+      return vidWideActionButton(context, caption, (context, d) async {
 
         if( (gblCurJourney+1) < gblPnrModel!.pNR.itinerary.itin.length){
-          _handleBookSeats(paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
+          await _handleBookSeats(paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
          // go to next flight
           gblCurJourney+=1;
           List<Pax> plist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
@@ -577,51 +596,29 @@ Widget getTitle() {
       if(paxlist!.list!.length > 1) {
         title1 = translate('Choose seats');
       }
-      List<Widget> list = [];
-      if( objSeatplan!= null && objSeatplan!.seats != null && objSeatplan!.seats.seatsFlt != null ) {
-        list.add(VTitleText(DateFormat('dd MMM').format(DateTime.parse(objSeatplan!.seats.seatsFlt.sFltDate)) , color:gblSystemColors.headerTextColor));
-      }
-      for(int i = 0; i < gblPnrModel!.pNR.itinerary.itin.length; i++){
-        if( i == gblCurJourney){
-          list.add(RotatedBox(
-              quarterTurns: 1,
-              child: new Icon(
-                Icons.airplanemode_active,
-                size: 15.0,
-                color: Colors.black,
-              )));
-        } else {
-          list.add(RotatedBox(
-              quarterTurns: 1,
-              child: new Icon(
-                Icons.airplanemode_active,
-                size: 15.0,
-                color: Colors.white,
-              )));
 
-        }
-      }
-      list.add(Padding(padding: EdgeInsets.all(3)));
-      list.add(VTitleText(route, size: TextSize.medium,color:gblSystemColors.headerTextColor));
+      List<Widget> listNo = [];
+      int index = 0;
+      gblPnrModel!.pNR.itinerary.itin.forEach((flight){
+        listNo.add(fltButton(index, index == gblCurJourney, (jNo){
+          // flt button clicked
+          if( jNo != gblCurJourney){
+            gblCurJourney = jNo;
+            List<Pax> plist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
+            paxlist!.init(plist);
+            _loadData( _getSeatPlanCommand(gblCurJourney));
+          }
+        }));
+       // listNo.add(Padding(padding: EdgeInsets.all(4)));
+        index++;
+      });
 
-      Row routeRow = Row(children: list);
-      Widget txt1 = Text('');
-      if( objSeatplan!= null && objSeatplan!.seats != null && objSeatplan!.seats.seatsFlt != null ) {
-        String ac = '';
-        if( objSeatplan!.seats.seatsFlt.sRef != '' ){
-          ac = '    Aircraft:' +
-              objSeatplan!.seats.seatsFlt.sRef;
-        }
-        txt1 = Align(
-          alignment: Alignment.centerLeft,
-          child:  VTitleText('FltNo: ' + objSeatplan!.seats.seatsFlt.sFltNo + ac,color:gblSystemColors.headerTextColor)
-        );
-      }
-      return Column(
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           VTitleText(title1, size: TextSize.large,color:gblSystemColors.headerTextColor),
-          routeRow,
-          txt1,
+          Row( children: listNo),
         ],
       );
 
@@ -631,6 +628,40 @@ Widget getTitle() {
               color:
               gblSystemColors.headerTextColor));
     }
+}
+Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
+    return Padding(padding: EdgeInsets.all(1), child:  SizedBox.fromSize(
+      size: Size(40, 40), // button width and height
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+        padding: EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          color: selected ? Colors.lightBlue : Colors.grey,
+            border: Border.all(width: 1, color: selected ? Colors.black : Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        //borderRadius: BorderRadius.circular(5.0),
+          child: InkWell(
+            splashColor: Colors.green, // splash color
+            onTap: () {
+            onClick(journeyNo);
+            }, // button pressed
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                RotatedBox(
+                quarterTurns: 1,
+                child: new Icon(
+                  Icons.airplanemode_active,
+                  size: 35.0,
+                  color: Colors.white,
+                )), // icon
+                Text((journeyNo +1).toString(), style: TextStyle(color: selected ? Colors.black : Colors.blueGrey, fontWeight: FontWeight.bold, ),textScaler: TextScaler.linear(1.5),), // text
+              ],
+            ),
+        ),
+      ),
+    ));
 }
 
   Widget body() {
@@ -699,7 +730,7 @@ Widget getTitle() {
         ),
       );
     } else {
-      Itin itin = gblPnrModel!.pNR.itinerary.itin[int.parse(widget.journeyNo)];
+      Itin itin = gblPnrModel!.pNR.itinerary.itin[gblCurJourney];
       DateTime deps = DateTime.parse(itin.depDate + ' ' + itin.depTime);
       Widget fltTitle = V2Heading2Text(translate('Flight') + ' ' + widget.flt+ ' ' +  DateFormat('dd MMM').format(deps) );
 
@@ -712,7 +743,7 @@ Widget getTitle() {
 
         list.add(getSeatKey());
         list.add(SeatPlanPassengersWidget(
-          paxList: paxlist!.list, segNo: widget.journeyNo,
+          paxList: paxlist!.list, segNo: gblCurJourney,
           loadingData: (msg){
             _displayProcessingText = msg;
             _loadingInProgress = true;
@@ -742,7 +773,28 @@ Widget getTitle() {
 
     } else {
         list.add(getSeatKey2());
-        list.add(Padding(padding: EdgeInsets.only(top: 10.0),),);
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ChoosePaymenMethodWidget(
+                            //SelectPaymentProviderWidget()
+                            newBooking: gblNewBooking,
+                            pnrModel: gblPnrModel as PnrModel,
+                            isMmb: false,)
+                  )
+              );
+            },
+          child:Text('Skip', style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.double),))
+          ],
+        ));
+        list.add(getRoute(gblCurJourney));
+
         list.add(        RenderSeatPlan2(
           seatplan: objSeatplan!,
           pax: paxlist!.list!,
@@ -754,15 +806,13 @@ Widget getTitle() {
         )
         );
         list.add(Padding(padding: EdgeInsets.all(10)));
-        return Container(
-      //    height: 800,
+        return /*Container(
             child: SingleChildScrollView(
-        child:
+        child:*/
             Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
             children: list
-        )
-        )
+        //)
         );
       }
 

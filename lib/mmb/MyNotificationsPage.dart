@@ -35,6 +35,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
   @override
   void initState() {
     super.initState();
+    gblError = '';
     _loadingInProgress = true;
     _controller = TabController(length: tablen, vsync: this);
     gblNotifications = null;  // incase none found

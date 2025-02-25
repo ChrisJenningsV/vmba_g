@@ -212,9 +212,9 @@ class Cbtextrecords {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final cbtext = this.cbtext;
-    if (cbtext != null) {
+    //if (cbtext != null) {
       data['cbtext'] = cbtext.map((v) => v.toJson()).toList();
-    }
+    //}
     return data;
   }
 }
@@ -341,12 +341,12 @@ class AvItin {
       flt.forEach((element) {
         String newStr = element.fltav.pri![curFare];
         double? newVal = double.tryParse(newStr);
-        if (newVal != null) prices.price += newVal as double;
+        if (newVal != null) prices.price += newVal;
         newVal = double.tryParse(element.fltav.tax![curFare]);
-        if (newVal != null) prices.price += newVal as double;
+        if (newVal != null) prices.price += newVal;
         String newMiles = element.fltav.miles![curFare];
         int? newMileVal = int.tryParse(newMiles);
-        if (newMileVal != null) prices.miles += newMileVal as int;
+        if (newMileVal != null) prices.miles += newMileVal;
       });
       prices.success = true;
       return prices;
@@ -428,20 +428,39 @@ class Flt {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dep'] = this.dep;
     data['arr'] = this.arr;
-    if (this.time != null) {
+    //if (this.time != null) {
       data['time'] = this.time.toJson();
-    }
-    if (this.fltdet != null) {
+    //}
+    //if (this.fltdet != null) {
       data['fltdet'] = this.fltdet.toJson();
-    }
-    if (this.fltav != null) {
+    //}
+    //if (this.fltav != null) {
       data['fltav'] = this.fltav.toJson();
-    }
+    //}
     return data;
   }
 
   String journeyDuration() {
-    return '1hrs 30min';
+    DateTime firstDeparture = DateTime.parse(
+        this.time.ddaygmt + ' ' + this.time.dtimgmt);
+    DateTime lastArival = DateTime.parse(
+        this.time.adaygmt + ' ' + this.time.atimgmt);
+
+//Add offset???
+
+    int hours = lastArival.difference(firstDeparture).inHours;
+    int min = lastArival.difference(firstDeparture).inMinutes;
+    min = min % 60;
+
+//'${DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime.trim()).add(Duration(days: int.tryParse(pnr.pNR.itinerary.itin[journey].arrOfst.trim()) ?? (0))).difference(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).inHours.toString()}h.
+//${(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].arrTime).add(Duration(days: int.tryParse(pnr.pNR.itinerary.itin[journey].arrOfst.trim()) ?? (0))).difference(DateTime.parse(pnr.pNR.itinerary.itin[journey].depDate + ' ' + pnr.pNR.itinerary.itin[journey].depTime)).inMinutes % 60).toString()}min',
+
+    // translate duration
+    if( wantRtl() && (gblSettings.wantEnglishDates == false)) {
+      return translateNo('$hours') + translate('hrs ') + ' ' + translateNo('$min') + translate('min');
+    }
+    return '${hours}h. ${min}min';
+    //return '1hrs 30min';
   }
 }
 
@@ -574,6 +593,8 @@ class Fltav {
   List<String>? fid;
   List<String>? finf;
   List<String>? discprice;
+  List<String>? incprice;
+
   bool? isLowestFareForThatDay;
 
   Fltav(
@@ -589,7 +610,8 @@ class Fltav {
       this.awards,
       this.fid,
       this.finf,
-      this.discprice});
+      this.discprice,
+      this.incprice});
 
   Fltav.fromJson(Map<String, dynamic> json) {
     if (json['cb'] is List) {
@@ -694,6 +716,13 @@ class Fltav {
       //new List<String>();
       if( json['discprice'] != null )      discprice?.add(json['discprice']);
     }
+    if (json['incprice'] is List) {
+      incprice = json['incprice'].cast<String>();
+    } else {
+      incprice = [];
+      //new List<String>();
+      if( json['incprice'] != null ) incprice?.add(json['incprice']);
+    }
 
     //av = json['av'].cast<String>();
     //cur = json['cur'].cast<String>();
@@ -743,9 +772,9 @@ class Cal {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.day != null) {
+    //if (this.day != null) {
       data['day'] = this.day.map((v) => v.toJson()).toList();
-    }
+    //}
     return data;
   }
 }

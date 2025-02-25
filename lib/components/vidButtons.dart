@@ -109,20 +109,23 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
     list.add(Icon(
       Icons.check,
-      color: disabled ? actionButtonDisabledTextColor() : Colors.white,
+      color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white,
     ));
   }
   if( gblActionBtnDisabled ){
+//    list.add(Text('D '));
+/*
     list.add(Transform.scale(
-      scale: 0.5,
+      scale: 0.3,
       child: CircularProgressIndicator( color: Colors.white,),
     ));
     list.add(Padding(padding: EdgeInsets.all(2)));
+*/
   }
   if( wantHomePageV2() || wantHomePageV3() ) {
-    list.add(VButtonText(caption, color: disabled ? actionButtonDisabledTextColor() : Colors.white));
+    list.add(VButtonText(caption, color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white));
   } else {
-    list.add(TrText(caption,style: TextStyle(color: disabled ? actionButtonDisabledTextColor() : Colors.white),
+    list.add(TrText(caption,style: TextStyle(color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white),
     ));
   }
 
@@ -145,11 +148,11 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
 
     style: ElevatedButton.styleFrom(
         elevation: wantShadows ? null :0,
-        backgroundColor: disabled ? actionButtonDisabledColor() :  actionButtonColor( availableOffline: availableOffline),
-        foregroundColor: disabled ? actionButtonDisabledTextColor() : null,
+        backgroundColor: (disabled || gblActionBtnDisabled) ? actionButtonDisabledColor() :  actionButtonColor( availableOffline: availableOffline),
+        foregroundColor: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : null,
         side: BorderSide(
-          width: disabled ? 2.0 : 0,
-          color: disabled ? actionButtonDisabledTextColor() : Colors.white,
+          width: (disabled || gblActionBtnDisabled) ? 2.0 : 0,
+          color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white,
         ),
         shape: RoundedRectangleBorder(
             borderRadius: getButtonRadius())),
@@ -229,7 +232,7 @@ Widget vidActionButton(BuildContext context, String caption, void Function(Build
 
     if( isRectangular == true ){
       shape = RoundedRectangleBorder(
-          side: BorderSide(width: borderWidth,color: lineColor as Color),
+          side: BorderSide(width: borderWidth,color: lineColor),
           borderRadius: BorderRadius.all(Radius.circular(5.0),)
       );
     }
@@ -317,7 +320,7 @@ Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, 
     onPressed: () {
       if( context != null ) {
         if (disabled == null || disabled == false) {
-          onPressed!(context as BuildContext, paxNo, segNo,);
+          onPressed!(context, paxNo, segNo,);
         }
       }
     },
@@ -344,7 +347,7 @@ Widget vidIconButton(BuildContext? context, {void Function(BuildContext, int, in
     onPressed: () {
       if( context != null ) {
         if (disabled == null || disabled == false) {
-          onPressed!(context as BuildContext, paxNo, segNo,);
+          onPressed!(context, paxNo, segNo,);
         }
       }
     },

@@ -123,7 +123,11 @@ void showVidDialog(BuildContext context, String title, String msg,
 }
 
 AlertDialog getAlertDialog(BuildContext context, String title, String msg, void Function(void Function()) setState2,
-    {void Function()? onComplete, DialogType type= DialogType.Information, Widget Function(void Function(void Function()))? getContent}) {
+    {void Function()? onComplete,
+      DialogType type= DialogType.Information,
+      Widget Function(void Function(void Function()))? getContent,
+      bool wantActions = true,
+    }) {
   logit('getAlertDialog');
 
   //IconData icon = Icons.error_outline;
@@ -159,7 +163,8 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
       break;
     default:
       break;
-  }
+    }
+
 
   Widget dlgTitleContent = Row(
       children: [
@@ -172,6 +177,25 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
     dlgTitleContent = Text(title,  style: TextStyle(color: titleTextClr),);
   }
 
+  List<Widget> actions = [
+    /*onComplete == null ?*/
+    ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+        onPressed: () {
+          if( onComplete != null ) {
+            onComplete();
+          } else {
+            try {
+              Navigator.of(context).pop();
+            } catch(e) {
+              logit(e.toString());
+            }
+          }
+        },
+        child: TrText
+          ('OK')) /*: Container()*/
+    ];
+    if( wantActions == false) actions = [];
 
   Widget dlgTitle =  Container(
   alignment: Alignment.topLeft,
@@ -211,56 +235,11 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
             ),
           ),
 
-       /*   onComplete != null ?
-          InkWell(
-            child: Container(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 50, right: 50),
-                decoration: BoxDecoration(
-                 // color: myColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0)),
-                ),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      side: BorderSide(color:  gblSystemColors.textButtonTextColor, width: 1),
-                      foregroundColor: Colors.white),
-                  child: new TrText("Close"),
-                  onPressed: () {
-                    if( onComplete != null ) {
-                      onComplete();
-                    }
-                    Navigator.of(context).pop();
-                  },
-                )
-            ),
-          ): Container(),*/
-
         ],
       ),
     ),
-      actions: [
-        /*onComplete == null ?*/
-      ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-onPressed: () {
-if( onComplete != null ) {
-onComplete();
-} else {
-  try {
-    Navigator.of(context).pop();
-  } catch(e) {
-    logit(e.toString());
-  }
-}
-},
-
-child: TrText
-('OK')) /*: Container()*/
-],
-);
-
+      actions: actions,
+      );
 
 }
 

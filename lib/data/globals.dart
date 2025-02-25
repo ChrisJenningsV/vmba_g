@@ -1,7 +1,6 @@
 
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:vmba/data/models/models.dart';
@@ -14,6 +13,7 @@ import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
 
 import 'models/cities.dart';
+import 'models/dialog.dart';
 import 'models/flightPrices.dart';
 import 'models/notifyMsgs.dart';
 import 'models/paxContacts.dart';
@@ -32,8 +32,8 @@ import 'models/vouchers.dart';
 // H4 hisky
 // X4 excursions
 // KG key lime / Dallas
-String gblBuildFlavor = 'X4';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LM';
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
 int requiredApiVersion = 105;
@@ -131,6 +131,8 @@ PnrModel? gblPnrModel;
 PnrModel? gblNextPnr;
 NewBooking? gblNewBooking;
 SeatPlanDefinition? gblSeatPlanDef;
+Seatplan? gblSeatplan;
+SeatPlanConfig? gblSeatPlanConfig;
 int gblCurPax = 0;
 int gblCurJourney = 0;
 FQTVMemberTransactions? gblUpcomingFlights;
@@ -197,3 +199,20 @@ SearchParams gblSearchParams = new SearchParams();
 FlightStatuss? gblFlightStatuss;
 String gblLoadedHomeCountry = '';
 Placemark? gblCurLocation;
+DialogDef? gblCurDialog;
+
+Map<String, String> gblValues = {};
+
+String getGblValue(String valName){
+  if( gblValues[valName] != null ){
+    return gblValues[valName] as String;
+  } else {
+    gblValues[valName]= 'false';
+    return gblValues[valName] as String;
+  }
+}
+
+setGblValue(String valName, String val){
+  gblValues[valName]= val;
+}
+

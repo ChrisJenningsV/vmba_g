@@ -15,6 +15,8 @@ import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
+import '../data/models/dialog.dart';
+import '../dialogs/smartDialog.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../helpCentre/helpCentrePage.dart';
 import '../home/home_page.dart';
@@ -174,9 +176,13 @@ class DrawerMenu extends StatefulWidget {
         dense: dense,
         title: _getMenuItem(Icons.help_center, 'Help Centre', iconColor: Colors.red),
         onTap: () {
+/*
           Navigator.push(
               context, SlideTopRoute(page: HelpCentrePageWidget()
           ));
+*/
+          Navigator.push(context,
+              SlideTopRoute(page: CustomPageWeb('Help Centre', gblSettings.contactUsUrl)));
         },
       ));
     }
@@ -380,7 +386,7 @@ class DrawerMenu extends StatefulWidget {
       }
     }
 
-    if(gblSecurityLevel > 90 ){
+    if(gblSecurityLevel >= 100 ){
       list.add(ListTile(
           dense: dense,
           title: _getMenuItem(Icons.web, 'Developer Page'),
@@ -418,6 +424,41 @@ class DrawerMenu extends StatefulWidget {
                 }
             );
           }));
+    }
+    if( gblSettings.wantAdminLogin){
+      if( gblSecurityLevel >= 99 ) {
+        list.add(ListTile(
+            dense: dense,
+            title: _getMenuItem(Icons.login, 'Admin Page'),
+            onTap: () {
+              Navigator.push(context,
+                  SlideTopRoute(page: DebugPage(name: 'ADMIN',)));
+
+            }
+        )
+        );
+      } else {
+        list.add(ListTile(
+            dense: dense,
+            title: _getMenuItem(Icons.login, 'Log in'),
+            onTap: () {
+              DialogDef dialog = new DialogDef(caption: 'Agent Login',
+                  actionText: 'Continue',
+                  action: 'DoAgentLogin');
+              dialog.fields.add(
+                  new DialogFieldDef(
+                      field_type: 'number', caption: 'sine (4ch)'));
+              dialog.fields.add(
+                  new DialogFieldDef(
+                      field_type: 'password', caption: 'Password'));
+              dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+
+              gblCurDialog = dialog;
+              showSmartDialog(context, null, () {
+                setState(() {});
+              });
+            }));
+      }
     }
 
     // DEMO login - for Apple acreditation

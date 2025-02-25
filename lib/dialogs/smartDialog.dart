@@ -2,82 +2,168 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/components/vidButtons.dart';
 
+import '../Helpers/settingsHelper.dart';
+import '../components/pageStyleV2.dart';
 import '../components/trText.dart';
 import '../data/globals.dart';
 import '../data/models/dialog.dart';
+import '../menu/menu.dart';
 import '../utilities/helper.dart';
+import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3FormFields.dart';
+import '../v3pages/controls/V3Constants.dart';
 import '../v3pages/fields/Pax.dart';
 import 'dialogActions.dart';
 
 bool _isHidden = true;
 
-Widget smartDialogPage( BuildContext context, DialogDef dialog, Widget? content, void Function() doUpdate) {
+class smartDialogPage extends StatefulWidget {
+  smartDialogPage({this.content});
+
+  _smartDialogPageState createState() => _smartDialogPageState();
+  Widget? content;
+}
+
+class _smartDialogPageState extends State<smartDialogPage> {
+
+//Widget smartDialogPage( BuildContext context, DialogDef dialog, Widget? content, void Function() doUpdate) {
+
+
+  late final formKey;
+
+  @override
+  initState() {
+    super.initState();
+    formKey = new GlobalKey<FormState>();
+
+    if( gblCurDialog! != null ) {
+      gblCurDialog!.fields.forEach((f) {
+        initField( f);
+      });
+    }
+
+  }
+  @override
+  Widget build(BuildContext context) {
   Color titleBackClr = gblSystemColors.primaryHeaderColor;
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   double? width;
   gblActionBtnDisabled = false;
   logit('get smart dialog');
 
+/*
   if( content == null ) content = getDialogContent(context, dialog, (){ doUpdate(); });
+*/
 
-  if( dialog.width == 'full') {
+  if( gblCurDialog!.width == 'full') {
     width = MediaQuery.of(context).size.width;
-    content = Container(width: width,
-      child: content,);
+    widget.content = Container(width: width,      child: widget.content,);
   }
 
+ /* return Scaffold(
+      backgroundColor: v2PageBackgroundColor(),
+      appBar: AppBar(
+        leading: getAppBarLeft(),
+        backgroundColor: gblSystemColors.primaryHeaderColor,
+        iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
+        title: TrText('',
+            style: TextStyle(color: gblSystemColors.headerTextColor)),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+      body:
+      Container(
+        margin: v2FormPadding(),
+        decoration: v2FormDecoration(),
+        child: new Form(
+          key: formKey,
+          child: new SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: widget.content
+            ),
+          ),
+        ),
+      )
+  );
+
+*/
+  if( widget.content == null ) widget.content = getDialogContent(context, gblCurDialog!, () {
+    setState(() {  });
+  });
+
     return  Scaffold(
-        body: /*InkWell(
-          onTap: () {
-            logit('clicked out');
-          },
-        child:*/
-        Column (
+      appBar:  appBar(context, '', PageEnum.summary),
+        endDrawer: DrawerMenu(),
+      backgroundColor: v2PageBackgroundColor(),
+        body:
+        Padding(padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+        child: Column (
             children: [
               flexibleSpace,
-              AlertDialog(
+              Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                titlePadding: EdgeInsets.only(top: 0),
-                contentPadding: EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 0),
-                title: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: titleBackClr,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
-                    padding: EdgeInsets.only(left: 10, top: 0, bottom: 0),
-                    child:
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(padding: EdgeInsets.all(20)),
-                          Text(dialog.caption,
-                            style: TextStyle(color: Colors.white),),
-                          IconButton(onPressed: () => Navigator.pop(context),
-                              icon: Stack(
-                                children: [
-                                  Icon(Icons.circle_outlined, color: Colors.white, size: 34,),
-                                  Padding( padding: EdgeInsets.only(left: 5, top: 5), child: Icon(Icons.close, color: Colors.white,)),
-                                ],
-                              ))
-                        ] )
+                child: Column(
+                  children: [
+                    Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: titleBackClr,
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+                        padding: EdgeInsets.only(left: 10, top: 0, bottom: 0),
+                        child:
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(padding: EdgeInsets.all(20)),
+                              Text(gblCurDialog!.caption,
+                                style: TextStyle(color: Colors.white),),
+                              IconButton(onPressed: () => Navigator.pop(context),
+                                  icon: Stack(
+                                    children: [
+                                      Icon(Icons.circle_outlined, color: Colors.white, size: 34,),
+                                      Padding( padding: EdgeInsets.only(left: 5, top: 5), child: Icon(Icons.close, color: Colors.white,)),
+                                    ],
+                                  ))
+                            ] )
+                    ),
+                    widget.content as Widget,
+                  ],
                 ),
-                content: content,
+
                 //actions: <Widget>[)    ]
               ),
             ])
-    //)
+        )
     );
+
+  }
 
 }
 
-void showSmartDialog( BuildContext context, DialogDef dialog, Widget? content, void Function() doUpdate){
+void showSmartDialog( BuildContext context, Widget? content, void Function() doUpdate){
   Color titleBackClr = gblSystemColors.primaryHeaderColor;
   gblActionBtnDisabled = false;
-  if( content == null ) content = getDialogContent(context, dialog, (){ doUpdate(); });
+  if( gblCurDialog! != null ) {
+    gblCurDialog!.fields.forEach((f) {
+      if( f.controller == null ) {
+        initField(f);
+      }
+    });
+  }
+
+ // if( content == null ) content = getDialogContent(context, gblCurDialog!, (){ doUpdate(); });
+  if( content == null ) content = DialogContent(gblCurDialog!);
 
   showDialog(
       context: context,
@@ -99,7 +185,7 @@ void showSmartDialog( BuildContext context, DialogDef dialog, Widget? content, v
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(padding: EdgeInsets.all(20)),
-                Text(dialog.caption,
+                Text(gblCurDialog!.caption,
                   style: TextStyle(color: Colors.white),),
                 IconButton(onPressed: () => Navigator.pop(context),
                     icon: Stack(
@@ -117,6 +203,29 @@ void showSmartDialog( BuildContext context, DialogDef dialog, Widget? content, v
 
 }
 
+
+class DialogContent extends StatefulWidget {
+  DialogDef dialog;
+  DialogContent(this.dialog);
+
+  @override
+  DialogContentState createState()  => new DialogContentState();
+}
+
+class DialogContentState extends State<DialogContent> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return getDialogContent(context, widget.dialog, doSetState) as Widget ;
+  }
+
+  void doSetState() {
+    setState(() {
+
+    });
+  }
+
+}
 
 //List<TextEditingController> editingControllers = [];
 
@@ -139,7 +248,7 @@ Widget? getDialogContent(BuildContext context, DialogDef dialog, void Function()
         gblActionBtnDisabled = true;
         doUpdate();
 
-        doDialogAction(context, dialog, null, doUpdate );
+        doDialogAction(context, null, doUpdate );
     }, pad: 5 , disabled: gblActionBtnDisabled ),  ));
 
   dialog.foot.forEach((f) {
@@ -176,14 +285,82 @@ Widget wrapFootField(BuildContext context,DialogDef dialog, DialogFieldDef f, vo
 }
 
 
-Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool isFoot, void Function() doUpdate){
+void initField( DialogFieldDef f){
   switch (f.field_type.toUpperCase()){
     case 'FQTVNUMBER':
       TextEditingController _fqtvTextEditingController = new TextEditingController();
+      f.controller = _fqtvTextEditingController;
+      gblCurDialog!.editingControllers.add(_fqtvTextEditingController);
+      break;
+
+    case 'EMAIL':
+      TextEditingController _emailEditingController = new TextEditingController();
+      f.controller = _emailEditingController;
+      gblCurDialog!.editingControllers.add(_emailEditingController);
+      break;
+    case 'PIN':
+      TextEditingController te1 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te1);
+      TextEditingController te2 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te2);
+      TextEditingController te3 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te3);
+      TextEditingController te4 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te4);
+      TextEditingController te5 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te5);
+      TextEditingController te6 = new TextEditingController();
+      gblCurDialog!.editingControllers.add(te6);
+      //List<TextEditingController> faEditingController = [te1,te2,te3,te4,te5,te6];
+      break;
+
+    case 'NUMBER':
+      TextEditingController _numEditingController = new TextEditingController();
+      f.controller = _numEditingController;
+      gblCurDialog!.editingControllers.add(_numEditingController);
+      break;
+    case 'PASSWORD':
+      TextEditingController _passwordEditingController = new TextEditingController();
+      f.controller = _passwordEditingController;
+      gblCurDialog!.editingControllers.add(_passwordEditingController);
+      break;
+    case 'EDITTEXT':
+      TextEditingController _textEditingController = new TextEditingController();
+      f.controller = _textEditingController;
+      gblCurDialog!.editingControllers.add(_textEditingController);
+      break;
+    case 'SWITCH':
+      if( f.controller == null ) {
+        f.value = getGblValue(f.initialValue);
+        TextEditingController _textEditingController = new TextEditingController(text: f.initialValue);
+        f.controller = _textEditingController;
+        gblCurDialog!.editingControllers.add(_textEditingController);
+      }
+      break;
+    case 'TEXT':
+//      return Padding(padding: EdgeInsets.only(left: 10 ), child:TrText(f.caption));
+      break;
+    case 'ACTION':
+      break;
+    case 'SPACE':
+      break;
+    default:
+      logit('ERROR unknown field type ${f.field_type}');
+      break;
+  }
+
+}
+
+Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool isFoot, void Function() doUpdate){
+  switch (f.field_type.toUpperCase()){
+    case 'FQTVNUMBER':
+/*
+      TextEditingController _fqtvTextEditingController = new TextEditingController();
       dialog.editingControllers.add(_fqtvTextEditingController);
+*/
       return Padding(padding: EdgeInsets.only(left: 10, right: 10), child: TextFormField(
         decoration: getDecoration( f.caption),
-        controller: _fqtvTextEditingController,
+        controller: f.controller,
         keyboardType: TextInputType.number,
         onSaved: (value) {
           if (value != null) {
@@ -194,60 +371,127 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       break;
 
     case 'EMAIL':
+/*
       TextEditingController _emailEditingController = new TextEditingController();
       dialog.editingControllers.add(_emailEditingController);
+*/
+  /*    return Padding(padding: EdgeInsets.only(left: 10, right: 10), child:  TextFormField(
+        controller: f.controller,
+        decoration:getDecoration(f.caption),
+        keyboardType: TextInputType.visiblePassword,
+        onSaved: (value) {
+          if (value != null) {
+          }
+        },
+      ));
+*/
 
-      return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
+
+      /*return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
           child:V3TextFormField(
       translate('Email'),
       _emailEditingController,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      //autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.emailAddress,
       validator: (value) => validateEmail(value!.trim()),
+      ));*/
+    return Padding(padding: EdgeInsets.only(left: 10, right: 10), child: V2TextWidget(
+        maxLength: 50,
+        styleVer: gblSettings.styleVersion,
+        decoration: getDecoration('Email'),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        controller: f.controller,
+        //autofocus: autofocus,
+        inputFormatters: [
+          FilteringTextInputFormatter.deny(RegExp("[#'!£^&*(){},|]"))
+        ],
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          String er = validateEmail(value!.trim());
+          if(er != '' ) return er;
+          return null;
+
+        },
       ));
 
     case 'PIN':
-      TextEditingController te1 = new TextEditingController();
-      dialog.editingControllers.add(te1);
-      TextEditingController te2 = new TextEditingController();
-      dialog.editingControllers.add(te2);
-      TextEditingController te3 = new TextEditingController();
-      dialog.editingControllers.add(te3);
-      TextEditingController te4 = new TextEditingController();
-      dialog.editingControllers.add(te4);
-      TextEditingController te5 = new TextEditingController();
-      dialog.editingControllers.add(te5);
-      TextEditingController te6 = new TextEditingController();
-      dialog.editingControllers.add(te6);
-      List<TextEditingController> faEditingController = [te1,te2,te3,te4,te5,te6];
+      List<TextEditingController> faEditingController = [gblCurDialog!.editingControllers[0],gblCurDialog!.editingControllers[1],
+        gblCurDialog!.editingControllers[2],gblCurDialog!.editingControllers[3],
+        gblCurDialog!.editingControllers[4],gblCurDialog!.editingControllers[5]];
 
       return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
           child: pax2faNumber(
           context, faEditingController, onFieldSubmitted: (value) {},
           onSaved: (value) {}, autofocus: true));
 
+    case 'EDITTEXT':
+      return Padding(padding: EdgeInsets.only(left: 10, right: 10),
+          child: V2TextWidget(
+        maxLength: 500,
+        styleVer: gblSettings.styleVersion,
+        decoration: getDecoration(f.caption),
+        controller: f.controller,
+        minlines: 3,
+        maxlines: 6,
+        validator: (value) {
+          return null;
+        },
+      ));
+      break;
+    case 'SWITCH':
+      return Padding(padding: EdgeInsets.only(left: 10, right: 10),
+        child:Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(f.caption),
+          Switch(
+            value:  parseBool(getGblValue(f.initialValue)), // sw1,
+            activeColor: Color(0xFF6200EE),
+            onChanged: (bool value) {
+              logit('switch click val $value');
+              setGblValue(f.initialValue, value.toString());
+              f.controller!.value = f.controller!.value.copyWith(
+                text: value.toString(),
+                //selection: TextSelection.collapsed(offset: updatedText.length),
+              );
+              doUpdate();
+/*
+              setState(() {
+              });
+*/
+
+            },
+          ),
+        ],
+      ));
+      break;
 
 
     case 'NUMBER':
+/*
       TextEditingController _emailEditingController = new TextEditingController();
       dialog.editingControllers.add(_emailEditingController);
+*/
 
       return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
-          child:V3TextFormField(
-            translate(f.caption),
-            _emailEditingController,
+          //child:V3TextFormField(
+          child: TextFormField(
+            decoration:getDecoration(f.caption),
+             controller: f.controller as TextEditingController,
             keyboardType: TextInputType.number,
             ),
           );
 
   case 'PASSWORD':
+/*
       TextEditingController _passwordEditingController = new TextEditingController();
       dialog.editingControllers.add(_passwordEditingController);
+*/
 
       return Padding(padding: EdgeInsets.only(left: 10, right: 10), child:  TextFormField(
       obscureText: _isHidden,
       obscuringCharacter: "*",
-      controller: _passwordEditingController ,
+      controller: f.controller ,
       decoration:getDecoration(f.caption),
       keyboardType: TextInputType.visiblePassword,
       onSaved: (value) {
@@ -270,7 +514,7 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
                   doUpdate();
 
                   Navigator.of(context).pop();
-                  doDialogAction(context, dialog, f, doUpdate);
+                  doDialogAction(context, f, doUpdate);
                 }
             );
         } else {
@@ -288,7 +532,7 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
                   doUpdate();
 
                   Navigator.of(context).pop();
-                  doDialogAction(context, dialog, f, doUpdate);
+                  doDialogAction(context, f, doUpdate);
                   /*
             navToGenericFormPage(context, new FormParams(formName: 'FQTVREGISTER',
             formTitle: '${gblSettings.fqtvName} Registration'));

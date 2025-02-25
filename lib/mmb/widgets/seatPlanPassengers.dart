@@ -17,10 +17,10 @@ import '../../utilities/helper.dart';
 
 class SeatPlanPassengersWidget extends StatefulWidget {
   SeatPlanPassengersWidget(
-      {Key key= const Key("seatplanpax_key"), this.onChanged, this.paxList, this.segNo = '0', required this.loadingData, required this.dataLoaded})
+      {Key key= const Key("seatplanpax_key"), this.onChanged, this.paxList, this.segNo = 0, required this.loadingData, required this.dataLoaded})
       : super(key: key);
   final List<Pax>? paxList;
-  final String segNo;
+  final int segNo;
   //final SystemColors systemColors;
   final ValueChanged<List<Pax>>? onChanged;
   void Function(String msg) loadingData;
@@ -190,7 +190,7 @@ class _SeatPlanPassengersWidgetState extends State<SeatPlanPassengersWidget> {
                 :
             Align(alignment: Alignment.topRight,
                 child: vidIconButton(context, paxNo: pax,
-                    segNo: int.parse(widget.segNo) ,
+                    segNo: widget.segNo,
                     onPressed: (context, paxNo, segNo) {
                       logit('removeSeat pax$paxNo seg$segNo');
                       smartRemoveSeat(paxNo, segNo);

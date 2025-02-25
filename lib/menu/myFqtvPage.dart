@@ -223,9 +223,9 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
               action: 'FqtvRegister'
             ));
         }
+        gblCurDialog = dialog;
 
-
-        return smartDialogPage(context, dialog, null, (){ setState(() {}); });
+        return smartDialogPage();
       }
 
 
