@@ -1,4 +1,4 @@
-import 'package:vmba/utilities/PaxManager.dart';
+import 'package:vmba/Managers/PaxManager.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/models/availability.dart';
 import 'package:vmba/data/settings.dart';

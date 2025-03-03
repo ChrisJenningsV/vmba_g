@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/globals.dart';
@@ -122,17 +123,34 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
   Widget body =  VTitleText(seatNo,size:  TextSize.small,color: seatTxtColor);
   if( seatSize == SeatSize.small) body =  VBodyText(seatNo,size:  TextSize.small,color: seatTxtColor);
   if( seatType == SeatType.occupied){
-    body = Stack( children: [
-      Icon(Icons.person,  size: 30,color: Colors.grey.shade300,),
-      Positioned(
-          left: 5,
-          top: 5,
-          child: CustomPaint(painter: LinePainter())
-      ),
-      Align( alignment: Alignment.center, child: VTitleText(seatNo,size:  TextSize.small, color: Colors.black,)),
-    ],);
+    List<Widget> list = [];
+    //list.add(Icon(Icons.person,  size: 30,color: Colors.grey.shade300,));
+    //list.add(  Positioned(  left: 5,  top: 5,  child: CustomPaint(painter: LinePainter())  ));
+    list.add(Align( alignment: Alignment.center, child:Icon(Icons.close, color: Colors.grey.shade400, size: 45,)));
+    list.add(Align( alignment: Alignment.center, child: VTitleText(seatNo,size:  TextSize.small, color: Colors.black,)));
+    body = Stack( children: list,);
   }
 
+  if( gblSettings.seatStyle != null &&  gblSettings.seatStyle == 'line'){
+    return Container(
+      padding: EdgeInsets.all(0),
+      alignment: Alignment.center,
+      height: gblSeatPlanDef!.seatHeight,
+      width: gblSeatPlanDef!.seatWidth,
+      decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(width: 1.0, color: seatClr as Color),
+            left: BorderSide(width: 1.0, color: seatClr as Color),
+            right: BorderSide(width: 1.0, color: seatClr as Color),
+            bottom: BorderSide(width: 15.0, color: seatClr as Color),
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0)),
+//        color: seatClr,
+      ),
+      child: body,
+    );
+  }
   return Container(
     //color: seatClr,
     padding: EdgeInsets.all(0),

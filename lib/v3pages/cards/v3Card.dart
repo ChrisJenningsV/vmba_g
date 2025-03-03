@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 
 import '../../components/trText.dart';
 import '../../data/globals.dart';
-import '../homePageHelper.dart';
+import '../Templates.dart';
 
-Widget v3ExpanderCard(BuildContext context, HomeCard card,  Widget body,
+Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
     { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
 
   Color titleColor = Colors.grey.shade200;

@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vmba/components/vidButtons.dart';
+import 'package:vmba/dialogs/smartDropDown.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/pageStyleV2.dart';
@@ -325,14 +326,22 @@ void initField( DialogFieldDef f){
       gblCurDialog!.editingControllers.add(_passwordEditingController);
       break;
     case 'EDITTEXT':
-      TextEditingController _textEditingController = new TextEditingController();
+      TextEditingController _textEditingController = new TextEditingController(text: getGblValue(f.valueKey));
       f.controller = _textEditingController;
       gblCurDialog!.editingControllers.add(_textEditingController);
       break;
+    case 'LIST':
+      f.value = getGblValue(f.valueKey);
+      TextEditingController _textEditingController = new TextEditingController(text: getGblValue(f.valueKey));
+      f.controller = _textEditingController;
+      gblCurDialog!.editingControllers.add(_textEditingController);
+      break;
+
+
     case 'SWITCH':
       if( f.controller == null ) {
-        f.value = getGblValue(f.initialValue);
-        TextEditingController _textEditingController = new TextEditingController(text: f.initialValue);
+        f.value = getGblValue(f.valueKey);
+        TextEditingController _textEditingController = new TextEditingController(text: f.valueKey);
         f.controller = _textEditingController;
         gblCurDialog!.editingControllers.add(_textEditingController);
       }
@@ -415,23 +424,31 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       ));
 
     case 'PIN':
-      List<TextEditingController> faEditingController = [gblCurDialog!.editingControllers[0],gblCurDialog!.editingControllers[1],
-        gblCurDialog!.editingControllers[2],gblCurDialog!.editingControllers[3],
-        gblCurDialog!.editingControllers[4],gblCurDialog!.editingControllers[5]];
+      if( gblCurDialog != null && gblCurDialog!.editingControllers.length > 5 ) {
+        List<TextEditingController> faEditingController = [
+          gblCurDialog!.editingControllers[0],
+          gblCurDialog!.editingControllers[1],
+          gblCurDialog!.editingControllers[2],
+          gblCurDialog!.editingControllers[3],
+          gblCurDialog!.editingControllers[4],
+          gblCurDialog!.editingControllers[5]
+        ];
 
-      return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
-          child: pax2faNumber(
-          context, faEditingController, onFieldSubmitted: (value) {},
-          onSaved: (value) {}, autofocus: true));
+        return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
+            child: pax2faNumber(
+                context, faEditingController, onFieldSubmitted: (value) {},
+                onSaved: (value) {}, autofocus: true));
+      }
+      break;
 
     case 'EDITTEXT':
-      return Padding(padding: EdgeInsets.only(left: 10, right: 10),
+      return Padding(padding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
           child: V2TextWidget(
         maxLength: 500,
         styleVer: gblSettings.styleVersion,
         decoration: getDecoration(f.caption),
         controller: f.controller,
-        minlines: 3,
+        minlines: 1,
         maxlines: 6,
         validator: (value) {
           return null;
@@ -445,11 +462,11 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
         children: [
           Text(f.caption),
           Switch(
-            value:  parseBool(getGblValue(f.initialValue)), // sw1,
+            value:  parseBool(getGblValue(f.valueKey)), // sw1,
             activeColor: Color(0xFF6200EE),
             onChanged: (bool value) {
               logit('switch click val $value');
-              setGblValue(f.initialValue, value.toString());
+              setGblValue(f.valueKey, value.toString());
               f.controller!.value = f.controller!.value.copyWith(
                 text: value.toString(),
                 //selection: TextSelection.collapsed(offset: updatedText.length),
@@ -466,13 +483,29 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       ));
       break;
 
+    case 'LIST':
+      return Padding(padding: EdgeInsets.only(left: 10, right: 10),
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(f.caption),
+              SmartDropDownMenu(
+                    controller: f.controller,
+                          options: f.options!,
+                          iconColor: Colors.white,
+                          onChange: (index) {
+                          print(index);
+                            f.controller!.text = f.options![index];
+                            f.value = f.options![index];
+                            setGblValue(f.valueKey, f.options![index]);
+                            doUpdate();
+                          },
+                ),
+              ],
+          ));
+      break;
 
     case 'NUMBER':
-/*
-      TextEditingController _emailEditingController = new TextEditingController();
-      dialog.editingControllers.add(_emailEditingController);
-*/
-
       return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
           //child:V3TextFormField(
           child: TextFormField(
@@ -483,11 +516,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
           );
 
   case 'PASSWORD':
-/*
-      TextEditingController _passwordEditingController = new TextEditingController();
-      dialog.editingControllers.add(_passwordEditingController);
-*/
-
       return Padding(padding: EdgeInsets.only(left: 10, right: 10), child:  TextFormField(
       obscureText: _isHidden,
       obscuringCharacter: "*",
@@ -548,3 +576,4 @@ break;
   }
   return Container();
 }
+

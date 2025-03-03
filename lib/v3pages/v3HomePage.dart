@@ -9,7 +9,7 @@ import '../data/globals.dart';
 import '../menu/contact_us_page.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
-import 'homePageHelper.dart';
+import 'Templates.dart';
 import 'cards/searchCard.dart';
 import 'cards/v3CustomPage.dart';
 
@@ -85,7 +85,7 @@ return  getCustomScaffoldPage(context, gblFqtvLoggedIn ? 'fqtvhome' : 'home', ()
 
   }
 
-Widget getSlide( HomeCard card, bool topLevel) {
+Widget getSlide( CardTemplate card, bool topLevel) {
 
 
     if( card.title!.color == null) card.title!.color = Colors.white;

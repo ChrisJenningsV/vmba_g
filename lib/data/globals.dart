@@ -7,7 +7,7 @@ import 'package:vmba/data/models/models.dart';
 import '../components/vidButtons.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../home/searchParams.dart';
-import '../v3pages/homePageHelper.dart';
+import '../v3pages/Templates.dart';
 import '../v3pages/v3Theme.dart';
 import 'SystemColors.dart';
 import 'package:vmba/data/settings.dart';
@@ -199,6 +199,9 @@ SearchParams gblSearchParams = new SearchParams();
 FlightStatuss? gblFlightStatuss;
 String gblLoadedHomeCountry = '';
 Placemark? gblCurLocation;
+String gblCurCity = '';
+double? gblLatitude;
+double? gblLongitude;
 DialogDef? gblCurDialog;
 
 Map<String, String> gblValues = {};

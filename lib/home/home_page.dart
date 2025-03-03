@@ -21,7 +21,7 @@ import '../components/showDialog.dart';
 import '../components/vidAppBar.dart';
 import '../data/repository.dart';
 import '../mmb/viewBookingPage.dart';
-import '../utilities/PaxManager.dart';
+import '../Managers/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../utilities/timeHelper.dart';
@@ -697,18 +697,29 @@ Widget _getLogo(){
 
     if( gblSettings.darkSiteEnabled) {
       String msg = gblSettings.darkSiteMessage;
+      String title = '' + gblSettings.darkSiteTitle;
       list.add( Padding( padding: EdgeInsets.fromLTRB(10, 0, 10, 50),
           child: Card(
             shadowColor: Colors.white,
             color: Colors.black,
               child: Container(
+                padding: EdgeInsets.all(10),
                 width: 400,
-                height: 300,
-                  child: VTitleText(msg, size: TextSize.large,
-                color: gblSystemColors.headerTextColor,))
+                height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        //leading: Icon(Icons.arrow_drop_down_circle, color: gblSystemColors.headerTextColor,),
+                        title: VTitleText(title,size: TextSize.large, color: gblSystemColors.headerTextColor,),
+                      ),
+                  VTitleText(msg, color: gblSystemColors.headerTextColor,),
+                ]
+          )
         )
-      ));
-      list.add( Padding( padding: EdgeInsets.all(60)));
+      ))
+      );
+      list.add( Padding( padding: EdgeInsets.all(25)));
     } else if(gblSettings.homePageMessage != '' ){
       String msg = gblSettings.homePageMessage;
       if( gblPassengerDetail != null && gblPassengerDetail!.firstName != ''){

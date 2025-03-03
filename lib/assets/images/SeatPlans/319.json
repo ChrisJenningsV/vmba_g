@@ -1,0 +1,14 @@
+{
+	"version": "1",
+	"name":	"319",
+	"fullName": "Airbus A319",
+	"top":	"490",
+	"left":	"15",
+	"cabinWidth":	"460",
+	"seatHorzSpace":  	"1",
+	"seatVertSpace":  	"10",
+	"seatWidth":	"45",
+	"seatHeight":	"45",
+	"aiselWidth":	"35",
+	"layout":	"3,3"
+}

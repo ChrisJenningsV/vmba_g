@@ -12,7 +12,7 @@ import '../../calendar/bookingFunctions.dart';
 import '../../components/trText.dart';
 import '../../data/globals.dart';
 import '../../data/models/vrsRequest.dart';
-import '../../data/CommsManager.dart';
+import '../../Managers/commsManager.dart';
 import '../../utilities/helper.dart';
 
 class SeatPlanPassengersWidget extends StatefulWidget {

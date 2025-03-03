@@ -25,7 +25,7 @@ Color actionButtonDisabledTextColor(){
 }
 
 Color cancelButtonColor( ){
-  return Colors.grey.shade100;
+  return Colors.grey;
 }
 
 Color disabledActionButtonColor(){

@@ -2,10 +2,10 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Helpers/networkHelper.dart';
+import '../data/globals.dart';
+import '../data/models/models.dart';
+import '../data/models/vrsRequest.dart';
 import '../utilities/helper.dart';
-import 'globals.dart';
-import 'models/models.dart';
-import 'models/vrsRequest.dart';
 
 Future<String> callSmartApi(String action, String data) async {
   VrsApiRequest rq =
@@ -23,6 +23,9 @@ Future<String> callSmartApi(String action, String data) async {
     rq.countryCode = gblCurLocation!.isoCountryCode;
     rq.country = gblCurLocation!.country;
     rq.city = gblCurLocation!.locality;
+
+    rq.latitude = gblLatitude;
+    rq.longitude = gblLongitude;
   }
   String msg =  json.encode(rq);
 
@@ -39,17 +42,6 @@ Future<String> callSmartApi(String action, String data) async {
         .catchError((resp) {
       logit(resp);
     });
-/*
-  } else {
-    response = await http
-        .get(Uri.parse(
-        "${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!
-            .varsSessionId}&req=$msg"))
-        .catchError((resp) {
-      logit(resp);
-    });
-  }
-*/
   if (response == null) {
     throw 'No Internet';
     //return new ParsedResponse(noInterent, null);
@@ -57,7 +49,7 @@ Future<String> callSmartApi(String action, String data) async {
 
   //If there was an error return null
   if (response.statusCode < 200 || response.statusCode >= 300) {
-    logit('callSmartApi (): ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String));
+    logit('callSm (): ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String));
     throw 'callSmartApi: ' + response.statusCode.toString() + ' ' + (response.reasonPhrase as String);
     //return new ParsedResponse(response.statusCode, null);
   }
@@ -103,6 +95,9 @@ Future<String> callSmartApi(String action, String data) async {
 
   if( rs.data == null ) {
     throw 'no data returned';
+  }
+  if( gblCurLocation!.locality == '' ) {
+    gblCurCity = rs.city;
   }
   return rs.data;
 }

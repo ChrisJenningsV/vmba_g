@@ -39,10 +39,12 @@ class Trip {
   String depart = '';
   String destin = '';
   String cabin = '';
+  String phone = '';
   DateTime? fltdate;  
 
   Trip.fromJson(Map<String, dynamic> json) {
     try {
+      String ctc = '';
       if (json['rloc'] != null) rloc = json['rloc'];
       if (json['RLOC'] != null) rloc = json['RLOC'];
       if (json['CTC'] != null) contact = json['CTC'];
@@ -50,6 +52,7 @@ class Trip {
       if (json['fltno'] != null) fltNo = json['fltno'].trim();
       if (json['depart'] != null) depart = json['depart'].trim();
       if (json['destin'] != null) destin = json['destin'].trim();
+      if (json['phone'] != null) ctc = json['phone'].trim();
       try {
         //"flt_date" -> "2025-01-29T00:00:00"
         if (json['flt_date'] != null) {
@@ -63,6 +66,18 @@ class Trip {
         logit('Trip.fromJson ' + e.toString());
       }
 
+      if( ctc != '' ){
+        ctc = ctc.replaceAll('   ', ' ');
+        ctc = ctc.replaceAll('  ', ' ');
+        List<String> aStr = ctc.split(' ');
+        if( aStr.length > 2) {
+          String no = aStr[2];
+          if (no != '') {
+            no = no.split('[')[0];
+            phone = no.trim();
+          }
+        }
+      }
 
       if (contact != '') {
         contact = contact.replaceAll('.', '').replaceAll(RegExp('[0-9]'), '');

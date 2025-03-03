@@ -4,7 +4,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:vmba/data/CommsManager.dart';
+import 'package:vmba/Managers/commsManager.dart';
 import 'package:vmba/data/models/dialog.dart';
 import 'package:vmba/dialogs/registerActions.dart';
 import 'package:vmba/dialogs/smartDialog.dart';
@@ -15,7 +15,7 @@ import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/repository.dart';
 import '../menu/debug.dart';
-import '../utilities/PaxManager.dart';
+import '../Managers/PaxManager.dart';
 import 'genericFormPage.dart';
 import '../menu/myFqtvPage.dart';
 import '../utilities/helper.dart';
@@ -84,24 +84,61 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
       break;
     case 'DODARKSITEADMIN':
       // save local
-      gblSettings.darkSiteMessage =gblCurDialog!.editingControllers[1].value.text;
+      gblSettings.darkSiteTitle =gblCurDialog!.editingControllers[1].value.text;
+      gblSettings.darkSiteMessage =gblCurDialog!.editingControllers[2].value.text;
       gblSettings.darkSiteEnabled = parseBool(getGblValue('dark'));
       // save to server
       SaveSettingsRequest saveSettingsRequest = new SaveSettingsRequest();
       saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteEnabled', gblSettings.darkSiteEnabled.toString()));
       saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteMessage', gblSettings.darkSiteMessage));
-
-      String data = json.encode(saveSettingsRequest);
-      String reply = await callSmartApi('SAVESETTINGS', data);
-      if( reply == 'OK' || reply == '') {
-         showVidDialog(context, 'Success', 'Settings saved', type: DialogType.Information, onComplete: (){
-           // go home
-           navToHomepage(context);
-         });
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteTitle', gblSettings.darkSiteTitle));
+      if( gblSettings.darkSiteEnabled && (gblSettings.darkSiteMessage == '' || gblSettings.darkSiteTitle == '')) {
+        showVidDialog(context, 'Error', 'Please complete Message and Title to save',
+            type: DialogType.Error);
       } else {
-        showVidDialog(context, 'Error', reply, type: DialogType.Error);
+        String data = json.encode(saveSettingsRequest);
+        String reply = await callSmartApi('SAVESETTINGS', data);
+        if (reply == 'OK' || reply == '') {
+          showVidDialog(context, 'Success', 'Settings saved',
+              type: DialogType.Information, onComplete: () {
+                // go home
+                navToHomepage(context);
+              });
+        } else {
+          showVidDialog(context, 'Error', reply, type: DialogType.Error);
+        }
       }
       break;
+    case 'DOSEATADMIN':
+    // save local
+      gblSettings.seatStyle =gblCurDialog!.editingControllers[0].value.text;
+      gblSettings.seatPriceStyle =gblCurDialog!.editingControllers[1].value.text;
+      // save to server
+/*
+      SaveSettingsRequest saveSettingsRequest = new SaveSettingsRequest();
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteEnabled', gblSettings.darkSiteEnabled.toString()));
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteMessage', gblSettings.darkSiteMessage));
+      saveSettingsRequest.settingsList!.add(MobileSetting('darkSiteTitle', gblSettings.darkSiteTitle));
+      if( gblSettings.darkSiteEnabled && (gblSettings.darkSiteMessage == '' || gblSettings.darkSiteTitle == '')) {
+        showVidDialog(context, 'Error', 'Please complete Message and Title to save',
+            type: DialogType.Error);
+      } else {
+        String data = json.encode(saveSettingsRequest);
+        String reply = await callSmartApi('SAVESETTINGS', data);
+        if (reply == 'OK' || reply == '') {
+          showVidDialog(context, 'Success', 'Settings saved',
+              type: DialogType.Information, onComplete: () {
+                // go home
+                navToHomepage(context);
+              });
+        } else {
+          showVidDialog(context, 'Error', reply, type: DialogType.Error);
+        }
+      }
+*/
+      Navigator.pop(context);
+      break;
+
     case 'DOAGENTLOGIN':
       String No = gblCurDialog!.editingControllers[0].value.text;
       String Pw = gblCurDialog!.editingControllers[1].value.text;
@@ -169,14 +206,15 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
         gblIsNewInstall = false;
         await Repository.get().settings();
         // save new email etc in my account
-        String firstName = '', lastName = '', title = '', dOB = '';
+        String firstName = '', lastName = '', title = '', dOB = '', phone = '';
         if( gblTrips != null &&  gblTrips!.trips != null && gblTrips!.trips!.length > 0){
           firstName = gblTrips!.trips![0].firstname;
           lastName = gblTrips!.trips![0].lastname;
           title = gblTrips!.trips![0].title;
           dOB = gblTrips!.trips![0].DOB;
+          phone = gblTrips!.trips![0].phone;
         }
-        PaxManager.populate(gblValidationEmail, firstName: firstName, title: title, lastName: lastName, dOB: dOB);
+        PaxManager.populate(gblValidationEmail, firstName: firstName, title: title, lastName: lastName, dOB: dOB, phone: phone);
         PaxManager.save();
         navToHomepage(context);
 

@@ -1,0 +1,12 @@
+{
+  "cards": [
+    {
+      "card_type": "NextFlight",
+      "title": "Your next flight: [[FLIGHTDATE]]"
+    },
+    {
+      "card_type": "Destination",
+      "title": "[[CITYNAME]]"
+    }
+  ]
+}

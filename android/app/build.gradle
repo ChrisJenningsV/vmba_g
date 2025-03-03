@@ -141,8 +141,8 @@ android {
         }
         Keylime {
           dimension "version"
-          resValue "string", "flavored_app_name", "key Lime Air"
-          applicationId "com.keylime.booking"
+          resValue "string", "flavored_app_name", "Denver Air Connection"
+          applicationId "com.denverairconnection.booking"
         }
     }
 

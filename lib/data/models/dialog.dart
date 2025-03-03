@@ -63,17 +63,22 @@ class DialogDef {
     // opts name, phone, email, password, text, textWithLink, number, image
     String caption = '';
     String actionText = '';
+    List<String>? options =[];
 
     String action = '';
     bool required = true;
+    bool isMenuOpen = false;
     String value = '';
-    String initialValue = '';
+    String valueKey = '';
 
     TextEditingController? controller;
 
 
     DialogFieldDef({this.field_type='', this.caption='',
-      this.actionText='', this.action = '', this.initialValue='false'});
+      this.actionText='', this.action = '',
+      this.valueKey='false', this.isMenuOpen=false,
+      this.options
+      });
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {
       try {

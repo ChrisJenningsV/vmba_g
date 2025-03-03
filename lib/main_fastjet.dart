@@ -66,6 +66,8 @@ void configFN() {
     avTimeFormat: 'HH:mm',
     homePageStyle: 'V1',
     pageStyle: 'V1',
+    wantCustomAnimations: true,
+    customProgressImage: 'lib/assets/fastjet/images/plane.png',
 
     airlineName: "fastjet",
     gblServerFiles: 'https://customer3.videcom.com/FastJet/AppFiles/',
@@ -142,8 +144,8 @@ void configFN() {
     //testSmartApiUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
     testSmartApiUrl:      "https://customertest.videcom.com/FastJet/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/FastJet/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
-    testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
-//    testApiUrl:      'http://10.0.2.2:5000/api',  // local
+ //   testApiUrl:      'https://customertest.videcom.com/FastJet/VARS/webApiv2/api/',
+    testApiUrl:      'http://10.0.2.2:5000/api/',  // local
 
 
     creditCardProvider: '3DS_videcard',

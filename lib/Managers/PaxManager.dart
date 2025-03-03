@@ -11,7 +11,7 @@ import '../data/models/models.dart';
 import '../data/models/user_profile.dart';
 import '../data/models/vrsRequest.dart';
 import '../data/repository.dart';
-import 'helper.dart';
+import '../utilities/helper.dart';
 
 class PaxManager {
   static PassengerDetail passengerDetail = new PassengerDetail();

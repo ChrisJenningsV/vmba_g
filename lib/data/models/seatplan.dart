@@ -23,13 +23,16 @@ class Seatplan {
 
   int getMinCol() {
     int minCol = -1;
-    this.seats.seat.forEach((s) {
+    this.seats.seat.forEach((Seat s) {
       if (minCol == -1 || minCol > s.sCol) {
-        minCol = s.sCol;
+        if( s.isSeat()) {
+          minCol = s.sCol;
+        }
       }
     });
     return minCol;
   }
+
   int getMaxCol() {
     int maxCol = 0;
     this.seats.seat.forEach((s) {
@@ -413,6 +416,8 @@ class SeatsFlt {
   String sDestin='';
   String sFltID='';
   String sRef='';
+  String displayInfo = '';
+  String departTime = '';
 
   SeatsFlt();
 
@@ -423,6 +428,8 @@ class SeatsFlt {
     if( json['Destin'] != null ) sDestin = json['Destin'];
     if( json['FltID'] != null ) sFltID = json['FltID'];
     if( json['Ref'] != null ) sRef = json['Ref'];
+    if( json['DisplayInfo'] != null ) displayInfo = json['DisplayInfo'];
+    if( json['DepartTime'] != null ) departTime = json['DepartTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -548,6 +555,13 @@ class Seat {
     } catch(e) {
       logit(e.toString());
     }
+  }
+
+  bool isSeat() {
+    if( this.sCellDescription == 'Seat' || this.sCellDescription == 'EmergencySeat' || this.sCellDescription == 'Block Seat'){
+      return true;
+    }
+    return false;
   }
 
   Map<String, dynamic> toJson() {

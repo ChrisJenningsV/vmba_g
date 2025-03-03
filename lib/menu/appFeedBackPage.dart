@@ -128,7 +128,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
                     '  GMT:${getGmtTime().toString().substring(0, 16)}'),
               ),
               (gblSettings.wantLocation && gblCurLocation != null) ?
-              Text('${gblCurLocation!.country} ${gblCurLocation!.locality}') : Container(),
+              Text('${gblCurLocation!.country} $gblCurCity') : Container(),
 
 
 /*

@@ -9,7 +9,7 @@ import '../Helpers/settingsHelper.dart';
 import '../components/trText.dart';
 import '../data/globals.dart';
 import '../utilities/helper.dart';
-import 'homePageHelper.dart';
+import 'Templates.dart';
 
 class V3Theme {
   V3Theme();

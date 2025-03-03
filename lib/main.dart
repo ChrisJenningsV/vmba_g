@@ -18,7 +18,7 @@ import 'package:vmba/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vmba/utilities/CustomError.dart';
 import 'package:vmba/utilities/helper.dart';
-import 'package:vmba/v3pages/homePageHelper.dart';
+import 'package:vmba/v3pages/Templates.dart';
 import 'package:vmba/v3pages/newInstallPage.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 

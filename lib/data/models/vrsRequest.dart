@@ -20,6 +20,9 @@ class VrsApiRequest extends Session {
   String? country = '';
   String? countryCode = '';
   String? city = '';
+  double? latitude;
+  double? longitude;
+
 
   VrsApiRequest(
       Session session,
@@ -33,6 +36,10 @@ class VrsApiRequest extends Session {
     this.country='',
     this.countryCode='',
     this.city='',
+/*
+    this.latitude=0,
+    this.longitude=0,
+*/
   }
       ) : super(session.sessionId, session.varsSessionId, session.vrsServerNo);
 
@@ -58,6 +65,8 @@ class VrsApiRequest extends Session {
     map['city'] = city;
     map['country'] = country;
     map['countryCode'] = countryCode;
+    map['longitude'] = longitude;
+    map['latitude'] = latitude;
 
     return map;
   }
@@ -71,6 +80,7 @@ class VrsApiResponse  {
   String varsSessionId ='';
   String vrsServerNo ='';
   String serverIP ='';
+  String city ='';
   bool isSuccessful = true;
 
   VrsApiResponse( this.data, this.varsSessionId, this.sessionId, this.vrsServerNo, this.errorMsg, this.isSuccessful) ;

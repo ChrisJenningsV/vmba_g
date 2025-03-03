@@ -182,6 +182,8 @@ class Settings {
   String homePageMessage;
   String productFormat;
   String homePageStyle;
+  String seatStyle;
+  String seatPriceStyle;
   String inputStyle;
   String homePageFilename;
   String pageStyle;
@@ -217,6 +219,7 @@ class Settings {
   String seatPlanStyle='';
   String defaultTraveller;
   String darkSiteMessage;
+  String darkSiteTitle;
 
   String customMenu1='';
   String customMenu2='';
@@ -279,6 +282,7 @@ class Settings {
   String appFeedbackEmail="";
   String buttonStyle;
   String upgradeMessage;
+  String customProgressImage;
 
   String prohibitedItemsNoticeUrl="";
   String groupsBookingsEmail ="";
@@ -416,12 +420,15 @@ bool bpShowFastTrack;
     this.avTimeFormat='HHmm',
     this.homePageStyle='V1',
     this.inputStyle='V1',
+    this.seatStyle='fill',
+    this.seatPriceStyle='fill',
     this.homePageFilename = '',
     this.pageStyle = 'V1',
     this.styleVersion = 1,
     this.seatPlanStyle = '',
     this.defaultTraveller = 'Traveller',
     this.darkSiteMessage = '',
+    this.darkSiteTitle = '',
 
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,
@@ -513,6 +520,7 @@ bool bpShowFastTrack;
     this.fQTVpointsName='',
     this.buttonStyle='',
     this.upgradeMessage='',
+    this.customProgressImage='',
     this.bpShowAddPassToWalletButton=false,
     this.passportLayoutStyle = 1,
     this.iOSDemoBuilds='',

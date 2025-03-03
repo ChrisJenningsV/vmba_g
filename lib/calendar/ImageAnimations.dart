@@ -490,6 +490,11 @@ class _RoataingImageState extends State<RoataingImage>
 
 }
 Widget smallPlane( int imgNo){
+  String assetImg = 'lib/assets/images/plane${imgNo.toString()}.png';
+  if(gblSettings.customProgressImage != '' ){
+    assetImg = gblSettings.customProgressImage;
+  }
+
   return Container(
     height: 100,
     width: 100,
@@ -498,7 +503,7 @@ Widget smallPlane( int imgNo){
           fit: BoxFit.fitWidth,
           image:  imgNo == 0 ?
           NetworkImage('${gblSettings.gblServerFiles}/pageImages/planex.png') :
-          AssetImage('lib/assets/images/plane${imgNo.toString()}.png')
+          AssetImage(assetImg)
       ),
     ),
   );

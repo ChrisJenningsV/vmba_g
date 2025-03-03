@@ -47,13 +47,14 @@ class PageListHolder {
 }
 
 class CustomPage {
-  List<HomeCard>? cards;
+  List<CardTemplate>? cards;
   String pageName = '';
   CardText? title;
   double topPadding = 40;
   double bottomPadding = 10;
   Color? backgroundColor = Colors.white;
   String backgroundImage = '';
+  bool wantBackground = true;
   BottomNav? bottomNav;
 
 
@@ -69,6 +70,7 @@ class CustomPage {
         backgroundColor = lookUpColor(json['backgroundColor'].toString());
       if (json['backgroundImage'] != null)
         backgroundImage = json['backgroundImage'];
+      if( json['wantBackground'] != null ) wantBackground = parseBool(json['wantBackground']);
 
       if (json['title'] != null) {
         if (json['title'] is Map) {
@@ -84,14 +86,14 @@ class CustomPage {
         //new List<Country>();
         if (json['cards'] is List) {
           json['cards'].forEach((v) {
-            HomeCard c = new HomeCard.fromJson(v);
+            CardTemplate c = new CardTemplate.fromJson(v);
             if (c.title != null) {
 //          logit('ttl ${c.title!.text} bgclr ${c.title!.backgroundColor}');
             }
             cards?.add(c);
           });
         } else {
-          HomeCard c = new HomeCard.fromJson(json['cards']);
+          CardTemplate c = new CardTemplate.fromJson(json['cards']);
           cards?.add(c);
         }
       }
@@ -115,7 +117,7 @@ class BottomNav {
 
 }
 
-class HomeCard extends HomeCardLink  {
+class CardTemplate extends LinkTemplate  {
 
   IconData? icon;
   String image='';
@@ -128,14 +130,15 @@ class HomeCard extends HomeCardLink  {
   double cornerRadius= 10;
   Color? backgroundClr;
   Color? textClr;
+  CardBodyTemplate? body;
 
-  List<HomeCard>? cards;
-  List<HomeCardLink>? links;
+  List<CardTemplate>? cards;
+  List<LinkTemplate>? links;
 
 
-  HomeCard();
+  CardTemplate();
 
-  HomeCard.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+  CardTemplate.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
 
     try {
       if (json['card_type'] != null) card_type = json['card_type'];
@@ -144,13 +147,6 @@ class HomeCard extends HomeCardLink  {
         //logit('HomeCard.fromJson $card_type');
       }
 
-      /*if( json['title'] != null ) {
-      if( json['title'] is Map) {
-        title = CardText.fromJson(card_type, json['title']);
-      } else {
-        title = new CardText(card_type, text: json['title']);
-      }
-    }*/
       if (json['expanded'] != null) expanded = parseBool(json['expanded']);
       if (json['format'] != null) format = json['format'];
       if (json['shape'] != null) shape = json['shape'];
@@ -175,7 +171,7 @@ class HomeCard extends HomeCardLink  {
         cards = [];
         //new List<Country>();
         json['cards'].forEach((v) {
-          cards?.add(new HomeCard.fromJson(v));
+          cards?.add(new CardTemplate.fromJson(v));
         });
       }
       if (json['links'] != null) {
@@ -183,10 +179,10 @@ class HomeCard extends HomeCardLink  {
         //new List<Country>();
         if (json['links'] is List) {
           json['links'].forEach((v) {
-            links?.add(new HomeCardLink.fromJson(v));
+            links?.add(new LinkTemplate.fromJson(v));
           });
         } else {
-          links?.add(new HomeCardLink.fromJson(json['links']));
+          links?.add(new LinkTemplate.fromJson(json['links']));
 
         }
 
@@ -199,15 +195,19 @@ class HomeCard extends HomeCardLink  {
     }
   }
 
-class HomeCardLink {
+  class CardBodyTemplate{
+
+  }
+
+class LinkTemplate {
   String url='';
   CardAction? action;
   String destination='';
   CardText? title;
   String card_type='';
 
-  HomeCardLink();
-  HomeCardLink.fromJson(Map<String, dynamic> json) {
+  LinkTemplate();
+  LinkTemplate.fromJson(Map<String, dynamic> json) {
     //logit('HomeCardLink.fromJson');
     try {
       if (json['action'] != null) {
@@ -227,8 +227,6 @@ class HomeCardLink {
     } catch(e) {
       logit('HomeCardLink.fromJson ${e.toString()}');
     }
-
-
 
     }
   }
@@ -532,3 +530,4 @@ Future<void> initHomePage(String fileName) async {
     logit('home file data error ' + data.substring(0,20));
   }
 }
+

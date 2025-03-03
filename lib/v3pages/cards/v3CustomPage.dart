@@ -15,7 +15,7 @@ import '../../mmb/myBookingsPage.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/navigation.dart';
 import '../../utilities/widgets/colourHelper.dart';
-import '../homePageHelper.dart';
+import '../Templates.dart';
 import '../loggedInHomePage.dart';
 import '../v3BottomNav.dart';
 import '../v3Theme.dart';
@@ -119,7 +119,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
 
 Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Function() doCallback) {
-  ImageProvider image = Image
+  ImageProvider? image = Image
       .asset('lib/assets/images/bg.png')
       .image;
 
@@ -131,6 +131,7 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
       backgroundImage,
       fit: BoxFit.cover,).image;
   }
+  if( homePage.wantBackground == false) image = null;
 
    if (homePage.pageName == 'newinstall') {
       NetworkImage backgroundImage = NetworkImage(
@@ -155,7 +156,7 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
               padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
 
               decoration: BoxDecoration(
-                image: DecorationImage(
+                image: image == null ? null : DecorationImage(
                     image: image, //mainBackGroundImage,
                     fit: BoxFit.fitWidth,
                     alignment: Alignment.topLeft),
@@ -275,7 +276,7 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
     return list;
   }
 
-Widget getCard(BuildContext context, HomeCard card,  Widget body,
+Widget getCard(BuildContext context, CardTemplate card,  Widget body,
     { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
 
   if( card.shape != null && card.shape == 'square'){
@@ -284,7 +285,7 @@ Widget getCard(BuildContext context, HomeCard card,  Widget body,
   return v3ExpanderCard( context, card, body, wantIcon: wantIcon,  ts: ts );
 }
 
-Widget squareCard(BuildContext context, HomeCard card,  Widget body,
+Widget squareCard(BuildContext context, CardTemplate card,  Widget body,
     { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
 
   Color titleColor = Colors.grey.shade200;
@@ -321,7 +322,7 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
   );
 
 }
-  Widget getSlides(BuildContext context, HomeCard card,  void Function() doCallback) {
+  Widget getSlides(BuildContext context, CardTemplate card,  void Function() doCallback) {
     List<Widget> list = [];
     final cards = card!.cards;
     if (cards != null) {
@@ -351,7 +352,7 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
           ),
         ));
   }
-  Widget getListItem(BuildContext context, HomeCard card, void Function() doCallback){
+  Widget getListItem(BuildContext context, CardTemplate card, void Function() doCallback){
     switch (card.card_type) {
       case 'photoLink':
         return getSlide(context, card, false);
@@ -367,7 +368,7 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
 
   }
 
-  List<Widget> getLinkList(BuildContext context, List<HomeCard>? cards, void Function() doCallback){
+  List<Widget> getLinkList(BuildContext context, List<CardTemplate>? cards, void Function() doCallback){
     List<Widget> list = [];
     if (cards != null) {
       cards.forEach((card) {
@@ -377,7 +378,7 @@ Widget squareCard(BuildContext context, HomeCard card,  Widget body,
     return list;
   }
 
-Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+Widget getPhotoList(BuildContext context, List<CardTemplate>? cards, void Function() doCallback) {
   List<Widget> list = [];
 
   if (cards != null) {
@@ -434,7 +435,7 @@ Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function()
       ));
 }
 
-  Widget getLinks(BuildContext context, List<HomeCard>? cards, void Function() doCallback) {
+  Widget getLinks(BuildContext context, List<CardTemplate>? cards, void Function() doCallback) {
     List<Widget> list = getLinkList(context, cards, doCallback);
 
     return SingleChildScrollView(
@@ -451,7 +452,7 @@ Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function()
         ));
   }
 
-  Widget getSlide(BuildContext context, HomeCard card, bool topLevel) {
+  Widget getSlide(BuildContext context, CardTemplate card, bool topLevel) {
     if (card.title!.color == null) card.title!.color = Colors.white;
 
     if( card.format != '' && card.format.toLowerCase() == 'fill'){
@@ -566,7 +567,7 @@ Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function()
     );
   }
 
-  DecorationImage? _getImage(HomeCard card, bool topLevel){
+  DecorationImage? _getImage(CardTemplate card, bool topLevel){
     return DecorationImage(
       image: NetworkImage(
           'https://customertest.videcom.com/LoganAir/AppFiles/${card.image}'),
@@ -575,7 +576,7 @@ Widget getPhotoList(BuildContext context, List<HomeCard>? cards, void Function()
     );
   }
 
-Widget getButton(BuildContext context, HomeCard card, bool topLevel,void Function() doCallback) {
+Widget getButton(BuildContext context, CardTemplate card, bool topLevel,void Function() doCallback) {
   EdgeInsets buttonPad = EdgeInsets.all(10);
   bool wantShadows = gblSettings.wantShadows;
 
@@ -614,7 +615,7 @@ Widget getButton(BuildContext context, HomeCard card, bool topLevel,void Functio
 
 
 
-  Widget getLinkButton(BuildContext context, HomeCard card, bool topLevel,void Function() doCallback) {
+  Widget getLinkButton(BuildContext context, CardTemplate card, bool topLevel,void Function() doCallback) {
     if (card.title!.color == null) card.title!.color = Colors.black;
 
     Widget caption;
@@ -700,7 +701,7 @@ Widget getButton(BuildContext context, HomeCard card, bool topLevel,void Functio
         ));
   }
 
-  Widget getIcon(HomeCard card) {
+  Widget getIcon(CardTemplate card) {
     if (card.icon != null) {
       //
       // return Icon(card.icon);

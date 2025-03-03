@@ -43,7 +43,7 @@ void configLM() {
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200],
     seatPlanBackColor: Colors.grey.shade300, // Colors.black,
-    seatPriceColor: Colors.black,
+    seatPriceColor: Colors.blue,
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
 
@@ -71,6 +71,8 @@ void configLM() {
     // start new bits
     homePageStyle: 'V3',
     inputStyle: 'V2',
+    seatStyle:'line',
+    seatPriceStyle:'round',
     smartApiVersion: 2,
     wantShadows: false,
     wantTransapentHomebar: true,
@@ -86,15 +88,15 @@ void configLM() {
     //wantProducts: true,
     wantStatusLine: true,
     wantFlightStatus: true,
-    wantNews: true,
+    wantNews: false,
     wantFopVouchers: true,
     wantHelpCentre: true,
     wantLocation: true,
-    wantDarkSite: false,
+    wantDarkSite: true,
     wantAdminLogin: true,
     wantGeoLocationHopePage: true,
     wantNewDialogs: true,
-    wantCustomAnimations: true,
+    wantCustomAnimations: false,
 
     wantSeatsWithProducts: false,
     useLogin2: true,
@@ -127,9 +129,11 @@ void configLM() {
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',
   termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
-    /*contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobileApp/ZenHelpCentre.aspx',*/
+/*
+    contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobileApp/ZenHelpCentre.aspx',
+*/
   contactUsUrl: 'https://inhouse.videcom.com/LoganAirInHouse/VARS/public/MobileApp/ZenHelpCentre.aspx',
-    //contactUsUrl: 'http://10.0.2.2:57793/MobileApp/ZenHelpCentre.aspx',
+//    contactUsUrl: 'http://10.0.2.2:57793/MobileApp/ZenHelpCentre.aspx',
    //trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',
   prohibitedItemsNoticeUrl:  'https://www.loganair.co.uk/prohibited-items-notice/',
@@ -200,8 +204,8 @@ void configLM() {
     testSmartApiUrl:      "https://inhouse.videcom.com/LoganAirinhouse/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
-
 /*
+
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

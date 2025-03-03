@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:vmba/data/models/vouchers.dart';
 import '../components/showDialog.dart';
 import '../data/globals.dart';
-import '../data/CommsManager.dart';
+import '../Managers/commsManager.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';

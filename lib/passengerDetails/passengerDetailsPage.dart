@@ -789,12 +789,17 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 navToFlightSearchPage(context);
               });
             } else if( gblSettings.wantNewSeats) {
+              gblError = '';
               PnrModel pnrModel = PnrModel();
               gblPnrModel = await makeBooking(widget.newBooking, pnrModel).catchError((e) {
                 logit('book error ${e.toString()}');
               });
               if(gblPnrModel == null ) {
-                showVidDialog(context, 'Error', 'Booking failed', onComplete:()
+                String errMsg = 'Booking failed';
+                if( gblError != ''){
+                  errMsg += '\n\n' + gblError;
+                }
+                showVidDialog(context, 'Error', errMsg, onComplete:()
                 {
                   navToFlightSearchPage(context);
                 });

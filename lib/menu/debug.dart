@@ -13,7 +13,7 @@ import '../utilities/helper.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3CustomPage.dart';
 import '../v3pages/controls/V3Constants.dart';
-import '../v3pages/homePageHelper.dart';
+import '../v3pages/Templates.dart';
 import '../v3pages/v3BottomNav.dart';
 import 'menu.dart';
 
@@ -119,106 +119,148 @@ class DebugPageState extends State<DebugPage> {
   bool isSwitched = false;
   bool isSwitched2 = true;
   Widget getAdminBody(){
-    return SettingsList(
-      sections: [
-        SettingsSection(
-          //titlePadding: EdgeInsets.all(20),
-          title: Text('Section 1'),
-          tiles: [
-            SettingsTile(
-              title: Text('Dark Site'),
-              //subtitle: 'English',
-              leading: Icon(Icons.dark_mode),
-              onPressed: (BuildContext context) {
-                logit('Section DarkSite click');
-                setGblValue('dark', gblSettings.wantDarkSite.toString());
-                DialogDef dialog = new DialogDef(caption: 'Dark site configuration',
-                    actionText: 'Save',
-                    action: 'DoDarkSiteAdmin');
-                dialog.fields.add(
-                    new DialogFieldDef(field_type: 'switch', caption: 'enabled', initialValue: 'dark' ));
-                dialog.fields.add(
-                    new DialogFieldDef(field_type: 'edittext', caption: 'message', initialValue: gblSettings.darkSiteMessage));
-                dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+    List<AbstractSettingsSection> list = [];
+    if( gblSettings.wantDarkSite) {
+      list.add(SettingsSection(
+        //titlePadding: EdgeInsets.all(20),
+        title: Text('System'),
+        tiles: [
+          SettingsTile(
+            title: Text('Dark Site'),
+            //subtitle: 'English',
+            leading: Icon(Icons.dark_mode),
+            onPressed: (BuildContext context) {
+              logit('Section DarkSite click');
+              setGblValue('dark', gblSettings.darkSiteEnabled.toString());
+              setGblValue('darkMessage', gblSettings.darkSiteMessage);
+              setGblValue('darkTitle', gblSettings.darkSiteTitle);
+              DialogDef dialog = new DialogDef(
+                  caption: 'Dark site configuration',
+                  actionText: 'Save',
+                  action: 'DoDarkSiteAdmin');
+              dialog.fields.add(
+                  new DialogFieldDef(field_type: 'switch',
+                      caption: 'enabled',
+                      valueKey: 'dark'));
+              dialog.fields.add(
+                  new DialogFieldDef(field_type: 'edittext',
+                      caption: 'Title',
+                      valueKey: 'darkTitle'));
+              dialog.fields.add(
+                  new DialogFieldDef(field_type: 'edittext',
+                      caption: 'Message',
+                      valueKey: 'darkMessage'));
+              dialog.fields.add(new DialogFieldDef(field_type: 'space'));
 
-                gblCurDialog = dialog;
-                showSmartDialog(context, null, () {
-                  setState(() {});
-                });
-              },
-            ),
-          ],
-        ),
-        SettingsSection(
-//          titlePadding: EdgeInsets.all(20),
-          title: Text('New Features'),
-          tiles: [
-/*
-            SettingsTile(
-              title: Text('Progress Animation'),
-              leading: Icon(Icons.animation),
-              onPressed: (BuildContext context) {},
-            ),
-*/
-            SettingsTile.switchTile(
-              initialValue: gblSettings.wantCustomAnimations,
-              title: Text('Custom Progress Animation'),
-              activeSwitchColor: Colors.blue,
-              leading: Icon(Icons.airplanemode_inactive),
-              onToggle: (value) {
-                setState(() {
-                  gblSettings.wantCustomAnimations = value;
-                });
-              },
-            ),
-            SettingsTile.switchTile(
-              title: Text('News'),
-              activeSwitchColor: Colors.blue,
-              leading: Icon(Icons.phone_android),
-              initialValue: gblSettings.wantNews,
-              onToggle: (value) {
-                setState(() {
-                  gblSettings.wantNews = value;
-                });
-              },
-            ),
-            SettingsTile.switchTile(
-              title: Text('Flight Status'),
-              activeSwitchColor: Colors.blue,
-              leading: Icon(Icons.airplanemode_active),
-              initialValue: gblSettings.wantFlightStatus,
-              onToggle: (value) {
-                setState(() {
-                  gblSettings.wantFlightStatus = value;
-                });
-              },
-            ),
-            SettingsTile.switchTile(
-              title: Text('Vouchers'),
-              activeSwitchColor: Colors.blue,
-              leading: Icon(Icons.airplane_ticket_outlined),
-              initialValue: gblSettings.wantFopVouchers,
-              onToggle: (value) {
-                setState(() {
-                  gblSettings.wantFopVouchers = value;
-                });
-              },
-            ),
-            SettingsTile.switchTile(
-              title: Text('Help centre'),
-              activeSwitchColor: Colors.red,
-              leading: Icon(Icons.help_center),
-              initialValue: gblSettings.wantHelpCentre,
-              onToggle: (value) {
-                setState(() {
-                  gblSettings.wantHelpCentre = value;
-                });
-              },
-            ),
-          ],
-        ),
-      ],
-    );;
+              gblCurDialog = dialog;
+              showSmartDialog(context, null, () {
+                setState(() {});
+              });
+            },
+          ),
+        ],
+      ));
+    }
+      list.add(SettingsSection(
+        title: Text('User Interface'),
+        tiles: [
+          SettingsTile(
+            title: Text('Seat Plan'),
+            //subtitle: 'English',
+            leading: Icon(Icons.event_seat),
+            onPressed: (BuildContext context) {
+              logit('Section Seats click');
+              setGblValue('seatStyle', gblSettings.seatStyle);
+              setGblValue('seatPrice', gblSettings.seatPriceStyle);
+              DialogDef dialog = new DialogDef(
+                  caption: 'seat Plan configuration',
+                  actionText: 'Save',
+                  action: 'DoSeatAdmin');
+              dialog.fields.add(
+                  new DialogFieldDef(field_type: 'list',
+                      caption: 'Seat Style',
+                      valueKey: 'seatStyle',
+                      options: ['fill', 'line']
+                  ));
+              dialog.fields.add(
+                  new DialogFieldDef(field_type: 'list',
+                      caption: 'Seat Price',
+                      valueKey: 'seatPrice',
+                      options: ['oval','square','round', 'ovalfill','squarefill','roundfill']
+                  ));
+              dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+
+              gblCurDialog = dialog;
+              showSmartDialog(context, null, () {
+                setState(() {});
+              });
+            },
+          ),
+        ],
+      ));
+    list.add(SettingsSection(
+      title: Text('New Features'),
+      tiles: [
+    SettingsTile.switchTile(
+    initialValue: gblSettings.wantCustomAnimations,
+      title: Text('Custom Progress Animation'),
+      activeSwitchColor: Colors.blue,
+      leading: Icon(Icons.airplanemode_inactive),
+      onToggle: (value) {
+        setState(() {
+          gblSettings.wantCustomAnimations = value;
+        });
+      },
+    ),
+      SettingsTile.switchTile(
+        title: Text('News'),
+        activeSwitchColor: Colors.blue,
+        leading: Icon(Icons.phone_android),
+        initialValue: gblSettings.wantNews,
+        onToggle: (value) {
+          setState(() {
+            gblSettings.wantNews = value;
+          });
+        },
+      ),
+      SettingsTile.switchTile(
+        title: Text('Flight Status'),
+        activeSwitchColor: Colors.blue,
+        leading: Icon(Icons.airplanemode_active),
+        initialValue: gblSettings.wantFlightStatus,
+        onToggle: (value) {
+          setState(() {
+            gblSettings.wantFlightStatus = value;
+          });
+        },
+      ),
+      SettingsTile.switchTile(
+        title: Text('Vouchers'),
+        activeSwitchColor: Colors.blue,
+        leading: Icon(Icons.airplane_ticket_outlined),
+        initialValue: gblSettings.wantFopVouchers,
+        onToggle: (value) {
+          setState(() {
+            gblSettings.wantFopVouchers = value;
+          });
+        },
+      ),
+      SettingsTile.switchTile(
+        title: Text('Help centre'),
+        activeSwitchColor: Colors.red,
+        leading: Icon(Icons.help_center),
+        initialValue: gblSettings.wantHelpCentre,
+        onToggle: (value) {
+          setState(() {
+            gblSettings.wantHelpCentre = value;
+          });
+        },
+      ),
+    ]));
+
+    return SettingsList(
+      sections: list
+    );
   }
 
 Widget getBottomNav() {

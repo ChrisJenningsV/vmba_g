@@ -1172,6 +1172,10 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         if (selected) seatType = SeatType.selected;
         break;
     }
+    if( seat!.sRLOC != '' ){
+      seatType = SeatType.occupied;
+    }
+
     String code = seat!.sCode;
     if( noCode == false) {
 

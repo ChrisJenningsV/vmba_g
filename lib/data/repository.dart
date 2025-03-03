@@ -9,17 +9,17 @@ import 'package:http/http.dart' as http;
 import 'package:vmba/data/models/paxContacts.dart';
 import 'package:vmba/data/models/routes.dart';
 import 'package:vmba/data/settings.dart';
-import 'package:vmba/data/CommsManager.dart';
+import 'package:vmba/Managers/commsManager.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
 import '../calendar/bookingFunctions.dart';
 import '../controllers/vrsCommands.dart';
 import '../main.dart';
-import '../utilities/PaxManager.dart';
+import '../Managers/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
-import '../v3pages/homePageHelper.dart';
-import 'audit.dart';
+import '../v3pages/Templates.dart';
+import '../Managers/auditManager.dart';
 import 'models/cities.dart';
 import 'package:vmba/data/models/boardingpass.dart';
 import 'package:vmba/data/models/pnrs.dart';
@@ -509,8 +509,11 @@ class Repository {
                   case'productimagemode':
                     gblSettings.productImageMode = item['value'];
                     break;
-                  case 'darkSiteMessage':
+                  case 'darksitemessage':
                     gblSettings.darkSiteMessage = item['value'];
+                    break;
+                  case 'darksitetitle':
+                    gblSettings.darkSiteTitle = item['value'];
                     break;
 
 
@@ -564,10 +567,10 @@ class Repository {
                   case 'wantLocation':
                     gblSettings.wantLocation = parseBool(item['value']);
                     break;
-                  case 'wantdarkSite':
+                  case 'wantdarksite':
                     gblSettings.wantDarkSite = parseBool(item['value']);
                     break;
-                  case 'darkSiteEnabled':
+                  case 'darksiteenabled':
                     gblSettings.darkSiteEnabled = parseBool(item['value']);
                     break;
 
@@ -1787,11 +1790,15 @@ Future<String> runVrsCommand(String cmd) async {
           .replaceAll('</string>', ''));
       if( map["errorMsg"] != null ) {
         logit('runVrs ${map["errorMsg"]}');
+        gblError = map["errorMsg"];
         //throw map["errorMsg"];
         return map["errorMsg"];
       }
       if( map["data"] != null ) {
         logit('runVrs ${map["data"]}');
+        if( map["data"].toString().contains('ERROR:')) {
+          gblError = map["data"];
+        }
         throw map["data"];
       }
       throw "Error returned from server";
@@ -1920,8 +1927,12 @@ Future<void> initGeolocation(void Function()? onComplete) async {
         position.latitude,
         position.longitude,
       );
+      gblLongitude = position.longitude;
+      gblLatitude = position.latitude;
+
       if( placemarks.length > 0) {
         gblCurLocation = placemarks[0];
+        gblCurCity = gblCurLocation!.locality as String;
         logit('got Geo');
         print(placemarks[0]);
         await loadLocationHome();
@@ -1949,6 +1960,8 @@ Future<void> loadLocationHome() async {
   String rx = await callSmartApi('LOADHOMEPAGE', data);
   gblLoadedHomeCountry = gblCurLocation!.country as String;
   logit('smartHomePage: loaded home');
+  // add city ?
+  rx = rx.replaceAll('[[CITY]]', gblCurCity);
   final Map<String, dynamic> map = json.decode(rx);
   gblHomeCardList = new PageListHolder.fromJson(map['root']);
 

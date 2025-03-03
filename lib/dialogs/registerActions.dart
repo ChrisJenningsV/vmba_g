@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../components/showDialog.dart';
 import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/CommsManager.dart';
+import '../Managers/commsManager.dart';
 
 Future<void> sendUnlockMsg(BuildContext context, String email, void Function() doCallback) async {
   try {

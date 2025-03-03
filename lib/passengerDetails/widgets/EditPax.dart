@@ -8,7 +8,7 @@ import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';
-import 'package:vmba/utilities/PaxManager.dart';
+import 'package:vmba/Managers/PaxManager.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/passengerDetails/widgets/CountryCodePicker.dart';

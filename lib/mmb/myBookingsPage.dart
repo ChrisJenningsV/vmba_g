@@ -26,13 +26,13 @@ import '../Helpers/settingsHelper.dart';
 import '../components/bottomNav.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/CommsManager.dart';
-import '../utilities/PaxManager.dart';
+import '../Managers/commsManager.dart';
+import '../Managers/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
 import '../v3pages/cards/typogrify.dart';
 import '../v3pages/cards/v3Card.dart';
-import '../v3pages/homePageHelper.dart';
+import '../v3pages/Templates.dart';
 import '../v3pages/loggedInHomePage.dart';
 import '../v3pages/v3Constants.dart';
 
@@ -1300,7 +1300,7 @@ getmybookings(void Function() onComplete )  {
 Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
 {
   if( gblTrips != null && gblTrips!.trips != null &&  gblTrips!.trips!.length > 0){
-    HomeCard card = new HomeCard();
+    CardTemplate card = new CardTemplate();
     String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
     DateTime dtComp = DateTime.now().add(Duration(days: 1));
     if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
@@ -1330,7 +1330,7 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
 
     if(/* gblIsNewInstall == true ||*/ PaxManager.getPaxEmail() == '') {
 
-      HomeCard card = new HomeCard();
+      CardTemplate card = new CardTemplate();
       card.title = CardText('', text: translate('Finish setting up my App'));
       card.icon = Icons.settings;
       card.title!.backgroundColor = gblSystemColors.primaryButtonColor;

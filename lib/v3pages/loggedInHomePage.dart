@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/Managers/imageManager.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/models/models.dart';
@@ -18,7 +19,7 @@ import '../menu/contact_us_page.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
-import 'homePageHelper.dart';
+import 'Templates.dart';
 import 'cards/searchCard.dart';
 import 'cards/v3CustomPage.dart';
 
@@ -107,6 +108,7 @@ class LoggedInHomePageState extends State<LoggedInHomePage>{
           gblPassengerDetail!.firstName = gblTrips!.trips!.first.firstname;
           gblPassengerDetail!.lastName = gblTrips!.trips!.first.lastname;
           gblPassengerDetail!.title = gblTrips!.trips!.first.title;
+          gblPassengerDetail!.phonenumber = gblTrips!.trips!.first.phone;
 
       }
     }
@@ -151,13 +153,12 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
      Container(
        padding: EdgeInsets.all(10),
   width: MediaQuery.of(context).size.width,
+/*
          decoration: BoxDecoration(
-           image: DecorationImage(
-             opacity: 0.7,
-             image: NetworkImage('${gblSettings.gblServerFiles}/cityImages/$destin.png'),//AssetImage("assets/images/bulb.jpg"),
-             fit: BoxFit.cover,
-           ),
+           image: ImageManager.getNetworkImage('${gblSettings.gblServerFiles}/cityImages/$destin.png'),
          ),
+*/
+
   // height: 400,
   child:Column(
   crossAxisAlignment: CrossAxisAlignment.stretch,  // add this

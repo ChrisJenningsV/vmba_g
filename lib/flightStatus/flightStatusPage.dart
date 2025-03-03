@@ -7,7 +7,7 @@ import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
-import '../data/CommsManager.dart';
+import '../Managers/commsManager.dart';
 import '../flightSearch/widgets/citylist.dart';
 import '../flightSearch/widgets/journey.dart';
 import '../menu/icons.dart';
@@ -498,6 +498,13 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
   Widget getRouteView(String brew){
 
+    if( gblFlightStatuss == null ){
+      return Container(
+        height: 400,
+        child: TrText('Loading...'),
+      );
+    }
+
     List<Widget> searchBoxes = [];
 
     if( brew == 'd' || brew == 'r' || brew == 'a'){
@@ -630,6 +637,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
   Widget getFltNoView(){
     return Container(
+        height: 500,
         padding: EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.max,

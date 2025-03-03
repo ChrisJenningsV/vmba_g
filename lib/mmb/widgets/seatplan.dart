@@ -30,7 +30,7 @@ import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
-import '../../data/CommsManager.dart';
+import '../../Managers/commsManager.dart';
 import '../../menu/menu.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
@@ -146,7 +146,12 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
   Widget getRoute(int journeyNo){
 
-    String text =  gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '  ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive;
+    DateTime deps = DateTime.parse(gblPnrModel!.pNR.itinerary.itin[journeyNo].depDate + ' ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].depTime);
+
+    String text =  gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '  '
+        + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive +
+         ' ' +  DateFormat('dd MMM').format(deps) ;
+
     if( gblIsLive == false && gblSeatplan != null ) text += ' [' + gblSeatplan!.seats.seatsFlt.sRef + ']';
     return Row( mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -777,18 +782,25 @@ Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ChoosePaymenMethodWidget(
-                            //SelectPaymentProviderWidget()
-                            newBooking: gblNewBooking,
-                            pnrModel: gblPnrModel as PnrModel,
-                            isMmb: false,)
-                  )
-              );
+            onPressed: () async {
+              bool bContinue = await confirmDialog(context, 'Are you sure?',
+                  "Skipping now means we can't guarantee you'll get your preferred seat later" );
+
+              if( bContinue) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ChoosePaymenMethodWidget(
+                              //SelectPaymentProviderWidget()
+                              newBooking: gblNewBooking,
+                              pnrModel: gblPnrModel as PnrModel,
+                              isMmb: false,)
+                    )
+                );
+              } else {
+                //Navigator.of(context).pop();
+              }
             },
           child:Text('Skip', style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.double),))
           ],

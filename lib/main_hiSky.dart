@@ -55,6 +55,7 @@ void configH4() {
 //    latestBuildAndroid: '1.0.0.98',
 //    homePageStyle: 'V2',
     //pageStyle: 'V2',
+    wantNewSeats: true,
     wantRememberMe: false,
     wantHomeFQTVButton: false,
     gblLanguages: 'ro,Romanian,en,English',

@@ -29,14 +29,14 @@ import '../calendar/bookingFunctions.dart';
 import '../components/bottomNav.dart';
 import '../data/models/providers.dart';
 import '../data/models/vrsRequest.dart';
-import '../data/CommsManager.dart';
+import '../Managers/commsManager.dart';
 import '../menu/myAccountPage.dart';
 import '../mmb/viewBookingPage.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 import '../v3pages/cards/v3Card.dart';
 import '../v3pages/controls/V3Constants.dart';
-import '../v3pages/homePageHelper.dart';
+import '../v3pages/Templates.dart';
 import 'ProviderFieldsPage.dart';
 import 'giftVoucher.dart';
 
@@ -1864,7 +1864,7 @@ List<Widget> getPayOptions(String amount, String cur) {
               ;
             }
         list.add(Padding(padding: EdgeInsets.all(5)));
-        HomeCard card = HomeCard();
+        CardTemplate card = CardTemplate();
         card.title = CardText('', text: 'Offline Payment');
         card.icon = Icons.contact_phone_outlined;
 

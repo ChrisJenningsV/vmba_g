@@ -141,7 +141,8 @@ class V2TextWidget extends StatefulWidget {
   V2TextWidget({//Key key= const Key("t2text_key"),
     this.decoration, this.controller, this.validator, this.onFieldSubmitted, this.onSaved,this.onChanged,
     this.inputFormatters, this.textInputAction, this.maxLength, this.keyboardType, this.autovalidateMode,
-    this.styleVer = 1,this.textAlign =TextAlign.start, this.autofocus = false, this.focusNode, this.maxlines, this.minlines,
+    this.styleVer = 1,this.textAlign =TextAlign.start, this.autofocus = false, this.focusNode, this.maxlines,
+    this.minlines
   });
       //: super(key: key);
 
@@ -186,6 +187,7 @@ class _V2TextWidgetState extends State<V2TextWidget> {
                 autofocus: widget.autofocus,
                 focusNode: widget.focusNode,
                 minLines: widget.minlines,
+ //               initialValue: widget.initialValue,
               )
           )
       );

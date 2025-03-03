@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:vmba/utilities/PaxManager.dart';
+import 'package:vmba/Managers/PaxManager.dart';
 import 'package:vmba/utilities/navigation.dart';
 import 'package:vmba/v3pages/fields/Pax.dart';
 import 'package:vmba/v3pages/loggedInHomePage.dart';
