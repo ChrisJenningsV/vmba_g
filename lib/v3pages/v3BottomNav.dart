@@ -5,6 +5,9 @@ import '../components/bottomNav.dart';
 import '../components/selectLang.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
+import '../dialogs/genericFormPage.dart';
+import '../home/home_page.dart';
+import '../menu/icons.dart';
 import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
 import 'cards/v3CustomPage.dart';
@@ -46,12 +49,32 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
       },));
     }
 
+    int index = -1;
+    switch(gblCurPage) {
+      case 'HOME':
+        index = 0;
+        break;
+      case 'FLIGHTSEARCH':
+        index = 1;
+        break;
+      case 'MYBOOKINGS':
+        index = 2;
+        break;
+      case 'FLIGHTSTATUS':
+        index = 3;
+        break;
+    }
 
   return
-    BottomNavigationBar(
+    Container(
+        decoration: BoxDecoration(
+        color: Colors.red,
+        border: Border(top: BorderSide(color: Colors.red, width: 2.0))),
+  child:
+  BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
 
-      backgroundColor: Color.fromRGBO(0, 0, 0, 0.6),
+      backgroundColor: Colors.black, //Color.fromRGBO(0, 0, 0, 0.6),
       items:   <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -59,28 +82,27 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
           ),
 
         BottomNavigationBarItem(
-          icon:  Icon(Icons.airplanemode_active),
+          icon:  getNamedIcon('TAKEOFF'), // Icon(Icons.airplanemode_active),
           label: 'Book',
         ),
 
         BottomNavigationBarItem(
-          icon:  Icon(Icons.table_rows_sharp),
-          label: 'Bookings',
+          icon:  Icon(Icons.luggage_rounded),
+          label: 'My Trips',
         ),
         BottomNavigationBarItem(
           icon:  Icon(Icons.person),
-          label: 'Account',
+          label: 'Login',
         ),
-/*
+
         BottomNavigationBarItem(
-          icon:  Icon(Icons.menu
-          ),
-          label: 'more',
+          icon:  getNamedIcon('FLIGHTESTATUS'),
+          label: 'Track',
         ),
-*/
+
 
       ],
-      currentIndex: 0,
+      currentIndex: index,
       selectedItemColor: Colors.red,
       unselectedItemColor: Colors.white,
       onTap: (value) async {
@@ -100,19 +122,17 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
             navToMyBookingsPage(context);
             break;
           case 3:
-            // my account
-            gblCurPage = 'MYACCOUNT';
-            navToMyAccountPage(context);
+//            navToMyAccountPage(context);
+            navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',
+                formTitle: '${gblSettings.fqtvName} Registration'));
             break;
           case 4:
-            // more
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-              V3CustomPage( name: 'menu')));
-
+            navToFlightStatusPage(context);
             break;
         }
 
       }
+  )
     );
 
 }

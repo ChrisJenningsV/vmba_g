@@ -51,8 +51,8 @@ class SearchButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       String text ='SEARCH FLIGHTS';
-      if( wantHomePageV2() || wantHomePageV3() ) {
-        text ='Show flights';
+      if(  wantHomePageV3() ) {
+        text ='Search';
       }
       return vidWideActionButton(context,text, _onPressed, icon: Icons.check, offset: 35.0 , disabled:  !_validate(newBooking));
   }

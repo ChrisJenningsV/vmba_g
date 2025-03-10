@@ -31,10 +31,12 @@ void configLM() {
       textButtonTextColor: Colors.black54,
       plainTextButtonTextColor: Colors.red,
       primaryButtonTextColor: Colors.white,
-      primaryHeaderColor: Colors.red,
+      primaryHeaderColor: Colors.white,
+      dialogHeaderColor: Colors.red,
+      dialogHeaderTextColor: Colors.white,
       calInRangeColor: Color.fromRGBO(169, 169, 169, 1),
       borderColor: Color.fromRGBO(230, 230, 230, 1),
-      headerTextColor: Colors.white,
+      headerTextColor: Colors.red,
       classBandIconColor: Colors.black,
       statusBar: Brightness.dark,
     seatPlanColorEmergency: Colors.red, //Colors.yellow
@@ -42,7 +44,7 @@ void configLM() {
     seatPlanColorSelected: Colors.blue.shade900, //Colors.grey.shade600
     seatPlanColorUnavailable:      Colors.grey.shade300, //Colors.grey.shade300
     seatPlanColorRestricted: Colors.green[200],
-    seatPlanBackColor: Colors.grey.shade300, // Colors.black,
+    seatPlanBackColor: Colors.black, // Colors.grey.shade300, //
     seatPriceColor: Colors.blue,
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
@@ -81,26 +83,29 @@ void configLM() {
     wantPriceCalendar: true ,
     wantNewMMB: true,
     wantNewSeats: true,
+    wantSeatPlanImages: false,
     wantUpgradePrices: true,
     wantButtonIcons: false,
     wantPriceCalendarRounding: false,
     wantUnlock:false,
+    wantEnglishTranslation: true,
     //wantProducts: true,
     wantStatusLine: true,
     wantFlightStatus: true,
     wantNews: false,
     wantFopVouchers: true,
     wantHelpCentre: true,
-    wantLocation: true,
+    wantLocation: false,
     wantDarkSite: true,
     wantAdminLogin: true,
-    wantGeoLocationHopePage: true,
+    wantGeoLocationHopePage: false,
     wantNewDialogs: true,
     wantCustomAnimations: false,
+    wantHomepageButtons: false,
 
     wantSeatsWithProducts: false,
     useLogin2: true,
-    homePageMessage: 'Hello [[firstname]], where can we take you today?',
+    homePageMessage: '',
 
     wantNewCalendar: true,
     wantCalendarBigMonth: true,
@@ -161,7 +166,10 @@ void configLM() {
     searchDateBack: 6,
 
 
-    adsTermsUrl: 'https://www.loganair.co.uk/travel-help/air-discount-scheme-residents-fare-card-terms-and-conditions/',
+    adsTermsUrl: 'https://www.loganair.co.uk/customer-support/air-discount-scheme-resident-fare-card-terms-and-conditions/',
+    bottomNavPages: 'HOME,FLIGHTSEARCH',
+    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
+    titleImagePages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
     passengerTypes: PassengerTypes(
   adults: true,
   child: true,
@@ -200,17 +208,17 @@ void configLM() {
 
 
 
+/*
     testXmlUrl:      "https://inhouse.videcom.com/LoganAirinhouse/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://inhouse.videcom.com/LoganAirinhouse/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://inhouse.videcom.com/LoganAirinhouse/VARS/webApiv2/api/',
-/*
+*/
 
     testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
     testApisUrl:      'https://customertest.videcom.com/LoganAir/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
-*/
 
 
 //    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",

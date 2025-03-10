@@ -148,8 +148,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
     DateTime deps = DateTime.parse(gblPnrModel!.pNR.itinerary.itin[journeyNo].depDate + ' ' + gblPnrModel!.pNR.itinerary.itin[journeyNo].depTime);
 
-    String text =  gblPnrModel!.pNR.itinerary.itin[journeyNo].depart + '  '
-        + gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive +
+    String text =  cityCodetoAirport(gblPnrModel!.pNR.itinerary.itin[journeyNo].depart) + '  '
+        + cityCodetoAirport(gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive) +
          ' ' +  DateFormat('dd MMM').format(deps) ;
 
     if( gblIsLive == false && gblSeatplan != null ) text += ' [' + gblSeatplan!.seats.seatsFlt.sRef + ']';
@@ -508,11 +508,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: _key,
-        endDrawer: gblSettings.wantNewSeats ? DrawerMenu() : null,
+        endDrawer: (gblSettings.wantNewSeats && !widget.isMmb) ? DrawerMenu() : null,
         appBar: new V3AppBar(
           automaticallyImplyLeading: false,
           PageEnum.chooseSeat,
-          actions: gblSettings.wantNewSeats ? null : <Widget>[
+          actions: (gblSettings.wantNewSeats && !widget.isMmb) ? null : <Widget>[
             IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
@@ -635,13 +635,17 @@ Widget getTitle() {
     }
 }
 Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
+    Color selectedColor = gblSystemColors.primaryHeaderColor;
+    if( selectedColor == Colors.white) {
+      selectedColor = gblSystemColors.headerTextColor as Color;
+    }
     return Padding(padding: EdgeInsets.all(1), child:  SizedBox.fromSize(
       size: Size(40, 40), // button width and height
       child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
         padding: EdgeInsets.all(0),
         decoration: BoxDecoration(
-          color: selected ? Colors.lightBlue : Colors.grey,
+          color: selected ? selectedColor : Colors.grey,
             border: Border.all(width: 1, color: selected ? Colors.black : Colors.white),
             borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -778,33 +782,38 @@ Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
 
     } else {
         list.add(getSeatKey2());
-        list.add(Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-            onPressed: () async {
-              bool bContinue = await confirmDialog(context, 'Are you sure?',
-                  "Skipping now means we can't guarantee you'll get your preferred seat later" );
+        if( widget.isMmb == false ) {
+          list.add(Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    bool bContinue = await confirmDialog(
+                        context, 'Are you sure?',
+                        "Skipping now means we can't guarantee you'll get your preferred seat later");
 
-              if( bContinue) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ChoosePaymenMethodWidget(
-                              //SelectPaymentProviderWidget()
-                              newBooking: gblNewBooking,
-                              pnrModel: gblPnrModel as PnrModel,
-                              isMmb: false,)
-                    )
-                );
-              } else {
-                //Navigator.of(context).pop();
-              }
-            },
-          child:Text('Skip', style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.double),))
-          ],
-        ));
+                    if (bContinue) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChoosePaymenMethodWidget(
+                                    //SelectPaymentProviderWidget()
+                                    newBooking: gblNewBooking,
+                                    pnrModel: gblPnrModel as PnrModel,
+                                    isMmb: false,)
+                          )
+                      );
+                    } else {
+                      //Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text('Skip', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      decorationStyle: TextDecorationStyle.double),))
+            ],
+          ));
+        }
         list.add(getRoute(gblCurJourney));
 
         list.add(        RenderSeatPlan2(

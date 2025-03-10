@@ -15,7 +15,7 @@ import '../../data/globals.dart';
 import '../../data/models/models.dart';
 import '../../data/repository.dart';
 import '../../flightSearch/widgets/citylist.dart';
-import '../../flightSearch/widgets/type.dart';
+import '../../flightSearch/widgets/oneWayReturnType.dart';
 import '../../utilities/helper.dart';
 import '../v3Constants.dart';
 

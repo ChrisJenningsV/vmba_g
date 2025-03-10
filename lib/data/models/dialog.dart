@@ -12,7 +12,8 @@ class DialogDef {
   String width = '';
   bool wantClose = true;
   List<DialogFieldDef> fields = [];
-  List<DialogFieldDef> foot = [];
+  List<DialogFieldDef> dialogFoot = [];
+  List<DialogFieldDef> pageFoot = [];
   List<TextEditingController> editingControllers = [];
 
   DialogDef({this.caption = '', this.actionText='', this.action = '', this.width=''});
@@ -38,14 +39,14 @@ class DialogDef {
       }
 
       if (json['foot'] != null) {
-        foot = [];
+        dialogFoot = [];
         //new List<Country>();
         if (json['foot'] is List) {
           json['foot'].forEach((v) {
-            foot.add(new DialogFieldDef.fromJson(v));
+            dialogFoot.add(new DialogFieldDef.fromJson(v));
           });
         } else {
-          foot.add(new DialogFieldDef.fromJson(json['foot']));
+          dialogFoot.add(new DialogFieldDef.fromJson(json['foot']));
         }
       }
 

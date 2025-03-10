@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
 import '../dialogs/genericFormPage.dart';
+import '../flightStatus/flightStatusPage.dart';
 import '../menu/myAccountPage.dart';
 import '../menu/myFqtvPage.dart';
 import '../mmb/viewBookingPage.dart';
@@ -21,6 +22,11 @@ void navToNewInstallPage(BuildContext context) {
 
 void navToFlightSearchPage(BuildContext context) {
   Navigator.of(context).pushNamedAndRemoveUntil('/FlightSearchPage', (Route<dynamic> route) => false);
+}
+
+
+void navToFlightStatusPage(BuildContext context) {
+  Navigator.push(context, SlideTopRoute(page: FlightStatusPageWidget( )  ));
 }
 
 void navToMyBookingsPage(BuildContext context) {

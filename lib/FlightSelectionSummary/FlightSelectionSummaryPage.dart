@@ -720,9 +720,9 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         endDrawer: DrawerMenu(),
         bottomNavigationBar: getBottomNav(context),
         body: _getBody(),
-        floatingActionButton: /*(wantPageV2() || wantHomePageV3()) ? */vidWideActionButton(
+        floatingActionButton: vidWideActionButton(
             context, 'Continue', onCompletePressed, icon: Icons.check,
-            offset: 35.0) /*: null*/,
+            offset: 35.0),
       );
     }
   }

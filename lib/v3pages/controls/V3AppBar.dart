@@ -17,6 +17,7 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? titleText;
   final List<Widget>? actions;
   final Widget? leading;
+  final double? leadngWidth;
   final Widget? flexibleSpace;
   final PreferredSizeWidget? bottom;
   final double? elevation;
@@ -31,6 +32,7 @@ class V3AppBar extends StatefulWidget implements PreferredSizeWidget {
         this.title,
         this.titleText,
         this.leading,
+        this.leadngWidth,
         this.flexibleSpace,
         this.bottom,
         this.elevation,
@@ -95,6 +97,7 @@ class _V3AppBarState extends State<V3AppBar>{
         flexibleSpace: widget.flexibleSpace,
         actions: widget.actions,
         leading: widget.leading,
+        leadingWidth: widget.leadngWidth,
         bottom: widget.bottom,
         elevation: gblSettings.wantShadows ? widget.elevation : 0,
         actionsIconTheme: widget.actionsIconTheme,

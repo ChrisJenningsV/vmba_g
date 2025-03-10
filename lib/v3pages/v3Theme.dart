@@ -318,6 +318,6 @@ class VButtonText extends Text {
     if(color != null  ) {
       style = style.copyWith(color: color);
     }
-    return Text(text, style: style,);
+    return Text(text, style: style, textScaler: wantHomePageV3() ? TextScaler.linear(1.45) : null ,);
   }
 }

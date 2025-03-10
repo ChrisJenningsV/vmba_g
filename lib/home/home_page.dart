@@ -20,6 +20,7 @@ import '../components/networCheck.dart';
 import '../components/showDialog.dart';
 import '../components/vidAppBar.dart';
 import '../data/repository.dart';
+import '../mmb/myBookingsPage.dart';
 import '../mmb/viewBookingPage.dart';
 import '../Managers/PaxManager.dart';
 import '../utilities/messagePages.dart';
@@ -458,12 +459,14 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           extendBodyBehindAppBar: extendBodyBehindAppBar,
           appBar:  new vidAppBar(
             elevation: elevation,
+            automaticallyImplyLeading: false,
             centerTitle: gblCentreTitle,
 
             //brightness: gblSystemColors.statusBar,
             //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
             backgroundColor: background,
-            title:_getLogo() ,
+            //title: _getLogo() ,
+            titleText: _getTitleText(),
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
 
             //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
@@ -546,10 +549,12 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         extendBodyBehindAppBar: extendBodyBehindAppBar,
         appBar: new vidAppBar(
           elevation: elevation,
+            automaticallyImplyLeading: false,
             centerTitle: gblCentreTitle,
             backgroundColor: background,
-            title:_getLogo() ,
-            iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
+            //title: _getLogo() ,
+            titleText: _getTitleText()
+            //iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
             ),
         body: Stack(
           children: _getBackImage(buttonShape, buttonHeight),
@@ -561,45 +566,37 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
     }
   }
-Widget _getLogo(){
+
+ String  _getTitleText() {
+   if( gblIsLive == false ) {
+     return 'Test build $buildNo';
+   }
+   return '';
+ }
+/*Widget _getLogo(){
+    //return Text('xxx');
   String txt = '';
   if( gblIsLive == false ) {
     txt = 'Test build $buildNo';
     if (gblBuildFlavor == 'BM')
       txt = 'Test Airline $buildNo';
   }
-
- /* return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Image.asset(
-        'lib/assets/$gblAppTitle/images/appBar.png',
-        fit: BoxFit.contain,
-        height: 40,
-      ),
-       Text(txt)
-    ],
-  );
-*/
-  //: Row(children: <Widget>[
-  //_getLogo(),
-  //Text('Test', style: gblTitleStyle,)
-  //])
   double height = 50;
-  if(gblSettings.aircode == 'LM' ) {
+  if(gblSettings.aircode == 'LMx' ) {
     height = 70;
   } else if(gblSettings.aircode == 'SI' ) {
     height = 40;
    }
   List<Widget> list = [];
   if ( height > 0 ) {
-    if( gblIsLive == true) {
+   *//* if( gblIsLive == true) {
       return Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height);
-    }
-    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height));
+    }*//*
+    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',height: height, alignment: Alignment.topLeft,));
     } else {
-    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png'));
+    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png', alignment: Alignment.topLeft));
   }
+  //return list[0];
   if( gblIsLive == false) {
     TextStyle st = new TextStyle( color: gblSystemColors.headerTextColor  );
     list.add(Text(txt, style: st, textScaleFactor: 0.75,));
@@ -607,10 +604,13 @@ Widget _getLogo(){
   if( gblSettings.wantCentreTitle) {
     return new Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
   } else {
-    return new Row(children: list);
+    return new Row(children: list,
+      //mainAxisAlignment: MainAxisAlignment.start,
+      //mainAxisSize: MainAxisSize.max,
+    );
 
   }
-}
+}*/
 
   List<Widget> _getBackImage(var buttonShape, var buttonHeight) {
     List<Widget> list = [];
@@ -642,27 +642,36 @@ Widget _getLogo(){
           .height,
     ));
 
-    switch (gblSettings.buttonStyle.toUpperCase()){
-      case 'RO3':
-        list.add(
-          Padding(padding: EdgeInsets.only(left: 20, right: 20),
-            child:
-            Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: _getButtons(context, buttonShape, buttonHeight),
-          ),),
-        ));
-        break;
-      default:
-        list.add(Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: _getButtons(context, buttonShape, buttonHeight),
-          ),
-        ));
 
-        break;
+    if( wantHomePageV3()) {
+      list.add(getMiniMyBookingsPage(context, () {
+        //doCallback();
+      }));
+    }
+
+    if( gblSettings.wantHomepageButtons) {
+      switch (gblSettings.buttonStyle.toUpperCase()) {
+        case 'RO3':
+          list.add(
+              Padding(padding: EdgeInsets.only(left: 20, right: 20),
+                child:
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: _getButtons(context, buttonShape, buttonHeight),
+                  ),),
+              ));
+          break;
+        default:
+          list.add(Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: _getButtons(context, buttonShape, buttonHeight),
+            ),
+          ));
+
+          break;
+      }
     }
     return list;
   }
@@ -684,7 +693,7 @@ Widget _getLogo(){
           fontWeight: fw),
     );
 
-    if( wantHomePageV2() || wantHomePageV3() ) {
+    if( wantHomePageV3() ) {
       if( gblSystemColors.home1ButtonColor != null )       b1Clr = gblSystemColors.home1ButtonColor!;
       if( gblSystemColors.home2ButtonColor != null ) b2Clr = gblSystemColors.home2ButtonColor!;
       if( gblSystemColors.home1ButtonTextColor != null )  b1TextClr = gblSystemColors.home1ButtonTextColor!;
@@ -734,7 +743,7 @@ Widget _getLogo(){
 
     if( gblSettings.wantHomeUpcoming && gblTrips != null && gblTrips!.trips != null && gblTrips!.trips!.length> 0) { //
       HomeCard card = new HomeCard();
-      String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
+      String fltDate =  DateFormat('dd MMM yy').format(gblTrips!.trips!.first.fltdate!);
       DateTime dtComp = DateTime.now().add(Duration(days: 1));
       if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
         fltDate = 'Today';

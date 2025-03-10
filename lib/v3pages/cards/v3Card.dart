@@ -9,9 +9,11 @@ import '../../data/globals.dart';
 import '../Templates.dart';
 
 Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
-    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22) }) {
+    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22), double topMargin = 0 }) {
 
   Color titleColor = Colors.grey.shade200;
+  Color bodyColor = Colors.grey.shade200;
+
   if( card.title != null ) {
     if( card.title!.backgroundColor != null ) {
       titleColor = card.title!.backgroundColor!;
@@ -19,7 +21,9 @@ Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
   }
     if( card.backgroundClr != null){
       titleColor = card.backgroundClr as Color;
+      bodyColor =  card.backgroundClr as Color;
     }
+
   String sTitle = 'No Title';
   if( card.title != null ) {
     sTitle = card.title!.text;
@@ -27,9 +31,14 @@ Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
   if( gblPassengerDetail != null ){
     sTitle = sTitle.replaceAll('[[firstname]]', gblPassengerDetail!.firstName);
   }
-
+  EdgeInsets? margin = null;
+/*
+  if( topMargin > 0){
+    margin = EdgeInsets.only(top: topMargin);
+  }
+*/
   Widget title =       Container(
-    color: titleColor,
+    //color: titleColor,
       child: Row( children: [
         card.icon!= null ? Icon(
            card.icon,
@@ -41,7 +50,7 @@ Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
       ],));
 
 
-  return Padding(padding: EdgeInsets.only(top:2, left: 3, right: 3, bottom: 0),
+  return Padding(padding: EdgeInsets.only(top:2 + topMargin, left: 3, right: 3, bottom: 0),
       child: Card(
         color:  titleColor ,
         elevation: 3,
@@ -66,7 +75,7 @@ Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
                 trailing: wantIcon ? null : const SizedBox(),
               title: title,
               children: [ Container(
-                color: Colors.grey.shade200,
+                color: bodyColor,
                   child: body)]
             ),
           ),

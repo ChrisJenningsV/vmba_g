@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:vmba/flightSearch/widgets/passenger.dart';
 import 'package:vmba/flightSearch/widgets/searchButton.dart';
-import 'package:vmba/flightSearch/widgets/type.dart';
-import 'package:vmba/flightSearch/widgets/date.dart';
+import 'package:vmba/flightSearch/widgets/oneWayReturnType.dart';
+import 'package:vmba/flightSearch/widgets/departReturnDates.dart';
 import 'package:vmba/flightSearch/widgets/journey.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
+import 'package:vmba/menu/icons.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/flightSearch/widgets/evoucher.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
@@ -14,7 +15,9 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../Managers/imageManager.dart';
 import '../components/bottomNav.dart';
+import '../components/vidAppBar.dart';
 import '../utilities/helper.dart';
 import '../v3pages/controls/V3Constants.dart';
 
@@ -103,10 +106,6 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     final List<String>? args = ModalRoute.of(context)?.settings.arguments as List<String>?;
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     String helpText ='';
-    EdgeInsets pad = EdgeInsets.all(0.0);
-    if( wantPageV2()) {
-      pad = EdgeInsets.all(15.0);
-    }
     if( gblBuildFlavor == 'UZ') {
       helpText = 'Route Tripoli to Istanbul normally has some fares available.';
     }
@@ -119,7 +118,11 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         //backgroundColor: v2PageBackgroundColor(),
 
         appBar:
-        appBar(context, widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search', PageEnum.flightSearch),
+        vidAppBar(
+          automaticallyImplyLeading: false,
+          icon: getNamedIcon('FLIGHTSEARCH'),
+          titleText: widget.ads == true ? 'ADS/Island Resident Flight Search': 'Flight Search' ,
+        ),
         endDrawer: DrawerMenu(),
         floatingActionButton: showFab
             ? SearchButtonWidget(
@@ -128,88 +131,181 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         )
             : null,
         bottomNavigationBar: getBottomNav(context, helpText:  helpText),
-        body: SingleChildScrollView(
-          padding: pad,
-          child:  Padding(
-    padding: v2FormPadding(),
-    child: Card(
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10.0),
-    ),
-
-    clipBehavior: Clip.antiAlias,
-    child: Padding(
-      padding: EdgeInsets.all(10),
-      child:
-    Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              JourneyTypeWidget(
-                  isReturn: _isReturn,
-                  onChanged: _handleReturnToggleChanged),
-              new Padding(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: new Divider(
-                  height: 0.0,
-                ),
-              ),
-              gblSettings.wantCurrencyPicker ?
-              _currencyPicker() : Container(),
-              SelectJourneyWidget(
-                onChanged: _handleFlightselectedChanged,
-              ),
-              new Padding(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: new Divider(
-                  height: 0.0,
-                ),
-              ),
-              JourneyDateWidget(
-                  isReturn: _isReturn, onChanged: _handleDateChanged),
-              (wantPageV2()) ?  Container() :
-              new Padding(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: new Divider(
-                  height: 0.0,
-                ),
-              ) ,
-              //Pax selection
-              PassengerWidget(
-                systemColors: gblSystemColors,
-                passengers: booking.passengers,
-                onChanged: _handlePaxNumberChanged,
-              ),
-              (wantPageV2()) ?  Container() :
-              new Padding(
-                padding: EdgeInsets.only(bottom: 5, top: 0),
-                child: new Divider(
-                  height: 0.0,
-                ),
-              ),
-
-              gblSettings.eVoucher
-                  ? EVoucherWidget(
-                evoucherNo: booking.eVoucherCode,
-                onChanged: _handleEVoucherChanged,
-              )
-                  : Container(),
-              (_canDoRedeem())
-                  ? CheckboxListTile(
-                title: TrText("Redeem ${gblSettings.fqtvName} points"),
-                value: gblRedeemingAirmiles,
-                onChanged: (newValue) {
-                  setState(() {
-                    gblRedeemingAirmiles = newValue as bool;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-              ) : Container(),
-            ],
-          ),
-        ))
-    ))
+        body: ImageManager.getBodyWithBackground( gblCurPage,_body())
     );
+  }
+
+  Widget _body() {
+    EdgeInsets pad = EdgeInsets.all(0.0);
+
+    if( gblSettings.homePageStyle == 'V3') {
+      List<Widget> list = [];
+
+      list.add(Padding(padding: EdgeInsets.all(5)));
+      // return or One Way
+      list.add(JourneyTypeWidget(
+          isReturn: _isReturn,
+          onChanged: _handleReturnToggleChanged));
+      list.add(Padding(padding: EdgeInsets.all(5)));
+
+      // ££
+      if(gblSettings.wantCurrencyPicker ) {
+        list.add(_currencyPicker());
+      }
+
+      // from to
+      list.add( Card(
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+        child: Padding(
+        padding: EdgeInsets.all(10),
+        child:
+        SelectJourneyWidget(
+        onChanged: _handleFlightselectedChanged,
+        ))));
+
+      list.add(Padding(padding: EdgeInsets.all(5)));
+
+      List<Widget> list2 = [];
+      list2.add(JourneyDateWidget( isReturn: _isReturn,onChanged: _handleDateChanged));
+
+      list2.add(Padding(padding: EdgeInsets.only(bottom: 5, top: 5),
+        child: new Divider(height: 0.0,    ),    ));
+
+      //Pax selection
+      list2.add(PassengerWidget(systemColors: gblSystemColors, passengers: booking.passengers,onChanged: _handlePaxNumberChanged,));
+
+
+      if( gblSettings.eVoucher) {
+        list2.add(Padding(padding: EdgeInsets.only(bottom: 5, top: 5),child: new Divider(height: 2.0,thickness: 2, color: Colors.grey,),));
+
+        list2.add(EVoucherWidget(evoucherNo: booking.eVoucherCode,
+          onChanged: _handleEVoucherChanged,));
+      }
+
+      if(_canDoRedeem()) {
+        list2.add(CheckboxListTile(
+          title: TrText("Redeem ${gblSettings.fqtvName} points"),
+          value: gblRedeemingAirmiles, onChanged: (newValue) {
+          setState(() {
+            gblRedeemingAirmiles = newValue as bool;
+          });
+        },
+          controlAffinity: ListTileControlAffinity.leading,));
+      }
+      list.add( Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: list2,
+              )
+          )
+      ));
+
+
+
+      return SingleChildScrollView(
+          padding: pad,
+          child: Padding(
+          padding: v2FormPadding(),
+        child :Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: list,
+        ))
+      );
+
+    } else {
+      return
+        SingleChildScrollView(
+            padding: pad,
+            child: Padding(
+                padding: v2FormPadding(),
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+
+                    clipBehavior: Clip.antiAlias,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child:
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          JourneyTypeWidget(
+                              isReturn: _isReturn,
+                              onChanged: _handleReturnToggleChanged),
+                          new Padding(
+                            padding: EdgeInsets.only(bottom: 5, top: 5),
+                            child: new Divider(
+                              height: 0.0,
+                            ),
+                          ),
+                          gblSettings.wantCurrencyPicker ?
+                          _currencyPicker() : Container(),
+                          SelectJourneyWidget(
+                            onChanged: _handleFlightselectedChanged,
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(bottom: 5, top: 5),
+                            child: new Divider(
+                              height: 0.0,
+                            ),
+                          ),
+                          JourneyDateWidget(
+                              isReturn: _isReturn,
+                              onChanged: _handleDateChanged),
+                          new Padding(
+                            padding: EdgeInsets.only(bottom: 5, top: 5),
+                            child: new Divider(
+                              height: 0.0,
+                            ),
+                          ),
+                          //Pax selection
+                          PassengerWidget(
+                            systemColors: gblSystemColors,
+                            passengers: booking.passengers,
+                            onChanged: _handlePaxNumberChanged,
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(bottom: 5, top: 0),
+                            child: new Divider(
+                              height: 0.0,
+                            ),
+                          ),
+
+                          gblSettings.eVoucher
+                              ? EVoucherWidget(
+                            evoucherNo: booking.eVoucherCode,
+                            onChanged: _handleEVoucherChanged,
+                          )
+                              : Container(),
+                          (_canDoRedeem())
+                              ? CheckboxListTile(
+                            title: TrText(
+                                "Redeem ${gblSettings.fqtvName} points"),
+                            value: gblRedeemingAirmiles,
+                            onChanged: (newValue) {
+                              setState(() {
+                                gblRedeemingAirmiles = newValue as bool;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity
+                                .leading, //  <-- leading Checkbox
+                          ) : Container(),
+                        ],
+                      ),
+                    ))
+            ));
+    }
   }
 
   Widget _currencyPicker() {
@@ -336,23 +432,3 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     ];
   }*/
 }
-
-
-//       class CustomWidget {
-// AppBar appBar(BuildContext context, String title) {
-//      return AppBar(
-//        leading: Padding(
-//           padding: EdgeInsets.only(left: 10.0),
-//           child: Image.asset(
-//               'lib/assets/${AppConfig.of(context).appTitle}/images/appBarLeft.png',
-//               color: Color.fromRGBO(255, 255, 255, 0.1),
-//                colorBlendMode: BlendMode.modulate)),
-//        brightness: AppConfig.of(context).systemColors.statusBar,
-//        backgroundColor: AppConfig.of(context).systemColors.primaryHeaderColor,
-//       iconTheme: IconThemeData(
-//            color: AppConfig.of(context).systemColors.primaryHeaderOnColor),
-//       title: new Text(title,
-//          style: TextStyle(
-//               color: AppConfig.of(context).systemColors.primaryHeaderOnColor)),
-//      );}
-//   }

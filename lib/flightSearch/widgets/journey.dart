@@ -26,12 +26,7 @@ class SelectJourneyWidget extends StatefulWidget {
 }
 
 class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
-/*
-  String departureAirport = '';
-  String departureCode = '';
-  String arrivalAirport = '';
-  String arrivalCode = '';
-*/
+
   late SelectedRoute route;
 
   @override
@@ -39,23 +34,13 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
     super.initState();
     route = new SelectedRoute('', '');
     gblSearchParams.initAirports();
-/*
-    departureAirport = translate('Select departure airport');
-    arrivalAirport = translate('Select arrival airport');
-*/
+
   }
 
   void _handleDeptureSelectionChanged(String newValue) {
     if (newValue != "null") {
       setState(() {
-/*
-        departureCode = newValue.split('|')[0];
-        gblOrigin =departureCode;
-        departureAirport = newValue.split('|')[1];
-        arrivalAirport = translate('Select arrival airport');
-        route.departure = departureCode;
-        route.arrival = arrivalCode;
-*/
+
         gblSearchParams.searchOriginCode = newValue.split('|')[0];
         gblOrigin = gblSearchParams.searchOriginCode;
         gblSearchParams.searchOrigin = newValue.split('|')[1];
@@ -74,13 +59,7 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
   void _handleArrivalSelectionChanged(String newValue) {
     if (newValue != null && newValue != "null") {
       setState(() {
-/*
-        arrivalCode = newValue.split('|')[0];
-        gblDestination =arrivalCode;
-        arrivalAirport = newValue.split('|')[1];
-        route.departure = departureCode;
-        route.arrival = arrivalCode;
-*/
+
         gblSearchParams.searchDestinationCode = newValue.split('|')[0];
         gblDestination = gblSearchParams.searchDestinationCode;
         gblSearchParams.searchDestination = newValue.split('|')[1];
@@ -96,45 +75,76 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //color: Colors.red,
-        child: Row(
+    List<Widget> list = [];
 
-          //mainAxisSize: MainAxisSize.max,
-          // mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              new Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  new GestureDetector(
-                    onTap: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CitiesScreen()),
-                      );
-                      // print('$result');
-                      _handleDeptureSelectionChanged('$result');
-                    },
-                    child: getFlyFrom(context, 'Fly from'),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                  ),
-                  new GestureDetector(
-                    onTap: () async {
-                      //departureCode == 'null' || departureCode == ''
-                      gblSearchParams.searchOriginCode == 'null' ||
-                          gblSearchParams.searchOriginCode == ''
-                          ? print('Pick departure city first')
-                          : await arrivalSelection(context);
-                    },
-                    child: getFlyTo(context, setState, 'Fly to', true),
-                  )
-                ],
-              )
-            ])
-    );
+    list.add( GestureDetector(
+              onTap: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CitiesScreen()),
+                );
+                // print('$result');
+                _handleDeptureSelectionChanged('$result');
+              },
+              child: getFlyFrom(context, 'Fly from'),
+            ),);
+
+            if( gblSettings.homePageStyle == 'V3') {
+              list.add(Divider(color: Colors.grey, height: 5, thickness: 1.0, ),);
+            } else {
+              list.add(Padding(padding: EdgeInsets.only(bottom: 5)));
+            }
+            list.add( GestureDetector(
+              onTap: () async {
+                //departureCode == 'null' || departureCode == ''
+                gblSearchParams.searchOriginCode == 'null' ||
+                    gblSearchParams.searchOriginCode == ''
+                    ? print('Pick departure city first')
+                    : await arrivalSelection(context);
+              },
+              child: getFlyTo(context, setState, 'Fly to', true),
+            ));
+
+            if( wantHomePageV3()){
+              return Container(
+                //color: Colors.red,
+                  child: Stack(
+                      children: [
+                        Column(
+                            children: list
+                        ),
+                        Positioned(
+                            top: 20,
+                            left: 3 * MediaQuery
+                                .sizeOf(context)
+                                .width / 4,
+                            child: Container(
+                                width: 35,
+                                height: 35,
+                                color: Colors.white,
+                                child: IconButton(icon: Icon(
+                              Icons.sync, color: Colors.grey, size: 35,),
+                              onPressed: () {
+                                var dest = gblSearchParams.searchOrigin;
+                                var destCode = gblSearchParams.searchOriginCode;
+                                gblSearchParams.searchOrigin =
+                                    gblSearchParams.searchDestination;
+                                gblSearchParams.searchOriginCode =
+                                    gblSearchParams.searchDestinationCode;
+                                gblSearchParams.searchDestinationCode =
+                                    destCode;
+                                gblSearchParams.searchDestination = dest;
+                                setState(() {});
+                              },)),)
+                      ]));
+            } else {
+              return Container(
+                //color: Colors.red,
+                  child:
+                        Column(
+                            children: list
+                        ));
+            }
   }
 
 
@@ -185,6 +195,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
       Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            wantHomePageV3() ? v2SeatchValueText(translate(airportName)) :
             TrText(
                 translate(airportName),
                 noTrans: true,
@@ -201,27 +212,17 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
 }
 
   Widget getFlyTo(BuildContext context, void Function(void Function()) setState, String title, bool flightSearchPage, {bool bWantWide = true} ) {
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate(title), Row(
-          children: <Widget>[
-            Icon(PhosphorIcons.airplane_landing, color:  gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
-            Padding(padding: EdgeInsets.all(5)),
-            ///_airport(arrivalAirport), /// Text(departureAirport)
-            showAirport(gblSearchParams.searchDestination), /// Text(departureAirport)
-          ]));
 
-    } else {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         //(gblSettings.wantCitySwap && departureCode.isNotEmpty && arrivalCode.isNotEmpty) ?
-        (gblSettings.wantCitySwap && gblSearchParams.searchOriginCode.isNotEmpty &&
+        (wantHomePageV3() == false &&  gblSettings.wantCitySwap && gblSearchParams.searchOriginCode.isNotEmpty &&
             gblSearchParams.searchDestinationCode.isNotEmpty && flightSearchPage) ?
         Row(children: [
-          TrText(title, style: new TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 15.0)),
+          v2Label(title),
           IconButton(
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
@@ -229,11 +230,6 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
             color: Colors.blueGrey,
             tooltip: translate('Swap Origin and Destination'),
             onPressed: () {
-/*
-                var dest = departureAirport;
-                departureAirport = arrivalAirport;
-                arrivalAirport = dest;
-*/
                 var dest = gblSearchParams.searchOrigin;
                 var destCode = gblSearchParams.searchOriginCode;
                 gblSearchParams.searchOrigin = gblSearchParams.searchDestination;
@@ -246,7 +242,9 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
         ],)
             : new TrText(title,
             style: new TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 15.0)),
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+                color: v2LabelColor())),
         //_getAirportText(arrivalAirport, arrivalCode),
         _getAirportText(context, gblSearchParams.searchDestination, gblSearchParams.searchDestinationCode,bWantWide),
         new Divider(
@@ -255,38 +253,20 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
       ],
     );
   }
-  }
 
   Widget getFlyFrom(BuildContext context, String title, {bool bWantWide = true, bool bold = false} ) {
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate(title), Row(
-          children: <Widget>[
-            Icon(PhosphorIcons.airplane_takeoff, color: gblSystemColors.textEditIconColor, ), //Icons.flight_takeoff_outlined),
-            Padding(padding: EdgeInsets.all(5)),
-            //_airport(departureAirport), /// Text(departureAirport)
-            showAirport(gblSearchParams.searchOrigin), /// Text(departureAirport)
-          ]));
-
-    } else {
       return new Column(
           mainAxisSize: MainAxisSize.max,
         // mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TrText(
-              title,
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0,
-              ),
-            ),
+              v2Label(title),
             //_getAirportText(departureAirport, departureCode),
             _getAirportText(context, gblSearchParams.searchOrigin, gblSearchParams.searchOriginCode, bWantWide, bold: bold),
             new Divider(
               height: 0.0,
             ),
           ]);
-    }
   }
 
 

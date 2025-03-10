@@ -18,8 +18,8 @@ import '../../utilities/messagePages.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../v3pages/v3Theme.dart';
 
-class FlightSelectionSummaryWidget extends StatefulWidget {
-  FlightSelectionSummaryWidget(
+class ChangeFlightSummaryWidget extends StatefulWidget {
+  ChangeFlightSummaryWidget(
       {Key key= const Key("fltselsum_key"),
       //   this.newBooking,
       required this.mmbBooking})
@@ -30,7 +30,7 @@ class FlightSelectionSummaryWidget extends StatefulWidget {
   _FlightSelectionSummaryState createState() => _FlightSelectionSummaryState();
 }
 
-class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
+class _FlightSelectionSummaryState extends State<ChangeFlightSummaryWidget> {
   final formKey = new GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _key = GlobalKey();
   PnrModel pnrModel = PnrModel();

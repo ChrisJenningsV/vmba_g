@@ -22,6 +22,8 @@ class SystemColors {
 
   Color borderColor;
    Color primaryHeaderColor ;
+   Color? dialogHeaderColor ;
+   Color? dialogHeaderTextColor;
    Color? calInRangeColor;
    Color? calDisabledColor;
    Color? calTextColor;
@@ -95,6 +97,8 @@ class SystemColors {
     this.progressBackColor,
     this.progressTextColor,
     required this.primaryHeaderColor,
+    this.dialogHeaderColor,
+    this.dialogHeaderTextColor,
     this.calInRangeColor = Colors.black54,
     this.calDisabledColor = Colors.transparent,
     this.calTextColor = Colors.black,
@@ -171,6 +175,8 @@ class SystemColors {
     if( textEditIconColor == null ) textEditIconColor =Colors.grey.shade500;
     if( inputFillColor == null ) inputFillColor = Colors.grey.shade100;
     if( backgroundColor == null ) backgroundColor = Colors.grey.shade400;
+    if( dialogHeaderColor == null ) dialogHeaderColor = primaryHeaderColor;
+    if( dialogHeaderTextColor == null ) dialogHeaderTextColor = headerTextColor;
 
   }
 }

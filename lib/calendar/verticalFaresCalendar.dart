@@ -16,6 +16,7 @@ import '../data/globals.dart';
 import '../data/models/availability.dart';
 import '../data/models/models.dart';
 import '../data/models/pnr.dart';
+import '../mmb/widgets/change_flight_summary.dart';
 import '../passengerDetails/passengerDetailsPage.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
@@ -29,11 +30,13 @@ import 'flightPageUtils.dart';
 class VerticalFaresCalendar  extends StatefulWidget {
   AvailabilityModel objAv;
   NewBooking newBooking;
+  MmbBooking? mmbBooking;
   void Function(bool ) loadData;
   bool isReturnFlight;
   void Function() showProgress;
 
-  VerticalFaresCalendar({required this.newBooking, required this.objAv, required this.loadData, required this.showProgress, this.isReturnFlight = false }) ;
+  VerticalFaresCalendar({required this.newBooking, required this.objAv, required this.loadData, required this.showProgress,
+    this.isReturnFlight = false, this.mmbBooking }) ;
 
   _VerticalFaresCalendarState createState() => new _VerticalFaresCalendarState();
 
@@ -210,7 +213,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
 
 
     return Card(
-      color: selectedFlt == fltNo
+      color: expandedFlt == fltNo /*selectedFlt == fltNo*/
           ? gblSystemColors.selectedFlt
           : gblSystemColors.unselectedFlt,
       elevation: 3,
@@ -588,7 +591,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     innerList.add(infoRow(context, item!));*/
     return Container(
       // margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 5, right: 5),
-        color: selectedFlt == fltNo
+        color: expandedFlt == fltNo /*selectedFlt == fltNo*/
             ? gblSystemColors.selectedFlt
             : gblSystemColors.unselectedFlt,
         padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
@@ -698,9 +701,14 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
       }
     }
     try {
-      PnrModel pnrModel = await searchSaveBooking(
-          this.widget.newBooking);
-      gblPnrModel = pnrModel;
+      if( gblCurPage == 'CHANGEFLT' ) {
+
+      } else {
+        PnrModel pnrModel = await searchSaveBooking(
+            this.widget.newBooking);
+        gblPnrModel = pnrModel;
+      }
+
     } catch (e) {
 
     }
@@ -729,13 +737,25 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                         newBooking: widget.newBooking,
                         pnrModel: gblPnrModel,)));
         } else {
-          Navigator.push(
-              context,
-              // MaterialPageRoute(
-              CustomPageRoute(
-                  builder: (context) =>
-                      FlightSelectionSummaryWidget(
-                          newBooking: this.widget.newBooking)));
+          if( gblCurPage == 'CHANGEFLT' ) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChangeFlightSummaryWidget(
+                      // newBooking: newFlight,
+                      mmbBooking: widget!.mmbBooking as MmbBooking,
+                      //journeys: widget.journeys,
+                      //intJourney: widget.journey,
+                    )));
+          } else {
+            Navigator.push(
+                context,
+                // MaterialPageRoute(
+                CustomPageRoute(
+                    builder: (context) =>
+                        FlightSelectionSummaryWidget(
+                            newBooking: this.widget.newBooking)));
+          }
         }
       }
     }
@@ -798,13 +818,13 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
             title: Container(
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
-                    color: gblSystemColors.primaryHeaderColor,
+                    color: gblSystemColors.dialogHeaderColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       topRight: Radius.circular(10.0),)),
                 padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
                 child: Text(title!,
-                  style: TextStyle(color: gblSystemColors.headerTextColor),)),
+                  style: TextStyle(color: gblSystemColors.dialogHeaderTextColor),)),
             content: content,
             //contentPadding: EdgeInsets.all(5),
             //Text(txt == '' ? 'A newer version of the app is available to download' : txt),

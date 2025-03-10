@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vmba/Helpers/settingsHelper.dart';
 
 import '../../components/trText.dart';
 import '../../data/globals.dart';
@@ -233,10 +234,9 @@ Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
     ) );
     list1.add(Padding(padding: EdgeInsets.all(5)));
     List<Widget> colList =[];
-    colList.add(Text(translate('Departing: '),
-      style: TextStyle(fontWeight: FontWeight.bold),));
+    colList.add(v2Label(translate('Departing: ')));
     if (depDate != null) {
-      colList.add(Text(DateFormat('dd MMM kk').format(depDate)));
+      colList.add(Text(DateFormat('dd MMM yy').format(depDate)));
     }
     list1.add(Column( children: colList,));
     rowList.add(Row(
@@ -246,7 +246,7 @@ Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
     list.add(Text(translate('Departing: '),
       style: TextStyle(fontWeight: FontWeight.bold),));
     if (depDate != null) {
-      list.add(Text(DateFormat('dd MMM kk').format(depDate)));
+      list.add(Text(DateFormat('dd MMM yy').format(depDate)));
     }
     rowList.add(Row(
       children: list,
@@ -272,10 +272,9 @@ Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
       ) );
       list2.add(Padding(padding: EdgeInsets.all(5)));
       List<Widget> colList =[];
-      colList.add(Text(translate('Returning: '),
-        style: TextStyle(fontWeight: FontWeight.bold),));
+      colList.add(v2Label(translate('Returning: ')));
       if (depDate != null) {
-        colList.add(Text(DateFormat('dd MMM kk').format(retDate!)));
+        colList.add(Text(DateFormat('dd MMM yy').format(retDate!)));
       }
       list2.add(Column( children: colList,));
       rowList.add(Row(
@@ -285,7 +284,7 @@ Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
       list2.add(Text(translate('Returning: '),
         style: TextStyle(fontWeight: FontWeight.bold),));
       if (retDate != null) {
-        list2.add(Text(DateFormat('dd MMM kk').format(retDate)));
+        list2.add(Text(DateFormat('dd MMM yy').format(retDate)));
       }
       rowList.add(Row(
         children: list2,

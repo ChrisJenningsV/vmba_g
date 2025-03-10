@@ -35,22 +35,10 @@ void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {
       PaxManager.populateFromFqtvMember(fqtvLoginReply, fqtvNo, fqtvPass);
       navToFqtvPage(context);
 
-  /*    widget.passengerDetail = gblPassengerDetail;
-      gblError ='';
-      _error = '';
-      _isButtonDisabled = false;
-      _loadingInProgress = false;
-      _actionCompleted();
-
-      setState(() {});
-*/
     } catch (e) {
-
+      gblError == e.toString();
       print(gblError);
-/*
-      _error = gblError;
-      _loadingInProgress = false;
-*/
+
       showVidDialog(context, 'Information', gblError, onComplete: () {
         gblError = '';
         try {

@@ -64,6 +64,12 @@ class _DayPickerPageState extends State<DayPickerPage> {
     _initData(widget.departureDate);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    hideSnackBarMessage();
+  }
 
   @override
   void didChangeDependencies() {

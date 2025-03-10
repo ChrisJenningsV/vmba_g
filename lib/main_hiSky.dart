@@ -51,10 +51,6 @@ void configH4() {
 
 
   gblSettings = Settings (
-//    latestBuildiOS: '1.0.5',
-//    latestBuildAndroid: '1.0.0.98',
-//    homePageStyle: 'V2',
-    //pageStyle: 'V2',
     wantNewSeats: true,
     wantRememberMe: false,
     wantHomeFQTVButton: false,

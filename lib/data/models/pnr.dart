@@ -38,7 +38,6 @@ class PnrModel {
   }
 
   String getBookingCurrency() {
-
     if (this.pNR.fareQuote != null && this.pNR.fareQuote.fQItin.length > 0 ) {
       return this.pNR.fareQuote.fQItin[0].cur;
     } else if( this.pNR.payments != null && this.pNR.payments.fOP != null &&
@@ -87,7 +86,25 @@ class PnrModel {
     return false;
   }
 
-  List<Pax> getBookedPaxList(int journey) {
+  String getOccupant(String seatNo) {
+    String paxNo = '';
+    String occ = seatNo;
+    pNR.aPFAX.aFX.forEach((af){
+      if( af.aFXID == 'SEAT' && af.seat == seatNo){
+        paxNo = af.pax;
+      }
+    });
+    if( paxNo != '' ) {
+      for (var pax = 0; pax <= pNR.names.pAX.length - 1; pax++) {
+        if( pNR.names.pAX[pax].paxNo == paxNo){
+          occ = pNR.names.pAX[pax].firstName[0] + pNR.names.pAX[pax].surname[0] ;
+        }
+      }
+    }
+    return occ;
+    }
+
+    List<Pax> getBookedPaxList(int journey) {
     List<Pax> paxlist = [];
     for (var pax = 0; pax <= pNR.names.pAX.length - 1; pax++) {
       if (pNR.names.pAX[pax].paxType != 'IN') {

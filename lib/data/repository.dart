@@ -715,6 +715,10 @@ class Repository {
                     gblSettings.backgroundImageUrl = item['value'];
                     print(gblSettings.backgroundImageUrl);
                     break;
+                  case 'pageimageurl':
+                    gblSettings.backgroundImageUrl = item['value'];
+                    print(gblSettings.backgroundImageUrl);
+                    break;
                   case 'adstermsurl':
                     gblSettings.adsTermsUrl = item['value'];
                     break;

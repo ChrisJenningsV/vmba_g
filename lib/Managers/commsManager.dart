@@ -41,11 +41,14 @@ Future<String> callSmartApi(String action, String data) async {
         )
         .catchError((resp) {
       logit(resp);
+      return '';
     });
+/*
   if (response == null) {
     throw 'No Internet';
     //return new ParsedResponse(noInterent, null);
   }
+*/
 
   //If there was an error return null
   if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -83,7 +86,7 @@ Future<String> callSmartApi(String action, String data) async {
   // gblSession = Session(map['sessionId'], map['varsSessionId'], map['vrsServerNo'].toString());
   logit('Server IP ${map['serverIP']}');
   if( rs.isSuccessful == false) {
-    if( rs.data != null && rs.data.isNotEmpty) {
+    if(  rs.data.isNotEmpty) {
       gblError =rs.data;
      throw rs.data;
     } else {
@@ -93,10 +96,12 @@ Future<String> callSmartApi(String action, String data) async {
   }
 
 
+/*
   if( rs.data == null ) {
     throw 'no data returned';
   }
-  if( gblCurLocation!.locality == '' ) {
+*/
+  if( gblCurLocation != null && gblCurLocation!.locality == '' ) {
     gblCurCity = rs.city;
   }
   return rs.data;

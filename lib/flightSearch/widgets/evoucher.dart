@@ -29,19 +29,7 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
   Widget build(BuildContext context) {
     _textEditingController.text = widget.evoucherNo;
 
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Promo Code'),
-          TextField(
-    controller: _textEditingController,
-    onChanged: widget.onChanged,
-    decoration: InputDecoration(
-    border: InputBorder.none, hintText: translate('Enter your code')),
-    style: new TextStyle(
-    //fontSize: 20.0,
-    fontWeight: FontWeight.w300,
-    color: Colors.grey,
-    )));
-          } else {
+
       double screenWidth = MediaQuery.of(context).size.width;
 
       double fSize;
@@ -51,27 +39,21 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
         fSize = 18.0;
       }
     return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-    TrText('Promo Code',
-    style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
-    TextField(
-    controller: _textEditingController,
-    onChanged: widget.onChanged,
-    decoration: InputDecoration(
-    border: InputBorder.none, hintText: translate('Enter your code')),
-    style: new TextStyle(
-   // fontSize: fSize,
-    fontWeight: FontWeight.w300,
-    color: Colors.grey,
-    ),
-    ),
-    Container(
-    child: new Divider(
-    height: 0.0,
-    ))
-    ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        v2Label(translate('Promo Code')),
+        TextField(
+          controller: _textEditingController,
+          onChanged: widget.onChanged,
+          decoration: InputDecoration(
+              border: InputBorder.none, hintText: translate('Enter your code')),
+          style: new TextStyle(
+            // fontSize: fSize,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+       ],
     );
-    }
   }
 }

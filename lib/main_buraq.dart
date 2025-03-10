@@ -64,8 +64,6 @@ void configUZ() {
 
     gblLanguages: 'ar,عربي,en,English',
     wantEnglishDates: true,
-/*    homePageStyle: 'V2',
-    pageStyle: 'V2',*/
     buttonStyle: 'RO3',
     airlineName: "Buraq",
   gblServerFiles: 'https://booking.buraq.aero/VARS/AppFiles/',

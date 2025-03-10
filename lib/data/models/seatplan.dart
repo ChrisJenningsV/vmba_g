@@ -57,10 +57,11 @@ class Seatplan {
     return seats;
   }
 
-  SeatPlanDefinition? getPlanDataTable(){
+  SeatPlanDefinition? getPlanDataTable() {
+      return init();
+  }
+  SeatPlanDefinition? init() {
     SeatPlanDefinition def = new SeatPlanDefinition();
-
-
     // build a table of seats
     //def.noRows = this.seats.seat.last.sRow;
 
@@ -100,6 +101,8 @@ class Seatplan {
     }
 
     int cols = this.seats.seat.last.sRow;
+    int maxSeatsPerRow = 0;
+    int maxAiselsPerRow = 0;
     // step through rows
     for (var indexRow = 1; indexRow <= def.maxRow; indexRow++) {
       List<Seat> seats = this.seats.seat.where((a) => a.sRow == indexRow).toList();
@@ -107,14 +110,29 @@ class Seatplan {
       SeatPlanRow sRow = new SeatPlanRow();
       sRow.rowNo = indexRow;
       // add something for each column
+      int seatsThisRow = 0;
+      int aiselsThisRow = 0;
       for ( var indexCol = 0; indexCol <= def.maxCol ; indexCol++){
         Seat? seat  = seats.where((a) => a.sCol == indexCol).firstOrNull;
-
+        if( indexCol == 5){
+          int x = 1;
+        }
+        if( seat != null && seat!.isSeat()) {
+          seatsThisRow ++;
+        } else if(  seat != null && seat!.isAisle()) {
+          logit('aisle r=${seat!.sRow} c=${seat!.sCol}');
+          aiselsThisRow++;
+        }
         // add this seat (or null ) to map
         sRow.cols[indexCol] = seat;
       }
+      if( seatsThisRow > maxSeatsPerRow ) maxSeatsPerRow = seatsThisRow ;
+      if( aiselsThisRow > maxAiselsPerRow ) maxAiselsPerRow = aiselsThisRow;
+
       def.table.add(sRow);
     }
+    def.maxSeatsPerRow = maxSeatsPerRow;
+    def.maxAiselsPerRow = maxAiselsPerRow;
 
     // aisel
     def.colTypes = [];
@@ -305,6 +323,8 @@ class SeatPlanDefinition{
   int maxRow = 0;
   int minCol = 0;
   int maxCol = 0;
+  int maxSeatsPerRow = 0;
+  int maxAiselsPerRow = 0;
   double seatWidth = 35;
   double seatHeight = 35;
   double asileWidth = 5;
@@ -562,6 +582,13 @@ class Seat {
       return true;
     }
     return false;
+  }
+  bool isAisle() {
+    if( this.sCellDescription == 'Aisle' ){
+      return true;
+    }
+    return false;
+
   }
 
   Map<String, dynamic> toJson() {

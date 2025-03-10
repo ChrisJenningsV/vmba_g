@@ -11,6 +11,7 @@ import '../data/globals.dart';
 import '../utilities/blueScreen.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
+import '../v3pages/v3BottomNav.dart';
 import 'trText.dart';
 void Function()? _custom;
 
@@ -72,7 +73,11 @@ Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText=
     );
   }
 
-  if( gblCurPage != 'HOME'){
+  if(  gblSettings.bottomNavPages.contains(gblCurPage)){
+    return getV3BottomNav(context);
+  }
+
+  if( gblCurPage != 'HOME' ){
     return null;
   }
 

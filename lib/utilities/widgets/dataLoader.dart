@@ -328,7 +328,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
     try {
       gblSnackBarShowing = true;
       Timer(Duration(milliseconds: 10), () {
-        showSnackBar('Loading ...', context, label: 'X');
+        showSnackBar('Loading ...', context, label: 'X', duration: Duration(seconds: 25));
       });
     } catch(e) {
 

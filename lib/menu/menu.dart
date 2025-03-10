@@ -16,6 +16,7 @@ import 'package:vmba/v3pages/v3UnlockPage.dart';
 import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
 import '../data/models/dialog.dart';
+import '../dialogs/genericFormPage.dart';
 import '../dialogs/smartDialog.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../helpCentre/helpCentrePage.dart';
@@ -61,7 +62,9 @@ class DrawerMenu extends StatefulWidget {
     // Home
     bool dense = true;
     list.add(  ListTile(
+//      contentPadding: EdgeInsets.all(0),
       dense: dense,
+        //visualDensity: VisualDensity(vertical: -4),
         title: _getMenuItem( Icons.home, 'Home' ),
         onTap: () {
           // Update the state of the app
@@ -244,9 +247,7 @@ class DrawerMenu extends StatefulWidget {
         onTap: () {
           gblDestination = '';
           gblOrigin = '';
-          Navigator.push(
-              context, SlideTopRoute(page: FlightStatusPageWidget(          )
-          ));
+          navToFlightStatusPage(context);
         },
       ));
     }
@@ -425,6 +426,7 @@ class DrawerMenu extends StatefulWidget {
             );
           }));
     }
+/*
     if( gblSettings.wantAdminLogin){
       if( gblSecurityLevel >= 99 ) {
         list.add(ListTile(
@@ -442,24 +444,16 @@ class DrawerMenu extends StatefulWidget {
             dense: dense,
             title: _getMenuItem(Icons.login, 'Log in'),
             onTap: () {
-              DialogDef dialog = new DialogDef(caption: 'Agent Login',
-                  actionText: 'Continue',
-                  action: 'DoAgentLogin');
-              dialog.fields.add(
-                  new DialogFieldDef(
-                      field_type: 'number', caption: 'sine (4ch)'));
-              dialog.fields.add(
-                  new DialogFieldDef(
-                      field_type: 'password', caption: 'Password'));
-              dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+              gblCurDialog = getDialogDefinition('AGENTLOGIN','Agent Login' );
+//              return smartDialogPage();
 
-              gblCurDialog = dialog;
               showSmartDialog(context, null, () {
                 setState(() {});
               });
             }));
       }
     }
+*/
 
     // DEMO login - for Apple acreditation
     if(  (gblSettings.iOSDemoBuilds != null && gblSettings.iOSDemoBuilds.isNotEmpty  && gblIsIos == true ) ||
@@ -569,16 +563,14 @@ class DrawerMenu extends StatefulWidget {
     );
   }
 
-
-
-
-
-
   Widget _getMenuItem( IconData ico, String txt, {Color? iconColor, String iconName=''} ) {
 
+      if( iconColor == null ){
+        iconColor = Colors.black;
+      }
       Widget mIcon = Icon(ico, color: iconColor,);
       if( iconName != '' ){
-          mIcon = getnamedIcon(iconName);
+          mIcon = getNamedIcon(iconName, color: iconColor);
     }
 
     return Row(

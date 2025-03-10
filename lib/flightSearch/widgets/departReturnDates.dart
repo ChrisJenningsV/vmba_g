@@ -56,7 +56,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
 
     _displayText =
         widget.isReturn ? translate('Choose travel dates') : translate('Choose travel date');
-     _returningText = widget.isReturn ? 'Returning' : '';
+     _returningText = widget.isReturn ? translate('Returning') : '';
 
     return Row(children: [
       new Expanded(
@@ -84,79 +84,23 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
       ))
     ]);
   }
+
   List <Widget> _getDates() {
     List <Widget> list = [];
 
-    if( wantPageV2()) {
-      List <Widget> list2 = [];
-      if (dateSelected) {
-        list2.add(
-            Expanded(
-              flex: 1,
-               child: v2BorderBox(context, ' ' + translate('Departing'),
-            Row(
-              children: [
-                Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ),
-                Text(getIntlDate('dd MMM yyyy', _departingingDate), textScaleFactor: 1.25,style: TextStyle(fontWeight: FontWeight.bold),),
-              ],
-            )))
-            );
-        list2.add(Padding(padding: EdgeInsets.all(5)));
-        list2.add(
-          Expanded(
-              flex: 1,
-              child:
-                  widget.isReturn ?  v2BorderBox(context, ' ' + translate(_returningText), Row(
-          children: [
-             Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) ,
-            Text(getIntlDate('dd MMM yyyy', _returningDate as DateTime), textScaleFactor: 1.25,style: TextStyle(fontWeight: FontWeight.bold),),
-          ],
-        )): Container(),
-              )
-
-        );
-      } else {
-
-          list2.add(
-              Expanded(
-                  flex: 1,
-                  child:v2BorderBox(context, ' ' + translate('Departing'),
-              Row(
-                children: [
-                  Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ),
-                  Text(_displayText),
-                ],
-              ))));
-          list2.add(Padding(padding: EdgeInsets.all(5)));
-          list2.add(
-            Expanded(
-                flex: 1,
-                child: widget.isReturn ? v2BorderBox(context, ' ' + translate(_returningText),
-              Row(
-                children: [
-                  Icon(PhosphorIcons.calendar, color:  gblSystemColors.textEditIconColor, ) ,
-                  Text(''),
-                ],
-              ))
-                    : Container())
-          );
-
-      }
-      list.add(Row(children: list2,));
-    } else {
       list.add(Row(children: <Widget>[
         Expanded(
-            child: TrText('Departing',
-                style: new TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 15.0))),
+            child: v2Label(translate('Departing'))),
         Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child:
+            child:
+                v2Label(_returningText),
+/*
               TrText(_returningText,
                   style: new TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15.0)),
-            ))
+                      fontWeight: FontWeight.bold, fontSize: 15.0
+                      ,color: wantHomePageV3() ? v2LabelColor() : null )),
+*/
+        )
       ]));
 
       if (dateSelected) {
@@ -164,27 +108,23 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(getIntlDate('E d', _departingingDate),
-                        //DateFormat('E d').format(_departingingDate).toString(), //'Wed 3',
-                        style: new TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 18.0,
-                          //color: Colors.grey,
-                        )),
-                    Text(getIntlDate('MMMM yyyy', _departingingDate),
-                        //DateFormat('MMMM yyyy').format(_departingingDate).toString(), //'July 2019',
-                        style: new TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 18.0,
-                          // color: Colors.grey,
-                        ))
-                  ],
-                )),
+                child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                v2SeatchValueText(getIntlDate('E, dd MMM yy', _departingingDate),),
+                Padding(padding: EdgeInsets.only(right: 10) ,child: Icon(Icons.calendar_month_outlined)),
+              ]
+            )),
             Expanded(
-                child: Padding(
+                child:
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    v2SeatchValueText(_returningDate == null ? '' : getIntlDate('E, dd MMM yy', _returningDate as DateTime),),
+                    Padding(padding: EdgeInsets.only(right: 10) ,child: _returningDate != null  ? Icon(Icons.calendar_month_outlined) : Container() ),
+                  ])
+/*
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +147,8 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                     [Text('')],
                     //],
                   ),
-                ))
+*/
+                )
           ],
         )
         );
@@ -229,7 +170,6 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
           )
         );
       }
-    }
     return list;
   }
 

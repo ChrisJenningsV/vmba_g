@@ -7,7 +7,7 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/menu.dart';
-import 'package:vmba/mmb/widgets/flight_selection_summary.dart';
+import 'package:vmba/mmb/widgets/change_flight_summary.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +17,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../calendar/calendarFunctions.dart';
+import '../calendar/verticalFaresCalendar.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/timeHelper.dart';
 import '../utilities/widgets/colourHelper.dart';
@@ -58,6 +59,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
 
     gblBookingState = BookingState.changeFlt;
 
+    gblCurrentRloc = widget.pnr.pNR.rLOC;
+
     // check if we are redeeming airmiles
     //gblRedeemingAirmiles = false;
     if( widget.pnr != null && widget.pnr.pNR != null && widget.pnr.pNR.payments != null && widget.pnr.pNR.payments.fOP != null) {
@@ -68,7 +71,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
       });
     }
 
-    _loadData();
+    _loadData(false);
   }
 
   bool isReturn() {
@@ -97,7 +100,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     setState(() {
       _loadingInProgress = true;
       _noInternet = false;
-      _loadData();
+      _loadData(false);
     });
   }
 
@@ -221,10 +224,16 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         .replaceAll(']', '%5D');
   }
 
-  Future _loadData() async {
+  Future _loadData(bool doStatState) async {
     // rload booking
     String cmd = '*${this.widget.pnr.pNR.rLOC}[MMB]';
     logit(cmd);
+    if(doStatState) {
+      setState(() {
+
+      });
+    }
+
     await await runVrsCommand(cmd);
 
 
@@ -298,9 +307,11 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     setState(() {
       _loadingInProgress = false;
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _scrollController.animateTo(animateTo,
-            duration: new Duration(microseconds: 1), curve: Curves.ease));
+    if (gblSettings.wantVericalFaresCalendar == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          _scrollController.animateTo(animateTo,
+              duration: new Duration(microseconds: 1), curve: Curves.ease));
+    }
   }
 
   validateSelection(index, item) {
@@ -398,7 +409,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     setState(() {
       this.widget.departureDate = newDate;
       _loadingInProgress = true;
-      _loadData();
+      _loadData(false);
     });
   }
 
@@ -449,9 +460,31 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
         ),
       );
     } else {
-      return flightSelection();
-    }
+      NewBooking newBooking = NewBooking();
+      newBooking.departureDate = this.widget.departureDate;
+      newBooking.isReturn = false;
+
+
+      if( gblSettings.wantVericalFaresCalendar ) { // && 1==2
+          gblSearchParams.departDate = this.widget.departureDate;
+          gblSearchParams.isReturn = false;
+          gblDepartDate = this.widget.departureDate;
+          return VerticalFaresCalendar(objAv: objAv,
+            newBooking: newBooking,
+            mmbBooking: widget.mmbBooking,
+            loadData: _loadData,
+            showProgress: showProgress,);
+        }
+        return flightSelection();
+      }
   }
+  void showProgress() {
+    _loadingInProgress = true;
+    setState(() {
+
+    });
+  }
+
 
   /*
   String calenderPrice(String currency, String price) {
@@ -711,7 +744,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => FlightSelectionSummaryWidget(
+                  builder: (context) => ChangeFlightSummaryWidget(
                         // newBooking: newFlight,
                         mmbBooking: widget.mmbBooking,
                         //journeys: widget.journeys,

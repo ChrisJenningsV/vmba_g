@@ -122,8 +122,10 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
     list.add(Padding(padding: EdgeInsets.all(2)));
 */
   }
-  if( wantHomePageV2() || wantHomePageV3() ) {
-    list.add(VButtonText(caption, color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white));
+  if(  wantHomePageV3() ) {
+    list.add(VButtonText(caption,
+        color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white,
+        ));
   } else {
     list.add(TrText(caption,style: TextStyle(color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white),
     ));
@@ -152,7 +154,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
         foregroundColor: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : null,
         side: BorderSide(
           width: (disabled || gblActionBtnDisabled) ? 2.0 : 0,
-          color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : Colors.white,
+          color: (disabled || gblActionBtnDisabled) ? actionButtonDisabledTextColor() : (wantHomePageV3() ? Colors.transparent: Colors.white),
         ),
         shape: RoundedRectangleBorder(
             borderRadius: getButtonRadius())),

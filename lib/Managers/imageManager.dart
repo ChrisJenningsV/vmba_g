@@ -11,4 +11,29 @@ class ImageManager{
       fit: BoxFit.cover,
     );
   }
+
+  static getPageBack() {
+
+  }
+
+  static Widget getBodyWithBackground( String pageName, Widget body){
+    List<Widget> list = [];
+
+    if( gblSettings.imageBackgroundPages.contains(pageName)){
+      AssetImage img = AssetImage('lib/assets/$gblAppTitle/images/pagebg.png');
+      list.add(Container(
+          decoration: BoxDecoration(
+              color: gblSettings.darkSiteEnabled ?Colors.black : null,
+              image: DecorationImage(
+                  //colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
+                  image: img, fit: BoxFit.fill))));
+    }
+    list.add(body);
+    return Stack(
+      children: list,
+    );
+
+  }
+
+
 }

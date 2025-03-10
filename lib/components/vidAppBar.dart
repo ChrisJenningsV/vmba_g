@@ -13,12 +13,15 @@ import '../utilities/helper.dart';
 
 class vidAppBar extends StatefulWidget implements PreferredSizeWidget {
   vidAppBar({this.elevation,this.centerTitle, this.backgroundColor,
-    this.title, this.iconTheme,this.toolbarHeight,this.bottom,
+    this.title, this.titleText, this.icon,
+    this.iconTheme,this.toolbarHeight,this.bottom,
     this.leading,this.flexibleSpace,this.actions,
     this.automaticallyImplyLeading = true,} ):
         preferredSize = _PreferredAppBarSize(toolbarHeight, bottom?.preferredSize.height);
 
   final Widget? title;
+  final Widget? icon;
+  final String? titleText;
   final double? elevation;
   final Color? backgroundColor;
   final bool? centerTitle;
@@ -99,15 +102,19 @@ class vidAppBarState extends State<vidAppBar>  with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    IconThemeData iconTheme = widget.iconTheme == null ? IconThemeData(color:gblSystemColors.headerTextColor) : widget.iconTheme as IconThemeData;
+    Color back = widget.backgroundColor == null ? gblSystemColors.primaryHeaderColor : widget.backgroundColor as Color;
+    Widget title = widget.title ?? getLogoTitle(widget.titleText as String, icon: widget.icon);
+
     return new AppBar(
       elevation: widget.elevation,
       centerTitle: gblCentreTitle,
-
       //brightness: gblSystemColors.statusBar,
       //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
-      backgroundColor: widget.backgroundColor,
-      title: widget.title ,
-      iconTheme: widget.iconTheme,
+      backgroundColor: back,
+      title: title,
+      titleSpacing: 0,
+      iconTheme:iconTheme,
       leading: widget.leading,
       flexibleSpace: widget.flexibleSpace,
       automaticallyImplyLeading: widget.automaticallyImplyLeading,
@@ -124,4 +131,32 @@ class _PreferredAppBarSize extends Size {
 
   final double? toolbarHeight;
   final double? bottomHeight;
+}
+
+Widget getLogoTitle(String txt, {Widget? icon=null} ){
+  List<Widget> list = [];
+  if( gblSettings.imageBackgroundPages.contains(gblCurPage)) {
+    list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',
+        alignment: Alignment.topLeft));
+  }
+  if( icon != null ){
+    list.add(
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          icon,
+          Text(txt, style: TextStyle(color: gblSystemColors.headerTextColor,),textScaler: TextScaler.linear(0.9),)
+          ]
+    ));
+
+  } else {
+    list.add(
+        Text(txt, style: TextStyle(color: gblSystemColors.headerTextColor,),textScaler: TextScaler.linear(0.9)));
+  }
+  if( gblSettings.wantCentreTitle) {
+    return new Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+  } else {
+    return new Row(children: list,
+    );
+  }
 }

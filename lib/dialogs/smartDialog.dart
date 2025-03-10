@@ -22,10 +22,11 @@ import 'dialogActions.dart';
 bool _isHidden = true;
 
 class smartDialogPage extends StatefulWidget {
-  smartDialogPage({this.content});
+  smartDialogPage({this.content, this.reload = false});
 
   _smartDialogPageState createState() => _smartDialogPageState();
   Widget? content;
+  bool reload ;
 }
 
 class _smartDialogPageState extends State<smartDialogPage> {
@@ -49,7 +50,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
   }
   @override
   Widget build(BuildContext context) {
-  Color titleBackClr = gblSystemColors.primaryHeaderColor;
+  Color titleBackClr = gblSystemColors.dialogHeaderColor as Color;
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   double? width;
   gblActionBtnDisabled = false;
@@ -64,45 +65,14 @@ class _smartDialogPageState extends State<smartDialogPage> {
     widget.content = Container(width: width,      child: widget.content,);
   }
 
- /* return Scaffold(
-      backgroundColor: v2PageBackgroundColor(),
-      appBar: AppBar(
-        leading: getAppBarLeft(),
-        backgroundColor: gblSystemColors.primaryHeaderColor,
-        iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
-        title: TrText('',
-            style: TextStyle(color: gblSystemColors.headerTextColor)),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () => Navigator.pop(context),
-          )
-        ],
-      ),
-      body:
-      Container(
-        margin: v2FormPadding(),
-        decoration: v2FormDecoration(),
-        child: new Form(
-          key: formKey,
-          child: new SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: widget.content
-            ),
-          ),
-        ),
-      )
-  );
-
-*/
-  if( widget.content == null ) widget.content = getDialogContent(context, gblCurDialog!, () {
+  if( widget.content == null || widget!.reload) widget.content = getDialogContent(context, gblCurDialog!, () {
     setState(() {  });
   });
 
     return  Scaffold(
+      floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
+          ? wrapFootField(context, gblCurDialog!,gblCurDialog!.pageFoot.first, (){}) : null ,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
       appBar:  appBar(context, '', PageEnum.summary),
         endDrawer: DrawerMenu(),
       backgroundColor: v2PageBackgroundColor(),
@@ -128,7 +98,8 @@ class _smartDialogPageState extends State<smartDialogPage> {
                             children: [
                               Padding(padding: EdgeInsets.all(20)),
                               Text(gblCurDialog!.caption,
-                                style: TextStyle(color: Colors.white),),
+                                textScaler: TextScaler.linear(1.25),
+                                style: TextStyle(color: gblSystemColors.dialogHeaderTextColor),),
                               IconButton(onPressed: () => Navigator.pop(context),
                                   icon: Stack(
                                     children: [
@@ -153,7 +124,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
 }
 
 void showSmartDialog( BuildContext context, Widget? content, void Function() doUpdate){
-  Color titleBackClr = gblSystemColors.primaryHeaderColor;
+  Color titleBackClr = gblSystemColors.dialogHeaderColor as Color;
   gblActionBtnDisabled = false;
   if( gblCurDialog! != null ) {
     gblCurDialog!.fields.forEach((f) {
@@ -252,7 +223,7 @@ Widget? getDialogContent(BuildContext context, DialogDef dialog, void Function()
         doDialogAction(context, null, doUpdate );
     }, pad: 5 , disabled: gblActionBtnDisabled ),  ));
 
-  dialog.foot.forEach((f) {
+  dialog.dialogFoot.forEach((f) {
     fields.add(wrapFootField(context, dialog, f, doUpdate));
   });
 

@@ -47,8 +47,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
     if (DateTime.now().isAfter(departureDate!)) {
       departureDate = DateTime.now();
     }
-
-
+    gblDepartDate = departureDate;
     lastDate = DateTime.now().add(Duration(days: 364));// +
     //mmbBooking.journeys.journey[widget.journeyToChange-1].itin.first.depTime);
     //Oneway flight

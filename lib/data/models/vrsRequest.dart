@@ -93,6 +93,7 @@ class VrsApiResponse  {
     if( json['vrsServerNo'] != null )vrsServerNo = json['vrsServerNo'];
     if( json['isSuccessful'] != null )isSuccessful = json['isSuccessful'];
     if( json['serverIP'] != null )serverIP = json['serverIP'];
+    if( json['city'] != null ) city = json['city'];
   }
 }
 

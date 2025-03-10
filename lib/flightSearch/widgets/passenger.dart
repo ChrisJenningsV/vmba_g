@@ -5,6 +5,7 @@ import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/menu/icons.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../Helpers/settingsHelper.dart';
@@ -19,6 +20,7 @@ class PassengerWidget extends StatefulWidget {
   final Passengers? passengers;
   final ValueChanged<Passengers>? onChanged;
 
+
   _PassengerWidgetState createState() => _PassengerWidgetState();
 }
 
@@ -30,10 +32,12 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   int students = 0;
   int seniors = 0;
   int teachers = 0;
+  late bool expanded;
 
   @override
   initState() {
     super.initState();
+    expanded = false;
     if (widget.passengers != null) {
       adults = widget.passengers!.adults;
       children = widget.passengers!.children;
@@ -66,30 +70,6 @@ class _PassengerWidgetState extends State<PassengerWidget> {
     });
   }
 
-  // void _removeChild() {
-  //   setState(() {
-  //     children -= 1;
-  //   });
-  // }
-
-  // void _addChild() {
-  //   setState(() {
-  //     children += 1;
-  //   });
-  // }
-
-  // void _removeInfant() {
-  //   setState(() {
-  //     infants -= 1;
-  //   });
-  // }
-
-  // void _addInfant() {
-  //   setState(() {
-  //     infants += 1;
-  //   });
-  // }
-
   void _updateAll(Passengers value) {
     if (value != null) {
       setState(() {
@@ -114,61 +94,173 @@ class _PassengerWidgetState extends State<PassengerWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    if( wantHomePageV3()) {
+
+      List<Widget> list = [];
+//        list.add(_getAdults(),);
+        PaxRowInfo pri = PaxRowInfo(min: 1, max: gblSettings.maxNumberOfPax,
+            iconName: 'adult', typeName: 'Adult', description: '16 years and above', count: widget.passengers!.adults);
+        list.add(getPaxRow(pri, (PaxRowInfo priOut){
+          widget.passengers!.adults = priOut.count;
+          setState(() {             });
+        } ));
+        if( expanded) {
+          if(gblSettings.passengerTypes.youths) {
+            PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+              iconName: 'youth', typeName: 'Youths', description: '12 to 15 years', count: widget.passengers!.youths);
+            list.add(getPaxRow(pri, (PaxRowInfo priOut){
+              widget.passengers!.youths = priOut.count;
+              setState(() {             });
+            } ));
+          }
+          if(gblSettings.passengerTypes.child) {
+            PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+                iconName: 'child', typeName: 'Child', description: 'between 2 and 11 years', count: widget.passengers!.children);
+            list.add(getPaxRow(pri, (priOut){
+              widget.passengers!.children = priOut.count;
+              setState(() {             });
+            }));
+          }
+          if(gblSettings.passengerTypes.infant) {
+            PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+                iconName: 'infant', typeName: 'Infant', description: 'Under 2 years', count: widget.passengers!.infants);
+            list.add(getPaxRow(pri, (priOut){
+              widget.passengers!.infants = priOut.count;
+              setState(() {             });
+            }));
+          }
+          if( gblSettings.passengerTypes.senior){
+
+          }
+          if( gblSettings.passengerTypes.student ){
+
+          }
+          return Column(
+                children: list,);
+        } else {
+          PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+              iconName: 'people', typeName: 'Other Passengers', description: '', isMoreButton: true);
+          list.add(getPaxRow(pri, (priOut){
+            expanded = !expanded;
+            setState(() {             });
+          }));
+/*
+          list.add(
+              Row(
+                children: [
+                  Expanded(flex: 1, child: Icon(Icons.people, size: 30,)),
+                  Expanded(flex: 6, child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        v2SeatchValueText('Other Passengers'),
+                        Text('select')
+                      ])),
+                  Expanded(flex: 2, child: Icon(Icons.chevron_right, size: 30,))
+                ],
+
+              )
+          );
+*/
+          return GestureDetector(
+              onTap: () {
+                expanded = !expanded;
+                setState(() {
+
+                });
+              },
+              child: Column(
+                children: list,));
+        }
+
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          new Expanded(
+
+            child: _getAdults(),
+
+            flex: 1,
+          ),
+          Container(
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              height: 60,
+              child: new VerticalDivider(
+                color: Colors.black26,
+                width: 4,
+              )),
+          new Expanded(
+            child: _getOtherPax(),
+
+            flex: 1,
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget getPaxRow(PaxRowInfo pri, void Function(PaxRowInfo priOut) onChange) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        new Expanded(
-
-          child: _getAdults(),
-
-          flex: 1,
-        ),
-        Container(
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            height: 60,
-            child: new VerticalDivider(
-              color: Colors.black26,
-              width: 4,
-            )),
-        new Expanded(
-          child: _getOtherPax(),
-
-          flex: 1,
-        ),
+        Expanded(flex: 1, child: getNamedIcon(pri.iconName)),
+        Expanded(flex: 6, child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              v2SeatchValueText(pri.typeName),
+              Text(pri.description)
+            ])),
+        //Expanded(flex: 2, child: Icon(Icons.chevron_right, size: 30,))
+        Expanded(flex: 1, child: v2SeatchValueText(pri.isMoreButton ? '' : pri.count.toString())),
+        pri.isMoreButton ?
+          Expanded(flex: 2, child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+            IconButton(onPressed: (){
+            onChange(pri);
+            }, icon: Icon(Icons.chevron_right))]))
+        : Expanded(flex: 2, child: upDownButton(pri.count, pri.min, pri.max, (int newVal){
+          pri.count = newVal;
+          onChange(pri);
+            } )),
       ],
+
     );
   }
+
+
+
   Widget _getOtherPax() {
     if( wantPageV2()) {
       return v2BorderBox(context,  ' ' + translate('Other Passengers'),
         GestureDetector(
-    onTap: () {
-    //  _selectedDate(context);
-    _navigateToNewScreen(context);
-    },
-    child: Padding(
-    padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
-    child: Row(
-    mainAxisSize: MainAxisSize.max,
-    children: <Widget>[
-    Expanded(
-    child: (infants + children + youths + seniors + students + teachers) == 0
-    ? TrText("Select",
-    style: new TextStyle(
-    fontWeight: FontWeight.w300,
-    fontSize: 20.0,
-    color: Colors.grey))
-        : Text(translateNo((infants + children + youths + seniors + students + teachers ).toString()),
-    style: new TextStyle(
-    //fontWeight: FontWeight.w300,
-    fontSize: 20.0,
-    //color: Colors.grey
-    )),
-    ),
-    ],
-    ),
-    ),
-    ),
+        onTap: () {
+        //  _selectedDate(context);
+        _navigateToNewScreen(context);
+        },
+        child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
+        child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+        Expanded(
+        child: (infants + children + youths + seniors + students + teachers) == 0
+        ? TrText("Select",
+        style: new TextStyle(
+        fontWeight: FontWeight.w300,
+        fontSize: 20.0,
+        color: Colors.grey))
+            : Text(translateNo((infants + children + youths + seniors + students + teachers ).toString()),
+        style: new TextStyle(
+        //fontWeight: FontWeight.w300,
+        fontSize: 20.0,
+        //color: Colors.grey
+        )),
+        ),
+        ],
+        ),
+        ),
+        ),
         height: 70
       );
 
@@ -213,29 +305,40 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   }
 
   Widget _getAdults() {
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Adults 16+'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    if( wantHomePageV3()) {
+         return Row(
+           mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new IconButton(
-                icon: Icon(
-                  adults <= 1 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
+              Expanded( flex: 1, child: Icon(Icons.person, size: 30,)),
+              Expanded( flex: 6, child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                v2SeatchValueText('Adult'),
+                Text('16 years and above')
+              ],)),
+              Expanded( flex: 1, child: v2SeatchValueText(adults.toString())),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                  children: [
+                  new IconButton(
+                  icon: Icon(
+                    adults <= 1 ? Icons.remove_circle_outline : Icons.remove_circle_outlined,
+                  ),
+                  onPressed: adults == 1 ? null : _removeAdult,
                 ),
-                onPressed: adults == 1 ? null : _removeAdult,
-              ),
-              new Text(translateNo(adults.toString()), style: TextStyle(fontSize: 20)),
-              new IconButton(
-                icon: Icon(
-                  adults < gblSettings.maxNumberOfPax ?
-                  Icons.add_circle_outlined : Icons.add_circle_outline,
+  //              new Text(translateNo(adults.toString()), style: TextStyle(fontSize: 20)),
+                new IconButton(
+                  icon: Icon(
+                    adults < gblSettings.maxNumberOfPax ?
+                    Icons.add_circle_outlined : Icons.add_circle_outline,
+                  ),
+                  onPressed: adults < gblSettings.maxNumberOfPax ? _addAdult : null ,
                 ),
-                onPressed: adults < gblSettings.maxNumberOfPax ? _addAdult : null ,
-              ),
+                ])
             ],
-          ),
-        height: 70,
-      );
+          );
 
     } else {
       return Container(
@@ -719,3 +822,61 @@ class _PassengerSelectionPageState extends State<PassengerSelectionPage> {
         ));
   }
 }
+
+Widget upDownButton(int val, int min, int max, void Function(int val) onChange ){
+  return Container(
+      height: 30,
+      //padding: EdgeInsets.all(1.5),
+      width: 150,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black, width: 1),
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        children: <Widget>[  
+          Expanded(
+              child: InkWell(
+                  onTap: () {
+                    if( val > min) {
+                      onChange(val - 1);
+                    }
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.transparent,
+                    child: Icon(Icons.remove, size: 20, weight: 300, color: val == min ? Colors.grey.shade400 : Colors.black,)),
+                  )),
+          Expanded(
+              child: InkWell(
+                  onTap: () {
+                    if( val < (max)) {
+                    onChange(val+1);
+                    }
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
+                    child: Icon(Icons.add, size: 25, weight: 200, color: val < max ? Colors.black : Colors.grey.shade300))
+                  )),
+        ],
+      ));
+
+}
+
+
+
+class PaxRowInfo {
+  String typeName = '';
+  String iconName = '';
+  String description = '';
+  int count = 0;
+  int max = 9;
+  int min = 0;
+  bool isMoreButton;
+  PaxRowInfo({required this.min, required this.max, required this.description, required this.iconName,
+    this.count =0, required this.typeName, this.isMoreButton = false});
+}
+
+
+

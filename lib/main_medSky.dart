@@ -72,9 +72,6 @@ void configM1() {
   gblSystemColors.home2ButtonTextColor = Colors.black;
 
   gblSettings = Settings (
-    //   homePageFilename: 'customPages.json',
-    // start new bits
-//    homePageStyle: 'V3',
     smartApiVersion: 2,
     wantShadows: false,
     wantTransapentHomebar: true,

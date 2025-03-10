@@ -136,6 +136,7 @@ class Settings {
   bool wantCalendarBigMonth;
   bool wantNewMMB;
   bool wantNewSeats;
+  bool wantSeatPlanImages;
   bool wantAddContact;
   bool wantSeatKeyExpanded;
   bool wantUpgradePrices;
@@ -172,6 +173,7 @@ class Settings {
   bool wantFqtvDob;
   bool wantFqtvPassport;
   bool wantCustomAnimations;
+  bool wantHomepageButtons;
 
   String fqtvName="";
   String fQTVpointsName = 'airmiles';
@@ -210,6 +212,7 @@ class Settings {
   String previousVrsGuid='';
   bool autoSeatOption;
   String backgroundImageUrl='';
+  String pageBackgroundImageUrl='';
   String iOSDemoBuilds='';
   String androidDemoBuilds='';
   String demoUser='';
@@ -230,6 +233,9 @@ class Settings {
   String productImageMap='';
   String paxWeight='';
   String skyFlyToken='';
+  String bottomNavPages = '';
+  String imageBackgroundPages = '';
+  String titleImagePages = '';
 
  // String hostBaseUrl;
   String iOSAppId='';
@@ -327,6 +333,7 @@ bool bpShowFastTrack;
     this.wantFqtvAddress = false,
     this.wantFqtvPassport = false,
     this.wantCustomAnimations = false,
+    this.wantHomepageButtons = true,
     this.wantFlightStatus = false,
     this.wantNews = false,
     this.wantFopVouchers = false,
@@ -385,6 +392,7 @@ bool bpShowFastTrack;
     this.wantNewCalendar = false,
     this.wantCalendarBigMonth = false,
     this.wantNewSeats = false,
+    this.wantSeatPlanImages = false,
     this.wantAddContact = false,
     this.wantSeatKeyExpanded = false,
     this.wantNewMMB = false,
@@ -450,6 +458,7 @@ bool bpShowFastTrack;
     this.previousVrsGuid='',
     this.autoSeatOption=false,
     this.backgroundImageUrl='',
+    this.pageBackgroundImageUrl='',
 //    this.hostBaseUrl,
     this.iOSAppId='',
     this.androidAppId='',
@@ -479,6 +488,9 @@ bool bpShowFastTrack;
     this.productImageMap = '{"BAG2": "golfBag", "BAG1": "holdBag"}',
     this.paxWeight = '{"lb": "lb(s)", "kg": "kg(s)"}',
     this.skyFlyToken = '',
+    this.bottomNavPages = '',
+    this.imageBackgroundPages = '',
+    this.titleImagePages = '',
 
     this.fqtvName = '',
     this.updateMessage = '',

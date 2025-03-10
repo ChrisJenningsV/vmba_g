@@ -10,6 +10,7 @@ import 'package:vmba/dialogs/registerActions.dart';
 import 'package:vmba/dialogs/smartDialog.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 
+import '../ads/adsPage.dart';
 import '../components/showDialog.dart';
 import '../data/globals.dart';
 import '../data/models/vrsRequest.dart';
@@ -58,6 +59,18 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
     case 'DOFQTVLOGIN':
       String FqtvNo = gblCurDialog!.editingControllers[0].value.text;
       String FqtvPw = gblCurDialog!.editingControllers[1].value.text;
+      if( FqtvNo == 'AGENT' || FqtvNo == 'BSIA') {
+        navToSmartDialogHostPage(context, new FormParams(formName: 'AGENTLOGIN',
+            formTitle: '${gblSettings.fqtvName} Reset Password'));
+        return;
+/*
+        //Navigator.pop(context);
+        gblCurDialog = getDialogDefinition('AGENTLOGIN','Agent Login' );
+        smartDialogPage(reload: true,);
+        return;
+*/
+      }
+
       if( FqtvNo == '' || FqtvPw == '') {
         showVidDialog(context, 'Error', 'Please complete all details',
             type: DialogType.Error);
@@ -81,6 +94,10 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
               type: DialogType.Error);
         }
       }
+      break;
+    case 'ADSLOGIN':
+      gblCurPage = 'BOOKADS';
+      Navigator.push(context, SlideTopRoute(page: AdsPage()));
       break;
     case 'DODARKSITEADMIN':
       // save local

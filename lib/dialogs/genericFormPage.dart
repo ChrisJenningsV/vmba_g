@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../components/trText.dart';
 import '../data/globals.dart';
 import '../data/models/dialog.dart';
 import 'smartDialog.dart';
@@ -34,6 +35,7 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
   @override
   Widget build(BuildContext context) {
 
+/*
     DialogDef dialog = new DialogDef(caption: widget.formParams!.formTitle);
 
     switch (widget.formParams!.formName) {
@@ -74,32 +76,15 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
         gblCurDialog = dialog;
 
         return smartDialogPage();
-
-
       default:
         gblCurDialog = dialog;
         return smartDialogPage(content:  _body());
 
     }
+*/
+    gblCurDialog = getDialogDefinition(widget.formParams!.formName, widget.formParams!.formTitle);
+    return smartDialogPage(); // content:  _body()
 
-
-    return
-
-      new Scaffold(
-        backgroundColor: v2PageBackgroundColor(),
-        appBar: appBar(context, widget.formParams!.formTitle, PageEnum.editPax,
-          imageName: gblSettings.wantPageImages ? widget.formParams!.formName : '',
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
-            )
-          ],
-        ),
-        extendBodyBehindAppBar: gblSettings.wantPageImages,
-        //endDrawer: DrawerMenu(),
-        body: _body(),
-      );
   }
 
   Widget _body() {
@@ -109,23 +94,8 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
             child: SingleChildScrollView(
                 child: Padding(
                   padding: v2FormPadding(),
-                  child:/* Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: v2BorderColor()),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-
-                      clipBehavior: Clip.antiAlias,
-                      child:*/ Column(
+                  child: Column(
                           children: [
-/*
-                            ListTile(
-                              tileColor: gblSystemColors.primaryHeaderColor ,
-                              leading: Icon(Icons.person, size: 50.0, color: gblSystemColors.headerTextColor   ,),
-                              title: Text(translate('Passenger') + ' ' + widget.passengerDetail.paxNumber + ' (' + translate(paxTypeName) + ')'  ,
-                                style: TextStyle(color: gblSystemColors.headerTextColor, fontWeight: FontWeight.bold),),
-                            ),
-*/
                             Padding(
                                 padding: EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                                 child: Column(
@@ -151,3 +121,78 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
     }
   }
   }
+
+DialogDef getDialogDefinition(String formName, String formTitle){
+  DialogDef dialog = new DialogDef(caption: formTitle);
+
+  switch (formName) {
+    case 'FQTVRESET':
+      dialog = new DialogDef(caption: 'Reset Password', actionText: 'Continue', action: 'DoFqtvReset');
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      break;
+    case 'FQTVREGISTER':
+      dialog.width = 'full';
+      break;
+
+    case 'NEWINSTALLSETTINGS':
+    //gblValidationEmail = '';
+      gblValidationPinTries = 0;
+      dialog = new DialogDef(caption: 'Register App', actionText: 'Continue', action: 'DoRequestPin');
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Enter email to access details of bookings made on the website.A validation PIN will be sent to this email.'));
+      // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
+      dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      break;
+    case 'VALIDATEPIN':
+      dialog = new DialogDef(caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check youe email inbox, and enter the validation PIN below. '));
+      // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
+      dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
+      break;
+    case 'AGENTLOGIN':
+      dialog = new DialogDef(caption: 'Agent Login',
+          actionText: 'Continue',
+          action: 'DoAgentLogin');
+      dialog.fields.add(
+          new DialogFieldDef(
+              field_type: 'number', caption: 'sine (4ch)'));
+      dialog.fields.add(
+          new DialogFieldDef(
+              field_type: 'password', caption: 'Password'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+      gblCurDialog = dialog;
+      break;
+
+    case 'FQTVLOGIN':
+      dialog = new DialogDef(caption: formTitle, actionText: 'Continue', action: 'DOFQTVLOGIN');
+      dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number')));
+      dialog.fields.add(new DialogFieldDef(field_type: 'space', caption: ''));
+      dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'action', caption: "Can't log in? ",
+          actionText: translate('Reset Password'),
+          action: 'FqtvReset'
+      ));
+      if( gblSettings.wantFqtvRegister ) {
+        dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', caption: '',
+            actionText: translate('Create a') + ' ${gblSettings.fqtvName} ' + translate('account >'),
+            action: 'FqtvRegister'
+        ));
+      }
+      if( gblBuildFlavor == 'LM'){
+          dialog.pageFoot.add(new DialogFieldDef(field_type: 'action', caption: '',
+          actionText: translate('For ADS login click here >'),
+          action: 'ADSLogin'
+          ));
+      }
+      break;
+    default:
+      gblCurDialog = dialog;
+   }
+  return dialog;
+}

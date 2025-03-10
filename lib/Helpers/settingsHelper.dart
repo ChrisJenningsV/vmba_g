@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../components/trText.dart';
 import '../data/globals.dart';
 
 void setLiveTest() {
@@ -43,13 +44,6 @@ bool wantPageV2() {
     return false;
   }
 }
-bool wantHomePageV2() {
-  if( gblSettings.homePageStyle == 'V2') {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 bool wantHomePageV3() {
   if( gblSettings.homePageStyle == 'V3') {
@@ -69,6 +63,23 @@ Color v2BorderColor(){
 EdgeInsets v2FormPadding(){
   return EdgeInsets.all(5);
 }
+
+Color v2LabelColor() {
+  return Colors.grey;
+}
+
+Widget v2Label(String text) {
+  return TrText(text,
+      style: new TextStyle(
+          fontWeight: FontWeight.bold, fontSize: 15.0
+          ,color: wantHomePageV3() ? v2LabelColor() : null ));
+
+}
+
+Widget v2SeatchValueText(String text){
+  return Text( text,style: new TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold ));
+}
+
 
 BoxDecoration v2FormDecoration() {
   if( gblSettings.wantShadows) {
@@ -112,3 +123,4 @@ int parseInt( String str ){
   }
   return int.parse(str);
 }
+

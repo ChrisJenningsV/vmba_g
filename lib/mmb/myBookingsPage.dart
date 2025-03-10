@@ -1297,11 +1297,11 @@ getmybookings(void Function() onComplete )  {
   });
 }
 
-Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
+Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {double topMargin = 0})
 {
   if( gblTrips != null && gblTrips!.trips != null &&  gblTrips!.trips!.length > 0){
     CardTemplate card = new CardTemplate();
-    String fltDate =  DateFormat('dd MMM kk').format(gblTrips!.trips!.first.fltdate!);
+    String fltDate =  DateFormat('dd MMM yy').format(gblTrips!.trips!.first.fltdate!);
     DateTime dtComp = DateTime.now().add(Duration(days: 1));
     if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
       fltDate = 'Today';
@@ -1310,8 +1310,10 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
     }
     card.title = CardText('', text: translate('Your next flight' + ': ' + fltDate));
     card.icon = null; // Icons.airplanemode_active;
-    card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
+    card.title!.backgroundColor = Colors.black.withValues(alpha: 0.4);
+    card.backgroundClr = Colors.black.withValues(alpha: 0.4);
     card.title!.color = gblSystemColors.primaryButtonTextColor;
+    card.textClr = Colors.white;
 
     return GestureDetector(
         onTap: () {
@@ -1319,10 +1321,12 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate)
         },
         child:
         v3ExpanderCard(
-            context, card, getUpcoming(context, () {
+            context, card, getUpcoming(context, card, () {
             doUpdate();
           //setState(() {});
-        }), wantIcon: false
+        }), wantIcon: false,
+          topMargin: 70,
+
         ));
 
   }

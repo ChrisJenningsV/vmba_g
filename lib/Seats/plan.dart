@@ -226,7 +226,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   }
 
   void selectPaxForSeat(BuildContext context, Seat iselectedSeat) {
-    bool isAllowEmergencySeating = true;
     selectedSeat = iselectedSeat;
 
 /*
@@ -367,7 +366,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                   padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                   child: getSeat2(
                       Seat(sCode: p.seat, sCellDescription: 'Seat'), false,
-                      SeatSize.medium, noCode: true, occupant: this.paxlist!.getOccupant(seat!.sCode, seat, widget.rloc)),) : Container(),
+                      SeatSize.medium, noCode: true, occupant: this.paxlist!.getOccupant(seat.sCode, seat, widget.rloc)),) : Container(),
                 // name
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +397,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                         paxlist!.releaseSeat(seat.sCode);
                         paxlist!.list![params.paxNo].selected = true;
                         paxlist!.list![params.paxNo].seat = seat.sCode;
-                        gblSelectedSeats!.add(seat.sCode);
+                        gblSelectedSeats.add(seat.sCode);
                       }
                       setState2(() {
 
@@ -613,9 +612,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           .seat
           .where((a) => a.sRow == indexRow)
           .toList();
-      if (seats == null) {} else {
+//      if (seats == null) {} else {
         seats.sort((a, b) => a.sRow.compareTo(b.sCol));
-      }
+  //    }
       // check for large plane
       if (maxCol > 8) {
         cellSize = 30;
@@ -637,11 +636,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       indexColumn <= maxCol;
       indexColumn++) {
         Seat? seat;
-        bool found = false;
         seats.forEach((element) {
           if (element.sCol == indexColumn) {
             seat = element;
-            found = true;
           }
         });
 
@@ -650,17 +647,15 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         // get price for row
         currentSeatPrice = '0';
         seats.forEach((element) {
-          if (element != null && element.sScprice != null) {
             if (double.parse(element.sScprice) >
                 double.parse(currentSeatPrice)) {
               currentSeatPrice = element.sScprice;
               currentSeatPriceLabel = element.sScinfo;
               currencyCode = element.sCur;
             }
-          }
         });
 
-        if (seat != null && seat!.sRLOC != null && seat!.sRLOC != '') {
+        if (seat != null && seat!.sRLOC != '') {
           logit('s=${seat!.sCode} r=${seat!.sRLOC}');
         }
 
@@ -702,9 +697,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                 child: Container(
                   width: cellSize,
                   child: Center(
-                      child: Text(seat!.sCellDescription != null
-                          ? seat!.sCellDescription
-                          : '')),
+                      child: Text(seat!.sCellDescription)),
                 )),
           );
         } else if (seat!.sCellDescription == 'SeatPlanWidthMarker' ||
@@ -713,40 +706,37 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             seat!.sCellDescription == 'Wing End' ||
             seat!.sCellDescription == 'DoorDown' ||
             seat!.sCellDescription == 'DoorUp') {
-          String seatTxt = '';
-          Widget? pathWidget = null;
 
-          if (gblSettings.seatPlanStyle != null &&
-              gblSettings.seatPlanStyle.contains('W')) {
+          if ( gblSettings.seatPlanStyle.contains('W')) {
             switch (seat!.sCellDescription) {
               case 'SeatPlanWidthMarker':
-                seatTxt = 'w';
+                //seatTxt = 'w';
                 indexColumn < 3 ? leftWing = 'w' : rightWing = 'w';
                 break;
               case 'Wing Start':
-                seatTxt = 's';
+                //seatTxt = 's';
                 indexColumn < 3 ? leftWing = 's' : rightWing = 's';
-                pathWidget = getWingPath(context, 's', 50, 45, indexColumn < 3);
+                //pathWidget = getWingPath(context, 's', 50, 45, indexColumn < 3);
                 break;
               case 'Wing Middle':
-                pathWidget = getWingPath(context, 'm', 50, 45, indexColumn < 3);
+                ///pathWidget = getWingPath(context, 'm', 50, 45, indexColumn < 3);
                 indexColumn < 3 ? leftWing = 'm' : rightWing = 'm';
-                seatTxt = 'm';
+                //seatTxt = 'm';
                 break;
               case 'Wing End':
-                pathWidget = getWingPath(context, 'e', 50, 45, indexColumn < 3);
+                //pathWidget = getWingPath(context, 'e', 50, 45, indexColumn < 3);
                 indexColumn < 3 ? leftWing = 'e' : rightWing = 'e';
-                seatTxt = 'e';
+                //seatTxt = 'e';
                 break;
               case 'DoorDown':
-                pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                //pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
                 indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
-                seatTxt = 'd';
+                //seatTxt = 'd';
                 break;
               case 'DoorUp':
-                pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
+                //pathWidget = getWingPath(context, 'd', 50, 45, indexColumn < 3);
                 indexColumn < 3 ? leftWing = 'd' : rightWing = 'd';
-                seatTxt = 'u';
+                //seatTxt = 'u';
                 break;
             }
           }
@@ -760,9 +750,9 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             ),
           ));*/
         } else
-        if ((seat!.sRLOC != null && seat!.sRLOC != '' && seat!.sRLOC != rloc) ||
+        if ((seat!.sRLOC != '' && seat!.sRLOC != rloc) ||
             (seat!.sSeatID != '0' &&
-                (seat!.sRLOC == null || seat!.sRLOC == '')) ||
+                (seat!.sRLOC == '')) ||
             (seat!.sCellDescription == 'Block Seat') ||
             ((seat!.sCabinClass != widget.cabin) && widget.cabin != '')) {
           rowHasSeats = true;
@@ -800,7 +790,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             selectableSeat = false;
           }
           bool selected = false;
-          if (gblSelectedSeats != null && seat != null && seat!.sCode != '' &&
+          if (seat != null && seat!.sCode != '' &&
               gblSelectedSeats.contains(seat!.sCode)) {
             selected = true;
           }
@@ -830,7 +820,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       }
       if (gblLogProducts) logit('price $currentSeatPrice r=$indexRow');
       if (widget.displaySeatPrices &&
-          currentSeatPrice != null &&
           currentSeatPrice != "0") {
         //add row price
         if (previousSeatPrice != currentSeatPrice) {
@@ -1107,6 +1096,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   }
 
 
+/*
   Widget _getSeatPriceInfo() {
     return Container(child: Row(
       //crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1123,6 +1113,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         //     VBodyText('price', color: Colors.white,),
       ],));
   }
+*/
 
   Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat,SeatSize seatSize) {
     return Padding(
@@ -1131,7 +1122,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           child: getSeat2(seat, selected, seatSize),
           onTap: () {
             if (selectableSeat && !gblSelectedSeats.contains(seat!.sCode)) {
-              selectPaxForSeat(context, seat!);
+              selectPaxForSeat(context, seat);
             }
           },
         ));
@@ -1142,7 +1133,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     if (seat == null) {
       return Container();
     }
-    switch (seat!.sCellDescription) {
+    switch (seat.sCellDescription) {
       case 'Occupied':
         seatType = SeatType.occupied;
         break;
@@ -1152,19 +1143,19 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       case 'EmergencySeat':
         seatType = SeatType.emergency;
         if (selected) seatType = SeatType.selected;
-        if( seat!.sRLOC != '' ) SeatType.selected;
+        if( seat.sRLOC != '' ) SeatType.selected;
         break;
       case 'Seat':
-        if (seat!.noInfantSeat) {
+        if (seat.noInfantSeat) {
           seatType = SeatType.availableRestricted;
         } else {
           seatType = SeatType.available;
         }
         if (selected) seatType = SeatType.selected;
-        if( seat!.sRLOC != '' ) SeatType.selected;
+        if( seat.sRLOC != '' ) SeatType.selected;
         break;
       default:
-        if (seat!.noInfantSeat) {
+        if (seat.noInfantSeat) {
           seatType = SeatType.availableRestricted;
         } else {
           seatType = SeatType.available;
@@ -1172,17 +1163,27 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         if (selected) seatType = SeatType.selected;
         break;
     }
-    if( seat!.sRLOC != '' ){
+    String code = seat.sCode;
+    if( seatType == SeatType.occupied){
+      // check
+    }
+    if( seat.sRLOC != '' ){
       seatType = SeatType.occupied;
+      if( seat.sRLOC == gblCurrentRloc) {
+        code = gblPnrModel!.getOccupant(code);
+      }
     }
 
-    String code = seat!.sCode;
+
+    //widget.paxlist.getOccupant(code,seat, String rloc);
+    //getOccupant(String code, Seat? seat, String rloc){
+
     if( noCode == false) {
 
       String oCode = occupant;
       if( oCode != '' ) code = oCode;
     }
-      if( code != '' &&  code != seat!.sCode){
+      if( code != '' &&  code != seat.sCode){
         // occupied seat
         seatType = SeatType.selected;
       }

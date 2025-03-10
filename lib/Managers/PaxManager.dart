@@ -34,7 +34,7 @@ class PaxManager {
     passengerDetail.firstName = firstName;
     passengerDetail.lastName = lastName;
     passengerDetail.phonenumber = phone;
-    if( dOB != null &&  dOB != ''){
+    if(dOB != ''){
       passengerDetail.dateOfBirth = DateTime.parse(dOB);
     } else if( dateOfBirth != null ){
       passengerDetail.dateOfBirth = dateOfBirth;
@@ -44,7 +44,7 @@ class PaxManager {
 
       if( gblPassengerDetail!.country.length <= 3){
         Countrylist list = await getCountrylist();
-        if( list != null && list.countries != null  ) {
+        if( list.countries != null  ) {
           list.countries!.forEach((element) {
             if( element.alpha2code ==gblPassengerDetail!.country ){
               gblPassengerDetail!.country = element.enShortName;
@@ -65,7 +65,7 @@ class PaxManager {
     UserProfileRecord _profileRecord = new UserProfileRecord(
         name: 'PAX1',
         value: json
-            .encode(passengerDetail!.toJson())
+            .encode(passengerDetail.toJson())
             .replaceAll('"', "'"));
 
     _userProfileRecordList.add(_profileRecord);
@@ -87,7 +87,7 @@ class PaxManager {
     gblPassengerDetail!.lastName = fqtvLoginReply.surname;
 //    widget.passengerDetail!.firstName = fqtvLoginReply.firstname;
 //    widget.passengerDetail!.lastName = fqtvLoginReply.surname;
-    if( fqtvLoginReply.dOB != null &&  fqtvLoginReply.dOB != ''){
+    if( fqtvLoginReply.dOB != ''){
       gblPassengerDetail!.dateOfBirth = DateTime.parse(fqtvLoginReply.dOB);
 //      widget.passengerDetail!.dateOfBirth = DateTime.parse(fqtvLoginReply.dOB);
     }
@@ -96,7 +96,7 @@ class PaxManager {
 
       if( gblPassengerDetail!.country.length <= 3){
         Countrylist list = await getCountrylist();
-        if( list != null && list.countries != null  ) {
+        if( list.countries != null  ) {
           list.countries!.forEach((element) {
             if( element.alpha2code ==gblPassengerDetail!.country ){
               gblPassengerDetail!.country = element.enShortName;
@@ -108,8 +108,7 @@ class PaxManager {
     }
 
     gblPassengerDetail!.phonenumber = fqtvLoginReply.phoneMobile;
-    if (gblPassengerDetail!.phonenumber == null ||
-        gblPassengerDetail!.phonenumber.isEmpty) {
+    if (gblPassengerDetail!.phonenumber.isEmpty) {
       gblPassengerDetail!.phonenumber = fqtvLoginReply.phoneHome;
     }
     gblFqtvBalance = int.parse(fqtvLoginReply.balance);

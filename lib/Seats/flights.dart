@@ -11,18 +11,16 @@ int outboundOrReturn = 1;
 
 
 Widget getFlightSelector(BuildContext context, void Function() onChange){
-  String out = '';
   String outLong = '';
-  String back = '';
   int noFlts = 0;
-  if( gblPnrModel!= null && gblPnrModel!.pNR.itinerary != null && gblPnrModel!.pNR.itinerary.itin.length > 0){
+  if( gblPnrModel!= null &&  gblPnrModel!.pNR.itinerary.itin.length > 0){
     Itin flt = gblPnrModel!.pNR.itinerary.itin[0];
     noFlts = gblPnrModel!.pNR.itinerary.itin.length;
-    out = '${flt.depart} to ${flt.arrive}';
+    //out = '${flt.depart} to ${flt.arrive}';
     outLong = '${flt.airID} ${flt.fltNo} ${flt.depart} to ${flt.arrive} ${getIntlDate('EEE dd MMM', DateTime.parse(flt.depDate + ' ' + flt.depTime))}';
     if( gblPnrModel!.pNR.itinerary.itin.length > 1){
       flt = gblPnrModel!.pNR.itinerary.itin[1];
-      back = '${flt.depart} to ${flt.arrive}';
+      //back = '${flt.depart} to ${flt.arrive}';
     }
   }
 
@@ -68,7 +66,7 @@ Widget getFlightSelector(BuildContext context, void Function() onChange){
               // item in the selected set.
               //calendarView = newSelection.first;
               //    });
-              int ab = 1;
+
               gblLoadSeatState = VrsCmdState.loading;
               gblCurJourney = newSelection.first -1;
               outboundOrReturn = newSelection.first;

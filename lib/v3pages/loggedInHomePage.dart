@@ -124,7 +124,7 @@ class LoggedInHomePageState extends State<LoggedInHomePage>{
 
 }
 
-Widget getUpcoming(BuildContext context, void Function() doCallback) {
+Widget getUpcoming(BuildContext context,CardTemplate card, void Function() doCallback) {
   if( gblTrips == null || gblTrips!.trips == null || gblTrips!.trips!.length == 0){
     return VTitleText('No upcoming trips', translate: true,);
 
@@ -132,19 +132,24 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
   String destin = gblTrips!.trips!.first.destin; //cityCodetoAirport(gblTrips!.trips!.first.destin);
   //String destin = cityCodetoAirport(gblTrips!.trips!.first.depart);
   List<Widget> list = [];
+  String departs = '';
+  String lands = '';
 
   if( gblNextPnr != null ){
-      list.add(Row( children: [VHeadlineText('Booking Reference: ${gblNextPnr!.pNR.rLOC}', size: TextSize.small,)]));
-      list.add(Row( children: [VHeadlineText('${gblTrips!.trips!.first.fltNo}', size: TextSize.small,)]));
+
+      list.add(Row( children: [VHeadlineText('Booking Reference: ${gblNextPnr!.pNR.rLOC}', color: card.textClr, size: TextSize.small,)]));
+      list.add(Row( children: [VHeadlineText('${gblTrips!.trips!.first.fltNo}', color: card.textClr, size: TextSize.small,)]));
+      departs = gblNextPnr!.pNR.itinerary.itin.first.depTime.substring(0, 5);
+      lands = gblNextPnr!.pNR.itinerary.itin.first.arrTime.substring(0, 5);
   }
   // Booking reference
 
   list.add(
     Row(
       children: [
-        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.depart), size: TextSize.small, ),
-        Icon(Icons.flight_takeoff, size: 25,),
-        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.destin), size: TextSize.small)
+        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.depart) + ' ' + departs, color: card.textClr, size: TextSize.small, ),
+        Icon(Icons.flight_takeoff, size: 25, color: card.textClr,),
+        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.destin )+ ' ' + lands, color: card.textClr, size: TextSize.small)
       ]
     ));
 
@@ -152,23 +157,12 @@ Widget getUpcoming(BuildContext context, void Function() doCallback) {
   return
      Container(
        padding: EdgeInsets.all(10),
+  color: Colors.transparent,
   width: MediaQuery.of(context).size.width,
-/*
-         decoration: BoxDecoration(
-           image: ImageManager.getNetworkImage('${gblSettings.gblServerFiles}/cityImages/$destin.png'),
-         ),
-*/
 
-  // height: 400,
   child:Column(
   crossAxisAlignment: CrossAxisAlignment.stretch,  // add this
   children: <Widget>[
-/*
-  Image.network('${gblSettings.gblServerFiles}/cityImages/$destin.png',
-    fit:BoxFit.fill
-
-  ),
-*/
     Column(
         children: list,
       ),

@@ -13,7 +13,7 @@ Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData? 
   double w = MediaQuery.of(context).size.width -30 ;
   TextStyle textStyle = TextStyle(color: gblSystemColors.textEditIconColor, fontSize: 14);
   if( titleText != null && titleText){
-    textStyle = TextStyle( fontSize: 18, fontWeight: FontWeight.bold);
+    textStyle = TextStyle( fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey);
   }
 
   if( padding == null ){

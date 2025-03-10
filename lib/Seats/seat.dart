@@ -51,7 +51,7 @@ Widget getSeatKey2() {
                 childrenPadding: EdgeInsets.all(0),
                 initiallyExpanded: gblSettings.wantSeatKeyExpanded,
                 tilePadding: EdgeInsets.fromLTRB(10, -10, 10, 0),
-                title: VTitleText('What it all means...', color: Colors.white, translate: true, size: TextSize.large,),
+                title: VTitleText('Seat Key', color: Colors.white, translate: true, size: TextSize.large,),
                 children: <Widget>[
                   Container(
                       decoration: BoxDecoration(

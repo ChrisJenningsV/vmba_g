@@ -101,14 +101,16 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
 
     }
     Widget body = Text('Loading...');
+    Color? backColor = Colors.transparent;
     if( homePage != null ){
       body = getCustomPageBody(context, homePage as CustomPage , doCallback);
+      if(homePage.wantBackground == false ) backColor = null;
     }
 
     return Scaffold(
         extendBodyBehindAppBar: true,
         extendBody: true,
-        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0,
+        appBar: AppBar(backgroundColor: backColor, elevation: 0,
         ),
         endDrawer: new DrawerMenu(),
         bottomNavigationBar: getV3BottomNav(context),
@@ -228,7 +230,7 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
               break;
             case 'UPCOMING':
               list.add(v3ExpanderCard(
-                  context, card, getUpcoming(context, doCallback), ts: ts));
+                  context, card, getUpcoming(context,card, doCallback), ts: ts));
               break;
             case 'FQTVLOGIN':
               list.add(v3ExpanderCard(
@@ -454,7 +456,7 @@ Widget getPhotoList(BuildContext context, List<CardTemplate>? cards, void Functi
 
   Widget getSlide(BuildContext context, CardTemplate card, bool topLevel) {
     if (card.title!.color == null) card.title!.color = Colors.white;
-
+ 
     if( card.format != '' && card.format.toLowerCase() == 'fill'){
       return InkWell(
           onTap: () {
@@ -503,6 +505,7 @@ Widget getPhotoList(BuildContext context, List<CardTemplate>? cards, void Functi
         children: [
           Padding(padding: EdgeInsets.only(top: 125)),
           Container(
+              padding: EdgeInsets.all(5),
           color: Colors.white,
                 child:Row(
                     children: [Text(card.title!.text, style: card.title!.getStyle())])),
@@ -533,14 +536,14 @@ Widget getPhotoList(BuildContext context, List<CardTemplate>? cards, void Functi
           }
         },
         child: Container(
-          height: card.height == 0 ? 170 : card.height,
+          height: card.height == 0 ? 185 : card.height,
           width: (topLevel) ? null : 170,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             border: Border.all(
-              width: 2.0,
+              width: 0.0,
               // assign the color to the border color
-              color: Colors.red,
+              //color: Colors.red,
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -556,6 +559,7 @@ Widget getPhotoList(BuildContext context, List<CardTemplate>? cards, void Functi
           alignment: Alignment.bottomCenter,
           child:
               Container(
+
                 alignment: Alignment.bottomCenter,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.transparent,

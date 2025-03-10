@@ -15,8 +15,7 @@ import '../../v3pages/controls/V3Constants.dart';
 import '../helper.dart';
 import 'package:vmba/components/showDialog.dart';
 
-
-
+double? imageWidth;
 //class CustomWidget {
 PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum,
     {Widget? leading,
@@ -35,7 +34,6 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
 //    logit( 'bottom on page $title');
   }
   bool wantOutline = false;
-
 
   double height = 80;
   if( gblSettings.wantTallPageImage ) {
@@ -116,21 +114,23 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
     wantOutline = true;
   }
 
-  if( gblSettings.wantLeftLogo && (leading == null || leading == false)) {
+  if( (gblSettings.wantLeftLogo || gblSettings.imageBackgroundPages.contains(gblCurPage) )&& (leading == null || leading == false)) {
 
     return V3AppBar(pageEnum,
       flexibleSpace: flexibleSpace,
       centerTitle: gblCentreTitle,
+      title: getText(title),
       toolbarHeight: toolbarHeight,
       elevation: elevalion,
       leading: getAppBarLeft(),
+      leadngWidth: imageWidth,
       //backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
-      title: new TrText(title,
+      /*title: new TrText(title,
           style: TextStyle(
               color: gblSystemColors.headerTextColor),
-          variety: 'title'),
+          variety: 'title'),*/
       actions: actions,
       bottom: bottom,
     );
@@ -430,7 +430,7 @@ getPaxCounts(NewBooking newBooking, List<Widget> listMain, Color txtCol, TextSty
 
 Widget getAppBarLeft() {
   Widget leading = Text('');
-  if(gblSettings.wantLeftLogo  ) {
+  if(gblSettings.wantLeftLogo || gblSettings.titleImagePages.contains(gblCurPage) ) {
     if( gblSettings.aircode == 'SI') {
       leading = Padding(
           padding: EdgeInsets.only(left: 10.0),
@@ -440,17 +440,22 @@ Widget getAppBarLeft() {
               colorBlendMode: BlendMode.modulate)
       );
     } else {
-      leading = Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: Image.asset(
-              'lib/assets/$gblAppTitle/images/appBarLeft.png')
-      );
+      leading = Image.asset('lib/assets/$gblAppTitle/images/appBarLeft.png',
+              alignment: Alignment.topLeft,);
+      imageWidth = 300;
     }
   }
   return leading;
 }
 
 Widget getText(String txt) {
+  return Text(translate(txt), textScaler: TextScaler.linear(1.25),
+    style: TextStyle(
+      color: Colors.red , //gblSystemColors.headerTextColor,
+    ),
+  );
+
+
 return Stack(
   children: <Widget>[
     // Stroked text as border.
@@ -469,7 +474,7 @@ return Stack(
       translate(txt),
       textScaleFactor: 1.25,
       style: TextStyle(
-        color: Colors.white,
+        color: gblSystemColors.headerTextColor,
       ),
     ),
   ],

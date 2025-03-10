@@ -1,10 +1,8 @@
 
 import 'package:flutter/material.dart';
-import '../components/showDialog.dart';
 import '../data/globals.dart';
 import '../data/models/seatplan.dart';
 import '../utilities/helper.dart';
-import '../v3pages/v3Theme.dart';
 import 'plan.dart';
 
 // seat layouts / seat plans found at https://www.aerolopa.com/lm-e45
@@ -15,7 +13,7 @@ double seatWidth = 40;
 double vertSpace = 5;
 double horzSpace = 5;
 double aSpace = 10;
-double seatsTop = 240;
+double seatsTop = 40;
 double seatsLeft = 80;
 double pricingHeight = 30;
 double pricingOffset = 0;
@@ -43,7 +41,7 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
   List<Seat> seats = [];
 
 
-  if( gblSeatPlanConfig != null ) {
+  if( gblSettings.wantSeatPlanImages && gblSeatPlanConfig != null  ) {
     seatsTop = gblSeatPlanConfig!.top;
     seatsLeft = gblSeatPlanConfig!.left;
     seatHeight = gblSeatPlanConfig!.seatHeight;
@@ -57,36 +55,66 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
     cabinWidth = gblSeatPlanConfig!.cabinWidth;
 
     logit('set custom seat plan config [$seatsTop]' );
+  } else {
+    gblSeatPlanDef = gblSeatplan!.getPlanDataTable();
+    int seatsPlusSpace = gblSeatPlanDef!.maxSeatsPerRow ;
+    double width = MediaQuery.sizeOf(context).width;
+    seatsTop = 30;
+    seatHeight = 60;
+    seatWidth = 50;
+
+    if( seatsPlusSpace < 6) {
+      // narrow body
+      //  space as
+      //  x |side| space seat(x) space seat(x) Aisel seat(x) space seat(x) space |side| x
+      // calc seat width
+      double swidth = (width - horzSpace * (gblSeatPlanDef!.maxSeatsPerRow +1)) /
+          (gblSeatPlanDef!.maxSeatsPerRow + 3);
+      seatWidth = swidth;
+      seatsLeft = swidth;
+      cabinWidth = (gblSeatPlanDef!.maxSeatsPerRow + 1) * swidth +
+            gblSeatPlanDef!.maxSeatsPerRow * horzSpace;
+    } else {
+    }
+    gblSeatPlanDef!.seatWidth = seatWidth;
+    gblSeatPlanDef!.seatHeight = seatHeight;
   }
 
   // Existing Image Block
   bool iLoaded = true;
   String msg = '';
-  Image? floorImg = getNetFloorPlan('${gblSettings.gblServerFiles}/SeatPlans/${gblSeatplan!.seats.seatsFlt.sRef}.png');
-  if(  netImgLoaded == false ){
-    // get default image
-    floorImg = Image.asset('lib/assets/images/floor2.png');
+  if(gblSettings.wantSeatPlanImages) {
+    Image? floorImg = getNetFloorPlan(
+        '${gblSettings.gblServerFiles}/SeatPlans/${gblSeatplan!.seats.seatsFlt
+            .sRef}.png');
+    if (netImgLoaded == false) {
+      // get default image
+      floorImg = Image.asset('lib/assets/images/floor2.png');
+    }
+    list.add(floorImg);
+
+    if (layoutMode) {
+      floorImg.image.resolve(ImageConfiguration()).addListener(
+        ImageStreamListener(
+              (ImageInfo image, bool synchronousCall) {
+            var myImage = image.image;
+            Size size = Size(
+                myImage.width.toDouble(), myImage.height.toDouble());
+            logit('img: w: ${size.width} h: ${size.height}');
+            //completer.complete(size);
+          },
+        ),
+      );
+      // add grid
+      list.add(CustomPaint(
+        painter: GridPainter(MediaQuery.sizeOf(context)),
+      ));
+    }
+  } else {
+    // dummy floor
+    Image floorImg = Image.asset('lib/assets/images/dummyfloor.png');
+    list.add(floorImg);
   }
-  list.add(floorImg);
-
-  if( layoutMode){
-    floorImg.image.resolve(ImageConfiguration()).addListener(
-      ImageStreamListener(
-            (ImageInfo image, bool synchronousCall) {
-          var myImage = image.image;
-          Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
-          logit('img: w: ${size.width} h: ${size.height}');
-          //completer.complete(size);
-        },
-      ),
-    );
-    // add grid
-    list.add(CustomPaint(
-      painter: GridPainter(MediaQuery.sizeOf(context)),
-    ));
-
-  }
-
   // dump
   if( gblSeatPlanDef != null ){
     gblSeatPlanDef!.dump();
@@ -121,7 +149,6 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
         currentSeatPrice = '0';
         bool rowHasSeats = false;
         seats.forEach((element) {
-          if (element != null && element.sScprice != null) {
             if (double.parse(element.sScprice) >
                 double.parse(currentSeatPrice)) {
               currentSeatPrice = element.sScprice;
@@ -130,10 +157,9 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
 
               rowHasSeats = true;
             }
-          }
         });
 
-        if (rowHasSeats &&  currentSeatPrice != null && currentSeatPrice != "0") {
+        if (rowHasSeats &&  currentSeatPrice != '' && currentSeatPrice != "0") {
           //add row price
           if (previousSeatPrice != currentSeatPrice) {
             getPricing(list, indexRow);
@@ -142,13 +168,13 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
         }
 
         if (seat != null && (seat!.isSeat())) {
-          //logit('s ${seat!.sCode} t:${seatsTop + (indexRow-3) * seatHeight + vertSpace}');
+          logit('s ${seat!.sCode} t:${seatsTop + (indexRow-3) * seatHeight + vertSpace}');
           bool selected = false;
           bool selectableSeat = true;
           if (gblSelectedSeats.contains(seat!.sCode)) {
             selectableSeat = false;
           }
-          if (gblSelectedSeats != null && seat != null && seat!.sCode != '' &&
+          if (seat != null && seat!.sCode != '' &&
               gblSelectedSeats.contains(seat!.sCode)) {
             selected = true;
           }
@@ -268,7 +294,6 @@ Image getNetFloorPlan(String file ){
         StackTrace? stackTrace) {
       logit('Cannot load image ${gblSeatplan!.seats.seatsFlt.sRef}.png');
       netImgLoaded = false;
-      String msg = 'Cannot load image ${gblSeatplan!.seats.seatsFlt.sRef}.png';
       return  Image.asset('lib/assets/images/floor2.png');
       //return Text(msg, style: TextStyle(color: Colors.red));
     },// floor2.png',

@@ -76,7 +76,7 @@ String gblDeviceId ='';
 String gblCurPage ='';
 String gblUndoCommand ='';
 String gblBookSeatCmd = '';
-String gblPageName = '';
+
 String gblValidationEmail = '';
 int gblValidationPinTries = 0;
 int gblValidationEmailTries = 0;
