@@ -127,10 +127,6 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
       //backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
           color: gblSystemColors.headerTextColor),
-      /*title: new TrText(title,
-          style: TextStyle(
-              color: gblSystemColors.headerTextColor),
-          variety: 'title'),*/
       actions: actions,
       bottom: bottom,
     );

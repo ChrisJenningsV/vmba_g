@@ -48,6 +48,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
   void initState() {
     super.initState();
 
+    gblCurPage = 'DATEPICKER';
     _firstDate = DateTime.parse(
         DateFormat('y-MM-dd').format(DateTime.now()) + ' 00:00:00');
 
@@ -110,8 +111,8 @@ class _RangePickerPageState extends State<RangePickerPage> {
           .size
           .width;
 
-      Color backColor = Colors.grey.shade300;
-      if( gblV3Theme != null ) backColor = gblV3Theme!.calendar.backColor;
+      Color backColor = gblSystemColors.calBackColor as Color;
+      //if( gblV3Theme != null ) backColor = gblV3Theme!.calendar.backColor;
       return
         Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) ,

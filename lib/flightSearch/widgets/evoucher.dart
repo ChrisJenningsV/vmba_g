@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:vmba/data/globals.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
+import '../../functions/text.dart';
+import '../../utilities/helper.dart';
 
 class EVoucherWidget extends StatefulWidget {
   EVoucherWidget({Key key= const Key("evoucher_key"), required this.evoucherNo, required this.onChanged}) : super(key: key);
@@ -38,6 +41,32 @@ class _EVoucherWidgetState extends State<EVoucherWidget> {
       } else {
         fSize = 18.0;
       }
+      if( wantHomePageV3()) {
+        return  V2TextWidget(
+          maxLength: 50,
+          styleVer: gblSettings.styleVersion,
+          decoration: getDecoration(translate('Promo Code')),
+          controller: _textEditingController,
+/*
+          onFieldSubmitted: (value) {
+            onFieldSubmitted(value);
+          },
+*/
+          textInputAction: TextInputAction.done,
+          // keyboardType: TextInputType.text,
+/*
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z- ÆØøäöåÄÖÅæé]"))
+          ],
+*/
+          onChanged: (value) {
+            widget.onChanged(value!);
+          },
+        );
+
+      }
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

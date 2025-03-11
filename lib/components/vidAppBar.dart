@@ -137,6 +137,7 @@ Widget getLogoTitle(String txt, {Widget? icon=null} ){
   List<Widget> list = [];
   if( gblSettings.imageBackgroundPages.contains(gblCurPage)) {
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',
+        width: 150,
         alignment: Alignment.topLeft));
   }
   if( icon != null ){

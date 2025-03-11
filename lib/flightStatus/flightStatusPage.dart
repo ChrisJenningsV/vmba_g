@@ -102,6 +102,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
                 controller: _controller),
             ),
           ),
+/*
         actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
@@ -110,6 +111,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
               },
             )
           ],
+*/
         ),
         extendBodyBehindAppBar: false,
         //endDrawer: DrawerMenu(),

@@ -71,52 +71,10 @@ class ChooseFlight extends StatelessWidget {
   Widget classBands(context) {
     List <Widget> list = [];
 
- /*   if( wantPageV2()) {
-      String _currencySymbol = '';
-      if( gblSettings.wantCurrencySymbols == true ) {
-        _currencySymbol = (simpleCurrencySymbols[currency] ?? currency as String);
-      }
-
-      list.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          TrText(
-            //this.classband.cbdisplayname.toUpperCase()
-              this.classband?.cbdisplayname == 'Fly Flex Plus'
-                  ? 'Fly Flex +'
-                  : (this.classband?.cbdisplayname as String),
-              style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700)),
-          Padding(padding: EdgeInsets.all(5)),
-          Text(_currencySymbol + price.toStringAsFixed(2),
-              style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700)
-          ),
-
-        ],
-      ),);
-      list.add(new Row(children: [Padding(padding: EdgeInsets.all(5))]));
-    } else {*/
       list.add(inPageTitleText(this.classband?.cbdisplayname == 'Fly Flex Plus'
           ? 'Fly Flex +'
           : this.classband?.cbdisplayname as String));
 
-/*
-      list.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          TrText(
-            //this.classband.cbdisplayname.toUpperCase()
-              (this.classband?.cbdisplayname == 'Fly Flex Plus'
-                  ? 'Fly Flex +'
-                  : this.classband?.cbdisplayname as String),
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700))
-        ],
-      ),);
-   // }
-    list.add(V3Divider());
-*/
 
     if( gblSettings.wantClassBandImages) {
       //list.add( Image( image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/${this.classband?.cbdisplayname}.png')));
@@ -132,35 +90,6 @@ class ChooseFlight extends StatelessWidget {
     list.add( new Padding(padding: EdgeInsets.only(bottom: 15.0),    ));
     list.add(classbandText(classband!));
 
-    if( wantPageV2()){
-      return Container(
-
-        decoration: BoxDecoration(
-            border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
-            borderRadius: BorderRadius.all(
-                Radius.circular(15.0)),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 3,
-                blurRadius: 3,
-                offset: Offset(0, 4), // changes position of shadow
-              ),]
-
-        ),
-
-        margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 10, right: 10),
-        padding: EdgeInsets.only(
-            left: 5, right: 5, bottom: 8.0, top: 8.0),
-        child: Column(
-            children: [ Flexible(child: ListView(
-              padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 55),
-              children: list,)
-            )]
-        ),
-      );
-    }
     // Pass the text down to another widget
     return ListView(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 55),

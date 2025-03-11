@@ -1,8 +1,11 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vmba/components/vidAppBar.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/dialogs/smartDropDown.dart';
 
@@ -40,6 +43,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
   initState() {
     super.initState();
     formKey = new GlobalKey<FormState>();
+    commonPageInit('DIALOGPAGE');
 
     if( gblCurDialog! != null ) {
       gblCurDialog!.fields.forEach((f) {
@@ -50,7 +54,6 @@ class _smartDialogPageState extends State<smartDialogPage> {
   }
   @override
   Widget build(BuildContext context) {
-  Color titleBackClr = gblSystemColors.dialogHeaderColor as Color;
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   double? width;
   gblActionBtnDisabled = false;
@@ -73,12 +76,39 @@ class _smartDialogPageState extends State<smartDialogPage> {
       floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
           ? wrapFootField(context, gblCurDialog!,gblCurDialog!.pageFoot.first, (){}) : null ,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
-      appBar:  appBar(context, '', PageEnum.summary),
-        endDrawer: DrawerMenu(),
+      appBar:
+        vidAppBar(titleText: '',backgroundColor: v2PageBackgroundColor(),),
+        //appBar(context, '', PageEnum.summary, backgroundColor: Colors.transparent),
+      endDrawer: DrawerMenu(),
       backgroundColor: v2PageBackgroundColor(),
-        body:
-        Padding(padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-        child: Column (
+        body: _body()
+
+    );
+
+  }
+
+
+Widget _body() {
+  Color titleBackClr = gblSystemColors.dialogHeaderColor as Color;
+  Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
+  if (gblSettings.pageImageMap != null && gblSettings.pageImageMap != '') {
+    Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
+    if (pageMap['FQTV'] != null) {
+      String pageImage = pageMap['FQTV'];
+
+      if (pageImage != null && pageImage.isNotEmpty) {
+        NetworkImage backgroundImage = NetworkImage(
+            '${gblSettings.gblServerFiles}/pageImages/$pageImage.png');
+        flexibleSpace = Image(
+          image:
+          backgroundImage,
+          fit: BoxFit.cover,);
+      }
+    }
+  }
+
+    return Padding(padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+        child: Column(
             children: [
               flexibleSpace,
               Card(
@@ -90,7 +120,9 @@ class _smartDialogPageState extends State<smartDialogPage> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: titleBackClr,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),)),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              topRight: Radius.circular(10.0),)),
                         padding: EdgeInsets.only(left: 10, top: 0, bottom: 0),
                         child:
                         Row(
@@ -99,15 +131,21 @@ class _smartDialogPageState extends State<smartDialogPage> {
                               Padding(padding: EdgeInsets.all(20)),
                               Text(gblCurDialog!.caption,
                                 textScaler: TextScaler.linear(1.25),
-                                style: TextStyle(color: gblSystemColors.dialogHeaderTextColor),),
-                              IconButton(onPressed: () => Navigator.pop(context),
+                                style: TextStyle(color: gblSystemColors
+                                    .dialogHeaderTextColor),),
+                              IconButton(
+                                  onPressed: () => Navigator.pop(context),
                                   icon: Stack(
                                     children: [
-                                      Icon(Icons.circle_outlined, color: Colors.white, size: 34,),
-                                      Padding( padding: EdgeInsets.only(left: 5, top: 5), child: Icon(Icons.close, color: Colors.white,)),
+                                      Icon(Icons.circle_outlined,
+                                        color: Colors.white, size: 34,),
+                                      Padding(padding: EdgeInsets.only(
+                                          left: 5, top: 5),
+                                          child: Icon(
+                                            Icons.close, color: Colors.white,)),
                                     ],
                                   ))
-                            ] )
+                            ])
                     ),
                     widget.content as Widget,
                   ],
@@ -116,12 +154,10 @@ class _smartDialogPageState extends State<smartDialogPage> {
                 //actions: <Widget>[)    ]
               ),
             ])
-        )
     );
-
   }
-
 }
+
 
 void showSmartDialog( BuildContext context, Widget? content, void Function() doUpdate){
   Color titleBackClr = gblSystemColors.dialogHeaderColor as Color;

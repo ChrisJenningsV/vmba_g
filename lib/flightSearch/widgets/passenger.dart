@@ -11,6 +11,7 @@ import 'package:vmba/v3pages/v3Theme.dart';
 import '../../Helpers/settingsHelper.dart';
 import '../../Helpers/stringHelpers.dart';
 import '../../components/pageStyleV2.dart';
+import '../../functions/text.dart';
 
 class PassengerWidget extends StatefulWidget {
   PassengerWidget({Key key= const Key("paxwi_key"), this.systemColors, this.passengers, this.onChanged})
@@ -207,11 +208,11 @@ class _PassengerWidgetState extends State<PassengerWidget> {
         Expanded(flex: 6, child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              v2SeatchValueText(pri.typeName),
+              v2SearchValueText(pri.typeName),
               Text(pri.description)
             ])),
         //Expanded(flex: 2, child: Icon(Icons.chevron_right, size: 30,))
-        Expanded(flex: 1, child: v2SeatchValueText(pri.isMoreButton ? '' : pri.count.toString())),
+        Expanded(flex: 1, child: v2SearchValueText(pri.isMoreButton ? '' : pri.count.toString())),
         pri.isMoreButton ?
           Expanded(flex: 2, child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -231,40 +232,6 @@ class _PassengerWidgetState extends State<PassengerWidget> {
 
 
   Widget _getOtherPax() {
-    if( wantPageV2()) {
-      return v2BorderBox(context,  ' ' + translate('Other Passengers'),
-        GestureDetector(
-        onTap: () {
-        //  _selectedDate(context);
-        _navigateToNewScreen(context);
-        },
-        child: Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 12, 0, 0),
-        child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-        Expanded(
-        child: (infants + children + youths + seniors + students + teachers) == 0
-        ? TrText("Select",
-        style: new TextStyle(
-        fontWeight: FontWeight.w300,
-        fontSize: 20.0,
-        color: Colors.grey))
-            : Text(translateNo((infants + children + youths + seniors + students + teachers ).toString()),
-        style: new TextStyle(
-        //fontWeight: FontWeight.w300,
-        fontSize: 20.0,
-        //color: Colors.grey
-        )),
-        ),
-        ],
-        ),
-        ),
-        ),
-        height: 70
-      );
-
-    } else {
       return  Container(
         child:
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -301,7 +268,6 @@ class _PassengerWidgetState extends State<PassengerWidget> {
           ),
         ]),
       );
-    }
   }
 
   Widget _getAdults() {
@@ -315,10 +281,10 @@ class _PassengerWidgetState extends State<PassengerWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                v2SeatchValueText('Adult'),
+                v2SearchValueText('Adult'),
                 Text('16 years and above')
               ],)),
-              Expanded( flex: 1, child: v2SeatchValueText(adults.toString())),
+              Expanded( flex: 1, child: v2SearchValueText(adults.toString())),
               Row(
                 mainAxisSize: MainAxisSize.min,
                   children: [

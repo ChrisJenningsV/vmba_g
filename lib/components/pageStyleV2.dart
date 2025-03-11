@@ -57,20 +57,20 @@ Widget v2BorderBox(BuildContext context, String label, Widget child, {IconData? 
 
 EdgeInsets containerMargins({String location = ''}){
   if( location == 'day'){
-    return wantPageV2() ? EdgeInsets.only( left: 3.0, right: 3.0, top: 5.0) : EdgeInsets.all(0);
+    return EdgeInsets.all(0);
   }
   if( location == 'top'){
-    return wantPageV2() ? EdgeInsets.only( left: 10.0, right: 10.0, top: 10.0) : EdgeInsets.all(0);
+    return EdgeInsets.all(0);
   }
   if( location == 'middle'){
-    return wantPageV2() ? EdgeInsets.only( left: 10.0, right: 10.0) : EdgeInsets.all(0);
+    return EdgeInsets.all(0);
   }
 
-  return wantPageV2() ? EdgeInsets.all(10.0) : EdgeInsets.all(0);
+  return EdgeInsets.all(0);
 }
 
 Decoration? containerDecoration({String location = ''}) {
-  return wantPageV2() ? v2ContainerDecoration(location: location) : null;
+  return  null;
 }
 
 Decoration v2ContainerDecoration({String location = ''})

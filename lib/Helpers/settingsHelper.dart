@@ -1,10 +1,5 @@
-
-
-
-
 import 'package:flutter/material.dart';
 
-import '../components/trText.dart';
 import '../data/globals.dart';
 
 void setLiveTest() {
@@ -66,18 +61,6 @@ EdgeInsets v2FormPadding(){
 
 Color v2LabelColor() {
   return Colors.grey;
-}
-
-Widget v2Label(String text) {
-  return TrText(text,
-      style: new TextStyle(
-          fontWeight: FontWeight.bold, fontSize: 15.0
-          ,color: wantHomePageV3() ? v2LabelColor() : null ));
-
-}
-
-Widget v2SeatchValueText(String text){
-  return Text( text,style: new TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold ));
 }
 
 

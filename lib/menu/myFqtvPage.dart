@@ -208,21 +208,6 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
 
       if( gblSettings.wantNewDialogs ) {
 
-       /* dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number')));
-        dialog.fields.add(new DialogFieldDef(field_type: 'space', caption: ''));
-        dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'action', caption: "Can't log in? ",
-            actionText: translate('Reset Password'),
-            action: 'FqtvReset'
-          ));
-
-
-        if( gblSettings.wantFqtvRegister ) {
-          dialog.foot.add(new DialogFieldDef(field_type: 'action', caption: '',
-              actionText: translate('Create a') + ' ${gblSettings.fqtvName} ' + translate('account >'),
-              action: 'FqtvRegister'
-            ));
-        }*/
         gblCurDialog = getDialogDefinition('FQTVLOGIN',sTitle );
 
         return smartDialogPage();

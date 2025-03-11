@@ -139,6 +139,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     EdgeInsets pad = EdgeInsets.all(0.0);
 
     if( gblSettings.homePageStyle == 'V3') {
+
       List<Widget> list = [];
 
       list.add(Padding(padding: EdgeInsets.all(5)));

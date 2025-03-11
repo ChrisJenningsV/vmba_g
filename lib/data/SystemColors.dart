@@ -30,6 +30,7 @@ class SystemColors {
    Color? calDepartColor;
    Color? calReturnColor;
    Color? calTodayColor;
+   Color? calBackColor;
    Color? calTodayTextColor;
    Color? progressBackColor;
    Color? progressTextColor;
@@ -105,6 +106,7 @@ class SystemColors {
     this.calDepartColor = Colors.green,
     this.calReturnColor = Colors.blue,
     this.calTodayColor = Colors.white,
+    this.calBackColor,
     this.calTodayTextColor = Colors.red,
     this.headerTextColor,
     this.statusBar =Brightness.light,
@@ -177,6 +179,6 @@ class SystemColors {
     if( backgroundColor == null ) backgroundColor = Colors.grey.shade400;
     if( dialogHeaderColor == null ) dialogHeaderColor = primaryHeaderColor;
     if( dialogHeaderTextColor == null ) dialogHeaderTextColor = headerTextColor;
-
+    if( calBackColor == null ) calBackColor = Colors.grey.shade300;
   }
 }

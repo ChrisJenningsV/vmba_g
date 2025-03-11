@@ -9,6 +9,7 @@ import 'package:vmba/calendar/flightPageUtils.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
+import '../../functions/text.dart';
 
 
 class JourneyDateWidget extends StatefulWidget {
@@ -112,7 +113,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                v2SeatchValueText(getIntlDate('E, dd MMM yy', _departingingDate),),
+                v2SearchValueText(getIntlDate('E, dd MMM yy', _departingingDate),),
                 Padding(padding: EdgeInsets.only(right: 10) ,child: Icon(Icons.calendar_month_outlined)),
               ]
             )),
@@ -121,7 +122,7 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
                   Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    v2SeatchValueText(_returningDate == null ? '' : getIntlDate('E, dd MMM yy', _returningDate as DateTime),),
+                    v2SearchValueText(_returningDate == null ? '' : getIntlDate('E, dd MMM yy', _returningDate as DateTime),),
                     Padding(padding: EdgeInsets.only(right: 10) ,child: _returningDate != null  ? Icon(Icons.calendar_month_outlined) : Container() ),
                   ])
 /*

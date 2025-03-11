@@ -61,6 +61,8 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
   initState() {
     super.initState();
     _displayProcessingIndicator = false;
+    gblError = '';
+    commonPageInit('FLIGHTSEARCH');
   }
 
   @override

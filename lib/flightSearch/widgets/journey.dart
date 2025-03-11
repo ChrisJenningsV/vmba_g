@@ -8,6 +8,7 @@ import 'package:vmba/components/trText.dart';
 
 import '../../Helpers/settingsHelper.dart';
 import '../../components/pageStyleV2.dart';
+import '../../functions/text.dart';
 import '../../utilities/helper.dart';
 
 class SelectedRoute {
@@ -195,7 +196,7 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
       Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            wantHomePageV3() ? v2SeatchValueText(translate(airportName)) :
+            wantHomePageV3() ? v2SearchValueText(translate(airportName)) :
             TrText(
                 translate(airportName),
                 noTrans: true,

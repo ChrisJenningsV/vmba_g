@@ -6,6 +6,7 @@ import 'package:vmba/datePickers/widgets/dayPicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
+import '../Managers/imageManager.dart';
 import '../components/vidButtons.dart';
 import '../v3pages/controls/V3AppBar.dart';
 import '../v3pages/controls/V3Constants.dart';
@@ -24,6 +25,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
   @override
   void initState() {
     super.initState();
+    gblCurPage = 'DATEPICKER';
 
     departureDate = widget.departureDate;
     gblDepartDate = departureDate;
@@ -60,7 +62,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
           ),
         ),
         body: gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar ?
-            wrapCal(
+        ImageManager.getBodyWithBackground( gblCurPage,wrapCal(
            DayPickerPage(
                 firstDate: DateTime.now(),
                 departureDate: widget.departureDate,
@@ -68,7 +70,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
                 onChanged: _handleDateChanged,
               ),
                 (){ setState(() {},);},
-                false, departureDate, null)
+                false, departureDate, null))
         : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

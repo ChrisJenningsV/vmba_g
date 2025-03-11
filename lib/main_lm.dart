@@ -48,6 +48,9 @@ void configLM() {
     seatPriceColor: Colors.blue,
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
+    calDepartColor: Colors.red,
+    calReturnColor: Colors.purple,
+    calBackColor: Colors.white,
 
     // new
       inputFillColor: Colors.grey.shade50,
@@ -93,7 +96,7 @@ void configLM() {
     wantStatusLine: true,
     wantFlightStatus: true,
     wantNews: false,
-    wantFopVouchers: true,
+    wantFopVouchers: false,
     wantHelpCentre: true,
     wantLocation: false,
     wantDarkSite: true,
@@ -108,7 +111,7 @@ void configLM() {
     homePageMessage: '',
 
     wantNewCalendar: true,
-    wantCalendarBigMonth: true,
+    wantCalendarBigMonth: false,
     seatPlanStyle: '', //'''WI',
 //    wantNewInstallPage: true,
 //    wantHomeUpcoming: true,
@@ -156,7 +159,7 @@ void configLM() {
   fqtvName: 'Clan',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',
-    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers"}',
+    pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTVlogin"}',
     wantClassBandImages: false,
     wantDangerousGoodsCheckin: true ,
     bpShowFastTrack: true,
@@ -168,7 +171,7 @@ void configLM() {
 
     adsTermsUrl: 'https://www.loganair.co.uk/customer-support/air-discount-scheme-resident-fare-card-terms-and-conditions/',
     bottomNavPages: 'HOME,FLIGHTSEARCH',
-    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
+    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,DIALOGPAGE',
     titleImagePages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
     passengerTypes: PassengerTypes(
   adults: true,

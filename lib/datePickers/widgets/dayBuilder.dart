@@ -7,6 +7,7 @@ import 'package:vmba/Helpers/settingsHelper.dart';
 
 import '../../components/trText.dart';
 import '../../data/globals.dart';
+import '../../functions/text.dart';
 import '../../utilities/helper.dart';
 
 
@@ -189,22 +190,7 @@ Widget wrapCal( Widget child, void Function() callback, bool isReturn, DateTime?
     Divider(color: Colors.grey, height: 2,),
     Padding(padding: EdgeInsets.all(10),),
     child,
-  // if test build, allow test of new theme
-/*
-  gblIsLive ? Container() :
-  Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: TextButton(
-  onLongPress: () async {
-  await loadNetTheme('theme.json');
-    callback();
-  },
-  child: Container(),
-  onPressed: () {},
-  ),
-  ),
-*/
-  ]
+   ]
   )
   )
   )
@@ -292,12 +278,15 @@ Widget getLabel(bool isReturn, DateTime? depDate,DateTime? retDate, ){
     }
   }
 
-  return Padding(
+  return Container(
+    color: Colors.white,
+    child:
+      Padding(
       padding: EdgeInsets.only(top: 10.0, left: 10, right: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: rowList   ,
     )
-  );
+  ));
 }
 

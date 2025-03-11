@@ -9,7 +9,7 @@ import '../../data/globals.dart';
 import '../Templates.dart';
 
 Widget v3ExpanderCard(BuildContext context, CardTemplate card,  Widget body,
-    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey, fontSize: 22), double topMargin = 0 }) {
+    { bool wantIcon = true,  TextStyle ts= const TextStyle(color: Colors.grey), double topMargin = 0 }) {
 
   Color titleColor = Colors.grey.shade200;
   Color bodyColor = Colors.grey.shade200;

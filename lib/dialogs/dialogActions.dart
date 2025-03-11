@@ -59,7 +59,7 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
     case 'DOFQTVLOGIN':
       String FqtvNo = gblCurDialog!.editingControllers[0].value.text;
       String FqtvPw = gblCurDialog!.editingControllers[1].value.text;
-      if( FqtvNo == 'AGENT' || FqtvNo == 'BSIA') {
+      if( FqtvPw == 'AGENT' || FqtvPw == 'BSIA') {
         navToSmartDialogHostPage(context, new FormParams(formName: 'AGENTLOGIN',
             formTitle: '${gblSettings.fqtvName} Reset Password'));
         return;

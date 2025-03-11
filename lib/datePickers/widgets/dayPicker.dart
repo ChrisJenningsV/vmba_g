@@ -122,8 +122,9 @@ class _DayPickerPageState extends State<DayPickerPage> {
       List<DateTime?> _singleDatePickerValueWithDefaultValue = [
         _selectedDate,
       ];
-      Color backColor = Colors.grey.shade300;
-      if( gblV3Theme != null ) backColor = gblV3Theme!.calendar.backColor;
+      Color backColor =gblSystemColors.calBackColor as Color;
+
+      //if( gblV3Theme != null ) backColor = gblV3Theme!.calendar.backColor;
       return
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) ,

@@ -1325,7 +1325,7 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
             doUpdate();
           //setState(() {});
         }), wantIcon: false,
-          topMargin: 70,
+          topMargin: 90,
 
         ));
 
@@ -1336,14 +1336,15 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
 
       CardTemplate card = new CardTemplate();
       card.title = CardText('', text: translate('Finish setting up my App'));
-      card.icon = Icons.settings;
+      //card.icon = Icons.settings;
       card.title!.backgroundColor = gblSystemColors.primaryButtonColor;
       card.title!.color = gblSystemColors.primaryButtonTextColor;
 
       return
           v3ExpanderCard(
               context, card, getFinishSetup(context, () {
-          }), wantIcon: false
+          }), wantIcon: false,
+              topMargin: 90,
           );
 
 

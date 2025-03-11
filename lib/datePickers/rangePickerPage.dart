@@ -5,6 +5,8 @@ import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/components/trText.dart';
+import '../Managers/imageManager.dart';
+import '../components/vidAppBar.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../v3pages/controls/V3AppBar.dart';
@@ -57,8 +59,8 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: V3AppBar(
-          PageEnum.travelDates,
+        appBar: vidAppBar(
+          //PageEnum.travelDates,
          // backgroundColor: gblSystemColors.primaryHeaderColor,
           automaticallyImplyLeading: false,
           actions: <Widget>[
@@ -67,21 +69,18 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
               onPressed: () => Navigator.pop(context),
             )
           ],
-          title: TrText(
-            'Travel Dates',
-            style: TextStyle(letterSpacing: 1.15),
-          ),
+          titleText: 'Travel Dates',
         ),
         body:
     gblSettings. wantNewCalendar || gblSettings.wantPriceCalendar ?
-    wrapCal(
+    ImageManager.getBodyWithBackground(gblCurPage, wrapCal(
         RangePickerPage(
             departureDate: widget.departureDate,
             returnDate: widget.returnDate,
             onChanged: _handleDateChanged,
           ),
             (){ setState(() { });},
-            true, startOfPeriod, endOfPeriod)
+            true, startOfPeriod, endOfPeriod))
         :         RangePickerPage(
         departureDate: widget.departureDate,
         returnDate: widget.returnDate,

@@ -137,8 +137,8 @@ Widget getUpcoming(BuildContext context,CardTemplate card, void Function() doCal
 
   if( gblNextPnr != null ){
 
-      list.add(Row( children: [VHeadlineText('Booking Reference: ${gblNextPnr!.pNR.rLOC}', color: card.textClr, size: TextSize.small,)]));
-      list.add(Row( children: [VHeadlineText('${gblTrips!.trips!.first.fltNo}', color: card.textClr, size: TextSize.small,)]));
+      list.add(Row( children: [Text(translate('Booking Reference:') + ' ${gblNextPnr!.pNR.rLOC}', style: TextStyle(color: card.textClr))]));
+      list.add(Row( children: [Text('${gblTrips!.trips!.first.fltNo}', style: TextStyle(color: card.textClr))]));
       departs = gblNextPnr!.pNR.itinerary.itin.first.depTime.substring(0, 5);
       lands = gblNextPnr!.pNR.itinerary.itin.first.arrTime.substring(0, 5);
   }
@@ -147,9 +147,9 @@ Widget getUpcoming(BuildContext context,CardTemplate card, void Function() doCal
   list.add(
     Row(
       children: [
-        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.depart) + ' ' + departs, color: card.textClr, size: TextSize.small, ),
+        Text(cityCodetoAirport(gblTrips!.trips!.first.depart) + ' ' + departs, style: TextStyle(color: card.textClr,) ),
         Icon(Icons.flight_takeoff, size: 25, color: card.textClr,),
-        VHeadlineText(cityCodetoAirport(gblTrips!.trips!.first.destin )+ ' ' + lands, color: card.textClr, size: TextSize.small)
+        Text(cityCodetoAirport(gblTrips!.trips!.first.destin )+ ' ' + lands, style: TextStyle(color: card.textClr,))
       ]
     ));
 
@@ -175,8 +175,9 @@ Widget getFinishSetup(BuildContext context, void Function() doCallback){
   List<Widget> list = [];
   list.add(
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            vidWideActionButton(context, 'Setttings', (context, d){
+            vidActionButton(context, 'Setttings', (context, d){
               navToSmartDialogHostPage(context, new FormParams(formName: 'NEWINSTALLSETTINGS',
                   formTitle: 'New Install Settings'));
 

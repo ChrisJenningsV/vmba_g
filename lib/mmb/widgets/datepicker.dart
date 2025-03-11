@@ -10,6 +10,7 @@ import 'package:vmba/mmb/changeFlightPage.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
+import '../../Managers/imageManager.dart';
 import '../../datePickers/widgets/dayBuilder.dart';
 
 class MmbDatePickerWidget extends StatefulWidget {
@@ -101,7 +102,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
         endDrawer: DrawerMenu(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           gblSettings.wantNewCalendar ?
-              wrapCal(
+        ImageManager.getBodyWithBackground( gblCurPage,wrapCal(
                 DayPickerPage(
                   firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
                   departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
@@ -112,7 +113,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                   onChanged: _handleDateChanged,
               ),
                   (){ setState(() {},);},
-              false, departureDate, null)
+              false, departureDate, null))
               :
           DayPickerPage(
             firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),

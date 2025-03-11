@@ -421,31 +421,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
 
 
     //Adult start
-    if( wantPageV2()){
-      paxWidgets.add(paxTypeEntry(PaxType.adult, pax.adults, i));
-      i += pax.adults;
-      if( pax.youths > 0) {
-        paxWidgets.add(paxTypeEntry(PaxType.youth, pax.youths, i));
-        i += pax.youths;
-      }
-      if( pax.students > 0) {
-        paxWidgets.add(paxTypeEntry(PaxType.student, pax.students, i));
-        i += pax.students;
-      }
-      if( pax.seniors > 0) {
-        paxWidgets.add(paxTypeEntry(PaxType.senior, pax.seniors, i));
-        i += pax.seniors;
-      }
-      if( pax.children > 0) {
-        paxWidgets.add(paxTypeEntry(PaxType.child, pax.children, i));
-        i += pax.children;
-      }
-      if( pax.infants > 0) {
-        paxWidgets.add(paxTypeEntry(PaxType.infant, pax.infants, i));
-        i += pax.infants;
-      }
 
-    } else {
       if (pax.adults == 1) {
         paxWidgets.add(paxEntryHeader(PaxType.adult, true));
       } else if (pax.adults > 1) {
@@ -525,15 +501,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
       paxWidgets.add(Divider());
     }
     //Infant end
-    }
 
-
-/*
-    if (allPaxDetailsCompleted) {
-      paxWidgets.add(
-        vidWideActionButton(context, 'CONTINUE', _onContinuePressed));
-    }
-*/
     paxWidgets.add(Padding(
       padding: new EdgeInsets.only(top: 60.0),
     ));

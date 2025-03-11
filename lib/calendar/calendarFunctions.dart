@@ -8,12 +8,11 @@ import 'package:vmba/components/vidGraphics.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../chooseFlight/chooseFlightPage.dart';
-import '../components/pageStyleV2.dart';
 import '../components/trText.dart';
 import '../data/models/availability.dart';
 import '../data/models/models.dart';
+import '../functions/text.dart';
 import '../utilities/helper.dart';
-import '../v3pages/v3CalendarObects.dart';
 import '../v3pages/v3Theme.dart';
 import 'flightPageUtils.dart';
 
@@ -128,29 +127,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
                                 seatCount)
                                 : print('No av')
                           },
-                          child: wantPageV2() ?
-                          Card(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(5.0))),
-                            color: index
-                                .floor()
-                                .isOdd
-                                ? gblSystemColors.accentColor
-                                : gblSystemColors.primaryButtonColor,
-                            child: Container(
-                                width: 100,
-                                padding: EdgeInsets.all(5),
-                                child: Column(
-                                  children: getPriceButtonList(
-                                      objAv.availability.classbands
-                                          ?.band![index].cbdisplayname, item,
-                                      index, inRow: false),
-
-                                )),
-                          )
-                              :
+                          child:
                           Chip(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -259,15 +236,8 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
       innerList.add(V3Divider());
       innerList.add(CannedFactWidget(flt: item.flt));
     }
-    if (!wantPageV2()) {
-      innerList.add(infoRow(context, item!));
-    }
+    innerList.add(infoRow(context, item!));
 
-/*
-    if (!wantPageV2()) {
-      topList.add(flightTopRow(item!));
-    }
-*/
     topList.add(Container(
       // margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 5, right: 5),
         padding: EdgeInsets.all(10),
@@ -407,12 +377,6 @@ Widget v2FlightRow(String dDay,String  dTime,String  departs,String dTerm, Strin
 
 
 Widget flightRow(BuildContext context, AvItin? item) {
-  if( wantPageV2()){
-    return v2FlightRow(item!.flt[0].time.ddaylcl, item.flt.first.time.dtimlcl, item.flt.first.dep, getTerminalString(item.flt.first, true),
-        item.flt.last.time.adaylcl, item.flt.last.time.atimlcl, item.flt.last.arr, getTerminalString(item.flt.last, false),
-        item.journeyDuration(), context, item);
-
-  } else {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -444,7 +408,6 @@ Widget flightRow(BuildContext context, AvItin? item) {
         )
       ],
     );
-  }
 }
 
 Widget getDate(String dt){
@@ -707,70 +670,24 @@ String formatDayPrice(String amt){
 Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBeforeDate, {void Function()? onPressed} ) {
   List <Widget> list = [];
   bool showNoFlightIcon = false;
-  if( gblRedeemingAirmiles== false && item.amt.length == 0 ){
-    if( wantPageV2()) {
-      showNoFlightIcon = true;
-    }
-  }
+
   Color? txtColor = Colors.black;
   if( isSearchDate(
       DateTime.parse(item.daylcl),
       selectedDate)){
     txtColor = Colors.white;
   }
-  if( wantPageV2()) {
-    txtColor = Colors.black;
-      if( isSearchDate(DateTime.parse(item.daylcl),
-          selectedDate)) {
-        txtColor = gblSystemColors.headerTextColor;
 
-      }
-  }
-
-    list.add( getCalDate(item.daylcl, txtColor),
+  list.add( getCalDate(item.daylcl, txtColor),
       //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
     );
 
-    if( wantPageV2()) {
-      txtColor = Colors.grey;
-      if(isSearchDate(DateTime.parse(item.daylcl),
-          selectedDate)) {
-        txtColor = Colors.black;
-      }
-    }
       if( showNoFlightIcon ){
         list.add(vidNoFlights());
       } else {
-        list.add(TrText('from', style: TextStyle(fontSize: 14,
-            color: txtColor),
-        ));
+        list.add(v2CalFromText('from',txtColor));
 
-        list.add(Text(
-          calenderPrice(item.cur, formatDayPrice(item.amt), item.miles),
-          //textScaleFactor: 1.0,
-          textScaler: TextScaler.linear(1.2),
-          style: TextStyle(
-              //fontSize: 14,
-              color: txtColor),
-        ));
-      }
-      if( wantPageV2()){
-        if( showNoFlightIcon ) {
-          return v3CalendarDay(item,selectedDate,vidNoFlights(), null, onPressed);
-
-        } else {
-          return v3CalendarDay(item,selectedDate,
-              TrText('from', style: TextStyle(fontSize: 14,color: txtColor)),
-              Text(
-                calenderPrice(item.cur, item.amt, item.miles),
-                //textScaleFactor: 1.0,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: txtColor),
-              ),
-              onPressed
-          );
-        }
+        list.add(v2CalDayPriceText(calenderPrice(item.cur, formatDayPrice(item.amt), item.miles), txtColor) );
       }
 
       if( wantRtl()) {
@@ -818,16 +735,6 @@ Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBe
 
 
         EdgeInsets marg = EdgeInsets.all(0);
-        if( wantPageV2()) {
-          if( isSearchDate(DateTime.parse(item.daylcl),
-              selectedDate)) {
-            dec = containerDecoration(location: 'selected') as Decoration;
-          } else {
-            dec = containerDecoration(location: 'day') as Decoration;
-          }
-          marg = containerMargins(location: 'day') ;
-        }
-
 
         return Container(
           decoration: dec,
@@ -1197,21 +1104,25 @@ bool isJourneyAvailableForCb(List<Flt> flts, int cbIndex) {
 Widget getCalDate(String sDate, Color? txtColor){
 
   if( gblSettings.wantMonthOnCalendar == true) {
-   return Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),
+   return v2CalDateText(getIntlDate('EEE dd MMM', DateTime.parse(sDate)), txtColor);
+     Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),
        textScaler: TextScaler.linear(1.2),
        style: TextStyle(
        //fontSize: 14,
-       fontWeight: wantPageV2() ? FontWeight.bold : FontWeight.normal,
+       fontWeight:  FontWeight.normal,
        color: txtColor)
   );
   } else {
-    return Text(getIntlDate('EEE dd', DateTime.parse(sDate)),
+    return v2CalDateText(getIntlDate('EEE dd', DateTime.parse(sDate)), txtColor);
+/*
+      Text(getIntlDate('EEE dd', DateTime.parse(sDate)),
         textScaler: TextScaler.linear(1.2),
         style: TextStyle(
         //fontSize: 14,
-        fontWeight: wantPageV2() ? FontWeight.bold : FontWeight.normal,
+        fontWeight:  FontWeight.normal,
         color: txtColor)
     );
+*/
   }
 
 }
