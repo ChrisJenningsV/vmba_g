@@ -7,6 +7,7 @@ import '../../utilities/helper.dart';
 
 class DialogDef {
   String caption = '';
+  String formname = '';
   String action = '';
   String actionText = '';
   String width = '';
@@ -16,7 +17,7 @@ class DialogDef {
   List<DialogFieldDef> pageFoot = [];
   List<TextEditingController> editingControllers = [];
 
-  DialogDef({this.caption = '', this.actionText='', this.action = '', this.width=''});
+  DialogDef({this.caption = '', this.actionText='', this.action = '', this.width='', this.formname=''});
 
   DialogDef.fromJson(Map<String, dynamic> json)  {
     try {
@@ -71,6 +72,7 @@ class DialogDef {
     bool isMenuOpen = false;
     String value = '';
     String valueKey = '';
+    Color? backgroundColor;
 
     TextEditingController? controller;
 
@@ -78,7 +80,7 @@ class DialogDef {
     DialogFieldDef({this.field_type='', this.caption='',
       this.actionText='', this.action = '',
       this.valueKey='false', this.isMenuOpen=false,
-      this.options
+      this.options, this.backgroundColor
       });
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {

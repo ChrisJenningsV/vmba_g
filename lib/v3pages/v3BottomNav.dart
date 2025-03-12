@@ -12,15 +12,15 @@ import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
 import 'cards/v3CustomPage.dart';
 
-Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpText='',  void Function()? custom } ) {
+Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
     List <Widget> list = [];
 
-    //list.add(vidTextButton(context, 'logout', _logout)
+/*    //list.add(vidTextButton(context, 'logout', _logout)
     list.add(TextButton(
         onPressed: () {
           logit('logout');
-/*
+*//*
           gblDemoMode = false;
           gblIsLive = true;
           setLiveTest();
@@ -30,7 +30,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
           } else {
             reloadPage(context);
           }
-*/
+*//*
         },
 
         child:Text('logout')));
@@ -47,10 +47,10 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
       list.add(vidDemoButton(context, 'Demo mode',  (c) {
         demoDialog(context, helpText: helpText);
       },));
-    }
+    }*/
 
     int index = -1;
-    switch(gblCurPage) {
+    switch(curPage) {
       case 'HOME':
         index = 0;
         break;
@@ -82,7 +82,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
           ),
 
         BottomNavigationBarItem(
-          icon:  getNamedIcon('TAKEOFF'), // Icon(Icons.airplanemode_active),
+          icon:  getNamedIcon('FLIGHTSEARCH'), // Icon(Icons.airplanemode_active),
           label: 'Book',
         ),
 
@@ -96,11 +96,9 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
         ),
 
         BottomNavigationBarItem(
-          icon:  getNamedIcon('FLIGHTESTATUS'),
+          icon:  getNamedIcon('FLIGHTSTATUS'),
           label: 'Track',
         ),
-
-
       ],
       currentIndex: index,
       selectedItemColor: Colors.red,
@@ -124,7 +122,7 @@ Widget? getV3BottomNav(BuildContext context, {Widget? popButton , String helpTex
           case 3:
 //            navToMyAccountPage(context);
             navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',
-                formTitle: '${gblSettings.fqtvName} Registration'));
+                formTitle: '${gblSettings.fqtvName} Login'));
             break;
           case 4:
             navToFlightStatusPage(context);

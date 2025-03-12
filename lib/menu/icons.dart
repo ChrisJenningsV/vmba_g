@@ -22,6 +22,7 @@ Widget getNamedIcon(String name, {Color? color}){
                   angle: math.pi / 4,
                   child: new Icon(
                     Icons.airplanemode_active,
+                    size: 20,
                     color: color,
                   )),
             ),
@@ -31,7 +32,7 @@ Widget getNamedIcon(String name, {Color? color}){
             child: Container(
               child: Icon(
                 Icons.access_time_outlined,
-                size: 12,
+                size: 15,
                 color: color,
               ),
             ),
@@ -99,16 +100,18 @@ Widget getNamedIcon(String name, {Color? color}){
         return Icon(Icons.people);
         break;
     case 'ADULT':
-      return Icon(Icons.person);
+      //return  Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.user));
+      return Padding( padding: EdgeInsets.only(left: 0, right: 5), child: Icon(Icons.person));
       break;
     case 'YOUTH':
-          return FaIcon(FontAwesomeIcons.person);
+          return  Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.person));
           break;
     case 'CHILD':
-      return FaIcon(FontAwesomeIcons.child);
+      return Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.child));
       break;
     case 'INFANT':
-      return FaIcon(FontAwesomeIcons.child);
+      return Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.baby));
+      //return Icon(Icons.baby)
       break;
     default:
     return Transform.rotate(

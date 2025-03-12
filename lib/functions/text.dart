@@ -31,7 +31,6 @@ Widget v2CalDateText(String text, Color? txtColor){
  //     textScaler: TextScaler.linear(1.2),
       style: TextStyle(
         fontSize: 14,
-        //  fontWeight:  FontWeight.normal,
           color: txtColor)
   );
 }
@@ -41,7 +40,6 @@ Widget v2CalDayPriceText(String text, Color? txtColor){
     //  textScaler: TextScaler.linear(1.2),
       style: TextStyle(
           fontSize: 14,
-          //  fontWeight:  FontWeight.normal,
           color: txtColor)
   );
 }
@@ -51,7 +49,33 @@ Widget v2CalFromText(String text, Color? txtColor){
       textScaler: TextScaler.linear(1.2),
       style: TextStyle(
           fontSize: 14,
-          //  fontWeight:  FontWeight.normal,
           color: txtColor)
   );
 }
+
+Widget v2FlightText(String text,  Color? txtColor){
+  return Text(translate(text),
+      style: TextStyle(
+//      fontSize: 14,
+      color: txtColor)
+  );
+}
+Widget v2TerminalText(String text,  Color? txtColor){
+  return Text(translate(text),
+      style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: txtColor)
+  );
+}
+
+Widget v2FlightPriceText(String text,  Color? txtColor){
+  return Text(translate(text),
+      style: TextStyle(
+          fontSize: 16,
+          color: txtColor)
+  );
+}
+
+
+

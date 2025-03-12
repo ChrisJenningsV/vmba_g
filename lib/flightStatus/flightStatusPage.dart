@@ -116,7 +116,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
         extendBodyBehindAppBar: false,
         //endDrawer: DrawerMenu(),
         body: ImageManager.getBodyWithBackground(
-          gblCurPage,
+          'FLIGHTSTATUS',
           TabBarView(
           physics: NeverScrollableScrollPhysics(),
           //dragStartBehavior: DragStartBehavior.down,

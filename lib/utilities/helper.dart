@@ -667,7 +667,7 @@ commonPageInit(String pageName) {
     hideSnackBarMessage();
   }
   //gblPayAction = pageName;
-  gblCurPage = pageName;
+  if( pageName != '' ) gblCurPage = pageName;
   gblActionBtnDisabled = false;
   setError('');
   gblStack = null;

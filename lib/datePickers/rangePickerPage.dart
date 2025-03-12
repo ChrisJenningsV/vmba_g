@@ -73,7 +73,7 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
         ),
         body:
     gblSettings. wantNewCalendar || gblSettings.wantPriceCalendar ?
-    ImageManager.getBodyWithBackground(gblCurPage, wrapCal(
+    ImageManager.getBodyWithBackground('DATEPICKER', wrapCal(
         RangePickerPage(
             departureDate: widget.departureDate,
             returnDate: widget.returnDate,

@@ -127,7 +127,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
 
   switch (formName) {
     case 'FQTVRESET':
-      dialog = new DialogDef(caption: 'Reset Password', actionText: 'Continue', action: 'DoFqtvReset');
+      dialog = new DialogDef(formname: formName, caption: 'Reset Password', actionText: 'Continue', action: 'DoFqtvReset');
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
       dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
@@ -139,7 +139,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
     case 'NEWINSTALLSETTINGS':
     //gblValidationEmail = '';
       gblValidationPinTries = 0;
-      dialog = new DialogDef(caption: 'Register App', actionText: 'Continue', action: 'DoRequestPin');
+      dialog = new DialogDef(formname: formName, caption: 'Register App', actionText: 'Continue', action: 'DoRequestPin');
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
       dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Enter email to access details of bookings made on the website.A validation PIN will be sent to this email.'));
       // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
@@ -147,7 +147,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
       break;
     case 'VALIDATEPIN':
-      dialog = new DialogDef(caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
+      dialog = new DialogDef(formname: formName, caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
       dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check youe email inbox, and enter the validation PIN below. '));
       // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
@@ -156,9 +156,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
       break;
     case 'AGENTLOGIN':
-      dialog = new DialogDef(caption: 'Agent Login',
-          actionText: 'Continue',
-          action: 'DoAgentLogin');
+      dialog = new DialogDef(formname: formName, caption: 'Agent Login',actionText: 'Continue',action: 'DoAgentLogin');
       dialog.fields.add(
           new DialogFieldDef(
               field_type: 'number', caption: 'sine (4ch)'));
@@ -170,7 +168,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       break;
 
     case 'FQTVLOGIN':
-      dialog = new DialogDef(caption: formTitle, actionText: 'Continue', action: 'DOFQTVLOGIN');
+      dialog = new DialogDef(formname: formName, caption: formTitle, actionText: 'Continue', action: 'DOFQTVLOGIN');
       dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number')));
       dialog.fields.add(new DialogFieldDef(field_type: 'space', caption: ''));
       dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password'));
@@ -187,7 +185,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       if( gblBuildFlavor == 'LM'){
           dialog.pageFoot.add(new DialogFieldDef(field_type: 'action', caption: '',
           actionText: translate('For ADS login click here >'),
-          action: 'ADSLogin'
+          action: 'ADSLogin', backgroundColor: Colors.white
           ));
       }
       break;

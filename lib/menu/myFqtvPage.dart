@@ -204,7 +204,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
       String sTitle = translate('${gblSettings.fqtvName} ') + translate('LOGIN');
       if( sTitle.length > 20 ) sTitle = translate('LOGIN');
 
-      DialogDef dialog = new DialogDef(caption: sTitle, actionText: 'Continue', action: 'DoFqtvLogin');
+      DialogDef dialog = new DialogDef(formname: 'FQTVLOGIN', caption: sTitle, actionText: 'Continue', action: 'DoFqtvLogin');
 
       if( gblSettings.wantNewDialogs ) {
 

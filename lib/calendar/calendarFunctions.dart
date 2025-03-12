@@ -499,9 +499,9 @@ Widget getTerminal(String term, bool depart){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-          TrText('Terminal'),
+          v2FlightText(translate('Terminal'), gblSystemColors.fltText),
           Padding(padding: EdgeInsets.only(left: 10)),
-          Text( term, textScaleFactor: 1.5,),
+          v2TerminalText( term, gblSystemColors.fltText),
         ]);
 }
 

@@ -48,7 +48,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   @override
   void initState() {
     super.initState();
-    commonPageInit('NEWBOOKING');
+    commonPageInit('OUTBOUND');
     gblBookSeatCmd = '';
 
 //    gblActionBtnDisabled = false;
@@ -191,50 +191,60 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
     }
     await runVrsCommand('I');
 
+      try {
+        Repository.get().getAv(
+            getAvCommand(/*gblSettings.useWebApiforVrs == false*/ false)).then((
+            rs) async {
+          if (rs.isOk()) {
+            objAv = rs.body!;
+            removeDepartedFlights();
+            try {
+              objAv.availability.MarkLowestFare();
+            } catch (e) {
 
-      Repository.get().getAv(getAvCommand(/*gblSettings.useWebApiforVrs == false*/false)).then((rs) async {
-      if (rs.isOk()) {
-        objAv = rs.body!;
-        removeDepartedFlights();
-        try{
-          objAv.availability.MarkLowestFare();
-        } catch(e) {
+            }
+            _dataLoaded();
 
-        }
-        _dataLoaded();
-
-        // check if invalid voucher
-        if( this.widget.newBooking.eVoucherCode != '' && objAv.availability.itin != null ){
-          // look for discprice
-          objAv.availability.itin!.forEach((element) {
-              element.flt.forEach((flt) {
-                if(flt.fltav.discprice!= null ) {
-                  flt.fltav.discprice!.forEach((discprice) {
-                    if( discprice != '' ) {
-                      // logit('discp $discprice');
-                    }
-                  });
-                }
+            // check if invalid voucher
+            if (this.widget.newBooking.eVoucherCode != '' &&
+                objAv.availability.itin != null) {
+              // look for discprice
+              objAv.availability.itin!.forEach((element) {
+                element.flt.forEach((flt) {
+                  if (flt.fltav.discprice != null) {
+                    flt.fltav.discprice!.forEach((discprice) {
+                      if (discprice != '') {
+                        // logit('discp $discprice');
+                      }
+                    });
+                  }
+                });
               });
-          });
+            }
+          } else if (rs.statusCode == notSinedIn) {
+            await login().then((result) {});
+            Repository.get()
+                .getAv(
+                getAvCommand(/*gblSettings.useWebApiforVrs == false*/ false))
+                .then((rs) {
+              objAv = rs.body!;
 
-        }
-      } else if(rs.statusCode == notSinedIn)  {
-        await login().then((result) {});
-        Repository.get().getAv(getAvCommand(/*gblSettings.useWebApiforVrs == false*/false)).then((rs) {
-          objAv = rs.body!;
-
-          removeDepartedFlights();
-          _dataLoaded();
+              removeDepartedFlights();
+              _dataLoaded();
+            });
+          } else {
+            avErrorMsg = rs.errorStatus();
+            setState(() {
+              _loadingInProgress = false;
+              _noInternet = true;
+            });
+          }
         });
-      } else {
-        avErrorMsg = rs.errorStatus();
-        setState(() {
-          _loadingInProgress = false;
-          _noInternet = true;
-        });
+      } catch(e) {
+        logit(e.toString());
+        gblError = e.toString();
+        _dataLoaded();
       }
-    });
   }
 
   void removeDepartedFlights() {
@@ -535,9 +545,12 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
 
   void flightSelected(BuildContext context,AvItin? avItem, List<String> flt, List<Flt> outboundflts, String className) {
-    /*setState(() {
-
-    });*/
+/*
+    setState(() {
+      logit('do loading');
+      _loadingInProgress = true;
+    });
+*/
 
       print(flt);
       if (flt.length > 0) {

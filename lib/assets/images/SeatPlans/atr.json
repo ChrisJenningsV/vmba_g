@@ -1,0 +1,14 @@
+{
+	"version": "1",
+	"name":	"ATR",
+	"fullName": "ATR 42-500",
+	"top":	"200",
+	"left":	"51",
+	"cabinWidth":	"256",
+	"seatHorzSpace":  	"2",
+	"seatVertSpace":  	"15",
+	"seatWidth":	"49",
+	"seatHeight":	"70",
+	"aiselWidth":	"40",
+	"layout":	"1,2"
+}

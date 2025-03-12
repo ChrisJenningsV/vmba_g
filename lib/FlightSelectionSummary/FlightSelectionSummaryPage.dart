@@ -718,7 +718,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
           imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
         //extendBodyBehindAppBar: gblSettings.wantCityImages,
         endDrawer: DrawerMenu(),
-        bottomNavigationBar: getBottomNav(context),
+        bottomNavigationBar: getBottomNav(context, 'FLIGTSUMMARY'),
         body: _getBody(),
         floatingActionButton: vidWideActionButton(
             context, 'Continue', onCompletePressed, icon: Icons.check,

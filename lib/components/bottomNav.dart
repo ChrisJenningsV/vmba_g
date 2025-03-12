@@ -15,13 +15,13 @@ import '../v3pages/v3BottomNav.dart';
 import 'trText.dart';
 void Function()? _custom;
 
-Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText='',  void Function()? custom } ) {
+Widget? getBottomNav(BuildContext context, String curPage, {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
   if( gblDebugMode == true ){
     return DebugBottomNav(custom: custom,);
   }
 
-  if( gblDemoMode == true){
+/*  if( gblDemoMode == true){
     List <Widget> list = [];
 
     //list.add(vidTextButton(context, 'logout', _logout)
@@ -71,10 +71,12 @@ Widget? getBottomNav(BuildContext context, {Widget? popButton , String helpText=
     children: list
       )
     );
-  }
+  }*/
 
-  if(  gblSettings.bottomNavPages.contains(gblCurPage)){
-    return getV3BottomNav(context);
+  //logit( 'getBN p:$gblCurPage');
+  // n.b. browser back may cause arrival here with wrong pagename
+  if(  gblSettings.bottomNavPages.contains(curPage)){
+    return getV3BottomNav(context, curPage);
   }
 
   if( gblCurPage != 'HOME' ){

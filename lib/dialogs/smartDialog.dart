@@ -10,6 +10,7 @@ import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/dialogs/smartDropDown.dart';
 
 import '../Helpers/settingsHelper.dart';
+import '../Managers/imageManager.dart';
 import '../components/pageStyleV2.dart';
 import '../components/trText.dart';
 import '../data/globals.dart';
@@ -43,12 +44,14 @@ class _smartDialogPageState extends State<smartDialogPage> {
   initState() {
     super.initState();
     formKey = new GlobalKey<FormState>();
-    commonPageInit('DIALOGPAGE');
 
     if( gblCurDialog! != null ) {
       gblCurDialog!.fields.forEach((f) {
         initField( f);
       });
+      commonPageInit(gblCurDialog!.formname);
+    } else {
+      commonPageInit('DIALOGPAGE');
     }
 
   }
@@ -76,12 +79,14 @@ class _smartDialogPageState extends State<smartDialogPage> {
       floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
           ? wrapFootField(context, gblCurDialog!,gblCurDialog!.pageFoot.first, (){}) : null ,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
+      //extendBodyBehindAppBar: gblCurDialog!.formname == 'FQTVLOGIN' ? true : false ,
       appBar:
-        vidAppBar(titleText: '',backgroundColor: v2PageBackgroundColor(),),
+        //vidAppBar(titleText: gblCurDialog!.caption , backgroundColor:  gblCurDialog!.formname == 'FQTVLOGIN' ? Colors.transparent :v2PageBackgroundColor(),), //
+        vidAppBar(titleText: gblCurDialog!.caption , backgroundColor: gblSystemColors.primaryHeaderColor,), //
         //appBar(context, '', PageEnum.summary, backgroundColor: Colors.transparent),
       endDrawer: DrawerMenu(),
       backgroundColor: v2PageBackgroundColor(),
-        body: _body()
+        body: ImageManager.getBodyWithBackground( gblCurPage,_body())
 
     );
 
@@ -281,7 +286,7 @@ Widget? getDialogContent(BuildContext context, DialogDef dialog, void Function()
 Widget wrapFootField(BuildContext context,DialogDef dialog, DialogFieldDef f, void Function() doUpdate){
   return Container(
       decoration: BoxDecoration(
-      color: Colors.black12 ,
+      color: f.backgroundColor ?? Colors.black12 ,
       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0),)),
   margin: EdgeInsets.all(0),
   height: 35,

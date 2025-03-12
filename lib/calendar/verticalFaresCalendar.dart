@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/calendar/returningFlightPage.dart';
 import 'package:vmba/components/vidButtons.dart';
+import 'package:vmba/functions/text.dart';
 
 import '../FlightSelectionSummary/FlightSelectionSummaryPage.dart';
 import '../Helpers/settingsHelper.dart';
@@ -46,6 +47,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
   int selectedFlt = 0;
   int expandedFlt = 0;
   int selectedFare = -1;
+  bool _loadingInProgress = false;
 
 
   get flightSelected => null;
@@ -105,6 +107,9 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
   @override
   Widget build(BuildContext context) {
     EdgeInsets mar = EdgeInsets.fromLTRB(10, 10, 0, 10);
+    if (_loadingInProgress) {
+      return getProgressMessage(translate('Loading...'), '');
+    }
 
     return new Column(
       children: <Widget>[
@@ -679,6 +684,10 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
 
   Future<void> _GoToNextPage(AvItin item, Band classband) async {
     gblError = '';
+    setState(() {
+      logit('do loading');
+      _loadingInProgress = true;
+    });
 
     // save flt
     List<String> msgs = buildfltRequestMsg(item.flt,
@@ -717,6 +726,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     } else {
       // if single, get fare quote and go to summary page
       if (gblSearchParams.isReturn == true && widget.isReturnFlight == false) {
+        _loadingInProgress = false;  // for phone BACK
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -728,6 +738,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                     )));
       } else {
         if (gblSettings.wantProducts) {
+          _loadingInProgress = false;  // for phone BACK
           Navigator.push(
               context,
               //MaterialPageRoute(
@@ -738,6 +749,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                         pnrModel: gblPnrModel,)));
         } else {
           if( gblCurPage == 'CHANGEFLT' ) {
+            _loadingInProgress = false;  // for phone BACK
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -748,6 +760,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                       //intJourney: widget.journey,
                     )));
           } else {
+            _loadingInProgress = false;  // for phone BACK
             Navigator.push(
                 context,
                 // MaterialPageRoute(
@@ -788,8 +801,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
   }
 
   Widget fltText(String text) {
-    return VBodyText(
-      text, size: TextSize.large, color: gblSystemColors.fltText,);
+    return v2FlightText(text, gblSystemColors.fltText,);
   }
 
   Widget fareText(String text, int fltNo, int fareNo) {
@@ -800,7 +812,8 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     } else {
       clr = gblSystemColors.defaultFaretext!;
     }
-    return VBodyText(text, size: TextSize.large, color: clr,);
+    return v2FlightPriceText(text, clr,);
+//    return VBodyText(text, size: TextSize.large, color: clr,);
   }
 
   Widget vertGetAirport(String code,) {

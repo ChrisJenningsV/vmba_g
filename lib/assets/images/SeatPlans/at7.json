@@ -1,0 +1,15 @@
+{
+	"version": "1",
+	"name":	"AT7",
+	"fullName": "ATR 72-600",
+	"top":	"390",
+	"left":	"50",
+	"cabinWidth":	"308",
+	"seatHorzSpace":  	"1",
+	"seatVertSpace":  	"10",
+	"seatWidth":	"50",
+	"seatHeight":	"70",
+	"aiselWidth":	"40",
+
+	"layout":	"2,2"
+}

@@ -113,7 +113,7 @@ Widget getCustomScaffoldPage(BuildContext context, String pageName, void Functio
         appBar: AppBar(backgroundColor: backColor, elevation: 0,
         ),
         endDrawer: new DrawerMenu(),
-        bottomNavigationBar: getV3BottomNav(context),
+        //bottomNavigationBar: getV3BottomNav(context, curPage),
         //drawer: DrawerMenu(),
         body: body
     );

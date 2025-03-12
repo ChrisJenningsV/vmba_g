@@ -1,0 +1,15 @@
+{
+	"version": "1",
+	"name":	"ER4",
+	"fullName": "Embraer 145",
+	"top":	"350",
+	"left":	"90",
+	"cabinWidth":	"240",
+	"seatHorzSpace":  	"1",
+	"seatVertSpace":  	"10",
+	"seatWidth":	"45",
+	"seatHeight":	"55",
+	"aiselWidth":	"40",
+
+	"layout":	"1,2"
+}

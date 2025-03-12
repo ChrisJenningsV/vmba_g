@@ -165,7 +165,7 @@ class MyBookingsPageState extends State<MyBookingsPage> with TickerProviderState
           ),
           ),// translated in appBar
           endDrawer: DrawerMenu(),
-        bottomNavigationBar: getBottomNav(context, ),
+        bottomNavigationBar: getBottomNav(context,'MYBOOKINGS' ),
           body: TabBarView(
               controller: _controller,
               children: tabeViews,

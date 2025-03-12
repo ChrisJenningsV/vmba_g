@@ -1231,7 +1231,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
           //endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
           body:  criticalErrorWidget(context, gblPaymentMsg, title: 'Payment Error', onComplete: onComplete,wantButtons: wantButtons),
-          bottomNavigationBar: getBottomNav(context),
+          bottomNavigationBar: getBottomNav(context,'CHOOSEPAYMENT'),
       ));
 
     } else {

@@ -202,31 +202,52 @@ class _PassengerWidgetState extends State<PassengerWidget> {
   }
 
   Widget getPaxRow(PaxRowInfo pri, void Function(PaxRowInfo priOut) onChange) {
-    return Row(
-      children: [
-        Expanded(flex: 1, child: getNamedIcon(pri.iconName)),
-        Expanded(flex: 6, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              v2SearchValueText(pri.typeName),
-              Text(pri.description)
-            ])),
-        //Expanded(flex: 2, child: Icon(Icons.chevron_right, size: 30,))
-        Expanded(flex: 1, child: v2SearchValueText(pri.isMoreButton ? '' : pri.count.toString())),
-        pri.isMoreButton ?
-          Expanded(flex: 2, child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-            IconButton(onPressed: (){
-            onChange(pri);
-            }, icon: Icon(Icons.chevron_right))]))
-        : Expanded(flex: 2, child: upDownButton(pri.count, pri.min, pri.max, (int newVal){
-          pri.count = newVal;
-          onChange(pri);
-            } )),
-      ],
+    List<Widget> list = [];
 
-    );
+    list.add(Expanded(flex: 1, child: getNamedIcon(pri.iconName)));
+
+    if( pri.isMoreButton ) {
+      list.add(Expanded(flex: 6, child: Row(
+          mainAxisAlignment:  MainAxisAlignment.center,
+          children: [
+            v2SearchValueText(pri.typeName),
+          ])));
+    } else {
+      list.add(Expanded(flex: 6, child: Column(
+          crossAxisAlignment:  CrossAxisAlignment.start,
+          children: [
+            v2SearchValueText(pri.typeName),
+            Text(pri.description)
+          ])));
+    }
+
+    list.add(Expanded(flex: 1, child: v2SearchValueText(pri.isMoreButton ? '' : pri.count.toString())));
+
+    if( pri.isMoreButton ) {
+      list.add( Expanded(flex: 2, child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(onPressed: (){
+              onChange(pri);
+            }, icon: Icon(Icons.chevron_right))]))
+          );
+    } else {
+      list.add(Expanded(flex: 2, child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+          Expanded(flex: 2, child: upDownButton(pri.count, pri.min, pri.max, (int newVal){
+            pri.count = newVal;
+            onChange(pri);
+          } ))
+          ]
+      )));
+      }
+
+    return Padding(padding: EdgeInsets.only(top: 5),
+        child: Row(
+      children: list,
+
+    ));
   }
 
 

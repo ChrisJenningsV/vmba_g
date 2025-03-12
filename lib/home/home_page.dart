@@ -436,6 +436,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
     if (_displayProcessingIndicator) {
       return Scaffold(
+          bottomNavigationBar: getBottomNav(context, 'HOME'),
           body: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -473,6 +474,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           ),
           endDrawer: DrawerMenu(),
           backgroundColor: Colors.grey.shade500,
+          bottomNavigationBar: getBottomNav(context, 'HOME'),
           body: Center( child: Container(
 
             //alignment: Alignment.topCenter,
@@ -559,7 +561,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         body: Stack(
           children: _getBackImage(buttonShape, buttonHeight),
         ),
-        bottomNavigationBar: getBottomNav(context),
+        bottomNavigationBar: getBottomNav(context, 'HOME'),
         endDrawer: new DrawerMenu(),
       );
 

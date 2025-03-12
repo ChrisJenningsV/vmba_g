@@ -382,7 +382,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           imageName:  gblSettings.wantPageImages ? 'paxDetails': '' ),
 //      extendBodyBehindAppBar: gblSettings.wantCityImages,
       endDrawer: DrawerMenu(),
-          bottomNavigationBar: getBottomNav(context, ),
+          bottomNavigationBar: getBottomNav(context, 'PAXDETAILS'),
       body: getSummaryBody(context, widget.newBooking,  _body, statusGlobalKeyPax),
       floatingActionButton: floatBtn,
     ))  ;

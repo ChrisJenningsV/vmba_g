@@ -135,7 +135,9 @@ class _PreferredAppBarSize extends Size {
 
 Widget getLogoTitle(String txt, {Widget? icon=null} ){
   List<Widget> list = [];
-  if( gblSettings.imageBackgroundPages.contains(gblCurPage)) {
+
+
+  if( gblSettings.imageBackgroundPages.contains(gblCurPage) && txt.length < 20) {
     list.add(Image.asset('lib/assets/$gblAppTitle/images/appBar.png',
         width: 150,
         alignment: Alignment.topLeft));

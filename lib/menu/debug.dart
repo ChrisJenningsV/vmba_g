@@ -93,7 +93,7 @@ class DebugPageState extends State<DebugPage> {
           PageEnum.summary,
         ),
         endDrawer: new DrawerMenu(),
-        bottomNavigationBar: getV3BottomNav(context),
+        bottomNavigationBar: getV3BottomNav(context, curPage),
         //drawer: DrawerMenu(),
         body: body
     );

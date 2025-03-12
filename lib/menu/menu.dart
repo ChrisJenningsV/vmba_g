@@ -51,7 +51,7 @@ class DrawerMenu extends StatefulWidget {
     List<Widget> list = [];
 
     if(wantHomePageV3() ) {
-        list.add(Padding( padding: EdgeInsets.only(left: 10, top: 10),
+        list.add(Padding( padding: EdgeInsets.only(left: 10, top: 30),
             child: Image.asset('lib/assets/$gblAppTitle/images/appBar.png',
         width: 150,
         alignment: Alignment.bottomLeft,)));
@@ -76,19 +76,7 @@ class DrawerMenu extends StatefulWidget {
       list.add( menuItem(Icons.flight_takeoff, 'Book a flight' , (){
         gblCurPage = 'FLIGHTSEARCH';
         navToFlightSearchPage(context);
-      }, iconName: 'flight') );
-/*
-      list.add(ListTile(
-        dense: dense,
-        title: _getMenuItem(Icons.flight_takeoff, 'Book a flight', iconName: 'flight'),
-        onTap: () {
-          // Update the state of the app
-          // ...
-          gblCurPage = 'FLIGHTSEARCH';
-          navToFlightSearchPage(context);
-        },
-      ));
-*/
+      }, iconName: 'flightSearch') );
     }
 
       if(  gblBuildFlavor == 'LM' && gblNoNetwork == false && gblSettings.disableBookings == false ) {
@@ -96,17 +84,6 @@ class DrawerMenu extends StatefulWidget {
           gblCurPage = 'BOOKADS';
           Navigator.push(context, SlideTopRoute(page: AdsPage()));
         },  iconName: 'flight'));
-/*
-        list.add(ListTile(
-          dense: true,
-          // contentPadding: EdgeInsets.zero,
-          title: _getMenuItem(Icons.flight_takeoff, 'Book an ADS / Island Resident Flight', iconName: 'flight'),
-          onTap: () {
-            gblCurPage = 'BOOKADS';
-            Navigator.push(context, SlideTopRoute(page: AdsPage()));
-          },
-        ));
-*/
       }
 
         //Divider(),
@@ -115,20 +92,6 @@ class DrawerMenu extends StatefulWidget {
       Navigator.of(context).pushNamedAndRemoveUntil(
           '/MyBookingsPage', (Route<dynamic> route) => false);
     }, ));
-/*
-        list.add(ListTile(
-          dense: true,
-          title: _getMenuItem(Icons.card_travel, 'My Bookings'),
-          onTap: () {
-            // Update the state of the app
-            // ...
-            gblCurPage = 'MYBOOKINGS';
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/MyBookingsPage', (Route<dynamic> route) => false);
-          },
-        ));
-*/
-
       if( gblSettings.wantPushNoticications){
         //Divider(),
         list.add( menuItem(Icons.push_pin_outlined, 'Notifications' , (){
@@ -136,19 +99,6 @@ class DrawerMenu extends StatefulWidget {
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/MyNotificationsPage', (Route<dynamic> route) => false);
         }));
-/*
-        list.add(ListTile(
-          dense: true,
-          title: _getMenuItem(Icons.push_pin_outlined, 'Notifications'),
-          onTap: () {
-            // Update the state of the app
-            // ...
-            gblCurPage = 'MYNOTIFICATIONS';
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/MyNotificationsPage', (Route<dynamic> route) => false);
-          },
-        ));
-*/
       }
 
         if( gblNoNetwork == false ) {
@@ -157,20 +107,6 @@ class DrawerMenu extends StatefulWidget {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/AddBookingPage', (Route<dynamic> route) => false);
           }));
-
-/*
-            list.add(ListTile(
-            dense: true,
-            title: _getMenuItem( Icons.add, 'Add an existing booking' ),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              gblCurPage = 'ADDBOOKING';
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/AddBookingPage', (Route<dynamic> route) => false);
-            },
-          ));
-*/
         }
 
         if(gblSettings.gblLanguages != null && gblSettings.gblLanguages.isNotEmpty && gblNoNetwork == false ) {
@@ -180,17 +116,6 @@ class DrawerMenu extends StatefulWidget {
             ));
           },
           ));
-/*
-          list.add(ListTile(
-            dense: true,
-            title: _getMenuItem(Icons.flag, 'Language'),
-            onTap: () {
-              Navigator.push(
-                  context, SlideTopRoute(page: LanguageSelection()
-              ));
-            },
-          ));
-*/
         }
 
 
@@ -199,16 +124,6 @@ class DrawerMenu extends StatefulWidget {
         Navigator.push(context,
             SlideTopRoute(page: CustomPageWeb('Help Centre', gblSettings.contactUsUrl)));
       },  iconColor: Colors.red));
-/*
-      list.add(ListTile(
-        dense: true,
-        title: _getMenuItem(Icons.help_center, 'Help Centre', iconColor: Colors.red),
-        onTap: () {
-          Navigator.push(context,
-              SlideTopRoute(page: CustomPageWeb('Help Centre', gblSettings.contactUsUrl)));
-        },
-      ));
-*/
     }
 
     if(gblSettings.wantUnlock && gblIsLive == false) {
@@ -217,17 +132,6 @@ class DrawerMenu extends StatefulWidget {
             context, SlideTopRoute(page: UnlockPage()
         ));
       }));
-/*
-        list.add(ListTile(
-        dense: true,
-        title: _getMenuItem(Icons.lock, 'Unlock'),
-        onTap: () {
-          Navigator.push(
-              context, SlideTopRoute(page: UnlockPage()
-          ));
-        },
-      ));
-*/
     }
 
 
@@ -240,19 +144,6 @@ class DrawerMenu extends StatefulWidget {
           isLeadPassenger: true,
         )
         ));
-
-/*
-        list.add(ListTile(
-        dense: true,
-        title: _getMenuItem(Icons.person_outline, 'My account'),
-        onTap: () {
-          Navigator.push(
-              context, SlideTopRoute(page: MyAccountPage(
-            isAdsBooking: false,
-            isLeadPassenger: true,
-          )
-          ));
-*/
         },
       ));
     }
@@ -272,20 +163,6 @@ class DrawerMenu extends StatefulWidget {
         )
         ));
       }));
-/*
-      list.add(ListTile(
-        dense: true,
-        title: _getMenuItem( Icons.person_pin, fqtvName ),
-        onTap: () {
-          Navigator.push(
-              context, SlideTopRoute(page: MyFqtvPage(
-            isAdsBooking: false,
-            isLeadPassenger: true,
-          )
-          ));
-        },
-      ));
-*/
       }
 
     if( gblSettings != null && gblSettings!.wantFlightStatus && gblIsLive == false){
@@ -294,17 +171,6 @@ class DrawerMenu extends StatefulWidget {
         gblOrigin = '';
         navToFlightStatusPage(context);
       }, iconName: 'FlightStatus' ));
-/*
-      list.add(ListTile(
-        dense: true,
-        title: _getMenuItem( Icons.airplanemode_active, 'Flight Status', iconName: 'FlightStatus' ),
-        onTap: () {
-          gblDestination = '';
-          gblOrigin = '';
-          navToFlightStatusPage(context);
-        },
-      ));
-*/
     }
 
     if( gblSettings != null && gblSettings!.wantFopVouchers && gblIsLive == false){
@@ -313,18 +179,6 @@ class DrawerMenu extends StatefulWidget {
             context, SlideTopRoute(page: GetericListPageWidget('VOUCHERS')
         ));
       }));
-
-/*
-        list.add(ListTile(
-        dense: true,
-        title: _getMenuItem( Icons.airplane_ticket_outlined, 'My Vouchers' ),
-        onTap: () {
-          Navigator.push(
-              context, SlideTopRoute(page: GetericListPageWidget('VOUCHERS')
-          ));
-        },
-      ));
-*/
     }
 
     if( gblSettings != null && gblSettings!.wantNews && gblIsLive == false){
@@ -332,18 +186,6 @@ class DrawerMenu extends StatefulWidget {
         Navigator.push(
             context, SlideTopRoute(page: GetericListPageWidget('NEWS')));
       }));
-
-/*
-        list.add(ListTile(
-        dense: true,
-        title: _getMenuItem( Icons.newspaper_outlined, 'NEWS' ),
-        onTap: () {
-          Navigator.push(
-              context, SlideTopRoute(page: GetericListPageWidget('NEWS')
-          ));
-        },
-      ));
-*/
     }
 
     // FAQ
@@ -363,25 +205,6 @@ class DrawerMenu extends StatefulWidget {
             Navigator.push(context, SlideTopRoute(page: FAQsPageWeb()));
         }
       }));
-
-/*
-      list.add(ListTile(
-        dense: true,
-        title: _getMenuItem( Icons.live_help, 'FAQs' ),
-        onTap: () {
-          switch (gblSettings.aircode) {
-            case 'LM':
-              Navigator.push(context, SlideTopRoute(page: FAQsPage()));
-              break;
-            case 'SI':
-              Navigator.push(context, SlideTopRoute(page: FAQsPage()));
-              break;
-            default:
-              Navigator.push(context, SlideTopRoute(page: FAQsPageWeb()));
-          }
-        },
-      ));
-*/
     }
 
     // contact us
@@ -401,25 +224,6 @@ class DrawerMenu extends StatefulWidget {
       }
       }));
 
-/*
-      list.add(ListTile(
-        dense: true,
-    title: _getMenuItem( Icons.phone, 'Contact us' ),
-    onTap: () {
-    //Navigator.push(context, SlideTopRoute(page: ContactUsPage()
-    switch (gblSettings.aircode) {
-    case 'LM':
-    Navigator.push(context, SlideTopRoute(page: ContactUsPage()));
-    break;
-    case 'SI':
-    Navigator.push(context, SlideTopRoute(page: ContactUsPage()));
-    break;
-    default:
-    Navigator.push(context, SlideTopRoute(page: ContactUsPageWeb()));
-    }
-    },
-    ));
-*/
   }
 
     // custom1
@@ -437,16 +241,6 @@ class DrawerMenu extends StatefulWidget {
             Navigator.push(context,
                 SlideTopRoute(page: CustomPageWeb(pageText, url)));
             }
-/*
-            list.add(ListTile(
-                dense: true,
-                title: _getMenuItem(Icons.web, menuText),
-                onTap: () {
-                  Navigator.push(context,
-                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
-                })
-            );
-*/
         } catch (e) {
           logit(e.toString());
         }
@@ -464,15 +258,6 @@ class DrawerMenu extends StatefulWidget {
               Navigator.push(context,
                   SlideTopRoute(page: CustomPageWeb(pageText, url)));
             }));
-/*
-            list.add(ListTile(
-                dense: true,
-                title: _getMenuItem(Icons.web, menuText),
-                onTap: () {
-                  Navigator.push(context,
-                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
-                }));
-*/
           }
         } catch (e) {
           logit(e.toString());
@@ -490,16 +275,6 @@ class DrawerMenu extends StatefulWidget {
               Navigator.push(context,
                   SlideTopRoute(page: CustomPageWeb(pageText, url)));
             }));
-/*
-
-            list.add(ListTile(
-                dense: true,
-                title: _getMenuItem(Icons.web, menuText),
-                onTap: () {
-                  Navigator.push(context,
-                      SlideTopRoute(page: CustomPageWeb(pageText, url)));
-                }));
-*/
           }
         } catch (e) {
           logit(e.toString());
@@ -513,15 +288,6 @@ class DrawerMenu extends StatefulWidget {
             SlideTopRoute(page: DebugPage()));
       }));
 
-/*
-      list.add(ListTile(
-          dense: true,
-          title: _getMenuItem(Icons.web, 'Developer Page'),
-          onTap: () {
-            Navigator.push(context,
-                SlideTopRoute(page: DebugPage()));
-          }));
-*/
     }
     
     if( gblIsLive == false && gblWantLogBuffer) {
@@ -696,21 +462,7 @@ class DrawerMenu extends StatefulWidget {
             context, SlideTopRoute(page: AppFeedBackPage(version: version)));
       });
     }));
-/*
-      list.add(ListTile(
-      title: _getMenuItem(Icons.stay_primary_portrait, 'App feedback'),
-      onTap: () {
-        Navigator.of(context).pop();
-        PackageInfo.fromPlatform()
-            .then((PackageInfo packageInfo) =>
-                packageInfo.version + '.' + packageInfo.buildNumber)
-            .then((String version) {
-          Navigator.push(
-              context, SlideTopRoute(page: AppFeedBackPage(version: version)));
-        });
-      },
-    ));
-*/
+
 
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
@@ -759,7 +511,7 @@ class DrawerMenu extends StatefulWidget {
             ListTile(
               contentPadding: EdgeInsets.only(left: 10),
               dense: true,
-              visualDensity: VisualDensity(vertical: -2),
+              visualDensity: VisualDensity(vertical: -1),
               title: _getMenuItem( icon, caption, iconName: iconName, iconColor: iconColor ),
               onTap: () {
                 onClick();

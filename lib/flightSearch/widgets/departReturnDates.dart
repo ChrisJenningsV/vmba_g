@@ -160,8 +160,9 @@ class _JourneyDateWidgetState extends State<JourneyDateWidget> {
               child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                wantHomePageV3() ? v2SearchValueText(_displayText) :
                 TrText(_displayText,
-                  style: wantHomePageV3() ? null : TextStyle(
+                  style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w300,
                     color: Colors.grey,

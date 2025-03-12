@@ -40,7 +40,7 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
       break;
     case 'FQTVLOGIN':
       navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',
-          formTitle: '${gblSettings.fqtvName} Registration'));
+          formTitle: '${gblSettings.fqtvName} Login'));
       break;
     case 'FQTVRESET':
       navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVRESET',

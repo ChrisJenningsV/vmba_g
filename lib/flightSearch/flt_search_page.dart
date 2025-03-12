@@ -130,8 +130,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
           onChanged: _reloadSearch,
         )
             : null,
-        bottomNavigationBar: getBottomNav(context, helpText:  helpText),
-        body: ImageManager.getBodyWithBackground( gblCurPage,_body())
+        bottomNavigationBar: getBottomNav(context, 'FLIGHTSEARCH', helpText:  helpText),
+        body: ImageManager.getBodyWithBackground( 'FLIGHTSEARCH',_body())
     );
   }
 
@@ -172,8 +172,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
       List<Widget> list2 = [];
       list2.add(JourneyDateWidget( isReturn: _isReturn,onChanged: _handleDateChanged));
 
-      list2.add(Padding(padding: EdgeInsets.only(bottom: 5, top: 5),
-        child: new Divider(height: 0.0,    ),    ));
+      list2.add(Padding(padding: EdgeInsets.only(bottom: 5, top: 5),child: new Divider(height: 2.0,thickness: 2, color: Colors.grey,),));
 
       //Pax selection
       list2.add(PassengerWidget(systemColors: gblSystemColors, passengers: booking.passengers,onChanged: _handlePaxNumberChanged,));

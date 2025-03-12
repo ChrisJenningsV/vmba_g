@@ -117,7 +117,7 @@ void configLM() {
 //    wantHomeUpcoming: true,
 //    wantRememberMe: true,
     wantAddContact: true,
-    wantFqtvRegister: true,
+    wantFqtvRegister: false,
     // end new bits
 
    // paySettings: PaySettings(payImageMap: '{"WORLDPAYHOSTED": "image" }' ),
@@ -171,7 +171,7 @@ void configLM() {
 
     adsTermsUrl: 'https://www.loganair.co.uk/customer-support/air-discount-scheme-resident-fare-card-terms-and-conditions/',
     bottomNavPages: 'HOME,FLIGHTSEARCH',
-    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,DIALOGPAGE',
+    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,FQTVLOGIN',
     titleImagePages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
     passengerTypes: PassengerTypes(
   adults: true,

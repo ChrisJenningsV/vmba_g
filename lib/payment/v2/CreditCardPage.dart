@@ -181,7 +181,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         imageName: gblSettings.wantPageImages ? 'paymentPage' : '',
       ),
       endDrawer: DrawerMenu(),
-      bottomNavigationBar: getBottomNav(context, popButton: popButton, helpText: 'The test CC will popular field with working test card values.', custom: customAction),
+      bottomNavigationBar: getBottomNav(context, 'CREDITCARD', popButton: popButton, helpText: 'The test CC will popular field with working test card values.', custom: customAction),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
           Row(children: <Widget>[

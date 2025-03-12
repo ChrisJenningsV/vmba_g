@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
+import '../utilities/helper.dart';
 
 class ImageManager{
   static DecorationImage getNetworkImage(String url, {double? opacity}){
@@ -19,6 +20,9 @@ class ImageManager{
   static Widget getBodyWithBackground( String pageName, Widget body){
     List<Widget> list = [];
 
+    //logit( 'getBWB p:$gblCurPage');
+
+    // n.b. browser back may cause arrival here with wrong pagename
     if( gblSettings.imageBackgroundPages.contains(pageName)){
       AssetImage img = AssetImage('lib/assets/$gblAppTitle/images/pagebg.png');
       list.add(Container(
