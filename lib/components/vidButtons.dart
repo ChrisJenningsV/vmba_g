@@ -6,6 +6,7 @@ import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
+import '../functions/text.dart';
 
 Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
@@ -57,10 +58,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          TrText(
-            caption,
-            style: TextStyle(color: textClr),
-          ),
+          v2TextButton(translate(caption),textClr),
           Padding(
             padding: EdgeInsets.only(left: 5.0),
           ),

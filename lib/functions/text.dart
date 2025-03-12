@@ -52,6 +52,13 @@ Widget v2CalFromText(String text, Color? txtColor){
           color: txtColor)
   );
 }
+Widget v2TextButton(String text,  Color? txtColor){
+  return Text(translate(text),
+      style: TextStyle(
+//      fontSize: 14,
+          color: txtColor)
+  );
+}
 
 Widget v2FlightText(String text,  Color? txtColor){
   return Text(translate(text),
