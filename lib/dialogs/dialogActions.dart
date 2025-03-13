@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:vmba/Managers/commsManager.dart';
 import 'package:vmba/data/models/dialog.dart';
 import 'package:vmba/dialogs/registerActions.dart';
-import 'package:vmba/dialogs/smartDialog.dart';
 import 'package:vmba/menu/appFeedBackPage.dart';
 
 import '../ads/adsPage.dart';
@@ -34,6 +33,9 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
   }
 
   switch( action.toUpperCase()){
+    case 'POP':
+      Navigator.of(context).pop();
+      break;
     case 'FQTVREGISTER':
       navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVREGISTER',
           formTitle: '${gblSettings.fqtvName} Registration'));

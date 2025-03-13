@@ -16,7 +16,6 @@ import 'package:vmba/dialogs/genericFormPage.dart';
 import 'package:vmba/utilities/helper.dart';
 import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/utilities/navigation.dart';
-import 'package:vmba/utilities/widgets/colourHelper.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../Helpers/settingsHelper.dart';
@@ -28,7 +27,6 @@ import '../Managers/PaxManager.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3FormFields.dart';
-import '../v3pages/controls/v3Dialog.dart';
 
 //ignore: must_be_immutable
 class MyFqtvPage extends StatefulWidget {
@@ -1502,6 +1500,7 @@ void fqtvResetPassword(BuildContext context, String email, {void Function()? ref
   String msg = json.encode(ApiFqtvResetPasswordRequest(
       email).toJson());
   String method = 'ResetPassword';
+  gblActionBtnDisabled = true;
 
   //print(msg);
   sendVRSCommand(msg, ApiMethod:  "/FqTvMember/ResetPassword").then((resultin){

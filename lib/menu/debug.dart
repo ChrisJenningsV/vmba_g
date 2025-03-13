@@ -161,6 +161,7 @@ class DebugPageState extends State<DebugPage> {
         ],
       ));
     }
+    if( gblSecurityLevel >= 100 ) {
       list.add(SettingsSection(
         title: Text('User Interface'),
         tiles: [
@@ -186,7 +187,14 @@ class DebugPageState extends State<DebugPage> {
                   new DialogFieldDef(field_type: 'list',
                       caption: 'Seat Price',
                       valueKey: 'seatPrice',
-                      options: ['oval','square','round', 'ovalfill','squarefill','roundfill']
+                      options: [
+                        'oval',
+                        'square',
+                        'round',
+                        'ovalfill',
+                        'squarefill',
+                        'roundfill'
+                      ]
                   ));
               dialog.fields.add(new DialogFieldDef(field_type: 'space'));
 
@@ -198,66 +206,66 @@ class DebugPageState extends State<DebugPage> {
           ),
         ],
       ));
-    list.add(SettingsSection(
-      title: Text('New Features'),
-      tiles: [
-    SettingsTile.switchTile(
-    initialValue: gblSettings.wantCustomAnimations,
-      title: Text('Custom Progress Animation'),
-      activeSwitchColor: Colors.blue,
-      leading: Icon(Icons.airplanemode_inactive),
-      onToggle: (value) {
-        setState(() {
-          gblSettings.wantCustomAnimations = value;
-        });
-      },
-    ),
-      SettingsTile.switchTile(
-        title: Text('News'),
-        activeSwitchColor: Colors.blue,
-        leading: Icon(Icons.phone_android),
-        initialValue: gblSettings.wantNews,
-        onToggle: (value) {
-          setState(() {
-            gblSettings.wantNews = value;
-          });
-        },
-      ),
-      SettingsTile.switchTile(
-        title: Text('Flight Status'),
-        activeSwitchColor: Colors.blue,
-        leading: Icon(Icons.airplanemode_active),
-        initialValue: gblSettings.wantFlightStatus,
-        onToggle: (value) {
-          setState(() {
-            gblSettings.wantFlightStatus = value;
-          });
-        },
-      ),
-      SettingsTile.switchTile(
-        title: Text('Vouchers'),
-        activeSwitchColor: Colors.blue,
-        leading: Icon(Icons.airplane_ticket_outlined),
-        initialValue: gblSettings.wantFopVouchers,
-        onToggle: (value) {
-          setState(() {
-            gblSettings.wantFopVouchers = value;
-          });
-        },
-      ),
-      SettingsTile.switchTile(
-        title: Text('Help centre'),
-        activeSwitchColor: Colors.red,
-        leading: Icon(Icons.help_center),
-        initialValue: gblSettings.wantHelpCentre,
-        onToggle: (value) {
-          setState(() {
-            gblSettings.wantHelpCentre = value;
-          });
-        },
-      ),
-    ]));
-
+      list.add(SettingsSection(
+          title: Text('New Features'),
+          tiles: [
+            SettingsTile.switchTile(
+              initialValue: gblSettings.wantCustomAnimations,
+              title: Text('Custom Progress Animation'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplanemode_inactive),
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantCustomAnimations = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('News'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.phone_android),
+              initialValue: gblSettings.wantNews,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantNews = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Flight Status'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplanemode_active),
+              initialValue: gblSettings.wantFlightStatus,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantFlightStatus = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Vouchers'),
+              activeSwitchColor: Colors.blue,
+              leading: Icon(Icons.airplane_ticket_outlined),
+              initialValue: gblSettings.wantFopVouchers,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantFopVouchers = value;
+                });
+              },
+            ),
+            SettingsTile.switchTile(
+              title: Text('Help centre'),
+              activeSwitchColor: Colors.red,
+              leading: Icon(Icons.help_center),
+              initialValue: gblSettings.wantHelpCentre,
+              onToggle: (value) {
+                setState(() {
+                  gblSettings.wantHelpCentre = value;
+                });
+              },
+            ),
+          ]));
+    }
     return SettingsList(
       sections: list
     );
@@ -367,7 +375,6 @@ IconData iconFromText(VNavButton b){
 
     default:
       return Icons.question_mark;
-      break;
   }
 }
 

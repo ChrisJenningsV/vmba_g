@@ -523,62 +523,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     }
 
     return seatsByPosition();
-
-    return Container(
-        margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-
-        decoration: BoxDecoration(
-          //border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0)),
-          color: gblSettings.seatPlanStyle.contains('I')
-              ? null
-              : gblSystemColors.seatPlanBackColor,
-          image: gblSettings.seatPlanStyle.contains('I') ?
-          DecorationImage(
-              image: AssetImage('lib/assets/images/sky.png') as ImageProvider,
-              fit: BoxFit.fill) : null,
-        ),
-        child: Column(children: renderSeats(
-            rows, minCol, maxCol, widget.rloc, widget.cabin))
-    );
-
-    Expanded(child:
-    Container(
-        margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-        height: 2000,
-        width: 400,
-        decoration: BoxDecoration(
-          //border: Border.all(color: v2BorderColor(), width: v2BorderWidth()),
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0)),
-          color: Colors.black,
-        ),
-        child: Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: ListView(
-                    controller: _controller,
-                    padding: EdgeInsets.only(left: 5, right: 5),
-                    children: renderSeats(
-                        rows, minCol, maxCol, widget.rloc, widget.cabin),
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: Text('price', style: TextStyle(color: Colors.red),)
-              ),
-            ]
-//        )
-        )
-    )
-    );
-/*
-    ],
-    ) ;
-*/
   }
 
   List<Widget> renderSeats(int rows, int minCol, int maxCol, String rloc,

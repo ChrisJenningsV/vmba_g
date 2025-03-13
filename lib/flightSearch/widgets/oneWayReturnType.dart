@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
-import 'package:vmba/data/SystemColors.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../../data/globals.dart';

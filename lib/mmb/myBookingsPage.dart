@@ -11,7 +11,6 @@ import 'dart:convert';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/timeHelper.dart';
-import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/data/globals.dart';
@@ -1325,7 +1324,7 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
             doUpdate();
           //setState(() {});
         }), wantIcon: false,
-          topMargin: 90,
+          topMargin: 150,
 
         ));
 

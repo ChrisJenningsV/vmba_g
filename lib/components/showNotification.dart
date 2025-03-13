@@ -120,7 +120,28 @@ List<Widget> _getBody(
   if (data['format'] != null && data['format'] == 'HTML' && data['html'] != '') {
     body = data['html'];
   } else {
-    body = notification.body as String;
+    String body1 = notification.body as String;
+
+    String body2 = '';
+    body2 = body1.replaceAll('\/r', '<br>');
+    body2 = '';
+    // for some reason replace not working for this string - some sort of constant ??
+    for (int i=0; i<body1.length;i++){
+      String c1 = body1[i];
+      if( c1 == '\\'){
+        String c2 = body1[i+1];
+        if( c2 == 'n'){
+          // rip it out
+          i++;
+          c1 = '<br>';
+        }
+      }
+      body2 += c1;
+    }
+
+    // body1.replaceAll('/[\n\r]/g', '<br>');
+  //  body=body1.replaceAll('\n', '<br\>');
+      body = body2;
   }
   double h = 200;
   if (data['height'] != null && data['height'] != '') {

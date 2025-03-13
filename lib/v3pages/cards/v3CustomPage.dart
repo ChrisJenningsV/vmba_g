@@ -7,17 +7,13 @@ import 'package:vmba/v3pages/cards/searchCard.dart';
 import 'package:vmba/v3pages/cards/v3Card.dart';
 
 import '../../components/trText.dart';
-import '../../components/vidCards.dart';
 import '../../data/globals.dart';
 import '../../menu/contact_us_page.dart';
 import '../../menu/menu.dart';
 import '../../mmb/myBookingsPage.dart';
 import '../../utilities/helper.dart';
-import '../../utilities/navigation.dart';
-import '../../utilities/widgets/colourHelper.dart';
 import '../Templates.dart';
 import '../loggedInHomePage.dart';
-import '../v3BottomNav.dart';
 import '../v3Theme.dart';
 import '../v3UnlockPage.dart';
 import 'FqtvLogin.dart';

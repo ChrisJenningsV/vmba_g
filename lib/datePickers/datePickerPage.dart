@@ -62,7 +62,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
           ),
         ),
         body: gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar ?
-        ImageManager.getBodyWithBackground( 'DATEPICKER',wrapCal(
+        ImageManager.getBodyWithBackground(context, 'DATEPICKER',wrapCal(
            DayPickerPage(
                 firstDate: DateTime.now(),
                 departureDate: widget.departureDate,
@@ -70,7 +70,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget>
                 onChanged: _handleDateChanged,
               ),
                 (){ setState(() {},);},
-                false, departureDate, null))
+                false, departureDate, null), null)
         : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

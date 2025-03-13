@@ -219,7 +219,7 @@ class PassengerDetail {
 
     }
 
-    if (lastName == '' || lastName == null) {
+    if (lastName == '' ) {
 /*
       gblWarning = 'Last name is required';
       return false;
@@ -253,7 +253,7 @@ class PassengerDetail {
 
     }
 
-    if (gblSettings.wantGender && (gender == null || gender.isEmpty)) {
+    if (gblSettings.wantGender &&  gender.isEmpty) {
 /*
       gblWarning = 'Gender is required';
       return false;
@@ -264,7 +264,7 @@ class PassengerDetail {
       return errorParams;
     }
 
-    if( gblRedeemingAirmiles && (fqtv == null || fqtv.isEmpty )){
+    if( gblRedeemingAirmiles && (fqtv.isEmpty )){
 /*
       gblWarning = '${gblSettings.fqtvName}' + translate( ' number required');
           return false;
@@ -274,7 +274,7 @@ class PassengerDetail {
       errorParams.isError = true;
       return errorParams;
     }
-    if( gblSettings.wantCountry && (country == null || country == '') ){
+    if( gblSettings.wantCountry && (country == '') ){
 /*
       gblWarning = translate( 'Country is required');
       return false;
@@ -295,7 +295,7 @@ class PassengerDetail {
         // check age OK
         if( this.paxType ==PaxType.infant ){
           DateTime birthday = DateTime(dateOfBirth!.year + gblSettings.passengerTypes.infantMaxAge, dateOfBirth!.month,  dateOfBirth!.day);
-          if( birthday.isBefore(gblSearchParams!.returnDate as DateTime)){
+          if( birthday.isBefore(gblSearchParams.returnDate as DateTime)){
             logit('infant too old on return');
             errorParams.msg = translate( 'Sorry, it seems that an infant has an important birthday relating to this booking.\nYou cannot make a return ' +
               'booking where an infant is under ${gblSettings.passengerTypes.infantMaxAge} on the outbound and over ${gblSettings.passengerTypes.infantMaxAge} ' +
@@ -307,7 +307,7 @@ class PassengerDetail {
           }
         } else if (this.paxType == PaxType.child){
           DateTime birthday = DateTime(dateOfBirth!.year + gblSettings.passengerTypes.childMaxAge, dateOfBirth!.month,  dateOfBirth!.day);
-          if( birthday.isBefore(gblSearchParams!.returnDate as DateTime)){
+          if( birthday.isBefore(gblSearchParams.returnDate as DateTime)){
             logit('infant too old on return');
             errorParams.msg = translate( 'Sorry, it seems that a child has an important birthday relating to this booking.\nYou cannot make a return ' +
                 'booking where an child is under ${gblSettings.passengerTypes.childMaxAge} on the outbound and over ${gblSettings.passengerTypes.childMaxAge} ' +
@@ -375,9 +375,11 @@ class PassengerDetail {
       case PaxType.teacher:
         data['paxType'] = 'TD';
         break;
+/*
       default:
         data['paxType'] = 'AD';
         break;
+*/
     }
 /*
       if( this.dateOfBirth == null ) {
@@ -408,10 +410,12 @@ class PassengerDetail {
     if(json['firstName']!= null )firstName = json['firstName'];
     if(json['middleName']!= null )middleName = json['middleName'];
     if(json['lastName']!= null )lastName = json['lastName'];
-    if(json['wantNotifications']!= null )wantNotifications = json['wantNotifications'];
+    if(json['wantNotifications']!= null )wantNotifications = parseBool(json['wantNotifications']);
+/*
     if( wantNotifications == null ) {
       wantNotifications = false;
     }
+*/
 
     switch (json['paxType']) {
       case 'IN':
@@ -674,13 +678,17 @@ class FQTVMemberTransactions {
   FQTVMemberTransactions.fromJson(List<dynamic> json) {
     trans = [];
 
+/*
     if (json is List) {
+*/
       json.forEach((v) {
         trans.add(new ApiFQTVMemberTransaction.fromJson(v));
       } );
+/*
     } else {
      // trans.add(new ApiFQTVMemberTransaction.fromJson(json));
     }
+*/
   }
 }
 
@@ -736,7 +744,7 @@ class ApiFqtvMemberTransactionsResp extends ApiResponseStatus {
             _getString(tran['arrivalCityCode']),
             _getNumber(tran['airMiles']),
             _getString(tran['description'])) ;
-        transactions!.add(mTran as ApiFQTVMemberTransaction) ;
+        transactions!.add(mTran /*as ApiFQTVMemberTransaction*/) ;
       }
     } catch (e) {
       print(e);
@@ -751,9 +759,11 @@ String _getString(String? inStr) {
 }
 
 String _getNumber(double inNo) {
+/*
   if( inNo == null ) {
     return '0';
   }
+*/
   return '$inNo';
 }
 

@@ -13,7 +13,6 @@ import '../components/vidButtons.dart';
 import '../v3pages/cards/typogrify.dart';
 import '../v3pages/controls/V3AppBar.dart';
 import '../v3pages/controls/V3Constants.dart';
-import '../v3pages/v3Theme.dart';
 
 //ADS40 00 00 02 09 095
 //Pin: 9831

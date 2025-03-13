@@ -49,7 +49,7 @@ void configLM() {
     seatSelectButtonColor: Colors.amber,
     seatSelectTextColor: Colors.black,
     calDepartColor: Colors.red,
-    calReturnColor: Colors.purple,
+    calReturnColor: Colors.red,
     calBackColor: Colors.white,
 
     // new
@@ -156,7 +156,7 @@ void configLM() {
 //  hostBaseUrl:  'https://customertest.videcom.com/LoganAirInHouse/VARS/public',
   iOSAppId: '1457545908',
   androidAppId: 'uk.co.loganair.booking',
-  fqtvName: 'Clan',
+  fqtvName: 'Loyalty',
   appFeedbackEmail: 'appfeedback@loganair.co.uk',
   groupsBookingsEmail: 'groups@loganair.co.uk',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTVlogin"}',
@@ -171,13 +171,15 @@ void configLM() {
 
     adsTermsUrl: 'https://www.loganair.co.uk/customer-support/air-discount-scheme-resident-fare-card-terms-and-conditions/',
     bottomNavPages: 'HOME,FLIGHTSEARCH',
-    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,FQTVLOGIN',
+    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,FQTVLOGIN,FQTVRESET',
     titleImagePages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
     passengerTypes: PassengerTypes(
   adults: true,
   child: true,
   infant: true,
   youths: true,
+      student: true,
+      senior: true,
       wantYouthDOB: true,
 
   ),

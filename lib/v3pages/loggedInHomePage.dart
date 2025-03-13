@@ -1,26 +1,17 @@
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:vmba/Managers/imageManager.dart';
-import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/models/models.dart';
-import 'package:vmba/v3pages/v3BottomNav.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../components/showDialog.dart';
 import '../components/trText.dart';
-import '../components/vidCards.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../data/repository.dart';
 import '../dialogs/genericFormPage.dart';
-import '../menu/contact_us_page.dart';
-import '../menu/menu.dart';
 import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
 import 'Templates.dart';
-import 'cards/searchCard.dart';
 import 'cards/v3CustomPage.dart';
 
 class LoggedInHomePage extends StatefulWidget {

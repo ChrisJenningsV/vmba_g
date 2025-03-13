@@ -102,7 +102,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
         endDrawer: DrawerMenu(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           gblSettings.wantNewCalendar ?
-        ImageManager.getBodyWithBackground( 'DATEPICKER',wrapCal(
+        ImageManager.getBodyWithBackground( context,'DATEPICKER',wrapCal(
                 DayPickerPage(
                   firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),
                   departureDate: DateTime.parse(DateFormat('y-MM-dd').format(departureDate!) + ' 00:00:00'),
@@ -113,7 +113,7 @@ class _DatePickerWidgetState extends State<MmbDatePickerWidget>
                   onChanged: _handleDateChanged,
               ),
                   (){ setState(() {},);},
-              false, departureDate, null))
+              false, departureDate, null), null)
               :
           DayPickerPage(
             firstDate: DateTime.parse(DateFormat('y-MM-dd').format(firstDate!) + ' 00:00:00'),

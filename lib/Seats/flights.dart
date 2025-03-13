@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/data/globals.dart';
@@ -40,6 +41,7 @@ Widget getFlightSelector(BuildContext context, void Function() onChange){
       ));
       index ++;
     });
+*/
 /*
     list.add(
       ButtonSegment<int>(
@@ -50,7 +52,8 @@ Widget getFlightSelector(BuildContext context, void Function() onChange){
                 : Colors.black,),
           icon: Icon(Icons.add, size: 1, color: Colors.transparent,)
       ));
-*/
+*//*
+
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,4 +93,4 @@ Widget getFlightSelector(BuildContext context, void Function() onChange){
     return  Align( alignment: Alignment.topLeft, child: VTitleText(outLong, size: TextSize.large,));
   }
 
-}
+}*/

@@ -17,9 +17,6 @@ import '../data/globals.dart';
 import '../data/models/dialog.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
-import '../utilities/widgets/appBarWidget.dart';
-import '../v3pages/cards/v3FormFields.dart';
-import '../v3pages/controls/V3Constants.dart';
 import '../v3pages/fields/Pax.dart';
 import 'dialogActions.dart';
 
@@ -60,7 +57,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   double? width;
   gblActionBtnDisabled = false;
-  logit('get smart dialog');
+  logit('get smart dialog form: ${gblCurDialog!.formname}');
 
 /*
   if( content == null ) content = getDialogContent(context, dialog, (){ doUpdate(); });
@@ -76,9 +73,10 @@ class _smartDialogPageState extends State<smartDialogPage> {
   });
 
     return  Scaffold(
-      floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
+ /*     floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
           ? wrapFootField(context, gblCurDialog!,gblCurDialog!.pageFoot.first, (){}) : null ,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
+      resizeToAvoidBottomInset: true,*/
       //extendBodyBehindAppBar: gblCurDialog!.formname == 'FQTVLOGIN' ? true : false ,
       appBar:
         //vidAppBar(titleText: gblCurDialog!.caption , backgroundColor:  gblCurDialog!.formname == 'FQTVLOGIN' ? Colors.transparent :v2PageBackgroundColor(),), //
@@ -86,7 +84,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
         //appBar(context, '', PageEnum.summary, backgroundColor: Colors.transparent),
       endDrawer: DrawerMenu(),
       backgroundColor: v2PageBackgroundColor(),
-        body: ImageManager.getBodyWithBackground( gblCurPage,_body())
+        body: ImageManager.getBodyWithBackground(context, gblCurPage,_body(), gblCurDialog)
 
     );
 
@@ -98,7 +96,7 @@ Widget _body() {
   Widget flexibleSpace = Padding(padding: EdgeInsets.all(30,));
   if (gblSettings.pageImageMap != null && gblSettings.pageImageMap != '') {
     Map pageMap = json.decode(gblSettings.pageImageMap.toUpperCase());
-    if (pageMap['FQTV'] != null) {
+    if (gblCurDialog != null && gblCurDialog!.formname == 'FQTVLOGIN' && pageMap['FQTV'] != null) {
       String pageImage = pageMap['FQTV'];
 
       if (pageImage != null && pageImage.isNotEmpty) {
@@ -258,10 +256,11 @@ Widget? getDialogContent(BuildContext context, DialogDef dialog, void Function()
     Padding(padding: EdgeInsets.all(10),
       child: vidWideActionButton(context, dialog.actionText, (c, d){
         // button pressed
-        gblActionBtnDisabled = true;
-        doUpdate();
-
-        doDialogAction(context, null, doUpdate );
+        if( gblActionBtnDisabled == false ){
+          gblActionBtnDisabled = true;
+          doUpdate();
+          doDialogAction(context, null, doUpdate);
+        }
     }, pad: 5 , disabled: gblActionBtnDisabled ),  ));
 
   dialog.dialogFoot.forEach((f) {
@@ -300,6 +299,8 @@ Widget wrapFootField(BuildContext context,DialogDef dialog, DialogFieldDef f, vo
 
 void initField( DialogFieldDef f){
   switch (f.field_type.toUpperCase()){
+    case 'SCROLLTEXT':
+      break;
     case 'FQTVNUMBER':
       TextEditingController _fqtvTextEditingController = new TextEditingController();
       f.controller = _fqtvTextEditingController;
@@ -374,7 +375,21 @@ void initField( DialogFieldDef f){
 
 Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool isFoot, void Function() doUpdate){
   switch (f.field_type.toUpperCase()){
-    case 'FQTVNUMBER':
+    case 'SCROLLTEXT':
+      return Container(
+        height: 300,
+        child: Expanded(
+        flex: 1,
+        child: new SingleChildScrollView(
+          scrollDirection: Axis.vertical,//.horizontal
+          child: new Text( f.caption,
+            style: new TextStyle(
+               color: Colors.black,
+            ),
+          ),
+        ),
+      ));
+  case 'FQTVNUMBER':
 /*
       TextEditingController _fqtvTextEditingController = new TextEditingController();
       dialog.editingControllers.add(_fqtvTextEditingController);
@@ -389,7 +404,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
           }
         },
       )  );
-      break;
 
     case 'EMAIL':
 /*
@@ -466,7 +480,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
           return null;
         },
       ));
-      break;
     case 'SWITCH':
       return Padding(padding: EdgeInsets.only(left: 10, right: 10),
         child:Row(
@@ -493,7 +506,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
           ),
         ],
       ));
-      break;
 
     case 'LIST':
       return Padding(padding: EdgeInsets.only(left: 10, right: 10),
@@ -515,7 +527,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
                 ),
               ],
           ));
-      break;
 
     case 'NUMBER':
       return new Padding(padding: EdgeInsets.only(left: 10, right: 10),
@@ -539,7 +550,6 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
       }
       },
       ));
-      break;
     case 'TEXT':
       return Padding(padding: EdgeInsets.only(left: 10 ), child:TrText(f.caption));
     case 'ACTION':
@@ -550,11 +560,13 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
                 ),
                 // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
-                  gblActionBtnDisabled = true;
-                  doUpdate();
+                  if(gblActionBtnDisabled == false ) {
+                    gblActionBtnDisabled = true;
+                    doUpdate();
 
-                  Navigator.of(context).pop();
-                  doDialogAction(context, f, doUpdate);
+                    Navigator.of(context).pop();
+                    doDialogAction(context, f, doUpdate);
+                  }
                 }
             );
         } else {
@@ -568,12 +580,14 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
             ),
                 // style: TextButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.grey.shade300, width: 2)),
                 onPressed: () {
-                  gblActionBtnDisabled = true;
-                  doUpdate();
+                  if(gblActionBtnDisabled == false ) {
+                    gblActionBtnDisabled = true;
+                    doUpdate();
 
-                  Navigator.of(context).pop();
-                  doDialogAction(context, f, doUpdate);
-                  /*
+                    Navigator.of(context).pop();
+                    doDialogAction(context, f, doUpdate);
+                  }
+                /*
             navToGenericFormPage(context, new FormParams(formName: 'FQTVREGISTER',
             formTitle: '${gblSettings.fqtvName} Registration'));
             */
@@ -581,10 +595,8 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
             )]
             );
         }
-break;
     case 'SPACE':
       return SizedBox(height: 15,);
-      break;
   }
   return Container();
 }

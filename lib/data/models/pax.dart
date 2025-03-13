@@ -33,7 +33,7 @@ class PaxList{
 
   String getOccupant(String code, Seat? seat, String rloc){
     bool bFound = false;
-    this!.list!.forEach((pax) {
+    this.list!.forEach((pax) {
        if( pax.seat == code){
          // get initials
          List<String> strArray = pax.name.split(' ');
@@ -46,11 +46,11 @@ class PaxList{
     });
     if( bFound)     return code;
     if(seat != null ) {
-      if (seat!.sRLOC == rloc) {
-        if( seat!.sFirstName != '' ) {
-          code = seat!.sFirstName.substring(0, 1);
-          if (seat!.sLastName != '') {
-            code += seat!.sLastName.substring(0, 1);
+      if (seat.sRLOC == rloc) {
+        if( seat.sFirstName != '' ) {
+          code = seat.sFirstName.substring(0, 1);
+          if (seat.sLastName != '') {
+            code += seat.sLastName.substring(0, 1);
             bFound = true;
           }
         }
@@ -74,14 +74,12 @@ class PaxList{
         pax.selected = false;
       }
     });
-    if( gblSelectedSeats != null ){
       int index = 0;
-      gblSelectedSeats!.forEach((seat) {
+      gblSelectedSeats.forEach((seat) {
         if ( seat == sCode) {
-          gblSelectedSeats![index] ='';
+          gblSelectedSeats[index] ='';
         }
         index+=1;
       });
-    }
   }
 }

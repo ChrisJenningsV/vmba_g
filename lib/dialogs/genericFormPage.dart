@@ -8,8 +8,6 @@ import '../components/trText.dart';
 import '../data/globals.dart';
 import '../data/models/dialog.dart';
 import 'smartDialog.dart';
-import '../utilities/widgets/appBarWidget.dart';
-import '../v3pages/controls/V3Constants.dart';
 import '../forms/fqtvRegisterFields.dart';
 
 class FormParams {

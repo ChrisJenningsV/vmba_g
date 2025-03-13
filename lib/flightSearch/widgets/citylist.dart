@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:vmba/Helpers/settingsHelper.dart';
-import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
@@ -13,7 +11,6 @@ import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../data/models/cities.dart';
-import '../../flightStatus/flightStatusPage.dart';
 import '../../utilities/helper.dart';
 import '../../v3pages/controls/V3AppBar.dart';
 

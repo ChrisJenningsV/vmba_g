@@ -49,8 +49,7 @@ class PassengerTypes {
   });
 
   PassengerTypes.fromJson(Map<String, dynamic> json) {
-      this.adults = ['adults'] != null &&
-              json['adults'].toString().toLowerCase() ==
+      this.adults = json['adults'].toString().toLowerCase() ==
                   'false'
           ? false
           : true;

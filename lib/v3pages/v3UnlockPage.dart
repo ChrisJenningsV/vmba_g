@@ -1,19 +1,13 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:vmba/Managers/PaxManager.dart';
 import 'package:vmba/utilities/navigation.dart';
 import 'package:vmba/v3pages/fields/Pax.dart';
-import 'package:vmba/v3pages/loggedInHomePage.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
-import '../data/models/vrsRequest.dart';
 import '../data/repository.dart';
 import '../utilities/helper.dart';
 
@@ -260,7 +254,7 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
               } else {
                 gblValidationPinTries +=1;
                 String value = emailTextEditingController.text;
-                String er = validateEmail(value!.trim());
+                String er = validateEmail(value.trim());
                 if( er == '') {
                   gblValidationEmail = value.trim();
                   _isButtonDisabled = true;

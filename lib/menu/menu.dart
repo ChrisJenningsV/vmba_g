@@ -9,22 +9,15 @@ import 'package:vmba/components/trText.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/selectLang.dart';
-import 'package:vmba/menu/profileList.dart';
 import 'package:vmba/ads/adsPage.dart';
 import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
-import '../data/models/dialog.dart';
-import '../dialogs/genericFormPage.dart';
-import '../dialogs/smartDialog.dart';
-import '../flightStatus/flightStatusPage.dart';
 import '../functions/text.dart';
-import '../helpCentre/helpCentrePage.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
-import '../v3pages/cards/v3CustomPage.dart';
 import 'debug.dart';
 import 'icons.dart';
 
@@ -120,9 +113,9 @@ class DrawerMenu extends StatefulWidget {
 
 
     if(gblSettings.wantHelpCentre) {
-      list.add( menuItem(Icons.help_center, 'Help Centre' , (){
+      list.add( menuItem(Icons.help_center, 'Contact Us' , (){
         Navigator.push(context,
-            SlideTopRoute(page: CustomPageWeb('Help Centre', gblSettings.contactUsUrl)));
+            SlideTopRoute(page: CustomPageWeb('Contact Us', gblSettings.contactUsUrl)));
       },  iconColor: Colors.red));
     }
 
@@ -208,7 +201,7 @@ class DrawerMenu extends StatefulWidget {
     }
 
     // contact us
-    if( gblNoNetwork == false &&
+    if( gblNoNetwork == false && gblSettings.wantHelpCentre == false &&
         (gblSettings.aircode == 'LM' || gblSettings.aircode == 'SI' || gblSettings.contactUsUrl != '')) {
 
       list.add( menuItem( Icons.phone, 'Contact us' , () {
@@ -282,10 +275,10 @@ class DrawerMenu extends StatefulWidget {
       }
     }
 
-    if(gblSecurityLevel >= 100 ){
-      list.add( menuItem(Icons.web, 'Developer Page', () {
+    if(gblSecurityLevel >= 99 ){
+      list.add( menuItem(Icons.web, 'Admin Page', () {
         Navigator.push(context,
-            SlideTopRoute(page: DebugPage()));
+            SlideTopRoute(page: DebugPage(name: 'ADMIN',)));
       }));
 
     }

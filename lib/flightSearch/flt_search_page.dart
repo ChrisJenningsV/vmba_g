@@ -10,7 +10,6 @@ import 'package:vmba/data/repository.dart';
 import 'package:vmba/menu/icons.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:vmba/flightSearch/widgets/evoucher.dart';
-import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
@@ -19,7 +18,6 @@ import '../Managers/imageManager.dart';
 import '../components/bottomNav.dart';
 import '../components/vidAppBar.dart';
 import '../utilities/helper.dart';
-import '../v3pages/controls/V3Constants.dart';
 
 class FlightSearchPage extends StatefulWidget {
   FlightSearchPage({this.ads = false});
@@ -131,7 +129,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         )
             : null,
         bottomNavigationBar: getBottomNav(context, 'FLIGHTSEARCH', helpText:  helpText),
-        body: ImageManager.getBodyWithBackground( 'FLIGHTSEARCH',_body())
+        body: ImageManager.getBodyWithBackground(context, 'FLIGHTSEARCH',_body(), null)
     );
   }
 
@@ -195,6 +193,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
         },
           controlAffinity: ListTileControlAffinity.leading,));
       }
+      // add bottom padding so to scroll up under floating button
+
       list.add( Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -207,6 +207,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
               )
           )
       ));
+      list.add(Padding(padding: EdgeInsets.only(bottom: 100)));
 
 
 
@@ -343,7 +344,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
                 setState(() {
                   gblSearchParams.initAirports();
                   gblSelectedCurrency = newValue as String ;
-                  booking.currency = newValue as String;
+                  booking.currency = newValue ;
                   if(gblSettings.useLogin2 &&  gblSettings.currencyLimitedToDomesticRoutes != ''){
                     // clear from / to
                   }

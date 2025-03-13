@@ -15,7 +15,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 import 'package:vmba/components/trText.dart';
 
-import '../Helpers/settingsHelper.dart';
 import '../calendar/calendarFunctions.dart';
 import '../calendar/verticalFaresCalendar.dart';
 import '../utilities/messagePages.dart';
@@ -133,6 +132,8 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     }
     buffer.write(
         'SalesCity=${this.widget.pnr.pNR.itinerary.itin[widget.mmbBooking.journeyToChange - 1].depart}');
+    buffer.write(
+        ',minClass=${this.widget.pnr.pNR.itinerary.itin[widget.mmbBooking.journeyToChange - 1].xclass}');
 /*
     if( this.widget.newBooking.eVoucherCode != null && this.widget.newBooking.eVoucherCode.isNotEmpty && this.widget.newBooking.eVoucherCode != '' ){
       buffer.write(',evoucher=${this.widget.newBooking.eVoucherCode}');

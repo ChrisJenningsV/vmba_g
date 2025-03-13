@@ -8,8 +8,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/models/pnr.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
-
-import '../Helpers/settingsHelper.dart';
 import '../Products/optionsPage.dart';
 import '../calendar/bookingFunctions.dart';
 import '../components/showDialog.dart';

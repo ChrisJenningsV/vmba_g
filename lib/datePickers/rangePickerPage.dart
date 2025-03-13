@@ -4,13 +4,10 @@ import 'package:vmba/datePickers/widgets/dayBuilder.dart';
 import 'package:vmba/datePickers/widgets/rangePicker.dart';
 import 'package:vmba/datePickers/models/flightDatesModel.dart';
 import 'package:intl/intl.dart';
-import 'package:vmba/components/trText.dart';
 import '../Managers/imageManager.dart';
 import '../components/vidAppBar.dart';
 import '../components/vidButtons.dart';
 import '../data/globals.dart';
-import '../v3pages/controls/V3AppBar.dart';
-import '../v3pages/controls/V3Constants.dart';
 
 
 class RangePickerWidget extends StatefulWidget {
@@ -73,14 +70,14 @@ class _RangePickerWidgetState extends State<RangePickerWidget>
         ),
         body:
     gblSettings. wantNewCalendar || gblSettings.wantPriceCalendar ?
-    ImageManager.getBodyWithBackground('DATEPICKER', wrapCal(
+    ImageManager.getBodyWithBackground(context,'DATEPICKER', wrapCal(
         RangePickerPage(
             departureDate: widget.departureDate,
             returnDate: widget.returnDate,
             onChanged: _handleDateChanged,
           ),
             (){ setState(() { });},
-            true, startOfPeriod, endOfPeriod))
+            true, startOfPeriod, endOfPeriod), null)
         :         RangePickerPage(
         departureDate: widget.departureDate,
         returnDate: widget.returnDate,

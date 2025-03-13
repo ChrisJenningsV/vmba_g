@@ -31,9 +31,7 @@ class PnrModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pNR != null) {
-      data['PNR'] = this.pNR.toJson();
-    }
+    data['PNR'] = this.pNR.toJson();
     return data;
   }
 

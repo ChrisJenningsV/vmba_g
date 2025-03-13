@@ -172,9 +172,8 @@ class WingStartLeftPath extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     // fill
-    bool isLeft = true;
-    canvas.drawRect(Rect.fromLTRB(isLeft ? 4 * width/5 + 2 : 2,
-        0.0, isLeft ? width-2 : width/5-2 , height),
+    canvas.drawRect(Rect.fromLTRB( 4 * width/5 + 2 ,
+        0.0, width-2 , height),
         new Paint()..color = gblSystemColors.seatPlanWallColor as Color);
 
     canvas.drawLine(Offset(width, 0),
@@ -217,9 +216,8 @@ class WingStartRightPath extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     // fill
-    bool isLeft = false;
-    canvas.drawRect(Rect.fromLTRB(isLeft ? 4 * width/5 + 2 : 2,
-        0.0, isLeft ? width-2 : width/5-2 , height),
+    canvas.drawRect(Rect.fromLTRB( 2,
+        0.0, width/5-2 , height),
         new Paint()..color = gblSystemColors.seatPlanWallColor as Color);
 
       canvas.drawLine(Offset(0, 0),
@@ -260,9 +258,8 @@ class WingEndLeftPath extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // fill
-    bool isLeft = true;
-    canvas.drawRect(Rect.fromLTRB(isLeft ? 4 * width/5 + 2 : 2,
-        0.0, isLeft ? width-2 : width/5-2 , height),
+    canvas.drawRect(Rect.fromLTRB(4 * width/5 + 2 ,
+        0.0, width-2  , height),
         new Paint()..color = gblSystemColors.seatPlanWallColor as Color);
 
     canvas.drawLine(Offset(width, 0),
@@ -304,9 +301,8 @@ class WingEndRightPath extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     // fill
-    bool isLeft = false;
-    canvas.drawRect(Rect.fromLTRB(isLeft ? 4 * width/5 + 2 : 2,
-        0.0, isLeft ? width-2 : width/5-2 , height),
+    canvas.drawRect(Rect.fromLTRB( 2,
+        0.0, width/5-2 , height),
         new Paint()..color = gblSystemColors.seatPlanWallColor as Color);
 
 

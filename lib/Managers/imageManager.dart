@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
+import '../data/models/dialog.dart';
+import '../dialogs/smartDialog.dart';
 import '../utilities/helper.dart';
 
 class ImageManager{
@@ -17,22 +19,35 @@ class ImageManager{
 
   }
 
-  static Widget getBodyWithBackground( String pageName, Widget body){
+  static Widget getBodyWithBackground(BuildContext context,  String pageName, Widget body, DialogDef? curDialog) {
     List<Widget> list = [];
 
     //logit( 'getBWB p:$gblCurPage');
 
     // n.b. browser back may cause arrival here with wrong pagename
-    if( gblSettings.imageBackgroundPages.contains(pageName)){
+    if (gblSettings.imageBackgroundPages.contains(pageName)) {
       AssetImage img = AssetImage('lib/assets/$gblAppTitle/images/pagebg.png');
       list.add(Container(
           decoration: BoxDecoration(
-              color: gblSettings.darkSiteEnabled ?Colors.black : null,
+              color: gblSettings.darkSiteEnabled ? Colors.black : null,
               image: DecorationImage(
-                  //colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
+                //colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
                   image: img, fit: BoxFit.fill))));
     }
     list.add(body);
+    logit( 'wb = ${WidgetsBinding.instance.window.viewInsets.bottom}');
+    if (WidgetsBinding.instance.window.viewInsets.bottom == 0.0) {
+      if ((curDialog != null && curDialog!.pageFoot != null &&
+          curDialog!.pageFoot.length > 0)) {
+        list.add(Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: wrapFootField(
+                context, curDialog!, curDialog!.pageFoot.first, () {}),
+          ),
+        ));
+      }
+    }
     return Stack(
       children: list,
     );

@@ -8,7 +8,6 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/calendar/flightPageUtils.dart';
 
 import '../../Helpers/settingsHelper.dart';
-import '../../components/pageStyleV2.dart';
 import '../../functions/text.dart';
 
 

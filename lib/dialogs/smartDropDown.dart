@@ -209,37 +209,26 @@ Icon getIcon(String option){
       switch(option.toUpperCase()){
       case 'PERSON':
         return Icon(Icons.person);
-        break;
       case 'SETTINGS':
         return Icon(Icons.settings);
-        break;
       case 'CARD':
         return Icon(Icons.credit_card);
-        break;
       case 'FILL':
         return Icon(Icons.event_seat);
-        break;
       case 'LINE':
         return Icon(Icons.event_seat_outlined);
-        break;
       case 'OVAL':
         return Icon(CupertinoIcons.arrowtriangle_down);
-        break;
       case 'SQUARE':
         return Icon(CupertinoIcons.app);
-        break;
       case 'ROUND':
         return Icon(CupertinoIcons.circle);
-        break;
       case 'OVALFILL':
         return Icon(CupertinoIcons.arrowtriangle_down_fill);
-        break;
       case 'SQUAREFILL':
         return Icon(CupertinoIcons.app_fill);
-        break;
       case 'ROUNDFILL':
         return Icon(CupertinoIcons.circle_fill);
-        break;
     }
   return Icon(Icons.question_mark);
 }

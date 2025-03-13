@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'dart:async';
 import 'package:vmba/flightSearch/widgets/citylist.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -7,7 +6,6 @@ import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../../Helpers/settingsHelper.dart';
-import '../../components/pageStyleV2.dart';
 import '../../functions/text.dart';
 import '../../utilities/helper.dart';
 

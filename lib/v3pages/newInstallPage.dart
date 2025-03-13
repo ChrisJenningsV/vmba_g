@@ -1,19 +1,9 @@
-
-
-
 import 'package:flutter/material.dart';
-import 'package:vmba/v3pages/v3BottomNav.dart';
-
-import '../components/showDialog.dart';
 import '../components/trText.dart';
-import '../components/vidCards.dart';
-import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
 import '../menu/contact_us_page.dart';
-import '../menu/menu.dart';
 import '../utilities/helper.dart';
 import 'Templates.dart';
-import 'cards/searchCard.dart';
 import 'cards/v3CustomPage.dart';
 
 class NewInstallPage extends StatefulWidget {

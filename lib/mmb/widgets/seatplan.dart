@@ -26,11 +26,12 @@ import 'package:vmba/components/trText.dart';
 import 'package:vmba/v3pages/controls/V3Constants.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
-import '../../Helpers/settingsHelper.dart';
 import '../../calendar/bookingFunctions.dart';
 import '../../components/vidButtons.dart';
 import '../../controllers/vrsCommands.dart';
 import '../../Managers/commsManager.dart';
+import '../../data/models/dialog.dart';
+import '../../dialogs/smartDialog.dart';
 import '../../menu/menu.dart';
 import '../../utilities/widgets/CustomPageRoute.dart';
 import '../../utilities/widgets/colourHelper.dart';
@@ -152,14 +153,17 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         + cityCodetoAirport(gblPnrModel!.pNR.itinerary.itin[journeyNo].arrive) +
          ' ' +  DateFormat('dd MMM').format(deps) ;
 
-    if( gblIsLive == false && gblSeatplan != null ) text += ' [' + gblSeatplan!.seats.seatsFlt.sRef + ']';
-    return Row( mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          VTitleText(text ,
+    if( gblSecurityLevel >= 100  && gblSeatplan != null ) {
+      text += ' [' + gblSeatplan!.seats.seatsFlt.sRef + ']';
+    }
+      return Row( mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            VTitleText(text ,
             )
-    ]
-    );
-  }
+          ]
+      );
+    }
+
   void _dataLoaded() {
     setState(() {
       _loadingInProgress = false;
@@ -782,7 +786,32 @@ Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
 
     } else {
         list.add(getSeatKey2());
+        if( gblSecurityLevel >= 100 ){
+          // add debug menu
+          String dumpData = gblSeatPlanDef!.dump(false);
+          list.add(
+            Row(
+              children: [
+                vidActionButton(context, 'Dump seats', (context, params) {
+                DialogDef dialog = new DialogDef(caption: 'Seat dump',
+                    actionText: 'OK',
+                    action: 'pop');
+
+                dialog.fields.add(
+                    new DialogFieldDef(field_type: 'scrolltext', caption: dumpData ));
+
+
+                gblCurDialog = dialog;
+                showSmartDialog(context, null, () {
+                  setState(() {});
+                });
+                })
+              ],
+            ));
+        }
+
         if( widget.isMmb == false ) {
+
           list.add(Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -815,6 +844,15 @@ Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
           ));
         }
         list.add(getRoute(gblCurJourney));
+
+        // add comment
+        if( objSeatplan!.seats.seatsFlt.displayInfo != ''   ) {
+          list.add(Padding(padding: EdgeInsets.only(top: 10),
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+              children: [Text(objSeatplan!.seats.seatsFlt.displayInfo, style: TextStyle(fontSize: 16),)
+          ])));
+        }
 
         list.add(        RenderSeatPlan2(
           seatplan: objSeatplan!,

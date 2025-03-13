@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/Managers/imageManager.dart';
+import 'package:vmba/functions/text.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 import '../Helpers/settingsHelper.dart';
 import '../components/showDialog.dart';
@@ -13,10 +13,8 @@ import '../data/globals.dart';
 import '../Managers/commsManager.dart';
 import '../flightSearch/widgets/citylist.dart';
 import '../flightSearch/widgets/journey.dart';
-import '../menu/icons.dart';
 import '../menu/menu.dart';
 import '../utilities/helper.dart';
-import '../utilities/messagePages.dart';
 import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/cards/v3FormFields.dart';
 import '../v3pages/controls/V3Constants.dart';
@@ -61,77 +59,95 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
   @override
   Widget build(BuildContext context) {
-    List <Widget> tabs = [];
+   /* List <Widget> tabs = [];
     List <Widget> tabViews = [];
 
-    tabs.add(TrText('Arrivals'));
-    tabs.add(TrText('Departures'));
-    tabs.add(TrText('Route'));
-    tabs.add(TrText('Flight No'));
+    tabs.add(Container( color: Colors.transparent, child:TrText('Departures', style: TextStyle(color: Colors.white),)));
+    tabs.add(Container( color: Colors.transparent, child:TrText('Arrivals', style: TextStyle(color: Colors.white),)));
+    tabs.add(Container( color: Colors.transparent, child:TrText('Route', style: TextStyle(color: Colors.white),)));
+    tabs.add(Container( color: Colors.transparent, child:TrText('Flight No', style: TextStyle(color: Colors.white),)));
 
-    tabViews.add(getRouteView('a'));
     tabViews.add(getRouteView('d'));
+    tabViews.add(getRouteView('a'));
     tabViews.add(getRouteView('r'));
     tabViews.add(getFltNoView() );
-
+*/
 
     return
 
       new Scaffold(
         backgroundColor: v2PageBackgroundColor(), // Colors.grey.shade50, //
         endDrawer: DrawerMenu(),
-        appBar: appBar(context, _showResults ? 'Flight Status' : 'Flight Status', PageEnum.editPax,
-          //imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
-          toolbarHeight: 160,
-          bottom:  new PreferredSize(
-            preferredSize: new Size.fromHeight(30.0),
-            child: new Container(
-              height: 20.0, child: TabBar(
-                onTap: (index){
-                  logit('OnTab i=$index');
-                  _showResults = false;
-                  setState(() {
-
-                  });
-                  //_controller!.animateTo((index ));
-                },
-                indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.black : gblSystemColors.tabUnderlineColor,
-                isScrollable: true,
-                labelColor: Colors.black,
-                tabs: tabs,
-                controller: _controller),
-            ),
-          ),
-/*
-        actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                  Navigator.pop(context);
-              },
-            )
-          ],
-*/
-        ),
+        appBar: appBar(context, _showResults ? 'Flight Status' : 'Flight Status', PageEnum.editPax ),
         extendBodyBehindAppBar: false,
         //endDrawer: DrawerMenu(),
-        body: ImageManager.getBodyWithBackground(
+        body: ImageManager.getBodyWithBackground(context,
           'FLIGHTSTATUS',
-          TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          //dragStartBehavior: DragStartBehavior.down,
-          viewportFraction: 1.0,
-          controller: _controller,
-          children: tabViews,
-        ),
-        )
-      );
+          _body()/*tabViews*/,
+            null),
+        );
+
+  }
+
+  Widget _body(){
+    List <Widget> tabs = [];
+    List <Widget> tabViews = [];
+
+    tabs.add(Container( padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:TrText('Departures', style: TextStyle(fontSize: 16, color: Colors.white),)));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:TrText('Arrivals', style: TextStyle(fontSize: 16,color: Colors.white),)));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:TrText('Route', style: TextStyle(fontSize: 16,color: Colors.white),)));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:TrText('Flight No', style: TextStyle(fontSize: 16,color: Colors.white),)));
+
+    tabViews.add(getRouteView('d'));
+    tabViews.add(getRouteView('a'));
+    tabViews.add(getRouteView('r'));
+    tabViews.add(getFltNoView() );
+
+    return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 5, bottom: 5),
+            width: MediaQuery.sizeOf(context).width,
+            color: Colors.black,
+            padding: EdgeInsets.only(top: 5, bottom: 5),
+            height: 40.0, child: TabBar(
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  10.0,
+                ),
+                color: Colors.red,
+              ),
+              onTap: (index){
+                logit('OnTab i=$index');
+                _showResults = false;
+                setState(() {
+
+                });
+                //_controller!.animateTo((index ));
+              },
+              indicatorColor: gblSystemColors.tabUnderlineColor == null ? Colors.black : gblSystemColors.tabUnderlineColor,
+              isScrollable: true,
+              labelColor: Colors.black,
+              tabs: tabs,
+              controller: _controller),
+          ),
+          Container(
+              height: MediaQuery.of(context).size.height -160,
+              child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                //dragStartBehavior: DragStartBehavior.down,
+                //  viewportFraction: 1.0,
+                controller: _controller,
+                children:  tabViews,
+              )
+          )
+        ]);
   }
 
   List<DataRow> getRows(String brew) {
     List<DataRow> list = [];
   String dDate = '';
-    List<FlightStatus> fs;
+    List<FlightStatus> fs = [];
     bool byRoute = true;
     int index = _controller!.index;
     if( index > 0 ) byRoute = false;
@@ -148,13 +164,21 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       element.departureAirport == gblOrigin &&
           element.schArrivalAirport == gblDestination).toList();
     } else {
-      String fltNo = _fltNoEditingController.text;
-      gblFltNo = fltNo;
-      fs = gblFlightStatuss!.flights.where((element) => element
-          .flightNumber == fltNo).toList();
+      String fltNo = _fltNoEditingController.text.toUpperCase();
+      if( fltNo != '' ) {
+        gblFltNo = fltNo.replaceAll(gblSettings.aircode, '');
+        gblFltNo = gblFltNo.replaceAll(new RegExp(r'^0+(?=.)'), '');
 
+        if (gblFlightStatuss != null) {
+          fs = gblFlightStatuss!.flights.where((element) =>
+          element
+              .flightNumber == gblFltNo).toList();
+         }
+        logit('got ${fs.length} flights');
+      }
     }
-    var sorted = fs.toList();
+    //var sorted = fs.toList();
+
 
   fs.forEach((flight) {
     if(flight.departureAirportName == flight.schArrivalAirportName ) {
@@ -180,7 +204,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       if( brew == 'a' ) {
         cells.add(DataCell(Text(flight.departureAirportName)));
       }
-      if(  brew == 'r') {
+      if(  brew == 'r' || brew == 'n') {
         cells.add(DataCell(
             Column(
                 children: [
@@ -211,21 +235,24 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       }
       Color clr = Colors.green.shade200;
       if( status.contains('Sched')){
-        clr = Colors.black54;
+        clr = Colors.black26;
       } else if( status.contains('Exp')){
         clr = Colors.blue.shade200;
       } else if( status.contains('Can')){
         clr = Colors.red.shade200;
       }
       cells.add(DataCell(
-        Container(
+          Padding(padding: EdgeInsets.only(right: 5),
+              child: Container(
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: clr,
-            borderRadius:BorderRadius.circular(25.0),
+            borderRadius:BorderRadius.circular(5.0),
           ),
-          child: Text(status,)))
-      );
+          child: Row(
+              children: [Text(status,)])
+        ))
+      ));
       list.add(DataRow(cells: cells));
     }
   });
@@ -239,45 +266,51 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     }
 
     return DataColumn(
+     /* label: Expanded(
+        flex: 2,
+        child: txt));
+*/
       label: Container(
           width: width,
           color: colColor,
           child: txt),
+
     );
   }
 
   Color colColor = Colors.white;
+
   List <DataColumn> getCols(String brew){
     double width = MediaQuery.sizeOf(context).width;
     List <DataColumn> cols = [];
 
     // 20%
-    double colWidth = width /5;
-    cols.add(getColDef(1,'Flight', colWidth, leftPad: 10));
-
+    cols.add(getColDef(1,'Flight', 15 * width /100, leftPad: 10));
 
     if( brew == 'a') {
-//      cols.add(DataColumn(label: Container(color: colColor, child: Text('Departs',)),));
-      // 30%
-      double colWidth = 2.5 * width /10;
-      cols.add(getColDef(2,'Departs', colWidth,));
+      cols.add(getColDef(2,'Departs', 25 * width /100,));
     }
-    if(  brew == 'r') {
-      cols.add(DataColumn(
-        label: Container(color: colColor, child: Text('Route',)),));
+    // a = 40
+    if(  brew == 'r' || brew == 'n') {
+      cols.add(getColDef(2,'route', 25 * width /100,));
     }
-    cols.add(DataColumn( label: getNamedIcon('takeOff', color: Colors.black),));
+    cols.add(getColDef(3,'Take Off', 15 * width /100,));
+    // a = 55
+    //cols.add(DataColumn( label: getNamedIcon('takeOff', color: Colors.black),));
     if( brew == 'd' ) {
-      cols.add(DataColumn(
-        label: Container(color: colColor, child: Text('Arrives',)),));
+      cols.add(getColDef(3,'Arrives', 25* width /100,));
+/*      cols.add(DataColumn(
+        label: Container(color: colColor, child: Text('Arrives',)),));*/
     }
-    cols.add(DataColumn( label: getNamedIcon('landing', color: Colors.black),));
-    cols.add(DataColumn( label: Container( color: colColor, child: Text('Status',)),));
+    cols.add(getColDef(2,'Landing', 15 * width /100,));
+    // a = 70
+    //cols.add(DataColumn( label: getNamedIcon('landing', color: Colors.black),));
+    cols.add(getColDef(2,'Status', 27* width /100,));
+    //cols.add(DataColumn( label: Container( color: colColor, child: Text('Status',)),));
+    // a = 100
 
     return cols;
   }
-
-
 
 
   Widget getFlight(FlightStatus fs, int index ){
@@ -419,9 +452,26 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
               scrollDirection: Axis.vertical,
               child:
           Column(
+            mainAxisSize: MainAxisSize.max,
               children: [
-          Row(mainAxisAlignment: brew == 'a' ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
-          children: searchBoxes),
+
+                // search
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+            margin: EdgeInsets.fromLTRB(5, 2, 5, 2),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  ),
+                  color: Colors.white
+              ),
+          child:
+              Row(mainAxisAlignment: brew == 'a' ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+              children: searchBoxes),
+          ),
+
+          // data table
           Container(
             margin: EdgeInsets.fromLTRB(5, 2, 5, 2),
             decoration: BoxDecoration(
@@ -429,14 +479,6 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
                  // color: Colors.red,
                 ),
                 borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-              BoxShadow(
-              color: Colors.grey,
-              //  gblSystemColors.primaryHeaderColor.withOpacity(0.5), //Colors.blue.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 9), // changes position of shadow
-            )],
               color: Colors.white
             ),
               child:
@@ -502,33 +544,85 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
   TextEditingController _fltNoEditingController = new TextEditingController();
 
   Widget getFltNoView(){
-    return Container(
-        height: 500,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 100)),
 
+    return ConstrainedBox(
+        constraints: BoxConstraints.expand(
+            width: MediaQuery.of(context).size.width
+        ),
+        child:
+        SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child:
+            Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
 
-            Text("Enter Flight number without airline code or leading 0's"),
-            Padding(padding: EdgeInsets.only(left: 10, right: 10),
-              child:V3TextFormField(
-                translate('Flt No'),
-                _fltNoEditingController,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            Padding(padding: EdgeInsets.all(15)),
-            vidWideActionButton(context,'Find Flights',
-                disabled: (_fltNoEditingController.text == '') ? true : false,
-                _onPressed,
-                icon: Icons.check,
-                offset: 0 ),
-            /*_showResults ? getResults('f'):*/ Container()
-          ],
-        ));
+                  // search
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    margin: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0),
+                        ),
+                        color: Colors.white
+                    ),
+                    child:
+                    Row(
+                     // mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      v2Label(translate("Enter Flight number")),
+                      TextField(
+                        textAlign: TextAlign.start,
+                        //keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.black),
+                        controller: _fltNoEditingController,
+                        decoration: InputDecoration(
+                            hintText: 'LM0123',
+                            isDense: true,
+                            constraints: BoxConstraints(
+                                maxWidth: 60
+                            )
+                        ),
+                      )
+                    ]),
+                        vidActionButton(context,'Find Flights',
+                            /*disabled: (_fltNoEditingController.text == '') ? true : false,*/
+                            _onPressed,                            ),
+                        /*_showResults ? getResults('f'):*/ Container()
+                      ],
+                    )),
+
+                  // data table
+                  Container(
+                      margin: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            // color: Colors.red,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white
+                      ),
+                      child: /*Text('data')*/
+                      DataTable(
+                          columnSpacing: 0,
+                          headingTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          dataRowColor: WidgetStateColor.resolveWith((states) => Colors.white),
+                          horizontalMargin: 0,
+                          //columnSpacing: 5,
+                          columns: getCols('n') ,
+                          rows: getRows('n')
+                      )
+                  )
+                ])
+        )
+    );
 
   }
 

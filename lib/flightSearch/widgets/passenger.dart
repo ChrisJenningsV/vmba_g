@@ -9,8 +9,6 @@ import 'package:vmba/menu/icons.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
 import '../../Helpers/settingsHelper.dart';
-import '../../Helpers/stringHelpers.dart';
-import '../../components/pageStyleV2.dart';
 import '../../functions/text.dart';
 
 class PassengerWidget extends StatefulWidget {
@@ -132,13 +130,27 @@ class _PassengerWidgetState extends State<PassengerWidget> {
             }));
           }
           if( gblSettings.passengerTypes.senior){
-
+            PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+                iconName: 'senior', typeName: 'Senior', description: 'over 65', count: widget.passengers!.seniors);
+            list.add(getPaxRow(pri, (priOut){
+              widget.passengers!.seniors = priOut.count;
+              setState(() {             });
+            }));
           }
           if( gblSettings.passengerTypes.student ){
-
+            PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
+                iconName: 'student', typeName: 'Student', description: 'in full time education', count: widget.passengers!.students);
+            list.add(getPaxRow(pri, (priOut){
+              widget.passengers!.students = priOut.count;
+              setState(() {             });
+            }));
           }
-          return Column(
-                children: list,);
+          return SingleChildScrollView(
+              child: Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Column(
+                          children: list,
+              )));
         } else {
           PaxRowInfo pri = PaxRowInfo(min: 0, max: gblSettings.maxNumberOfPax,
               iconName: 'people', typeName: 'Other Passengers', description: '', isMoreButton: true);

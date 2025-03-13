@@ -154,7 +154,7 @@ class SystemColors {
   void setDefaults() {
 
     if( textButtonTextColor == null ) textButtonTextColor = Colors.black;
-    if( accentColor == null ) accentColor = Colors.black;
+    //if( accentColor == null ) accentColor = Colors.black;
     if( oldPriceColor == null ) oldPriceColor = Colors.red;
 
     //final Color primaryHeaderColor;

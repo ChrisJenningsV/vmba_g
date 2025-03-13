@@ -6,7 +6,6 @@ import 'package:vmba/data/models/models.dart';
 import 'package:vmba/v3pages/controls/V3AppBar.dart';
 import '../../Products/productFunctions.dart';
 import '../../calendar/bookingFunctions.dart';
-import '../../components/vidAppBar.dart';
 import '../../data/models/pnr.dart';
 import '../../summary/FareRulesView.dart';
 import '../../summary/summaryView.dart';
@@ -102,7 +101,8 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
             title: getText(title),
             actionsIconTheme: IconThemeData( color: Colors.white),
             actions: actions,
-          ));
+          )
+      );
 
 
     }

@@ -42,6 +42,7 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
 
 
   if( gblSettings.wantSeatPlanImages && gblSeatPlanConfig != null  ) {
+    // we have json definition file for this aircraft
     seatsTop = gblSeatPlanConfig!.top;
     seatsLeft = gblSeatPlanConfig!.left;
     seatHeight = gblSeatPlanConfig!.seatHeight;
@@ -56,6 +57,7 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
 
     logit('set custom seat plan config [$seatsTop]' );
   } else {
+    // need to calc layout
     gblSeatPlanDef = gblSeatplan!.getPlanDataTable();
     int seatsPlusSpace = gblSeatPlanDef!.maxSeatsPerRow ;
     double width = MediaQuery.sizeOf(context).width;
@@ -74,6 +76,9 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
       seatsLeft = swidth;
       cabinWidth = (gblSeatPlanDef!.maxSeatsPerRow + 1) * swidth +
             gblSeatPlanDef!.maxSeatsPerRow * horzSpace;
+
+      seatsLeft = (width - cabinWidth) /2;
+
     } else {
     }
     gblSeatPlanDef!.seatWidth = seatWidth;
@@ -117,13 +122,13 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
   }
   // dump
   if( gblSeatPlanDef != null ){
-    gblSeatPlanDef!.dump();
+    gblSeatPlanDef!.dump(true);
     rows = gblSeatPlanDef!.maxRow;
   }
 
   logit('last row $rows min col $minCol');
 
-  for (var indexRow = 1; indexRow <= rows; indexRow++) {
+  for (var indexRow = gblSeatPlanDef!.minRow; indexRow <= rows; indexRow++) {
     if( layoutMode) {
       list.add(Positioned(
           left: 10,
@@ -168,7 +173,7 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
         }
 
         if (seat != null && (seat!.isSeat())) {
-          logit('s ${seat!.sCode} t:${seatsTop + (indexRow-3) * seatHeight + vertSpace}');
+          //logit('s ${seat!.sCode} t:${seatsTop + (indexRow-3) * seatHeight + vertSpace}');
           bool selected = false;
           bool selectableSeat = true;
           if (gblSelectedSeats.contains(seat!.sCode)) {
@@ -202,7 +207,7 @@ double getLeftOffset(int indexColumn, { bool inclueOffset = true}) {
   return seatsLeft + (indexColumn-gblSeatplan!.getMinCol()) * (seatWidth + horzSpace) + (inclueOffset ? aSpace : 0);
 }
 double getTopOffset(int indexRow) {
-  return seatsTop + (indexRow-3) * (seatHeight + vertSpace) + pricingOffset;
+  return seatsTop + (indexRow-gblSeatPlanDef!.minRow-1) * (seatHeight + vertSpace) + pricingOffset;
 }
 
 getPricing(List <Widget> list, int indexRow ){

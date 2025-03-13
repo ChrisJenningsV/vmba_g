@@ -67,6 +67,7 @@ class Seatplan {
 
     int minCol = -1;
     int maxCol = -1;
+    int minRow = -1;
     int maxRow = -1;
     this.seats.seat.forEach((s) {
       if(minCol == -1 || minCol > s.sCol ){
@@ -78,7 +79,12 @@ class Seatplan {
       if(s.sRow > maxRow ) {
         maxRow = s.sRow;
       }
+      if(s.sRow < minRow || minRow == -1 ) {
+        minRow = s.sRow;
+      }
+
     });
+    def.minRow = minRow;
     def.minCol = minCol;
     def.maxCol = maxCol;
     def.maxRow = maxRow;
@@ -120,7 +126,7 @@ class Seatplan {
         if( seat != null && seat!.isSeat()) {
           seatsThisRow ++;
         } else if(  seat != null && seat!.isAisle()) {
-          logit('aisle r=${seat!.sRow} c=${seat!.sCol}');
+          //logit('aisle r=${seat!.sRow} c=${seat!.sCol}');
           aiselsThisRow++;
         }
         // add this seat (or null ) to map
@@ -320,6 +326,7 @@ class SeatPlanDefinition{
   List<SeatPlanRow> table = [];
 
 //  int noRows = 0;
+  int minRow = 0;
   int maxRow = 0;
   int minCol = 0;
   int maxCol = 0;
@@ -343,7 +350,8 @@ class SeatPlanDefinition{
     return paxlist;
   }
 
-  dump( ){
+  String dump(bool toPrint  ){
+    String dumpOut='';
     if(table != null  ){
       int iRow = 1;
       table!.forEach((row){
@@ -352,18 +360,46 @@ class SeatPlanDefinition{
           if( row.cols[indexCol] != null ){
             Seat seat = row.cols[indexCol];
             if( seat.sCode == ''){
-              sDump += ' ${seat.sCellDescription}';
+              String seatTxt = '';
+              switch (seat.sCellDescription){
+                case 'SeatPlanWidthMarker':
+                  seatTxt = 'w';
+                  break;
+                case 'Wing Start':
+                  seatTxt = 's';
+                  break;
+                case 'Wing Middle':
+                  seatTxt = 'm';
+                  break;
+                case 'Wing End':
+                  seatTxt = 'e';
+                  break;
+                case 'DoorDown':
+                  seatTxt = 'd';
+                  break;
+                case 'DoorUp':
+                  seatTxt = 'u';
+                  break;
+                case 'Aisle':
+                  seatTxt = 'a';
+                  break;
+                default:
+                  seatTxt = seat.sCellDescription;
+                  break;
+
+              }
+              sDump += ' $seatTxt';
             } else {
               sDump += ' ${seat.sCode}';
             }
           }
         };
         //logit('r: $iRow $sDump');
-
-
+        dumpOut += ' r: $iRow ' + sDump + '\n\r';
         iRow++;
       });
     }
+    return dumpOut;
   }
 
   // type of col - used to set width

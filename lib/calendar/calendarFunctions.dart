@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/calendar/widgets/cannedFact.dart';
-import 'package:vmba/components/vidGraphics.dart';
 import 'package:vmba/data/globals.dart';
 
 import '../chooseFlight/chooseFlightPage.dart';
@@ -669,7 +668,6 @@ String formatDayPrice(String amt){
 
 Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBeforeDate, {void Function()? onPressed} ) {
   List <Widget> list = [];
-  bool showNoFlightIcon = false;
 
   Color? txtColor = Colors.black;
   if( isSearchDate(
@@ -682,13 +680,9 @@ Widget getCalDay(Day item, String action, DateTime selectedDate, DateTime hideBe
       //new DateFormat('EEE dd').format(DateTime.parse(item.daylcl)),
     );
 
-      if( showNoFlightIcon ){
-        list.add(vidNoFlights());
-      } else {
-        list.add(v2CalFromText('from',txtColor));
+      list.add(v2CalFromText('from',txtColor));
 
-        list.add(v2CalDayPriceText(calenderPrice(item.cur, formatDayPrice(item.amt), item.miles), txtColor) );
-      }
+      list.add(v2CalDayPriceText(calenderPrice(item.cur, formatDayPrice(item.amt), item.miles), txtColor) );
 
       if( wantRtl()) {
         return SingleChildScrollView(
@@ -1105,24 +1099,8 @@ Widget getCalDate(String sDate, Color? txtColor){
 
   if( gblSettings.wantMonthOnCalendar == true) {
    return v2CalDateText(getIntlDate('EEE dd MMM', DateTime.parse(sDate)), txtColor);
-     Text(getIntlDate('EEE dd MMM', DateTime.parse(sDate)),
-       textScaler: TextScaler.linear(1.2),
-       style: TextStyle(
-       //fontSize: 14,
-       fontWeight:  FontWeight.normal,
-       color: txtColor)
-  );
   } else {
     return v2CalDateText(getIntlDate('EEE dd', DateTime.parse(sDate)), txtColor);
-/*
-      Text(getIntlDate('EEE dd', DateTime.parse(sDate)),
-        textScaler: TextScaler.linear(1.2),
-        style: TextStyle(
-        //fontSize: 14,
-        fontWeight:  FontWeight.normal,
-        color: txtColor)
-    );
-*/
   }
 
 }

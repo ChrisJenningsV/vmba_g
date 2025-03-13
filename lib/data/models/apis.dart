@@ -187,9 +187,7 @@ class Fields {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.field != null) {
-      data['field'] = this.field.map((v) => v.toJson()).toList();
-    }
+    data['field'] = this.field.map((v) => v.toJson()).toList();
     return data;
   }
 }

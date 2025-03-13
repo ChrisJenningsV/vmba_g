@@ -1,16 +1,10 @@
 
 import 'package:flutter/material.dart';
-
-import '../components/bottomNav.dart';
-import '../components/selectLang.dart';
-import '../components/vidButtons.dart';
 import '../data/globals.dart';
 import '../dialogs/genericFormPage.dart';
-import '../home/home_page.dart';
 import '../menu/icons.dart';
 import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
-import 'cards/v3CustomPage.dart';
 
 Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
@@ -49,7 +43,7 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
       },));
     }*/
 
-    int index = -1;
+    int index = 0;
     switch(curPage) {
       case 'HOME':
         index = 0;
@@ -62,6 +56,9 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
         break;
       case 'FLIGHTSTATUS':
         index = 3;
+        break;
+      default:
+        logit('bottom nav page = $curPage');
         break;
     }
 
