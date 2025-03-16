@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:vmba/home/travelNotifiation.dart';
 import 'package:vmba/menu/menu.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -644,8 +645,10 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
           .height,
     ));
 
-
     if( wantHomePageV3()) {
+      list.add( Padding(padding: EdgeInsets.only(top: 200)));
+      list.add(frontPageNotification(context));
+
       list.add(getMiniMyBookingsPage(context, () {
         //doCallback();
       }));

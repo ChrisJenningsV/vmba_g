@@ -224,10 +224,10 @@ Widget getCustomPageBody(BuildContext context, CustomPage homePage, void Functio
               list.add(v3ExpanderCard(
                   context, card, getUnlockDlg(context, doCallback, isStep1: true), ts: ts, wantIcon: false));
               break;
-            case 'UPCOMING':
+ /*           case 'UPCOMING':
               list.add(v3ExpanderCard(
                   context, card, getUpcoming(context,card, doCallback), ts: ts));
-              break;
+              break;*/
             case 'FQTVLOGIN':
               list.add(v3ExpanderCard(
                   context, card, FqtvLoginBox(), ts: ts));

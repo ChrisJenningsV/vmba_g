@@ -60,8 +60,12 @@ initLangCached(String lang) async {
     File file = File(filePath);
     if( file.existsSync()) {
       DateTime modified = file.lastModifiedSync();
-
-      if( modified.isBefore(DateTime.now().subtract(Duration(hours: 24)))){
+      Duration dur = Duration(hours: 24);
+      if( gblIsLive == false ) {
+        // short cache for test
+        Duration dur = Duration(minutes: 2);
+      }
+      if( modified.isBefore(DateTime.now().subtract(dur))){
         // change to 2 days!
         // out of date - get new copy
         logit('lang file out of date');
@@ -69,7 +73,7 @@ initLangCached(String lang) async {
         return;
       }
       // is serverfile modified
-      if( gblLangFileModTime != null && gblLangFileModTime.isNotEmpty){
+      if( gblLangFileModTime != null && gblLangFileModTime.isNotEmpty  ){
         var serverFile = parseUkDateTime(gblLangFileModTime);
         if(modified.isBefore( serverFile )) {
           logit('lang new server file available');
@@ -77,6 +81,10 @@ initLangCached(String lang) async {
           return;
 
         }
+      } else if ( gblLanguage == 'en') {
+        logit('lang new EN server file available');
+        await initLang(lang);
+        return;
       }
 
       readLang( lang).then((result ) {

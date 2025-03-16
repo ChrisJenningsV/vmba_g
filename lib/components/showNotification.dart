@@ -12,6 +12,7 @@ import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../calendar/bookingFunctions.dart';
+import '../functions/text.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 
@@ -122,10 +123,8 @@ List<Widget> _getBody(
   } else {
     String body1 = notification.body as String;
 
+/*
     String body2 = '';
-    body2 = body1.replaceAll('\/r', '<br>');
-    body2 = '';
-    // for some reason replace not working for this string - some sort of constant ??
     for (int i=0; i<body1.length;i++){
       String c1 = body1[i];
       if( c1 == '\\'){
@@ -138,10 +137,8 @@ List<Widget> _getBody(
       }
       body2 += c1;
     }
-
-    // body1.replaceAll('/[\n\r]/g', '<br>');
-  //  body=body1.replaceAll('\n', '<br\>');
-      body = body2;
+*/
+      body = replaceCrWithBreak( body1);
   }
   double h = 200;
   if (data['height'] != null && data['height'] != '') {
@@ -161,16 +158,7 @@ List<Widget> _getBody(
       height: h,
       width: 400,
       child: WebViewWidget(controller: _controller
-        /*initialUrl: Uri.dataFromString(
-                '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
-                    body +
-                    '</body></html>',
-                mimeType: 'text/html')
-            .toString(),
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },*/
-      )));
+       )));
   /* } else {
       if( notification != null ) {
         list2.add(Row(

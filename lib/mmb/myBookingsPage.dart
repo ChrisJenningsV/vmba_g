@@ -1298,36 +1298,50 @@ getmybookings(void Function() onComplete )  {
 
 Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {double topMargin = 0})
 {
-  if( gblTrips != null && gblTrips!.trips != null &&  gblTrips!.trips!.length > 0){
-    CardTemplate card = new CardTemplate();
-    String fltDate =  DateFormat('dd MMM yy').format(gblTrips!.trips!.first.fltdate!);
-    DateTime dtComp = DateTime.now().add(Duration(days: 1));
-    if(gblTrips!.trips!.first.fltdate!.month == DateTime.now().month && gblTrips!.trips!.first.fltdate!.day == DateTime.now().day) {
-      fltDate = 'Today';
-    } else if(gblTrips!.trips!.first.fltdate!.month == dtComp.month && gblTrips!.trips!.first.fltdate!.day == dtComp.day) {
-      fltDate = 'Tomorrow';
-    }
-    card.title = CardText('', text: translate('Your next flight' + ': ' + fltDate));
-    card.icon = null; // Icons.airplanemode_active;
-    card.title!.backgroundColor = Colors.black.withValues(alpha: 0.4);
-    card.backgroundClr = Colors.black.withValues(alpha: 0.4);
-    card.title!.color = gblSystemColors.primaryButtonTextColor;
-    card.textClr = Colors.white;
+  if( gblTrips != null && gblTrips!.trips != null &&  gblTrips!.trips!.length > 0) {
+    // check for future booking
 
-    return GestureDetector(
-        onTap: () {
-          navToMyBookingPage(context, gblTrips!.trips!.first.rloc);
-        },
-        child:
-        v3ExpanderCard(
-            context, card, getUpcoming(context, card, () {
-            doUpdate();
-          //setState(() {});
-        }), wantIcon: false,
-          topMargin: 150,
+    for(var trip in gblTrips!.trips!){
+      DateTime dt = trip.fltdate!;
+      dt = dt.add(Duration(hours: 22));
+      if (dt.isAfter( DateTime.now())) {
+        String fltDate = DateFormat('dd MMM yy').format(
+            trip.fltdate!);
+        CardTemplate card = new CardTemplate();
+        DateTime dtComp = DateTime.now().add(Duration(days: 1));
+        if (trip.fltdate!.month == DateTime
+            .now()
+            .month && trip.fltdate!.day == DateTime
+            .now()
+            .day) {
+          fltDate = 'Today';
+        } else if (trip.fltdate!.month == dtComp.month &&
+            trip.fltdate!.day == dtComp.day) {
+          fltDate = 'Tomorrow';
+        }
+        card.title =
+            CardText('', text: translate('Your next flight' + ': ' + fltDate));
+        card.icon = null; // Icons.airplanemode_active;
+        card.title!.backgroundColor = Colors.black.withValues(alpha: 0.4);
+        card.backgroundClr = Colors.black.withValues(alpha: 0.4);
+        card.title!.color = gblSystemColors.primaryButtonTextColor;
+        card.textClr = Colors.white;
 
-        ));
+        return GestureDetector(
+            onTap: () {
+              navToMyBookingPage(context, trip.rloc);
+            },
+            child:
+            v3ExpanderCard(
+              context, card, getUpcoming(context, card, trip, () {
+              doUpdate();
+              //setState(() {});
+            }), wantIcon: false,
+              topMargin: 140,
 
+            ));
+      }
+    };
   }
 //  if( gblSettings.wantNewInstallPage && PaxManager.getPaxEmail() == '')
 

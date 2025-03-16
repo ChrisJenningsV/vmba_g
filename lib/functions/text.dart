@@ -60,6 +60,14 @@ Widget v2TextButton(String text,  Color? txtColor){
   );
 }
 
+Widget v2NotifyText( String text,  Color? txtColor){
+  return Text(text,
+      style: TextStyle(
+//      fontSize: 14,
+          color: txtColor)
+  );
+}
+
 Widget v2FlightText(String text,  Color? txtColor){
   return Text(translate(text),
       style: TextStyle(
@@ -84,5 +92,24 @@ Widget v2FlightPriceText(String text,  Color? txtColor){
   );
 }
 
+String replaceCrWithBreak(String body1){
+  String body2 = '';
+  for (int i=0; i<body1.length;i++){
+    String c1 = body1[i];
+    if( c1.codeUnitAt(0) == 10){
+      // it's single code new line / line feed
+      c1 = '<br>';
 
+    } else if( c1 == '\\'){
+      String c2 = body1[i+1];
+      if( c2 == 'n'){
+        // rip it out
+        i++;
+        c1 = '<br>';
+      }
+    }
+    body2 += c1;
+  }
+  return body2;
+}
 

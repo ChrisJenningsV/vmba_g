@@ -5,10 +5,12 @@ import 'package:vmba/menu/menu.dart';
 import 'package:vmba/data/repository.dart';
 import 'package:vmba/utilities/widgets/appBarWidget.dart';
 import 'package:vmba/components/trText.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../components/showNotification.dart';
 import '../data/globals.dart';
 import '../data/models/notifyMsgs.dart';
+import '../functions/text.dart';
 import '../v3pages/controls/V3Constants.dart';
 
 
@@ -194,8 +196,19 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
       if( msg.data != null && msg.data!['rloc'] != null ){
         title = msg.data!['rloc'] + ' ' + title;
       }
-      body = msg.notification!.body;
+      body = replaceCrWithBreak(msg.notification!.body);
+
     }
+
+    WebViewController _controller;
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadHtmlString(
+          '<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>' +
+              body +
+              '</body></html>');
+
+
     //if (hasFutureFlights(pnr.pNR.itinerary.itin.last)) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
@@ -219,7 +232,8 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
             ],
           ),
           new Divider(),
-          Text(body),
+          Container(height: 100, child: WebViewWidget(controller: _controller))
+          //Text(body),
         ]),
         onPressed: () {
           print('Click on notification');

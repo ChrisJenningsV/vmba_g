@@ -7,6 +7,7 @@ import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
+import '../data/models/trips.dart';
 import '../data/repository.dart';
 import '../dialogs/genericFormPage.dart';
 import '../utilities/helper.dart';
@@ -115,12 +116,12 @@ class LoggedInHomePageState extends State<LoggedInHomePage>{
 
 }
 
-Widget getUpcoming(BuildContext context,CardTemplate card, void Function() doCallback) {
-  if( gblTrips == null || gblTrips!.trips == null || gblTrips!.trips!.length == 0){
+Widget getUpcoming(BuildContext context,CardTemplate card, Trip trip, void Function() doCallback) {
+  if( trip == null ){
     return VTitleText('No upcoming trips', translate: true,);
 
   }
-  String destin = gblTrips!.trips!.first.destin; //cityCodetoAirport(gblTrips!.trips!.first.destin);
+  String destin = trip.destin; //cityCodetoAirport(gblTrips!.trips!.first.destin);
   //String destin = cityCodetoAirport(gblTrips!.trips!.first.depart);
   List<Widget> list = [];
   String departs = '';
@@ -138,9 +139,9 @@ Widget getUpcoming(BuildContext context,CardTemplate card, void Function() doCal
   list.add(
     Row(
       children: [
-        Text(cityCodetoAirport(gblTrips!.trips!.first.depart) + ' ' + departs, style: TextStyle(color: card.textClr,) ),
-        Icon(Icons.flight_takeoff, size: 25, color: card.textClr,),
-        Text(cityCodetoAirport(gblTrips!.trips!.first.destin )+ ' ' + lands, style: TextStyle(color: card.textClr,))
+        Text(cityCodetoAirport(trip.depart) + ' ' + departs, style: TextStyle(color: card.textClr,) ),
+        Padding(padding: EdgeInsets.only(left: 10, right: 10), child:Icon(Icons.flight_takeoff, size: 25, color: card.textClr,)),
+        Text(cityCodetoAirport(trip.destin )+ ' ' + lands, style: TextStyle(color: card.textClr,))
       ]
     ));
 
