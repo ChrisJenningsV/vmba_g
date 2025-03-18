@@ -769,7 +769,8 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 }
                 showVidDialog(context, 'Error', errMsg, onComplete:()
                 {
-                  navToFlightSearchPage(context);
+                  Navigator.of(context).pop();
+                  //navToFlightSearchPage(context);
                 });
               } else {
                 Navigator.push(

@@ -140,7 +140,7 @@ void configLM() {
 /*
     contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobileApp/ZenHelpCentre.aspx',
 */
-  contactUsUrl: 'https://inhouse.videcom.com/LoganAirInHouse/VARS/public/MobileApp/ZenHelpCentre.aspx',
+  contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/public/MobileApp/ZenHelpCentre.aspx',
 //    contactUsUrl: 'http://10.0.2.2:57793/MobileApp/ZenHelpCentre.aspx',
    //trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
    privacyPolicyUrl:  'https://booking.loganair.co.uk/vars/public/CustomerFiles/LoganAir/mobile/LoganPrivacyPolicy.html',

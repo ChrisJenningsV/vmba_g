@@ -849,7 +849,7 @@ Widget fltButton( int journeyNo, bool selected, void Function(int) onClick){
         if( objSeatplan!.seats.seatsFlt.displayInfo != ''   ) {
           list.add(Padding(padding: EdgeInsets.only(top: 10),
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
               children: [Text(objSeatplan!.seats.seatsFlt.displayInfo, style: TextStyle(fontSize: 16),)
           ])));
         }

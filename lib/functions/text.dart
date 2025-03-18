@@ -22,8 +22,8 @@ Widget v2SearchValueText(String text){
   return Text( text,style: new TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold ));
 }
 
-Widget v2MenuText(String text ){
-  return Text(translate(text), style: TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.2),);
+Widget v2MenuText(String text, {bool smallFont = false }){
+  return Text(translate(text), style: TextStyle(fontWeight: FontWeight.bold), textScaler: smallFont ? TextScaler.linear(1.0):TextScaler.linear(1.2),);
 }
 
 Widget v2CalDateText(String text, Color? txtColor){

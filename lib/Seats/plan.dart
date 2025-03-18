@@ -307,7 +307,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         child: TextField(
           readOnly: true,
           decoration: InputDecoration(
-            hintText: msg,
+            hintText: translate(msg),
             border: InputBorder.none,
           ),
           maxLines: 4,

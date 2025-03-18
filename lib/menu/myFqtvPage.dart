@@ -1512,18 +1512,9 @@ void fqtvResetPassword(BuildContext context, String email, {void Function()? ref
       ApiResponseStatus resp = new ApiResponseStatus.fromJson(map);
       //_isButtonDisabled = false;
       if (resp.statusCode != 'OK') {
-/*
-      _error = resp.message;
-      _actionCompleted();
-      _showDialog();
-*/
+
         showVidDialog(context, 'Error', resp.message);
       } else {
-/*
-      _error = resp.message;
-      _actionCompleted();
-      _error = 'Reset email sent';
-*/
         Navigator.of(context).pop();
         //_showDialog();
         showVidDialog(context, 'Information', 'Reset email sent');

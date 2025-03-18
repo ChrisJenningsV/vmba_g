@@ -723,6 +723,10 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     }
     if (gblError != '') {
       showVidDialog(context, 'Error', gblError, type: DialogType.Error);
+      _loadingInProgress = false;
+      setState(() {
+        gblError = '';
+      });
     } else {
       // if single, get fare quote and go to summary page
       if (gblSearchParams.isReturn == true && widget.isReturnFlight == false) {

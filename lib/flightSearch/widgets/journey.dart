@@ -125,16 +125,23 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
                               Icons.sync, color: Colors.grey, size: 35,),
                               onPressed: () {
                                 var dest = gblSearchParams.searchOrigin;
+                                var org = gblSearchParams.searchDestination;
                                 var destCode = gblSearchParams.searchOriginCode;
-                                gblSearchParams.searchOrigin =
-                                    gblSearchParams.searchDestination;
-                                gblSearchParams.searchOriginCode =
-                                    gblSearchParams.searchDestinationCode;
-                                gblSearchParams.searchDestinationCode =
-                                    destCode;
-                                gblSearchParams.searchDestination = dest;
-                                setState(() {});
-                              },)),)
+                                if( !dest.contains('Select') && !org.contains('Select')){
+                                    gblSearchParams.searchOrigin =
+                                        gblSearchParams.searchDestination;
+                                    gblSearchParams.searchOriginCode =
+                                        gblSearchParams.searchDestinationCode;
+                                    gblSearchParams.searchDestinationCode =
+                                        destCode;
+                                    gblSearchParams.searchDestination = dest;
+                                    gblDestination = dest;
+                                    gblOrigin = gblSearchParams.searchOrigin;
+
+                                    setState(() {});
+                                  }
+                                }
+                                ,)),)
                       ]));
             } else {
               return Container(

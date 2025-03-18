@@ -76,7 +76,7 @@ class DrawerMenu extends StatefulWidget {
         list.add( menuItem(Icons.flight_takeoff, 'Book an ADS / Island Resident Flight' , (){
           gblCurPage = 'BOOKADS';
           Navigator.push(context, SlideTopRoute(page: AdsPage()));
-        },  iconName: 'flight'));
+        },  iconName: 'flight', smallFont: true));
       }
 
         //Divider(),
@@ -474,7 +474,7 @@ class DrawerMenu extends StatefulWidget {
     );
   }
 
-  Widget _getMenuItem( IconData ico, String txt, {Color? iconColor, String iconName=''} ) {
+  Widget _getMenuItem( IconData ico, String txt, {Color? iconColor, String iconName='', bool smallFont = false} ) {
 
       if( iconColor == null ){
         iconColor = Colors.black;
@@ -491,13 +491,13 @@ class DrawerMenu extends StatefulWidget {
           padding: EdgeInsets.only(right: 10),
           child: mIcon,
         ),
-        v2MenuText(txt),
+        v2MenuText(txt, smallFont: smallFont),
       ],
     );
   }
 
 
-    Widget menuItem( IconData icon, String caption , void Function () onClick, {Color? iconColor, String iconName=''} ) {
+    Widget menuItem( IconData icon, String caption , void Function () onClick, {Color? iconColor, String iconName='', bool smallFont = false} ) {
       return Container(child:
           Column(
           children: [
@@ -505,7 +505,7 @@ class DrawerMenu extends StatefulWidget {
               contentPadding: EdgeInsets.only(left: 10),
               dense: true,
               visualDensity: VisualDensity(vertical: -1),
-              title: _getMenuItem( icon, caption, iconName: iconName, iconColor: iconColor ),
+              title: _getMenuItem( icon, caption, iconName: iconName, iconColor: iconColor, smallFont: smallFont ),
               onTap: () {
                 onClick();
               },

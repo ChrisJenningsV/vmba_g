@@ -42,7 +42,7 @@ Widget getNamedIcon(String name, {Color? color}){
     );
     case 'FLIGHTSEARCH':
       return SizedBox(
-        height: 30,
+        height: 25,
         width: 25,
         child: Stack(
           alignment: Alignment.center,
@@ -88,6 +88,10 @@ Widget getNamedIcon(String name, {Color? color}){
         return Icon(Icons.people);
     case 'ADULT':
       //return  Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.user));
+      return Padding( padding: EdgeInsets.only(left: 0, right: 5), child: Icon(Icons.person));
+    case 'SENIOR':
+      return Padding( padding: EdgeInsets.only(left: 0, right: 5), child: Icon(Icons.person));
+    case 'STUDENT':
       return Padding( padding: EdgeInsets.only(left: 0, right: 5), child: Icon(Icons.person));
     case 'YOUTH':
           return  Padding( padding: EdgeInsets.only(left: 5), child: FaIcon(FontAwesomeIcons.person));

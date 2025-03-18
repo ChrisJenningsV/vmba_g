@@ -756,6 +756,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             // go to options page
             if (gblError != '') {
               showVidDialog(context, 'Error', gblError);
+              _loadingInProgress = false;
             } else {
               Navigator.push(
                   context,
@@ -775,6 +776,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
             } catch(e){
               setError( e.toString());
               showVidDialog(context, 'Error', gblError);
+              _loadingInProgress = false;
 
             }
           } else {
