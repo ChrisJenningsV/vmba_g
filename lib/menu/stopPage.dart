@@ -19,7 +19,7 @@ class StopPageWeb extends StatelessWidget {
       ]);
     } else {
       return  Scaffold(
-          appBar: appBar(context, (gblSettings.stopTitle != null) ? gblSettings.stopTitle :'App Suspended', PageEnum.stopPage,),
+          appBar: appBar(context, (gblSettings.stopTitle != null) ? gblSettings.stopTitle :'App Suspended', PageEnum.stopPage, 'STOP'),
           body: Container(
             color: Colors.white, constraints: BoxConstraints.expand(),
             child: Center(

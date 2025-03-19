@@ -15,7 +15,7 @@ class ContactUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: getAppBarLeft(),
+        leading: getAppBarLeft('CONTACTUS'),
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

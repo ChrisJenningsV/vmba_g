@@ -73,15 +73,9 @@ class _smartDialogPageState extends State<smartDialogPage> {
   });
 
     return  Scaffold(
- /*     floatingActionButton: (gblCurDialog!= null && gblCurDialog!.pageFoot != null && gblCurDialog!.pageFoot.length > 0)
-          ? wrapFootField(context, gblCurDialog!,gblCurDialog!.pageFoot.first, (){}) : null ,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
-      resizeToAvoidBottomInset: true,*/
-      //extendBodyBehindAppBar: gblCurDialog!.formname == 'FQTVLOGIN' ? true : false ,
+
       appBar:
-        //vidAppBar(titleText: gblCurDialog!.caption , backgroundColor:  gblCurDialog!.formname == 'FQTVLOGIN' ? Colors.transparent :v2PageBackgroundColor(),), //
         vidAppBar(titleText: gblCurDialog!.caption , backgroundColor: gblSystemColors.primaryHeaderColor,), //
-        //appBar(context, '', PageEnum.summary, backgroundColor: Colors.transparent),
       endDrawer: DrawerMenu(),
       backgroundColor: v2PageBackgroundColor(),
         body: ImageManager.getBodyWithBackground(context, gblCurPage,_body(), gblCurDialog)
@@ -282,11 +276,11 @@ Widget? getDialogContent(BuildContext context, DialogDef dialog, void Function()
         )
     );
 }
-Widget wrapFootField(BuildContext context,DialogDef dialog, DialogFieldDef f, void Function() doUpdate){
+Widget wrapFootField(BuildContext context,DialogDef dialog, DialogFieldDef f, void Function() doUpdate, {bool isPageBottom = false}){
   return Container(
       decoration: BoxDecoration(
       color: f.backgroundColor ?? Colors.black12 ,
-      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0),)),
+      borderRadius: isPageBottom ? null : BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0),)),
   margin: EdgeInsets.all(0),
   height: 35,
   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),

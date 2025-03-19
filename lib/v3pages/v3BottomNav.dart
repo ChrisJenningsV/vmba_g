@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
+import '../components/trText.dart';
 import '../data/globals.dart';
 import '../dialogs/genericFormPage.dart';
+import '../dialogs/smartDialog.dart';
 import '../menu/icons.dart';
+import '../menu/myFqtvPage.dart';
 import '../utilities/helper.dart';
 import '../utilities/navigation.dart';
 
@@ -87,10 +90,14 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
           icon:  Icon(Icons.luggage_rounded),
           label: 'My Trips',
         ),
+          ( gblFqtvLoggedIn == false ) ?
         BottomNavigationBarItem(
           icon:  Icon(Icons.person),
           label: 'Login',
-        ),
+        ) : BottomNavigationBarItem(
+            icon:  Icon(Icons.person),
+            label: '${gblSettings.fqtvName}',
+          ) ,
 
         BottomNavigationBarItem(
           icon:  getNamedIcon('FLIGHTSTATUS'),
@@ -117,9 +124,18 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
             navToMyBookingsPage(context);
             break;
           case 3:
-//            navToMyAccountPage(context);
-            navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',
-                formTitle: '${gblSettings.fqtvName} Login'));
+            if ( gblFqtvLoggedIn == false ) {
+              navToSmartDialogHostPage(
+                  context, new FormParams(formName: 'FQTVLOGIN',
+                  formTitle: '${gblSettings.fqtvName} Login'));
+            } else {
+              Navigator.push(
+                  context, SlideTopRoute(page: MyFqtvPage(
+                isAdsBooking: false,
+                isLeadPassenger: true,
+              )
+              ));
+            }
             break;
           case 4:
             navToFlightStatusPage(context);

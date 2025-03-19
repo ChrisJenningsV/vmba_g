@@ -71,7 +71,7 @@ class _EditDetailsWidgetWidgetState extends State<EditDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: appBar(context, 'Edit Details', PageEnum.editPax,
+      appBar: appBar(context, 'Edit Details', PageEnum.editPax,'EDITPAX',
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(

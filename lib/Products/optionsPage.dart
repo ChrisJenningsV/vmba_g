@@ -60,7 +60,7 @@ class _OptionsWidgetState extends State<SeatsAndOptionsPageWidget> {
           onWillPop: true,
         child:  Scaffold(
         key: _key,
-        appBar: appBar(context, 'Options',PageEnum.products,
+        appBar: appBar(context, 'Options',PageEnum.products,'OPTIONS',
             curStep: 4,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'options' : ''),

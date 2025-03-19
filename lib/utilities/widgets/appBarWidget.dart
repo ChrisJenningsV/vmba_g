@@ -16,7 +16,7 @@ import 'package:vmba/components/showDialog.dart';
 
 double? imageWidth;
 //class CustomWidget {
-PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum,
+PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum, String curPage,
     {Widget? leading,
       bool automaticallyImplyLeading=false, List<Widget>? actions,
         Color? backgroundColor,
@@ -114,7 +114,7 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
     wantOutline = true;
   }
 
-  if( (gblSettings.wantLeftLogo || gblSettings.imageBackgroundPages.contains(gblCurPage) )&& (leading == null || leading == false)) {
+  if( (gblSettings.wantLeftLogo || gblSettings.imageBackgroundPages.contains(curPage) )&& (leading == null || leading == false)) {
 
     return V3AppBar(pageEnum,
       flexibleSpace: flexibleSpace,
@@ -122,7 +122,7 @@ PreferredSizeWidget appBar(BuildContext context, String title, PageEnum pageEnum
       title: getText(title),
       toolbarHeight: toolbarHeight,
       elevation: elevalion,
-      leading: getAppBarLeft(),
+      leading: getAppBarLeft(curPage),
       leadngWidth: imageWidth,
       //backgroundColor: (backgroundColor == null) ? gblSystemColors.primaryHeaderColor : backgroundColor,
       iconTheme: IconThemeData(
@@ -424,9 +424,9 @@ getPaxCounts(NewBooking newBooking, List<Widget> listMain, Color txtCol, TextSty
 }
 
 
-Widget getAppBarLeft() {
+Widget getAppBarLeft(String curPage) {
   Widget leading = Text('');
-  if(gblSettings.wantLeftLogo || gblSettings.titleImagePages.contains(gblCurPage) ) {
+  if(gblSettings.wantLeftLogo || gblSettings.titleImagePages.contains(curPage) ) {
     if( gblSettings.aircode == 'SI') {
       leading = Padding(
           padding: EdgeInsets.only(left: 10.0),

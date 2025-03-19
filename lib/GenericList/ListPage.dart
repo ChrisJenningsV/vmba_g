@@ -57,7 +57,7 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
       new Scaffold(
         backgroundColor: Colors.grey.shade50, //v2PageBackgroundColor(),
         appBar: appBar(context, title,
-          PageEnum.news,
+          PageEnum.news, 'LIST',
           //imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
           actions: <Widget>[
             IconButton(

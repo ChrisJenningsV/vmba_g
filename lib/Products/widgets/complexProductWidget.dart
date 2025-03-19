@@ -70,7 +70,7 @@ class ComplextProductWidgetState extends State<ComplextProductWidget> {
       appBar: appBar(
         context,
         widget.product!.productName,
-          PageEnum.product,
+          PageEnum.product, 'PRODUCT',
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),

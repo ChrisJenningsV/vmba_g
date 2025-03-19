@@ -260,7 +260,7 @@ class _MyFqtvPageState extends State<MyFqtvPage> {
     return Scaffold(
         backgroundColor: v2PageBackgroundColor(),
       appBar: AppBar(
-        leading: getAppBarLeft(),
+        leading: getAppBarLeft('MYFQTV'),
         backgroundColor:
         gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
@@ -592,7 +592,7 @@ if( widget.passengerDetail!.joiningDate != null && widget.passengerDetail!.joini
     widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Show Transactions', _showTransactions, wantIcon: false)));
     widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Refresh Points', _reloadPoints, wantIcon: false)));
 
-    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Show Pending Transactions', _showPendingTransactions, wantIcon: false)));
+    widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Pending Transactions', _showPendingTransactions, wantIcon: false)));
     widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Change Password', _changePasswordDialog, wantIcon: false)));
     widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Book a flight', _bookAFlight, wantIcon: false)));
     widgets.add(Padding(padding: EdgeInsets.all(3), child: vidWideActionButton(context, 'Logout', _logout, wantIcon: false)));

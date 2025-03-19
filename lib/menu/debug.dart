@@ -90,7 +90,7 @@ class DebugPageState extends State<DebugPage> {
         extendBody: true,
         appBar: appBar(context,
           title,
-          PageEnum.summary,
+          PageEnum.summary,'DEBUG',
         ),
         endDrawer: new DrawerMenu(),
         bottomNavigationBar: getV3BottomNav(context, curPage),

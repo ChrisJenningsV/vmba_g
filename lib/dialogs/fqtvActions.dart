@@ -31,6 +31,7 @@ void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {
       FqtvLoginReply fqtvLoginReply = new FqtvLoginReply.fromJson(map);
 
       gblFqtvLoggedIn = true;
+      gblActionBtnDisabled = false;
       Navigator.pop(context);
       PaxManager.populateFromFqtvMember(fqtvLoginReply, fqtvNo, fqtvPass);
       navToFqtvPage(context);
@@ -42,8 +43,10 @@ void fqtvLogin(BuildContext context, String fqtvNo, String fqtvPass) async {
       showVidDialog(context, 'Information', gblError, onComplete: () {
         gblError = '';
         try {
+          gblActionBtnDisabled = false;
           Navigator.of(context).pop();
         } catch(e) {
+          gblActionBtnDisabled = false;
           logit('FQTV Login ' + e.toString());
           navToHomepage(context);
         }

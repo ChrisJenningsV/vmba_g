@@ -102,7 +102,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> with TickerPr
         }
       }
       return Scaffold(
-        appBar: appBar(context, title, PageEnum.myNotifications,
+        appBar: appBar(context, title, PageEnum.myNotifications, 'MYNOTIFICATIONS',
           bottom: new PreferredSize(
             preferredSize: new Size.fromHeight(30.0),
             child: new Container(

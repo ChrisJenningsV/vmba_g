@@ -296,7 +296,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     });
   }
 
-  bool _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true, int? journeyNo }) {
+  Future<bool> _handleBookSeats(List<Pax> paxValue, {bool gotoPayment = true, int? journeyNo }) async {
    // _bookSeats();
     setError( '');
     // check is any seats selects
@@ -311,7 +311,8 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       showVidDialog(context, 'Error', 'Select Seats First');
 
     } else {
-      smartBookSeats(gotoPayment,  journeyNo  as int );
+      await smartBookSeats(gotoPayment,  journeyNo  as int );
+      logit('done book seats');
       setState(() {
         paxlist=new PaxList();
         paxlist!.init(paxValue);

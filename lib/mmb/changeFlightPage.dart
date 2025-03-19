@@ -662,55 +662,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
             page: ChooseFlight(
           classband: objAv.availability.classbands!.band![index],
           flts: flts, //objAv.availability.itin[0].flt,
-          seats: (this
-                      .widget
-                      .pnr
-                      .pNR
-                      .names
-                      .pAX
-                      .where((pax) => pax.paxType == 'AD')
-                      .length +
-                  this
-                      .widget
-                      .pnr
-                      .pNR
-                      .names
-                      .pAX
-                      .where((pax) => pax.paxType == 'CH')
-                      .length +
-              this
-                  .widget
-                  .pnr
-                  .pNR
-                  .names
-                  .pAX
-                  .where((pax) => pax.paxType == 'CD')
-                  .length +
-              this
-                  .widget
-                  .pnr
-                  .pNR
-                  .names
-                  .pAX
-                  .where((pax) => pax.paxType == 'SD')
-                  .length +
-              this
-                  .widget
-                  .pnr
-                  .pNR
-                  .names
-                  .pAX
-                  .where((pax) => pax.paxType == 'TD')
-                  .length +
-                  this
-                      .widget
-                      .pnr
-                      .pNR
-                      .names
-                      .pAX
-                      .where((pax) => pax.paxType == 'TH')
-                      .length)
-              .toString(),
+          seats: widget.pnr.getPaxCount (),
         )));
     flightSelected(context,null, selectedFlt, flts, '');
   }

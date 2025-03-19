@@ -35,19 +35,26 @@ class ImageManager{
                   image: img, fit: BoxFit.fill))));
     }
     list.add(body);
-    logit( 'wb = ${WidgetsBinding.instance.window.viewInsets.bottom}');
-    if (WidgetsBinding.instance.window.viewInsets.bottom == 0.0) {
+    double wb = View.of(context).viewInsets.bottom;
+    logit( 'wb = $wb');
+
+    if (wb == 0.0) {
       if ((curDialog != null && curDialog!.pageFoot != null &&
           curDialog!.pageFoot.length > 0)) {
-        list.add(Expanded(
+        list.add(Positioned(
+          left: 0,
+          bottom: 0,
+          child: wrapFootField(context, curDialog!, curDialog!.pageFoot.first, () {}, isPageBottom: true),) );
+      /*  list.add(Expanded(
           child: Align(
             alignment: Alignment.bottomCenter,
             child: wrapFootField(
                 context, curDialog!, curDialog!.pageFoot.first, () {}),
           ),
-        ));
+        ));*/
       }
     }
+
     return Stack(
       children: list,
     );

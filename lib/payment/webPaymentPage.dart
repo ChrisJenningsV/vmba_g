@@ -189,7 +189,7 @@ Page resource error:
           onWillPop: true,
         child:*/
         Scaffold(
-      appBar: appBar(context,  'Payment Page',PageEnum.webPayment,
+      appBar: appBar(context,  'Payment Page',PageEnum.webPayment,'WEBPAY',
           automaticallyImplyLeading: false,
           actions:<Widget> [ new IconButton(
       icon:  new Icon(Icons.close),

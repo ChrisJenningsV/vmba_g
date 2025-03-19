@@ -87,7 +87,7 @@ class HelpCentrePageWidgetState extends State<HelpCentrePageWidget>  with Ticker
         backgroundColor: Colors.grey.shade50, //v2PageBackgroundColor(),
         appBar: appBar(context,
           _showResults ? 'Help Centre Results' : 'Help Centre',
-          PageEnum.editPax,
+          PageEnum.editPax, 'HELPCENTRE',
           //imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
           actions: <Widget>[
             IconButton(

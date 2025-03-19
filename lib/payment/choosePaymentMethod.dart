@@ -1172,7 +1172,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
       } else {
         return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Payment', PageEnum.choosePayment,
+          appBar: appBar(context, 'Payment', PageEnum.choosePayment,'PAYMENT',
             newBooking: widget.newBooking,
             curStep: 5,
             imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
@@ -1261,7 +1261,7 @@ class _ChoosePaymenMethodWidgetState extends State<ChoosePaymenMethodWidget> {
 Widget _body() {
     return Scaffold(
       key: _key,
-      appBar: appBar(context, 'Payment',PageEnum.choosePayment,
+      appBar: appBar(context, 'Payment',PageEnum.choosePayment,'PAYMENT',
         newBooking: widget.newBooking,
         curStep: 5,
         imageName: gblSettings.wantPageImages ? 'paymentpage' : '',) ,

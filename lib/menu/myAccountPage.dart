@@ -272,7 +272,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
     if( _gotData == false) {
       return Scaffold(
           appBar: AppBar(
-          leading: getAppBarLeft(),
+          leading: getAppBarLeft('MYACCOUNT'),
     backgroundColor: gblSystemColors.primaryHeaderColor,
     iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
     title: TrText('My Account',
@@ -295,7 +295,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       return Scaffold(
         backgroundColor: v2PageBackgroundColor(),
         appBar: AppBar(
-          leading: getAppBarLeft(),
+          leading: getAppBarLeft('MYACCOUNT'),
           backgroundColor: gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(color: gblSystemColors.headerTextColor),
           title: TrText('My Account',

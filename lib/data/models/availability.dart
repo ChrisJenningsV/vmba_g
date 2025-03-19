@@ -1,4 +1,5 @@
 
+import 'package:intl/intl.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
 import 'package:vmba/data/globals.dart';
@@ -298,6 +299,20 @@ class AvItin {
 /*    } else {
       flt = null;*/
     }
+  }
+
+  List<String> getFlt(Band band, int seats){
+    List<String> list = [];
+
+    this.flt.forEach((Flt f){
+      String _date = DateFormat('ddMMMyy').format(DateTime.parse(f.time.ddaylcl));
+      String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
+      String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
+
+      list.add('0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![int.parse(band?.cb as String) - 1] +
+          _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=${band.cabin})[CB=${band.cbname}]');
+    });
+  return list;
   }
 
   Prices getLowestPrice(  ){

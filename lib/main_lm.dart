@@ -136,7 +136,8 @@ void configLM() {
   xmlToken: "token=tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo%3D",
     xmlTokenPost: "tKXalaKEJHvQdwV4eN02v073sLxYwU97VoZsOpvxfOo=",
   aircode: 'LM',
-  termsAndConditionsUrl: 'https://loganair.co.uk/terms-m/',
+  termsAndConditionsUrl: 'https://www.loganair.co.uk/customer-support/help-centre/conditions-of-carriage/',
+  //''https://loganair.co.uk/terms-m/',
 /*
     contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobileApp/ZenHelpCentre.aspx',
 */

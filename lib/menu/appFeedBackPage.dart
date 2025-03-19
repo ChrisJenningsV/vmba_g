@@ -71,7 +71,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
       return Scaffold(
         key: _key,
         appBar: new AppBar(
-          leading: getAppBarLeft(),
+          leading: getAppBarLeft('APPFEEDBACK'),
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(
@@ -97,7 +97,7 @@ class _AppFeedBackPageState extends State<AppFeedBackPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: getAppBarLeft(),
+          leading: getAppBarLeft('APPFEEDBACK'),
           backgroundColor:
           gblSystemColors.primaryHeaderColor,
           iconTheme: IconThemeData(

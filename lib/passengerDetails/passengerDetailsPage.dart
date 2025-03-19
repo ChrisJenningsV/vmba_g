@@ -376,7 +376,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
           onWillPop: true,
         child: Scaffold(
       //key: _key,
-      appBar: appBar(context, 'Passengers Details', PageEnum.passengerDetails,
+      appBar: appBar(context, 'Passengers Details', PageEnum.passengerDetails,'PAXDETAILS',
           curStep: 4,
           newBooking: widget.newBooking,
           imageName:  gblSettings.wantPageImages ? 'paxDetails': '' ),

@@ -400,8 +400,10 @@ extension Section on ViewBookingBodyState {
                           SlideTopRoute(
                               page: DangerousGoodsWidget( pnr: pnr, journeyNo: journeyNo, paxNo: paxNo, ))).then((continuePass) {
                         if( continuePass != null &&  continuePass) {
-                          _displayCheckingDialog(pnr, journeyNo, paxNo);
-
+                          //_displayCheckingDialog(pnr, journeyNo, paxNo);
+                          _doPaxCheckin(pnr, journeyNo, paxNo);
+                          gblActionBtnDisabled = false;
+                          //Navigator.of(context).pop();
                         }
                       });
                     } else {

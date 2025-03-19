@@ -631,7 +631,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
         return getProgressMessage('Calculating your price...', 'Summary');
       } else {
         return Scaffold(
-          appBar: appBar(context, 'Summary', PageEnum.summary,
+          appBar: appBar(context, 'Summary', PageEnum.summary, 'SUMMARY',
             newBooking: widget.newBooking,
             curStep: 3,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
@@ -654,7 +654,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     } else if (_eVoucherNotValid || _tooManyUmnr || _hasError) {
       return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Summary', PageEnum.summary,
+          appBar: appBar(context, 'Summary', PageEnum.summary, 'SUMMARY',
             curStep: 3,
             newBooking: widget.newBooking,
             imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),
@@ -712,7 +712,7 @@ class _FlightSelectionSummaryState extends State<FlightSelectionSummaryWidget> {
     } else {
       return new Scaffold(
         key: _key,
-        appBar: appBar(context, 'Summary', PageEnum.summary,
+        appBar: appBar(context, 'Summary', PageEnum.summary, 'SUMMARY',
           curStep: 3,
           newBooking: widget.newBooking,
           imageName: gblSettings.wantPageImages ? 'flightSummary' : '',),

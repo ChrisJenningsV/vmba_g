@@ -183,8 +183,10 @@ AlertDialog getAlertDialog(BuildContext context, String title, String msg, void 
         style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
         onPressed: () {
           if( onComplete != null ) {
+            gblActionBtnDisabled = false;
             onComplete();
           } else {
+            gblActionBtnDisabled = false;
             try {
               Navigator.of(context).pop();
             } catch(e) {

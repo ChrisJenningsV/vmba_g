@@ -641,6 +641,42 @@ class PnrModel {
   }
   }
 
+  int getPaxCount() {
+    int c = 0;
+    c = this.pNR
+        .names
+        .pAX
+        .where((pax) => pax.paxType == 'AD')
+        .length +
+        this.pNR
+            .names
+            .pAX
+            .where((pax) => pax.paxType == 'CH')
+            .length +
+        this.pNR
+            .names
+            .pAX
+            .where((pax) => pax.paxType == 'CD')
+            .length +
+        this.pNR
+            .names
+            .pAX
+            .where((pax) => pax.paxType == 'SD')
+            .length +
+        this.pNR
+            .names
+            .pAX
+            .where((pax) => pax.paxType == 'TD')
+            .length +
+        this.pNR
+            .names
+            .pAX
+            .where((pax) => pax.paxType == 'TH')
+            .length;
+
+    return c;
+  }
+
 }
 
 class PNR {

@@ -117,7 +117,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
         key: _key,
         appBar: appBar(
           context,
-          'Payment', PageEnum.creditCard,
+          'Payment', PageEnum.creditCard,'CREDITCARD',
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',
@@ -175,7 +175,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
       key: _key,
       appBar: appBar(
         context,
-        'Payment', PageEnum.creditCard,
+        'Payment', PageEnum.creditCard,'CREDITCARD',
         newBooking: widget.newBooking,
         curStep: 5,
         imageName: gblSettings.wantPageImages ? 'paymentPage' : '',

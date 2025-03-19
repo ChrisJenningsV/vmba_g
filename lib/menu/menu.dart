@@ -14,6 +14,8 @@ import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
+import '../dialogs/genericFormPage.dart';
+import '../dialogs/smartDialog.dart';
 import '../functions/text.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
@@ -149,12 +151,29 @@ class DrawerMenu extends StatefulWidget {
 
     if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
       list.add( menuItem(Icons.person_pin, fqtvName , () {
-        Navigator.push(
-            context, SlideTopRoute(page: MyFqtvPage(
-          isAdsBooking: false,
-          isLeadPassenger: true,
-        )
-        ));
+        if( gblFqtvLoggedIn == false ) {
+          navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',
+              formTitle: '${gblSettings.fqtvName} Login'));
+/*
+          if (gblSettings.wantNewDialogs) {
+            String sTitle = translate('${gblSettings.fqtvName} ') +
+                translate('LOGIN');
+            if (sTitle.length > 20) sTitle = translate('LOGIN');
+            gblCurDialog = getDialogDefinition('FQTVLOGIN', sTitle);
+
+            showSmartDialog(context, null, () {
+              setState(() {});
+            });
+*/
+          //}
+        } else {
+              Navigator.push(
+                  context, SlideTopRoute(page: MyFqtvPage(
+                isAdsBooking: false,
+                isLeadPassenger: true,
+              )
+              ));
+        }
       }));
       }
 

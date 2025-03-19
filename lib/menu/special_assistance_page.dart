@@ -116,7 +116,7 @@ class SpecialAssistancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: getAppBarLeft(),
+        leading: getAppBarLeft('ASSISTANCE'),
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

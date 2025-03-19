@@ -78,7 +78,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     if( gblError != null && gblError.isNotEmpty) {
       return Scaffold(
         key: _key,
-        appBar: appBar(context, 'Payment',PageEnum.providerFields,
+        appBar: appBar(context, 'Payment',PageEnum.providerFields,'PROVIDER',
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
@@ -133,7 +133,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       // no error
       return Scaffold(
         key: _key,
-        appBar: appBar(context, 'Payment', PageEnum.providerFields,
+        appBar: appBar(context, 'Payment', PageEnum.providerFields,'PROVIDER',
           newBooking: widget.newBooking,
           curStep: 5,
           imageName: gblSettings.wantPageImages ? 'paymentPage' : '',) ,

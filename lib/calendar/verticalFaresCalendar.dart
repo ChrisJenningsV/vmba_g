@@ -248,6 +248,8 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                   selectedFlt = fltNo;
                   expandedFlt = fltNo;
                   selectedFare = -1;
+
+
                   // collapse other tiles
                   int index = 1;
                   _controllerList.forEach((element) {
@@ -361,6 +363,14 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     return InkWell(
         onTap: () {
 //          logit('clicketty');
+          if( widget.mmbBooking != null) {
+            //msg.add(
+            //           '0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![cb - 1] + _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=$cabin)[CB=$classBandName]');
+
+            widget.mmbBooking!.newFlights = item.getFlt(widget.objAv.availability.classbands?.band![curFare] as Band, gblPnrModel!.getPaxCount ());
+
+          }
+
           setState(() {
             selectedFare = curFare;
           });

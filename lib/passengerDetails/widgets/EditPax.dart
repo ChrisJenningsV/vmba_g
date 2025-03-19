@@ -131,7 +131,7 @@ class _EditPaxWidgetState extends State<EditPaxWidget> {
 
       new Scaffold(
         backgroundColor: v2PageBackgroundColor(),
-      appBar: appBar(context, 'Passenger Detail', PageEnum.editPax,
+      appBar: appBar(context, 'Passenger Detail', PageEnum.editPax,'EDITPAX',
         newBooking: widget.newBooking,
         curStep: 4,
         imageName: gblSettings.wantPageImages ? 'editPax' : '',

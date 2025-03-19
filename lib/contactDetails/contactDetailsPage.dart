@@ -86,7 +86,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       } else {
         return Scaffold(
           key: _key,
-          appBar: appBar(context, 'Payment',  PageEnum.contactDetails,
+          appBar: appBar(context, 'Payment',  PageEnum.contactDetails,'CONTACT',
             curStep: 5,
             imageName: gblSettings.wantPageImages ? 'paymentPage' : '',),
 

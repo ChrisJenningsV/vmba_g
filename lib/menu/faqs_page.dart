@@ -12,7 +12,7 @@ class FAQsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: getAppBarLeft(),
+        leading: getAppBarLeft('FAQ'),
         backgroundColor: gblSystemColors.primaryHeaderColor,
         iconTheme: IconThemeData(
             color: gblSystemColors.headerTextColor),

@@ -116,9 +116,14 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
      //     textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
           lineTwo =  Text('-', style: TextStyle(color: textColor),);
         } else if( flightPrice.CssClass.contains('no-price')){
-          isDisabled = true;
+
    //       textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
           lineTwo =  Text('-', style: TextStyle(color: textColor),);
+        }
+        if( flightPrice.Selectable == false){
+          isDisabled = true;
+          decorationColor =  gblSystemColors.calDisabledColor;
+          textColor = Colors.black38;
         }
 
    /*     if(isSelected != null && isSelected == true){

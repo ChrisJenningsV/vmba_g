@@ -256,7 +256,7 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
 
         return new Scaffold(
       key: _key,
-      appBar: appBar(context,"Returning Flight", PageEnum.returningFlight),
+      appBar: appBar(context,"Returning Flight", PageEnum.returningFlight,'RETURNING',),
         endDrawer: DrawerMenu(),
       body: _buildBody(),
     );

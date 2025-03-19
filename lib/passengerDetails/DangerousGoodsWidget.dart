@@ -45,7 +45,7 @@ class DangerousGoodsWidgetState extends State<DangerousGoodsWidget> {
     return new Scaffold(
       appBar: appBar(
         context,
-        'Dangerous Goods', PageEnum.dangerousGoods,
+        'Dangerous Goods', PageEnum.dangerousGoods, 'DANGEROUS'
       ),
       //endDrawer: DrawerMenu(),
       body: SingleChildScrollView( child:_body()),

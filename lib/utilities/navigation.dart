@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/globals.dart';
 import '../dialogs/genericFormPage.dart';
+import '../dialogs/smartDialog.dart';
 import '../flightStatus/flightStatusPage.dart';
 import '../menu/myAccountPage.dart';
 import '../menu/myFqtvPage.dart';
@@ -65,6 +66,13 @@ void navToSmartDialogHostPage(BuildContext context, FormParams params){
           ))
   );
 }
+void navToDialogPage(BuildContext context ){
+  Navigator.push(
+      context, SlideTopRoute(page: smartDialogPage()
+  ));
+
+}
+
 
 void navToFqtvPage(BuildContext context){
   Navigator.push(

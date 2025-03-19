@@ -36,7 +36,7 @@ class ContactListPageWidgetState extends State<ContactListPageWidget>{
       new Scaffold(
         backgroundColor: Colors.grey.shade50, //v2PageBackgroundColor(),
         appBar: appBar(context,'Contacts',
-          PageEnum.editPax,
+          PageEnum.editPax,'CONTACTLIST',
           //imageName: gblSettings.wantPageImages ? widget.formParams.formName : '',
           actions: <Widget>[
             IconButton(

@@ -336,7 +336,7 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
   }
     return new Scaffold(
       key: _key,
-      appBar: appBar(context,  "Outbound Flight", PageEnum.outboundFlight,
+      appBar: appBar(context,  "Outbound Flight", PageEnum.outboundFlight, 'OUTBOUND',
           leading: new IconButton(
         icon: new Icon(Icons.arrow_back),
         onPressed: () async {
