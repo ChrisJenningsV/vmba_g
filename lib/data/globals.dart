@@ -35,7 +35,7 @@ import 'models/vouchers.dart';
 String gblBuildFlavor = 'LM';
 bool gblIsLive = false;
 bool gblWantLogBuffer = false;
-int requiredXmlVersion = 117; // now 119 for LM NEW, 120 for FQTV reg
+int requiredXmlVersion = 122; // now 119 for LM NEW, 120 for FQTV reg, 122 fix for next pnr
 int requiredApiVersion = 105;
 int apiBuldVersion = 0;
 bool gblDoVersionCheck = false;

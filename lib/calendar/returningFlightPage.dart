@@ -288,7 +288,10 @@ class _ReturnFlightSeletionState extends State<ReturnFlightSeletionPage> {
         ),
       );
     } else {
-      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv! , newBooking:  widget.newBooking, loadData: _loadData,isReturnFlight: true, showProgress: showProgress,);
+      if( gblSettings.wantVericalFaresCalendar){
+        return VerticalFaresCalendar( objAv:  objAv! , newBooking:  widget.newBooking, loadData: _loadData,isReturnFlight: true, showProgress: showProgress,
+            changeSearchDate: (d){});
+      }
       return flightSelection();
     }
   }

@@ -26,24 +26,6 @@ class CannedFactWidget extends StatelessWidget {
                       return msgDialog(context, translate('Additional Info'),
                         additionalInfoWidget(flt! ));
 
-/*
-                      return AlertDialog(
-                          actions: <Widget>[
-                            new TextButton(
-                              child: new TrText("OK"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                          title: new TrText('Additional Info'),
-                          content: SingleChildScrollView(
-                            child: Wrap(
-                              children: additionalInfoWidget(
-                                  flt.first.fltdet.canfac.fac.trim()),
-                            ),
-                          ));
-*/
                     },
                   );
                 },

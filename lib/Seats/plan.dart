@@ -310,7 +310,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
             hintText: translate(msg),
             border: InputBorder.none,
           ),
-          maxLines: 4,
+          maxLines: 8,
         ),
       ));
 
@@ -393,8 +393,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                               .sCode}');
                       if (params.action.toLowerCase() == 'release') {
                         paxlist!.releaseSeat(seat.sCode);
-                      } else {
-                        paxlist!.releaseSeat(seat.sCode);
+                      } else { //replace
+                        paxlist!.releaseSeat(p.seat);
                         paxlist!.list![params.paxNo].selected = true;
                         paxlist!.list![params.paxNo].seat = seat.sCode;
                         gblSelectedSeats.add(seat.sCode);
@@ -1095,9 +1095,14 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
         } else {
           seatType = SeatType.available;
         }
-        if (selected) seatType = SeatType.selected;
-        if( seat.sRLOC != '' ) SeatType.selected;
-        break;
+        if (selected) {
+          seatType = SeatType.selected;
+        }
+          if( seat.sRLOC != '' ) {
+            SeatType.selected;
+          }
+          break;
+
       default:
         if (seat.noInfantSeat) {
           seatType = SeatType.availableRestricted;

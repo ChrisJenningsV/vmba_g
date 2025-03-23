@@ -1265,10 +1265,12 @@ class Repository {
 
 
 
-    Future<PnrDBCopy?> fetchPnr(String rloc) async {
+    Future<PnrDBCopy?> fetchPnr(String rloc, {bool save = false}) async {
       String data;
       try {
-        data = await runVrsCommand('*$rloc[MMB]~x');
+        String cmd = '*$rloc[MMB]~x';
+        if( save ) cmd = 'E*R~x';
+        data = await runVrsCommand(cmd);
       } catch(e) {
         logit('catch ${e.toString()}');
         throw (e);

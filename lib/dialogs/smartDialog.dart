@@ -298,6 +298,9 @@ void initField( DialogFieldDef f){
     case 'FQTVNUMBER':
       TextEditingController _fqtvTextEditingController = new TextEditingController();
       f.controller = _fqtvTextEditingController;
+      if(f.value != ''){
+        f.controller!.text = f.value as String;
+      }
       gblCurDialog!.editingControllers.add(_fqtvTextEditingController);
       break;
 
@@ -330,6 +333,9 @@ void initField( DialogFieldDef f){
     case 'PASSWORD':
       TextEditingController _passwordEditingController = new TextEditingController();
       f.controller = _passwordEditingController;
+      if(f.value != ''){
+        f.controller!.text = f.value as String;
+      }
       gblCurDialog!.editingControllers.add(_passwordEditingController);
       break;
     case 'EDITTEXT':

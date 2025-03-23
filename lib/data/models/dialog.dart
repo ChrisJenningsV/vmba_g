@@ -80,7 +80,7 @@ class DialogDef {
     DialogFieldDef({this.field_type='', this.caption='',
       this.actionText='', this.action = '',
       this.valueKey='false', this.isMenuOpen=false,
-      this.options, this.backgroundColor
+      this.options, this.backgroundColor, this.value = ''
       });
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {

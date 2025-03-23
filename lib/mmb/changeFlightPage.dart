@@ -405,7 +405,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
     return DateTime.parse(date + ' ' + time.trim());
   }
 
-  _changeSearchDate(DateTime newDate) {
+  changeSearchDate(DateTime newDate) {
     print(this.widget.departureDate.toString());
     setState(() {
       this.widget.departureDate = newDate;
@@ -470,11 +470,14 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
           gblSearchParams.departDate = this.widget.departureDate;
           gblSearchParams.isReturn = false;
           gblDepartDate = this.widget.departureDate;
+          gblReturnDate = null;
           return VerticalFaresCalendar(objAv: objAv,
             newBooking: newBooking,
             mmbBooking: widget.mmbBooking,
             loadData: _loadData,
-            showProgress: showProgress,);
+            showProgress: showProgress,
+            changeSearchDate: changeSearchDate,
+          );
         }
         return flightSelection();
       }
@@ -525,7 +528,7 @@ class _ChangeFlightState extends State<ChangeFlightPage> {
                       onPressed: () {
                         hasDataConnection().then((result) {
                           if (result == true) {
-                            _changeSearchDate(DateTime.parse(item.daylcl));
+                            changeSearchDate(DateTime.parse(item.daylcl));
                           } else {
                             //showSnackBar('Please, check your internet connection');
                             //noInternetSnackBar(context);

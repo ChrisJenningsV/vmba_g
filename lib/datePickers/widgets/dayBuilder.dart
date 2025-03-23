@@ -22,11 +22,13 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
     borderRadius: BorderRadius.circular(1),);
 */
 
+  bool isPast = date.isBefore(DateTime.now());
   Widget lineTwo = Text('');
   Color? textColor = gblSystemColors.calTextColor;
   Color? decorationColor = Colors.grey.shade300.withOpacity(0.5);
   FontWeight? fontWeight;
   BoxDecoration? decoration;
+  double line2TopPad = 18;
 
 /*
   if( gblV3Theme != null ){
@@ -114,26 +116,46 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
         } else if( flightPrice.CssClass.contains('not-available')){
           isDisabled = true;
      //     textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
-          lineTwo =  Text('-', style: TextStyle(color: textColor),);
+
+            lineTwo = Text('-', style: TextStyle(color: textColor),);
         } else if( flightPrice.CssClass.contains('no-price')){
 
    //       textStyle = TextStyle( color: textColor, fontWeight: FontWeight.bold);
-          lineTwo =  Text('-', style: TextStyle(color: textColor),);
+          if( gblSettings.wantIconsOnPriceCalendar ) {
+            lineTwo =
+              RotatedBox(
+                  quarterTurns: 1,
+                  child: new Icon(
+                    Icons.airplanemode_active,
+                    size: 15.0,
+                    color: Colors.black,
+                  ));
+          } else {
+            lineTwo = Text('-', style: TextStyle(color: textColor),);
+          }
         }
         if( flightPrice.Selectable == false){
           isDisabled = true;
+          line2TopPad = 10;
           decorationColor =  gblSystemColors.calDisabledColor;
           textColor = Colors.black38;
-        }
-
-   /*     if(isSelected != null && isSelected == true){
-          textStyle = TextStyle( color: Colors.white, fontWeight: FontWeight.bold);
-*//*
-          decoration = BoxDecoration(color: Colors.red,
-              borderRadius: BorderRadius.circular(1));
-*//*
-        }
+          if( gblSettings.wantIconsOnPriceCalendar && !isPast ) {
+/*
+            lineTwo = Stack( children: [
+              RotatedBox(
+                  quarterTurns: 1,
+                  child: new Icon(
+                    Icons.airplanemode_active,
+                    size: 30.0,
+                    color: Colors.grey,
+                  )),
+              Positioned(
+                  left: 5,
+                  top: 5,
+                  child: Icon(Icons.close, size: 20.0, color: Colors.black,))
+            ],);
 */
+          }        }
       }
     });
   }
@@ -156,7 +178,7 @@ Widget? dayBuilder(BuildContext context,  DateTime date,
             textScaler: textScaler,
           ),
           gblSettings.wantPriceCalendar ? Padding(
-            padding: const EdgeInsets.only(top: 18),
+            padding: EdgeInsets.only(top: line2TopPad),
             child: Container(
               child: lineTwo,
             ),

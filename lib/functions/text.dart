@@ -18,8 +18,16 @@ Widget v2Label(String text) {
 
 }
 
-Widget v2SearchValueText(String text){
-  return Text( text,style: new TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold ));
+Widget v2SearchValueText(String text, {bool narrowField = false}){
+  double fontSize = 18.0;
+  if( narrowField) {
+    if (text.length > 15) fontSize = 16.0;
+    if (text.length > 18) fontSize = 15.0;
+    if (text.length > 20) fontSize = 12.0;
+  } else {
+    if (text.length > 20) fontSize = 16.0;
+  }
+  return Text( text,style: new TextStyle( fontSize: fontSize, fontWeight: FontWeight.bold ));
 }
 
 Widget v2MenuText(String text, {bool smallFont = false }){
@@ -68,11 +76,12 @@ Widget v2NotifyText( String text,  Color? txtColor){
   );
 }
 
-Widget v2FlightText(String text,  Color? txtColor){
+Widget v2FlightText(String text,  Color? txtColor, {int? maxLines = null}){
   return Text(translate(text),
       style: TextStyle(
 //      fontSize: 14,
-      color: txtColor)
+      color: txtColor,),
+      maxLines: maxLines,
   );
 }
 Widget v2TerminalText(String text,  Color? txtColor){

@@ -136,12 +136,15 @@ extension Section on ViewBookingBodyState {
     String ticketNo = '';
     String couponNo = '';
     try {
+      CheckinRequest cr = new CheckinRequest();
       gblPnrModel!.pNR.tickets.tKT.forEach((ticket) {
         if (ticket.tKTID == 'ELFT' && ticket.segNo != null && ticket.segNo != '' &&  int.parse(ticket.segNo) == (p1! + 1) && int.parse(ticket.pax) == (p2!+1)) {
           // strip spaces
           ticketNo = ticket.tktNo.replaceAll(' ', '');
           // get coupon without leading zero
           couponNo = int.parse(ticket.coupon).toString();
+          cr.paxNo = ticket.pax;
+          cr.segNo = int.parse(ticket.segNo).toString(); // remove leading '0'
         }
       });
       logit('t=$ticketNo c=$couponNo');
@@ -153,7 +156,7 @@ extension Section on ViewBookingBodyState {
         // get server to do unload
         gblActionBtnDisabled = true;
         gblPayAction = 'UNDOCHECKIN';
-        CheckinRequest cr = new CheckinRequest();
+
         cr.rloc = gblPnrModel!.pNR.rLOC;
         cr.ticketNo = ticketNo;
         cr.couponNo = couponNo;
@@ -175,9 +178,14 @@ extension Section on ViewBookingBodyState {
             setState(() {});
           }
         } catch (e) {
-          showVidDialog(context, 'Error', e.toString(), onComplete:() {
+          String er = e.toString();
+          if( er.contains('null')){
+            er = 'Undo failed, try reload';
+          }
+          showVidDialog(context, 'Error', er, onComplete:() {
             setError('');
             setState(() {});
+            Navigator.of(context).pop();
           });
           print(e.toString());
         }
@@ -241,7 +249,7 @@ extension Section on ViewBookingBodyState {
       }
 
       //return new TextButton(
-      if( gblSettings.canUndoCheckin) {
+      if( gblSettings.canUndoCheckin && (pnr.pNR.names.pAX[paxNo].paxType != 'IN')) {
         if(pnr.canCheckOut(paxNo+1, journeyNo+1)) {
           return Column(
             children: [

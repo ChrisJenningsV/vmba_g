@@ -173,6 +173,8 @@ class CheckinRequest{
   String rloc ='';
   String ticketNo = '';
   String couponNo = '';
+  String paxNo = '';
+  String segNo = '';
 
   CheckinRequest();
 
@@ -181,7 +183,8 @@ class CheckinRequest{
     map['rloc'] = rloc;
     map['ticketNo'] = ticketNo;
     map['couponNo'] = couponNo;
-
+    map['paxNo'] = paxNo;
+    map['segNo'] = segNo;
     return map;
   }
 }

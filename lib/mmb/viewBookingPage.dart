@@ -1076,6 +1076,7 @@ class ViewBookingBodyState
     RefundRequest rfund = new RefundRequest();
     rfund.rloc = widget.rloc;
     rfund.journeyNo = p1!;
+    gblReturnDate = null;
 
     String data =  json.encode(rfund);
 
@@ -1094,7 +1095,7 @@ class ViewBookingBodyState
     }
   }
   void _onPressedChangeFlt({int? p1, int? p2, String? p3}) {
-
+    gblReturnDate = null;
     if( objPNR!.pNR.isFQTVBooking()) {
       gblRedeemingAirmiles = true;
     } else {
@@ -2471,6 +2472,7 @@ class ViewBookingBodyState
         }
       });
     }
+    cmd = cmd + '^E';
     logit('do checkin cmd $cmd');
     _checkin(cmd);
 

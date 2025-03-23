@@ -14,6 +14,7 @@ import '../data/models/pnr.dart';
 import '../data/repository.dart';
 import '../home/home_page.dart';
 import '../utilities/helper.dart';
+import 'package:time_machine/time_machine.dart';
 
 Future searchSaveBooking(NewBooking newBooking) async {
   gblPayable = '';
@@ -608,9 +609,16 @@ String buildAddPaxCmd(NewBooking newBooking) {
       }
       if (pax.dateOfBirth != null) {
         // get age in years
-        Duration td = DateTime.now().difference(pax.dateOfBirth as DateTime);
-        int ageYears = (td.inDays / 365).round();
-        int ageMonths = (td.inDays / 30).round();
+
+        LocalDate b = LocalDate.today();
+        LocalDate a = LocalDate.dateTime(pax.dateOfBirth as DateTime);
+        Period diff = b.periodSince(a);
+
+
+       /* Duration td = DateTime.now().difference(pax.dateOfBirth as DateTime);*/
+        int ageYears = diff.years; // (td.inDays / 365).round();
+        int ageMonths = diff.months + diff.years * 12; // (td.inDays / 30).round();
+
         if( ageMonths == 24) ageMonths = 23;
         String _dob = DateFormat('ddMMMyy').format(pax.dateOfBirth as DateTime).toString();
 

@@ -7,6 +7,7 @@ import '../components/showDialog.dart';
 import '../components/trText.dart';
 import '../controllers/vrsCommands.dart';
 import '../data/globals.dart';
+import '../data/models/pnr.dart';
 import '../data/models/trips.dart';
 import '../data/repository.dart';
 import '../dialogs/genericFormPage.dart';
@@ -125,23 +126,49 @@ Widget getUpcoming(BuildContext context,CardTemplate card, Trip trip, void Funct
   //String destin = cityCodetoAirport(gblTrips!.trips!.first.depart);
   List<Widget> list = [];
   String departs = '';
+  String depart = trip.depart;
   String lands = '';
-
+  Itin? firstFlt;
+  bool found = false;
+  gblNextPnr!.pNR.itinerary.itin.forEach((Itin flt ) {
+    if (!found) {
+      DateTime fltDt = DateTime.parse(flt.ddaygmt + ' ' + flt.dtimgmt);
+      if (fltDt.isAfter(DateTime.now())) {
+        firstFlt = flt;
+        found = true;
+      }
+    }
+  });
   if( gblNextPnr != null ){
 
       list.add(Row( children: [Text(translate('Booking Reference:') + ' ${gblNextPnr!.pNR.rLOC}', style: TextStyle(color: card.textClr))]));
-      list.add(Row( children: [Text('${gblTrips!.trips!.first.fltNo}', style: TextStyle(color: card.textClr))]));
-      departs = gblNextPnr!.pNR.itinerary.itin.first.depTime.substring(0, 5);
-      lands = gblNextPnr!.pNR.itinerary.itin.first.arrTime.substring(0, 5);
+      if( firstFlt != null ){
+        list.add(Row(children: [
+          Text('${firstFlt!.fltNo}',
+              style: TextStyle(color: card.textClr))
+        ]));
+        departs = firstFlt!.depTime.substring(0, 5);
+        lands = firstFlt!.arrTime.substring(0, 5);
+        depart = firstFlt!.depart;
+        destin = firstFlt!.arrive;
+
+      } else {
+        list.add(Row(children: [
+          Text('${gblTrips!.trips!.first.fltNo}',
+              style: TextStyle(color: card.textClr))
+        ]));
+        departs = gblNextPnr!.pNR.itinerary.itin.first.depTime.substring(0, 5);
+        lands = gblNextPnr!.pNR.itinerary.itin.first.arrTime.substring(0, 5);
+      }
   }
   // Booking reference
 
   list.add(
     Row(
       children: [
-        Text(cityCodetoAirport(trip.depart) + ' ' + departs, style: TextStyle(color: card.textClr,) ),
+        Text(cityCodetoAirport(depart) + ' ' + departs, style: TextStyle(color: card.textClr,) ),
         Padding(padding: EdgeInsets.only(left: 10, right: 10), child:Icon(Icons.flight_takeoff, size: 25, color: card.textClr,)),
-        Text(cityCodetoAirport(trip.destin )+ ' ' + lands, style: TextStyle(color: card.textClr,))
+        Text(cityCodetoAirport(destin )+ ' ' + lands, style: TextStyle(color: card.textClr,))
       ]
     ));
 

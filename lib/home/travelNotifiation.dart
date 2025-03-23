@@ -27,7 +27,7 @@ Widget frontPageNotification(BuildContext context) {
             '/MyNotificationsPage', (Route<dynamic> route) => false);
       },
       child: Container(
-        margin: EdgeInsets.only(top: 85, bottom: 10, left: 10, right: 10),
+        margin: EdgeInsets.only(top: 15, bottom: 0, left: 10, right: 10),
     height: 40,
     // width: (topLevel)? null : 120,
     decoration: BoxDecoration(

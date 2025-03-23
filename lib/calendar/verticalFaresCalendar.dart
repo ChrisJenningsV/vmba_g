@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/calendar/returningFlightPage.dart';
+import 'package:vmba/calendar/widgets/cannedFact.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/functions/text.dart';
 
@@ -33,11 +34,12 @@ class VerticalFaresCalendar  extends StatefulWidget {
   NewBooking newBooking;
   MmbBooking? mmbBooking;
   void Function(bool ) loadData;
+  void Function(DateTime ) changeSearchDate;
   bool isReturnFlight;
   void Function() showProgress;
 
   VerticalFaresCalendar({required this.newBooking, required this.objAv, required this.loadData, required this.showProgress,
-    this.isReturnFlight = false, this.mmbBooking }) ;
+    this.isReturnFlight = false, this.mmbBooking, required this.changeSearchDate }) ;
 
   _VerticalFaresCalendarState createState() => new _VerticalFaresCalendarState();
 
@@ -183,6 +185,9 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         this.widget.newBooking.departureDate = newDate;
         print(this.widget.newBooking.departureDate.toString());
       }
+      if( widget.changeSearchDate != null ) {
+        widget.changeSearchDate!(newDate);
+      }
       widget.loadData(true);
     });
   }
@@ -215,6 +220,20 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         widget.newBooking.passengers.students +
         widget.newBooking.passengers.children;
 */
+
+  Widget? subTitle ;
+  if (gblSettings.wantCanFacs &&
+      item!.flt.first.fltdet.canfac?.fac != null && item!.flt.first.fltdet.canfac?.fac != '' ) {
+    //innerList.add(V3Divider());
+    subTitle = Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Icon(Icons.info_outline),
+          Expanded(
+            child: fltText(item!.flt.first.fltdet.canfac?.fac as String, maxLines: 4),
+          )
+        ]);
+    }
 
 
     return Card(
@@ -275,6 +294,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
 //        backgroundColor:  Colors.blue,
               initiallyExpanded: expandedFlt == fltNo,
               title: flightTitle(item, fltNo),
+              subtitle: subTitle,
               children: [ Container(
                   color: Colors.grey.shade200,
                   child: getFareList(item, fltNo))
@@ -335,6 +355,24 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     if (noAv > 0 && curFare > 0 &&
         curFare <= item.flt[fltNo - 1].fltav.pri!.length) {
       //logit('a');
+      cur = item.flt[0].fltav.cur![0];
+      item.flt.forEach((flt) {
+        String up1 = flt.fltav.incprice![curFare];
+        String up =   flt.fltav.incprice![curFare-1];
+
+        if( up == '') up = '0';
+        if (double.parse(up1) > double.parse(up)) {
+          //logit('c');
+          if( gblSettings.wantUpgradePrices) {
+            upgradePrice += double.parse(up1) ;
+            //logit('upgrade $up1');
+          } else {
+            upgradePrice = 0;
+          }
+        }
+      });
+
+/*
       cur = item.flt[fltNo - 1].fltav.cur![0];
       if (item.flt[fltNo - 1].fltav.pri![curFare] != '' &&
           item.flt[fltNo - 1].fltav.pri![curFare - 1 ] != '') {
@@ -342,8 +380,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         String up1 = item.flt[fltNo - 1].fltav.incprice![curFare];
         String up = item.flt[fltNo - 1].fltav.incprice![curFare-1];
         if( up == '') up = '0';
-        if (double.parse(up1) >
-            double.parse(up)) {
+        if (double.parse(up1) > double.parse(up)) {
           //logit('c');
           if( gblSettings.wantUpgradePrices) {
             upgradePrice = double.parse(up1) ;
@@ -353,6 +390,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
           }
         }
       }
+*/
     }
 //    logit('index $index upgrade $upgradePrice');
 
@@ -394,7 +432,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                         children: [
                           fltText('Upgrade from'),
                           fltText(calenderPrice(
-                              cur, upgradePrice.round().toString(), '')),
+                              cur, upgradePrice.toStringAsFixed(2), '')), //cur, upgradePrice.round().toString(), '')),
                         ],
                       ),
                     ),
@@ -457,6 +495,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     // content
 
     int index = 0;
+    int noFlts = itin.flt.length;
     itin.flt.forEach((f) {
       list.add(
           Row(
@@ -482,7 +521,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                   children: [
                 VTitleText(cityCodetoAirport(f.dep), size: TextSize.medium,),
                 VBodyText(f.fltdet.airid + f.fltdet.fltno + ': '),
-                VBodyText(f.journeyDuration()),
+                noFlts > 1 ?VBodyText(f.journeyDuration()) : Container(),
                 Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                 VTitleText(cityCodetoAirport(f.arr), size: TextSize.medium,),
               ]),
@@ -598,15 +637,11 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     List <Widget> innerList = [];
 
     innerList.add(vertFlightRow(context, item, fltNo));
-    /* if (gblSettings.wantCanFacs &&
-        item!.flt.first.fltdet.canfac?.fac.isNotEmpty != null) {
-      innerList.add(V3Divider());
-      innerList.add(CannedFactWidget(flt: item.flt));
-    }
-    innerList.add(infoRow(context, item!));*/
+
+    /*innerList.add(infoRow(context, item!));*/
     return Container(
-      // margin: EdgeInsets.only(top: 10, bottom: 10.0, left: 5, right: 5),
-        color: expandedFlt == fltNo /*selectedFlt == fltNo*/
+//      color: Colors.red,
+        color: expandedFlt == fltNo
             ? gblSystemColors.selectedFlt
             : gblSystemColors.unselectedFlt,
         padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
@@ -814,8 +849,8 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     }
   }
 
-  Widget fltText(String text) {
-    return v2FlightText(text, gblSystemColors.fltText,);
+  Widget fltText(String text, {int? maxLines}) {
+    return v2FlightText(text, gblSystemColors.fltText, maxLines: maxLines);
   }
 
   Widget fareText(String text, int fltNo, int fareNo) {

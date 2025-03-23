@@ -155,14 +155,14 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
     if( brew == 'a' ) {
       fs = gblFlightStatuss!.flights.where((element) =>
-      element.schArrivalAirport == gblOrigin).toList();
+        element.schArrivalAirport == gblOrigin && element.serviceTypeCode == 'J').toList();
     } else if( brew == 'd') {
       fs = gblFlightStatuss!.flights.where((element) =>
-      element.departureAirport == gblOrigin ).toList();
+      element.departureAirport == gblOrigin  && element.serviceTypeCode == 'J').toList();
     } else if (brew == 'r') {
       fs = gblFlightStatuss!.flights.where((element) =>
       element.departureAirport == gblOrigin &&
-          element.schArrivalAirport == gblDestination).toList();
+          element.schArrivalAirport == gblDestination  && element.serviceTypeCode == 'J').toList();
     } else {
       String fltNo = _fltNoEditingController.text.toUpperCase();
       if( fltNo != '' ) {
@@ -171,8 +171,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
         if (gblFlightStatuss != null) {
           fs = gblFlightStatuss!.flights.where((element) =>
-          element
-              .flightNumber == gblFltNo).toList();
+          element.flightNumber == gblFltNo  && element.serviceTypeCode == 'J').toList();
          }
         logit('got ${fs.length} flights');
       }
@@ -288,21 +287,29 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     cols.add(getColDef(1,'Flight', 15 * width /100, leftPad: 10));
 
     if( brew == 'a') {
-      cols.add(getColDef(2,'Departs', 25 * width /100,));
+      cols.add(getColDef(2,'Departs', 28 * width /100,));
     }
     // a = 40
     if(  brew == 'r' || brew == 'n') {
-      cols.add(getColDef(2,'route', 25 * width /100,));
+      cols.add(getColDef(2,'route', 35 * width /100,));
     }
-    cols.add(getColDef(3,'Take Off', 15 * width /100,));
+   // if(  brew == 'r' || brew == 'n' || brew == 'd') {
+      cols.add(getColDef(3, 'T/O', 10 * width / 100,));
+//    } else {
+  //    cols.add(getColDef(3, 'Take Off', 15 * width / 100,));
+    //}
     // a = 55
     //cols.add(DataColumn( label: getNamedIcon('takeOff', color: Colors.black),));
     if( brew == 'd' ) {
-      cols.add(getColDef(3,'Arrives', 25* width /100,));
+      cols.add(getColDef(3,'Arrives', 30 * width /100,));
 /*      cols.add(DataColumn(
         label: Container(color: colColor, child: Text('Arrives',)),));*/
     }
-    cols.add(getColDef(2,'Landing', 15 * width /100,));
+    if(  brew == 'r' || brew == 'n') {
+      cols.add(getColDef(2,'Land', 10 * width /100,));
+    } else {
+     cols.add(getColDef(2,'Landing', 15 * width /100,));
+    }
     // a = 70
     //cols.add(DataColumn( label: getNamedIcon('landing', color: Colors.black),));
     cols.add(getColDef(2,'Status', 27* width /100,));
@@ -419,7 +426,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
             // print('$result');
             _handleDeptureSelectionChanged('$result');
           },
-          child: getFlyFrom(context, brew == 'a'? 'Arrives' : 'Departs', bWantWide: false, bold: true)
+          child: getFlyFrom(context, brew == 'a'? 'Arrives' : 'Departs', bWantWide: (brew=='r') ? false : true, bold: true)
       ));
     }
     if( brew == 'r') {

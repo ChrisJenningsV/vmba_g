@@ -273,11 +273,27 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
 
 
       } else {
-        setError( rs.error);
-        setState(() {
-          _loadingInProgress = false;
-          //_noInternet = true;
-        });
+        if( rs.error.contains('ANOTHER CARRIER' )){
+          showVidDialog(context, 'Error', 'No seat booking available as flight operated by other carrier', onComplete: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ChoosePaymenMethodWidget(
+                          //SelectPaymentProviderWidget()
+                          newBooking: gblNewBooking,
+                          pnrModel: gblPnrModel as PnrModel,
+                          isMmb: false,)
+                )
+            );
+          });
+        } else {
+          setError(rs.error);
+          setState(() {
+            _loadingInProgress = false;
+            //_noInternet = true;
+          });
+        }
       }
     });
   }
@@ -548,21 +564,23 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       }
 
       return vidWideActionButton(context, caption, (context, d) async {
-
-        if( (gblCurJourney+1) < gblPnrModel!.pNR.itinerary.itin.length){
-          await _handleBookSeats(paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
-         // go to next flight
-          gblCurJourney+=1;
-          List<Pax> plist =  gblPnrModel!.getBookedPaxList(gblCurJourney);
-          paxlist!.init(plist);
-         _loadData( _getSeatPlanCommand(gblCurJourney));
-
-        } else {
-          _handleBookSeats(paxlist!.list!, gotoPayment: true, journeyNo: gblCurJourney);
-        }
-      }, icon: Icons.check,
+        if (!gblActionBtnDisabled) {
+          gblActionBtnDisabled = true;
+          if ((gblCurJourney + 1) < gblPnrModel!.pNR.itinerary.itin.length) {
+            await _handleBookSeats(
+                paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
+            // go to next flight
+            gblCurJourney += 1;
+            List<Pax> plist = gblPnrModel!.getBookedPaxList(gblCurJourney);
+            paxlist!.init(plist);
+            _loadData(_getSeatPlanCommand(gblCurJourney));
+          } else {
+            _handleBookSeats(
+                paxlist!.list!, gotoPayment: true, journeyNo: gblCurJourney);
+          }
+      }},  icon: Icons.check,
           offset: 35.0,
-          disabled: paxlist!.allocatedCount() == 0);
+          disabled: paxlist!.allocatedCount() == 0 || gblActionBtnDisabled, );
     }
     return
          Padding(

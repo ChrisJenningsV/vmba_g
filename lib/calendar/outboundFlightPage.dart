@@ -380,8 +380,16 @@ class _FlightSeletionState extends State<FlightSeletionPage> {
         ),
       );
     } else {
-      if( gblSettings.wantVericalFaresCalendar) return VerticalFaresCalendar( objAv:  objAv, newBooking:  widget.newBooking, loadData: _loadData, showProgress: showProgress,);
-      return flightSelection();
+      if( gblSettings.wantVericalFaresCalendar) {
+        return VerticalFaresCalendar(objAv: objAv,
+          newBooking: widget.newBooking,
+          loadData: _loadData,
+          showProgress: showProgress,
+          changeSearchDate: (d){},
+        );
+      }
+        return flightSelection();
+
     }
   }
 

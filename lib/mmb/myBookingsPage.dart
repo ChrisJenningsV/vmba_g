@@ -1303,6 +1303,19 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
 
     for(var trip in gblTrips!.trips!){
       DateTime dt = trip.fltdate!;
+      if( gblNextPnr != null ) {
+        bool found = false;
+        // get first future flight
+        gblNextPnr!.pNR.itinerary.itin.forEach((Itin flt ){
+          if( ! found) {
+            DateTime fltDt = DateTime.parse(flt.ddaygmt + ' ' + flt.dtimgmt);
+            if( fltDt.isAfter(DateTime.now())){
+              dt = fltDt;
+              found = true;
+            }
+          }
+        });
+      }
       dt = dt.add(Duration(hours: 22));
       if (dt.isAfter( DateTime.now())) {
         String fltDate = DateFormat('dd MMM yy').format(
@@ -1337,7 +1350,7 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
               doUpdate();
               //setState(() {});
             }), wantIcon: false,
-              topMargin: 140,
+              topMargin: 0,
 
             ));
       }
@@ -1359,7 +1372,6 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
           }), wantIcon: false,
               topMargin: 90,
           );
-
 
       return Text('New Install');
     }

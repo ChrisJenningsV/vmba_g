@@ -15,6 +15,7 @@ import '../../calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/dataLoader.dart';
 import 'dayBuilder.dart';
+import 'functions.dart';
 
 class RangePickerPage extends StatefulWidget {
   RangePickerPage(
@@ -98,6 +99,7 @@ class _RangePickerPageState extends State<RangePickerPage> {
         firstDate: _firstDate,
         lastDate: _lastDate,
         dayBuilder: _dayBuilder,
+        selectableDayPredicate: dayIsSelectable,
         monthChange: _monthChange,
         weekdayLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         controlsTextStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -249,12 +251,10 @@ class _RangePickerPageState extends State<RangePickerPage> {
       widget.onChanged(FlightDates(newPeriod.start, newPeriod.end));
     });
   }
-
-  void _monthChange(DateTime newMonth){
-    logit('MonthChange event',verboseMsg: false);
-    // load this months data
-    LoadCalendarData(context, newMonth, onCompleteLoad);
+  void _monthChange(DateTime newMonth) {
+    monthChange(context, newMonth, onCompleteLoad);
   }
+
   void onCompleteLoad()
   {
     Timer(Duration(seconds : 1), ()

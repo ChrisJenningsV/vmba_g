@@ -84,6 +84,7 @@ void configLM() {
     wantVericalFaresCalendar: true,
     wantCustomHomepage:false,
     wantPriceCalendar: true ,
+    wantIconsOnPriceCalendar: true,
     wantNewMMB: true,
     wantNewSeats: true,
     wantSeatPlanImages: false,
@@ -179,8 +180,8 @@ void configLM() {
   child: true,
   infant: true,
   youths: true,
-      student: true,
-      senior: true,
+      student: false,
+      senior: false,
       wantYouthDOB: true,
 
   ),
@@ -227,7 +228,7 @@ void configLM() {
     testApiUrl:      'https://customertest.videcom.com/LoganAir/VARS/webApiv2/api/',
 
 
-//    testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
+ //   testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
   //  testXmlUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
 
 //   testSmartApiUrl:      "https://customertest.videcom.com/LoganAir/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",

@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:vmba/Managers/PaxManager.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/trText.dart';
@@ -166,10 +167,16 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       break;
 
     case 'FQTVLOGIN':
+      String fNo = '';
+      String pw = '';
+      if( gblPassengerDetail != null ) {
+        fNo = gblPassengerDetail!.fqtv;
+        pw =  gblPassengerDetail!.fqtvPassword;
+      }
       dialog = new DialogDef(formname: formName, caption: formTitle, actionText: 'Continue', action: 'DOFQTVLOGIN');
-      dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number')));
+      dialog.fields.add(new DialogFieldDef(field_type: 'FQTVNUMBER', caption: '${gblSettings.fqtvName} ' + translate('number'),value: fNo ));
       dialog.fields.add(new DialogFieldDef(field_type: 'space', caption: ''));
-      dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password'));
+      dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password', value: pw));
       dialog.fields.add(new DialogFieldDef(field_type: 'action', caption: "Can't log in? ",
           actionText: translate('Reset Password'),
           action: 'FqtvReset'

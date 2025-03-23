@@ -36,7 +36,7 @@ class ImageManager{
     }
     list.add(body);
     double wb = View.of(context).viewInsets.bottom;
-    logit( 'wb = $wb');
+    //logit( 'wb = $wb');
 
     if (wb == 0.0) {
       if ((curDialog != null && curDialog!.pageFoot != null &&

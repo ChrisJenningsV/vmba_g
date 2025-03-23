@@ -12,6 +12,7 @@ import '../../calendar/fareCalendar/widgets/FareCalendarDatePicker_config.dart';
 import '../../utilities/helper.dart';
 import '../../utilities/widgets/dataLoader.dart';
 import './dayBuilder.dart';
+import 'functions.dart';
 
 class DayPickerPage extends StatefulWidget {
   DayPickerPage(
@@ -110,6 +111,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
         firstDate: _firstDate,
         lastDate: _lastDate,
         dayBuilder: _dayBuilder,
+        selectableDayPredicate: dayIsSelectable,
         monthChange: _monthChange,
         disableModePicker: true,
         weekdayLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
@@ -173,10 +175,14 @@ class _DayPickerPageState extends State<DayPickerPage> {
   }
 
   void _monthChange(DateTime newMonth){
+    monthChange(context, newMonth, onCompleteLoad);
+/*
     logit('MonthChange event',verboseMsg: false);
     // load this months data
     LoadCalendarData(context, newMonth, onCompleteLoad);
+*/
   }
+
 
   Widget? _dayBuilder({required DateTime date,
     TextStyle? textStyle,

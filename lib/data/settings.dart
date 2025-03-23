@@ -132,6 +132,7 @@ class Settings {
   bool wantTerminal;
   bool wantMaterialFonts;
   bool wantPriceCalendar;
+  bool wantIconsOnPriceCalendar;
   bool wantNewCalendar;
   bool wantCalendarBigMonth;
   bool wantNewMMB;
@@ -389,6 +390,7 @@ bool bpShowFastTrack;
     this.wantTerminal = true,
     this.wantMaterialFonts = false,
     this.wantPriceCalendar = false,
+    this.wantIconsOnPriceCalendar = true,
     this.wantNewCalendar = false,
     this.wantCalendarBigMonth = false,
     this.wantNewSeats = false,

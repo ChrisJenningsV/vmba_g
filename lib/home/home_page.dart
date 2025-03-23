@@ -633,8 +633,9 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     //}
 
     list.add(Container(
+      padding: EdgeInsets.only(top: 60),
       //This container stops the alternative image from scrolling
-      child: Text(''),
+      child: Text('', style: TextStyle(color: Colors.white, fontSize: 30), ), //Text(''),
       width: MediaQuery
           .of(context)
           .size
@@ -646,12 +647,16 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     ));
 
     if( wantHomePageV3()) {
-      list.add( Padding(padding: EdgeInsets.only(top: 200)));
-      list.add(frontPageNotification(context));
-
-      list.add(getMiniMyBookingsPage(context, () {
+      List<Widget> list2 = [];
+      list2.add( Padding(padding: EdgeInsets.only(top: 60)));
+      list2.add(frontPageNotification(context));
+      list2.add( Padding(padding: EdgeInsets.only(top: 10)));
+      list2.add(getMiniMyBookingsPage(context, () {
         //doCallback();
       }));
+
+      list.add(Column(
+        children: list2)    );
     }
 
     if( gblSettings.wantHomepageButtons) {

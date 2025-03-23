@@ -312,7 +312,8 @@ bool isSearchDate(DateTime itemDate, DateTime searchDate) {
   DateTime _searchDate =
       DateTime.parse(searchDate.toString().split(' ')[0] + ' 00:00:00');
   int diffDays = itemDate.difference(_searchDate).inDays;
-  if (diffDays == 0) {
+ // if (diffDays == 0) {
+  if (itemDate.month == _searchDate.month && itemDate.day == _searchDate.day) {
     return true;
   } else {
     return false;

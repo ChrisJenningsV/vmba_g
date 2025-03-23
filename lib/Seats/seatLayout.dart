@@ -212,7 +212,7 @@ double getTopOffset(int indexRow) {
 
 getPricing(List <Widget> list, int indexRow ){
 double y= getTopOffset(indexRow);
-logit( ' pricing w: $cabinWidth o: $pricingOffset y: $y');
+//logit( ' pricing w: $cabinWidth o: $pricingOffset y: $y');
 
  /* Widget priceBox =  Container(
     padding: EdgeInsets.fromLTRB(2, 0, 2, 0),

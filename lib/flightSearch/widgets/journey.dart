@@ -137,7 +137,9 @@ class _SelectJourneyWidgetState extends State<SelectJourneyWidget> {
                                     gblSearchParams.searchDestination = dest;
                                     gblDestination = dest;
                                     gblOrigin = gblSearchParams.searchOrigin;
-
+                                    route.departure = gblSearchParams.searchOriginCode;
+                                    route.arrival = gblSearchParams.searchDestinationCode;
+                                    widget.onChanged!(route);
                                     setState(() {});
                                   }
                                 }
@@ -191,17 +193,16 @@ Widget _getAirportText(BuildContext context, String airportName, String code, bo
   }
   if (bold) fw = FontWeight.bold;
 
-  double width = MediaQuery.of(context).size.width - 40;
+  double width = MediaQuery.of(context).size.width - 50;
   if( !bIsWide) width = width/2;
 
   return Container(
-    //   color: Colors.red,
-      width: width,
+//      width: width,
       child:
       Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            wantHomePageV3() ? v2SearchValueText(translate(airportName)) :
+            wantHomePageV3() ? v2SearchValueText(translate(airportName), narrowField: !bIsWide) :
             TrText(
                 translate(airportName),
                 noTrans: true,
