@@ -144,7 +144,7 @@ Widget getUpcoming(BuildContext context,CardTemplate card, Trip trip, void Funct
       list.add(Row( children: [Text(translate('Booking Reference:') + ' ${gblNextPnr!.pNR.rLOC}', style: TextStyle(color: card.textClr))]));
       if( firstFlt != null ){
         list.add(Row(children: [
-          Text('${firstFlt!.fltNo}',
+          Text('${firstFlt!.airID}${firstFlt!.fltNo}',
               style: TextStyle(color: card.textClr))
         ]));
         departs = firstFlt!.depTime.substring(0, 5);

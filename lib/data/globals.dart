@@ -33,7 +33,7 @@ import 'models/vouchers.dart';
 // X4 excursions
 // KG key lime / Dallas
 String gblBuildFlavor = 'LM';
-bool gblIsLive = true;
+bool gblIsLive = false;
 bool gblWantLogBuffer = false;
 int requiredXmlVersion = 122; // now 119 for LM NEW, 120 for FQTV reg, 122 fix for next pnr
 int requiredApiVersion = 105;

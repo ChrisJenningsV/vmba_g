@@ -59,20 +59,6 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
 
   @override
   Widget build(BuildContext context) {
-   /* List <Widget> tabs = [];
-    List <Widget> tabViews = [];
-
-    tabs.add(Container( color: Colors.transparent, child:TrText('Departures', style: TextStyle(color: Colors.white),)));
-    tabs.add(Container( color: Colors.transparent, child:TrText('Arrivals', style: TextStyle(color: Colors.white),)));
-    tabs.add(Container( color: Colors.transparent, child:TrText('Route', style: TextStyle(color: Colors.white),)));
-    tabs.add(Container( color: Colors.transparent, child:TrText('Flight No', style: TextStyle(color: Colors.white),)));
-
-    tabViews.add(getRouteView('d'));
-    tabViews.add(getRouteView('a'));
-    tabViews.add(getRouteView('r'));
-    tabViews.add(getFltNoView() );
-*/
-
     return
 
       new Scaffold(
@@ -93,10 +79,10 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     List <Widget> tabs = [];
     List <Widget> tabViews = [];
 
-    tabs.add(Container( padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:TrText('Departures', style: TextStyle(fontSize: 16, color: Colors.white),)));
-    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:TrText('Arrivals', style: TextStyle(fontSize: 16,color: Colors.white),)));
-    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:TrText('Route', style: TextStyle(fontSize: 16,color: Colors.white),)));
-    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:TrText('Flight No', style: TextStyle(fontSize: 16,color: Colors.white),)));
+    tabs.add(Container( padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:titleText('Departures',)));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25, color: Colors.transparent, child:titleText('Arrivals')));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:titleText('Route')));
+    tabs.add(Container(  padding: EdgeInsets.only(top: 5), height: 25,color: Colors.transparent, child:titleText('Flight No')));
 
     tabViews.add(getRouteView('d'));
     tabViews.add(getRouteView('a'));
@@ -199,32 +185,32 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       }
       if( dDate == '') dDate = depDate;
       List<DataCell> cells = [];
-      cells.add( DataCell(Padding(padding: EdgeInsets.only(left: 10) , child: Text(flight.airlineCode + flight.flightNumber))));
+      cells.add( DataCell(Padding(padding: EdgeInsets.only(left: 10) , child: stText(flight.airlineCode + flight.flightNumber))));
       if( brew == 'a' ) {
-        cells.add(DataCell(Text(flight.departureAirportName)));
+        cells.add(DataCell(stText(flight.departureAirportName)));
       }
       if(  brew == 'r' || brew == 'n') {
         cells.add(DataCell(
             Column(
                 children: [
-                  Text(flight.departureAirportName),
-                  Text(flight.schArrivalAirportName)
+                  stText(flight.departureAirportName),
+                  stText(flight.schArrivalAirportName)
                 ]
             ))
         );
       }
       if( dDate != depDate) {
-        cells.add(DataCell(Column( children: [Text(depTime), Text(depDate)])));
+        cells.add(DataCell(Column( children: [stText(depTime), smText(depDate)])));
       } else {
-        cells.add(DataCell(Text(depTime)));
+        cells.add(DataCell(stText(depTime)));
       }
       if( brew == 'd' ) {
-        cells.add(DataCell(Text(flight.schArrivalAirportName)));
+        cells.add(DataCell(stText(flight.schArrivalAirportName)));
       }
       if( dDate != arDate) {
-        cells.add(DataCell(Column( children: [Text(arTime), Text(arDate)])));
+        cells.add(DataCell(Column( children: [stText(arTime), smText(arDate)])));
       } else {
-        cells.add(DataCell(Text(arTime)));
+        cells.add(DataCell(stText(arTime)));
       }
       String status = '';
       if(flight.arrivalStatus == 'As Scheduled'){
@@ -249,7 +235,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
             borderRadius:BorderRadius.circular(5.0),
           ),
           child: Row(
-              children: [Text(status,)])
+              children: [statText(status,)])
         ))
       ));
       list.add(DataRow(cells: cells));
@@ -294,7 +280,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
       cols.add(getColDef(2,'route', 35 * width /100,));
     }
    // if(  brew == 'r' || brew == 'n' || brew == 'd') {
-      cols.add(getColDef(3, 'T/O', 10 * width / 100,));
+      cols.add(getColDef(3, 'T/O', 12 * width / 100,));
 //    } else {
   //    cols.add(getColDef(3, 'Take Off', 15 * width / 100,));
     //}
@@ -750,4 +736,24 @@ class FlightStatus {
     if( json['Suffix'] != null) suffix = json['Suffix'];
   }
 }
+Widget titleText(String text){
+  return Text(translate(text), style: TextStyle(fontSize: 14, color: Colors.white),);
+}
 
+
+Widget stText(String text){
+  if( text.length > 8){
+    return Text(text, textScaler: TextScaler.linear(0.8),);
+  }
+  return Text(text, style: TextStyle(fontSize: 12),);
+}
+Widget smText(String text){
+  return Text(text, style: TextStyle(fontSize: 10),);
+}
+
+Widget statText(String text){
+  if( text.length > 12){
+    return Text(text, textScaler: TextScaler.linear(0.8),);
+  }
+  return Text(text, style: TextStyle(fontSize: 12),);
+}

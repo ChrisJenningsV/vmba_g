@@ -334,7 +334,17 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
   Widget getPaxSeatList(Seat seat, void Function(void Function()) setState2) {
     List<Widget> paxes = [];
 
+    // check if seat already selected
     int index = 0;
+    bool seatSelected = false;
+    paxlist!.list!.forEach((p) {
+      if (paxlist!.list![index].seat == seat.sCode) {
+        seatSelected = true;
+      }
+      index+=1;
+    });
+
+    index = 0;
     paxlist!.list!.forEach((p) {
       List<String> nameArray = p.name.split(' ');
       List<Widget> textList = [];
@@ -371,6 +381,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: textList,),
+                // cannot select a seat more than once
+                (action == 'Select' && seatSelected) ? Container() :
                 vidActionButton(context, action,
                     params: new ButtonClickParams(paxNo: index, action: action),
                     isRectangular: true,
@@ -410,8 +422,8 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
       index++;
     });
 
-    double setVal = 100;
-    double maxVal = 200;
+    double setVal = 120;
+    double maxVal = 220;
     if (paxes.length > 2) {
       if (paxes.length < 5) {
         maxVal = paxes.length * 60;
