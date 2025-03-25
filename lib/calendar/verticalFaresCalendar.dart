@@ -372,25 +372,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         }
       });
 
-/*
-      cur = item.flt[fltNo - 1].fltav.cur![0];
-      if (item.flt[fltNo - 1].fltav.pri![curFare] != '' &&
-          item.flt[fltNo - 1].fltav.pri![curFare - 1 ] != '') {
-        //logit('b');
-        String up1 = item.flt[fltNo - 1].fltav.incprice![curFare];
-        String up = item.flt[fltNo - 1].fltav.incprice![curFare-1];
-        if( up == '') up = '0';
-        if (double.parse(up1) > double.parse(up)) {
-          //logit('c');
-          if( gblSettings.wantUpgradePrices) {
-            upgradePrice = double.parse(up1) ;
-            //logit('upgrade $up1');
-          } else {
-            upgradePrice = 0;
-          }
-        }
-      }
-*/
+
     }
 //    logit('index $index upgrade $upgradePrice');
 
@@ -520,7 +502,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                 VTitleText(cityCodetoAirport(f.dep), size: TextSize.medium,),
-                VBodyText(f.fltdet.airid + f.fltdet.fltno + ': '),
+                VBodyText(f.fltdet.airid + f.fltdet.fltno ),
                 noFlts > 1 ?VBodyText(f.journeyDuration()) : Container(),
                 Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                 VTitleText(cityCodetoAirport(f.arr), size: TextSize.medium,),

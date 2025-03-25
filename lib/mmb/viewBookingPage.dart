@@ -51,6 +51,7 @@ enum Month { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec }
 
 //int _journeyToChange;
 MmbBooking _mmbBooking = MmbBooking();
+bool buttonEnabled = false;
 //PnrModel pnr;
 
 bool wantChangeAnyFlight = true;
@@ -79,6 +80,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
 
   //CheckinBoardingPassesPage({this.rloc});
   GlobalKey<ScaffoldState> _key = GlobalKey();
+  late bool _buttonEnabled ;
 
   // int currentPaxNo;
   // int currentJourneyNo;
@@ -87,6 +89,7 @@ class ViewBookingPageState extends State<ViewBookingPage> {
   initState() {
     gblCurPage = 'VIEWBOOKING';
     gblActionBtnDisabled = false;
+    _buttonEnabled = false;
     setError( '');
     gblPaymentMsg = '';
     if(widget.rloc == null || widget.rloc == ''){
@@ -1101,6 +1104,15 @@ class ViewBookingBodyState
     } else {
       gblRedeemingAirmiles = false;
     }
+    if( p1 == 1) {
+      // out
+      gblOrigin = objPNR!.pNR.itinerary.itin[0].depart;
+      gblDestination = objPNR!.pNR.itinerary.itin[0].arrive;
+    } else {
+      // back = 2
+      gblOrigin = objPNR!.pNR.itinerary.itin[1].depart;
+      gblDestination = objPNR!.pNR.itinerary.itin[1].arrive;
+    }
 
 
     if( objPNR!.pNR.fareQuote != null && objPNR!.pNR.fareQuote.fQItin != null && objPNR!.pNR.fareQuote.fQItin.length >0 ){
@@ -1121,6 +1133,10 @@ class ViewBookingBodyState
         ));
   }
   void _onPressedChangeFlt2(BuildContext context, dynamic p1) {
+/*
+    gblOrigin = objPNR!.pNR.
+    gblDestination
+*/
     if( objPNR!.pNR.fareQuote != null && objPNR!.pNR.fareQuote.fQItin != null && objPNR!.pNR.fareQuote.fQItin.length >0 ){
       //gblSettings.currency = objPNR!.pNR.fareQuote.fQItin[0].cur;
       if( objPNR!.pNR.payments != null && objPNR!.pNR.payments.fOP != null && objPNR!.pNR.payments.fOP.length > 0) {
@@ -1269,6 +1285,7 @@ class ViewBookingBodyState
         !apisPnrStatus!.apisInfoEnteredAll(currentJourneyNo)) {
       //widget.showSnackBar(          'Can\'t check in all passengers as APIS information not complete');
     } else {
+
       _displayCheckingAllDialog(_objPNR, currentJourneyNo);
     }
   }
@@ -2505,37 +2522,70 @@ class ViewBookingBodyState
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
+        List <Widget> body  = [];
+
+        if( gblSettings.wantDangerousGoods || gblSettings.wantDangerousGoodsCheckin) {
+          body.add(TrText('The following is a non-exhaustive list of Prohibited Items'));
+
+          double height = gblIsIos ? 350 : 450;
+          double width = gblIsIos ? 220 : 250;
+          if( gblSettings.dagerousdims != '' ){
+            // format {"iOSw": "220", "iOSh": "350", "aNDw": "400", "aNDh": "500"}
+            Map dimMap = json.decode(gblSettings.dagerousdims.toUpperCase());
+            if( gblIsIos) {
+              height = double.parse(dimMap['IOSH']);
+              width = double.parse(dimMap['IOSW']);
+            } else {
+              height = double.parse(dimMap['ANDH']);
+              width = double.parse(dimMap['ANDW']);
+            }
+          }
+
+
+          //list.add(Padding(padding: EdgeInsets.only(top: 60)));
+          body.add( Image(
+            image: NetworkImage('${gblSettings.gblServerFiles}/pageImages/dangerousgoods.jpg'),
+            height: height,
+            width: width,
+            fit: BoxFit.fill,
+          ));
+
+         /* body.add(CheckboxListTile(
+            title: TrText("I confirm that I have read and understood this notice and there are no Dangerous Goods or Prohibited Items in my hand luggage or checked-in baggage."),
+            value: buttonEnabled,
+            onChanged: (newValue) {
+              setState(() {
+                buttonEnabled = newValue!;
+              });
+            },
+            controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+          ));*/
+        } else {
+          body.add(para1);
+          body.add(Padding(padding: EdgeInsets.all(4)));
+          if (gblSettings.prohibitedItemsNoticeUrl != null) {
+            body.add(appLinkWidget(
+                'https',
+                gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
+                Text(gblSettings.prohibitedItemsNoticeUrl,
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ))));
+          }
+          body.add(Padding(padding: EdgeInsets.all(4),),);
+          body.add(TrText(
+              'I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'));
+          body.add(Padding(padding: EdgeInsets.all(4)));
+          if (gblSettings.aircode != 'SI') {
+            body.add(TrText(
+                'I also confirm I am fit to travel and devoid of any Covid-19 symptoms'));
+          }
+        }
         return AlertDialog(
           title: new TrText("Online Check-in"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              para1,
-              /*Text(
-                  "Passenger cabin bags and hold luggage must not contain any articles or substances that may present a danger during transport. Please read the Prohibited Items Notice."),*/
-              Padding(
-                padding: EdgeInsets.all(4),
-              ),
-              gblSettings.prohibitedItemsNoticeUrl == null ? Container() : appLinkWidget(
-                  'https',
-                  gblSettings.prohibitedItemsNoticeUrl.replaceAll('https', ''),
-                  Text(gblSettings.prohibitedItemsNoticeUrl,
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      ))),
-              Padding(
-                padding: EdgeInsets.all(4),
-              ),
-              TrText(
-                  'I confirm I have read and understand the restrictions on dangerous goods in cabin and hold luggage'),
-              Padding(
-                padding: EdgeInsets.all(4),
-              ),
-              (gblSettings.aircode != 'SI' )?
-              TrText(
-                  'I also confirm I am fit to travel and devoid of any Covid-19 symptoms')
-                  : Container()
-            ],
+            children: body,
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog

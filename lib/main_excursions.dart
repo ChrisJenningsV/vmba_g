@@ -11,6 +11,10 @@ import 'data/globals.dart';
 void main() {
   configX4();
 
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.blue, // navigation bar color
+    statusBarColor: Colors.pink, // status bar color
+  ));
   var configuredApp = AppConfig(
     appTitle: 'excursions',
     child: App(),

@@ -45,7 +45,7 @@ extension Section on ViewBookingBodyState {
                       fontSize: 16.0, fontWeight: FontWeight.w400)),
             ),
             //(seatNo!= '' )? Text(seatNo + '  ') : Container(),
-            new Row(children: getButtons(pnr, i, journey, paxlist)),
+            new Row(children: getButtons(pnr, i, journey, paxlist, buttonEnabled)),
             //    ),
           ],
         ),
@@ -199,7 +199,7 @@ extension Section on ViewBookingBodyState {
     }
 
 
-  List <Widget> getButtons(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+  List <Widget> getButtons(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist, bool buttonEnabled) {
     List <Widget> list = [];
 
 
@@ -207,16 +207,16 @@ extension Section on ViewBookingBodyState {
       list.add(Column(
           children: [
             apisButtonOption(pnr, paxNo, journeyNo, paxlist),
-            buttonOption(pnr, paxNo, journeyNo, paxlist),
+            buttonOption(pnr, paxNo, journeyNo, paxlist, buttonEnabled),
           ]));
 
     } else {
-      list.add(buttonOption(pnr, paxNo, journeyNo, paxlist));
+      list.add(buttonOption(pnr, paxNo, journeyNo, paxlist, buttonEnabled));
     }
     return list;
   }
 
-  Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist) {
+  Widget buttonOption(PnrModel pnr, int paxNo, int journeyNo, List<Pax> paxlist, bool buttonEnabled) {
 
     if( isFltPassedDate(pnr.pNR.itinerary.itin[journeyNo], 12)) {
       // departed, no actions

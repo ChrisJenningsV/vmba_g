@@ -4,6 +4,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vmba/components/showNotification.dart';
 
 import '../data/globals.dart';
@@ -118,7 +119,16 @@ class vidAppBarState extends State<vidAppBar>  with WidgetsBindingObserver {
       leading: widget.leading,
       flexibleSpace: widget.flexibleSpace,
       automaticallyImplyLeading: widget.automaticallyImplyLeading,
-      actions: widget.actions
+      actions: widget.actions,
+      systemOverlayStyle: SystemUiOverlayStyle(
+      // Status bar color
+        statusBarColor: Colors.black.withValues(alpha: 0.3),
+
+      // Status bar brightness (optional)
+      statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+        statusBarBrightness: Brightness.dark, // For iOS (dark icons)
+      /*statusBarBrightness: Brightness.light, // For iOS (dark icons)*/
+    ),
       //iconTheme: IconThemeData(color:gblSystemColors.headerTextColor)
     );
   }

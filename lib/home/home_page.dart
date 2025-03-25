@@ -464,10 +464,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
             automaticallyImplyLeading: false,
             centerTitle: gblCentreTitle,
 
-            //brightness: gblSystemColors.statusBar,
-            //leading: Image.asset("lib/assets/$gblAppTitle/images/appBar.png",),
             backgroundColor: background,
-            //title: _getLogo() ,
             titleText: _getTitleText(),
             iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
 
@@ -547,6 +544,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         background = Colors.black;
       }
 
+      logit( 'HP ext = $extendBodyBehindAppBar e=$elevation b=${background.toString()}');
       return new Scaffold(
         key: scaffoldKey,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
@@ -555,8 +553,8 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
             automaticallyImplyLeading: false,
             centerTitle: gblCentreTitle,
             backgroundColor: background,
-            //title: _getLogo() ,
-            titleText: _getTitleText()
+            titleText: _getTitleText(),
+
             //iconTheme: IconThemeData(color: gblSystemColors.headerTextColor) ,
             ),
         body: Stack(
@@ -648,7 +646,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
     if( wantHomePageV3()) {
       List<Widget> list2 = [];
-      list2.add( Padding(padding: EdgeInsets.only(top: 60)));
+      list2.add( Padding(padding: EdgeInsets.only(top: 70)));
       list2.add(frontPageNotification(context));
       list2.add( Padding(padding: EdgeInsets.only(top: 10)));
       list2.add(getMiniMyBookingsPage(context, () {

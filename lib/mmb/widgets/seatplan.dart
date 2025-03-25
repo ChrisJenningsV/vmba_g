@@ -175,7 +175,10 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     setState(() {
       _loadingInProgress = false;
     });
-    showVidDialog(context, 'Error booking seats', errorMsg);
+    showVidDialog(context, 'Error booking seats', errorMsg, onComplete: () {
+      _loadingInProgress = false;
+      Navigator.of(context).pop();
+    });
     //showSnackBar(errorMsg);
   }
 
@@ -327,20 +330,22 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
       showVidDialog(context, 'Error', 'Select Seats First');
 
     } else {
-      await smartBookSeats(gotoPayment,  journeyNo  as int );
-      logit('done book seats');
-      setState(() {
-        paxlist=new PaxList();
-        paxlist!.init(paxValue);
-        _loadingInProgress = true;
-        _displayProcessingText = translate('Booking your seat selection...');
-      });
-      return true;
+      String result = await smartBookSeats(gotoPayment,  journeyNo  as int );
+      if( result == 'OK') {
+        logit('done book seats');
+        setState(() {
+          paxlist = new PaxList();
+          paxlist!.init(paxValue);
+          _loadingInProgress = true;
+          _displayProcessingText = translate('Booking your seat selection...');
+        });
+        return true;
+      }
     }
     return false;
   }
 
-  smartBookSeats(bool gotoPayment , int journeyNo) async {
+  Future<String> smartBookSeats(bool gotoPayment , int journeyNo) async {
     gblPayAction = 'BOOKSEAT';
     SeatRequest seat = new SeatRequest();
     gblBookSeatCmd = '';
@@ -403,6 +408,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
                   }
                 }
             );
+        return 'OK';
       } else {
         if (outstanding == 0) { // zero outstanding
           String msg = json.encode(RunVRSCommand(session!, "E"));
@@ -469,9 +475,11 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
           });
         }
       }
+      return 'OK';
     } catch(e) {
       print(e.toString());
       _dataLoadedFailed(e);
+      return e.toString();
     }
 
   }
@@ -567,16 +575,16 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
         if (!gblActionBtnDisabled) {
           gblActionBtnDisabled = true;
           if ((gblCurJourney + 1) < gblPnrModel!.pNR.itinerary.itin.length) {
-            await _handleBookSeats(
-                paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
-            // go to next flight
-            gblCurJourney += 1;
-            List<Pax> plist = gblPnrModel!.getBookedPaxList(gblCurJourney);
-            paxlist!.init(plist);
-            _loadData(_getSeatPlanCommand(gblCurJourney));
+            bool result = await _handleBookSeats(paxlist!.list!, gotoPayment: false, journeyNo: gblCurJourney);
+            if( result == true) {
+              // go to next flight
+              gblCurJourney += 1;
+              List<Pax> plist = gblPnrModel!.getBookedPaxList(gblCurJourney);
+              paxlist!.init(plist);
+              _loadData(_getSeatPlanCommand(gblCurJourney));
+            }
           } else {
-            _handleBookSeats(
-                paxlist!.list!, gotoPayment: true, journeyNo: gblCurJourney);
+            bool result = await _handleBookSeats( paxlist!.list!, gotoPayment: true, journeyNo: gblCurJourney);
           }
       }},  icon: Icons.check,
           offset: 35.0,
