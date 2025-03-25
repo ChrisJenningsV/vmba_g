@@ -21,25 +21,25 @@ Widget v2Label(String text) {
 
 Widget v2SearchValueText(String text, {bool narrowField = false}){
   double fontSize = 18.0;
-  double scale = 1.6;
+  double scale = 1.3;
   if( narrowField) {
     if (text.length > 15) {
       fontSize = 16.0;
-      scale = 1.5;
+      scale = 1.2;
     }
     if (text.length > 18) {
       fontSize = 15.0;
-      scale = 1.4;
+      scale = 1.1;
     }
     if (text.length > 20)
     {
       fontSize = 12.0;
-      scale = 1.2;
+      scale = 1.0;
     }
   } else {
     if (text.length > 20){
       fontSize = 16.0;
-      scale = 1.4;
+      scale = 1.1;
     }
   }
 
