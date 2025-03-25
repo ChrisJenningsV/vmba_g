@@ -106,7 +106,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
         .size
         .width;
 
-    if ((gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true) && gblIsLive == false ) {
+    if ((gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true)  ) {
       FareCalendarDatePickerConfig config = FareCalendarDatePickerConfig(
         firstDate: _firstDate,
         lastDate: _lastDate,

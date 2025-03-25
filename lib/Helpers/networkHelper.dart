@@ -11,7 +11,13 @@ Map <String, String> getApiHeaders(){
   };
 }
 Map <String, String> getApiHeadersReferer(){
-
+  if( gblIsLive) {
+    return  {'Content-Type': 'application/json',
+      'Referer': 'https://booking.loganair.co.uk/VARS/public/default/home.aspx',
+      '__SkyFlyTok_V1': gblSettings.skyFlyToken,
+      'Videcom_ApiKey': gblSettings.apiKey
+    };
+  }
   return  {'Content-Type': 'application/json',
     'Referer': 'https://customertest.videcom.com/LoganAirInhouse/VARS/public/default/home.aspx',
     '__SkyFlyTok_V1': gblSettings.skyFlyToken,

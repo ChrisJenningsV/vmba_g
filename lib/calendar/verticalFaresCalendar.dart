@@ -361,6 +361,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         String up =   flt.fltav.incprice![curFare-1];
 
         if( up == '') up = '0';
+        if( up1 == '') up1 = '0';
         if (double.parse(up1) > double.parse(up)) {
           //logit('c');
           if( gblSettings.wantUpgradePrices) {

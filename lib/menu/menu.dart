@@ -177,7 +177,7 @@ class DrawerMenu extends StatefulWidget {
       }));
       }
 
-    if( gblSettings != null && gblSettings!.wantFlightStatus && gblIsLive == false){
+    if( gblSettings != null && gblSettings!.wantFlightStatus ){
       list.add( menuItem(Icons.airplanemode_active, 'Flight Status' , () {
         gblDestination = '';
         gblOrigin = '';

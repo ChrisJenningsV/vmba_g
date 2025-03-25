@@ -341,6 +341,7 @@ class DataLoaderWidgetState extends State<DataLoaderWidget> {
       flightDateEnd: DateFormat('yyyy-MM-dd').format(endDate),    isReturnJourney: 0,  selectedCurrency: gblSelectedCurrency,
       isADS: false, showFlightPrices: true).toJson());  // , arrivalCityCode: gblDestination
 
+    logit( 'LCD $_msg');
 
   final http.Response response = await http.post(
         Uri.parse(_url),

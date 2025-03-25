@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vmba/data/globals.dart';
 
 import '../Helpers/settingsHelper.dart';
 import '../components/trText.dart';
@@ -20,14 +21,33 @@ Widget v2Label(String text) {
 
 Widget v2SearchValueText(String text, {bool narrowField = false}){
   double fontSize = 18.0;
+  double scale = 1.6;
   if( narrowField) {
-    if (text.length > 15) fontSize = 16.0;
-    if (text.length > 18) fontSize = 15.0;
-    if (text.length > 20) fontSize = 12.0;
+    if (text.length > 15) {
+      fontSize = 16.0;
+      scale = 1.5;
+    }
+    if (text.length > 18) {
+      fontSize = 15.0;
+      scale = 1.4;
+    }
+    if (text.length > 20)
+    {
+      fontSize = 12.0;
+      scale = 1.2;
+    }
   } else {
-    if (text.length > 20) fontSize = 16.0;
+    if (text.length > 20){
+      fontSize = 16.0;
+      scale = 1.4;
+    }
   }
-  return Text( text,style: new TextStyle( fontSize: fontSize, fontWeight: FontWeight.bold ));
+
+  if( gblIsIos) {
+    return Text(text,style: new TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(scale));
+  } else {
+    return Text(text,style: new TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold));
+  }
 }
 
 Widget v2MenuText(String text, {bool smallFont = false }){

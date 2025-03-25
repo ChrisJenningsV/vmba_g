@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../data/globals.dart';
 import '../data/models/dialog.dart';
 import '../dialogs/smartDialog.dart';
-import '../utilities/helper.dart';
 
 class ImageManager{
   static DecorationImage getNetworkImage(String url, {double? opacity}){

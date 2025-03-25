@@ -16,61 +16,11 @@ void Function()? _custom;
 
 Widget? getBottomNav(BuildContext context, String curPage, {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
+/*
   if( gblDebugMode == true ){
     return DebugBottomNav(custom: custom,);
   }
-
-/*  if( gblDemoMode == true){
-    List <Widget> list = [];
-
-    //list.add(vidTextButton(context, 'logout', _logout)
-    list.add(TextButton(
-        onPressed: () {
-          logit('logout');
-          gblDemoMode = false;
-          gblIsLive = true;
-          setLiveTest();
-          if( gblCurPage != 'HOME') {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/HomePage', (Route<dynamic> route) => false);
-          } else {
-            reloadPage(context);
-          }
-            //(context as Element).reassemble();
-        },
-
-        child:Text('logout')));
-
-      if ( popButton != null ){
-        list.add(popButton);
-      }
-      //Text('Demo Mode'),
-      if( helpText.isNotEmpty) {
-      list.add(VidBlinkingButton(title: 'Demo mode', color: Colors.lightBlue.shade400, onClick: (c) {
-        demoDialog(context, helpText: helpText);
-        },));
-      } else {
-        list.add(vidDemoButton(context, 'Demo mode',  (c) {
-          demoDialog(context, helpText: helpText);
-        },));
-      }
-
-
-
-    return Container(
-        decoration: BoxDecoration(
-          color: Colors.lightBlue.shade50,
-          border: Border(top: BorderSide(color: Colors.grey, width: 1)),
-        ),
-      //
-        child: Row(
-
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-    children: list
-      )
-    );
-  }*/
+*/
 
   //logit( 'getBN p:$gblCurPage');
   // n.b. browser back may cause arrival here with wrong pagename
@@ -204,6 +154,7 @@ void demoDialog(BuildContext context, {String? helpText} ) {
   );
 }
 
+/*
 
 class DebugBottomNav extends StatefulWidget {
    void Function()? custom;
@@ -318,3 +269,4 @@ class DebugBottomNavState extends State<DebugBottomNav> {
   }
 
 
+*/

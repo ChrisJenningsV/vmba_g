@@ -1,13 +1,19 @@
 {
   "version": "1",
   "calendar": {
-    "backColor": "grey",
+    "backColor": "#E8E8E8",
     "textColor": "red",
-    "selectableColor": "blue",
+    "selectableColor": "#CACACA",
     "disabledColor": "White",
     "selectedBackColor": "red",
     "selectedTextColor": "white"
-
-
+  },
+  "generic": {
+    "setStatusBarColor": "true",
+    "centerTitleText": "true",
+    "actionButtonColor": "Red",
+    "actionButtonRadius": "10",
+    "actionButtonIcons": "false",
+    "actionButtonPadding": "15"
   }
 }

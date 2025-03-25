@@ -125,7 +125,7 @@ class PaxManager {
     if( gblPassengerDetail != null && gblPassengerDetail!.email != ''){
       return gblPassengerDetail!.email;
     }
-    if( gblIsLive) return '';
+   // if( gblIsLive) return '';
 
     return gblValidationEmail;
   }
