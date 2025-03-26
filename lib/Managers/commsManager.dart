@@ -29,7 +29,7 @@ Future<String> callSmartApi(String action, String data) async {
   }
   String msg =  json.encode(rq);
 
-  print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg');
+  print('callSmartApi::${gblSettings.smartApiUrl}?VarsSessionID=${gblSession!.varsSessionId}&req=$msg sid=${gblSession!.sessionId}');
   http.Response? response;
 
   //if( gblSettings.smartApiVersion == 2) {

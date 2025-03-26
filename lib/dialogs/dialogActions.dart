@@ -204,10 +204,9 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
         if(gblValidationEmail == '') gblValidationEmail = email;
         sendUnlockMsg(context, gblValidationEmail, () {
           showSnackBar('PIN email request sent', context,duration: Duration(seconds: 10),);
-//          Navigator.pop(context);
           doUpdate();
-          navToSmartDialogHostPage(context, new FormParams(formName: 'VALIDATEPIN',
-              formTitle: 'Validate PIN'));
+  /*        navToSmartDialogHostPage(context, new FormParams(formName: 'VALIDATEPIN',
+              formTitle: 'Validate PIN'));*/
 
         });
       }

@@ -142,6 +142,8 @@ void configLM() {
 /*
     contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/Public/MobileApp/ZenHelpCentre.aspx',
 */
+  testContactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/public/MobileApp/ZenHelpCentre.aspx',
+  liveContactUsUrl: 'https://booking.loganair.co.uk/vars/public/MobileApp/ZenHelpCentre.aspx',
   contactUsUrl: 'https://customertest.videcom.com/LoganAir/VARS/public/MobileApp/ZenHelpCentre.aspx',
 //    contactUsUrl: 'http://10.0.2.2:57793/MobileApp/ZenHelpCentre.aspx',
    //trackerUrl: 'https://www.easyjet.com/en/flight-tracker/',
@@ -174,7 +176,7 @@ void configLM() {
     adsTermsUrl: 'https://www.loganair.co.uk/customer-support/air-discount-scheme-resident-fare-card-terms-and-conditions/',
     bottomNavPages: 'HOME,FLIGHTSEARCH',
     imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,FQTVLOGIN,FQTVRESET',
-    titleImagePages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS',
+    titleImagePages: 'HOME,FLIGHTSEARCH',
     passengerTypes: PassengerTypes(
   adults: true,
   child: true,

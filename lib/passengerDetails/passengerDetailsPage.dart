@@ -769,6 +769,7 @@ class _PassengerDetailsWidgetState extends State<PassengerDetailsWidget> {
                 }
                 showVidDialog(context, 'Error', errMsg, onComplete:()
                 {
+                  gblError = '';
                   Navigator.of(context).pop();
                   //navToFlightSearchPage(context);
                 });

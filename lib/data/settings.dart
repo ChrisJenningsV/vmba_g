@@ -191,6 +191,8 @@ class Settings {
   String homePageFilename;
   String pageStyle;
   String defaultCountryCode;
+  String testContactUsUrl="";
+  String liveContactUsUrl="";
   String termsAndConditionsUrl="";
   String adsTermsUrl='';
   String privacyPolicyUrl='';
@@ -443,6 +445,9 @@ bool bpShowFastTrack;
     this.productFormat = 'web',
     this.wantEnglishTranslation = false,
     this.termsAndConditionsUrl='',
+    this.testContactUsUrl='',
+    this.liveContactUsUrl='',
+
     this.adsTermsUrl='',
     this.privacyPolicyUrl='',
     this.trackerUrl = '',

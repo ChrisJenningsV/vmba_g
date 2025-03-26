@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:vmba/components/trText.dart';
+
+import '../helper.dart';
 
 class VidWebViewWidget extends StatefulWidget {
   final url;
@@ -60,6 +63,18 @@ Page resource error:
             debugPrint('blocking navigation to ${request.url}');
             return NavigationDecision.prevent;
           }
+          if (request.url.startsWith('https://tel/')) {
+            debugPrint('blocking navigation to ${request.url}');
+
+            openPhone(request.url.replaceAll('https://tel/', ''));
+            return NavigationDecision.prevent;
+          }
+          if (request.url.startsWith('https://mailto/')) {
+            debugPrint('blocking navigation to ${request.url}');
+//            launch('tel:00447824323434');
+            openEmail(request.url.replaceAll('https://mailto/', ''));
+            return NavigationDecision.prevent;
+          }
           debugPrint('allowing navigation to ${request.url}');
           return NavigationDecision.navigate;
         },
@@ -71,6 +86,25 @@ Page resource error:
     ..loadRequest(Uri.parse(widget.url.toString().trim()));  //
 
     super.initState();
+  }
+
+  openEmail(String mail) async {
+    Uri url = Uri(scheme: "mailto", path: mail,  query: 'subject=Contact Us',);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      logit("Can't open email.");
+    }
+  }
+
+
+  openPhone(String phoneNumber) async {
+    Uri url = Uri(scheme: "tel", path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      logit("Can't open dial pad.");
+    }
   }
 
   @override

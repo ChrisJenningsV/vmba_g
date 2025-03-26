@@ -646,7 +646,11 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
 
     if( wantHomePageV3()) {
       List<Widget> list2 = [];
-      list2.add( Padding(padding: EdgeInsets.only(top: 70)));
+      if( gblIsIos) {
+        list2.add(Padding(padding: EdgeInsets.only(top: 90)));
+      } else {
+        list2.add(Padding(padding: EdgeInsets.only(top: 70)));
+      }
       list2.add(frontPageNotification(context));
       list2.add( Padding(padding: EdgeInsets.only(top: 10)));
       list2.add(getMiniMyBookingsPage(context, () {

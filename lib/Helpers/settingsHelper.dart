@@ -11,6 +11,8 @@ void setLiveTest() {
     gblSettings.apiUrl = gblSettings.liveApiUrl;
     gblSettings.smartApiUrl = gblSettings.liveSmartApiUrl;
     gblSettings.creditCardProvider  = gblSettings.liveCreditCardProvider;
+
+    if( gblSettings.liveContactUsUrl != '') gblSettings.contactUsUrl = gblSettings.liveContactUsUrl;
   } else {
     // gblSettings.payUrl = gblSettings.testPayUrl;
     gblSettings.payPage = gblSettings.testPayPage;
@@ -22,6 +24,9 @@ void setLiveTest() {
     if( gblSettings.testServerFiles != '' && gblSettings.testServerFiles.isNotEmpty){
       gblSettings.gblServerFiles = gblSettings.testServerFiles;
     }
+
+    if( gblSettings.testContactUsUrl != '') gblSettings.contactUsUrl = gblSettings.testContactUsUrl;
+
   }
 }
 

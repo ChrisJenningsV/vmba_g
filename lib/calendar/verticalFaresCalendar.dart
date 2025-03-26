@@ -352,8 +352,9 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     int fltNo = 1;
     int len = item.flt[fltNo - 1].fltav.pri!.length;
     String cur = '';
-    if (noAv > 0 && curFare > 0 &&
-        curFare <= item.flt[fltNo - 1].fltav.pri!.length) {
+    // do not do upgrade prices if voucher used - it does not work
+    if( widget.newBooking.eVoucherCode == '' ){
+      if (noAv > 0 && curFare > 0 && curFare <= item.flt[fltNo - 1].fltav.pri!.length) {
       //logit('a');
       cur = item.flt[0].fltav.cur![0];
       item.flt.forEach((flt) {
@@ -374,6 +375,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
       });
 
 
+    }
     }
 //    logit('index $index upgrade $upgradePrice');
 
@@ -605,11 +607,27 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     }
     if (noAv > 0) {
       Prices prices = item.getPrices(curfare);
-      return VTitleText(calenderPrice(prices.currency,
-          prices.price.toStringAsFixed(gblSettings.currencyDecimalPlaces),
-          prices.miles.toString()),
-        color: clr,
+      if( prices.discPrice != 0 ) {
+        return Column(children: [
+          VTitleText(calenderPrice(prices.currency,
+              prices.price.toStringAsFixed(gblSettings.currencyDecimalPlaces),
+              prices.miles.toString()),
+            color: clr, styleIn: TextStyle(decoration: TextDecoration.lineThrough, decorationColor: Colors.grey, decorationThickness: 2.0, fontSize: 12),
+          ),
+            VTitleText('now', translate: true, size: TextSize.small,),
+            VTitleText(calenderPrice(prices.currency,
+            prices.discPrice.toStringAsFixed(gblSettings.currencyDecimalPlaces),
+            prices.miles.toString()),
+              color: clr,
+          )
+        ],);
+      } else {
+        return VTitleText(calenderPrice(prices.currency,
+            prices.price.toStringAsFixed(gblSettings.currencyDecimalPlaces),
+            prices.miles.toString()),
+          color: clr,
         );
+      }
     } else {
       return getNoSeatsRow();
     }

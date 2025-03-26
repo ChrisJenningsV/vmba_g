@@ -69,6 +69,7 @@ class DialogDef {
 
     String action = '';
     bool required = true;
+    bool popOnAction = true;
     bool isMenuOpen = false;
     String value = '';
     String valueKey = '';
@@ -80,7 +81,8 @@ class DialogDef {
     DialogFieldDef({this.field_type='', this.caption='',
       this.actionText='', this.action = '',
       this.valueKey='false', this.isMenuOpen=false,
-      this.options, this.backgroundColor, this.value = ''
+      this.options, this.backgroundColor, this.value = '',
+      this.popOnAction = true,
       });
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {

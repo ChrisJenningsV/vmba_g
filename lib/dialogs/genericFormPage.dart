@@ -34,53 +34,6 @@ class SmartDialogHostPageState extends State<SmartDialogHostPage> {
   @override
   Widget build(BuildContext context) {
 
-/*
-    DialogDef dialog = new DialogDef(caption: widget.formParams!.formTitle);
-
-    switch (widget.formParams!.formName) {
-      case 'FQTVRESET':
-        DialogDef dialog = new DialogDef(caption: 'Reset Password', actionText: 'Continue', action: 'DoFqtvReset');
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        gblCurDialog = dialog;
-
-        return smartDialogPage();
-
-      case 'FQTVREGISTER':
-        dialog.width = 'full';
-        gblCurDialog = dialog;
-        return smartDialogPage( content:  _body());
-
-      case 'NEWINSTALLSETTINGS':
-        //gblValidationEmail = '';
-        gblValidationPinTries = 0;
-        DialogDef dialog = new DialogDef(caption: 'Register App', actionText: 'Continue', action: 'DoRequestPin');
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Enter email to access details of bookings made on the website.A validation PIN will be sent to this email.'));
-        // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
-        dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        gblCurDialog = dialog;
-        return smartDialogPage();
-
-      case 'VALIDATEPIN':
-        DialogDef dialog = new DialogDef(caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check youe email inbox, and enter the validation PIN below. '));
-        // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
-        dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
-        dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-        dialog.foot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
-        gblCurDialog = dialog;
-
-        return smartDialogPage();
-      default:
-        gblCurDialog = dialog;
-        return smartDialogPage(content:  _body());
-
-    }
-*/
     gblCurDialog = getDialogDefinition(widget.formParams!.formName, widget.formParams!.formTitle);
     return smartDialogPage(); // content:  _body()
 
@@ -152,7 +105,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
       dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-      dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin'));
+      dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', actionText: 'Resend PIN email', action: 'DoResendPin', popOnAction: false ));
       break;
     case 'AGENTLOGIN':
       dialog = new DialogDef(formname: formName, caption: 'Agent Login',actionText: 'Continue',action: 'DoAgentLogin');

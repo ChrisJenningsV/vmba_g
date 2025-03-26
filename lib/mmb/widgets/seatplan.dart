@@ -226,7 +226,7 @@ class _SeatPlanWidgetState extends State<SeatPlanWidget> {
     setState(() {
 
     });
-    Repository.get().getSeatPlan(seatPlanCmd).then((rs) async {
+    await Repository.get().getSeatPlan(seatPlanCmd).then((rs) async {
       if (rs.isOk()) {
         objSeatplan = rs.body;
 

@@ -382,7 +382,7 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: textList,),
                 // cannot select a seat more than once
-                (action == 'Select' && seatSelected) ? Container() :
+                ((action == 'Select' || action == 'Replace') && seatSelected) ? Container() :
                 vidActionButton(context, action,
                     params: new ButtonClickParams(paxNo: index, action: action),
                     isRectangular: true,
@@ -1051,25 +1051,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
     );
   }
 
-
-/*
-  Widget _getSeatPriceInfo() {
-    return Container(child: Row(
-      //crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        VerticalDivider(width: 2, color: Colors.red, thickness: 10,),
-        Container(
-          margin: EdgeInsets.all(0),
-          padding: EdgeInsets.all(0),
-          width: 3,
-          height: 40,
-          color: Colors.white,
-          child: Padding(padding: EdgeInsets.all(0),),),
-        //Padding(padding: EdgeInsets.fromLTRB(40, 0, 20, 0)),
-        //     VBodyText('price', color: Colors.white,),
-      ],));
-  }
-*/
 
   Widget hookUpSeat(Seat? seat, bool selected, bool selectableSeat,SeatSize seatSize) {
     return Padding(

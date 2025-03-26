@@ -563,8 +563,9 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
                   if(gblActionBtnDisabled == false ) {
                     gblActionBtnDisabled = true;
                     doUpdate();
-
-                    Navigator.of(context).pop();
+                    if( f.popOnAction) {
+                      Navigator.of(context).pop();
+                    }
                     doDialogAction(context, f, doUpdate);
                   }
                 }

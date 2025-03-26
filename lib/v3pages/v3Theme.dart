@@ -270,8 +270,9 @@ class VTitleText extends Text {
   TextSize size;
   Color? color;
   bool translate;
+  TextStyle? styleIn;
 
-  VTitleText(super.data, {this.size = TextSize.medium, this.color, this.translate = false});
+  VTitleText(super.data, {this.size = TextSize.medium, this.color, this.translate = false, this.styleIn});
 
   build(BuildContext context){
     TextStyle style;
@@ -291,6 +292,7 @@ class VTitleText extends Text {
     if(color != null  ) {
       style = style.copyWith(color: color);
     }
+    if(styleIn != null  ) style = styleIn as TextStyle;
     return Text(data!, style: style,);
   }
 }

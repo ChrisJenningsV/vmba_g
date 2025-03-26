@@ -80,7 +80,9 @@ class Seatplan {
         maxRow = s.sRow;
       }
       if(s.sRow < minRow || minRow == -1 ) {
-        minRow = s.sRow;
+        if( s.isSeat()) {
+          minRow = s.sRow;
+        }
       }
 
     });

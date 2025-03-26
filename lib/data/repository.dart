@@ -12,6 +12,7 @@ import 'package:vmba/data/settings.dart';
 import 'package:vmba/Managers/commsManager.dart';
 import 'package:vmba/data/xmlApi.dart';
 import '../Helpers/networkHelper.dart';
+import '../Managers/pnrManager.dart';
 import '../calendar/bookingFunctions.dart';
 import '../controllers/vrsCommands.dart';
 import '../main.dart';
@@ -361,7 +362,7 @@ class Repository {
               Map<String, dynamic> mapP = json.decode(pnrJson);
 
               gblNextPnr = new PnrModel.fromJson(mapP);
-
+              PnrManager.savePnrIfNotPresent(pnrJson) ;
             }
 
           } catch(e) {
@@ -1747,7 +1748,7 @@ Future<String> runFunctionCommand(String function,String cmd) async {
 
 Future<String> runVrsCommand(String cmd) async {
   gblError ='';
-  logit('runVrsCommand $cmd');
+  logit('runVrsCommand $cmd sid:${gblSession!.sessionId}');
  // if( gblSettings.useWebApiforVrs) {
 
     String msg =  json.encode(VrsApiRequest(gblSession!, cmd,

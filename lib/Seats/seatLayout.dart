@@ -207,35 +207,13 @@ double getLeftOffset(int indexColumn, { bool inclueOffset = true}) {
   return seatsLeft + (indexColumn-gblSeatplan!.getMinCol()) * (seatWidth + horzSpace) + (inclueOffset ? aSpace : 0);
 }
 double getTopOffset(int indexRow) {
-  return seatsTop + (indexRow-gblSeatPlanDef!.minRow-1) * (seatHeight + vertSpace) + pricingOffset;
+  return seatsTop + (indexRow-gblSeatPlanDef!.minRow) * (seatHeight + vertSpace) + pricingOffset;
 }
 
 getPricing(List <Widget> list, int indexRow ){
 double y= getTopOffset(indexRow);
 //logit( ' pricing w: $cabinWidth o: $pricingOffset y: $y');
 
- /* Widget priceBox =  Container(
-    padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
-    alignment: Alignment.center,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(width: 2.0, color: Colors.lightBlue.shade600),
-          left: BorderSide(width: 2.0, color: Colors.lightBlue.shade900),
-          right: BorderSide(width: 2.0, color: Colors.lightBlue.shade900),
-        ),
-        color: Colors.transparent,
-      ),
-    width: cabinWidth, // 200
-    height: pricingHeight,
-    child: Text(
-      currentSeatPriceLabel + ' ' +
-          formatPrice(currencyCode, double.parse(currentSeatPrice)),
-      style: TextStyle(color: Colors.lightBlue.shade900), // TextStyle(color: gblSystemColors.seatPriceColor as Color),
-
-
-    ));
-
-*/
       double x = getLeftOffset(gblSeatplan!.getMinCol(), inclueOffset: false) +15;
       list.add(Positioned(
       left: x,

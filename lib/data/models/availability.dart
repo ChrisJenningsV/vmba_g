@@ -360,10 +360,16 @@ class AvItin {
         if (newVal != null) prices.price += newVal;
         newVal = double.tryParse(element.fltav.tax![curFare]);
         if (newVal != null) prices.price += newVal;
+
+
         if( element.fltav.discprice != null && element.fltav.discprice!.length > curFare  ){
           if( element.fltav.discprice![curFare] != '' ){
+
             double? discVal = double.tryParse(element.fltav.discprice![curFare]);
-            if( (discVal as double) < (prices.price as double )) prices.price = discVal;
+            if( (discVal as double) < (prices.price as double )){
+              prices.discPrice = discVal;
+
+            }
           }
         }
 
@@ -418,6 +424,7 @@ String departureDateLocalLong() {
 }
 class Prices {
   double price = 0;
+  double discPrice = 0;
   int miles = 0;
   String currency = '';
   bool success = false;
