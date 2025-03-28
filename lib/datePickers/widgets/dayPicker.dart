@@ -108,13 +108,14 @@ class _DayPickerPageState extends State<DayPickerPage> {
 
     if ((gblSettings.wantNewCalendar || gblSettings.wantPriceCalendar == true)  ) {
       FareCalendarDatePickerConfig config = FareCalendarDatePickerConfig(
+        firstDayOfWeek: 1,
         firstDate: _firstDate,
         lastDate: _lastDate,
         dayBuilder: _dayBuilder,
         selectableDayPredicate: dayIsSelectable,
         monthChange: _monthChange,
         disableModePicker: true,
-        weekdayLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        weekdayLabels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
         controlsTextStyle: TextStyle(fontWeight: FontWeight.bold),
         weekdayLabelTextStyle: TextStyle(fontWeight: FontWeight.bold),
           centerAlignModePicker: true,
