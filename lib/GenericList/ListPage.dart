@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vmba/data/database.dart';
 import 'package:vmba/data/models/vouchers.dart';
 import '../components/showDialog.dart';
 import '../data/globals.dart';
 import '../Managers/commsManager.dart';
+import '../data/repository.dart';
 import '../menu/contact_us_page.dart';
 import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
@@ -13,22 +15,23 @@ import '../utilities/widgets/appBarWidget.dart';
 import '../v3pages/controls/V3Constants.dart';
 
 
-class GetericListPageWidget extends StatefulWidget {
+class GenericListPageWidget extends StatefulWidget {
 
-  GetericListPageWidget(this.listType);
+  GenericListPageWidget(this.listType);
   // : super(key: key);
 
   final String listType;
 
 
-  GetericListPageWidgetState createState() =>      GetericListPageWidgetState();
+  GenericListPageWidgetState createState() =>      GenericListPageWidgetState();
 }
 
-class GetericListPageWidgetState extends State<GetericListPageWidget>  with TickerProviderStateMixin {
+class GenericListPageWidgetState extends State<GenericListPageWidget>  with TickerProviderStateMixin {
   late bool _loadingInProgress;
   late News news;
   late String title;
   bool wantTitle2 = false;
+  List<LogEntry> logs = [];
 
   @override void initState() {
     super.initState();
@@ -43,6 +46,11 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
       case 'VOUCHERS':
         _loadingInProgress = false;
         title = 'My Vouchers';
+        wantTitle2 = false;
+        break;
+      case 'LOG':
+        title = 'Db Dev LOG';
+        loadLogData();
         wantTitle2 = false;
         break;
     }
@@ -103,15 +111,18 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
           len = gblFopVouchers!.vouchers.length;
           pad = 10;
         }
+      case 'LOG':
+        sError = 'No LOG available';
+        len =  logs.length;
         break;
     }
 
     if( len == 0){
       return getAlertDialog(context, title, sError, setState, onComplete: () {
+        Navigator.of(context).pop();
         setState(() {});
       },
-          type: DialogType.Information,wantActions: false);
-
+          type: DialogType.Information,);
     }
 
 
@@ -131,6 +142,10 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
                 case 'VOUCHERS':
                   len = gblFopVouchers!.vouchers.length;
                   itemBody = getVoucher(i);
+                  break;
+                case 'LOG':
+                  len = logs.length;
+                  itemBody = getLog(i);
                   break;
               }
 
@@ -154,6 +169,12 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
     }
     )
         ) ;
+  }
+
+  Widget getLog(int index) {
+    LogEntry l = logs[index];
+
+    return Text( '${l.timestamp} ${l.value}');
   }
 
   Widget getnews(NewsItem ni, int index) {
@@ -247,6 +268,15 @@ class GetericListPageWidgetState extends State<GetericListPageWidget>  with Tick
             children: [Text('${news.description}', style: TextStyle(color: Colors.black87),)]),
       ])
     );
+  }
+
+  Future<void> loadLogData() async {
+    logs = await Repository.get().getLogfiles();
+    _loadingInProgress = false;
+    setState(() {
+
+    });
+
   }
 
   Future<void> loadData() async {

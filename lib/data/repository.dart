@@ -1025,9 +1025,12 @@ class Repository {
     await database.updateLogfile(logfile);
   }
 
+  Future clearLogfile() async {
+    await database.clearLogfile();
+  }
+
   Future <List<LogEntry>> getLogfiles() async {
-    List<LogEntry> log =
-    await database.getLog();
+    List<LogEntry> log =    await database.getLog();
     return log;
   }
 

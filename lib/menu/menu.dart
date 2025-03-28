@@ -14,12 +14,14 @@ import 'package:vmba/v3pages/v3UnlockPage.dart';
 
 import '../GenericList/ListPage.dart';
 import '../Helpers/settingsHelper.dart';
+import '../data/repository.dart';
 import '../dialogs/genericFormPage.dart';
 import '../dialogs/smartDialog.dart';
 import '../functions/text.dart';
 import '../home/home_page.dart';
 import '../utilities/messagePages.dart';
 import '../utilities/navigation.dart';
+import '../utilities/widgets/snackbarWidget.dart';
 import 'debug.dart';
 import 'icons.dart';
 
@@ -188,7 +190,7 @@ class DrawerMenu extends StatefulWidget {
     if( gblSettings != null && gblSettings!.wantFopVouchers && gblIsLive == false){
       list.add( menuItem(Icons.airplane_ticket_outlined, 'My Vouchers' , () {
         Navigator.push(
-            context, SlideTopRoute(page: GetericListPageWidget('VOUCHERS')
+            context, SlideTopRoute(page: GenericListPageWidget('VOUCHERS')
         ));
       }));
     }
@@ -196,7 +198,7 @@ class DrawerMenu extends StatefulWidget {
     if( gblSettings != null && gblSettings!.wantNews && gblIsLive == false){
       list.add( menuItem(Icons.newspaper_outlined, 'NEWS'  , () {
         Navigator.push(
-            context, SlideTopRoute(page: GetericListPageWidget('NEWS')));
+            context, SlideTopRoute(page: GenericListPageWidget('NEWS')));
       }));
     }
 
@@ -298,6 +300,17 @@ class DrawerMenu extends StatefulWidget {
       list.add( menuItem(Icons.web, 'Admin Page', () {
         Navigator.push(context,
             SlideTopRoute(page: DebugPage(name: 'ADMIN',)));
+      }));
+
+      list.add( menuItem(Icons.web, 'Log', () {
+        Navigator.push(context,
+            SlideTopRoute(page: GenericListPageWidget('LOG')));
+      }));
+
+      list.add( menuItem(Icons.web, 'Clear Log', () {
+        Repository.get().clearLogfile();
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(snackbar('Done'));
       }));
 
     }

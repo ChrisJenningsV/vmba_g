@@ -249,6 +249,13 @@ class AppDatabase {
     return cities;
   }
 
+  Future clearLogfile() async
+  {
+    var db = await _getDb();
+    await db.rawInsert('DELETE FROM LOGGING');
+
+  }
+
   Future updateLogfile(LogEntry logEntry) async
   {
     var db = await _getDb();
@@ -989,6 +996,8 @@ class LogEntry {
   String timestamp='';
   String value='';
   String value2='';
+
+  LogEntry(this.timestamp, this.value, {this.value2 = ''});
 
   LogEntry.fromMap(Map<String, dynamic> json){
     if( json['timestamp'] != null ) timestamp = json['timestamp'];

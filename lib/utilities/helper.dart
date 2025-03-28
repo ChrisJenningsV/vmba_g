@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
 import 'package:vmba/components/showDialog.dart';
+import 'package:vmba/data/database.dart';
 import 'package:vmba/data/models/cities.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
@@ -377,11 +378,7 @@ showstatusMessage(String message, BuildContext context) {
 }
 
 void devMsg(String msg ){
-  if( gblSecurityLevel > 99 || gblDebugMode) {
-    if( scaffoldKey.currentContext != null ) {
-      showVidDialog(scaffoldKey.currentContext as BuildContext, 'Dev Msg', msg);
-    }
-  }
+  Repository.get().updateLogfile(LogEntry( DateFormat('MMM-dd kk:mm').format(DateTime.now()),  msg));
 }
 
 void logit(String msg, {bool verboseMsg = false}) {
