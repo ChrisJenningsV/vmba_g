@@ -31,7 +31,7 @@ class AppDatabase {
   final String tableNameVRSBoardingPasses = "VRSBoardingPasses";
   final String tableNameNotifications = "Notifications";
 
-  static final _databaseVersion = 9;
+  static final _databaseVersion = 10;
 
   late Database db;
 
@@ -185,6 +185,13 @@ class AppDatabase {
                 'ALTER TABLE $tableNameBoardingPasses ADD ${BoardingPass
                     .dbBoardingTime} TEXT');
           }
+          if (newVersion == 10) {
+            await db.execute("CREATE TABLE IF NOT EXISTS LOGGING ("
+                "${LogEntry.dbf1} TEXT ,"
+                "${LogEntry.dbf2} TEXT,"
+                "${LogEntry.dbf3} TEXT"
+                ");");
+          }
             //if (oldVersion < 7)
           try {
             await db.execute("CREATE TABLE IF NOT EXISTS $tableNameNotifications ("
@@ -240,6 +247,26 @@ class AppDatabase {
       cities.add(new City.fromMap(item));
     }
     return cities;
+  }
+
+  Future updateLogfile(LogEntry logEntry) async
+  {
+    var db = await _getDb();
+    await db.rawInsert('INSERT OR REPLACE INTO '
+        'LOGGING(${LogEntry.dbf1}, ${LogEntry.dbf2},${LogEntry.dbf3} )'
+        ' VALUES("${logEntry.timestamp}", "${logEntry.value}", "${logEntry.value2}")');
+  }
+
+  Future<List<LogEntry>> getLog() async {
+    var db = await _getDb();
+
+    var result = await db.rawQuery(
+        'SELECT * FROM LOGGING');
+    List<LogEntry> log = []; // var cities = List<City>;
+    for (Map<String, dynamic> item in result) {
+      log.add(new LogEntry.fromMap(item));
+    }
+    return log;
   }
 
   /// Inserts or replaces the city.
@@ -949,4 +976,22 @@ class AppDatabase {
   // }
 
 //SETTINGS END
+}
+class LogEntry {
+  static final dbf1 = "timestamp";
+  static final dbf2 = "value";
+  static final dbf3 = "value2";
+
+  String timestamp='';
+  String value='';
+  String value2='';
+
+  LogEntry.fromMap(Map<String, dynamic> json){
+    if( json['timestamp'] != null ) timestamp = json['timestamp'];
+    if( json['value'] != null ) value = json['value'];
+    if( json['value2'] != null ) value2 = json['value2'];
+
+  }
+
+
 }

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/Helpers/settingsHelper.dart';
 import 'package:vmba/Helpers/stringHelpers.dart';
+import 'package:vmba/components/showDialog.dart';
 import 'package:vmba/data/models/cities.dart';
 import 'package:vmba/data/models/models.dart';
 import 'package:vmba/data/repository.dart';
@@ -25,6 +26,7 @@ import 'package:vmba/utilities/widgets/snackbarWidget.dart';
 
 import '../Helpers/networkHelper.dart';
 import '../controllers/vrsCommands.dart';
+import '../home/home_page.dart';
 import '../main.dart';
 import 'messagePages.dart';
 import 'package:provider/provider.dart';
@@ -374,6 +376,13 @@ showstatusMessage(String message, BuildContext context) {
   //_key.currentState.showSnackBar(_snackbar);
 }
 
+void devMsg(String msg ){
+  if( gblSecurityLevel > 99 || gblDebugMode) {
+    if( scaffoldKey.currentContext != null ) {
+      showVidDialog(scaffoldKey.currentContext as BuildContext, 'Dev Msg', msg);
+    }
+  }
+}
 
 void logit(String msg, {bool verboseMsg = false}) {
   if( verboseMsg == true && gblVerbose == false) return;

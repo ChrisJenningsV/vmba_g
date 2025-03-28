@@ -132,6 +132,7 @@ class NotificationService {
         RemoteNotification? notification = message.notification;
         //AndroidNotification android = message.notification?.android;
         logit('onMessage.listen msg received ${message.messageId}');
+        devMsg('onMessage.listen msg received ${message.notification!.title }');
         //Map data = message.data;
 
        try {
@@ -150,6 +151,7 @@ class NotificationService {
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         logit('A new onMessageOpenedApp msg received ${message.messageId}');
+        devMsg('onMessageOpenedApp msg received ${message.notification!.title }');
         try {
           Repository.get().updateNotification(message, false, false).then((value) {
             Repository.get().getAllNotifications().then((m) {
@@ -223,6 +225,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   //await Firebase.initializeApp();
   logit('Handling a background message ${message.messageId}');
+  devMsg('Handling a background message ${message.messageId}');
+
   try {
     Repository.get().updateNotification(message, true, false).then((value) {
       Repository.get().getAllNotifications().then((m) {
@@ -243,7 +247,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     });
 
   } catch(e) {
-
+    logit('not ${e.toString()}');
+    devMsg(e.toString());
   }
 
 

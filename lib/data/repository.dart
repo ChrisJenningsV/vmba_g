@@ -1021,6 +1021,16 @@ class Repository {
     await database.updateCity(city);
   }
 
+  Future updateLogfile(LogEntry logfile) async {
+    await database.updateLogfile(logfile);
+  }
+
+  Future <List<LogEntry>> getLogfiles() async {
+    List<LogEntry> log =
+    await database.getLog();
+    return log;
+  }
+
   Future updateCities(Cities cities) async {
     await database.updateCities(cities);
   }
@@ -1040,6 +1050,7 @@ class Repository {
   Future updateNotification(RemoteMessage msg, bool background, bool replace) async {
     try{
       print('saving push msg');
+      devMsg('saving push msg ${msg.notification!.title}');
       final Map<String, dynamic> notifyMap = new Map<String, dynamic>();
       final Map<String, dynamic> msgMap = new Map<String, dynamic>();
 
@@ -1085,6 +1096,7 @@ class Repository {
         }
 
       String sMsg = jsonEncode(msgMap);
+      replace = false;
     await database.updateNotification(sMsg.replaceAll('"', '|'), msgMap['sentTime'], replace);
     } catch(e) {
       String m = e.toString();
