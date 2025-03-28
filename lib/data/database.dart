@@ -947,15 +947,19 @@ class AppDatabase {
 
       await db.rawDelete('DELETE FROM $tableNameNotifications WHERE ${KeyPair.dbName}=\'$sTime\'');
 
+/*
       if (replace) {
         await db.rawInsert('UPDATE '
             '$tableNameNotifications SET  ${KeyPair.dbValue}="$msg"'
             ' WHERE ${KeyPair.dbName}=\'$sTime\'');
       } else {
+*/
         await db.rawInsert('INSERT OR REPLACE INTO '
             '$tableNameNotifications(${KeyPair.dbName}, ${KeyPair.dbValue})'
             ' VALUES ( \'$sTime\', \'$msg\')');
+/*
       }
+*/
     } catch (e) {
         print(e.toString());
     }
