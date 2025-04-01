@@ -76,6 +76,7 @@ class Settings {
   bool darkSiteEnabled;
   bool wantGeoLocationHopePage;
   bool wantNewDialogs;
+  bool wantNewPaxDialogs;
   bool wantFindBookings = false;
   bool want2Dbarcode = true;
   bool wantCurrencySymbols = false;
@@ -263,6 +264,7 @@ class Settings {
   String gblLanguages ;
   String currencies;
   String gblServerFiles;
+  String fqtvRegisterUrl;
   String testServerFiles;
   String covidText;
 
@@ -421,6 +423,7 @@ bool bpShowFastTrack;
     this.wantAdminLogin = false,
     this.wantGeoLocationHopePage = false,
     this.wantNewDialogs = false,
+    this.wantNewPaxDialogs = false,
 
     // new Gui
     this.wantCityDividers = false,
@@ -488,6 +491,7 @@ bool bpShowFastTrack;
     this.covidText='',
     this.currencies='',
     this.gblServerFiles='',
+    this.fqtvRegisterUrl='',
     this.testServerFiles='',
     this.pageImageMap = '{"flightSummary": "happystaff", "paymentPage": "paymentPage", "editPax": "[dest]", "paxDetails": "happypax"}',
     this.homepageImageMap = '',
@@ -496,7 +500,7 @@ bool bpShowFastTrack;
     this.paxWeight = '{"lb": "lb(s)", "kg": "kg(s)"}',
     this.skyFlyToken = '',
     this.bottomNavPages = '',
-    this.imageBackgroundPages = '',
+    this.imageBackgroundPages = 'HOME',
     this.titleImagePages = '',
 
     this.fqtvName = '',

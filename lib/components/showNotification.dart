@@ -55,7 +55,7 @@ void showNotification( BuildContext? context, RemoteNotification? notification, 
 Widget _getTitle( BuildContext context, RemoteNotification notification, Map data, String from) {
   String time = DateFormat('kk:mm').format(DateTime.now());
   String title = notification.title.toString();
-  if( data != null && data[title] != null ) {
+  if(  data[title] != null ) {
     title = data['title'];
   }
   if(gblIsLive == false ){
@@ -170,7 +170,7 @@ List<Widget> _getBody(
       }
     }*/
   // buttons?
-  if (data != null && data != '') {
+  if (data != '') {
     if (data['image'] != null && data['image'].toString().isNotEmpty) {
       list2.add(SizedBox(
         height: 5.0,

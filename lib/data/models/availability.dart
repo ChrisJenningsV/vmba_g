@@ -309,7 +309,7 @@ class AvItin {
       String _dTime = f.time.dtimlcl.substring(0, 5).replaceAll(':', '');
       String _aTime = f.time.atimlcl.substring(0, 5).replaceAll(':', '');
 
-      list.add('0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![int.parse(band?.cb as String) - 1] +
+      list.add('0${f.fltdet.airid + f.fltdet.fltno + f.fltav.id![int.parse(band.cb) - 1] +
           _date + f.dep + f.arr}NN${seats.toString()}/${_dTime + _aTime}(CAB=${band.cabin})[CB=${band.cbname}]');
     });
   return list;
@@ -366,7 +366,7 @@ class AvItin {
           if( element.fltav.discprice![curFare] != '' ){
 
             double? discVal = double.tryParse(element.fltav.discprice![curFare]);
-            if( (discVal as double) < (prices.price as double )){
+            if( (discVal as double) < (prices.price )){
               prices.discPrice = discVal;
 
             }

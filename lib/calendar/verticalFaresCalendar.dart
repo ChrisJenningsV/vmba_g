@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vmba/calendar/calendarFunctions.dart';
 import 'package:vmba/calendar/returningFlightPage.dart';
-import 'package:vmba/calendar/widgets/cannedFact.dart';
 import 'package:vmba/components/vidButtons.dart';
 import 'package:vmba/functions/text.dart';
 
@@ -97,7 +96,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     } else {
       selectedFlt = 1;
     }
-    if(  widget.objAv.availability != null &&  widget.objAv.availability.itin != null ) {
+    if(    widget.objAv.availability.itin != null ) {
       widget.objAv.availability.itin!.forEach((element) {
         _controllerList.add(new ExpansionTileController());
       });
@@ -133,8 +132,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
   }
 
   Widget getCalenderDays(AvailabilityModel objAv, NewBooking newBooking) {
-    if (objAv != null && objAv.availability.cal != null &&
-        objAv.availability.cal!.day != null) {
+    if ( objAv.availability.cal != null ) {
       return new ListView(
           shrinkWrap: true,
           controller: _scrollController,
@@ -185,15 +183,13 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         this.widget.newBooking.departureDate = newDate;
         print(this.widget.newBooking.departureDate.toString());
       }
-      if( widget.changeSearchDate != null ) {
-        widget.changeSearchDate!(newDate);
-      }
+      widget.changeSearchDate(newDate);
       widget.loadData(true);
     });
   }
 
   Widget flightList(AvailabilityModel objAv) {
-    if (objAv != null && objAv.availability.itin != null &&
+    if ( objAv.availability.itin != null &&
         objAv.availability.itin!.length > 0) {
       int fltNo = 1;
       List<Widget> list = [];
@@ -223,14 +219,14 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
 
   Widget? subTitle ;
   if (gblSettings.wantCanFacs &&
-      item!.flt.first.fltdet.canfac?.fac != null && item!.flt.first.fltdet.canfac?.fac != '' ) {
+      item.flt.first.fltdet.canfac?.fac != null && item.flt.first.fltdet.canfac?.fac != '' ) {
     //innerList.add(V3Divider());
     subTitle = Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Icon(Icons.info_outline),
           Expanded(
-            child: fltText(item!.flt.first.fltdet.canfac?.fac as String, maxLines: 4),
+            child: fltText(item.flt.first.fltdet.canfac?.fac as String, maxLines: 4),
           )
         ]);
     }
@@ -350,7 +346,6 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
     //   logit('fltNo $curFltNo index $index');
 
     int fltNo = 1;
-    int len = item.flt[fltNo - 1].fltav.pri!.length;
     String cur = '';
     // do not do upgrade prices if voucher used - it does not work
     if( widget.newBooking.eVoucherCode == '' ){
@@ -743,13 +738,13 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
         this.widget.newBooking.passengers.totalSeatedPassengers());
 
     if (widget.isReturnFlight) {
-      if (msgs != null && msgs.length > 0) {
+      if (msgs.length > 0) {
         this.widget.newBooking.returningflight = msgs;
         this.widget.newBooking.returningflts = item.flt;
         this.widget.newBooking.returningClass = classband.cbname;
       }
     } else {
-      if (msgs != null && msgs.length > 0) {
+      if (msgs.length > 0) {
         this.widget.newBooking.outboundflight = msgs;
         this.widget.newBooking.outboundflts = item.flt;
         this.widget.newBooking.outboundClass = classband.cbname;
@@ -805,7 +800,7 @@ class _VerticalFaresCalendarState extends State<VerticalFaresCalendar> {
                 MaterialPageRoute(
                     builder: (context) => ChangeFlightSummaryWidget(
                       // newBooking: newFlight,
-                      mmbBooking: widget!.mmbBooking as MmbBooking,
+                      mmbBooking: widget.mmbBooking as MmbBooking,
                       //journeys: widget.journeys,
                       //intJourney: widget.journey,
                     )));

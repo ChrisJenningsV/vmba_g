@@ -348,6 +348,7 @@ Widget paxGetDOB(BuildContext context, TextEditingController  dateOfBirthTextEdi
 }
 
 Widget _getTitle(BuildContext context,TextEditingController titleTextEditingController ){
+  logit('title val=${titleTextEditingController.text}');
   if( wantPageV2()) {
     return v2BorderBox(context,  ' ' + translate('Title'),
       TextFormField(

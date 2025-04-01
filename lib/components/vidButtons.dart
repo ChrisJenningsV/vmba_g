@@ -7,6 +7,7 @@ import 'package:vmba/v3pages/v3Theme.dart';
 import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
 import '../functions/text.dart';
+import '../utilities/helper.dart';
 
 Widget vidWideTextButton(BuildContext context, String caption, void Function({int? p1, int? p2, String? p3}) onPressed, {IconData? icon, int iconRotation=0,int p1 = 0 } ) {
   return Expanded( child: vidTextButton(context, caption, onPressed, icon: icon, iconRotation: iconRotation, p1: p1 ));
@@ -20,7 +21,7 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
   if( color != null ) textClr = color;
 
   if( icon != null) {
-    if( iconRotation != null && iconRotation > 0 ) {
+    if(  iconRotation > 0 ) {
       iconWidget = RotatedBox(
           quarterTurns: iconRotation,
           child: Icon(
@@ -71,8 +72,8 @@ Widget vidTextButton(BuildContext context, String caption, void Function({int? p
 
 BorderRadius getButtonRadius() {
   BorderRadius radius = BorderRadius.circular(30.0);
-  if( gblV3Theme != null && gblV3Theme!.generic != null && gblV3Theme!.generic!.actionButtonRadius != null ){
-    return BorderRadius.circular(gblV3Theme!.generic!.actionButtonRadius as double);
+  if( gblV3Theme != null && gblV3Theme!.generic.actionButtonRadius != null ){
+    return BorderRadius.circular(gblV3Theme!.generic.actionButtonRadius as double);
   }
   if(wantPageV2() ){
     radius = BorderRadius.circular(5.0);
@@ -90,19 +91,18 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   EdgeInsets buttonPad = EdgeInsets.all(0);
   bool wantShadows = true;
 
-  if( gblV3Theme != null && gblV3Theme!.generic != null  ){
-    if( gblV3Theme!.generic!.actionButtonIcons != null) {
-      wantIcon = gblV3Theme!.generic!.actionButtonIcons as bool;
+  logit('wid button d:$disabled');
+  if( gblV3Theme != null   ){
+    if( gblV3Theme!.generic.actionButtonIcons != null) {
+      wantIcon = gblV3Theme!.generic.actionButtonIcons as bool;
     }
 
     if( pad != null ) {
       buttonPad = EdgeInsets.all(pad);
-    } else if( gblV3Theme!.generic!.actionButtonPadding != null ){
-      buttonPad = EdgeInsets.all(gblV3Theme!.generic!.actionButtonPadding as double);
+    } else if( gblV3Theme!.generic.actionButtonPadding != null ){
+      buttonPad = EdgeInsets.all(gblV3Theme!.generic.actionButtonPadding as double);
     }
-    if( gblV3Theme!.generic!.actionButtonShadow != null ){
-      wantShadows = gblV3Theme!.generic!.actionButtonShadow;
-    }
+    wantShadows = gblV3Theme!.generic.actionButtonShadow;
   }
   if( gblSettings.wantButtonIcons && !gblActionBtnDisabled && wantIcon) {
     list.add(Icon(
@@ -286,7 +286,7 @@ Widget vidInfoButton(BuildContext context, {void Function(BuildContext)? onPress
 
 Widget vidAddButton(BuildContext? context, {void Function(BuildContext?)? onPressed,   bool disabled = false}){
   Color clr = gblSystemColors.primaryButtonColor;
-  if( disabled != null && disabled) {
+  if( disabled) {
     clr = Colors.grey;
   }
   return IconButton(
@@ -308,7 +308,7 @@ Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, 
     Color? clrIn, IconData? icon, double? size }){
 
   Color clr = clrIn == null ? gblSystemColors.primaryButtonColor : clrIn;
-      if( disabled != null && disabled) {
+      if(  disabled) {
         clr = Colors.grey;
       }
   return IconButton(
@@ -319,7 +319,7 @@ Widget vidRemoveButton(BuildContext? context, {void Function(BuildContext, int, 
     ),
     onPressed: () {
       if( context != null ) {
-        if (disabled == null || disabled == false) {
+        if ( disabled == false) {
           onPressed!(context, paxNo, segNo,);
         }
       }
@@ -332,7 +332,7 @@ Widget vidIconButton(BuildContext? context, {void Function(BuildContext, int, in
   Color? clrIn, IconData? icon, double? size }){
 
   Color clr = clrIn == null ? gblSystemColors.primaryButtonColor : clrIn;
-  if( disabled != null && disabled) {
+  if( disabled) {
     clr = Colors.grey;
   }
   return IconButton(
@@ -346,7 +346,7 @@ Widget vidIconButton(BuildContext? context, {void Function(BuildContext, int, in
     ),
     onPressed: () {
       if( context != null ) {
-        if (disabled == null || disabled == false) {
+        if (disabled == false) {
           onPressed!(context, paxNo, segNo,);
         }
       }
@@ -369,7 +369,7 @@ Widget vidRightButton(BuildContext context, {void Function(BuildContext)? onPres
 
 
 Widget vidRoundButton(BuildContext context,IconData icon,  void Function(BuildContext)? onPressed,{Color btnClr = Colors.white}){
-  if( btnClr == null ) {
+  if( btnClr == Colors.white ) {
     btnClr =  actionButtonColor();
   }
 

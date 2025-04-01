@@ -13,39 +13,6 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
 
     List <Widget> list = [];
 
-/*    //list.add(vidTextButton(context, 'logout', _logout)
-    list.add(TextButton(
-        onPressed: () {
-          logit('logout');
-*//*
-          gblDemoMode = false;
-          gblIsLive = true;
-          setLiveTest();
-          if( gblCurPage != 'HOME') {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/HomePage', (Route<dynamic> route) => false);
-          } else {
-            reloadPage(context);
-          }
-*//*
-        },
-
-        child:Text('logout')));
-
-    if ( popButton != null ){
-      list.add(popButton);
-    }
-    //Text('Demo Mode'),
-    if( helpText != null && helpText.isNotEmpty) {
-      list.add(VidBlinkingButton(title: 'Demo mode', color: Colors.lightBlue.shade400, onClick: (c) {
-        demoDialog(context, helpText: helpText);
-      },));
-    } else {
-      list.add(vidDemoButton(context, 'Demo mode',  (c) {
-        demoDialog(context, helpText: helpText);
-      },));
-    }*/
-
     int index = 0;
     switch(curPage) {
       case 'HOME':
@@ -65,6 +32,30 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
         break;
     }
 
+  List<BottomNavigationBarItem> bList = [];
+
+    bList.add(BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'));
+
+    bList.add(BottomNavigationBarItem(icon: getNamedIcon('FLIGHTSEARCH'), label: 'Book' ));
+
+    bList.add(BottomNavigationBarItem(icon: Icon(Icons.luggage_rounded), label: 'My Trips' ));
+
+    if( gblInReview == false) {
+      if (gblFqtvLoggedIn == false) {
+        bList.add(
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Login'));
+      } else {
+        bList.add(BottomNavigationBarItem(
+            icon: Icon(Icons.person), label: '${gblSettings.fqtvName}'));
+      }
+    }
+
+    if( gblSettings.wantFlightStatus) {
+      bList.add(BottomNavigationBarItem(
+          icon: getNamedIcon('FLIGHTSTATUS'), label: 'Track'));
+    }
+
+
   return
     Container(
         decoration: BoxDecoration(
@@ -75,35 +66,7 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
       type: BottomNavigationBarType.fixed,
 
       backgroundColor: Colors.black, //Color.fromRGBO(0, 0, 0, 0.6),
-      items:   <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-
-        BottomNavigationBarItem(
-          icon:  getNamedIcon('FLIGHTSEARCH'), // Icon(Icons.airplanemode_active),
-          label: 'Book',
-        ),
-
-        BottomNavigationBarItem(
-          icon:  Icon(Icons.luggage_rounded),
-          label: 'My Trips',
-        ),
-          ( gblFqtvLoggedIn == false ) ?
-        BottomNavigationBarItem(
-          icon:  Icon(Icons.person),
-          label: 'Login',
-        ) : BottomNavigationBarItem(
-            icon:  Icon(Icons.person),
-            label: '${gblSettings.fqtvName}',
-          ) ,
-
-        BottomNavigationBarItem(
-          icon:  getNamedIcon('FLIGHTSTATUS'),
-          label: 'Track',
-        ),
-      ],
+      items:   bList,
       currentIndex: index,
       selectedItemColor: Colors.red,
       unselectedItemColor: Colors.white,
@@ -124,17 +87,21 @@ Widget? getV3BottomNav(BuildContext context, String curPage,  {Widget? popButton
             navToMyBookingsPage(context);
             break;
           case 3:
-            if ( gblFqtvLoggedIn == false ) {
-              navToSmartDialogHostPage(
-                  context, new FormParams(formName: 'FQTVLOGIN',
-                  formTitle: '${gblSettings.fqtvName} Login'));
+            if( gblInReview == false) {
+              if (gblFqtvLoggedIn == false) {
+                navToSmartDialogHostPage(
+                    context, new FormParams(formName: 'FQTVLOGIN',
+                    formTitle: '${gblSettings.fqtvName} Login'));
+              } else {
+                Navigator.push(
+                    context, SlideTopRoute(page: MyFqtvPage(
+                  isAdsBooking: false,
+                  isLeadPassenger: true,
+                )
+                ));
+              }
             } else {
-              Navigator.push(
-                  context, SlideTopRoute(page: MyFqtvPage(
-                isAdsBooking: false,
-                isLeadPassenger: true,
-              )
-              ));
+              navToFlightStatusPage(context);
             }
             break;
           case 4:

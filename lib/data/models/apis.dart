@@ -44,7 +44,7 @@ class ApisModel {
               if (choice.passportexpiry != null) {
                 sb.write("passportexpiry=\"${choice.passportexpiry}\" ");
               }
-              if (choice.docissuingcountry != null) {
+              if (choice.docissuingcountry != '') {
                 sb.write("docissuingcountry=\"${choice.docissuingcountry}\" ");
               }
               sb.write("/>");
@@ -92,9 +92,7 @@ class Apis {
     data['platform'] = this.platform;
     data['agentcity'] = this.agentcity;
     data['apisformat'] = this.apisformat;
-    if (this.sections != null) {
-      data['sections'] = this.sections.toJson();
-    }
+    data['sections'] = this.sections.toJson();
     return data;
   }
 }
@@ -118,9 +116,7 @@ class Sections {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    if (this.section != null) {
-      data['section'] = this.section.map((v) => v.toJson()).toList();
-    }
+    data['section'] = this.section.map((v) => v.toJson()).toList();
     return data;
   }
 }
@@ -149,9 +145,7 @@ class Section {
     data['required'] = this.required;
     data['countrycode'] = this.countrycode;
 
-    if (this.fields != null) {
-      data['fields'] = this.fields.toJson();
-    }
+    data['fields'] = this.fields.toJson();
     return data;
   }
 }

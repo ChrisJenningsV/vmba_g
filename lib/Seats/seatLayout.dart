@@ -86,8 +86,6 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
   }
 
   // Existing Image Block
-  bool iLoaded = true;
-  String msg = '';
   if(gblSettings.wantSeatPlanImages) {
     Image? floorImg = getNetFloorPlan(
         '${gblSettings.gblServerFiles}/SeatPlans/${gblSeatplan!.seats.seatsFlt
@@ -142,11 +140,9 @@ List<Widget> AddSeats(BuildContext context, Widget Function(Seat? , bool, bool,S
       // logit('ROW: $indexRow');
       for (var indexColumn = minCol; indexColumn <= maxCol; indexColumn++) {
         Seat? seat;
-        bool found = false;
         seats.forEach((element) {
           if (element.sCol == indexColumn) {
             seat = element;
-            found = true;
           }
         });
 

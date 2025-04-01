@@ -544,7 +544,7 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
         background = Colors.black;
       }
 
-      logit( 'HP ext = $extendBodyBehindAppBar e=$elevation b=${background.toString()}');
+      //logit( 'HP ext = $extendBodyBehindAppBar e=$elevation b=${background.toString()}');
       return new Scaffold(
         key: scaffoldKey,
         extendBodyBehindAppBar: extendBodyBehindAppBar,

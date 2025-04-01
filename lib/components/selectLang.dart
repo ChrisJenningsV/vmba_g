@@ -61,10 +61,7 @@ initLangCached(String lang) async {
     if( file.existsSync()) {
       DateTime modified = file.lastModifiedSync();
       Duration dur = Duration(hours: 24);
-      if( gblIsLive == false ) {
-        // short cache for test
-        Duration dur = Duration(minutes: 2);
-      }
+
       if( modified.isBefore(DateTime.now().subtract(dur))){
         // change to 2 days!
         // out of date - get new copy
@@ -73,7 +70,7 @@ initLangCached(String lang) async {
         return;
       }
       // is serverfile modified
-      if( gblLangFileModTime != null && gblLangFileModTime.isNotEmpty  ){
+      if(  gblLangFileModTime.isNotEmpty  ){
         var serverFile = parseUkDateTime(gblLangFileModTime);
         if(modified.isBefore( serverFile )) {
           logit('lang new server file available');
@@ -117,7 +114,7 @@ initLang(String lang) async {
   if (gblLanguage != 'en' || gblSettings.wantEnglishTranslation  ) {
     logit('load lang $lang');
 
-    if ( gblSettings.gblServerFiles != null && gblSettings.gblServerFiles.isNotEmpty) {
+    if ( gblSettings.gblServerFiles != '' && gblSettings.gblServerFiles.isNotEmpty) {
       try {
 
         final jsonString = await http.get(Uri.parse('${gblSettings.gblServerFiles}/$lang.json'), headers: {HttpHeaders.contentTypeHeader: "application/json",
@@ -375,7 +372,7 @@ class _MyDialogContentState extends State<MyDialogContent> {
   void initState() {
     super.initState();
 
-    if( gblSettings.gblLanguages == null || gblSettings.gblLanguages.isEmpty ) {
+    if( gblSettings.gblLanguages == '' || gblSettings.gblLanguages.isEmpty ) {
       return;
       // test data
       //gblSettings.gblLanguages = 'en,English,fr,French';

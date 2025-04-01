@@ -60,17 +60,48 @@ void configT6() {
 
   gblSettings = Settings (
 /*  new features settings */
+    homePageStyle: 'V3',
+    inputStyle: 'V2',
+    seatStyle:'line',
+    seatPriceStyle:'round',
+    smartApiVersion: 2,
+    wantShadows: false,
+    wantTransapentHomebar: true,
+    wantVericalFaresCalendar: true,
+    wantCustomHomepage:false,
+    wantPriceCalendar: true ,
+    wantIconsOnPriceCalendar: true,
+    wantNewMMB: true,
+    wantNewSeats: true,
+    wantSeatPlanImages: false,
+    wantUpgradePrices: true,
+    wantButtonIcons: false,
+    wantPriceCalendarRounding: false,
+    wantUnlock:false,
+    wantEnglishTranslation: true,
+    //wantProducts: true,
+    wantStatusLine: true,
+    wantNews: false,
+    wantFopVouchers: false,
+    wantLocation: false,
+//    wantDarkSite: true,
+    wantAdminLogin: true,
+    wantGeoLocationHopePage: false,
+    wantNewDialogs: true,
+    wantNewPaxDialogs: true,
+    wantCustomAnimations: false,
+    wantHomepageButtons: false,
+
+    wantSeatsWithProducts: false,
+    useLogin2: true,
+    homePageMessage: '',
+    bottomNavPages: 'HOME,FLIGHTSEARCH',
+    imageBackgroundPages: 'HOME,FLIGHTSEARCH,FLIGHTSTATUS,DATEPICKER,FQTVLOGIN,FQTVRESET',
+
+
     wantNewCalendar: true,
     wantCalendarBigMonth: true,
-    wantNewSeats: true,
-    wantTransapentHomebar: true,
-    seatPlanStyle: 'WI',
-    useLogin2: true,
-    wantNewInstallPage: true,
-    wantHomeUpcoming: true,
-    wantRememberMe: true,
-    wantAddContact: true,
-    wantNewDialogs: true,
+
 
 // end new features
 
@@ -104,7 +135,7 @@ void configT6() {
  //     hostBaseUrl:  'https://customertest.videcom.com/airswift/VARS/public',
       iOSAppId: '1571286915', // CHECk THIS
       androidAppId: 'com.airswift.reservations',
-      fqtvName: 'My SWIFT Rewards Club',
+      fqtvName: 'SWIFT Rewards ',
       appFeedbackEmail: 'appfeedback@air-swift.com',
       groupsBookingsEmail: 'groups@air-swift.com',
       bpShowFastTrack: true,
@@ -125,7 +156,6 @@ void configT6() {
     //pageStyle: 'V2',
     pageImageMap: '{"flightSummary": "summary", "paymentPage": "paymentPage", "editPax": "editPax", "options": "editPax", "paxDetails": "passengers", "FQTV": "FQTV login"}',
     //useWebApiforVrs: true,
-    wantEnglishTranslation: true,
     progressFactor: -25, //-30,
     blockedUrls: '',
 
@@ -181,10 +211,10 @@ void configT6() {
     useScrollWebViewiOS: true,
     wantMmbProducts: true,
     productImageMode: 'index',
-    wantStatusLine: true,
-    wantSeatsWithProducts: true,
     wantFqtvAutologin: false,
     wantFqtvHomepage: false ,
+    wantFqtvRegister: true,
+
 
     wantLeftLogo: false,
   apiKey: '26d5a5deaf774724bb5d315dbb8bfee2',

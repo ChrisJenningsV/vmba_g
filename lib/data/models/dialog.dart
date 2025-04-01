@@ -12,12 +12,13 @@ class DialogDef {
   String actionText = '';
   String width = '';
   bool wantClose = true;
+  bool wantAppBar = true;
   List<DialogFieldDef> fields = [];
   List<DialogFieldDef> dialogFoot = [];
   List<DialogFieldDef> pageFoot = [];
   List<TextEditingController> editingControllers = [];
 
-  DialogDef({this.caption = '', this.actionText='', this.action = '', this.width='', this.formname=''});
+  DialogDef({this.caption = '', this.actionText='', this.action = '', this.width='', this.formname='', this.wantAppBar=true});
 
   DialogDef.fromJson(Map<String, dynamic> json)  {
     try {
@@ -71,9 +72,13 @@ class DialogDef {
     bool required = true;
     bool popOnAction = true;
     bool isMenuOpen = false;
+    bool isRequired = false;
     String value = '';
     String valueKey = '';
+    String formatRegex = '';
     Color? backgroundColor;
+    int maxLen=500;
+    int maxLines=6;
 
     TextEditingController? controller;
 
@@ -82,7 +87,8 @@ class DialogDef {
       this.actionText='', this.action = '',
       this.valueKey='false', this.isMenuOpen=false,
       this.options, this.backgroundColor, this.value = '',
-      this.popOnAction = true,
+      this.popOnAction = true, this.maxLen = 500, this.maxLines=6,
+      this.isRequired=false, this.formatRegex ='',
       });
 
     DialogFieldDef.fromJson(Map<String, dynamic> json) {

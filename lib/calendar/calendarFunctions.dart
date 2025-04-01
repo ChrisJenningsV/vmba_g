@@ -248,7 +248,7 @@ class _CalFlightItemWidgetState extends State<CalFlightItemWidget> {
 
     topList.add(pricebuttons(
         context, newBooking as NewBooking, objAv as AvailabilityModel,
-        item!.flt, item, seatCount));
+        item.flt, item, seatCount));
 
       return Container(
         decoration: BoxDecoration(

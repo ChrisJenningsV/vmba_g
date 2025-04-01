@@ -62,6 +62,7 @@ class FlightStatusPageWidgetState extends State<FlightStatusPageWidget>  with Ti
     return
 
       new Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: v2PageBackgroundColor(), // Colors.grey.shade50, //
         endDrawer: DrawerMenu(),
         appBar: appBar(context, _showResults ? 'Flight Status' : 'Flight Status', PageEnum.editPax , 'FLIGHTSTATUS'),

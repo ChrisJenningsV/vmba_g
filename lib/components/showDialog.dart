@@ -303,8 +303,7 @@ Widget buildMessage(String title, String body, {void Function()? onComplete  }) 
 
   void updateAppDialog(BuildContext context) {
     var txt = '';
-    if (gblSettings.optUpdateMsg != null &&
-        gblSettings.optUpdateMsg.isNotEmpty) {
+    if (gblSettings.optUpdateMsg.isNotEmpty) {
       txt = gblSettings.optUpdateMsg;
     }
     shownUpdate = true;

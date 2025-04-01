@@ -107,10 +107,10 @@ void configKG() {
 
     eVoucher:  true,
     wantUmnr: true,
-    fqtvName:  "Denver Air Club",
+    fqtvName:  "Mile High Elite",
     wantFQTV: true,
     wantFQTVNumber: true,
-    appFeedbackEmail:  "",
+    appFeedbackEmail:  "mobileapp@denverairconnection.com",
     prohibitedItemsNoticeUrl: 'https://denverairconnection.com/mobile/prohibited-items-notice/',
     groupsBookingsEmail:  "",
 //    maxNumberOfPax:  9,

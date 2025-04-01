@@ -54,7 +54,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   String weightUnit = 'lb';
 
   int _curGenderIndex =0;
-  List <String> genderList = ['Male', 'Female', 'Undisclosed'];
+  List <String> genderList = ['', 'Male', 'Female', 'Undisclosed'];
 
   List<UserProfileRecord>? userProfileRecordList;
   final formKey = new GlobalKey<FormState>();
@@ -380,8 +380,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
     // phone
     if( gblSettings.wantInternatDialCode) {
-
-
         widgets.add(InternationalPhoneInput(
           padding:_padding,
           popupTitle: translate('Select phone country'),

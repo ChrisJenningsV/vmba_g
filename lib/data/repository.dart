@@ -404,6 +404,9 @@ class Repository {
                   case 'languages':
                     gblSettings.gblLanguages = item['value'];
                     break;
+                  case 'fqtvregisterurl':
+                    gblSettings.fqtvRegisterUrl = item['value'];
+                    break;
                   case 'currencies':
                     gblSettings.currencies = item['value'];
                     break;
@@ -1022,7 +1025,7 @@ class Repository {
   }
 
   Future updateLogfile(LogEntry logfile) async {
-    await database.updateLogfile(logfile);
+    //await database.updateLogfile(logfile);
   }
 
   Future clearLogfile() async {

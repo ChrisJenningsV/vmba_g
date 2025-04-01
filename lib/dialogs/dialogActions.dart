@@ -4,6 +4,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vmba/Managers/commsManager.dart';
 import 'package:vmba/data/models/dialog.dart';
 import 'package:vmba/dialogs/registerActions.dart';
@@ -39,6 +40,9 @@ Future<void> doDialogAction(BuildContext context, DialogFieldDef? field, void Fu
     case 'FQTVREGISTER':
       navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVREGISTER',
           formTitle: '${gblSettings.fqtvName} Registration'));
+      break;
+    case 'OPENFQTVREGISTER':
+      launchUrl(Uri.parse(gblSettings.fqtvRegisterUrl));
       break;
     case 'FQTVLOGIN':
       navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',

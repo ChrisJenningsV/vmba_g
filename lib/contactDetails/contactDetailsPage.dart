@@ -366,11 +366,10 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
     }
 
     //Add voucher code
-    if (widget.newbooking.eVoucherCode != null &&
-        widget.newbooking.eVoucherCode.trim() != '') {
+    if (widget.newbooking.eVoucherCode.trim() != '') {
       msg += '4-1FDISC${widget.newbooking.eVoucherCode.trim()}^';
     }
-    if( gblSettings.brandID != null && gblSettings.brandID.isNotEmpty){
+    if( gblSettings.brandID != '' && gblSettings.brandID.isNotEmpty){
       msg += 'zbrandid=${gblSettings.brandID}^';
     }
     msg += addFg(widget.newbooking.currency, true);
@@ -503,7 +502,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       } catch (e) {
         logit(e.toString());
         _error = e.toString();
-        if( data != null ) {
+        if( data != '' ) {
           _error = data
               .replaceAll('<?xml version="1.0" encoding="utf-8"?>', '')
               .replaceAll('<string xmlns="http://videcom.com/">', '')
@@ -705,7 +704,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Error"),
-          content: _error != null && _error != ''
+          content:  _error != ''
               ? new Text(_error)
               : new Text("Please try again"),
           actions: <Widget>[
@@ -734,18 +733,18 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
   String buildAddContactsCmd() {
     StringBuffer sb = new StringBuffer();
   if( gblSettings.wantNewEditPax ) {
-    if( widget.newbooking.passengerDetails[0].phonenumber != null && widget.newbooking.passengerDetails[0].phonenumber.isNotEmpty) {
+    if( widget.newbooking.passengerDetails[0].phonenumber != '' && widget.newbooking.passengerDetails[0].phonenumber.isNotEmpty) {
       sb.write('9M*${widget.newbooking.passengerDetails[0].phonenumber}^');
     }
-    if(widget.newbooking.passengerDetails[0].email!= null && widget.newbooking.passengerDetails[0].email.isNotEmpty ) {
+    if(widget.newbooking.passengerDetails[0].email!= '' && widget.newbooking.passengerDetails[0].email.isNotEmpty ) {
       sb.write('9E*${widget.newbooking.passengerDetails[0].email}^');
     }
 
   } else {
-    if( widget.newbooking.contactInfomation.phonenumber != null && widget.newbooking.contactInfomation.phonenumber.isNotEmpty) {
+    if( widget.newbooking.contactInfomation.phonenumber != '' && widget.newbooking.contactInfomation.phonenumber.isNotEmpty) {
       sb.write('9M*${widget.newbooking.contactInfomation.phonenumber}^');
     }
-    if(widget.newbooking.contactInfomation.email!= null && widget.newbooking.contactInfomation.email.isNotEmpty ) {
+    if(widget.newbooking.contactInfomation.email!= '' && widget.newbooking.contactInfomation.email.isNotEmpty ) {
       sb.write('9E*${widget.newbooking.contactInfomation.email}^');
     }
   }
@@ -759,7 +758,7 @@ class _ContactDetailsWidgetState extends State<ContactDetailsWidget> {
       if (pax.fqtv != null && pax.fqtv != '') {
         sb.write('4-${index + 1}FFQTV${pax.fqtv}^');
       } else {
-        if( gblFqtvNumber != null && gblFqtvNumber.isNotEmpty && index == 0) {
+        if( gblFqtvNumber != '' && gblFqtvNumber.isNotEmpty && index == 0) {
           sb.write('4-${index + 1}FFQTV$gblFqtvNumber^');
 
         }

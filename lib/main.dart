@@ -223,7 +223,7 @@ bool bFirstTime = true;
 
 
     }
-    logit('CREATE APP lang=$gblLanguage');
+    //logit('CREATE APP lang=$gblLanguage');
 
     return ChangeNotifierProvider(
       create: (_) => new LocaleModel(),

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 
-import '../Helpers/settingsHelper.dart';
 import '../components/vidButtons.dart';
 import '../utilities/helper.dart';
 import '../v3pages/cards/typogrify.dart';
@@ -309,9 +308,6 @@ return str;
         break;
       case 'fa-check-square':
         iconData = Icons.check_box;
-        break;
-      case 'fa-exchange':
-        iconData = Icons.swap_horiz_outlined;
         break;
       case 'fa-exclamation':
         iconData = Icons.info_outline;

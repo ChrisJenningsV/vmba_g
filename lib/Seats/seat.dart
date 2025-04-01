@@ -131,7 +131,7 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
     body = Stack( children: list,);
   }
 
-  if( gblSettings.seatStyle != null &&  gblSettings.seatStyle == 'line'){
+  if( gblSettings.seatStyle != '' &&  gblSettings.seatStyle == 'line'){
     return Container(
       padding: EdgeInsets.all(0),
       alignment: Alignment.center,
@@ -140,9 +140,9 @@ Widget seat2(String seatNo,  SeatType seatType, SeatSize seatSize ) {
       decoration: BoxDecoration(
           border: Border(
             top: BorderSide(width: 1.0, color: seatClr as Color),
-            left: BorderSide(width: 1.0, color: seatClr as Color),
-            right: BorderSide(width: 1.0, color: seatClr as Color),
-            bottom: BorderSide(width: 15.0, color: seatClr as Color),
+            left: BorderSide(width: 1.0, color: seatClr ),
+            right: BorderSide(width: 1.0, color: seatClr ),
+            bottom: BorderSide(width: 15.0, color: seatClr ),
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(5.0)),

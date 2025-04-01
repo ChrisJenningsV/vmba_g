@@ -135,13 +135,18 @@ class DrawerMenu extends StatefulWidget {
     // My Account
     if(gblSettings != null &&  gblSettings.wantMyAccount != null && gblSettings.wantMyAccount) {
       list.add( menuItem(Icons.person_outlined, 'My Account' , () {
-        Navigator.push(
-            context, SlideTopRoute(page: MyAccountPage(
-          isAdsBooking: false,
-          isLeadPassenger: true,
-        )
-        ));
-        },
+        if (gblSettings.wantNewPaxDialogs) {
+          navToSmartDialogHostPage(context, new FormParams(formName: 'MYACCOUNT',
+              formTitle: 'My Account'));
+        } else {
+          Navigator.push(
+              context, SlideTopRoute(page: MyAccountPage(
+            isAdsBooking: false,
+            isLeadPassenger: true,
+          )
+          ));
+        }
+      },
       ));
     }
 
@@ -151,7 +156,7 @@ class DrawerMenu extends StatefulWidget {
       fqtvName = '${gblSettings.fqtvName}';
     }
 
-    if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV) {
+    if(gblNoNetwork == false  && gblSettings != null && gblSettings.wantFQTV!= null && gblSettings.wantFQTV && gblInReview == false) {
       list.add( menuItem(Icons.person_pin, fqtvName , () {
         if( gblFqtvLoggedIn == false ) {
           navToSmartDialogHostPage(context, new FormParams(formName: 'FQTVLOGIN',

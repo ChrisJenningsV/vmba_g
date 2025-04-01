@@ -85,7 +85,11 @@ DialogDef getDialogDefinition(String formName, String formTitle){
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
       break;
     case 'FQTVREGISTER':
-      dialog.width = 'full';
+      dialog = getFqtvRegister(formName);
+      break;
+
+    case 'MYACCOUNT':
+      dialog = getMyAccount(formName);
       break;
 
     case 'NEWINSTALLSETTINGS':
@@ -139,6 +143,11 @@ DialogDef getDialogDefinition(String formName, String formTitle){
             actionText: translate('Create a') + ' ${gblSettings.fqtvName} ' + translate('account >'),
             action: 'FqtvRegister'
         ));
+      } else if (gblSettings.fqtvRegisterUrl != ''){
+        dialog.dialogFoot.add(new DialogFieldDef(field_type: 'action', caption: '',
+            actionText: translate('Create a') + ' ${gblSettings.fqtvName} ' + translate('account >'),
+            action: 'OpenFqtvRegister'
+        ));
       }
       if( gblBuildFlavor == 'LM'){
           dialog.pageFoot.add(new DialogFieldDef(field_type: 'action', caption: '',
@@ -150,5 +159,85 @@ DialogDef getDialogDefinition(String formName, String formTitle){
     default:
       gblCurDialog = dialog;
    }
+  return dialog;
+}
+
+DialogDef getMyAccount(String formName) {
+  DialogDef dialog = new DialogDef(formname: formName,
+      caption: 'My Account',
+      actionText: 'Save',
+      action: 'DoMyAccount',
+      wantAppBar: false);
+
+  dialog.fields.add(new DialogFieldDef(field_type: 'dropdown', caption: 'title', options: gblTitles));
+
+  // first len 50
+  dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'First name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+  // middle len 50
+  if( gblSettings.wantMiddleName ) {
+    dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Middle name', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+  }
+    // last  len 50
+  dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Last name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+
+  // phone len 30
+  if( gblSettings.wantInternatDialCode) {} else {
+
+  }
+    // email len 100
+  dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email', maxLen: 100, isRequired: true));
+  // dob
+
+  // gender
+  if( gblSettings.wantGender) {
+    dialog.fields.add(new DialogFieldDef(
+        field_type: 'dropdown', caption: 'title', options: gblTitles));
+  }
+  // weight
+  if( gblSettings.wantWeight) {
+  }
+  // country
+  if( gblSettings.wantCountry) {
+  }
+  // notifications
+  // fqtv no  len 50
+  // fqtv pass
+
+  // LM ADS no and pass len 25
+  // T6 senior citizen ID and Disability ID
+
+  // redress no len 30
+  // known traveller no len 30
+
+
+  dialog.width = 'full';
+  return dialog;
+}
+
+
+DialogDef getFqtvRegister(String formName) {
+  DialogDef dialog = new DialogDef(formname: formName, caption: '${gblSettings.fqtvName} Registration', actionText: 'Continue', action: 'DoFqtvRegister', wantAppBar: false);
+  dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+  dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'On completion you will receive an email containing your joining information.'));
+  dialog.fields.add(new DialogFieldDef(field_type: 'dropdown', caption: 'title', options: gblTitles));
+
+  // first len 50
+  dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'First name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+  // middle len 50
+  if( gblSettings.wantMiddleName ) {
+    dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Middle name', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+  }
+  // last  len 50
+  dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Last name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
+
+  // dob
+  dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email', maxLen: 100));
+  // mobile
+  // nationallity
+  // password
+  // confirm
+  // accept
+  dialog.fields.add(new DialogFieldDef(field_type: 'space'));
+  dialog.width = 'full';
   return dialog;
 }

@@ -32,8 +32,8 @@ import 'models/vouchers.dart';
 // H4 hisky
 // X4 excursions
 // KG key lime / Dallas
-String gblBuildFlavor = 'LM';
-bool gblIsLive = true;
+String gblBuildFlavor = 'LY';
+bool gblIsLive = false;
 bool gblDebugMode = false;
 
 bool gblWantLogBuffer = false;
@@ -211,7 +211,7 @@ String getGblValue(String valName){
   if( gblValues[valName] != null ){
     return gblValues[valName] as String;
   } else {
-    gblValues[valName]= 'false';
+    gblValues[valName]= '';
     return gblValues[valName] as String;
   }
 }

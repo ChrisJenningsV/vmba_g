@@ -714,17 +714,13 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
           rowHasSeats = true;
           row.add(hookUpSeat(seat, false, false, gblSeatPlanDef!.seatSize));
         } else {
-          var color;
           dumpMsg += '${seat!.sCode} ';
           switch (seat!.sCellDescription) {
             case 'EmergencySeat':
-              color = gblSystemColors.seatPlanColorEmergency;
               break;
             case 'Seat':
               if (seat!.noInfantSeat) {
-                color = gblSystemColors.seatPlanColorRestricted;
               } else {
-                color = gblSystemColors.seatPlanColorAvailable;
               }
               if (seat!.sRLOC != '') {
                 SeatType.selected;
@@ -732,17 +728,11 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
               break;
 
             default:
-              if (seat!.noInfantSeat) {
-                color = gblSystemColors.seatPlanColorRestricted;
-              } else {
-                color = gblSystemColors.seatPlanColorSelected;
-              }
               selectableSeat = false;
           }
 
           //Is the seat already selected by one of the pax
           if (gblSelectedSeats.contains(seat!.sCode)) {
-            color = gblSystemColors.seatPlanColorSelected;
             selectableSeat = false;
           }
           bool selected = false;
@@ -1138,7 +1128,6 @@ class _RenderSeatPlanSeatState2 extends State<RenderSeatPlan2> {
 
 Widget getSeatplanTitle() {
   Itin flt = gblPnrModel!.pNR.itinerary.itin[gblCurJourney];
-  int noFlts = gblPnrModel!.pNR.itinerary.itin.length;
   String outLong = '${flt.airID} ${flt.fltNo} ${flt.depart} to ${flt.arrive} ${getIntlDate('EEE dd MMM', DateTime.parse(flt.depDate + ' ' + flt.depTime))}';
   return   Align( alignment: Alignment.topLeft, child: Padding( padding: EdgeInsets.fromLTRB(10,0,0,0), child:VTitleText(outLong, size: TextSize.large,)));
 

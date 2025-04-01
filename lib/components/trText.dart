@@ -46,7 +46,7 @@ class TrText extends StatelessWidget {
       }
     }
 
-    if( variety != null &&  variety.isNotEmpty) {
+    if(  variety.isNotEmpty) {
       double width = MediaQuery.of(context).size.width;
       Color? clr;
 

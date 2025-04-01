@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:vmba/data/models/models.dart';
-import 'package:vmba/data/models/user_profile.dart';
 import 'package:vmba/data/globals.dart';
 import 'package:vmba/components/trText.dart';
 import 'package:vmba/data/repository.dart';

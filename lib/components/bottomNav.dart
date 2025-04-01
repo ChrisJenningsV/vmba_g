@@ -4,25 +4,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:vmba/components/showNotification.dart';
 
-import '../Helpers/pageHelper.dart';
-import '../Helpers/settingsHelper.dart';
 import '../data/globals.dart';
-import '../utilities/blueScreen.dart';
-import '../utilities/helper.dart';
 import '../utilities/messagePages.dart';
 import '../v3pages/v3BottomNav.dart';
 import 'trText.dart';
-void Function()? _custom;
 
 Widget? getBottomNav(BuildContext context, String curPage, {Widget? popButton , String helpText='',  void Function()? custom } ) {
 
-/*
-  if( gblDebugMode == true ){
-    return DebugBottomNav(custom: custom,);
-  }
-*/
-
-  //logit( 'getBN p:$gblCurPage');
   // n.b. browser back may cause arrival here with wrong pagename
   if(  gblSettings.bottomNavPages.contains(curPage)){
     return getV3BottomNav(context, curPage);

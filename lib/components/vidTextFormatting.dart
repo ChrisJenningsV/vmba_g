@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget getH2Text(String stext, {String right=''}) {
-  if (right != null ) {
+  if (right != '' ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
