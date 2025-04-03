@@ -256,9 +256,11 @@ class DrawerMenu extends StatefulWidget {
           if (menuText.isNotEmpty && pageText.isNotEmpty && url.isNotEmpty) {
             // SizedBox(height: 24,
             //             child:
-            list.add( menuItem( Icons.web, menuText , () {}));
-            Navigator.push(context,
-                SlideTopRoute(page: CustomPageWeb(pageText, url)));
+            list.add( menuItem( Icons.web, menuText , () {
+              Navigator.push(context,
+                  SlideTopRoute(page: CustomPageWeb(pageText, url)));
+
+            }));
             }
         } catch (e) {
           logit(e.toString());

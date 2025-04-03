@@ -33,7 +33,7 @@ import 'models/vouchers.dart';
 // X4 excursions
 // KG key lime / Dallas
 String gblBuildFlavor = 'LY';
-bool gblIsLive = false;
+bool gblIsLive = true;
 bool gblDebugMode = false;
 
 bool gblWantLogBuffer = false;

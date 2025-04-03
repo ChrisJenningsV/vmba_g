@@ -6,6 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:vmba/components/trText.dart';
 
 import '../helper.dart';
+import '../navigation.dart';
 
 class VidWebViewWidget extends StatefulWidget {
   final url;
@@ -121,7 +122,8 @@ Page resource error:
         actions: (widget.canNotClose != null) ? <Widget>[Text(' ')] :  <Widget>[
           IconButton(icon: Icon(Icons.close, color: gblSystemColors.headerTextColor,
           ) ,
-          onPressed: () => Navigator.pop(context),
+
+          onPressed: () => navToHomepage(context), //Navigator.pop(context),
           )
         ],
       ),
