@@ -132,8 +132,8 @@ void configSI() {
 
     testXmlUrl:      "https://customertest.videcom.com/blueislands/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
  //   testXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",
-//  testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
-    testSmartApiUrl:  "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
+  testSmartApiUrl:  "https://customertest.videcom.com/blueislands/VARS/Public/webservices/VrsApi.asmx/MobileSmartApi",
+//    testSmartApiUrl:  "http://10.0.2.2:57793/webservices/VrsApi.asmx/MobileSmartApi",
   testApisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
 
   testApiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',
