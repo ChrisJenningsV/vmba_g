@@ -16,6 +16,7 @@ import 'package:vmba/data/models/providers.dart' as PaymentProvider;
 import 'package:vmba/utilities/widgets/buttons.dart';
 import 'package:vmba/v3pages/controls/V3Constants.dart';
 
+import '../Managers/commsManager.dart';
 import '../controllers/vrsCommands.dart';
 import '../utilities/widgets/CustomPageRoute.dart';
 
@@ -65,6 +66,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     super.initState();
     _displayProcessingIndicator = false;
     _displayProcessingText = 'Processing your payment...';
+    gblCurProvider = widget.provider;
     double am = double.parse(widget.pnrModel.pNR.basket.outstanding.amount);
     setError( '');
     gblPayBtnDisabled = false;
@@ -159,7 +161,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
     List <Widget> list = [];
 
     widget.provider.fields.paymentFields.forEach((element) {
-   //   logit('Add field ${element.paymentFieldName}');
+      logit('Add field ${element.paymentFieldName} ');
       FieldParams params = FieldParams();
       params.label = element.defaultLabel;
       params.maxLength = element.maxLen;
@@ -167,6 +169,7 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       params.required = element.requiredField;
       params.id = element.paymentFieldName;
       bool bShow = false;
+
 
       switch (element.paymentFieldName) {
         case 'CardType':
@@ -180,13 +183,23 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
           params.inputFormatters = [LengthLimitingTextInputFormatter(19)];
           bShow = true;
           break;
-        case 'CardStartDate':
+        case 'CardNumberBinBase':
+          params.inputFormatters = [LengthLimitingTextInputFormatter(19),
+                  FilteringTextInputFormatter.allow(RegExp("[0-9]")) ];
+          params.doBinBaseCheck = true;
+          bShow = true;
           break;
-        case 'CardExpiryDate':
+        case  'CardExpiryDate':
+          bShow = true;
+          params.ftype = FieldType.date;
+          break;
+        case  'CardSecurityCode':
+          bShow = true;
+          break;
+        case 'CardStartDate':
+          params.ftype = FieldType.date;
           break;
         case 'CardIssueNumber':
-          break;
-        case 'CardSecurityCode':
           break;
         case 'CardAuthorisationCode':
           break;
@@ -338,9 +351,13 @@ class ProviderFieldsPageState extends State<ProviderFieldsPage> {
       });
     }
   }
-
-
-
 }
 
+Future<void> doBinBaseCheck(String ccNo) async {
 
+
+  String rx = await callSmartApi('GETBINBASE', ccNo, data2: gblCurProvider!.paymentSchemeName);
+  if( rx != ''){
+    logit('GetBinBase rx: $rx');
+  }
+}

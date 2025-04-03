@@ -181,7 +181,9 @@ DialogDef getMyAccount(String formName) {
   dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Last name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
 
   // phone len 30
-  if( gblSettings.wantInternatDialCode) {} else {
+  if( gblSettings.wantInternatDialCode) {
+
+  } else {
 
   }
     // email len 100
@@ -231,12 +233,27 @@ DialogDef getFqtvRegister(String formName) {
   dialog.fields.add(new DialogFieldDef(field_type: 'edittext', caption: 'Last name (as Passport)', maxLen: 50, isRequired: true, formatRegex: '[a-zA-Z- ÆØøäöåÄÖÅæé]'));
 
   // dob
+  dialog.fields.add(new DialogFieldDef(field_type: 'dob', caption: 'Email', maxLen: 100));
+  // email
   dialog.fields.add(new DialogFieldDef(field_type: 'email', caption: 'Email', maxLen: 100));
   // mobile
+  if( gblSettings.wantInternatDialCode) {
+
+  } else {
+
+  }
+
   // nationallity
+
   // password
+  dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Password', maxLen: 50));
   // confirm
+  dialog.fields.add(new DialogFieldDef(field_type: 'password', caption: 'Confirm password', maxLen: 50));
+
   // accept
+  dialog.fields.add(new DialogFieldDef(field_type: 'switch', caption: 'I accept ${gblSettings.fqtvName} terms and conditions', maxLen: 50, maxLines: 2));
+
+
   dialog.fields.add(new DialogFieldDef(field_type: 'space'));
   dialog.width = 'full';
   return dialog;

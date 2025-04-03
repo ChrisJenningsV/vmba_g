@@ -9,6 +9,7 @@ import 'package:vmba/utilities/helper.dart';
 
 import '../../data/models/providers.dart';
 import '../../data/repository.dart';
+import '../ProviderFieldsPage.dart';
 
 
 
@@ -36,6 +37,9 @@ class VInputFieldState extends State<VInputField> {
   @override
   void initState() {
     super.initState();
+    if (gblPayFormVals == null) {
+      gblPayFormVals = new Map();
+    }
 
     _textEditingController = new TextEditingController();
   }
@@ -67,6 +71,23 @@ class VInputFieldState extends State<VInputField> {
       );
     }
 
+    if (widget.fieldParams!.ftype == FieldType.date) {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
+        child: new Theme(
+          data: theme,
+          child:
+          Container(
+            width: 400,
+              child: Row(
+          children: [
+ //           monthPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), theme),
+ //           yearPicker(EdgeInsets.fromLTRB(0, 8.0, 0, 8), theme),
+          ])
+        )),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8),
       child: new Theme(
@@ -92,6 +113,12 @@ class VInputFieldState extends State<VInputField> {
             if (widget.fieldParams!.required == false) return null;
             return value!.isEmpty ? translate('${widget.fieldParams!.label}') +
                 ' ' + translate('cannot be empty') : null;
+          },
+          onChanged: (value){
+            if(widget.fieldParams!.doBinBaseCheck &&  value.length == 11 ){
+              doBinBaseCheck(value);
+            }
+            gblPayFormVals![widget.fieldParams!.id] = value;
           },
           onSaved: (value) {
             if (value != null) {
@@ -236,7 +263,51 @@ class VInputFieldState extends State<VInputField> {
     return Future.value('');
   }
 
+  Widget monthPicker(EdgeInsetsGeometry padding, ThemeData theme) {
+    List<String> months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var index = 0;
+    return Padding(
+        padding: padding,
+        child: new Theme(
+        data: theme,
+        child: DropdownButtonFormField(
+        decoration: getDecoration('Month'),
+      value: 0,
+      items: months.map((month ) {
+            return DropdownMenuItem(
+              child: Text(month), //ext(trimCountry(country.enShortName)),
+              value: index++,
+            );
+      }
+    ).toList(),
+      onChanged: ( value) {  },
+    )));
 
+  }
+  Widget yearPicker(EdgeInsetsGeometry padding, ThemeData theme) {
+    List<String> years = [];
+    for(int i=DateTime.now().year; i< DateTime.now().year+15; i++ ){
+      years.add(i.toString());
+    }
+    var index = 0;
+    return Padding(
+        padding: padding,
+        child: new Theme(
+        data: theme,
+        child: DropdownButtonFormField(
+      decoration: getDecoration('Month'),
+      value: 0,
+      items: years.map((year ) {
+        return DropdownMenuItem(
+          child: Text(year), //ext(trimCountry(country.enShortName)),
+          value: index++,
+        );
+      }
+      ).toList(),
+      onChanged: ( value) {  },
+    )));
+
+  }
 
   Widget? countryPicker(EdgeInsetsGeometry padding, ThemeData theme) {
     // get current country index
@@ -305,7 +376,7 @@ class VInputFieldState extends State<VInputField> {
   }
 
 
-enum FieldType { text, country, checkbox, choice}
+enum FieldType { text, country, checkbox, choice, date}
 
 class FieldParams {
   String label;
@@ -316,6 +387,7 @@ class FieldParams {
   String id;
   FieldType ftype;
   String options;
+  bool doBinBaseCheck;
 
   List<TextInputFormatter>? inputFormatters;
 
@@ -327,8 +399,8 @@ class FieldParams {
     this.required = false,
     this.id = '',
     this.ftype = FieldType.text,
-    this.options = ''
+    this.options = '',
+    this.doBinBaseCheck = false,
   });
-
-
 }
+

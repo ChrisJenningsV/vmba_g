@@ -91,7 +91,7 @@ Widget vidWideActionButton(BuildContext context, String caption, void Function(B
   EdgeInsets buttonPad = EdgeInsets.all(0);
   bool wantShadows = true;
 
-  logit('wid button d:$disabled');
+  //logit('wid button d:$disabled');
   if( gblV3Theme != null   ){
     if( gblV3Theme!.generic.actionButtonIcons != null) {
       wantIcon = gblV3Theme!.generic.actionButtonIcons as bool;

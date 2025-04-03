@@ -12,6 +12,7 @@ class VrsApiRequest extends Session {
   String notifyToken ='';
   String rloc ='';
   String data ='';
+  String data2 ='';
   String language ='';
   String appVersion ='';
   String undoCmd ='';
@@ -30,8 +31,8 @@ class VrsApiRequest extends Session {
       this.token,
   {this.appFile='',this.vrsGuid='', this.appVersion='', this.brandId='',
     this.notifyToken='', this.rloc='', this.language='',this.phoneId='', this.undoCmd='',
-    this.data='',
-    this.smartApiVersion='1.2',
+    this.data='', this.data2='',
+    this.smartApiVersion='1.3',
     this.email='',
     this.country='',
     this.countryCode='',

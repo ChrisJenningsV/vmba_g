@@ -204,6 +204,7 @@ String gblCurCity = '';
 double? gblLatitude;
 double? gblLongitude;
 DialogDef? gblCurDialog;
+Provider? gblCurProvider;
 
 Map<String, String> gblValues = {};
 

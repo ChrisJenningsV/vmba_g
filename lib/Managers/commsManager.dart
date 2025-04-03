@@ -7,7 +7,7 @@ import '../data/models/models.dart';
 import '../data/models/vrsRequest.dart';
 import '../utilities/helper.dart';
 
-Future<String> callSmartApi(String action, String data) async {
+Future<String> callSmartApi(String action, String data, {String data2=''}) async {
   VrsApiRequest rq =
     VrsApiRequest(gblSession as Session, action,
       gblSettings.xmlToken.replaceFirst('token=', ''),
@@ -17,7 +17,8 @@ Future<String> callSmartApi(String action, String data) async {
       notifyToken: gblNotifyToken,
       rloc: gblCurrentRloc,
       language: gblLanguage,
-      phoneId: gblDeviceId
+      phoneId: gblDeviceId,
+      data2: data2
     ); // '{VrsApiRequest: ' + + '}' ;
   if( gblCurLocation != null ){
     rq.countryCode = gblCurLocation!.isoCountryCode;

@@ -59,7 +59,7 @@ class _smartDialogPageState extends State<smartDialogPage> {
   double? width;
  //gblActionBtnDisabled = false;
 
-  logit('sd build');
+  //logit('sd build');
 
   /*if( widget.content == null || widget!.reload)*/
   widget.content = getDialogContent(context, gblCurDialog!, () {
@@ -486,12 +486,14 @@ Widget getField(BuildContext context, DialogDef dialog, DialogFieldDef f, bool i
         child:Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(f.caption),
+          Container(
+            width: 3 * MediaQuery.of(context).size.width / 4,
+              child: Text(f.caption, maxLines: f.maxLines,)),
           Switch(
             value:  parseBool(getGblValue(f.valueKey)), // sw1,
             activeColor: Color(0xFF6200EE),
             onChanged: (bool value) {
-              logit('switch click val $value');
+              //logit('switch click val $value');
               setGblValue(f.valueKey, value.toString());
               f.controller!.value = f.controller!.value.copyWith(
                 text: value.toString(),

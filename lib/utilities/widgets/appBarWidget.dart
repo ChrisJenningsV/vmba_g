@@ -447,7 +447,7 @@ Widget getAppBarLeft(String curPage) {
 Widget getText(String txt) {
   return Text(translate(txt), textScaler: TextScaler.linear(1.25),
     style: TextStyle(
-      color: Colors.red , //gblSystemColors.headerTextColor,
+      color: gblSystemColors.headerTextColor,
     ),
   );
 
