@@ -4,9 +4,9 @@
 import 'package:flutter/material.dart';
 
 class AppErrorWidget extends StatelessWidget {
-  final FlutterErrorDetails errorDetails;
+  //final FlutterErrorDetails errorDetails;
 
-  const AppErrorWidget( {required this.errorDetails,super.key});
+  const AppErrorWidget( {/*required this.errorDetails,*/super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,8 @@ class AppErrorWidget extends StatelessWidget {
             SizedBox(height: 16),
             Text(
               'This error is crazy large it covers your whole screen. But no worries'
-                  ' though, we\'re working to fix it.\n\n' +
-                  errorDetails.summary.toString(),
+                  ' though, we\'re working to fix it.\n\n' /*+
+                  errorDetails.summary.toString()*/,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,

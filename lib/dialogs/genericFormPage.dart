@@ -105,7 +105,7 @@ DialogDef getDialogDefinition(String formName, String formTitle){
     case 'VALIDATEPIN':
       dialog = new DialogDef(formname: formName, caption: 'Validate PIN', actionText: 'Continue', action: 'DoValidatePin');
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));
-      dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check youe email inbox, and enter the validation PIN below. '));
+      dialog.fields.add(new DialogFieldDef(field_type: 'text', caption: 'Please check your email inbox, and enter the validation PIN below. '));
       // 'Sign in to access details of bookings made on the website.\n\n A validation PIN will be sent to this email.'
       dialog.fields.add(new DialogFieldDef(field_type: 'pin', caption: 'PIN'));
       dialog.fields.add(new DialogFieldDef(field_type: 'space'));

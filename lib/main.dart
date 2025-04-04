@@ -131,16 +131,20 @@ void main() async {
   }
   if( gblBuildFlavor == 'YL') {
     ErrorWidget.builder =(_) {
-      FlutterErrorDetails dets = FlutterErrorDetails(exception: new Exception('test'));
+//      FlutterErrorDetails dets = FlutterErrorDetails(exception: new Exception('test'));
+/*
       FlutterError.onError = (details) {
         dets = details;
+*/
 /*
         FlutterError.dumpErrorToConsole(details);
         if (!kReleaseMode) return;
-*/
+*//*
+
         // Send to your crashlytics service...
       };
-      return AppErrorWidget(errorDetails: dets,);
+*/
+      return AppErrorWidget(/*errorDetails: dets,*/);
     };// This line does the magic!
   }
 

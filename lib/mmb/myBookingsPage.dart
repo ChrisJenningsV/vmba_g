@@ -1382,7 +1382,7 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
     }
     );
   }*/
-
+/*
   List<Widget> list = [];
   activePnrs.forEach((element) {
     list.add(getMiniItem(context, element));
@@ -1393,7 +1393,8 @@ Widget getMiniMyBookingsPage(BuildContext context, void Function() doUpdate, {do
       child:Column(
         children: list,
       )
-  );
+  );*/
+  return Container();
 }
 Widget getMiniItem(BuildContext context , PnrDBCopy document) {
   String pnrJson = document.data;

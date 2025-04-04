@@ -32,7 +32,7 @@ import 'models/vouchers.dart';
 // H4 hisky
 // X4 excursions
 // KG key lime / Dallas
-String gblBuildFlavor = 'YL';
+String gblBuildFlavor = 'LM';
 bool gblIsLive = true;
 bool gblDebugMode = false;
 

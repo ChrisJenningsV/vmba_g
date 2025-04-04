@@ -149,7 +149,7 @@ getUnlockDlg(BuildContext context, void Function() doCallback, {bool? isStep1}) 
         onSaved: (value) {}, /*autofocus: true*/));
   } else {
     contentList.add(
-        Text('Please check youe email inbox, and enter the validation PIN below. '));
+        Text('Please check your email inbox, and enter the validation PIN below. '));
     //contentList.add( SplitInput(format:'1d 1d 1d 1d 1d 1d') );
     contentList.add(pax2faNumber(
         context, faEditingController, onFieldSubmitted: (value) {},
