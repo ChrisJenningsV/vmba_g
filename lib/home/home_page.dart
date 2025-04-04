@@ -617,13 +617,18 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
     List<Widget> list = [];
 
     //   if( gblSettings.aircode == 'LM') {
-    list.add(Container(
-        decoration: BoxDecoration(
-            color: gblSettings.darkSiteEnabled ?Colors.black : null,
-            image: DecorationImage(
-                colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
-                image: mainBackGroundImage, fit: BoxFit.fill))));
-    if (gotBG) {
+    if (!gotBG || gblSettings.darkSiteEnabled == true) {
+      list.add(Container(
+          decoration: BoxDecoration(
+              color: gblSettings.darkSiteEnabled ? Colors.black : null,
+              image: DecorationImage(
+                  colorFilter: gblSettings.darkSiteEnabled
+                      ? new ColorFilter.mode(
+                      Colors.black.withOpacity(0.3), BlendMode.dstATop)
+                      : null,
+                  image: mainBackGroundImage, fit: BoxFit.fill))));
+    }
+    if (gotBG && gblSettings.darkSiteEnabled == false) {
       list.add(ClipRRect(child: getImage()));
     }
 //    } else {
