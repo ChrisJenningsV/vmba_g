@@ -717,7 +717,7 @@ class Repository {
 
                   case 'backgroundimageurl':
                     gblSettings.backgroundImageUrl = item['value'];
-                    print(gblSettings.backgroundImageUrl);
+                    logit('got gb image : ' + gblSettings.backgroundImageUrl);
                     break;
                   case 'pageimageurl':
                     gblSettings.backgroundImageUrl = item['value'];

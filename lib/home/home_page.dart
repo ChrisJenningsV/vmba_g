@@ -629,7 +629,16 @@ class HomeState extends State<HomePage>  with WidgetsBindingObserver {
                   image: mainBackGroundImage, fit: BoxFit.fill))));
     }
     if (gotBG && gblSettings.darkSiteEnabled == false) {
-      list.add(ClipRRect(child: getImage()));
+      logit('loaded net bg');
+      list.add(Container(
+          decoration:BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image:
+                NetworkImage(gblSettings.backgroundImageUrl)
+            ),
+          )));
+      //list.add(ClipRRect(child: getImage()));
     }
 //    } else {
     //    list.add(ClipRRect(child: getImage()));

@@ -22,6 +22,7 @@ import 'package:vmba/v3pages/Templates.dart';
 import 'package:vmba/v3pages/newInstallPage.dart';
 import 'package:vmba/v3pages/v3Theme.dart';
 
+import 'Helpers/appErrorWidget.dart';
 import 'Helpers/settingsHelper.dart';
 import 'components/selectLang.dart';
 import 'data/globals.dart';
@@ -128,7 +129,20 @@ void main() async {
         break;
     }
   }
-
+  if( gblBuildFlavor == 'YL') {
+    ErrorWidget.builder =(_) {
+      FlutterErrorDetails dets = FlutterErrorDetails(exception: new Exception('test'));
+      FlutterError.onError = (details) {
+        dets = details;
+/*
+        FlutterError.dumpErrorToConsole(details);
+        if (!kReleaseMode) return;
+*/
+        // Send to your crashlytics service...
+      };
+      return AppErrorWidget(errorDetails: dets,);
+    };// This line does the magic!
+  }
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
