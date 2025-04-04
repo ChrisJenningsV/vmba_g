@@ -189,7 +189,7 @@ void configLM() {
 
   ),
 
-//Production setttings
+//Production settings
 
 //  liveXmlUrl:      "https://booking.loganair.co.uk/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     liveXmlUrl:      "https://booking.loganair.co.uk/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
@@ -205,7 +205,7 @@ void configLM() {
   apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
-//Staging setttings
+//Staging settings
 /*
   testApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',  // InHouse
 

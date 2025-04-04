@@ -126,7 +126,7 @@ void configKG() {
     wantCalendarBigMonth: true,
 
     apiKey: '75998e0697a04bc0bbb7dd9a38cf0745',
-//Staging setttings
+//Staging settings
     liveXmlUrl:      "https://booking.denverairconnection.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.denverairconnection.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:       'https://booking.denverairconnection.com/VARS/webApiV2/api/',

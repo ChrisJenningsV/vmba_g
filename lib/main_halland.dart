@@ -122,7 +122,7 @@ void configAH() {
     hideFareRules:  true,
     wantMyAccount: true,
     apiKey: '2edd1519899a4e7fbf9a307a0db4c17a',
-//Staging setttings
+//Staging settings
     liveXmlUrl:      "https://booking.airhalland.se/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
     liveApisUrl:       'https://booking.airhalland.se/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl: 'https://booking.airhalland.se/VARS/webApiV2/api/',

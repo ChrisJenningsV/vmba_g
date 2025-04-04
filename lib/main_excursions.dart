@@ -111,7 +111,7 @@ void configX4() {
 
     ),
 
-//Production setttings
+//Production settings
     liveXmlUrl:      "https://customer.videcom.com/AirExcursions/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://customer.videcom.com/AirExcursions/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     liveApiUrl:      'https://customer.videcom.com/AirExcursions/VARS/webApiv2/api/',

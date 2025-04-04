@@ -117,7 +117,7 @@ void configH4() {
 
     ),
 
-//Production setttings
+//Production settings
 
     liveXmlUrl:      "https://booking.hisky.md/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     //    liveXmlUrl:      "http://10.0.2.2:57793/webservices/VrsApi.asmx/PostVRSCommand?",

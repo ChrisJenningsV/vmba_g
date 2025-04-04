@@ -31,7 +31,7 @@ class ImageManager{
               color: gblSettings.darkSiteEnabled ? Colors.black : null,
               image: DecorationImage(
                 //colorFilter: gblSettings.darkSiteEnabled ? new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop) : null,
-                  image: img, fit: BoxFit.fitWidth))));
+                  image: img, fit: BoxFit.fill))));
     }
     list.add(body);
     double wb = View.of(context).viewInsets.bottom;

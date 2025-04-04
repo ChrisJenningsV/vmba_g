@@ -118,7 +118,7 @@ void config9Q() {
 
     ),
 
-//Production setttings
+//Production settings
 
     liveXmlUrl:      "https://customer.videcom.com/caicosexpressairways/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://customer.videcom.com/caicosexpressairways/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

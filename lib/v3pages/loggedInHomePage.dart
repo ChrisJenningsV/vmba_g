@@ -196,7 +196,7 @@ Widget getFinishSetup(BuildContext context, void Function() doCallback){
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            vidActionButton(context, 'Setttings', (context, d){
+            vidActionButton(context, 'Settings', (context, d){
               navToSmartDialogHostPage(context, new FormParams(formName: 'NEWINSTALLSETTINGS',
                   formTitle: 'New Install Settings'));
 

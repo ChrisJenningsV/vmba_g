@@ -111,7 +111,7 @@ void configU5() {
 
     ),
 
-//Production setttings
+//Production settings
 
     liveXmlUrl:      "https://booking.flyunitednigeria.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
     liveApisUrl:      'https://booking.flyunitednigeria.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',

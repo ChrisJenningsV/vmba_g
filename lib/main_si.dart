@@ -120,7 +120,7 @@ void configSI() {
     liveCreditCardProvider: 'citypaydirect',
 
   apiKey: '4d332cf7134f4a43958d954278474b41', // '2edd1519899a4e7fbf9a307a0db4c17a',
-//Staging setttings
+//Staging settings
   xmlUrl:      "https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://customertest.videcom.com/blueislands/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   apiUrl:      'https://customertest.videcom.com/blueislands/VARS/webApiV2/api/',

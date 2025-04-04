@@ -107,7 +107,7 @@ void configUZ() {
 
   ),
 
-//Production setttings
+//Production settings
 
   liveXmlUrl:      "https://booking.buraq.aero/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   //  liveXmlUrl:      "http://10.0.2.2:50311/webservices/VrsApi.asmx/PostVRSCommand?",
@@ -124,7 +124,7 @@ void configUZ() {
     apisUrl:      'https://customertest.videcom.com/LoganAirInHouse/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
     apiUrl:      'http://10.0.2.2:5000/api',  // InHouse
 
-//Staging setttings
+//Staging settings
 /*  testXmlUrl:      "https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   testApisUrl:      'https://10.0.2.2:51088/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   testApiUrl:      'https://10.0.2.2:51088/webApiv2/api/',  // InHouse

@@ -175,7 +175,7 @@ void configT6() {
       seniorMinAge: 70,
   ),
 
-//Production setttings
+//Production settings
   liveXmlUrl:      "https://booking.air-swift.com/VARS/Public/WebServices/VrsApi.asmx/PostVRSCommand?",
   liveApisUrl:      'https://booking.air-swift.com/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   liveApiUrl: 'https://booking.air-swift.com/VARS/webApiv2/api/',
@@ -186,7 +186,7 @@ void configT6() {
 
   eVoucher: true,
 
-//Staging setttings
+//Staging settings
   xmlUrl:      "https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostVRSCommand?",
   apisUrl:      'https://customertest.videcom.com/airswift/VRSXMLService/VRSXMLwebService3.asmx/PostApisData?',
   apiUrl:      'https://customertest.videcom.com/airswift/VARS/webApiv2/api/',  // InHouse
